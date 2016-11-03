@@ -33,6 +33,9 @@ hs_err_pid*
 .idea/dynamic.xml
 .idea/uiDesigner.xml
 
+# target directory
+target/
+
 # Gradle:
 .idea/gradle.xml
 .idea/libraries

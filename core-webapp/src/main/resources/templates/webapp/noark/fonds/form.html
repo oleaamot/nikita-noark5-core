@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="layout">
+<head>
+<title th:text="#{msg.fonds.fondsCreate}">Fonds : Create</title>
+</head>
+<body>
+    <h1 layout:fragment="header">Users : Create</h1>
+    <div layout:fragment="content" class="container">
+        <form id="userForm" th:action="@{/gui/arkiv/(form)}" th:object="${fonds}" action="#" method="post">
+            <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
+                <p th:each="error : ${#fields.errors('*')}" th:text="${error}">Validation error</p>
+            </div>
+            <div class="pull-right">
+                <a th:href="@{/arkiv/}" href="arkiv.html"> Users </a>
+            </div>
+            <input type="hidden" th:field="*{id}" th:class="${#fields.hasErrors('id')} ? 'field-error'" />
+
+            <label for="Title">#{msg.fonds.title}</label>
+            <input type="text" th:field="*{title}"/>
+            <label for="Description">#{msg.fonds.description}</label>
+            <input type="text" th:field="*{description}"/>
+            <label for="Document medium">#{msg.fonds.documentMedium}</label>
+            <input type="text" th:field="*{documentMedium}"/>
+
+            <div class="form-actions">
+                <input type="submit" th:attr="value=#{msg.save}"/>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

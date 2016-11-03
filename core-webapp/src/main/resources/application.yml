@@ -1,0 +1,83 @@
+# ===================================================================
+# Spring Boot configuration.
+#
+# This configuration will be overriden by the Spring profile you use,
+# for example application-dev.yml if you use the "dev" profile.
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+spring:
+    application:
+        name: nikitaNoark5Core
+#    jpa:
+#        open-in-view: false
+#        hibernate:
+#            ddl-auto: none
+#            naming-strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
+    messages:
+        basename: i18n/messages
+    mvc:
+        favicon:
+            enabled: false
+    thymeleaf:
+        mode: XHTML
+
+    datasource:
+            driverClassName: org.postgresql.Driver
+            url: jdbc:postgresql://localhost:5432/nikita_noark5_core_dev
+            name: nikita_noark5_core_dev
+            username: *********************
+            password: *********************
+            validation-query: SELECT 1;
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQL82Dialect
+        database: POSTGRESQL
+        show_sql: true
+        properties:
+            hibernate.cache.use_second_level_cache: false
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: true
+            show_sql: true
+            hibernate.hbm2ddl.auto: create-drop
+            hibernate.dialect: org.hibernate.dialect.PostgreSQL82Dialect
+
+security:
+    basic:
+        enabled: false
+
+server:
+    port: 8999
+
+# ===================================================================
+# nikita-noark5-core specific properties
+# ===================================================================
+
+nikita-noark5-core:
+    async:
+        corePoolSize: 2
+        maxPoolSize: 50
+        queueCapacity: 10000
+    #cors: #By default CORS are not enabled. Uncomment to enable.
+        #allowed-origins: "*"
+        #allowed-methods: GET, PUT, POST, DELETE, OPTIONS
+        #allowed-headers: "*"
+        #exposed-headers:
+        #allow-credentials: true
+        #max-age: 1800
+    mail:
+        from: nikita@nikita.arkivlab.no
+    swagger:
+        title: nikita-noark5-core API
+        description: nikitaNoark5Core API documentation
+        version: 0.0.1
+        termsOfServiceUrl: http://nikita.arkivlab.no/tos
+        contactName: nikita-admin
+        contactUrl: http://nikita.arkivlab.no/tos
+        contactEmail: post@nikita.arkivlab.no
+        license: AGPLv3+
+        licenseUrl: http://nikita.arkivlab.no/license

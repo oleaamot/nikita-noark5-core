@@ -1,0 +1,384 @@
+package no.arkivlab.hioa.nikita.webapp.service.impl;
+
+import nikita.model.noark5.v4.File;
+import nikita.repository.n5v4.IFileRepository;
+import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFileService;
+import no.arkivlab.hioa.nikita.webapp.util.validation.Utils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@Transactional
+public class FileService implements IFileService {
+
+    @Autowired
+    IFileRepository fileRepository;
+
+    public FileService() {
+    }
+
+    // All CREATE operations
+    public File save(File file){
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getName();
+
+        if (!Utils.checkDocumentMediumValid(file.getDocumentMedium())) {
+            // throw an error! Something is wrong. Either null or incorrect value
+        }
+
+        file.setSystemId(UUID.randomUUID().toString());
+        file.setCreatedDate(new Date());
+        file.setOwnedBy(username);
+        file.setCreatedBy(username);
+        file.setDeleted(false);
+
+        // Have to handle referenceToFonds. If it is not set do not allow persisit
+        // throw illegalstructure exception
+
+        // How do handle referenceToPrecusor? Update the entire object?? No patch?
+
+        return fileRepository.save(file);
+    }
+
+    // All READ operations
+    public Iterable<File> findAll() {
+        return fileRepository.findAll();
+    }
+
+    public List<File> findAll(Sort sort) {
+        return fileRepository.findAll(sort);
+    }
+
+    public Page<File> findAll(Pageable pageable) {
+        return fileRepository.findAll(pageable);
+    }
+
+    // id
+    public File findById(Long id) {
+        return fileRepository.findById(id);
+    }
+
+    // systemId
+    public File findBySystemId(String systemId) {
+        return fileRepository.findBySystemId(systemId);
+    }
+
+    // title
+    public List<File> findByTitleAndOwnedBy(String title, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByTitleAndOwnedBy(title,  ownedBy);
+    }
+
+    public List<File> findByTitleContainingAndOwnedBy(String title, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByTitleContainingAndOwnedBy(title, ownedBy);
+    }
+
+    public List<File> findByTitleIgnoreCaseContainingAndOwnedBy(String title, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByTitleIgnoreCaseContainingAndOwnedBy(title, ownedBy);
+    }
+
+    public List<File> findByTitleAndOwnedBy(String title, String ownedBy, Sort sort) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByTitleAndOwnedBy(title, ownedBy, sort);
+    }
+
+    public List<File> findByTitleContainingAndOwnedBy(String title, String ownedBy, Sort sort) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByTitleContainingAndOwnedBy(title, ownedBy, sort);
+    }
+
+    public List<File> findByTitleIgnoreCaseContainingAndOwnedBy(String title, String ownedBy, Sort sort) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByTitleIgnoreCaseContainingAndOwnedBy(title, ownedBy, sort);
+    }
+
+    public Page<File> findByTitleAndOwnedBy(String title, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByTitleAndOwnedBy(title, ownedBy, pageable);
+    }
+
+    public Page<File> findByTitleContainingAndOwnedBy(String title, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByTitleContainingAndOwnedBy(title, ownedBy, pageable);
+    }
+
+    public Page<File> findByTitleIgnoreCaseContainingAndOwnedBy(String title, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByTitleIgnoreCaseContainingAndOwnedBy(title, ownedBy, pageable);
+    }
+
+    // description
+    public List<File> findByDescriptionAndOwnedBy(String description, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByDescriptionAndOwnedBy(description, ownedBy);
+    }
+
+    public List<File> findByDescriptionContainingAndOwnedBy(String description, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByDescriptionContainingAndOwnedBy(description, ownedBy);
+    }
+
+    public List<File> findByDescriptionIgnoreCaseContainingAndOwnedBy(String description, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByDescriptionIgnoreCaseContainingAndOwnedBy(description, ownedBy);
+    }
+
+    public List<File> findByDescriptionAndOwnedBy(String description, String ownedBy, Sort sort) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByDescriptionAndOwnedBy(description, ownedBy, sort);
+    }
+
+    public List<File> findByDescriptionContainingAndOwnedBy(String description, String ownedBy, Sort sort) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByDescriptionContainingAndOwnedBy(description, ownedBy, sort);
+    }
+
+    public List<File> findByDescriptionIgnoreCaseContainingAndOwnedBy(String description, String ownedBy, Sort sort) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByDescriptionIgnoreCaseContainingAndOwnedBy(description, ownedBy, sort);
+    }
+
+    public Page<File> findByDescriptionAndOwnedBy(String description, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByDescriptionAndOwnedBy(description, ownedBy, pageable);
+    }
+
+    public Page<File> findByDescriptionContainingAndOwnedBy(String description, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByDescriptionContainingAndOwnedBy(description, ownedBy, pageable);
+    }
+
+    public Page<File> findByDescriptionIgnoreCaseContainingAndOwnedBy(String description, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByDescriptionIgnoreCaseContainingAndOwnedBy(description, ownedBy, pageable);
+    }
+
+    // documentMedium
+    public List<File> findByDocumentMediumAndOwnedBy(String documentMedium, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByDocumentMediumAndOwnedBy(documentMedium, ownedBy);
+    }
+
+    public List<File> findByDocumentMediumAndOwnedBy(String documentMedium, String ownedBy, Sort sort) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByDocumentMediumAndOwnedBy(documentMedium, ownedBy, sort);
+    }
+
+    public Page<File> findByDocumentMediumAndOwnedBy(String documentMedium, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByDocumentMediumAndOwnedBy(documentMedium, ownedBy, pageable);
+    }
+
+    // createdDate
+    public List<File> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByCreatedDateAndOwnedBy(createdDate, ownedBy);
+    }
+
+    public List<File> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy, Sort sort) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByCreatedDateAndOwnedBy(createdDate, ownedBy, sort);
+    }
+
+    public List<File> findByCreatedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByCreatedDateBetweenAndOwnedBy(start, end, ownedBy);
+    }
+
+    public Page<File> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByCreatedDateAndOwnedBy(createdDate, ownedBy, pageable);
+    }
+
+    public Page<File> findByCreatedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByCreatedDateBetweenAndOwnedBy(start, end, ownedBy, pageable);
+    }
+
+    // createdBy
+    public List<File> findByCreatedByAndOwnedBy(String createdBy, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByCreatedByAndOwnedBy(createdBy, ownedBy);
+    }
+
+    public List<File> findByCreatedByContainingAndOwnedBy(String createdBy, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByCreatedByContainingAndOwnedBy(createdBy, ownedBy);
+    }
+
+    public List<File> findByCreatedByIgnoreCaseContainingAndOwnedBy(String createdBy, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByCreatedByIgnoreCaseContainingAndOwnedBy(createdBy, ownedBy);
+    }
+
+    public List<File> findByCreatedByAndOwnedBy(String createdBy, String ownedBy, Sort sort) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByCreatedByAndOwnedBy(createdBy, ownedBy, sort);
+    }
+
+    public List<File> findByCreatedByContainingAndOwnedBy(String createdBy, String ownedBy, Sort sort) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByCreatedByContainingAndOwnedBy(createdBy, ownedBy, sort);
+    }
+
+    public List<File> findByCreatedByIgnoreCaseContainingAndOwnedBy(String createdBy, String ownedBy, Sort sort) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByCreatedByIgnoreCaseContainingAndOwnedBy(createdBy, ownedBy, sort);
+    }
+
+    public Page<File> findByCreatedByAndOwnedBy(String createdBy, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByCreatedByAndOwnedBy(createdBy, ownedBy, pageable);
+    }
+
+    public Page<File> findByCreatedByContainingAndOwnedBy(String createdBy, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByCreatedByContainingAndOwnedBy(createdBy, ownedBy, pageable);
+    }
+
+    public Page<File> findByCreatedByIgnoreCaseContainingAndOwnedBy(String createdBy, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByCreatedByIgnoreCaseContainingAndOwnedBy(createdBy, ownedBy, pageable);
+    }
+
+    // finalisedDate
+    public List<File> findByFinalisedDateAndOwnedBy(Date finalisedDate, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByFinalisedDateAndOwnedBy(finalisedDate, ownedBy);
+    }
+
+    public List<File> findByFinalisedDateAndOwnedBy(Date finalisedDate, String ownedBy, Sort sort) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByFinalisedDateAndOwnedBy(finalisedDate, ownedBy);
+    }
+
+    public List<File> findByFinalisedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByFinalisedDateBetweenAndOwnedBy(start, end, ownedBy);
+    }
+
+    public Page<File> findByFinalisedDateAndOwnedBy(Date finalisedDate, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByFinalisedDateAndOwnedBy(finalisedDate, ownedBy, pageable);
+    }
+
+    public Page<File> findByFinalisedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByFinalisedDateBetweenAndOwnedBy(start, end, ownedBy, pageable);
+    }
+
+    // finalisedBy
+    public List<File> findByFinalisedByAndOwnedBy(String finalisedBy, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByFinalisedByAndOwnedBy(finalisedBy, ownedBy);
+    }
+
+    public List<File> findByFinalisedByContainingAndOwnedBy(String finalisedBy, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByFinalisedByContainingAndOwnedBy(finalisedBy, ownedBy);
+    }
+
+    public List<File> findByFinalisedByIgnoreCaseContainingAndOwnedBy(String finalisedBy, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByFinalisedByIgnoreCaseContainingAndOwnedBy(finalisedBy, ownedBy);
+    }
+
+    public List<File> findByFinalisedByAndOwnedBy(String finalisedBy, String ownedBy, Sort sort) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByFinalisedByAndOwnedBy(finalisedBy, ownedBy, sort);
+    }
+
+    public List<File> findByFinalisedByContainingAndOwnedBy(String finalisedBy, String ownedBy, Sort sort) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByFinalisedByContainingAndOwnedBy(finalisedBy, ownedBy, sort);
+    }
+
+    public List<File> findByFinalisedByIgnoreCaseContainingAndOwnedBy(String finalisedBy, String ownedBy, Sort sort) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByFinalisedByIgnoreCaseContainingAndOwnedBy(finalisedBy, ownedBy, sort);
+    }
+
+    public Page<File> findByFinalisedByAndOwnedBy(String finalisedBy, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByFinalisedByAndOwnedBy(finalisedBy, ownedBy, pageable);
+    }
+
+    public Page<File> findByFinalisedByContainingAndOwnedBy(String finalisedBy, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByFinalisedByContainingAndOwnedBy(finalisedBy, ownedBy, pageable);
+    }
+
+    public Page<File> findByFinalisedByIgnoreCaseContainingAndOwnedBy(String finalisedBy, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByFinalisedByIgnoreCaseContainingAndOwnedBy(finalisedBy, ownedBy, pageable);
+    }
+
+    // deleted
+    public List<File> findByDeletedAndOwnedBy(String deleted, String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByDeletedAndOwnedBy(deleted, ownedBy);
+    }
+
+    public List<File> findByDeletedAndOwnedBy(String deleted, String ownedBy, Sort sort) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByDeletedAndOwnedBy(deleted, ownedBy, sort);
+    }
+
+    public Page<File> findByDeletedAndOwnedBy(String deleted, String ownedBy, Pageable pageable) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByDeletedAndOwnedBy(deleted, ownedBy, pageable);
+    }
+
+    // ownedBy
+    public List<File> findByOwnedBy(String ownedBy) {
+        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
+        return fileRepository.findByOwnedBy(ownedBy);
+    }
+
+    public List<File> findByOwnedBy(String ownedBy, Sort sort) {return fileRepository.findByOwnedBy(ownedBy, sort);}
+
+    public Page<File> findByOwnedBy(String ownedBy, Pageable pageable) {return fileRepository.findByOwnedBy(ownedBy, pageable);}
+
+    // All UPDATE operations
+    public File update(File file){
+        return fileRepository.save(file);
+    }
+
+    public File updateFileSetFinalized(Long id){
+        File file = fileRepository.findById(id);
+
+        if (file == null) {
+            // throw Object not find
+        }
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        file.setFinalisedDate(new Date());
+        file.setFinalisedBy(username);
+
+        return fileRepository.save(file);
+    }
+
+    public File updateFileSetTitle(Long id, String newTitle){
+
+        File file = fileRepository.findById(id);
+
+        file.setTitle(newTitle);
+        return fileRepository.save(file);
+    }
+
+
+    // All DELETE operations
+
+
+}
