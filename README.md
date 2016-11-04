@@ -62,12 +62,12 @@ use to login.
 
 Interacting via curl:
 
- curl -i -X POST -d username=admin -d password=password -c cookie.txt http://127.0.0.1:8092/noark5v4/doLogin
+    curl -i -X POST -d username=admin -d password=password -c cookie.txt http://127.0.0.1:8092/noark5v4/doLogin
 
 This will create a file called cookie.txt with your session information. Subsequent calls to the core will use this
 session key.
 
- curl -i --header "Accept:application/json" -X GET -b cookie.txt http://127.0.0.1:8092/noark5v4/hateoas-api/arkiv
+    curl -i --header "Accept:application/json" -X GET -b cookie.txt http://127.0.0.1:8092/noark5v4/hateoas-api/arkiv
 
 Retrieving a fonds (no:arkiv) or series (no:arkivdel) is pretty much all you can do with the data in demo mode. If you
 want to play around a bit more, take a look at the code in client-test-webapp-rest and you can see how to fill in the
@@ -102,9 +102,6 @@ postgres and mysql 'out-of-the-box' in production mode.
 Note also, for configuration purposes the resources directory of the parent project has application-*.yml files for the
 various profiles.
 
-FINAL NOTE: THIS IS AN EARLY ALPHA RELEASE JUST TO SHARE THE CODEBASE WITH INTERESTED PARTIES AND TO SHOW THE DIRECTION
-THE PROJECT IS GOING. THERE IS NO POINT IN FILING BUGS/ISSUES!
-
 LICENSE NOTE:
 Currently we are using AGPLv3 license, but it should be Apache v2 when finished (depending on integrated libraries).
 
@@ -113,6 +110,8 @@ Re maven.test.skip. We are skipping tests as there currently is an issue identif
 tests. I am assuming the security context will have the default anonymous user, but it is in fact null. This causes the
 tests to fail. Currently there is no point running tests.
 
+FINAL NOTE: THIS IS AN EARLY ALPHA RELEASE JUST TO SHARE THE CODEBASE WITH INTERESTED PARTIES AND TO SHOW THE DIRECTION
+THE PROJECT IS GOING. THERE IS NO POINT IN FILING BUGS/ISSUES!
 
-Thank yous:
+THANK YOUS:
 Thanks to IntelliJ for an idea license (https://www.jetbrains.com/idea/)
