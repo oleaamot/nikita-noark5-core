@@ -86,14 +86,14 @@ The core supports a number of different profiles. If no profile is set it will d
 
 To run using a different profile, use e.g.
 
- mvn spring-boot:run -Drun.jvmArguments="-Dspring.profiles.active=dev,nosecurity"
+    mvn spring-boot:run -Drun.jvmArguments="-Dspring.profiles.active=dev,nosecurity"
 
 This will start the core in developer mode without a need to login.
 
 When starting in dev/demo mode you should see a message like te following:
 
-  Dev/demo mode: In-memory database (H2) in use. See http://127.0.0.1:8082 .
-  Use following JDBC-string: jdbc:h2:mem:n5DemoDb/jdbc:h2:mem:n5DevDb
+    Dev/demo mode: In-memory database (H2) in use. See http://127.0.0.1:8082 .
+    Use following JDBC-string: jdbc:h2:mem:n5DemoDb/jdbc:h2:mem:n5DevDb
 
 In these modes the core uses a in-memory database (H2) instead of a standalone DBMS. It should be possible to use both
 postgres and mysql 'out-of-the-box' in production mode.
