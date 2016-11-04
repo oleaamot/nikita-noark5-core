@@ -29,6 +29,9 @@ public class WebappRestTest {
 
     private static final Logger logger = LoggerFactory.getLogger(WebappRestTest.class);
 
+
+
+
     /**
      * Main method, used to run the application.
      *
@@ -42,7 +45,7 @@ public class WebappRestTest {
         String port = "8092";
         String address = "127.0.0.1";
         String username="admin";
-        String password="pass";
+        String password="password";
         String addressAuthentication = "http://"+address+":"+port+"/"+appName+"/doLogin";
         String addressApplication = "http://"+address+":"+port+"/"+appName+"/hateoas-api/";
 
@@ -86,6 +89,7 @@ public class WebappRestTest {
         // Login should return 302
         assertThat(result.getStatusCode(), is(HttpStatus.FOUND));
 
+        // Are we handling a failed login properly here??
         logger.debug("Attempting to interact with the application [" + addressApplication + "]");
 
         // Create a fonds object to be persisted to the database via REST

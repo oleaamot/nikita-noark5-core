@@ -69,12 +69,54 @@ public class FondsService implements IFondsService {
      * @return The newly persisted fonds object
      */
 
+
+
+
     // All CREATE operations
+
+    public Fonds saveWithOwner(Fonds fonds, String owner){
+
+        if (Utils.checkDocumentMediumValid(fonds.getDocumentMedium())) {
+            fonds.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
+        }
+        else {
+            // throw an error! Something is wrong. Either null or incorrect value
+        }
+
+        fonds.setSystemId(UUID.randomUUID().toString());
+        fonds.setCreatedDate(new Date());
+        fonds.setOwnedBy(owner);
+        fonds.setCreatedBy(owner);
+        fonds.setDeleted(false);
+
+        // Can I get sent a fonds object via JSON that actually has children
+        // that are not associated. Yes, you can if the JSON request is hand crafted
+        // so you probably will want to double check it anyway. Never trust the client!!!
+
+        // remember, a lot of times != null is not correct as the set <> objects are set and
+        // have a size equal to 0. However, handcrafted JSON request may have them set to null
+        // so you have to handle both != null && size == 0
+
+        // Is date in JSON meant to be text readable or timestamp. Probably test so you will need a convertor
+        if (fonds.getReferenceParentFonds() != null) {
+            // check that parent exists
+            Long parentId = 1L;
+
+            // fonds.getReferenceParentFonds()
+            Fonds parentFonds = fonds.getReferenceParentFonds();
+
+            // check that no series are associated with the parent fonds
+
+            // check that referenceSeries != null && referenceSeries.size == 0
+            //Series series = seriesRepository.findBy
+        }
+
+        return fondsRepository.save(fonds);
+
+    }
+
     public Fonds save(Fonds fonds){
         SecurityContext securityContext  = SecurityContextHolder.getContext();
-        if (securityContext == null)
-            System.out.println("hello");
-
         Authentication authentication = securityContext .getAuthentication();
 
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getName();
@@ -119,6 +161,7 @@ public class FondsService implements IFondsService {
 
     // All READ operations
     public Iterable<Fonds> findAll() {
+
         return fondsRepository.findAll();
     }
 

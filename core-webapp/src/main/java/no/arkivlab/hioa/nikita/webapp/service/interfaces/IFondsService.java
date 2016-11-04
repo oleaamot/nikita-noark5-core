@@ -14,6 +14,7 @@ public interface IFondsService  {
     // -- All CREATE operations
 
     Fonds save(Fonds fonds);
+    Fonds saveWithOwner(Fonds fonds, String owner);
 
     // -- All READ operations
 

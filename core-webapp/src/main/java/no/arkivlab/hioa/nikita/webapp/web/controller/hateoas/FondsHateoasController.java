@@ -10,13 +10,21 @@ import nikita.config.N5ResourceMappings;
 import nikita.model.noark5.v4.Fonds;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
 import no.arkivlab.hioa.nikita.webapp.web.model.hateoas.FondsResource;
+import org.hibernate.Session;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
+import org.hibernate.search.elasticsearch.ElasticsearchQueries;
+import org.hibernate.search.query.engine.spi.QueryDescriptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -28,7 +36,8 @@ public class FondsHateoasController {
     @Autowired
     IFondsService fondsService;
 
-
+    @Autowired
+    EntityManager entityManager;
 
     // API - All POST Requests (CRUD - CREATE) {"title": "Test tittel", "description": "Test description", "documentMedium":"Elektronisk arkiv"}
     @ApiOperation(value = "Creates a new fonds object", notes = "Returns a complete list of users details with a date of last modification.", response = Fonds.class)
@@ -47,6 +56,11 @@ public class FondsHateoasController {
     public Iterable<Fonds> findAll(final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
         String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
         Iterable<Fonds> fonds = fondsService.findByOwnedBy(loggedInUser);
+
+        Session session = entityManager.unwrap(Session.class);
+//        FullTextSession fullTextSession = Search.getFullTextSession(session);
+  //      QueryDescriptor query = ElasticsearchQueries.fromQueryString("title:tales");
+    //    List<?> result = fullTextSession.createFullTextQuery(query, Fonds.class).list();
 
         /*
         PersonResourceAssembler assembler = new PersonResourceAssembler();

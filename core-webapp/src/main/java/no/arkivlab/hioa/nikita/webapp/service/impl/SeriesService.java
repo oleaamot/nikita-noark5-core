@@ -29,6 +29,25 @@ public class SeriesService implements ISeriesService {
     }
 
     // All CREATE operations
+    public Series saveWithOwner(Series series, String owner){
+        if (!Utils.checkDocumentMediumValid(series.getDocumentMedium())) {
+            // throw an error! Something is wrong. Either null or incorrect value
+        }
+
+        series.setSystemId(UUID.randomUUID().toString());
+        series.setCreatedDate(new Date());
+        series.setOwnedBy(owner);
+        series.setCreatedBy(owner);
+        series.setDeleted(false);
+
+        // Have to handle referenceToFonds. If it is not set do not allow persisit
+        // throw illegalstructure exception
+
+        // How do handle referenceToPrecusor? Update the entire object?? No patch?
+
+        return seriesRepository.save(series);
+    }
+
     public Series save(Series series){
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getName();
 

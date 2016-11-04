@@ -13,6 +13,8 @@
 #logging.level.org.springframework.web: DEBUG
 
 spring:
+    application:
+        name: HiOA Noark 5 Core (Dev mode)
     profiles:
         active: dev
     devtools:

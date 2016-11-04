@@ -1,8 +1,17 @@
 # ===================================================================
-# Spring Boot configuration.
+# Spring Boot configuration when no profile is set. Below, we set the
+# profile to be demo as the core must always boot with a profile
+# in order to start database etc. This is set using the following
+# property
 #
-# This configuration will be overriden by the Spring profile you use,
-# for example application-dev.yml if you use the "dev" profile.
+#   profiles:
+#        active: demo
+#
+# This file should be identical to application-demo.yml
+#
+# Note this is a temporary measure and later releases closer to 1.0.0
+# will set the default profile to prod
+#
 # ===================================================================
 
 # ===================================================================
@@ -11,73 +20,105 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
+#logging.level.org.springframework.web: DEBUG
+
 spring:
     application:
-        name: nikitaNoark5Core
-#    jpa:
-#        open-in-view: false
-#        hibernate:
-#            ddl-auto: none
-#            naming-strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
-    messages:
-        basename: i18n/messages
-    mvc:
-        favicon:
-            enabled: false
-    thymeleaf:
-        mode: XHTML
-
-    datasource:
-            driverClassName: org.postgresql.Driver
-            url: jdbc:postgresql://localhost:5432/nikita_noark5_core_dev
-            name: nikita_noark5_core_dev
-            username: *********************
-            password: *********************
-            validation-query: SELECT 1;
+        name: HiOA Noark 5 Core (Demo mode)
+    data:
+        elasticsearch:
+            properties:
+                path.home: target/elastic
+                http.enabled: true
+                index.number_of_replicas: 0
+    profiles:
+        active: demo
+    devtools:
+        restart:
+            enabled: true
+        livereload:
+            enabled: true
     jpa:
-        database-platform: org.hibernate.dialect.PostgreSQL82Dialect
-        database: POSTGRESQL
+        database-platform: org.hibernate.dialect.H2Dialect
+        database: H2
         show_sql: true
+
         properties:
             hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: true
-            show_sql: true
+            hibernate.generate_statistics: false
+            hibernate.dialect: org.hibernate.dialect.H2Dialect
+            hibernate.show_sql: false
             hibernate.hbm2ddl.auto: create-drop
-            hibernate.dialect: org.hibernate.dialect.PostgreSQL82Dialect
+            hibernate.hbm2ddl.import_files: classpath:/db/h2/demo/import.sql # Import some data into the demo
+            hibernate.search.default.directory_provider: filesystem
+            hibernate.search.default.indexBase: target/lucene/indexes
+            # Enable these to support elasticsearch, but wait until out of beta!
+            hibernate.search.default.indexmanager: elasticsearch
+            hibernate.search.default.elasticsearch.index_schema_management_strategy: CREATE_DELETE # on applicatoin startup, create new index from db
+            hibernate.search.default.elasticsearch.host: https://127.0.0.1:9876
 
-security:
-    basic:
-        enabled: false
-
+    mail:
+        host: localhost
+    messages:
+        basename: i18n/messages
+        cache-seconds: 1
+    thymeleaf:
+        cache: false
+    output:
+        ansi:
+          enabled: ALWAYS
 server:
-    port: 8999
+    contextPath: /noark5v4
+    port: 8092
+management:
+    context-path: /management
+info:
+    app.name: HiOA Noark 5 Core (Demo version)
+    build.version: ${project.version}
+    #ssl:
+    #    key-store: classpath:saml/nikitaKeystore.jks
+    #    key-store-password: **********
+    #    keyStoreType: JCEKS
+    #    #PKCS12
+    #    keyAlias: test-saml
 
 # ===================================================================
 # nikita-noark5-core specific properties
 # ===================================================================
 
 nikita-noark5-core:
-    async:
-        corePoolSize: 2
-        maxPoolSize: 50
-        queueCapacity: 10000
-    #cors: #By default CORS are not enabled. Uncomment to enable.
-        #allowed-origins: "*"
-        #allowed-methods: GET, PUT, POST, DELETE, OPTIONS
-        #allowed-headers: "*"
-        #exposed-headers:
-        #allow-credentials: true
-        #max-age: 1800
     mail:
         from: nikita@nikita.arkivlab.no
-    swagger:
-        title: nikita-noark5-core API
-        description: nikitaNoark5Core API documentation
-        version: 0.0.1
-        termsOfServiceUrl: http://nikita.arkivlab.no/tos
-        contactName: nikita-admin
-        contactUrl: http://nikita.arkivlab.no/tos
-        contactEmail: post@nikita.arkivlab.no
-        license: AGPLv3+
-        licenseUrl: http://nikita.arkivlab.no/license
+    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
+        jmx.enabled: true
+        spark:
+            enabled: false
+            host: localhost
+            port: 9999
+        graphite:
+            enabled: false
+            host: localhost
+            port: 2003
+            prefix: nikitaNoark5Core
+        logs: # report metrics in the logs
+            enabled: false
+            reportFrequency: 60 # in seconds
+    logging:
+        level:
+            ROOT: DEBUG
+        logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
+            enabled: false
+            host: localhost
+            port: 5000
+            queueSize: 512
+    persistence:
+         jpa.generateDdl: true
+         # For Feide login
+    saml:
+         entityId: no:hioa:nikita:noark5
+
+         idPUrl: http://nikita.hioa.no
+         idPMetadata: https://idp-test.feide.no/simplesaml/saml2/idp/metadata.php
+    server:
+         name: nikita.hioa.no

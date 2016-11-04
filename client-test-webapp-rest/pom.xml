@@ -5,13 +5,13 @@
     <parent>
         <artifactId>nikita-noark5</artifactId>
         <groupId>no.arkivlab.hioa.nikita</groupId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>0.0.1-ALPHA</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>client-test-webapp-rest</artifactId>
 
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <properties>
         <jdk.version>1.8</jdk.version>
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>no.arkivlab.hioa.nikita</groupId>
             <artifactId>core-common</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.0.1-ALPHA</version>
         </dependency>
 
         <dependency>
@@ -63,7 +63,6 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>${maven-jar-plugin.version}</version>
                 <configuration>
-                    <outputDirectory>/home/tsodring/develop/test/nikita-noark5/</outputDirectory>
                     <archive>
                         <manifest>
                             <mainClass>main.Main</mainClass>

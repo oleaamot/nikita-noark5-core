@@ -1,5 +1,5 @@
 # ===================================================================
-# Spring Boot configuration for the "dev" profile.
+# Spring Boot configuration for the "demo" profile.
 #
 # This configuration overrides the application.yml file.
 # ===================================================================
@@ -13,6 +13,8 @@
 #logging.level.org.springframework.web: DEBUG
 
 spring:
+    application:
+        name: HiOA Noark 5 Core (Demo mode)
     data:
         elasticsearch:
             properties:
@@ -20,7 +22,7 @@ spring:
                 http.enabled: true
                 index.number_of_replicas: 0
     profiles:
-        active: dev
+        active: demo
     devtools:
         restart:
             enabled: true
@@ -42,9 +44,9 @@ spring:
             hibernate.search.default.directory_provider: filesystem
             hibernate.search.default.indexBase: target/lucene/indexes
             # Enable these to support elasticsearch, but wait until out of beta!
-            #hibernate.search.default.indexmanager: elasticsearch
-            #hibernate.search.default.elasticsearch.index_schema_management_strategy: CREATE # on applicatoin startup, create new index from db
-            #hibernate.search.default.elasticsearch.host: https://127.0.0.1:9876 # Only required if not using localhost
+            hibernate.search.default.indexmanager: elasticsearch
+            hibernate.search.default.elasticsearch.index_schema_management_strategy: CREATE # on applicatoin startup, create new index from db
+            hibernate.search.default.elasticsearch.host: https://127.0.0.1:9876
 
     mail:
         host: localhost

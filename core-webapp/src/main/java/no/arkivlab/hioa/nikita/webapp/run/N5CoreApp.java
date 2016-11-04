@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
@@ -30,6 +31,7 @@ import java.util.Arrays;
 // both from spring-boot, but also as a normal web application (sans web.xml)
 @ComponentScan({"no.arkivlab.hioa.nikita.webapp.spring.datasource",
                 "no.arkivlab.hioa.nikita.webapp.web",
+                "no.arkivlab.hioa.nikita.webapp.run",
                 "no.arkivlab.hioa.nikita.webapp.service"}) // do I need service here? No because it's in ServiceConfig
 public class N5CoreApp extends SpringBootServletInitializer {
 
@@ -37,6 +39,8 @@ public class N5CoreApp extends SpringBootServletInitializer {
 
     @Autowired
     DataSourceConfig dataSourceConfig;
+
+
 
     private final static Object[] CONFIGS = { // @formatter:off
     		N5CoreApp.class,
@@ -62,9 +66,12 @@ public class N5CoreApp extends SpringBootServletInitializer {
      * @throws UnknownHostException if the local host name could not be resolved into an address
      */
     public static void main(final String... args) throws UnknownHostException {
-        SpringApplication app = new SpringApplication(N5CoreApp.class);
-        SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(args);
-        Environment env = SpringApplication.run(CONFIGS, args).getEnvironment();
+        //SpringApplication app = new SpringApplication(N5CoreApp.class);
+        //SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(args);
+
+        ConfigurableApplicationContext context = SpringApplication.run(CONFIGS, args);
+        context.getBean(AfterApplicationStartup.class).afterApplicationStarts();
+        Environment env = context.getEnvironment();
 
         String [] activeProfiles = env.getActiveProfiles();
         String profilesAsString = Arrays.toString(activeProfiles);

@@ -16,6 +16,7 @@ public interface ISeriesService  {
 	// -- All CREATE operations
 
 	Series save(Series series);
+	Series saveWithOwner(Series series, String owner);
 
 	// -- All READ operations
 
