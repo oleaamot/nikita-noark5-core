@@ -74,7 +74,7 @@ info.build.version: ${project.version}
 
 nikita-noark5-core:
     mail:
-        from: nikita@nikita.arkivlab.no
+        from: nikita@example.com
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         spark:
