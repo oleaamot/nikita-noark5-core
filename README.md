@@ -22,6 +22,8 @@ To compile the core, cd into the directory containing the source e.g. ~/git/niki
 
     mvn -Dmaven.test.skip=true clean install
 
+NB! See note below for information maven.test.skip.
+
 The program should compile without issues. The output should be similar to:
 
  	[INFO] Reactor Summary:
@@ -37,8 +39,6 @@ The program should compile without issues. The output should be similar to:
  	[INFO] Finished at: 2016-11-04T13:23:54+01:00
  	[INFO] Final Memory: 42M/509M
  	[INFO] ------------------------------------------------------------------------
-
-NB! See note below for information maven.test.skip.
 
 RUN:
 After that cd to the core-webapp directory
@@ -71,7 +71,7 @@ session key.
 
 Retrieving a fonds (no:arkiv) or series (no:arkivdel) is pretty much all you can do with the data in demo mode. If you
 want to play around a bit more, take a look at the code in client-test-webapp-rest and you can see how to fill in the
-entire Noark structure. Yo ucan also create your own client and insert/retrieve stuff.
+entire Noark structure. You can also create your own client and insert/retrieve stuff.
 
 Quick note on profiles.
 
@@ -99,8 +99,8 @@ In these modes the core uses a in-memory database (H2) instead of a standalone D
 postgres and mysql 'out-of-the-box' in production mode.
 
 
-Note also, for configuration purposes the resources directory of the parent project has application-*.yml files for the
-various profiles.
+NOTE. For configuration purposes, take a look at the resources directory of core-webapp for application-*.yml files for
+setting properties in the various profiles.
 
 LICENSE NOTE:
 Currently we are using AGPLv3 license, but it should be Apache v2 when finished (depending on integrated libraries).
