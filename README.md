@@ -10,8 +10,8 @@ This is a Java/maven based project so you need both maven and Java. The project 
 Apache Maven 3.2.1 and Java 1.8. Please make sure both of these are installed before you attempt to run the project.
 You should be able to run the following commands from the commandline before attempting to run the program:
 
- mvn --version
- java -version
+    mvn --version
+    java -version
 
 Installing should just be a matter of downloading the source code to a given directory and unpacking it. If you have git
 installed all you need to do is run 'git clone https://github.com/HiOA-ABI/nikita-noark5-core.git' in the directory you
@@ -20,7 +20,7 @@ want to compile from.
 COMPILE:
 To compile the core, cd into the directory containing the source e.g. ~/git/nikita-noark5-core. Issue command
 
- mvn -Dmaven.test.skip=true clean install
+    mvn -Dmaven.test.skip=true clean install
 
 The program should compile without issues. The output should be similar to:
 
@@ -44,7 +44,7 @@ RUN:
 After that cd to the core-webapp directory
 (e.g. ~/git/nikita-noark5-core/core-webapp) and run
 
- mvn spring-boot:run
+    mvn spring-boot:run
 
 You will see a lot of different startup messages, but there should be no exceptions. (Please let me know if there are
 any exceptions).
