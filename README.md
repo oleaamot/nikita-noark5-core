@@ -17,12 +17,31 @@ Installing should just be a matter of downloading the source code to a given dir
 installed all you need to do is run 'git clone https://github.com/HiOA-ABI/nikita-noark5-core.git' in the directory you
 want to compile from.
 
+COMPILE:
+To compile the core, cd into the directory containing the source e.g. ~/git/nikita-noark5-core. Issue command
+
+ mvn -Dmaven.test.skip=true clean install
+
+The program should compile without issues. The output should be similar to:
+
+ 	[INFO] Reactor Summary:
+ 	[INFO]
+ 	[INFO] nikita-noark5 ..................................... SUCCESS [  0.672 s]
+ 	[INFO] core-common ....................................... SUCCESS [  7.222 s]
+ 	[INFO] core-webapp ....................................... SUCCESS [  3.986 s]
+ 	[INFO] client-test-webapp-rest ........................... SUCCESS [  0.008 s]
+ 	[INFO] ------------------------------------------------------------------------
+ 	[INFO] BUILD SUCCESS
+ 	[INFO] ------------------------------------------------------------------------
+ 	[INFO] Total time: 12.618 s
+ 	[INFO] Finished at: 2016-11-04T13:23:54+01:00
+ 	[INFO] Final Memory: 42M/509M
+ 	[INFO] ------------------------------------------------------------------------
+
+NB! See note below for information maven.test.skip.
+
 RUN:
-To run the core cd into the directory containing the source e.g. ~/git/nikita-noark5-core. From there you can issue a
-
- mvn clean install
-
-to make sure the program compiles. After that cd to the core-webapp directory
+After that cd to the core-webapp directory
 (e.g. ~/git/nikita-noark5-core/core-webapp) and run
 
  mvn spring-boot:run
@@ -40,7 +59,6 @@ any exceptions).
 
 If you wish to interact with the core you will need to login. In demo mode there is a user 'admin/password' that you can
 use to login.
-
 
 Interacting via curl:
 
@@ -64,7 +82,7 @@ The core supports a number of different profiles. If no profile is set it will d
         dev: developer mode
         test: test mode
         prod: production mode
-        nosecurity: Switch if security, REST service is usable without logging in
+        nosecurity: Switch off security, REST service is usable without logging in
 
 To run using a different profile, use e.g.
 
@@ -89,6 +107,12 @@ THE PROJECT IS GOING. THERE IS NO POINT IN FILING BUGS/ISSUES!
 
 LICENSE NOTE:
 Currently we are using AGPLv3 license, but it should be Apache v2 when finished (depending on integrated libraries).
+
+TEST NOTE:
+Re maven.test.skip. We are skipping tests as there currently is an issue identifying the logged-in user when running
+tests. I am assuming the security context will have the default anonymous user, but it is in fact null. This causes the
+tests to fail. Currently there is no point running tests.
+
 
 Thank yous:
 Thanks to IntelliJ for an idea license (https://www.jetbrains.com/idea/)
