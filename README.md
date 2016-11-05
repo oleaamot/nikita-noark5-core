@@ -90,7 +90,7 @@ To run using a different profile, use e.g.
 
 This will start the core in developer mode without a need to login.
 
-When starting in dev/demo mode you should see a message like te following:
+When starting in dev/demo mode you should see a message like the following:
 
     Dev/demo mode: In-memory database (H2) in use. See http://127.0.0.1:8082 .
     Use following JDBC-string: jdbc:h2:mem:n5DemoDb/jdbc:h2:mem:n5DevDb
