@@ -94,3 +94,5 @@ nikita-noark5-core:
          jpa.generateDdl: true
     server:
          name: nikita.hioa.no
+         port: 8092
+         address: 127.0.0.1
