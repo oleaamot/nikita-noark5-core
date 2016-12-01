@@ -18,11 +18,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static nikita.config.Constants.NOARK_FONDS_STRUCTURE_PATH;
+import static nikita.config.Constants.SLASH;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping(value = Constants.HATEOAS_API_PATH + "/" + N5ResourceMappings.DOCUMENT_OBJECT)
+@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + N5ResourceMappings.DOCUMENT_OBJECT)
 public class DocumentObjectHateoasController {
 
     @Autowired

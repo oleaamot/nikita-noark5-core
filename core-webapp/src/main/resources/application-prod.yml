@@ -96,3 +96,7 @@ nikita-noark5-core:
          name: nikita.hioa.no
          port: 8092
          address: 127.0.0.1
+    details:
+        conformity-levels:
+            official: arkivstruktur, sakarkiv
+            non-official: api, gui # import (mass) should be here

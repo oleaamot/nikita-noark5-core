@@ -67,7 +67,7 @@ Interacting via curl:
 This will create a file called cookie.txt with your session information. Subsequent calls to the core will use this
 session key.
 
-    curl -i --header "Accept:application/json" -X GET -b cookie.txt http://127.0.0.1:8092/noark5v4/hateoas-api/arkiv
+    curl -i --header "Accept:application/vnd.noark5-v4+json" -X GET -b cookie.txt http://127.0.0.1:8092/noark5v4/hateoas-api/arkivstruktur/arkiv
 
 Retrieving a fonds (no:arkiv) or series (no:arkivdel) is pretty much all you can do with the data in demo mode. If you
 want to play around a bit more, take a look at the code in client-test-webapp-rest and you can see how to fill in the

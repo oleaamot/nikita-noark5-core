@@ -26,11 +26,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
+import static nikita.config.Constants.NOARK_FONDS_STRUCTURE_PATH;
+import static nikita.config.Constants.SLASH;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping(value = Constants.HATEOAS_API_PATH + "/" + N5ResourceMappings.FONDS)
+@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + N5ResourceMappings.FONDS)
 public class FondsHateoasController {
 
     @Autowired

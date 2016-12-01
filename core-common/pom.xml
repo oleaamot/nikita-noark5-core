@@ -50,6 +50,13 @@
             <version>${hibernate-search-orm.version}</version>
         </dependency>
 
+        <!-- Hateoas dependencies -->
+        <dependency>
+            <groupId>org.springframework.hateoas</groupId>
+            <artifactId>spring-hateoas</artifactId>
+            <version>${spring-hateoas.version}</version>
+        </dependency>
+
         <!-- Used for the @Audited annotation-->
         <dependency>
             <groupId>org.hibernate</groupId>

@@ -5,8 +5,6 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.context.MessageSource;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -25,14 +23,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.view.ThymeleafViewResolver;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 @EnableWebMvc
 @EnableSpringDataWebSupport
 public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
-
 
     /**
       * Used to set a suffix for the thymelaf templates under resources. All content will be under webapp
@@ -67,7 +61,7 @@ public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("/webapp/login/loginPage");
         registry.addViewController("/fonds").setViewName("/webapp/noark/fonds/list");
-        registry.addViewController("/").setViewName("/webapp/login/loginPage");
+        registry.addViewController("/gui").setViewName("/webapp/login/loginPage");
 
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
@@ -78,6 +72,7 @@ public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
      *  formatted output.
      *  However the client should be using Accept: application/json or application/xml when connecting
      */
+
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters){
 
@@ -107,6 +102,9 @@ public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer.defaultContentType(MediaType.APPLICATION_JSON_UTF8);
+        // Just here as it might be needed when we consume content
+        //configurer.mediaType("application/vnd.noark5-v4+json;charset=UTF-8", MediaType.APPLICATION_JSON_UTF8);
+        //configurer.mediaType("application/vnd.noark5-v4+json", MediaType.APPLICATION_JSON);
     }
 
     /**

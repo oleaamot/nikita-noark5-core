@@ -30,6 +30,7 @@ import java.util.Arrays;
 // Extending SpringBootServletInitializer allows N5CoreApp to be run
 // both from spring-boot, but also as a normal web application (sans web.xml)
 @ComponentScan({"no.arkivlab.hioa.nikita.webapp.spring.datasource",
+                "no.arkivlab.hioa.nikita.webapp.spring.objectMapper",
                 "no.arkivlab.hioa.nikita.webapp.web",
                 "no.arkivlab.hioa.nikita.webapp.run",
                 "no.arkivlab.hioa.nikita.webapp.service"}) // do I need service here? No because it's in ServiceConfig
