@@ -29,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception { // @formatter:off
         http
                 .authorizeRequests()
+                .antMatchers("/").permitAll() // allow access to conformity details
                 .antMatchers("/signup", "/user/register", "/webapp/login/**").permitAll()
                 // The metrics configuration is visible to all
                 .antMatchers("/management/**").permitAll()
