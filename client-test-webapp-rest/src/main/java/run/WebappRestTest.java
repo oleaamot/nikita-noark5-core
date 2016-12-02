@@ -43,7 +43,7 @@ public class WebappRestTest {
         // Configuration information. This should be set via a property file
         String appName = "noark5v4";
         String port = "8092";
-        String address = "127.0.0.1";
+        String address = "localhost";
         String username="admin";
         String password="password";
         String addressAuthentication = "http://"+address+":"+port+"/"+appName+"/doLogin";

@@ -52,7 +52,7 @@ any exceptions).
  The program should output the following if everything is successful
 
  	Application 'HiOA Noark 5 Core (Demo mode)' is running! Access URLs:
- 	Local: 			http://127.0.0.1:8092
+ 	Local: 			http://localhost:8092
  	External: 		http://127.0.1.1:8092
  	contextPath: 	http://127.0.1.1:8092/noark5v4
  	Application is running with following profile(s): [demo]
@@ -62,12 +62,12 @@ use to login.
 
 Interacting via curl:
 
-    curl -i -X POST -d username=admin -d password=password -c cookie.txt http://127.0.0.1:8092/noark5v4/doLogin
+    curl -i -X POST -d username=admin -d password=password -c cookie.txt http://localhost:8092/noark5v4/doLogin
 
 This will create a file called cookie.txt with your session information. Subsequent calls to the core will use this
 session key.
 
-    curl -i --header "Accept:application/vnd.noark5-v4+json" -X GET -b cookie.txt http://127.0.0.1:8092/noark5v4/hateoas-api/arkivstruktur/arkiv
+    curl -i --header "Accept:application/vnd.noark5-v4+json" -X GET -b cookie.txt http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkiv
 
 Retrieving a fonds (no:arkiv) or series (no:arkivdel) is pretty much all you can do with the data in demo mode. If you
 want to play around a bit more, take a look at the code in client-test-webapp-rest and you can see how to fill in the
@@ -92,7 +92,7 @@ This will start the core in developer mode without a need to login.
 
 When starting in dev/demo mode you should see a message like the following:
 
-    Dev/demo mode: In-memory database (H2) in use. See http://127.0.0.1:8082 .
+    Dev/demo mode: In-memory database (H2) in use. See http://localhost:8082 .
     Use following JDBC-string: jdbc:h2:mem:n5DemoDb/jdbc:h2:mem:n5DevDb
 
 In these modes the core uses a in-memory database (H2) instead of a standalone DBMS. It should be possible to use both

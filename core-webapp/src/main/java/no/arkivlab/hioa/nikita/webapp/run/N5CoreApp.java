@@ -78,7 +78,7 @@ public class N5CoreApp extends SpringBootServletInitializer {
         String profilesAsString = Arrays.toString(activeProfiles);
         logger.info("\n----------------------------------------------------------\n\t" +
                         "Application '{}' is running! Access URLs:\n\t" +
-                        "Local: \t\t\thttp://127.0.0.1:{}\n\t" +
+                        "Local: \t\t\thttp://localhost:{}\n\t" +
                         "External: \t\thttp://{}:{}\n\t" +
                         "contextPath: \thttp://{}:{}{} \n\t" +
                         "Application is running with following profile(s): {} \n\t" +
@@ -101,7 +101,7 @@ public class N5CoreApp extends SpringBootServletInitializer {
 
         if (profilesAsString != null && profilesAsString.contains("de")) {
             logger.info("\n----------------------------------------------------------\n\t" +
-                            "Dev/demo mode: In-memory database ({}) in use. See http://127.0.0.1:8082 . Use following JDBC-string: jdbc:h2:mem:n5DemoDb/jdbc:h2:mem:n5DevDb" +
+                            "Dev/demo mode: In-memory database ({}) in use. See http://localhost:8082 . Use following JDBC-string: jdbc:h2:mem:n5DemoDb/jdbc:h2:mem:n5DevDb" +
                     "\n----------------------------------------------------------",
                     env.getProperty("spring.jpa.database")
                     );

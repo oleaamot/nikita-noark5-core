@@ -66,7 +66,7 @@ public class DataSourceConfig {
         // If we want elasticsearch support, add these
         //hibernateProperties.setProperty("hibernate.search.default.indexmanager", env.getProperty("spring.jpa.properties.hibernate.search.default.indexmanager"));
         //hibernateProperties.setProperty("hibernate.search.default.elasticsearch.index_schema_management_strategy", env.getProperty("spring.jpa.properties.hibernate.search.default.elasticsearch.index_schema_management_strategy"));
-        //hibernateProperties.setProperty("hibernate.search.default.elasticsearch.host", "http://127.0.0.1:9200");
+        //hibernateProperties.setProperty("hibernate.search.default.elasticsearch.host", "http://localhost:9200");
 
 
 
