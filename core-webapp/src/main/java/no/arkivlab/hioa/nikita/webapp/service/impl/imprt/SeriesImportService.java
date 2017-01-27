@@ -4,6 +4,7 @@ import nikita.model.noark5.v4.CaseFile;
 import nikita.model.noark5.v4.File;
 import nikita.model.noark5.v4.Series;
 import nikita.repository.n5v4.ISeriesRepository;
+import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.imprt.ICaseFileImportService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.imprt.IFileImportService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.imprt.ISeriesImportService;
@@ -12,8 +13,11 @@ import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundExcepti
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 import static nikita.config.Constants.INFO_CANNOT_ASSOCIATE_WITH_CLOSED_OBJECT;
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
@@ -79,6 +83,22 @@ public class SeriesImportService implements ISeriesImportService {
     }
 
     public Series save(Series series){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (username == null) {
+            throw new NikitaException("Security context problem. username is null! Cannot continue with " +
+                    "this request!");
+        }
+        if (series.getCreatedDate() == null) {
+            series.setCreatedDate(new Date());
+        }
+        if (series.getCreatedBy() == null) {
+            series.setCreatedBy(username);
+        }
+        if (series.getOwnedBy() == null) {
+            series.setOwnedBy(username);
+        }
+        series.setDeleted(false);
+        
         return seriesRepository.save(series);
     }
 }

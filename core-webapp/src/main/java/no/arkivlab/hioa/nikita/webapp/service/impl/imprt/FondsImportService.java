@@ -3,15 +3,20 @@ package no.arkivlab.hioa.nikita.webapp.service.impl.imprt;
 import nikita.model.noark5.v4.Fonds;
 import nikita.model.noark5.v4.Series;
 import nikita.repository.n5v4.IFondsRepository;
+import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.imprt.IFondsImportService;
+import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityEditWhenClosedException;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkInvalidStructureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 import static nikita.config.Constants.INFO_CANNOT_ASSOCIATE_WITH_CLOSED_OBJECT;
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
@@ -41,7 +46,22 @@ public class FondsImportService implements IFondsImportService {
      */
     @Override
     public Fonds createNewFonds(Fonds fonds){
-    int I =0;
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (username == null) {
+            throw new NikitaException("Security context problem. username is null! Cannot continue with " +
+                    "this request!");
+        }
+        if (fonds.getCreatedDate() == null) {
+            fonds.setCreatedDate(new Date());
+        }
+        if (fonds.getCreatedBy() == null) {
+            fonds.setCreatedBy(username);
+        }
+        if (fonds.getOwnedBy() == null) {
+            fonds.setOwnedBy(username);
+        }
+        fonds.setDeleted(false);
+
         return fondsRepository.save(fonds);
     }
 

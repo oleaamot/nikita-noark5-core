@@ -3,6 +3,7 @@ package no.arkivlab.hioa.nikita.webapp.service.impl.imprt;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.Record;
 import nikita.repository.n5v4.IRecordRepository;
+import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.service.impl.DocumentDescriptionService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRecordService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.imprt.IRecordImportService;
@@ -41,7 +42,22 @@ public class RecordImportService implements IRecordImportService {
 
     // All CREATE operations
     public Record save(Record record){
-       return recordRepository.save(record);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (username == null) {
+            throw new NikitaException("Security context problem. username is null! Cannot continue with " +
+                    "this request!");
+        }
+        if (record.getCreatedDate() == null) {
+            record.setCreatedDate(new Date());
+        }
+        if (record.getCreatedBy() == null) {
+            record.setCreatedBy(username);
+        }
+        if (record.getOwnedBy() == null) {
+            record.setOwnedBy(username);
+        }
+        record.setDeleted(false);
+        return recordRepository.save(record);
     }
 
     @Override
