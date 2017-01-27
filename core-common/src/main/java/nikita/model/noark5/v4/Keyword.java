@@ -27,7 +27,7 @@ public class Keyword implements Serializable {
     /**
      * M001 - systemID (xs:string)
      */
-    @Column(name = "system_id")
+    @Column(name = "system_id", unique=true)
     @Audited
     protected String systemId;
 

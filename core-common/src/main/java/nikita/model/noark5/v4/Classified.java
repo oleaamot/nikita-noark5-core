@@ -34,7 +34,7 @@ public class Classified implements INikitaEntity, INoarkSystemIdEntity, IClassif
     /**
      * systemID (xs:string). Not part of Noark standard. Added so access via systemId is consistent
      */
-    @Column(name = "system_id")
+    @Column(name = "system_id", unique=true)
     @Audited
     protected String systemId;
 

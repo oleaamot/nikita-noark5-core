@@ -38,7 +38,7 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
     /**
      * M001 - systemID (xs:string)
      */
-    @Column(name = "system_id")
+    @Column(name = "system_id", unique=true)
     @Audited
     protected String systemId;
 
