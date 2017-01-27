@@ -1,9 +1,15 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
+import nikita.model.noark5.v4.BasicRecord;
 import nikita.model.noark5.v4.File;
+import nikita.model.noark5.v4.Record;
 import nikita.repository.n5v4.IFileRepository;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFileService;
-import no.arkivlab.hioa.nikita.webapp.util.validation.Utils;
+import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRecordService;
+import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,11 +20,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
+
+import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 
 @Service
 @Transactional
 public class FileService implements IFileService {
+
+    private static final Logger logger = LoggerFactory.getLogger(FileService.class);
+
+    @Autowired
+    IRecordService recordService;
 
     @Autowired
     IFileRepository fileRepository;
@@ -26,26 +38,44 @@ public class FileService implements IFileService {
     public FileService() {
     }
 
-    // All CREATE operations
-    public File save(File file){
-        String username = (String) SecurityContextHolder.getContext().getAuthentication().getName();
-
-        if (!Utils.checkDocumentMediumValid(file.getDocumentMedium())) {
-            // throw an error! Something is wrong. Either null or incorrect value
-        }
-
-        file.setSystemId(UUID.randomUUID().toString());
-        file.setCreatedDate(new Date());
-        file.setOwnedBy(username);
-        file.setCreatedBy(username);
-        file.setDeleted(false);
-
-        // Have to handle referenceToFonds. If it is not set do not allow persisit
-        // throw illegalstructure exception
-
-        // How do handle referenceToPrecusor? Update the entire object?? No patch?
-
+    @Override
+    public File createFile(File file) {
+        NoarkUtils.NoarkEntity.Create.checkDocumentMediumValid(file);
+        NoarkUtils.NoarkEntity.Create.setNoarkEntityValues(file);
+        NoarkUtils.NoarkEntity.Create.setFinaliseEntityValues(file);
         return fileRepository.save(file);
+    }
+
+    @Override
+    public Record createRecordAssociatedWithFile(String fileSystemId, Record record) {
+        Record persistedRecord = null;
+        File file = fileRepository.findBySystemId(fileSystemId);
+        if (file == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " File, using fileSystemId " + fileSystemId;
+            logger.info(info) ;
+            throw new NoarkEntityNotFoundException(info);
+        }
+        else {
+            record.setReferenceFile(file);
+            persistedRecord = recordService.save(record);
+        }
+        return persistedRecord;        
+    }
+
+    @Override
+    public BasicRecord createBasicRecordAssociatedWithFile(String fileSystemId, BasicRecord basicRecord) {
+        BasicRecord persistedBasicRecord = null;
+        File file = fileRepository.findBySystemId(fileSystemId);
+        if (file == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " File, using fileSystemId " + fileSystemId;
+            logger.info(info) ;
+            throw new NoarkEntityNotFoundException(info);
+        }
+        else {
+            basicRecord.setReferenceFile(file);
+            persistedBasicRecord = (BasicRecord)recordService.save((Record)basicRecord);
+        }
+        return persistedBasicRecord;
     }
 
     // All READ operations

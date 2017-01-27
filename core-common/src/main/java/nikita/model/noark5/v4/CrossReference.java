@@ -1,11 +1,11 @@
 package nikita.model.noark5.v4;
 
+import nikita.model.noark5.v4.interfaces.entities.ICrossReferenceEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.lang.*;
 
 @Entity
@@ -13,7 +13,7 @@ import java.lang.*;
 // Enable soft delete of CrossReference
 @SQLDelete(sql="UPDATE cross_reference SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class CrossReference implements Serializable {
+public class CrossReference implements ICrossReferenceEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,35 +31,38 @@ public class CrossReference implements Serializable {
     @Audited
     protected String ownedBy;
 
-    /** M219 - referanseTilKlasse (xs:string) **/
-    @OneToOne
-    @JoinColumn(name="class_system_id")
-    protected Class referenceToClass;
+    /** M219 - referanseTilKlasse (xs:string)
+     * points to systemId of the referenced Class
+     **/
+    @Column(name="class_system_id")
+    protected String referenceToClass;
 
-    /** M210 - referanseTilMappe (xs:string) **/
-    @OneToOne
-    @JoinColumn(name="file_system_id")
-    protected File referenceToFile;
+    /** M210 - referanseTilMappe (xs:string)
+     * points to systemId of the referenced File
+     **/
+    @Column(name="file_system_id")
+    protected String referenceToFile;
 
-    /** M212 - referanseTilRegistrering (xs:string) **/
-    @OneToOne
-    @JoinColumn(name="record_system_id")
-    protected Record referenceToRecord;
+    /** M212 - referanseTilRegistrering (xs:string)
+     * points to systemId of the referenced Record
+     **/
+    @Column(name="record_system_id")
+    protected String referenceToRecord;
 
     // Link to Class
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cross_reference_class_id", referencedColumnName = "pk_class_id")
     protected Class referenceClass;
 
     // Link to File
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cross_reference_file_id", referencedColumnName = "pk_file_id")
     protected File referenceFile;
 
-    // Link to Record
-    @ManyToOne
-    @JoinColumn(name = "cross_reference_record_id", referencedColumnName = "pk_record_id")
-    protected Record referenceRecord;
+    // Link to BasicRecord
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cross_reference_basic_record_id", referencedColumnName = "pk_record_id")
+    protected Record referenceBasicRecord;
 
     public Long getId() {
         return id;
@@ -85,27 +88,30 @@ public class CrossReference implements Serializable {
         this.ownedBy = ownedBy;
     }
 
-    public Class getReferenceToClass() {
+    @Override
+    public String getReferenceToClass() {
         return referenceToClass;
     }
 
-    public void setReferenceToClass(Class referenceToClass) {
+    public void setReferenceToClass(String referenceToClass) {
         this.referenceToClass = referenceToClass;
     }
 
-    public File getReferenceToFile() {
+    @Override
+    public String getReferenceToFile() {
         return referenceToFile;
     }
 
-    public void setReferenceToFile(File referenceToFile) {
+    public void setReferenceToFile(String referenceToFile) {
         this.referenceToFile = referenceToFile;
     }
 
-    public Record getReferenceToRecord() {
+    @Override
+    public String getReferenceToRecord() {
         return referenceToRecord;
     }
 
-    public void setReferenceToRecord(Record referenceToRecord) {
+    public void setReferenceToRecord(String referenceToRecord) {
         this.referenceToRecord = referenceToRecord;
     }
 
@@ -125,11 +131,11 @@ public class CrossReference implements Serializable {
         this.referenceFile = referenceFile;
     }
 
-    public Record getReferenceRecord() {
-        return referenceRecord;
+    public Record getReferenceBasicRecord() {
+        return referenceBasicRecord;
     }
 
-    public void setReferenceRecord(Record referenceRecord) {
-        this.referenceRecord = referenceRecord;
+    public void setReferenceBasicRecord(Record referenceBasicRecord) {
+        this.referenceBasicRecord = referenceBasicRecord;
     }
 }

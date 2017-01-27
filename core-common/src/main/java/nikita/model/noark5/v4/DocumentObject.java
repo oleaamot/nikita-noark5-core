@@ -1,13 +1,17 @@
 package nikita.model.noark5.v4;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import nikita.model.noark5.v4.interfaces.IConversion;
+import nikita.model.noark5.v4.interfaces.IElectronicSignature;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkCreateEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.deserialisers.DocumentObjectDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,15 +21,17 @@ import java.util.Set;
 // Enable soft delete of DocumentObject
 @SQLDelete(sql="UPDATE document_object SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
-public class DocumentObject implements Serializable {
+@JsonDeserialize(using = DocumentObjectDeserializer.class)
+public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoarkCreateEntity,
+        IElectronicSignature, IConversion
+{
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_document_object_id", nullable = false, insertable = true, updatable = false)
-    protected long id;
+    protected Long id;
 
     /**
      * M001 - systemID (xs:string)
@@ -115,12 +121,12 @@ public class DocumentObject implements Serializable {
     protected String ownedBy;
 
     // Link to DocumentDescription
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_object_document_description_id", referencedColumnName = "pk_document_description_id")
     protected DocumentDescription referenceDocumentDescription;
 
     // Link to Record
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_object_record_id", referencedColumnName = "pk_record_id")
     protected Record referenceRecord;
 
@@ -128,9 +134,16 @@ public class DocumentObject implements Serializable {
     @OneToMany(mappedBy = "referenceDocumentObject")
     protected Set<Conversion> referenceConversion = new HashSet<Conversion>();
 
-    public long getId() {
+    @OneToOne
+    @JoinColumn(name="pk_electronic_signature_id")
+    protected ElectronicSignature referenceElectronicSignature;
+
+    public Long getId() {
         return id;
     }
+
+    @Override
+    public void setId(Long id) {this.id = id; }
 
     public void setId(long id) {
         this.id = id;
@@ -263,6 +276,14 @@ public class DocumentObject implements Serializable {
 
     public void setReferenceConversion(Set<Conversion> referenceConversion) {
         this.referenceConversion = referenceConversion;
+    }
+
+    public ElectronicSignature getReferenceElectronicSignature() {
+        return referenceElectronicSignature;
+    }
+
+    public void setReferenceElectronicSignature(ElectronicSignature referenceElectronicSignature) {
+        this.referenceElectronicSignature = referenceElectronicSignature;
     }
 
     @Override

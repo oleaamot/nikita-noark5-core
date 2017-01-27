@@ -1,7 +1,8 @@
 package no.arkivlab.hioa.nikita.webapp.service.interfaces;
 
 
-import nikita.model.noark5.v4.Series;
+import nikita.model.noark5.v4.CaseFile;
+import nikita.model.noark5.v4.File;
 import nikita.model.noark5.v4.Series;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +17,8 @@ public interface ISeriesService  {
 	// -- All CREATE operations
 
 	Series save(Series series);
-	Series saveWithOwner(Series series, String owner);
+	File createFileAssociatedWithSeries(String seriesSystemId, File file);
+	CaseFile createCaseFileAssociatedWithSeries(String seriesSystemId, CaseFile caseFile);
 
 	// -- All READ operations
 
@@ -113,6 +115,5 @@ public interface ISeriesService  {
 	// ownedBy
 	List<Series> findByOwnedBy(String ownedBy);
 	List<Series> findByOwnedBy(String ownedBy, Sort sort);
-	Page<Series> findByOwnedBy(String ownedBy, Pageable pageable);
-
+	Iterable <Series> findSeriesByOwnerPaginated(final int top, final int skip);
 }

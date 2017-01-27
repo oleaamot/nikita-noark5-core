@@ -1,6 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.service.interfaces;
 
 
+import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.ClassificationSystem;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,8 +15,8 @@ public interface IClassificationSystemService {
 
 	// -- All CREATE operations
 
-	ClassificationSystem save(ClassificationSystem classificationSystem);
-
+	ClassificationSystem createNewClassificationSystem(ClassificationSystem classificationSystem);
+	Class createClassAssociatedWithClassificationSystem(String classificationSystemSystemId, Class klass);
 	// -- All READ operations
 
 	Iterable<ClassificationSystem> findAll();

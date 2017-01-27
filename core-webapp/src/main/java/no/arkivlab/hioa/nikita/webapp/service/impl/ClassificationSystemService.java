@@ -1,8 +1,14 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
+import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.ClassificationSystem;
 import nikita.repository.n5v4.IClassificationSystemRepository;
+import no.arkivlab.hioa.nikita.webapp.service.interfaces.IClassService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IClassificationSystemService;
+import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,11 +19,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
+import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 
 @Service
 @Transactional
 public class ClassificationSystemService implements IClassificationSystemService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ClassificationSystemService.class);
+
+    @Autowired
+    IClassService classService;
 
     @Autowired
     IClassificationSystemRepository classificationSystemRepository;
@@ -26,17 +37,27 @@ public class ClassificationSystemService implements IClassificationSystemService
     }
 
     // All CREATE operations
-    public ClassificationSystem save(ClassificationSystem classificationSystem){
-        String username = (String) SecurityContextHolder.getContext().getAuthentication().getName();
-
-        classificationSystem.setSystemId(UUID.randomUUID().toString());
-        classificationSystem.setCreatedDate(new Date());
-        classificationSystem.setOwnedBy(username);
-        classificationSystem.setCreatedBy(username);
-        classificationSystem.setDeleted(false);
-
-
+    @Override
+    public ClassificationSystem createNewClassificationSystem(ClassificationSystem classificationSystem){
+        NoarkUtils.NoarkEntity.Create.setNoarkEntityValues(classificationSystem);
+        NoarkUtils.NoarkEntity.Create.setFinaliseEntityValues(classificationSystem);
         return classificationSystemRepository.save(classificationSystem);
+    }
+
+    @Override
+    public Class createClassAssociatedWithClassificationSystem(String classificationSystemSystemId, Class klass) {
+        Class persistedClass = null;
+        ClassificationSystem classificationSystem = classificationSystemRepository.findBySystemId(classificationSystemSystemId);
+        if (classificationSystem == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " ClassificationSystem, using classificationSystemSystemId " + classificationSystemSystemId;
+            logger.info(info) ;
+            throw new NoarkEntityNotFoundException(info);
+        }
+        else {
+            klass.setReferenceClassificationSystem(classificationSystem);
+            persistedClass = classService.save(klass);
+        }
+        return persistedClass;
     }
 
     // All READ operations

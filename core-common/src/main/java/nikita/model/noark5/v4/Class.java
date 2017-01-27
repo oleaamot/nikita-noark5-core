@@ -1,13 +1,15 @@
 package nikita.model.noark5.v4;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import nikita.model.noark5.v4.interfaces.IClassified;
+import nikita.model.noark5.v4.interfaces.ICrossReference;
+import nikita.model.noark5.v4.interfaces.IDisposal;
+import nikita.model.noark5.v4.interfaces.IScreening;
+import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,8 +19,7 @@ import java.util.Set;
 // Enable soft delete of Class
 @SQLDelete(sql="UPDATE class SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
-public class Class implements Serializable {
+public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClassified, ICrossReference {
 
     private static final long serialVersionUID = 1L;
 
@@ -100,16 +101,18 @@ public class Class implements Serializable {
 
     // Links to Keywords
     @ManyToMany
-    @JoinTable(name = "class_keyword", joinColumns = @JoinColumn(name = "f_pk_class_id", referencedColumnName = "pk_class_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_keyword_id", referencedColumnName = "pk_keyword_id"))
+    @JoinTable(name = "class_keyword", joinColumns = @JoinColumn(name = "f_pk_class_id",
+            referencedColumnName = "pk_class_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_keyword_id",
+            referencedColumnName = "pk_keyword_id"))
     protected Set<Keyword> referenceKeyword = new HashSet<Keyword>();
 
     // Link to ClassificationSystem
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_classification_system_id", referencedColumnName = "pk_classification_system_id")
     protected ClassificationSystem referenceClassificationSystem;
 
     // Link to parent Class
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     protected Class referenceParentClass;
 
     // Links to child Classes
@@ -125,22 +128,22 @@ public class Class implements Serializable {
     protected Set<Record> referenceRecord = new HashSet<Record>();
 
     // Links to Classified
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "class_classified_id", referencedColumnName = "pk_classified_id")
     protected Classified referenceClassified;
 
     // Link to Disposal
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "class_disposal_id", referencedColumnName = "pk_disposal_id")
     protected Disposal referenceDisposal;
 
     // Link to Screening
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "class_screening_id", referencedColumnName = "pk_screening_id")
     protected Screening referenceScreening;
 
-    @OneToOne(mappedBy = "referenceToClass")
-    protected CrossReference referenceToCrossReference;
+    @OneToMany(mappedBy = "referenceClass")
+    protected Set<CrossReference> referenceCrossReference;
 
     public void setId(Long id) {
         this.id = id;
@@ -278,37 +281,44 @@ public class Class implements Serializable {
         this.referenceRecord = referenceRecord;
     }
 
+    @Override
     public Classified getReferenceClassified() {
-        return referenceClassified;
+        return null;
     }
 
-    public void setReferenceClassified(Classified referenceClassified) {
-        this.referenceClassified = referenceClassified;
+    @Override
+    public void setReferenceClassified(Classified classified) {
+
     }
 
+    @Override
     public Disposal getReferenceDisposal() {
-        return referenceDisposal;
+        return null;
     }
 
-    public void setReferenceDisposal(Disposal referenceDisposal) {
-        this.referenceDisposal = referenceDisposal;
+    @Override
+    public void setReferenceDisposal(Disposal disposal) {
+
     }
 
-
+    @Override
     public Screening getReferenceScreening() {
-        return referenceScreening;
+        return null;
     }
 
-    public void setReferenceScreening(Screening referenceScreening) {
-        this.referenceScreening = referenceScreening;
+    @Override
+    public void setReferenceScreening(Screening screening) {
+
     }
 
-    public CrossReference getReferenceToCrossReference() {
-        return referenceToCrossReference;
+    @Override
+    public Set<CrossReference> getReferenceCrossReference() {
+        return referenceCrossReference;
     }
 
-    public void setReferenceToCrossReference(CrossReference referenceToCrossReference) {
-        this.referenceToCrossReference = referenceToCrossReference;
+    @Override
+    public void setReferenceCrossReference(Set<CrossReference> referenceCrossReference) {
+        this.referenceCrossReference = referenceCrossReference;
     }
 
     @Override

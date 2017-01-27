@@ -1,11 +1,13 @@
 package nikita.model.noark5.v4;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import nikita.model.noark5.v4.interfaces.*;
+import nikita.util.deserialisers.RegistryEntryDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +18,9 @@ import java.util.Set;
 // Enable soft delete of RegistryEntry
 @SQLDelete(sql="UPDATE registry_entry SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class RegistryEntry extends BasicRecord implements Serializable {
+@JsonDeserialize(using = RegistryEntryDeserializer.class)
+public class RegistryEntry extends BasicRecord implements IElectronicSignature, IPrecedence, ICorrespondencePart,
+        ISignOff, IDocumentFlow {
 
     private static final long serialVersionUID = 1L;
 
@@ -123,7 +127,7 @@ public class RegistryEntry extends BasicRecord implements Serializable {
      */
     @Column(name = "loaned_to")
     @Audited
-    protected Date loanedTo;
+    protected String loanedTo;
 
     /**
      * M308 - journalenhet (xs:string)
@@ -150,9 +154,9 @@ public class RegistryEntry extends BasicRecord implements Serializable {
                     referencedColumnName = "pk_correspondence_part_id"))
     protected Set<CorrespondencePart> referenceCorrespondencePart = new HashSet<CorrespondencePart>();
 
-    // Links to Workflow
+    // Links to DocumentFlow
     @OneToMany(mappedBy = "referenceRegistryEntry")
-    protected Set<Workflow> referenceRecord = new HashSet<Workflow>();
+    protected Set<DocumentFlow> referenceDocumentFlow = new HashSet<DocumentFlow>();
 
     // Links to SignOff
     @ManyToMany
@@ -171,8 +175,11 @@ public class RegistryEntry extends BasicRecord implements Serializable {
                     referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_precedence_id",
                     referencedColumnName = "pk_precedence_id"))
-
     protected Set<Precedence> referencePrecedence = new HashSet<Precedence>();
+
+    @OneToOne
+    @JoinColumn(name="pk_electronic_signature_id")
+    protected ElectronicSignature referenceElectronicSignature;
 
     public Integer getRecordYear() {
         return recordYear;
@@ -278,11 +285,11 @@ public class RegistryEntry extends BasicRecord implements Serializable {
         this.loanedDate = loanedDate;
     }
 
-    public Date getLoanedTo() {
+    public String getLoanedTo() {
         return loanedTo;
     }
 
-    public void setLoanedTo(Date loanedTo) {
+    public void setLoanedTo(String loanedTo) {
         this.loanedTo = loanedTo;
     }
 
@@ -310,12 +317,14 @@ public class RegistryEntry extends BasicRecord implements Serializable {
         this.ownedBy = ownedBy;
     }
 
-    public Set<Workflow> getReferenceRecord() {
-        return referenceRecord;
+    @Override
+    public Set<DocumentFlow> getReferenceDocumentFlow() {
+        return referenceDocumentFlow;
     }
 
-    public void setReferenceRecord(Set<Workflow> referenceRecord) {
-        this.referenceRecord = referenceRecord;
+    @Override
+    public void setReferenceDocumentFlow(Set<DocumentFlow> referenceDocumentFlow) {
+        this.referenceDocumentFlow = referenceDocumentFlow;
     }
 
     public Set<CorrespondencePart> getReferenceCorrespondencePart() {
@@ -340,6 +349,14 @@ public class RegistryEntry extends BasicRecord implements Serializable {
 
     public void setReferencePrecedence(Set<Precedence> referencePrecedence) {
         this.referencePrecedence = referencePrecedence;
+    }
+
+    public ElectronicSignature getReferenceElectronicSignature() {
+        return referenceElectronicSignature;
+    }
+
+    public void setReferenceElectronicSignature(ElectronicSignature referenceElectronicSignature) {
+        this.referenceElectronicSignature = referenceElectronicSignature;
     }
 
     @Override

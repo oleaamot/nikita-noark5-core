@@ -1,13 +1,18 @@
 package nikita.model.noark5.v4;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import nikita.model.noark5.v4.interfaces.IDocumentMedium;
+import nikita.model.noark5.v4.interfaces.IFondsCreator;
+import nikita.model.noark5.v4.interfaces.IStorageLocation;
+import nikita.util.deserialisers.FondsDeserializer;
+import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
-
 
 import javax.persistence.*;
 import java.util.Date;
@@ -20,8 +25,8 @@ import java.util.Set;
 @SQLDelete(sql="UPDATE fonds SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
 @Indexed (index="Fonds")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
-public class Fonds implements NoarkEntity {
+@JsonDeserialize(using = FondsDeserializer.class)
+public class Fonds implements INoarkGeneralEntity, IStorageLocation, IDocumentMedium, IFondsCreator {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,7 +40,7 @@ public class Fonds implements NoarkEntity {
      */
     @Column(name = "system_id")
     @Audited
-    protected String systemId           ;
+    protected String systemId;
 
     /**
      * M020 - tittel (xs:string)
@@ -110,26 +115,29 @@ public class Fonds implements NoarkEntity {
 
     // Links to Series
     @OneToMany(mappedBy = "referenceFonds")
+    @JsonIgnore
     protected Set<Series> referenceSeries = new HashSet<Series>();
 
     // Link to parent Fonds
-    //@JsonManagedReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     protected Fonds referenceParentFonds;
 
     // Links to child Fonds
-    //@JsonBackReference
-    @OneToMany(mappedBy = "referenceParentFonds")
+    @OneToMany(mappedBy = "referenceParentFonds", fetch = FetchType.LAZY)
     protected Set<Fonds> referenceChildFonds = new HashSet<Fonds>();
 
     // Links to StorageLocations
-    @ManyToMany
-    @JoinTable(name = "fonds_storage_location", joinColumns = @JoinColumn(name = "f_pk_fonds_id", referencedColumnName = "pk_fonds_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id", referencedColumnName = "pk_storage_location_id"))
+    @ManyToMany (cascade=CascadeType.ALL)
+    @JoinTable(name = "fonds_storage_location", joinColumns = @JoinColumn(name = "f_pk_fonds_id",
+            referencedColumnName = "pk_fonds_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
+            referencedColumnName = "pk_storage_location_id"))
     protected Set<StorageLocation> referenceStorageLocation = new HashSet<StorageLocation>();
 
     // Links to FondsCreators
     @ManyToMany
-    @JoinTable(name = "fonds_fonds_creator", joinColumns = @JoinColumn(name = "f_pk_fonds_id", referencedColumnName = "pk_fonds_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_fonds_creator_id", referencedColumnName = "pk_fonds_creator_id"))
+    @JoinTable(name = "fonds_fonds_creator", joinColumns = @JoinColumn(name = "f_pk_fonds_id",
+            referencedColumnName = "pk_fonds_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_fonds_creator_id",
+            referencedColumnName = "pk_fonds_creator_id"))
     protected Set<FondsCreator> referenceFondsCreator = new HashSet<FondsCreator>();
 
     public Long getId() {

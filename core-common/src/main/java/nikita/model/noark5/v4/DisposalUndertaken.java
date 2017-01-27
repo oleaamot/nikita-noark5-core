@@ -1,11 +1,11 @@
 package nikita.model.noark5.v4;
 
+import nikita.model.noark5.v4.interfaces.entities.IDisposalUndertakenEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +15,7 @@ import java.util.Set;
 // Enable soft delete of DisposalUndertaken
 @SQLDelete(sql="UPDATE disposal_undertaken SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class DisposalUndertaken implements Serializable {
+public class DisposalUndertaken implements IDisposalUndertakenEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,11 +44,11 @@ public class DisposalUndertaken implements Serializable {
     protected String ownedBy;
 
     // Links to Series
-    @OneToMany(mappedBy = "referenceDisposalUndertaken")
+    @ManyToMany(mappedBy = "referenceDisposalUndertaken")
     protected Set<Series> referenceSeries = new HashSet<Series>();
 
     // Links to DocumentDescription
-    @OneToMany(mappedBy = "referenceDisposalUndertaken")
+    @ManyToMany(mappedBy = "referenceDisposalUndertaken")
     protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
 
     public Long getId() {

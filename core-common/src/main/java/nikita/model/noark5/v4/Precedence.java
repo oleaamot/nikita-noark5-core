@@ -1,11 +1,11 @@
 package nikita.model.noark5.v4;
 
+import nikita.model.noark5.v4.interfaces.entities.IPrecedenceEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +15,7 @@ import java.util.Set;
 // Enable soft delete of Precedence
 @SQLDelete(sql="UPDATE precedence SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Precedence implements Serializable {
+public class Precedence implements IPrecedenceEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,7 +29,7 @@ public class Precedence implements Serializable {
      */
     @Column(name = "precedence_date")
     @Audited
-    protected String precedenceDate;
+    protected Date precedenceDate;
 
     /**
      * M600 - opprettetDato (xs:dateTime)
@@ -133,11 +133,11 @@ public class Precedence implements Serializable {
         this.id = id;
     }
 
-    public String getPrecedenceDate() {
+    public Date getPrecedenceDate() {
         return precedenceDate;
     }
 
-    public void setPrecedenceDate(String precedenceDate) {
+    public void setPrecedenceDate(Date precedenceDate) {
         this.precedenceDate = precedenceDate;
     }
 

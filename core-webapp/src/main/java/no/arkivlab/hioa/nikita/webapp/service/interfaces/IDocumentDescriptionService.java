@@ -2,6 +2,7 @@ package no.arkivlab.hioa.nikita.webapp.service.interfaces;
 
 
 import nikita.model.noark5.v4.DocumentDescription;
+import nikita.model.noark5.v4.DocumentObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,7 +16,8 @@ public interface IDocumentDescriptionService {
 	// -- All CREATE operations
 
 	DocumentDescription save(DocumentDescription documentDescription);
-
+	DocumentObject createDocumentObjectAssociatedWithDocumentDescription(String documentDescriptionSystemId,
+														  DocumentObject documentObject);
 	// -- All READ operations
 
 	Iterable<DocumentDescription> findAll();

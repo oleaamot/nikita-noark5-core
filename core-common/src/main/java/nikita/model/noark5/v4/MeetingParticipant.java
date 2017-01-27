@@ -45,7 +45,7 @@ public class MeetingParticipant implements Serializable {
     protected String ownedBy;
 
     // Link to MeetingFile
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_participant_file_id", referencedColumnName = "pk_file_id")
     protected MeetingFile referenceMeetingFile;
 

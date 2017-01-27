@@ -1,7 +1,9 @@
 package no.arkivlab.hioa.nikita.webapp.service.interfaces;
 
 
+import nikita.model.noark5.v4.BasicRecord;
 import nikita.model.noark5.v4.File;
+import nikita.model.noark5.v4.Record;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,11 +15,11 @@ public interface IFileService {
 
 
 	// -- All CREATE operations
-
-	File save(File file);
+    File createFile(File file);
+	Record createRecordAssociatedWithFile(String fileSystemId, Record record);
+	BasicRecord createBasicRecordAssociatedWithFile(String fileSystemId, BasicRecord basicRecord);
 
 	// -- All READ operations
-
 	Iterable<File> findAll();
 	List<File> findAll(Sort sort);
 	Page<File> findAll(Pageable pageable);

@@ -1,11 +1,11 @@
 package nikita.model.noark5.v4;
 
+import nikita.model.noark5.v4.interfaces.entities.IDisposalEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.lang.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -19,7 +19,7 @@ import java.util.Set;
 // Enable soft delete of Disposal
 @SQLDelete(sql="UPDATE disposal SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Disposal implements Serializable {
+public class Disposal implements IDisposalEntity {
 
     private static final long serialVersionUID = 1L;
 

@@ -1,11 +1,11 @@
 package nikita.model.noark5.v4;
 
+import nikita.model.noark5.v4.interfaces.entities.IDeletionEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +15,7 @@ import java.util.Set;
 // Enable soft delete of Deletion
 @SQLDelete(sql="UPDATE deletion SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Deletion implements Serializable {
+public class Deletion implements IDeletionEntity {
 
     private static final long serialVersionUID = 1L;
 

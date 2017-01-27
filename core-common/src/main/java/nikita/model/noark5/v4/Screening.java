@@ -1,11 +1,11 @@
 package nikita.model.noark5.v4;
 
+import nikita.model.noark5.v4.interfaces.entities.IScreeningEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.lang.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -16,7 +16,7 @@ import java.util.Set;
 // Enable soft delete of Screening
 @SQLDelete(sql="UPDATE screening SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Screening implements Serializable {
+public class Screening implements IScreeningEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -78,23 +78,23 @@ public class Screening implements Serializable {
     protected String ownedBy;
 
     // Links to Series
-    @OneToMany(mappedBy = "referenceScreening")
+    @ManyToMany(mappedBy = "referenceScreening")
     protected Set<Series> referenceSeries = new HashSet<Series>();
 
     // Links to Class
-    @OneToMany(mappedBy = "referenceScreening")
-    protected Set<nikita.model.noark5.v4.Class> referenceClass = new HashSet<nikita.model.noark5.v4.Class>();
+    @ManyToMany(mappedBy = "referenceScreening")
+    protected Set<Class> referenceClass = new HashSet<Class>();
 
     // Links to File
-    @OneToMany(mappedBy = "referenceScreening")
+    @ManyToMany(mappedBy = "referenceScreening")
     protected Set<File> referenceFile = new HashSet<File>();
 
     // Links to Record
-    @OneToMany(mappedBy = "referenceScreening")
+    @ManyToMany(mappedBy = "referenceScreening")
     protected Set<Record> referenceRecord = new HashSet<Record>();
 
     // Links to DocumentDescription
-    @OneToMany(mappedBy = "referenceScreening")
+    @ManyToMany(mappedBy = "referenceScreening")
     protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
 
     public Long getId() {
@@ -177,11 +177,11 @@ public class Screening implements Serializable {
         this.referenceSeries = referenceSeries;
     }
 
-    public Set<nikita.model.noark5.v4.Class> getReferenceClass() {
+    public Set<Class> getReferenceClass() {
         return referenceClass;
     }
 
-    public void setReferenceClass(Set<nikita.model.noark5.v4.Class> referenceClass) {
+    public void setReferenceClass(Set<Class> referenceClass) {
         this.referenceClass = referenceClass;
     }
 

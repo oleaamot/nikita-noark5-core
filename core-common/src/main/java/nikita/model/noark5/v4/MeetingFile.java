@@ -60,7 +60,7 @@ public class MeetingFile extends File implements Serializable {
      * M221 - referanseForrigeMoete (xs:string)
      **/
     // Link to next Meeting
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     protected MeetingFile referenceNextMeeting;
 
     /**
@@ -68,7 +68,7 @@ public class MeetingFile extends File implements Serializable {
      **/
     // Link to previous Meeting
     // TODO: This links to id, not systemId. Fix!
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     protected MeetingFile referencePreviousMeeting;
 
     // Links to MeetingParticipant

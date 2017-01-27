@@ -61,7 +61,7 @@ public class Conversion {
     protected String ownedBy;
 
     // Link to DocumentObject
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "conversion_document_object_id", referencedColumnName = "pk_document_object_id")
     protected DocumentObject referenceDocumentObject;
 

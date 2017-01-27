@@ -15,6 +15,7 @@ public interface IClassService {
 	// -- All CREATE operations
 
 	Class save(Class klass);
+	Class createClassAssociatedWithClass(String classSystemId, Class klass);
 
 	// -- All READ operations
 

@@ -1,11 +1,8 @@
 package no.arkivlab.hioa.nikita.webapp;
 
 import nikita.model.noark5.v4.Fonds;
-import nikita.odata.SearchCriteria;
-import no.arkivlab.hioa.nikita.webapp.security.MockSecurityContext;
 import no.arkivlab.hioa.nikita.webapp.run.N5CoreApp;
 import no.arkivlab.hioa.nikita.webapp.spring.datasource.TestDataSource;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.UserExistsException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -18,19 +15,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.security.web.FilterChainProxy;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
@@ -42,7 +30,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -180,7 +167,7 @@ public class ApplicationTests {
 
 
     /**
-     * Test ability to create a correct fonds object with required metadata. Expected return value
+     * Test ability to create a correct fonds object with required administration. Expected return value
      * is 200 OK and the original Fonds object
      */
     @Test
@@ -194,10 +181,6 @@ public class ApplicationTests {
         fonds.setTitle(fondsTitle);
         fonds.setDescription(fondsDescription);
         fonds.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
-
-        List<SearchCriteria> params = new ArrayList<SearchCriteria>();
-        //params.add(new SearchCriteria("createdDate", "gt", "John"));
-        //params.add(new SearchCriteria("createdDate", "lt", "Doe"));
 
         mockMvc.perform(post("/" + API_PATH + "/" + FONDS)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

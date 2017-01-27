@@ -73,6 +73,8 @@ info.build.version: ${project.version}
 # ===================================================================
 
 nikita-noark5-core:
+    pagination:
+          _maxPageSize: 10
     mail:
         from: nikita@example.com
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
@@ -104,7 +106,7 @@ nikita-noark5-core:
          entityId: no:hioa:nikita:noark5
 
          idPUrl: http://nikita.hioa.no
-         idPMetadata: https://idp-test.feide.no/simplesaml/saml2/idp/metadata.php
+         idPMetadata: https://idp-test.feide.no/simplesaml/saml2/idp/administration.php
     server:
          name: nikita.hioa.no
          port: 8092
@@ -112,4 +114,4 @@ nikita-noark5-core:
     details:
         conformity-levels:
             official: arkivstruktur, sakarkiv
-            non-official: api, gui # import (mass) should be here
+            non-official: api, gui, importAPI

@@ -22,7 +22,7 @@
         <!-- Internal project dependencies -->
         <dependency>
             <groupId>no.arkivlab.hioa.nikita</groupId>
-            <artifactId>core-common</artifactId>
+            <artifactId>core-webapp</artifactId>
             <version>0.0.1-ALPHA</version>
         </dependency>
 

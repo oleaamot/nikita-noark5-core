@@ -1,11 +1,13 @@
 package nikita.model.noark5.v4;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import nikita.model.noark5.v4.interfaces.entities.IFondsCreatorEntity;
+import nikita.util.deserialisers.FondsCreatorDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +16,8 @@ import java.util.Set;
 // Enable soft delete of Fonds
 @SQLDelete(sql="UPDATE fonds_creator SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class FondsCreator implements Serializable {
+@JsonDeserialize(using = FondsCreatorDeserializer.class)
+public class FondsCreator implements IFondsCreatorEntity {
 
     private static final long serialVersionUID = 1L;
 

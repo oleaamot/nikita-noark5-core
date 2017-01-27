@@ -13,7 +13,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 import java.net.InetAddress;
@@ -30,19 +29,16 @@ import java.util.Arrays;
 // Extending SpringBootServletInitializer allows N5CoreApp to be run
 // both from spring-boot, but also as a normal web application (sans web.xml)
 @ComponentScan({"no.arkivlab.hioa.nikita.webapp.spring.datasource",
-                "no.arkivlab.hioa.nikita.webapp.spring.objectMapper",
                 "no.arkivlab.hioa.nikita.webapp.web",
                 "no.arkivlab.hioa.nikita.webapp.run",
-                "no.arkivlab.hioa.nikita.webapp.service"}) // do I need service here? No because it's in ServiceConfig
+                "no.arkivlab.hioa.nikita.webapp.util.error",
+                "nikita.util.deserialisers"})
 public class N5CoreApp extends SpringBootServletInitializer {
 
     private static final Logger logger = LoggerFactory.getLogger(N5CoreApp.class);
 
     @Autowired
     DataSourceConfig dataSourceConfig;
-
-
-
     private final static Object[] CONFIGS = { // @formatter:off
     		N5CoreApp.class,
             ContextConfig.class,

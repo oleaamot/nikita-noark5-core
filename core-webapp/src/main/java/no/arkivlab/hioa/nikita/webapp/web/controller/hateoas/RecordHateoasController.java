@@ -3,90 +3,87 @@ package no.arkivlab.hioa.nikita.webapp.web.controller.hateoas;
 import com.codahale.metrics.annotation.Counted;
 import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
 import nikita.config.N5ResourceMappings;
+import nikita.model.noark5.v4.Series;
+import nikita.util.exceptions.NikitaException;
+import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.Record;
+import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
+import nikita.model.noark5.v4.hateoas.RecordHateoas;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRecordService;
-import no.arkivlab.hioa.nikita.webapp.web.model.hateoas.RecordResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import static nikita.config.Constants.NOARK_FONDS_STRUCTURE_PATH;
-import static nikita.config.Constants.SLASH;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import static nikita.config.Constants.*;
+import static nikita.config.N5ResourceMappings.REGISTRATION;
 
 @RestController
-@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + N5ResourceMappings.REGISTRATION)
+@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + REGISTRATION)
 public class RecordHateoasController {
 
     @Autowired
     IRecordService recordService;
 
+    // API - All POST Requests (CRUD - CREATE)
 
-
-    // API - All POST Requests (CRUD - CREATE) {"title": "Test tittel", "description": "Test description", "documentMedium":"Elektronisk arkiv"}
-    @ApiOperation(value = "Creates a new record object", notes = "Returns a complete list of users details with a date of last modification.", response = Record.class)
+    @ApiOperation(value = "Persists a DocumentDescription object associated with the given Record systemId",
+            notes = "Returns the newly created DocumentDescription object after it was associated with a " +
+                    "Record object and persisted to the database", response = DocumentDescriptionHateoas.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Record object successfully created", response = Record.class),
-            @ApiResponse(code = 500, message = "Internal server error")}
-    )
+            @ApiResponse(code = 200, message = "DocumentDescription " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = DocumentDescriptionHateoas.class),
+            @ApiResponse(code = 201, message = "DocumentDescription " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = DocumentDescriptionHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type DocumentDescription"),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST)
-    public Record save(/* @ApiParam(name = "userName", value = "Alphanumeric login to the application", required = true) */@RequestBody Record record) {
-        return recordService.save(record);
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
+            SLASH + NEW_DOCUMENT_DESCRIPTION)
+    public ResponseEntity<DocumentDescriptionHateoas>
+    createDocumentDescriptionAssociatedWithRecord(
+            @ApiParam(name = "recordSystemId",
+                    value = "systemId of record to associate the documentDescription with.",
+                    required = true)
+            @PathVariable String recordSystemId,
+            @ApiParam(name = "documentDescription",
+                    value = "Incoming documentDescription object",
+                    required = true)
+            @RequestBody DocumentDescription documentDescription)
+            throws NikitaException {
+        DocumentDescriptionHateoas documentDescriptionHateoas =
+                new DocumentDescriptionHateoas(
+                        recordService.createDocumentDescriptionAssociatedWithRecord(recordSystemId,
+                                documentDescription));
+        return new ResponseEntity<>(documentDescriptionHateoas, HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public Iterable<Record> findAll(final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
-        String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        Iterable<Record> record = recordService.findByOwnedBy(loggedInUser);
+    // API - All GET Requests (CRUD - READ)
 
-        /*
-        PersonResourceAssembler assembler = new PersonResourceAssembler();
-        List<PersonResource> resources = assembler.toResources(people);
-        // Resources allows to add links once for the entire list
-        // provides the list as content attribute
-        Resources<RecordResource> wrapped = new Resources<RecordResource>(resources, linkTo(methodOn(RecordController.class, record)).withSelfRel()
-*/
-
-        return record;
-    }
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public RecordResource findOne(@PathVariable("id") final Long id) {
-        Record record = recordService.findById(id);
-
-        // Handle null content!!!
-        RecordResource recordResource = new RecordResource (record);
-/*
-        if (recordService.hasChildren(record)==true) {
-            // add links to children
-        }
-        if (recordService.hasSeries(record)==true) {
-            // add links to children
-        }
-*/
-        recordResource.add(
-                linkTo(
-                        methodOn(RecordHateoasController.class, record).findOne(record.getId())
-                ).withSelfRel()//.withRel()
-        );
-
-
-        // Look at https://github.com/opencredo/spring-hateoas-sample/blob/master/src/main/java/com/opencredo/demo/hateoas/api/AuthorResourceAssembler.java
-        //https://opencredo.com/hal-hypermedia-api-spring-hateoas/
-        // HEre yo could add links to recordCreator, parentRecord , associated series
-        //Resources<RecordResource> wrapped = new Resources<RecordResource>(resources, linkTo(methodOn(RecordController.class, record)).withSelfRel()
-
-        return recordResource;
+    @ApiOperation(value = "Retrieves a single Record entity given a systemId", response = Record.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Record returned", response = Record.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = "/{systemID}", method = RequestMethod.GET)
+    public ResponseEntity<RecordHateoas> findOneRecordbySystemId(
+            @ApiParam(name = "systemID",
+                    value = "systemID of the record to retrieve",
+                    required = true)
+            @PathVariable("systemID") final String recordSystemId) {
+        RecordHateoas recordHateoas = new
+                RecordHateoas(recordService.findBySystemId(recordSystemId));
+        return new ResponseEntity<>(recordHateoas, HttpStatus.CREATED);
     }
 }

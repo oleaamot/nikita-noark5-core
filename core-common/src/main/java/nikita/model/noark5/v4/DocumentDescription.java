@@ -1,13 +1,17 @@
 package nikita.model.noark5.v4;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import nikita.model.noark5.v4.interfaces.*;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkCreateEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkTitleDescriptionEntity;
+import nikita.util.deserialisers.DocumentDescriptionDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,8 +21,10 @@ import java.util.Set;
 // Enable soft delete of DocumentDescription
 @SQLDelete(sql="UPDATE document_description SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
-public class DocumentDescription implements Serializable {
+@JsonDeserialize(using = DocumentDescriptionDeserializer.class)
+public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity, INoarkTitleDescriptionEntity,
+        INoarkCreateEntity, IDocumentMedium, IStorageLocation, IDeletion, IScreening, IDisposal, IClassified,
+        IDisposalUndertaken, IComment, IElectronicSignature, IAuthor {
 
     private static final long serialVersionUID = 1L;
 
@@ -130,38 +136,65 @@ public class DocumentDescription implements Serializable {
     @OneToMany(mappedBy = "referenceDocumentDescription")
     protected Set<DocumentObject> referenceDocumentObject = new HashSet<DocumentObject>();
 
-    // Links to Classified
-    @ManyToOne
+    // Links to Comments
+    @ManyToMany
+    @JoinTable(name = "document_description_comment", joinColumns = @JoinColumn(name = "f_pk_document_description_id",
+            referencedColumnName = "pk_document_description_id"),
+            inverseJoinColumns = @JoinColumn(name = "f_pk_comment_id", referencedColumnName = "pk_comment_id"))
+    protected Set<Comment> referenceComment = new HashSet<Comment>();
+
+    // Links to Authors
+    @ManyToMany
+    @JoinTable(name = "document_description_author", joinColumns = @JoinColumn(name = "f_pk_document_description_id",
+            referencedColumnName = "pk_document_description_id"),
+            inverseJoinColumns = @JoinColumn(name = "f_pk_author_id", referencedColumnName = "pk_author_id"))
+    protected Set<Author> referenceAuthor = new HashSet<Author>();
+
+    // Link to StorageLocation
+    @ManyToMany (cascade=CascadeType.ALL)
+    @JoinTable(name = "document_description_storage_location", joinColumns = @JoinColumn(
+            name = "f_pk_document_description_id",referencedColumnName = "pk_document_description_id"),
+            inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
+            referencedColumnName = "pk_storage_location_id"))
+    protected Set<StorageLocation> referenceStorageLocation = new HashSet<StorageLocation>();
+
+    // Link to Classified
+    @ManyToOne (cascade=CascadeType.ALL)
     @JoinColumn(name = "document_description_classified_id", referencedColumnName = "pk_classified_id")
     protected Classified referenceClassified;
 
-    // Links to Comments
-    @ManyToMany
-    @JoinTable(name = "document_description_comment", joinColumns = @JoinColumn(name = "f_pk_document_description_id", referencedColumnName = "pk_document_description_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_comment_id", referencedColumnName = "pk_comment_id"))
-    protected Set<Comment> referenceComment = new HashSet<Comment>();
-
+    
     // Link to Disposal
-    @ManyToOne
+    @ManyToOne (cascade=CascadeType.ALL)
     @JoinColumn(name = "document_description_disposal_id", referencedColumnName = "pk_disposal_id")
     protected Disposal referenceDisposal;
 
     // Link to DisposalUndertaken
-    @ManyToOne
-    @JoinColumn(name = "document_description_disposal_undertaken_id", referencedColumnName = "pk_disposal_undertaken_id")
+    @ManyToOne (cascade=CascadeType.ALL)
+    @JoinColumn(name = "document_description_disposal_undertaken_id",
+            referencedColumnName = "pk_disposal_undertaken_id")
     protected DisposalUndertaken referenceDisposalUndertaken;
 
     // Link to Deletion
-    @ManyToOne
+    @ManyToOne (cascade=CascadeType.ALL)
     @JoinColumn(name = "document_description_deletion_id", referencedColumnName = "pk_deletion_id")
     protected Deletion referenceDeletion;
 
     // Link to Screening
-    @ManyToOne
+    @ManyToOne (cascade=CascadeType.ALL)
     @JoinColumn(name = "document_description_screening_id", referencedColumnName = "pk_screening_id")
     protected Screening referenceScreening;
 
+    @OneToOne
+    @JoinColumn(name="pk_electronic_signature_id")
+    protected ElectronicSignature referenceElectronicSignature;
+
+
     public Long getId() {
         return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getSystemId() {
@@ -297,14 +330,6 @@ public class DocumentDescription implements Serializable {
         this.referenceDocumentObject = referenceDocumentObject;
     }
 
-    public Classified getReferenceClassified() {
-        return referenceClassified;
-    }
-
-    public void setReferenceClassified(Classified referenceClassified) {
-        this.referenceClassified = referenceClassified;
-    }
-
     public Set<Comment> getReferenceComment() {
         return referenceComment;
     }
@@ -313,36 +338,87 @@ public class DocumentDescription implements Serializable {
         this.referenceComment = referenceComment;
     }
 
+    @Override
+    public Set<Author> getReferenceAuthor() {
+        return referenceAuthor;
+    }
+
+    @Override
+    public void setReferenceAuthor(Set<Author> referenceAuthor) {
+        this.referenceAuthor = referenceAuthor;
+    }
+
+    @Override
+    public Set<StorageLocation> getReferenceStorageLocation() {
+        return referenceStorageLocation;
+    }
+
+    @Override
+    public void setReferenceStorageLocation(Set<StorageLocation> referenceStorageLocation) {
+        this.referenceStorageLocation = referenceStorageLocation;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Override
+    public Classified getReferenceClassified() {
+        return referenceClassified;
+    }
+
+    @Override
+    public void setReferenceClassified(Classified referenceClassified) {
+        this.referenceClassified = referenceClassified;
+    }
+
+    @Override
     public Disposal getReferenceDisposal() {
         return referenceDisposal;
     }
 
+    @Override
     public void setReferenceDisposal(Disposal referenceDisposal) {
         this.referenceDisposal = referenceDisposal;
     }
 
+    @Override
     public DisposalUndertaken getReferenceDisposalUndertaken() {
         return referenceDisposalUndertaken;
     }
 
+    @Override
     public void setReferenceDisposalUndertaken(DisposalUndertaken referenceDisposalUndertaken) {
         this.referenceDisposalUndertaken = referenceDisposalUndertaken;
     }
 
-    public Deletion getReferenceDeletion() {
-        return referenceDeletion;
-    }
-
-    public void setReferenceDeletion(Deletion referenceDeletion) {
-        this.referenceDeletion = referenceDeletion;
-    }
-
+    @Override
     public Screening getReferenceScreening() {
         return referenceScreening;
     }
 
+    @Override
     public void setReferenceScreening(Screening referenceScreening) {
         this.referenceScreening = referenceScreening;
+    }
+    @Override
+    public Deletion getReferenceDeletion() {
+        return referenceDeletion;
+    }
+
+    @Override
+    public void setReferenceDeletion(Deletion referenceDeletion) {
+        this.referenceDeletion = referenceDeletion;
+    }
+
+    @Override
+    public ElectronicSignature getReferenceElectronicSignature() {
+        return referenceElectronicSignature;
+    }
+
+    @Override
+    public void setReferenceElectronicSignature(ElectronicSignature referenceElectronicSignature) {
+        this.referenceElectronicSignature = referenceElectronicSignature;
     }
 
     @Override

@@ -50,13 +50,13 @@ public class SignOff implements Serializable {
     protected String ownedBy;
 
     /** M215 referanseAvskrivesAvJournalpost */
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="system_id")
     protected RegistryEntry referenceSignedOffRecord;
 
     /** M??? - referanseAvskrivesAvKorrespondansepart
      * Note this is new to v4, I think. Missing Metatdata number */
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="pk_record_id")
     protected CorrespondencePart referenceSignedOffCorrespondencePart;
 

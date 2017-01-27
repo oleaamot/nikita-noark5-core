@@ -3,6 +3,7 @@ package no.arkivlab.hioa.nikita.webapp.service.impl;
 import nikita.model.noark5.v4.DocumentObject;
 import nikita.repository.n5v4.IDocumentObjectRepository;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentObjectService;
+import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static nikita.config.N5ResourceMappings.STATUS_OPEN;
+
 @Service
 @Transactional
 public class DocumentObjectService implements IDocumentObjectService {
@@ -26,21 +29,13 @@ public class DocumentObjectService implements IDocumentObjectService {
     }
 
     // All CREATE operations
+
+
     public DocumentObject save(DocumentObject documentObject){
-        String username = (String) SecurityContextHolder.getContext().getAuthentication().getName();
-
-
-        documentObject.setSystemId(UUID.randomUUID().toString());
-        documentObject.setCreatedDate(new Date());
-        documentObject.setOwnedBy(username);
-        documentObject.setCreatedBy(username);
-        documentObject.setDeleted(false);
-
-        // Have to handle referenceToFonds. If it is not set do not allow persisit
-        // throw illegalstructure exception
-
-        // How do handle referenceToPrecusor? Update the entire object?? No patch?
-
+        NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(documentObject);
+        NoarkUtils.NoarkEntity.Create.setCreateEntityValues(documentObject);
+        NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(documentObject);
+        NoarkUtils.NoarkEntity.Create.setFinaliseEntityValues(documentObject);
         return documentObjectRepository.save(documentObject);
     }
 

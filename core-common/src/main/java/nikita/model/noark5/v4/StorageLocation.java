@@ -1,5 +1,8 @@
 package nikita.model.noark5.v4;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import nikita.util.serializers.noark5v4.StorageLocationSerializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -11,9 +14,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "storage_location")
-// Enable soft delete of StorageLocation
+// Enable soft delete of IStorageLocation
 @SQLDelete(sql="UPDATE storage_location SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
+@JsonSerialize(using = StorageLocationSerializer.class)
 public class StorageLocation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,6 +52,7 @@ public class StorageLocation implements Serializable {
 
     // Links to Fonds
     @ManyToMany(mappedBy = "referenceStorageLocation")
+    @JsonIgnore
     protected Set<Fonds> referenceFonds = new HashSet<Fonds>();
 
     // Links to Series
@@ -59,19 +64,13 @@ public class StorageLocation implements Serializable {
     protected Set<File> referenceFile = new HashSet<File>();
 
     // Links to BasicRecords
-    @OneToMany(mappedBy = "referenceStorageLocation")
-    protected Set<BasicRecord> referenceRecord = new HashSet<BasicRecord>();
+    @ManyToMany(mappedBy = "referenceStorageLocation")
+    @JsonIgnore
+    protected Set<BasicRecord> referenceBasicRecord = new HashSet<>();
 
-
-    // TODO: Fix this!!
-    // Links to BasicRecords
-    /* @ManyToMany(mappedBy = "referenceStorageLocation", targetEntity="BasicRecord", fetch="EXTRA_LAZY")
-    protected $referenceRecord;
-
-    // Links to DocumentDescription
-     @OneToMany(mappedBy = "referenceStorageLocation", targetEntity="DocumentDescription", fetch="EXTRA_LAZY")
-    protected $referenceDocumentDescription;
-    */
+    @ManyToMany(mappedBy = "referenceStorageLocation")
+    @JsonIgnore
+    protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<>();
 
     public String getSystemId() {
         return systemId;
@@ -93,6 +92,10 @@ public class StorageLocation implements Serializable {
         return referenceFonds;
     }
 
+    public void setReferenceFonds(Set<Fonds> referenceFonds) {
+        this.referenceFonds = referenceFonds;
+    }
+
     public Boolean getDeleted() {
         return deleted;
     }
@@ -107,10 +110,6 @@ public class StorageLocation implements Serializable {
 
     public void setOwnedBy(String ownedBy) {
         this.ownedBy = ownedBy;
-    }
-
-    public void setReferenceFonds(Set<Fonds> referenceFonds) {
-        this.referenceFonds = referenceFonds;
     }
 
     public Set<Series> getReferenceSeries() {
@@ -129,21 +128,25 @@ public class StorageLocation implements Serializable {
         this.referenceFile = referenceFile;
     }
 
-    public Set<BasicRecord> getReferenceRecord() {
-        return referenceRecord;
+    public Set<BasicRecord> getReferenceBasicRecord() {
+        return referenceBasicRecord;
     }
 
-    public void setReferenceRecord(Set<BasicRecord> referenceRecord) {
-        this.referenceRecord = referenceRecord;
+    public void setReferenceBasicRecord(Set<BasicRecord> referenceBasicRecord) {
+        this.referenceBasicRecord = referenceBasicRecord;
+    }
+
+    public Set<DocumentDescription> getReferenceDocumentDescription() {
+        return referenceDocumentDescription;
+    }
+
+    public void setReferenceDocumentDescription(Set<DocumentDescription> referenceDocumentDescription) {
+        this.referenceDocumentDescription = referenceDocumentDescription;
     }
 
     @Override
     public String toString() {
-        return "StorageLocation [id=" + id + ", systemId=" + systemId
-                + ", storageLocation=" + storageLocation + ", referenceFonds="
-                + referenceFonds + ", referenceSeries=" + referenceSeries
-                + ", referenceFile=" + referenceFile + ", referenceRecord="
-                + referenceRecord + "]";
+        return "IStorageLocation [id=" + id + ", systemId=" + systemId + "]";
     }
 
 }

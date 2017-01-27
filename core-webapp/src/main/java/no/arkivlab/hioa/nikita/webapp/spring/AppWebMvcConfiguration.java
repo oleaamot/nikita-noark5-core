@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import com.fasterxml.jackson.databind.*;
 import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -21,8 +22,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 @EnableWebMvc
 @EnableSpringDataWebSupport
@@ -80,6 +79,8 @@ public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
         if (jsonConverterFound.isPresent()) {
             final AbstractJackson2HttpMessageConverter converter = (AbstractJackson2HttpMessageConverter) jsonConverterFound.get();
             converter.getObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+            // Convert timestamps to readable text strings
+            converter.getObjectMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
             converter.getObjectMapper().enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         }
         final Optional<HttpMessageConverter<?>> xmlConverterFound = converters.stream().filter(c -> c instanceof MappingJackson2XmlHttpMessageConverter).findFirst();

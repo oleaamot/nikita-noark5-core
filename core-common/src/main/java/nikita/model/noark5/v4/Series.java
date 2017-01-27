@@ -1,9 +1,11 @@
 package nikita.model.noark5.v4;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import nikita.model.noark5.v4.interfaces.*;
+import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
+import nikita.util.deserialisers.SeriesDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -17,13 +19,14 @@ import java.util.Set;
 // Enable soft delete of Series
 @SQLDelete(sql="UPDATE series SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
-public class Series {
+@JsonDeserialize(using = SeriesDeserializer.class)
+public class Series implements INoarkGeneralEntity, IStorageLocation, IDocumentMedium, IClassified, IScreening,
+        IDisposal, IDisposalUndertaken, IDeletion {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pk_series_id", nullable = false, insertable = true, updatable = false)
     protected Long id;
 
@@ -118,25 +121,28 @@ public class Series {
     protected String ownedBy;
 
     // Links to StorageLocations
-    @ManyToMany
-    @JoinTable(name = "series_storage_location", joinColumns = @JoinColumn(name = "f_pk_series_id", referencedColumnName = "pk_series_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id", referencedColumnName = "pk_storage_location_id"))
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "series_storage_location", joinColumns = @JoinColumn(name = "f_pk_series_id",
+            referencedColumnName = "pk_series_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
+            referencedColumnName = "pk_storage_location_id"))
     protected Set<StorageLocation> referenceStorageLocation = new HashSet<StorageLocation>();
 
     // Link to Fonds
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "series_fonds_id", referencedColumnName = "pk_fonds_id")
+    @JsonIgnore
     protected Fonds referenceFonds;
 
     // Link to precursor Series
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     protected Series referencePrecursor;
 
     // Link to successor Series
-    @OneToOne(mappedBy = "referencePrecursor")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "referencePrecursor")
     protected Series referenceSuccessor;
 
     // Link to ClassificationSystem
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "series_classification_system_id", referencedColumnName = "pk_classification_system_id")
     protected ClassificationSystem referenceClassificationSystem;
 
@@ -147,33 +153,39 @@ public class Series {
 
     // Links to Records
     @OneToMany(mappedBy = "referenceSeries")
+    @JsonIgnore
     protected Set<Record> referenceRecord = new HashSet<Record>();
 
     // Links to Classified
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "series_classified_id", referencedColumnName = "pk_classified_id")
+    @JsonIgnore
     protected Classified referenceClassified;
 
     // Link to Disposal
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "series_disposal_id", referencedColumnName = "pk_disposal_id")
+    @JsonIgnore
     protected Disposal referenceDisposal;
 
+    // Link to Screening
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "series_screening_id", referencedColumnName = "pk_screening_id")
+    @JsonIgnore
+    protected Screening referenceScreening;
+
     // Link to DisposalUndertaken
-    @ManyToOne
-    @JoinColumn(name = "series_disposal_undertaken_id", referencedColumnName = "pk_disposal_undertaken_id")
+    @ManyToOne (cascade=CascadeType.PERSIST)
+    @JoinColumn(name = "document_description_disposal_undertaken_id",
+            referencedColumnName = "pk_disposal_undertaken_id")
+    @JsonIgnore
     protected DisposalUndertaken referenceDisposalUndertaken;
 
     // Link to Deletion
-    @ManyToOne
-    @JoinColumn(name = "series_deletion_id", referencedColumnName = "pk_deletion_id")
+    @ManyToOne (cascade=CascadeType.PERSIST)
+    @JoinColumn(name = "document_description_deletion_id", referencedColumnName = "pk_deletion_id")
+    @JsonIgnore
     protected Deletion referenceDeletion;
-
-    // Link to Screening
-    @ManyToOne
-    @JoinColumn(name = "series_screening_id", referencedColumnName = "pk_screening_id")
-    protected Screening referenceScreening;
-
 
     public Long getId() {
         return id;
@@ -328,7 +340,6 @@ public class Series {
             ClassificationSystem referenceClassificationSystem) {
         this.referenceClassificationSystem = referenceClassificationSystem;
     }
-
     public Set<File> getReferenceFile() {
         return referenceFile;
     }
@@ -345,44 +356,53 @@ public class Series {
         this.referenceRecord = referenceRecord;
     }
 
+    @Override
     public Classified getReferenceClassified() {
         return referenceClassified;
     }
 
+    @Override
     public void setReferenceClassified(Classified referenceClassified) {
         this.referenceClassified = referenceClassified;
     }
 
+    @Override
     public Disposal getReferenceDisposal() {
         return referenceDisposal;
     }
 
+    @Override
     public void setReferenceDisposal(Disposal referenceDisposal) {
         this.referenceDisposal = referenceDisposal;
     }
 
+    @Override
     public DisposalUndertaken getReferenceDisposalUndertaken() {
         return referenceDisposalUndertaken;
     }
 
+    @Override
     public void setReferenceDisposalUndertaken(DisposalUndertaken referenceDisposalUndertaken) {
         this.referenceDisposalUndertaken = referenceDisposalUndertaken;
     }
 
-    public Deletion getReferenceDeletion() {
-        return referenceDeletion;
-    }
-
-    public void setReferenceDeletion(Deletion referenceDeletion) {
-        this.referenceDeletion = referenceDeletion;
-    }
-
+    @Override
     public Screening getReferenceScreening() {
         return referenceScreening;
     }
 
+    @Override
     public void setReferenceScreening(Screening referenceScreening) {
         this.referenceScreening = referenceScreening;
+    }
+    @Override
+    public Deletion getReferenceDeletion() {
+        return referenceDeletion;
+    }
+
+    @Override
+    public void setReferenceDeletion(Deletion referenceDeletion) {
+        this.referenceDeletion = referenceDeletion;
     }
 
     @Override

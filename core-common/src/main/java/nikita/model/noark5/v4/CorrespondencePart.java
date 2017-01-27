@@ -1,11 +1,11 @@
 package nikita.model.noark5.v4;
 
+import nikita.model.noark5.v4.interfaces.entities.ICorrespondencePartEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +14,7 @@ import java.util.Set;
 // Enable soft delete of CorrespondencePart
 @SQLDelete(sql="UPDATE correspondence_part SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class CorrespondencePart implements Serializable {
+public class CorrespondencePart implements ICorrespondencePartEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,14 +24,14 @@ public class CorrespondencePart implements Serializable {
     protected Long id;
 
     /** M087 - korrespondanseparttype (xs:string) */
-    @Column(name = "correspondance_part_type")
+    @Column(name = "correspondence_part_type")
     @Audited
-    protected String correspondancePartType;
+    protected String correspondencePartType;
 
     /** M400 - korrespondansepartNavn (xs:string) */
     @Audited
-    @Column(name = "correspondance_part_name")
-    protected String correspondancePartName;
+    @Column(name = "correspondence_part_name")
+    protected String correspondencePartName;
 
     /** M406 - postadresse (xs:string) */
     @Audited
@@ -100,20 +100,20 @@ public class CorrespondencePart implements Serializable {
         this.id = id;
     }
 
-    public String getCorrespondancePartType() {
-        return correspondancePartType;
+    public String getCorrespondencePartType() {
+        return correspondencePartType;
     }
 
-    public void setCorrespondancePartType(String correspondancePartType) {
-        this.correspondancePartType = correspondancePartType;
+    public void setCorrespondencePartType(String correspondencePartType) {
+        this.correspondencePartType = correspondencePartType;
     }
 
-    public String getCorrespondancePartName() {
-        return correspondancePartName;
+    public String getCorrespondencePartName() {
+        return correspondencePartName;
     }
 
-    public void setCorrespondancePartName(String correspondancePartName) {
-        this.correspondancePartName = correspondancePartName;
+    public void setCorrespondencePartName(String correspondencePartName) {
+        this.correspondencePartName = correspondencePartName;
     }
 
     public String getPostalAddress() {
@@ -224,8 +224,8 @@ public class CorrespondencePart implements Serializable {
                 ", postalTown='" + postalTown + '\'' +
                 ", postCode='" + postCode + '\'' +
                 ", postalAddress='" + postalAddress + '\'' +
-                ", correspondancePartName='" + correspondancePartName + '\'' +
-                ", correspondancePartType='" + correspondancePartType + '\'' +
+                ", correspondencePartName='" + correspondencePartName + '\'' +
+                ", correspondencePartType='" + correspondencePartType + '\'' +
                 ", id=" + id +
                 '}';
     }

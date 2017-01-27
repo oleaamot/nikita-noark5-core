@@ -49,7 +49,7 @@ public class Keyword implements Serializable {
 
     // Links to Class
     @ManyToMany(mappedBy = "referenceKeyword")
-    protected Set<nikita.model.noark5.v4.Class> referenceClass = new HashSet<nikita.model.noark5.v4.Class>();
+    protected Set<Class> referenceClass = new HashSet<Class>();
 
     // Links to File
     @ManyToMany(mappedBy = "referenceKeyword")
@@ -91,11 +91,11 @@ public class Keyword implements Serializable {
         this.ownedBy = ownedBy;
     }
 
-    public Set<nikita.model.noark5.v4.Class> getReferenceClass() {
+    public Set<Class> getReferenceClass() {
         return referenceClass;
     }
 
-    public void setReferenceClass(Set<nikita.model.noark5.v4.Class> referenceClass) {
+    public void setReferenceClass(Set<Class> referenceClass) {
         this.referenceClass = referenceClass;
     }
 

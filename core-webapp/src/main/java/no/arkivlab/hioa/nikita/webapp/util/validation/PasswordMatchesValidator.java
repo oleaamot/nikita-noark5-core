@@ -1,6 +1,6 @@
 package no.arkivlab.hioa.nikita.webapp.util.validation;
 
-import nikita.model.user.User;
+import no.arkivlab.hioa.nikita.webapp.model.user.User;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

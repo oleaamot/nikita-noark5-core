@@ -61,7 +61,7 @@ public class ElectronicSignature implements Serializable {
 
     @OneToOne
     @JoinColumn(name="pk_record_id")
-    protected Record referenceBasicRecord;
+    protected RegistryEntry referenceRegistryEntry;
 
     @OneToOne
     @JoinColumn(name="pk_document_object_id")
@@ -127,12 +127,12 @@ public class ElectronicSignature implements Serializable {
         this.ownedBy = ownedBy;
     }
 
-    public Record getReferenceBasicRecord() {
-        return referenceBasicRecord;
+    public RegistryEntry getReferenceRegistryEntry() {
+        return referenceRegistryEntry;
     }
 
-    public void setReferenceBasicRecord(Record referenceBasicRecord) {
-        this.referenceBasicRecord = referenceBasicRecord;
+    public void setReferenceRegistryEntry(RegistryEntry referenceRegistryEntry) {
+        this.referenceRegistryEntry = referenceRegistryEntry;
     }
 
     public DocumentObject getReferenceDocumentObject() {

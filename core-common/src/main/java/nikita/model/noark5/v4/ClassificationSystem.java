@@ -1,13 +1,11 @@
 package nikita.model.noark5.v4;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.lang.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -18,8 +16,7 @@ import java.util.Set;
 // Enable soft delete of ClassificationSystem
 @SQLDelete(sql="UPDATE classification_system SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
-public class ClassificationSystem implements Serializable {
+public class ClassificationSystem implements INoarkGeneralEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -102,6 +99,13 @@ public class ClassificationSystem implements Serializable {
     // Links to child Classes
     @OneToMany(mappedBy = "referenceClassificationSystem")
     protected Set<Class> referenceClass = new HashSet<Class>();
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public Long getId() {
+        return id;
+    }
 
     public String getSystemId() {
         return systemId;
@@ -208,10 +212,6 @@ public class ClassificationSystem implements Serializable {
                 + finalisedDate + ", finalisedBy=" + finalisedBy
                 + ", referenceSeries=" + referenceSeries + ", referenceClass="
                 + referenceClass + "]";
-    }
-
-    public Long getId() {
-        return id;
     }
 
 }

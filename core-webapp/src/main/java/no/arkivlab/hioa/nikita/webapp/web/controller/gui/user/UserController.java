@@ -1,9 +1,9 @@
 package no.arkivlab.hioa.nikita.webapp.web.controller.gui.user;
 
-import nikita.repository.user.UserRepository;
+import no.arkivlab.hioa.nikita.webapp.repository.user.UserRepository;
 import no.arkivlab.hioa.nikita.webapp.service.IUserService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.UsernameExistsException;
-import nikita.model.user.User;
+import no.arkivlab.hioa.nikita.webapp.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;

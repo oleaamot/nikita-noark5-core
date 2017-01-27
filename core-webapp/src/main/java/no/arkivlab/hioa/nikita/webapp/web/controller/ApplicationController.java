@@ -3,8 +3,8 @@ package no.arkivlab.hioa.nikita.webapp.web.controller;
 import com.codahale.metrics.annotation.Counted;
 import io.swagger.annotations.Api;
 
-import nikita.model.application.ApplicationDetails;
-import nikita.model.application.ConformityLevel;
+import no.arkivlab.hioa.nikita.webapp.model.application.ApplicationDetails;
+import no.arkivlab.hioa.nikita.webapp.model.application.ConformityLevel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;

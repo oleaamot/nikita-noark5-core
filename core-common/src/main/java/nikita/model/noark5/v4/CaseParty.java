@@ -1,5 +1,6 @@
 package nikita.model.noark5.v4;
 
+import nikita.model.noark5.v4.interfaces.entities.ICasePartyEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -14,11 +15,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "case_party")
-
 // Enable soft delete of CaseParty
 @SQLDelete(sql="UPDATE case_party SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class CaseParty {
+public class CaseParty implements ICasePartyEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -69,11 +69,11 @@ public class CaseParty {
     protected String postalTown;
 
     /**
-     * M409 - land (xs:string)
+     * M409 - utenlandsadresse (xs:string)
      */
-    @Column(name = "country")
+    @Column(name = "foreign_address")
     @Audited
-    protected String country;
+    protected String foreignAddress;
 
     /**
      * M410 - epostadresse (xs:string)
@@ -84,6 +84,7 @@ public class CaseParty {
 
     /**
      * M411 - telefonnummer (xs:string)
+     * TODO: This is a multi-value attributte, that needs to implemented properly
      */
     @Column(name = "telephone_number")
     @Audited
@@ -125,12 +126,12 @@ public class CaseParty {
         this.casePartyId = casePartyId;
     }
 
-    public String get$casePartyName() {
+    public String getCasePartyName() {
         return casePartyName;
     }
 
-    public void set$casePartyName(String $casePartyName) {
-        this.casePartyName = $casePartyName;
+    public void setCasePartyName(String casePartyName) {
+        this.casePartyName = casePartyName;
     }
 
     public String getCasePartyRole() {
@@ -165,12 +166,12 @@ public class CaseParty {
         this.postalTown = postalTown;
     }
 
-    public String getCountry() {
-        return country;
+    public String getForeignAddress() {
+        return foreignAddress;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setForeignAddress(String foreignAddress) {
+        this.foreignAddress = foreignAddress;
     }
 
     public String getEmailAddress() {
@@ -231,7 +232,7 @@ public class CaseParty {
                 ", postalAddress='" + postalAddress + '\'' +
                 ", postCode='" + postCode + '\'' +
                 ", postalTown='" + postalTown + '\'' +
-                ", country='" + country + '\'' +
+                ", foreignAddress='" + foreignAddress + '\'' +
                 ", emailAddress='" + emailAddress + '\'' +
                 ", telephoneNumber='" + telephoneNumber + '\'' +
                 ", contactPerson='" + contactPerson + '\'' +

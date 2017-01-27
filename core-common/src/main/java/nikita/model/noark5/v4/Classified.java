@@ -1,5 +1,8 @@
 package nikita.model.noark5.v4;
 
+import nikita.model.noark5.v4.interfaces.entities.IClassifiedEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -19,7 +22,7 @@ import java.util.Set;
 // Enable soft delete of Classified
 @SQLDelete(sql="UPDATE classified SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Classified {
+public class Classified implements INikitaEntity, INoarkSystemIdEntity, IClassifiedEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,6 +30,13 @@ public class Classified {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_classified_id", nullable = false, insertable = true, updatable = false)
     protected Long id;
+
+    /**
+     * systemID (xs:string). Not part of Noark standard. Added so access via systemId is consistent
+     */
+    @Column(name = "system_id")
+    @Audited
+    protected String systemId;
 
     /** M506 - gradering (xs:string) **/
     @Column(name="classification")
@@ -63,6 +73,7 @@ public class Classified {
     protected String ownedBy;
 
     // Links to Series
+
     @OneToMany(mappedBy = "referenceClassified")
     protected Set<Series> referenceSeries = new HashSet<Series>();
 
@@ -88,6 +99,16 @@ public class Classified {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public String getSystemId() {
+        return systemId;
+    }
+
+    @Override
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
     }
 
     public String getClassification() {

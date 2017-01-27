@@ -18,6 +18,7 @@ public interface ISeriesRepository extends PagingAndSortingRepository<Series, Lo
     @Override
     Series save(Series series);
 
+
     // -- All READ operations
     @Override
     List<Series> findAll();

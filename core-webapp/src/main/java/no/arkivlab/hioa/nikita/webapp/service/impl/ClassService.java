@@ -1,8 +1,15 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
+import nikita.model.noark5.v4.CaseFile;
 import nikita.model.noark5.v4.Class;
+import nikita.model.noark5.v4.Series;
 import nikita.repository.n5v4.IClassRepository;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IClassService;
+import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityEditWhenClosedException;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,9 +22,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static nikita.config.Constants.INFO_CANNOT_ASSOCIATE_WITH_CLOSED_OBJECT;
+import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
+import static nikita.config.N5ResourceMappings.STATUS_CLOSED;
+
 @Service
 @Transactional
 public class ClassService implements IClassService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ClassService.class);
 
     @Autowired
     IClassRepository klassRepository;
@@ -27,20 +40,28 @@ public class ClassService implements IClassService {
 
     // All CREATE operations
     public Class save(Class klass){
-        String username = (String) SecurityContextHolder.getContext().getAuthentication().getName();
-
-        klass.setSystemId(UUID.randomUUID().toString());
-        klass.setCreatedDate(new Date());
-        klass.setOwnedBy(username);
-        klass.setCreatedBy(username);
-        klass.setDeleted(false);
-
-        // Have to handle referenceToFonds. If it is not set do not allow persisit
-        // throw illegalstructure exception
-
-        // How do handle referenceToPrecusor? Update the entire object?? No patch?
-
+        NoarkUtils.NoarkEntity.Create.setNoarkEntityValues(klass);
+        NoarkUtils.NoarkEntity.Create.setFinaliseEntityValues(klass);
         return klassRepository.save(klass);
+    }
+
+    public  Class createClassAssociatedWithClass(String classSystemId, Class klass) {
+        Class persistedClass = null;
+        Class parentKlass = klassRepository.findBySystemId(classSystemId);
+        if (parentKlass == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " Class, using classSystemId " + classSystemId;
+            logger.info(info);
+            throw new NoarkEntityNotFoundException(info);
+        } else if (parentKlass.getFinalisedDate() != null) {
+            String info = INFO_CANNOT_ASSOCIATE_WITH_CLOSED_OBJECT + ". Class with classSystemId " + classSystemId +
+                    "has been finalised. Cannot associate a new class object with a finalised class object";
+            logger.info(info);
+            throw new NoarkEntityEditWhenClosedException(info);
+        } else {
+            klass.setReferenceParentClass(parentKlass);
+            persistedClass = this.save(klass);
+        }
+        return persistedClass;
     }
 
     // All READ operations

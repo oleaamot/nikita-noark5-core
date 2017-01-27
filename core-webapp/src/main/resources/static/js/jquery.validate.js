@@ -565,7 +565,7 @@ $.extend($.validator, {
     },
 
     // return the custom message for the given element and validation method
-    // specified in the element's "messages" metadata
+    // specified in the element's "messages" administration
     customMetaMessage: function(element, method) {
       if (!$.metadata) {
         return;
@@ -946,7 +946,7 @@ $.extend($.validator, {
       }
     }
 
-    // To support custom messages in metadata ignore rule methods titled "messages"
+    // To support custom messages in administration ignore rule methods titled "messages"
     if (rules.messages) {
       delete rules.messages;
     }

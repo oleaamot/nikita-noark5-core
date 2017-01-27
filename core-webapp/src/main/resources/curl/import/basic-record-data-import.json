@@ -1,0 +1,7 @@
+{
+  "registreringsID" : "registration Id of the bsc record",
+  "tittel" : "title of the basic record",
+  "offentligTittel" : "public title of the basic record",
+  "beskrivelse" : "Description of basic record",
+  "forfatter" : "The author"
+}

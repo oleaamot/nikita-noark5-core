@@ -1,9 +1,17 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
+import nikita.model.noark5.v4.CaseFile;
+import nikita.model.noark5.v4.File;
 import nikita.model.noark5.v4.Series;
 import nikita.repository.n5v4.ISeriesRepository;
+import no.arkivlab.hioa.nikita.webapp.service.interfaces.ICaseFileService;
+import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFileService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
-import no.arkivlab.hioa.nikita.webapp.util.validation.Utils;
+import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityEditWhenClosedException;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,64 +20,120 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.TypedQuery;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
+import static nikita.config.Constants.INFO_CANNOT_ASSOCIATE_WITH_CLOSED_OBJECT;
+import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 import static nikita.config.N5ResourceMappings.STATUS_CLOSED;
 
 @Service
 @Transactional
 public class SeriesService implements ISeriesService {
 
+    private static final Logger logger = LoggerFactory.getLogger(SeriesService.class);
+
+    @Autowired
+    IFileService fileService;
+
+    @Autowired
+    EntityManager entityManager;
+    
+    @Autowired
+    ICaseFileService caseFileService;
+
     @Autowired
     ISeriesRepository seriesRepository;
+
+
+    //@Value("${nikita-noark5-core.pagination.maxPageSize}")
+    Integer maxPageSize = new Integer(10);
 
     public SeriesService() {
     }
 
     // All CREATE operations
-    public Series saveWithOwner(Series series, String owner){
-        if (!Utils.checkDocumentMediumValid(series.getDocumentMedium())) {
-            // throw an error! Something is wrong. Either null or incorrect value
+
+    @Override
+    public CaseFile createCaseFileAssociatedWithSeries(String seriesSystemId, CaseFile caseFile) {
+        CaseFile persistedFile = null;
+        Series series = seriesRepository.findBySystemId(seriesSystemId);
+        if (series == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " Series, using seriesSystemId " + seriesSystemId;
+            logger.info(info);
+            throw new NoarkEntityNotFoundException(info);
+        } else if (series.getSeriesStatus() != null && series.getSeriesStatus().equals(STATUS_CLOSED)) {
+            String info = INFO_CANNOT_ASSOCIATE_WITH_CLOSED_OBJECT + ". Series with seriesSystemId " + seriesSystemId +
+                    "has status " + STATUS_CLOSED;
+            logger.info(info);
+            throw new NoarkEntityEditWhenClosedException(info);
+        } else {
+            caseFile.setReferenceSeries(series);
+            persistedFile = caseFileService.save(caseFile);
         }
-
-        series.setSystemId(UUID.randomUUID().toString());
-        series.setCreatedDate(new Date());
-        series.setOwnedBy(owner);
-        series.setCreatedBy(owner);
-        series.setDeleted(false);
-
-        // Have to handle referenceToFonds. If it is not set do not allow persisit
-        // throw illegalstructure exception
-
-        // How do handle referenceToPrecusor? Update the entire object?? No patch?
-
-        return seriesRepository.save(series);
+        return persistedFile;
+    }
+    
+    @Override
+    public File createFileAssociatedWithSeries(String seriesSystemId, File file) {
+        File persistedFile = null;
+        Series series = seriesRepository.findBySystemId(seriesSystemId);
+        if (series == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " Series, using seriesSystemId " + seriesSystemId;
+            logger.info(info) ;
+            throw new NoarkEntityNotFoundException(info);
+        }
+        else if (series.getSeriesStatus() != null && series.getSeriesStatus().equals(STATUS_CLOSED)) {
+            String info = INFO_CANNOT_ASSOCIATE_WITH_CLOSED_OBJECT + ". Series with seriesSystemId " + seriesSystemId +
+                    "has status " + STATUS_CLOSED;
+            logger.info(info) ;
+            throw new NoarkEntityEditWhenClosedException(info);
+        }
+        else {
+            file.setReferenceSeries(series);
+            persistedFile = fileService.createFile(file);
+        }
+        return persistedFile;
     }
 
     public Series save(Series series){
-        String username = (String) SecurityContextHolder.getContext().getAuthentication().getName();
-
-        if (!Utils.checkDocumentMediumValid(series.getDocumentMedium())) {
-            // throw an error! Something is wrong. Either null or incorrect value
-        }
-
-        series.setSystemId(UUID.randomUUID().toString());
-        series.setCreatedDate(new Date());
-        series.setOwnedBy(username);
-        series.setCreatedBy(username);
-        series.setDeleted(false);
-
-        // Have to handle referenceToFonds. If it is not set do not allow persisit
-        // throw illegalstructure exception
-
-        // How do handle referenceToPrecusor? Update the entire object?? No patch?
-
+        NoarkUtils.NoarkEntity.Create.setNoarkEntityValues(series);
+        NoarkUtils.NoarkEntity.Create.checkDocumentMediumValid(series);
         return seriesRepository.save(series);
     }
 
     // All READ operations
+
+    public Iterable <Series> findSeriesByOwnerPaginated(final int top, final int skip) {
+        String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Series> criteriaQuery = criteriaBuilder.createQuery(Series.class);
+        Root<Series> from = criteriaQuery.from(Series.class);
+        CriteriaQuery<Series> select = criteriaQuery.select(from);
+
+        criteriaQuery.where(criteriaBuilder.equal(from.get("ownedBy"), loggedInUser));
+        TypedQuery<Series> typedQuery = entityManager.createQuery(select);
+        typedQuery.setFirstResult(skip);
+        if (top > maxPageSize.intValue()) {
+            typedQuery.setMaxResults(maxPageSize.intValue());
+        }
+        else {
+            typedQuery.setMaxResults(top);
+        }
+
+        // Probably want to paginate this in someway
+        return typedQuery.getResultList();
+    }
+
+
+    // NOTE: I am leaving these methods here for another while. They will probably be replaced
+    // by a single CriteriaBuilder approach, but for the moment, they will be left here.
+
     public Iterable<Series> findAll() {
         return seriesRepository.findAll();
     }

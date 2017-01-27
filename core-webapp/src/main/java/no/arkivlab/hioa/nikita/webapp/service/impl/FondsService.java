@@ -1,167 +1,142 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
 import nikita.model.noark5.v4.Fonds;
+import nikita.model.noark5.v4.Series;
 import nikita.repository.n5v4.IFondsRepository;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
-import no.arkivlab.hioa.nikita.webapp.util.validation.Utils;
+import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityEditWhenClosedException;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkInvalidStructureException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
+import static nikita.config.Constants.INFO_CANNOT_ASSOCIATE_WITH_CLOSED_OBJECT;
+import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
+import static nikita.config.Constants.INFO_INVALID_STRUCTURE;
 import static nikita.config.N5ResourceMappings.*;
-
-/**
- * Note with regard to update the following should be noted:
- * Normally one should use the save method for both create and update (CRUD Repository)
- * but seeing as create has some additional processing, e.g generateUUID, set createdBy etc
- * I think it's more logical to separate the update and save methods
- *
- * We are using String ownedBy to identify the user that owns a record so when a user logs
- * in we can easily pick out their records. A record could be created by another user and
- * assigned to another user. Currently this is implementable by changing ownedBy.
- *
- * But another user (records manager) may have to search for other records. That's why if
- * ownedBy is null, we use the logged in username.
- *
- * TODO: Also include  String ownedBy for unique identifiers so that a user cannot acces records for others
- */
 
 @Service
 @Transactional
 public class FondsService implements IFondsService {
 
+    private static final Logger logger = LoggerFactory.getLogger(FondsService.class);
+
     @Autowired
     IFondsRepository fondsRepository;
 
-
-
-    /**
-     *
-     * @param fonds
-     *
-     * Takes in a fonds object and will try to persist it to the database.
-     *
-     * The following types of situations are dealt with : <br>
-     *     - A new fonds object with no children
-     *     - A new fonds object where parent fonds object is identified
-     *
-     * If the client tries to create a fonds object that already has as series
-     * object associated with it, the fonds object will not be persisted and a
-     * IllegalStructureAttempt exception will be thrown.
-     *
-     * If required fields (title) are null a IncompleteObject is thrown back to
-     * the Controller. Other fields will have values set automatically. These are
-     * systemId (UUID), createdDate and createdBy. If documentMedium is not set
-     * it is set to "Elektronisk arkiv", or if a non-standard value is used a
-     * IncompleteObject exception is thrown. fondStatus is set to "Opprettet"
-     * upon creation.
-     *
-     * @return The newly persisted fonds object
-     */
-
-
-
+    @Autowired
+    SeriesService seriesService;
 
     // All CREATE operations
 
-    public Fonds saveWithOwner(Fonds fonds, String owner){
-
-        if (Utils.checkDocumentMediumValid(fonds.getDocumentMedium())) {
-            fonds.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
-        }
-        else {
-            // throw an error! Something is wrong. Either null or incorrect value
-        }
-
-        fonds.setSystemId(UUID.randomUUID().toString());
-        fonds.setCreatedDate(new Date());
-        fonds.setOwnedBy(owner);
-        fonds.setCreatedBy(owner);
-        fonds.setDeleted(false);
-
-        // Can I get sent a fonds object via JSON that actually has children
-        // that are not associated. Yes, you can if the JSON request is hand crafted
-        // so you probably will want to double check it anyway. Never trust the client!!!
-
-        // remember, a lot of times != null is not correct as the set <> objects are set and
-        // have a size equal to 0. However, handcrafted JSON request may have them set to null
-        // so you have to handle both != null && size == 0
-
-        // Is date in JSON meant to be text readable or timestamp. Probably test so you will need a convertor
-        if (fonds.getReferenceParentFonds() != null) {
-            // check that parent exists
-            Long parentId = 1L;
-
-            // fonds.getReferenceParentFonds()
-            Fonds parentFonds = fonds.getReferenceParentFonds();
-
-            // check that no series are associated with the parent fonds
-
-            // check that referenceSeries != null && referenceSeries.size == 0
-            //Series series = seriesRepository.findBy
-        }
-
+    /**
+     * Persists a new fonds object to the database. Some values are set in the incoming payload (e.g. title)
+     * and some are set by the core. owner, createdBy, createdDate are automatically set by the core.
+     *
+     * @param fonds fonds object with some values set
+     * @return the newly persisted fonds object
+     */
+    @Override
+    public Fonds createNewFonds(Fonds fonds){
+        NoarkUtils.NoarkEntity.Create.checkDocumentMediumValid(fonds);
+        NoarkUtils.NoarkEntity.Create.setNoarkEntityValues(fonds);
+        fonds.setFondsStatus(STATUS_OPEN);
+        NoarkUtils.NoarkEntity.Create.setFinaliseEntityValues(fonds);
         return fondsRepository.save(fonds);
-
     }
 
-    public Fonds save(Fonds fonds){
-        SecurityContext securityContext  = SecurityContextHolder.getContext();
-        Authentication authentication = securityContext .getAuthentication();
+    /**
+     *
+     ** Persists a new fonds object to the database, that is associated with a parent fonds object. Some values are set
+     * in the incoming payload (e.g. title) and some are set by the core. owner, createdBy, createdDate are
+     * automatically set by the core.
+     *
+     * First we try to locate the parent. If the parent does not exist a NoarkEntityNotFoundException exception is
+     * thrown
+     *
+     * @param childFonds incoming fonds object with some values set
+     * @param parentFondsSystemId The systemId of the parent fonds
+     * @return the newly persisted fonds object
+     */
+    @Override
+    public Fonds createFondsAssociatedWithFonds(String parentFondsSystemId, Fonds childFonds) {
+        Fonds persistedChildFonds = null;
+        Fonds parentFonds = fondsRepository.findBySystemId(parentFondsSystemId);
 
-        String username = (String) SecurityContextHolder.getContext().getAuthentication().getName();
-
-        if (Utils.checkDocumentMediumValid(fonds.getDocumentMedium())) {
-            fonds.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
+        if (parentFonds == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " Fonds, using fondsSystemId " + parentFondsSystemId + " when " +
+                    "trying to associate a child fonds with a parent fonds";
+            logger.info(info) ;
+            throw new NoarkEntityNotFoundException(info);
+        }
+        else if (parentFonds.getReferenceSeries() != null) {
+            String info = INFO_INVALID_STRUCTURE + " Cannot associate a new child fonds with a fonds that has " +
+                    "one or more series " + parentFondsSystemId;
+            logger.info(info) ;
+            throw new NoarkEntityNotFoundException(info);
         }
         else {
-                // throw an error! Something is wrong. Either null or incorrect value
+            childFonds.setReferenceParentFonds(parentFonds);
+            persistedChildFonds = this.createNewFonds(childFonds);
         }
+        return persistedChildFonds;
+    }
 
-        fonds.setSystemId(UUID.randomUUID().toString());
-        fonds.setCreatedDate(new Date());
-        fonds.setOwnedBy(username);
-        fonds.setCreatedBy(username);
-        fonds.setDeleted(false);
+    /**
+     *
+     * Persists a new series object to the database. Some values are set in the incoming payload (e.g. title)
+     * and some are set by the core. owner, createdBy, createdDate are automatically set by the core.
+     *
+     * First we try to locate the parent fonds. If the parent fonds does not exist a NoarkEntityNotFoundException
+     * exception is thrown. Next  we check that the fonds does not have children fonds. If it does an
+     * exception is thrown.
+     *
+     * @param fondsSystemId
+     * @param series
+     * @return the newly persisted series object
+     */
+    @Override
+    public Series createSeriesAssociatedWithFonds(String fondsSystemId, Series series) {
+        Series persistedSeries = null;
+        Fonds fonds = fondsRepository.findBySystemId(fondsSystemId);
 
-        // Can I get sent a fonds object via JSON that actually has children
-        // that are not associated. Yes, you can if the JSON request is hand crafted
-        // so you probably will want to double check it anyway. Never trust the client!!!
-
-        // remember, a lot of times != null is not correct as the set <> objects are set and
-        // have a size equal to 0. However, handcrafted JSON request may have them set to null
-        // so you have to handle both != null && size == 0
-
-        // Is date in JSON meant to be text readable or timestamp. Probably test so you will need a convertor
-        if (fonds.getReferenceParentFonds() != null) {
-            // check that parent exists
-            Long parentId = 1L;
-
-            // fonds.getReferenceParentFonds()
-            Fonds parentFonds = fonds.getReferenceParentFonds();
-
-            // check that no series are associated with the parent fonds
-
-            // check that referenceSeries != null && referenceSeries.size == 0
-            //Series series = seriesRepository.findBy
+        if (fonds == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " Fonds, using fondsSystemId " + fondsSystemId;
+            logger.info(info) ;
+            throw new NoarkEntityNotFoundException(info);
         }
-
-        return fondsRepository.save(fonds);
+        else if (fonds.getReferenceChildFonds() != null && fonds.getReferenceChildFonds().size() > 0) {
+            String info = INFO_INVALID_STRUCTURE + " Cannot associate series with a fonds that has" +
+                    "children fonds " + fondsSystemId;
+            logger.info(info) ;
+            throw new NoarkInvalidStructureException(info, "Fonds", "Series");
+        }
+        else if (fonds.getFondsStatus() != null && fonds.getFondsStatus().equals(STATUS_CLOSED)) {
+            String info = INFO_CANNOT_ASSOCIATE_WITH_CLOSED_OBJECT + ". Fonds with fondsSystemId " + fondsSystemId +
+                    "has status " + STATUS_CLOSED;
+            logger.info(info) ;
+            throw new NoarkEntityEditWhenClosedException(info);
+        }
+        else {
+            series.setReferenceFonds(fonds);
+            persistedSeries = seriesService.save(series);
+        }
+        return persistedSeries;
     }
 
     // All READ operations
     public Iterable<Fonds> findAll() {
-
         return fondsRepository.findAll();
     }
 

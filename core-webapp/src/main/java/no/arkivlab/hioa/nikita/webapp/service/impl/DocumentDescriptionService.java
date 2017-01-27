@@ -1,8 +1,12 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
 import nikita.model.noark5.v4.DocumentDescription;
+import nikita.model.noark5.v4.DocumentObject;
 import nikita.repository.n5v4.IDocumentDescriptionRepository;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentDescriptionService;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,9 +19,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
+
 @Service
 @Transactional
 public class DocumentDescriptionService implements IDocumentDescriptionService {
+
+
+    private static final Logger logger = LoggerFactory.getLogger(FileService.class);
+
+    @Autowired
+    DocumentObjectService documentObjectService;
 
     @Autowired
     IDocumentDescriptionRepository documentDescriptionRepository;
@@ -26,21 +38,31 @@ public class DocumentDescriptionService implements IDocumentDescriptionService {
     }
 
     // All CREATE operations
+
+
+    @Override
+    public DocumentObject createDocumentObjectAssociatedWithDocumentDescription(String documentDescriptionSystemId, DocumentObject documentObject) {
+        DocumentObject persistedDocumentObject = null;
+        DocumentDescription documentDescription = documentDescriptionRepository.findBySystemId(documentDescriptionSystemId);
+        if (documentDescription == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " DocumentDescription, using documentDescriptionSystemId " + documentDescriptionSystemId;
+            logger.info(info) ;
+            throw new NoarkEntityNotFoundException(info);
+        }
+        else {
+            documentObject.setReferenceDocumentDescription(documentDescription);
+            persistedDocumentObject = documentObjectService.save(documentObject);
+        }
+        return persistedDocumentObject;
+    }
+
     public DocumentDescription save(DocumentDescription documentDescription){
-        String username = (String) SecurityContextHolder.getContext().getAuthentication().getName();
-
-
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         documentDescription.setSystemId(UUID.randomUUID().toString());
         documentDescription.setCreatedDate(new Date());
         documentDescription.setOwnedBy(username);
         documentDescription.setCreatedBy(username);
         documentDescription.setDeleted(false);
-
-        // Have to handle referenceToFonds. If it is not set do not allow persisit
-        // throw illegalstructure exception
-
-        // How do handle referenceToPrecusor? Update the entire object?? No patch?
-
         return documentDescriptionRepository.save(documentDescription);
     }
 

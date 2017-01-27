@@ -1,5 +1,10 @@
 package nikita.model.noark5.v4;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import nikita.model.noark5.v4.interfaces.ICaseParty;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
+import nikita.model.noark5.v4.interfaces.IPrecedence;
+import nikita.util.deserialisers.CaseFileDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -10,12 +15,17 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+
+// TODO: You are missing M209 referanseSekundaerKlassifikasjon
+
+
 @Entity
 @Table(name = "case_file")
 // Enable soft delete of CaseFile
 @SQLDelete(sql="UPDATE case_file SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class CaseFile extends File implements Serializable {
+@JsonDeserialize(using = CaseFileDeserializer.class)
+public class CaseFile extends File implements Serializable, INikitaEntity, IPrecedence, ICaseParty {
 
     private static final long serialVersionUID = 1L;
 
@@ -207,6 +217,14 @@ public class CaseFile extends File implements Serializable {
 
     public void setReferenceCaseParty(Set<CaseParty> referenceCaseParty) {
         this.referenceCaseParty = referenceCaseParty;
+    }
+
+    public Set<Precedence> getReferencePrecedence() {
+        return referencePrecedence;
+    }
+
+    public void setReferencePrecedence(Set<Precedence> referencePrecedence) {
+        this.referencePrecedence = referencePrecedence;
     }
 
     @Override

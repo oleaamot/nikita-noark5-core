@@ -2,7 +2,6 @@ package no.arkivlab.hioa.nikita.webapp.spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -18,9 +17,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories("nikita.repository")
-@ComponentScan("no.arkivlab.hioa.nikita.webapp.persistence")
-
+@EnableJpaRepositories({"nikita.repository", "no.arkivlab.hioa.nikita.webapp.repository"})
 public class DataSourceConfig {
 
 
@@ -29,6 +26,7 @@ public class DataSourceConfig {
 
     @Bean
     // This is dealt with by sub-classes
+    // You really should throw an exception rather than return null!
     public DataSource dataSource() {
         return null;
     }
@@ -44,7 +42,8 @@ public class DataSourceConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan("nikita.model", "no.arkivlab.hioa.nikita.webapp.web.model");
+        // Scan the Noark domain model from core-common and application domain model
+        em.setPackagesToScan("nikita.model", "no.arkivlab.hioa.nikita.webapp.model");
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(additionalProperties());

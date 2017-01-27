@@ -1,5 +1,6 @@
 package nikita.model.noark5.v4;
 
+import nikita.model.noark5.v4.interfaces.entities.ICommentEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -14,7 +15,7 @@ import java.util.Set;
 // Enable soft delete of Comment
 @SQLDelete(sql="UPDATE comment SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Comment {
+public class Comment implements ICommentEntity {
 
     private static final long serialVersionUID = 1L;
 

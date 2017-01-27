@@ -1,11 +1,11 @@
 package nikita.model.noark5.v4;
 
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,14 +14,14 @@ import java.util.Set;
 // Enable soft delete of Author
 @SQLDelete(sql="UPDATE author SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Author implements Serializable {
+public class Author implements INikitaEntity {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_author_id", nullable = false, insertable = true, updatable = false)
-    protected long id;
+    protected Long id;
 
     /**
      * M001 - systemID (xs:string)
@@ -49,6 +49,10 @@ public class Author implements Serializable {
     // Links to BasicRecords
     @ManyToMany(mappedBy = "referenceAuthor")
     protected Set<BasicRecord> referenceBasicRecord = new HashSet<BasicRecord>();
+
+    // Links to DocumentDescriptions
+    @ManyToMany(mappedBy = "referenceAuthor")
+    protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
 
     public String getSystemId() {
         return systemId;
@@ -82,12 +86,29 @@ public class Author implements Serializable {
         this.ownedBy = ownedBy;
     }
 
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Set<BasicRecord> getReferenceBasicRecord() {
         return referenceBasicRecord;
     }
 
     public void setReferenceBasicRecord(Set<BasicRecord> referenceBasicRecord) {
         this.referenceBasicRecord = referenceBasicRecord;
+    }
+
+    public Set<DocumentDescription> getReferenceDocumentDescription() {
+        return referenceDocumentDescription;
+    }
+
+    public void setReferenceDocumentDescription(Set<DocumentDescription> referenceDocumentDescription) {
+        this.referenceDocumentDescription = referenceDocumentDescription;
     }
 
     @Override

@@ -66,14 +66,14 @@ public class MeetingRecord extends BasicRecord implements Serializable {
      **/
     // Link to "to"  MeetingRegistration
     // TODO: This should link to sysemId, not id!
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     protected MeetingRecord referenceToMeetingRegistration;
 
     /**
      * M224 - referanseFraMoeteregistrering (xs:string)
      **/
     // Link to "from" MeetingRegistration
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     protected MeetingRecord referenceFromMeetingRegistration;
 
     public String getMeetingRecordType() {

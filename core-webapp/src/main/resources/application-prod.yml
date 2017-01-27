@@ -63,6 +63,8 @@ server:
 # ===================================================================
 
 nikita-noark5-core:
+    pagination:
+          _maxPageSize: 10
     mail:
         from: nikita@example.com
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
@@ -99,4 +101,4 @@ nikita-noark5-core:
     details:
         conformity-levels:
             official: arkivstruktur, sakarkiv
-            non-official: api, gui # import (mass) should be here
+            non-official: api, gui, importAPI

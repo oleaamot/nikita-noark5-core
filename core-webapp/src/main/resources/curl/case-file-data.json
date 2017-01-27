@@ -1,0 +1,17 @@
+{
+  "fileId" : "2016/01",
+  "officialTitle" : "Public title of the test file",
+  "title" : "Title of the test file",
+  "description" : "Description of the test file",
+  "oppbevaringsted" : [ "location 1", "location2", "location3" ],
+  "documentMedium" : "Elektronisk arkiv",
+  "caseYear" : "2016",
+  "caseSequenceNumber" : "1",
+  "caseDate" : "2016-10-04",
+  "administrativeUnit" : "The administrative unit",
+  "caseResponsible" : "Joe the case handler",
+  "recordsManagementUnit" : "The recordsmanagement unit",
+  "caseStatus" : "",
+  "loanedDate" : "2016-10-04",
+  "loanedTo" : "Doesn't make sense to have loaned on electronic records ... but just for fun ..."
+}

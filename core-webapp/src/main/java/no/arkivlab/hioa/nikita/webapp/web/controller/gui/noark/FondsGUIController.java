@@ -45,7 +45,7 @@ class FondsGUIController {
             return new ModelAndView("webapp/noark/fonds/form", "formErrors", result.getAllErrors());
         }
         //try {
-            fondsService.save(fonds);
+            fondsService.createNewFonds(fonds);
         //} catch (FondsnameExistsException e) {
          //   result.addError(new FieldError("fonds", "email", e.getMessage()));
          //   return new ModelAndView("webapp/fonds/form", "fonds", fonds);

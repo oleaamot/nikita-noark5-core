@@ -1,7 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.service.spring;
 
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.UserExistsException;
-import nikita.model.user.User;
+import no.arkivlab.hioa.nikita.webapp.model.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import nikita.repository.user.UserRepository;
+import no.arkivlab.hioa.nikita.webapp.repository.user.UserRepository;
 
 import java.util.Collection;
 

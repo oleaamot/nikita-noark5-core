@@ -1,9 +1,5 @@
 package no.arkivlab.hioa.nikita.webapp.run;
 
-import nikita.config.Constants;
-import nikita.config.N5ResourceMappings;
-import nikita.model.noark5.v4.Fonds;
-import nikita.model.noark5.v4.Series;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +29,7 @@ public class AfterApplicationStartup {
 
         if (Arrays.asList(activeProfiles).contains("demo") == true){
             // Create a fonds object to be persisted to the database via fondsService
-            Fonds fonds = new Fonds();
+/*            Fonds fonds = new Fonds();
             fonds.setTitle(Constants.TEST_TITLE);
             fonds.setDocumentMedium(N5ResourceMappings.DOCUMENT_MEDIUM_ELECTRONIC);
             Fonds persistedFonds = fondsService.saveWithOwner(fonds, "admin");
@@ -44,6 +40,7 @@ public class AfterApplicationStartup {
             series.setDocumentMedium(N5ResourceMappings.DOCUMENT_MEDIUM_ELECTRONIC);
             series.setReferenceFonds(persistedFonds);
             seriesService.saveWithOwner(series, "admin");
+            */
         }
     }
 }
