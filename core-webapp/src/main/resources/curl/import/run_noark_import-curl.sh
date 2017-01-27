@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # This is a script to populate the Noark core with imported data. It is assumed that you have the minimum amount of
 # Noark data when creating Noark objects. The example json files have this information. Note this is really only
-# important if you want to be able to create an extraction at some time in the futire.
+# important if you want to be able to create an extraction at some time in the future.
 
 # Put in directory location of json files to populate core with
 #/PATH_TO_PROJECT/nikita-noark5-core/core-webapp/src/main/resources/curl/
