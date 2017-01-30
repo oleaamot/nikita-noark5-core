@@ -7,11 +7,8 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
-import nikita.config.N5ResourceMappings;
 import nikita.model.noark5.v4.Class;
-import nikita.model.noark5.v4.ClassificationSystem;
 import nikita.model.noark5.v4.hateoas.ClassHateoas;
-import nikita.model.noark5.v4.hateoas.ClassificationSystemHateoas;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IClassService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.CLASS;
-import static nikita.config.N5ResourceMappings.CLASSIFICATION_SYSTEM;
+import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + CLASS + SLASH)
@@ -66,13 +63,13 @@ public class ClassHateoasController {
 
     // API - All GET Requests (CRUD - READ)
 
-    @RequestMapping(value = SLASH + "{id}", method = RequestMethod.GET)
+    @RequestMapping(value = LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<ClassHateoas> findOne(
-            @ApiParam(name = "classSystemId",
+            @ApiParam(name = "systemId",
                     value = "systemId of class to retrieve.",
                     required = true)
-            @PathVariable("id") final Long id) {
-        Class klass = classService.findById(id);
+            @PathVariable("systemID") final String classSystemId) {
+        Class klass = classService.findBySystemId(classSystemId);
         ClassHateoas classHateoas = new ClassHateoas(klass);
         return new ResponseEntity<> (classHateoas, HttpStatus.CREATED);
     }

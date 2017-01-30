@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
-import nikita.config.N5ResourceMappings;
 import nikita.model.noark5.v4.Fonds;
 import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.hateoas.FondsHateoas;
@@ -15,14 +14,15 @@ import nikita.model.noark5.v4.hateoas.SeriesHateoas;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static nikita.config.Constants.*;
-import static nikita.config.Constants.RIGHT_PARENTHESIS;
 import static nikita.config.N5ResourceMappings.FONDS;
+import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH,
@@ -131,14 +131,25 @@ public class FondsHateoasController {
     }
 
     // API - All GET Requests (CRUD - READ)
-
-    @RequestMapping(value = FONDS + SLASH + "{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "Retrieves a single fonds entity given a systemId", response = Fonds.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Fonds returned", response = Fonds.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
+            method = RequestMethod.GET)
     public ResponseEntity<FondsHateoas> findOne(
-            @ApiParam(name = "fondsSystemId",
+            @ApiParam(name = "systemId",
                     value = "systemId of fonds to retrieve.",
                     required = true)
-            @PathVariable("id") final Long id) {
-        Fonds fonds = fondsService.findById(id);
+            @PathVariable("systemID") final String fondsSystemId) {
+        Fonds fonds = fondsService.findBySystemId(fondsSystemId);
+        if (fonds == null) {
+            throw new NoarkEntityNotFoundException("Could not find fonds object with systemID " + fondsSystemId);
+        }
         FondsHateoas fondsHateoas = new FondsHateoas(fonds);
         return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
     }

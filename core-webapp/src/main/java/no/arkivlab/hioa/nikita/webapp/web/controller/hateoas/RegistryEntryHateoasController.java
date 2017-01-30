@@ -7,12 +7,13 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
-import nikita.util.exceptions.NikitaException;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
+import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRegistryEntryService;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
+import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + REGISTRY_ENTRY)
@@ -75,14 +77,20 @@ public class RegistryEntryHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = "/{systemID}", method = RequestMethod.GET)
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<RegistryEntryHateoas> findOneRegistryEntryBySystemId(
             @ApiParam(name = "systemID",
                     value = "systemID of the registryEntry to retrieve",
                     required = true)
             @PathVariable("systemID") final String registryEntrySystemId) {
+
+        RegistryEntry registryEntry = (RegistryEntry) registryEntryService.findBySystemId(registryEntrySystemId);
+        if (registryEntry == null) {
+            throw new NoarkEntityNotFoundException(
+                    "Could not find registryEntry object with systemID " + registryEntrySystemId);
+        }
         RegistryEntryHateoas registryEntryHateoas = new
-                RegistryEntryHateoas((RegistryEntry)registryEntryService.findBySystemId(registryEntrySystemId));
+                RegistryEntryHateoas(registryEntry);
         return new ResponseEntity<>(registryEntryHateoas, HttpStatus.CREATED);
     }
 }

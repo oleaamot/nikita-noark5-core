@@ -12,7 +12,7 @@ import nikita.util.CommonUtils;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
-import static nikita.config.N5ResourceMappings.*;
+import static nikita.config.N5ResourceMappings.FONDS_STATUS;
 
 /**
  *
@@ -40,19 +40,21 @@ public class FondsHateoasSerializer extends StdSerializer<FondsHateoas> {
             throws IOException {
 
         Fonds fonds = fondsHateoas.getFonds();
-        jgen.writeStartObject();
-        CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, fonds);
-        CommonUtils.Hateoas.Serialize.printTitleAndDescription(jgen, fonds);
-        if (fonds.getFondsStatus() != null) {
-            jgen.writeStringField(FONDS_STATUS, fonds.getFondsStatus());
+        if (fonds != null) {
+            jgen.writeStartObject();
+            CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, fonds);
+            CommonUtils.Hateoas.Serialize.printTitleAndDescription(jgen, fonds);
+            if (fonds.getFondsStatus() != null) {
+                jgen.writeStringField(FONDS_STATUS, fonds.getFondsStatus());
+            }
+            CommonUtils.Hateoas.Serialize.printDocumentMedium(jgen, fonds);
+            CommonUtils.Hateoas.Serialize.printStorageLocation(jgen, fonds);
+            CommonUtils.Hateoas.Serialize.printCreateEntity(jgen, fonds);
+            CommonUtils.Hateoas.Serialize.printFinaliseEntity(jgen, fonds);
+            CommonUtils.Hateoas.Serialize.printFondsCreators(jgen, fonds);
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, fondsHateoas.getLinks());
+            jgen.writeEndObject();
         }
-        CommonUtils.Hateoas.Serialize.printDocumentMedium(jgen, fonds);
-        CommonUtils.Hateoas.Serialize.printStorageLocation(jgen, fonds);
-        CommonUtils.Hateoas.Serialize.printCreateEntity(jgen, fonds);
-        CommonUtils.Hateoas.Serialize.printFinaliseEntity(jgen, fonds);
-        CommonUtils.Hateoas.Serialize.printFondsCreators(jgen, fonds);
-        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, fondsHateoas.getLinks());
-        jgen.writeEndObject();
     }
 
     @Override

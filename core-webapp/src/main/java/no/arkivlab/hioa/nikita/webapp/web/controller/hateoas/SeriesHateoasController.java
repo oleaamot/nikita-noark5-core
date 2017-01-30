@@ -9,10 +9,11 @@ import nikita.model.noark5.v4.File;
 import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.hateoas.CaseFileHateoas;
 import nikita.model.noark5.v4.hateoas.FileHateoas;
-import nikita.util.exceptions.NikitaException;
 import nikita.model.noark5.v4.hateoas.Link;
 import nikita.model.noark5.v4.hateoas.SeriesHateoas;
+import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
-import static nikita.config.N5ResourceMappings.CASE_FILE;
-import static nikita.config.N5ResourceMappings.SERIES;
+import static nikita.config.N5ResourceMappings.*;
 
 @RestController
 @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES)
@@ -161,14 +161,18 @@ public class SeriesHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = "/{systemID}", method = RequestMethod.GET)
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<SeriesHateoas> findOneSeriesbySystemId(
             @ApiParam(name = "systemID",
                     value = "systemID of the series to retrieve",
                     required = true)
             @PathVariable("systemID") final String seriesSystemId) {
+        Series series = seriesService.findBySystemId(seriesSystemId);
+        if (series == null) {
+            throw new NoarkEntityNotFoundException("Could not find series object with systemID " + seriesSystemId);
+        }
         SeriesHateoas seriesHateoas = new
-                SeriesHateoas(seriesService.findBySystemId(seriesSystemId));
+                SeriesHateoas(series);
         return new ResponseEntity<>(seriesHateoas, HttpStatus.CREATED);
     }
 }

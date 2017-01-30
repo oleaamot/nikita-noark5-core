@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import nikita.model.noark5.v4.*;
+import nikita.model.noark5.v4.hateoas.Link;
 import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.interfaces.entities.*;
 import nikita.util.exceptions.NikitaMalformedInputDataException;
-import nikita.model.noark5.v4.hateoas.Link;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -1217,11 +1217,13 @@ public final class CommonUtils {
                                                         INoarkTitleDescriptionEntity titleDescriptionEntity)
                     throws IOException {
 
-                if (titleDescriptionEntity.getTitle() != null) {
-                    jgen.writeStringField(TITLE, titleDescriptionEntity.getTitle());
-                }
-                if (titleDescriptionEntity.getDescription() != null) {
-                    jgen.writeStringField(DESCRIPTION, titleDescriptionEntity.getDescription());
+                if (titleDescriptionEntity != null) {
+                    if (titleDescriptionEntity.getTitle() != null) {
+                        jgen.writeStringField(TITLE, titleDescriptionEntity.getTitle());
+                    }
+                    if (titleDescriptionEntity.getDescription() != null) {
+                        jgen.writeStringField(DESCRIPTION, titleDescriptionEntity.getDescription());
+                    }
                 }
             }
 

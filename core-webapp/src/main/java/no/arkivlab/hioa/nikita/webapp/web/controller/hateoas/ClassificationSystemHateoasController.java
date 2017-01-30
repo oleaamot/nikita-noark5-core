@@ -6,11 +6,11 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import nikita.util.exceptions.NikitaException;
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.ClassificationSystem;
 import nikita.model.noark5.v4.hateoas.ClassHateoas;
 import nikita.model.noark5.v4.hateoas.ClassificationSystemHateoas;
+import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IClassificationSystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.CLASSIFICATION_SYSTEM;
+import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
 @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH)
@@ -88,13 +89,13 @@ public class ClassificationSystemHateoasController {
     }
     // API - All GET Requests (CRUD - READ)
 
-    @RequestMapping(value = SLASH + "{id}", method = RequestMethod.GET)
+    @RequestMapping(value = LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<ClassificationSystemHateoas> findOne(
-            @ApiParam(name = "classificationSystemSystemId",
+            @ApiParam(name = "systemId",
                     value = "systemId of classificationSystem to retrieve.",
                     required = true)
-            @PathVariable("id") final Long id) {
-        ClassificationSystem classificationSystem = classificationSystemService.findById(id);
+            @PathVariable("systemID") final String classificationSystemId) {
+        ClassificationSystem classificationSystem = classificationSystemService.findBySystemId(classificationSystemId);
         ClassificationSystemHateoas classificationSystemHateoas = new ClassificationSystemHateoas(classificationSystem);
         return new ResponseEntity<> (classificationSystemHateoas, HttpStatus.CREATED);
     }

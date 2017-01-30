@@ -7,20 +7,20 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
-import nikita.config.N5ResourceMappings;
-import nikita.model.noark5.v4.Series;
-import nikita.util.exceptions.NikitaException;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.Record;
 import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.RecordHateoas;
+import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.REGISTRATION;
+import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + REGISTRATION)
@@ -76,7 +76,7 @@ public class RecordHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = "/{systemID}", method = RequestMethod.GET)
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<RecordHateoas> findOneRecordbySystemId(
             @ApiParam(name = "systemID",
                     value = "systemID of the record to retrieve",
