@@ -19,9 +19,14 @@ public class CaseFileHateoas implements IHateoasLinks {
 
     protected List<Link> links = new ArrayList<>();
     CaseFile caseFile;
+    private Iterable<CaseFile> caseFileIterable;
 
     public CaseFileHateoas(CaseFile caseFile){
         this.caseFile = caseFile;
+    }
+
+    public CaseFileHateoas(Iterable<CaseFile> caseFileIterable) {
+        this.caseFileIterable = caseFileIterable;
     }
 
     public List<Link> getLinks() {
@@ -37,5 +42,13 @@ public class CaseFileHateoas implements IHateoasLinks {
     }
     public void setCaseFile(CaseFile caseFile) {
         this.caseFile = caseFile;
+    }
+
+    public Iterable<CaseFile> getCaseFileIterable() {
+        return caseFileIterable;
+    }
+
+    public void setCaseFileIterable(Iterable<CaseFile> caseFileIterable) {
+        this.caseFileIterable = caseFileIterable;
     }
 }

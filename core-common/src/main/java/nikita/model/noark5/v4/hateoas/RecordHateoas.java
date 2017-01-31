@@ -18,9 +18,14 @@ public class RecordHateoas implements IHateoasLinks {
 
     protected List<Link> links;
     Record record;
+    private Iterable<Record> recordIterable;
 
     public RecordHateoas(Record record){
         this.record = record;
+    }
+
+    public RecordHateoas(Iterable<Record> recordIterable) {
+        this.recordIterable = recordIterable;
     }
 
     public List<Link> getLinks() {
@@ -35,5 +40,13 @@ public class RecordHateoas implements IHateoasLinks {
     }
     public void setRecord(Record record) {
         this.record = record;
+    }
+
+    public Iterable<Record> getRecordIterable() {
+        return recordIterable;
+    }
+
+    public void setRecordIterable(Iterable<Record> recordIterable) {
+        this.recordIterable = recordIterable;
     }
 }

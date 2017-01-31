@@ -18,9 +18,14 @@ public class DocumentObjectHateoas implements IHateoasLinks {
 
     protected List<Link> links;
     DocumentObject documentObject;
+    private Iterable<DocumentObject> documentObjectIterable;
 
     public DocumentObjectHateoas(DocumentObject documentObject){
         this.documentObject = documentObject;
+    }
+
+    public DocumentObjectHateoas(Iterable<DocumentObject> documentObjectIterable) {
+        this.documentObjectIterable = documentObjectIterable;
     }
 
     public List<Link> getLinks() {
@@ -35,5 +40,13 @@ public class DocumentObjectHateoas implements IHateoasLinks {
     }
     public void setDocumentObject(DocumentObject documentObject) {
         this.documentObject = documentObject;
+    }
+
+    public Iterable<DocumentObject> getDocumentObjectIterable() {
+        return documentObjectIterable;
+    }
+
+    public void setDocumentObjectIterable(Iterable<DocumentObject> documentObjectIterable) {
+        this.documentObjectIterable = documentObjectIterable;
     }
 }

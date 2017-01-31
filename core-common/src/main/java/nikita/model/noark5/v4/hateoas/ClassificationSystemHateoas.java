@@ -11,8 +11,13 @@ public class ClassificationSystemHateoas implements IHateoasLinks {
 
     protected List<Link> links;
     protected ClassificationSystem classificationSystem;
+    private Iterable<ClassificationSystem> classificationSystemIterable;
 
     public ClassificationSystemHateoas(ClassificationSystem classificationSystem) {this.classificationSystem = classificationSystem;}
+
+    public ClassificationSystemHateoas(Iterable<ClassificationSystem> classificationSystemIterable) {
+        this.classificationSystemIterable = classificationSystemIterable;
+    }
 
     public List<Link> getLinks() {
         return links;
@@ -26,5 +31,13 @@ public class ClassificationSystemHateoas implements IHateoasLinks {
     }
     public void setClassificationSystem(ClassificationSystem classificationSystem) {
         this.classificationSystem = classificationSystem;
+    }
+
+    public Iterable<ClassificationSystem> getClassificationSystemIterable() {
+        return classificationSystemIterable;
+    }
+
+    public void setClassificationSystemIterable(Iterable<ClassificationSystem> classificationSystemIterable) {
+        this.classificationSystemIterable = classificationSystemIterable;
     }
 }

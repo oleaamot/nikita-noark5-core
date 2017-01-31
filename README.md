@@ -1,8 +1,7 @@
 # nikita-noark5-core
 ABOUT:
-This is an open source Noark 5v4 core. The core is under development and should be seen as a alpha product until
-releases closer to 0.6. Please note that this version is 0.0.1-alpha and has been published to just show that the
-codebase exists and to give you an idea of where the project is going.
+This is an open source Noark 5v4 core. The core is very much under development and should be seen as a alpha product until
+releases closer to 0.6. The current version is 0.1 and has implemented the arkivstruktur interface of Noark 5v4.  
 
 
 INSTALL:
@@ -16,6 +15,9 @@ You should be able to run the following commands from the commandline before att
 Installing should just be a matter of downloading the source code to a given directory and unpacking it. If you have git
 installed all you need to do is run 'git clone https://github.com/HiOA-ABI/nikita-noark5-core.git' in the directory you
 want to compile from.
+
+Please note that maven will automatically download all dependencies (jar files) and put them in a directory ~/.m2. If 
+you are uncomfortable with this, please check the pom.xml files to find out which jar files will be downloaded.
 
 COMPILE:
 To compile the core, cd into the directory containing the source e.g. ~/git/nikita-noark5-core. Issue command
@@ -46,7 +48,7 @@ After that cd to the core-webapp directory
 
     mvn spring-boot:run
 
-You will see a lot of different startup messages, but there should be no exceptions. (Please let me know if there are
+You will see a lot of different startup messages, but there should be no exceptions. (Please let us know if there are
 any exceptions).
 
  The program should output the following if everything is successful
@@ -57,21 +59,55 @@ any exceptions).
  	contextPath: 	http://127.0.1.1:8092/noark5v4
  	Application is running with following profile(s): [demo]
 
-If you wish to interact with the core you will need to login. In demo mode there is a user 'admin/password' that you can
-use to login.
 
-Interacting via curl:
+
+*Please note that you have to populate the core with some data. In the directory nikita-noark5-core/core-webapp/src/main/resources/curl
+ you will find a script that runs a series of curl commands that will populate the database with some data. On linux all
+  you have to is ./run_curl.sh from the nikita-noark5-core/core-webapp/src/main/resources/curl directory.*
+ 
+In accordance with the Noark 5v4 interface standard, the core advertises its services. The can be accessed by:
+
+    curl --header Accept:application/vnd.noark5-v4+json --header Content-Type:application/vnd.noark5-v4+json -X GET http://localhost:8092/noark5v4/
+
+A number of services are reported here, some are still in early development. The service at  
+http://localhost:8092/noark5v4/hateoas-api/arkivstruktur is the one you probably are looking for. This is the Noark 5v4 interface.
+
+    {
+      "_links" : [ {
+        "href" : "http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/",
+        "rel" : "http://rel.kxml.no/noark5/v4/api/arkivstruktur"
+      } ]
+    }
+
+At this point you do need to be logged on to continue. In demo mode there is a user 'admin/password' that you can use 
+to login. This can be bypassed by starting with the 'nosecurity' profile
+     
+Logging on to the core is done with the following command:
 
     curl -i -X POST -d username=admin -d password=password -c cookie.txt http://localhost:8092/noark5v4/doLogin
 
-This will create a file called cookie.txt with your session information. Subsequent calls to the core will use this
-session key.
+This will create a file called *cookie.txt* with your session information. Subsequent calls to the core will use this
+session information.
 
-    curl -i --header "Accept:application/vnd.noark5-v4+json" -X GET -b cookie.txt http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkiv
+If you then run
+    
+    curl --header Accept:application/vnd.noark5-v4+json --header Content-Type:application/vnd.noark5-v4+json -X GET  -b cookie.txt  http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/
 
-Retrieving a fonds (no:arkiv) or series (no:arkivdel) is pretty much all you can do with the data in demo mode. If you
-want to play around a bit more, take a look at the code in client-test-webapp-rest and you can see how to fill in the
-entire Noark structure. You can also create your own client and insert/retrieve stuff.
+You should get a list of Noark entities you can interact with.  These are all mapped to findAll calls and are automatically paginated. They do not have a next/previous link at the moment
+
+    {
+      "_links" : [ {
+        "href" : "http://localhost:8092/noark5v4/hateoas-api/arkiv/",
+        "rel" : "http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkiv",
+        "templated" : true,
+        "reltemplatedSpecified" : true
+      } ]
+     }
+
+Next you can query the core for the various Noark entities. e.g.
+
+    curl v --header Accept:application/vnd.noark5-v4+json --header Content-Type:application/vnd.noark5-v4+json -X GET  -b cookie.txt http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkiv/
+
 
 Quick note on profiles.
 
@@ -98,20 +134,20 @@ When starting in dev/demo mode you should see a message like the following:
 In these modes the core uses a in-memory database (H2) instead of a standalone DBMS. It should be possible to use both
 postgres and mysql 'out-of-the-box' in production mode.
 
+FEEDBACK
+Feedback is greatly appreciated. The project has an open ethos and welcomes all forms of feedback. The project maintains a
+mailing list (https://lists.nuug.no/mailman/listinfo/nikita-noark) and issues can be raised via github (https://github.com/HiOA-ABI/nikita-noark5-core/issues).
 
 NOTE. For configuration purposes, take a look at the resources directory of core-webapp for application-*.yml files for
 setting properties in the various profiles.
 
 LICENSE NOTE:
-Currently we are using AGPLv3 license, but it should be Apache v2 when finished (depending on integrated libraries).
+Currently we are using AGPLv3 license, but the code should be published as APLv2 when finished (depending on integrated libraries).
 
 TEST NOTE:
 Re maven.test.skip. We are skipping tests as there currently is an issue identifying the logged-in user when running
 tests. I am assuming the security context will have the default anonymous user, but it is in fact null. This causes the
 tests to fail. Currently there is no point running tests.
-
-FINAL NOTE: THIS IS AN EARLY ALPHA RELEASE JUST TO SHARE THE CODEBASE WITH INTERESTED PARTIES AND TO SHOW THE DIRECTION
-THE PROJECT IS GOING. THERE IS NO POINT IN FILING BUGS/ISSUES!
 
 THANK YOUS:
 Thanks to IntelliJ for an idea license (https://www.jetbrains.com/idea/)

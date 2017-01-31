@@ -12,6 +12,7 @@ import nikita.util.CommonUtils;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
+import static nikita.config.N5ResourceMappings.FONDS;
 import static nikita.config.N5ResourceMappings.FONDS_STATUS;
 
 /**
@@ -39,7 +40,25 @@ public class FondsHateoasSerializer extends StdSerializer<FondsHateoas> {
     public void serialize(FondsHateoas fondsHateoas, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
-        Fonds fonds = fondsHateoas.getFonds();
+        Iterable<Fonds> fondsIterable = fondsHateoas.getFondsIterable();
+        if (fondsIterable != null) {
+            jgen.writeStartObject();
+            jgen.writeFieldName(FONDS);
+            jgen.writeStartArray();
+            for (Fonds fonds : fondsIterable) {
+                serializeFonds(fonds, fondsHateoas, jgen, provider);
+            }
+            jgen.writeEndArray();
+            jgen.writeEndObject();
+        } else if (fondsHateoas.getFonds() != null) {
+            serializeFonds(fondsHateoas.getFonds(), fondsHateoas, jgen, provider);
+        }
+    }
+
+    private void serializeFonds(Fonds fonds, FondsHateoas fondsHateoas,
+                                JsonGenerator jgen, SerializerProvider provider) throws IOException {
+
+
         if (fonds != null) {
             jgen.writeStartObject();
             CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, fonds);

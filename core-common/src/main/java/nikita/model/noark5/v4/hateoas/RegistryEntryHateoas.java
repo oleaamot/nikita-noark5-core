@@ -18,9 +18,14 @@ public class RegistryEntryHateoas implements IHateoasLinks {
 
     protected List<Link> links;
     RegistryEntry registryEntry;
+    private Iterable<RegistryEntry> registryEntryIterable;
 
     public RegistryEntryHateoas(RegistryEntry registryEntry){
         this.registryEntry = registryEntry;
+    }
+
+    public RegistryEntryHateoas(Iterable<RegistryEntry> registryEntryIterable) {
+        this.registryEntryIterable = registryEntryIterable;
     }
 
     public List<Link> getLinks() {
@@ -35,5 +40,13 @@ public class RegistryEntryHateoas implements IHateoasLinks {
     }
     public void setRegistryEntry(RegistryEntry registryEntry) {
         this.registryEntry = registryEntry;
+    }
+
+    public Iterable<RegistryEntry> getRegistryEntryIterable() {
+        return registryEntryIterable;
+    }
+
+    public void setRegistryEntryIterable(Iterable<RegistryEntry> registryEntryIterable) {
+        this.registryEntryIterable = registryEntryIterable;
     }
 }

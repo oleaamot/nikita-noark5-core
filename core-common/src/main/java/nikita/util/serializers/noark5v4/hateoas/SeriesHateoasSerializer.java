@@ -8,8 +8,10 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.hateoas.SeriesHateoas;
 import nikita.util.CommonUtils;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
+
 import static nikita.config.Constants.DATE_FORMAT;
 import static nikita.config.N5ResourceMappings.*;
 
@@ -35,20 +37,27 @@ public class SeriesHateoasSerializer extends StdSerializer<SeriesHateoas> {
     }
 
     @Override
-    public void serialize(SeriesHateoas seriesHateoas, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+    public void serialize(SeriesHateoas seriesHateoas, JsonGenerator jgen, SerializerProvider provider)
+            throws IOException {
 
         Iterable <Series> seriesIterable = seriesHateoas.getSeriesIterable();
         if (seriesIterable != null) {
+            jgen.writeStartObject();
+            jgen.writeFieldName(SERIES);
+            jgen.writeStartArray();
             for (Series series : seriesIterable) {
                 serializeSeries(series, seriesHateoas, jgen, provider);
             }
+            jgen.writeEndArray();
+            jgen.writeEndObject();
         }
         else if (seriesHateoas.getSeries() != null) {
             serializeSeries(seriesHateoas.getSeries(), seriesHateoas, jgen, provider);
         }
     }
 
-    private void serializeSeries(Series series, SeriesHateoas seriesHateoas, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+    private void serializeSeries(Series series, SeriesHateoas seriesHateoas, JsonGenerator jgen,
+                                 SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
 
         CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, series);

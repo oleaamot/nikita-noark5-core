@@ -18,9 +18,14 @@ public class FileHateoas implements IHateoasLinks {
 
     protected List<Link> links;
     File file;
+    private Iterable<File> fileIterable;
 
     public FileHateoas(File file){
         this.file = file;
+    }
+
+    public FileHateoas(Iterable<File> fileIterable) {
+        this.fileIterable = fileIterable;
     }
 
     public List<Link> getLinks() {
@@ -35,5 +40,13 @@ public class FileHateoas implements IHateoasLinks {
     }
     public void setFile(File file) {
         this.file = file;
+    }
+
+    public Iterable<File> getFileIterable() {
+        return fileIterable;
+    }
+
+    public void setFileIterable(Iterable<File> fileIterable) {
+        this.fileIterable = fileIterable;
     }
 }

@@ -114,4 +114,4 @@ nikita-noark5-core:
     details:
         conformity-levels:
             official: arkivstruktur, sakarkiv
-            non-official: gui, importAPI
+            non-official: gui, import-api

@@ -17,6 +17,8 @@ public interface IFondsService  {
     Series createSeriesAssociatedWithFonds(String fondsSystemId, Series series);
     Fonds createFondsAssociatedWithFonds(String parentFondsSystemId, Fonds childFonds);
 
+    Iterable<Fonds> findFondsByOwnerPaginated(Integer top, Integer skip);
+
     // -- All READ operations
 
     Iterable<Fonds> findAll();

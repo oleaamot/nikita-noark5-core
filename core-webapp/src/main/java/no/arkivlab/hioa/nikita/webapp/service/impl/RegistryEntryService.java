@@ -10,9 +10,15 @@ import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundExcepti
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.HashSet;
 
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
@@ -28,6 +34,12 @@ public class RegistryEntryService extends BasicRecordService implements IRegistr
 
     @Autowired
     IRegistryEntryRepository registryEntryRepository;
+
+    @Autowired
+    EntityManager entityManager;
+
+    //@Value("${nikita-noark5-core.pagination.maxPageSize}")
+    Integer maxPageSize = new Integer(10);
 
     public RegistryEntryService() {
     }
@@ -66,4 +78,26 @@ public class RegistryEntryService extends BasicRecordService implements IRegistr
         return persistedDocumentDescription;
     }
 
+    // All READ operations
+    public Iterable<RegistryEntry> findRegistryEntryByOwnerPaginated(Integer top, Integer skip) {
+
+        if (top == null || top > maxPageSize) {
+            top = maxPageSize;
+        }
+        if (skip == null) {
+            skip = 0;
+        }
+
+        String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<RegistryEntry> criteriaQuery = criteriaBuilder.createQuery(RegistryEntry.class);
+        Root<RegistryEntry> from = criteriaQuery.from(RegistryEntry.class);
+        CriteriaQuery<RegistryEntry> select = criteriaQuery.select(from);
+
+        criteriaQuery.where(criteriaBuilder.equal(from.get("ownedBy"), loggedInUser));
+        TypedQuery<RegistryEntry> typedQuery = entityManager.createQuery(select);
+        typedQuery.setFirstResult(skip);
+        typedQuery.setMaxResults(maxPageSize);
+        return typedQuery.getResultList();
+    }
 }

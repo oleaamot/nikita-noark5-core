@@ -114,4 +114,27 @@ public class FileHateoasController {
                 FileHateoas(fileService.findBySystemId(fileSystemId));
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
     }
+
+    @ApiOperation(value = "Retrieves multiple File entities limited by ownership rights", notes = "The field skip" +
+            "tells how many File rows of the result set to ignore (starting at 0), while  top tells how many rows" +
+            " after skip to return. Note if the value of top is greater than system value " +
+            " nikita-noark5-core.pagination.maxPageSize, then nikita-noark5-core.pagination.maxPageSize is used. ",
+            response = FileHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "File list found",
+                    response = FileHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<FileHateoas> findAllFile(
+            @RequestParam(name = "top", required = false) Integer top,
+            @RequestParam(name = "skip", required = false) Integer skip) {
+
+        FileHateoas fileHateoas = new
+                FileHateoas(fileService.findFileByOwnerPaginated(top, skip));
+        return new ResponseEntity<>(fileHateoas, HttpStatus.OK);
+    }
 }

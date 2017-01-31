@@ -5,14 +5,14 @@
     <parent>
         <artifactId>nikita-noark5</artifactId>
         <groupId>no.arkivlab.hioa.nikita</groupId>
-        <version>0.0.1-ALPHA</version>
+        <version>0.0.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>core-webapp</artifactId>
-    <version>0.0.1-ALPHA</version>
+    <version>0.0.1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>no.arkivlab.hioa.nikita</groupId>
             <artifactId>core-common</artifactId>
-            <version>0.0.1-ALPHA</version>
+            <version>0.0.1</version>
         </dependency>
 
 

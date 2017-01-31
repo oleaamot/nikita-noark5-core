@@ -11,9 +11,14 @@ public class FondsHateoas implements IHateoasLinks {
 
     protected List<Link> links;
     protected Fonds fonds;
+    private Iterable<Fonds> fondsIterable;
 
     public FondsHateoas(Fonds fonds) {
         this.fonds = fonds;
+    }
+
+    public FondsHateoas(Iterable<Fonds> fondsIterable) {
+        this.fondsIterable = fondsIterable;
     }
 
     public List<Link> getLinks() {
@@ -26,8 +31,15 @@ public class FondsHateoas implements IHateoasLinks {
     public Fonds getFonds() {
         return fonds;
     }
-
     public void setFonds(Fonds fonds) {
         this.fonds = fonds;
+    }
+
+    public Iterable<Fonds> getFondsIterable() {
+        return fondsIterable;
+    }
+
+    public void setFondsIterable(Iterable<Fonds> fondsIterable) {
+        this.fondsIterable = fondsIterable;
     }
 }

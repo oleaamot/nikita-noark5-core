@@ -36,9 +36,26 @@ public class BasicRecordHateoasSerializer extends StdSerializer<BasicRecordHateo
     }
 
     @Override
-    public void serialize(BasicRecordHateoas basicRecordHateoas, JsonGenerator jgen,
-                          SerializerProvider provider) throws IOException {
-        BasicRecord basicRecord = basicRecordHateoas.getBasicRecord();
+    public void serialize(BasicRecordHateoas basicRecordHateoas, JsonGenerator jgen, SerializerProvider provider)
+            throws IOException {
+
+        Iterable<BasicRecord> basicRecordIterable = basicRecordHateoas.getBasicRecordIterable();
+        if (basicRecordIterable != null) {
+            jgen.writeStartObject();
+            jgen.writeFieldName(BASIC_RECORD);
+            jgen.writeStartArray();
+            for (BasicRecord basicRecord : basicRecordIterable) {
+                serializeBasicRecord(basicRecord, basicRecordHateoas, jgen, provider);
+            }
+            jgen.writeEndArray();
+            jgen.writeEndObject();
+        } else if (basicRecordHateoas.getBasicRecord() != null) {
+            serializeBasicRecord(basicRecordHateoas.getBasicRecord(), basicRecordHateoas, jgen, provider);
+        }
+    }
+
+    private void serializeBasicRecord(BasicRecord basicRecord, BasicRecordHateoas basicRecordHateoas,
+                                      JsonGenerator jgen, SerializerProvider provider) throws IOException {
 
         jgen.writeStartObject();
 

@@ -37,9 +37,26 @@ public class RegistryEntryHateoasSerializer extends StdSerializer<RegistryEntryH
     }
 
     @Override
-    public void serialize(RegistryEntryHateoas registryEntryHateoas, JsonGenerator jgen,
-                          SerializerProvider provider) throws IOException {
-        RegistryEntry registryEntry = registryEntryHateoas.getRegistryEntry();
+    public void serialize(RegistryEntryHateoas registryEntryHateoas, JsonGenerator jgen, SerializerProvider provider)
+            throws IOException {
+
+        Iterable<RegistryEntry> registryEntryIterable = registryEntryHateoas.getRegistryEntryIterable();
+        if (registryEntryIterable != null) {
+            jgen.writeStartObject();
+            jgen.writeFieldName(REGISTRY_ENTRY);
+            jgen.writeStartArray();
+            for (RegistryEntry registryEntry : registryEntryIterable) {
+                serializeRegistryEntry(registryEntry, registryEntryHateoas, jgen, provider);
+            }
+            jgen.writeEndArray();
+            jgen.writeEndObject();
+        } else if (registryEntryHateoas.getRegistryEntry() != null) {
+            serializeRegistryEntry(registryEntryHateoas.getRegistryEntry(), registryEntryHateoas, jgen, provider);
+        }
+    }
+
+    private void serializeRegistryEntry(RegistryEntry registryEntry, RegistryEntryHateoas registryEntryHateoas,
+                                        JsonGenerator jgen, SerializerProvider provider) throws IOException {
 
         jgen.writeStartObject();
 
@@ -48,7 +65,7 @@ public class RegistryEntryHateoasSerializer extends StdSerializer<RegistryEntryH
         if (registryEntry.getArchivedDate() != null) {
             jgen.writeStringField(RECORD_ARCHIVED_DATE, DATE_TIME_FORMAT.format(registryEntry.getArchivedDate()));
         }
-        if (registryEntry.getArchivedBy()!= null) {
+        if (registryEntry.getArchivedBy() != null) {
             jgen.writeStringField(RECORD_ARCHIVED_BY, registryEntry.getArchivedBy());
         }
         CommonUtils.Hateoas.Serialize.printDisposal(jgen, registryEntry);

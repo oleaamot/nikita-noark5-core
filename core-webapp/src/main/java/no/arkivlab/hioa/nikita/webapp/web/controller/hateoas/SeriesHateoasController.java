@@ -119,40 +119,7 @@ public class SeriesHateoasController {
         return new ResponseEntity<>(caseFileHateoas, HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Retrieves multiple Series entities limited by ownership rights", notes = "The field skip" +
-            "tells how many Series rows of the result set to ignore (starting at 0), while  top tells how many rows" +
-            " after skip to return. Note if the value of top is greater than system value " +
-            " nikita-noark5-core.pagination.maxPageSize, then nikita-noark5-core.pagination.maxPageSize is used. ",
-            response = SeriesHateoas.class)
-    @ApiResponses(value = {
-            // Probably going to be a SeriesHateoasIterator or similar
-            @ApiResponse(code = 200, message = "File " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
-                    response = SeriesHateoas.class),
-            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
-            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
-            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
-    @Counted
-    @Timed
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<SeriesHateoas> findAllSeries(
-            @RequestParam("top") final int top,
-            @RequestParam("skip") final int skip) {
-
-        SeriesHateoas seriesHateoas = new
-                SeriesHateoas(seriesService.findSeriesByOwnerPaginated(top, skip));
-
-        /* We need some kind of class to handle odata requirements in a more generic fashion
-          This is just temp to get an idea of what it looks like.
-        if (top > maxPageSize) {
-
-        }
-        else {
-
-        }
-        */
-        return new ResponseEntity<>(seriesHateoas, HttpStatus.OK);
-    }
-
+    // API - All GET Requests (CRUD - READ)
     @ApiOperation(value = "Retrieves a single Series entity given a systemId", response = Series.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Series returned", response = Series.class),
@@ -174,5 +141,28 @@ public class SeriesHateoasController {
         SeriesHateoas seriesHateoas = new
                 SeriesHateoas(series);
         return new ResponseEntity<>(seriesHateoas, HttpStatus.CREATED);
+    }
+
+    @ApiOperation(value = "Retrieves multiple Series entities limited by ownership rights", notes = "The field skip" +
+            "tells how many Series rows of the result set to ignore (starting at 0), while  top tells how many rows" +
+            " after skip to return. Note if the value of top is greater than system value " +
+            " nikita-noark5-core.pagination.maxPageSize, then nikita-noark5-core.pagination.maxPageSize is used. ",
+            response = SeriesHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Series list found",
+                    response = SeriesHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<SeriesHateoas> findAllSeries(
+            @RequestParam(name = "top", required = false) Integer top,
+            @RequestParam(name = "skip", required = false) Integer skip) {
+
+        SeriesHateoas seriesHateoas = new
+                SeriesHateoas(seriesService.findSeriesByOwnerPaginated(top, skip));
+        return new ResponseEntity<>(seriesHateoas, HttpStatus.OK);
     }
 }

@@ -19,6 +19,8 @@ public interface IFileService {
 	Record createRecordAssociatedWithFile(String fileSystemId, Record record);
 	BasicRecord createBasicRecordAssociatedWithFile(String fileSystemId, BasicRecord basicRecord);
 
+    Iterable<File> findFileByOwnerPaginated(Integer top, Integer skip);
+
 	// -- All READ operations
 	Iterable<File> findAll();
 	List<File> findAll(Sort sort);

@@ -109,10 +109,16 @@ public class SeriesService implements ISeriesService {
 
     // All READ operations
 
-    public Iterable <Series> findSeriesByOwnerPaginated(final int top, final int skip) {
-        String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        //CriteriaBuilder test = new CriteriaBuilder();
+    public Iterable<Series> findSeriesByOwnerPaginated(Integer top, Integer skip) {
 
+        if (top == null || top > maxPageSize) {
+            top = maxPageSize;
+        }
+        if (skip == null) {
+            skip = 0;
+        }
+
+        String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Series> criteriaQuery = criteriaBuilder.createQuery(Series.class);
         Root<Series> from = criteriaQuery.from(Series.class);
@@ -121,17 +127,9 @@ public class SeriesService implements ISeriesService {
         criteriaQuery.where(criteriaBuilder.equal(from.get("ownedBy"), loggedInUser));
         TypedQuery<Series> typedQuery = entityManager.createQuery(select);
         typedQuery.setFirstResult(skip);
-        if (top > maxPageSize.intValue()) {
-            typedQuery.setMaxResults(maxPageSize.intValue());
-        }
-        else {
-            typedQuery.setMaxResults(top);
-        }
-
-        // Probably want to paginate this in someway
+        typedQuery.setMaxResults(maxPageSize);
         return typedQuery.getResultList();
     }
-
 
     // NOTE: I am leaving these methods here for another while. They will probably be replaced
     // by a single CriteriaBuilder approach, but for the moment, they will be left here.

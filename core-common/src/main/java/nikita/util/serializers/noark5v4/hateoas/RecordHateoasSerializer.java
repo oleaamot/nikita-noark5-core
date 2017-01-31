@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import nikita.util.exceptions.NikitaEntityException;
 import nikita.model.noark5.v4.Record;
 import nikita.model.noark5.v4.hateoas.RecordHateoas;
 import nikita.util.CommonUtils;
+import nikita.util.exceptions.NikitaEntityException;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -37,9 +37,27 @@ public class RecordHateoasSerializer extends StdSerializer<RecordHateoas> {
     }
 
     @Override
-    public void serialize(RecordHateoas recordHateoas, JsonGenerator jgen, 
-                          SerializerProvider provider) throws IOException {
-        Record record = recordHateoas.getRecord();
+    public void serialize(RecordHateoas recordHateoas, JsonGenerator jgen, SerializerProvider provider)
+            throws IOException {
+
+        Iterable<Record> recordIterable = recordHateoas.getRecordIterable();
+        if (recordIterable != null) {
+            jgen.writeStartObject();
+            jgen.writeFieldName(REGISTRATION);
+            jgen.writeStartArray();
+            for (Record record : recordIterable) {
+                serializeRecord(record, recordHateoas, jgen, provider);
+            }
+            jgen.writeEndArray();
+            jgen.writeEndObject();
+        } else if (recordHateoas.getRecord() != null) {
+            serializeRecord(recordHateoas.getRecord(), recordHateoas, jgen, provider);
+        }
+    }
+
+    private void serializeRecord(Record record, RecordHateoas recordHateoas,
+                                 JsonGenerator jgen, SerializerProvider provider) throws IOException {
+
         if (record == null) {
             // TODO: Should we just be serialising an empty string in this case?
             // This case should never occur. A non existing Record should be exception handled

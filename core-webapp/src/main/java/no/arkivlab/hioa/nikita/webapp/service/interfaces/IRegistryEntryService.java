@@ -8,4 +8,6 @@ public interface IRegistryEntryService extends IBasicRecordService {
     RegistryEntry save(RegistryEntry registryEntry);
     DocumentDescription createDocumentDescriptionAssociatedWithRegistryEntry(
             String recordSystemId, DocumentDescription documentDescription);
+
+    Iterable<RegistryEntry> findRegistryEntryByOwnerPaginated(Integer top, Integer skip);
 }

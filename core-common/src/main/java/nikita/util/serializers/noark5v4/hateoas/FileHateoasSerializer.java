@@ -35,9 +35,26 @@ public class FileHateoasSerializer extends StdSerializer<FileHateoas> {
     }
 
     @Override
-    public void serialize(FileHateoas fileHateoas, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-        File file = fileHateoas.getFile();
+    public void serialize(FileHateoas fileHateoas, JsonGenerator jgen, SerializerProvider provider)
+            throws IOException {
 
+        Iterable<File> fileIterable = fileHateoas.getFileIterable();
+        if (fileIterable != null) {
+            jgen.writeStartObject();
+            jgen.writeFieldName(FILE);
+            jgen.writeStartArray();
+            for (File file : fileIterable) {
+                serializeFile(file, fileHateoas, jgen, provider);
+            }
+            jgen.writeEndArray();
+            jgen.writeEndObject();
+        } else if (fileHateoas.getFile() != null) {
+            serializeFile(fileHateoas.getFile(), fileHateoas, jgen, provider);
+        }
+    }
+
+    private void serializeFile(File file, FileHateoas fileHateoas,
+                               JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
         CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, file);
         CommonUtils.Hateoas.Serialize.printStorageLocation(jgen, file);

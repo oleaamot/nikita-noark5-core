@@ -12,6 +12,8 @@ import nikita.util.CommonUtils;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
+import static nikita.config.N5ResourceMappings.CLASSIFICATION_SYSTEM;
+
 /**
  *
  * Serialise an outgoing ClassificationSystem object as JSON.
@@ -34,8 +36,28 @@ public class ClassificationSystemHateoasSerializer extends StdSerializer<Classif
     }
 
     @Override
-    public void serialize(ClassificationSystemHateoas classificationSystemHateoas, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-        ClassificationSystem classificationSystem = classificationSystemHateoas.getClassificationSystem();
+    public void serialize(ClassificationSystemHateoas classificationSystemHateoas, JsonGenerator jgen, SerializerProvider provider)
+            throws IOException {
+
+        Iterable<ClassificationSystem> classificationSystemIterable = classificationSystemHateoas.getClassificationSystemIterable();
+        if (classificationSystemIterable != null) {
+            jgen.writeStartObject();
+            jgen.writeFieldName(CLASSIFICATION_SYSTEM);
+            jgen.writeStartArray();
+            for (ClassificationSystem classificationSystem : classificationSystemIterable) {
+                serializeClassificationSystem(classificationSystem, classificationSystemHateoas, jgen, provider);
+            }
+            jgen.writeEndArray();
+            jgen.writeEndObject();
+        } else if (classificationSystemHateoas.getClassificationSystem() != null) {
+            serializeClassificationSystem(classificationSystemHateoas.getClassificationSystem(), classificationSystemHateoas, jgen, provider);
+        }
+    }
+
+    private void serializeClassificationSystem(ClassificationSystem classificationSystem, ClassificationSystemHateoas classificationSystemHateoas,
+                                               JsonGenerator jgen, SerializerProvider provider) throws IOException {
+
+
         jgen.writeStartObject();
         CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, classificationSystem);
         CommonUtils.Hateoas.Serialize.printTitleAndDescription(jgen, classificationSystem);

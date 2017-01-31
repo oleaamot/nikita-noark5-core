@@ -18,6 +18,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +39,12 @@ public class FileService implements IFileService {
 
     @Autowired
     IFileRepository fileRepository;
+
+    @Autowired
+    EntityManager entityManager;
+
+    //@Value("${nikita-noark5-core.pagination.maxPageSize}")
+    Integer maxPageSize = new Integer(10);
 
     public FileService() {
     }
@@ -73,7 +84,7 @@ public class FileService implements IFileService {
         }
         else {
             basicRecord.setReferenceFile(file);
-            persistedBasicRecord = (BasicRecord)recordService.save((Record)basicRecord);
+            persistedBasicRecord = (BasicRecord) recordService.save(basicRecord);
         }
         return persistedBasicRecord;
     }
@@ -407,8 +418,27 @@ public class FileService implements IFileService {
         return fileRepository.save(file);
     }
 
+    // All READ operations
+    @Override
+    public Iterable<File> findFileByOwnerPaginated(Integer top, Integer skip) {
 
-    // All DELETE operations
+        if (top == null || top > maxPageSize) {
+            top = maxPageSize;
+        }
+        if (skip == null) {
+            skip = 0;
+        }
 
+        String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<File> criteriaQuery = criteriaBuilder.createQuery(File.class);
+        Root<File> from = criteriaQuery.from(File.class);
+        CriteriaQuery<File> select = criteriaQuery.select(from);
 
+        criteriaQuery.where(criteriaBuilder.equal(from.get("ownedBy"), loggedInUser));
+        TypedQuery<File> typedQuery = entityManager.createQuery(select);
+        typedQuery.setFirstResult(skip);
+        typedQuery.setMaxResults(maxPageSize);
+        return typedQuery.getResultList();
+    }
 }

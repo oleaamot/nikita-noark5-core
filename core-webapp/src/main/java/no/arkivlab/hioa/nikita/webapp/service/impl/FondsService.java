@@ -18,13 +18,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.Date;
 import java.util.List;
 
-import static nikita.config.Constants.INFO_CANNOT_ASSOCIATE_WITH_CLOSED_OBJECT;
-import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
-import static nikita.config.Constants.INFO_INVALID_STRUCTURE;
-import static nikita.config.N5ResourceMappings.*;
+import static nikita.config.Constants.*;
+import static nikita.config.N5ResourceMappings.STATUS_CLOSED;
+import static nikita.config.N5ResourceMappings.STATUS_OPEN;
 
 @Service
 @Transactional
@@ -37,6 +41,12 @@ public class FondsService implements IFondsService {
 
     @Autowired
     SeriesService seriesService;
+
+    @Autowired
+    EntityManager entityManager;
+
+    //@Value("${nikita-noark5-core.pagination.maxPageSize}")
+    Integer maxPageSize = new Integer(10);
 
     // All CREATE operations
 
@@ -490,6 +500,28 @@ public class FondsService implements IFondsService {
     }
 
 
-    // All DELETE operations
+    // All READ operations
 
+    public Iterable<Fonds> findFondsByOwnerPaginated(Integer top, Integer skip) {
+
+        if (top == null || top > maxPageSize) {
+            top = maxPageSize;
+        }
+        if (skip == null) {
+            skip = 0;
+        }
+
+        String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Fonds> criteriaQuery = criteriaBuilder.createQuery(Fonds.class);
+        Root<Fonds> from = criteriaQuery.from(Fonds.class);
+        CriteriaQuery<Fonds> select = criteriaQuery.select(from);
+
+        criteriaQuery.where(criteriaBuilder.equal(from.get("ownedBy"), loggedInUser));
+        TypedQuery<Fonds> typedQuery = entityManager.createQuery(select);
+        typedQuery.setFirstResult(skip);
+        typedQuery.setMaxResults(maxPageSize);
+
+        return typedQuery.getResultList();
+    }
 }

@@ -10,4 +10,5 @@ public interface ICaseFileService extends IFileService{
 	CaseFile save(CaseFile caseFile);
 	RegistryEntry createRegistryEntryAssociatedWithCaseFile(String fileSystemId, RegistryEntry registryEntry);
 
+    Iterable<CaseFile> findCaseFileByOwnerPaginated(Integer top, Integer skip);
 }

@@ -12,10 +12,7 @@ import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT;
@@ -47,5 +44,28 @@ public class DocumentObjectHateoasController {
         DocumentObjectHateoas documentObjectHateoas = new
                 DocumentObjectHateoas(documentObjectService.findBySystemId(documentObjectSystemId));
         return new ResponseEntity<>(documentObjectHateoas, HttpStatus.CREATED);
+    }
+
+    @ApiOperation(value = "Retrieves multiple DocumentObject entities limited by ownership rights", notes = "The field skip" +
+            "tells how many DocumentObject rows of the result set to ignore (starting at 0), while  top tells how many rows" +
+            " after skip to return. Note if the value of top is greater than system value " +
+            " nikita-noark5-core.pagination.maxPageSize, then nikita-noark5-core.pagination.maxPageSize is used. ",
+            response = DocumentObjectHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "DocumentObject list found",
+                    response = DocumentObjectHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<DocumentObjectHateoas> findAllDocumentObject(
+            @RequestParam(name = "top", required = false) Integer top,
+            @RequestParam(name = "skip", required = false) Integer skip) {
+
+        DocumentObjectHateoas documentObjectHateoas = new
+                DocumentObjectHateoas(documentObjectService.findDocumentObjectByOwnerPaginated(top, skip));
+        return new ResponseEntity<>(documentObjectHateoas, HttpStatus.OK);
     }
 }

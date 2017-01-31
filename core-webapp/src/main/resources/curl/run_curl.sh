@@ -16,7 +16,7 @@ curloptsCreateFonds+=( --data @"$curl_files_dir"fonds-data.json  'http://localho
 curl -X POST -d username=admin -d password=password -c ~/tmp/cookie.txt 'http://localhost:8092/noark5v4/doLogin';
 systemIDCreatedFonds=$(curl "${curloptsCreateFonds[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created Fonds 1             ($systemIDCreatedFonds) \n";
-echo "curl ${curloptsCreateFonds[@]}";
+
 # Setup curl options for series
 curloptsCreateSeries+=("${curlPostOpts[@]}");
 curloptsCreateSeries+=( --data @"$curl_files_dir"series-data.json  'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkiv/'$systemIDCreatedFonds'/ny-arkivdel' )
@@ -169,6 +169,7 @@ printf "Retrieving some of the created objects\n";
 printf " -- Retrieving fonds with systemID $systemIDCreatedFonds \n";
 curloptsGETFonds+=( "${curlGetOpts[@]}" 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkiv/'$systemIDCreatedFonds)
 output=$(curl "${curloptsGETFonds[@]}");
+
 printf "$output \n";
 
 printf " -- Retrieving series with systemID $systemIDCreatedSeries \n";

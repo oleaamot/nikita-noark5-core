@@ -12,6 +12,8 @@ import nikita.util.CommonUtils;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
+import static nikita.config.N5ResourceMappings.CLASS;
+
 /**
  *
  * Serialise an outgoing Class object as JSON.
@@ -34,8 +36,28 @@ public class ClassHateoasSerializer extends StdSerializer<ClassHateoas> {
     }
 
     @Override
-    public void serialize(ClassHateoas classHateoas, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-        Class klass = classHateoas.getKlass();
+    public void serialize(ClassHateoas classHateoas, JsonGenerator jgen, SerializerProvider provider)
+            throws IOException {
+
+        Iterable<Class> classIterable = classHateoas.getClassIterable();
+        if (classIterable != null) {
+            jgen.writeStartObject();
+            jgen.writeFieldName(CLASS);
+            jgen.writeStartArray();
+            for (Class klass : classIterable) {
+                serializeClass(klass, classHateoas, jgen, provider);
+            }
+            jgen.writeEndArray();
+            jgen.writeEndObject();
+        } else if (classHateoas.getKlass() != null) {
+            serializeClass(classHateoas.getKlass(), classHateoas, jgen, provider);
+        }
+    }
+
+    private void serializeClass(Class klass, ClassHateoas classHateoas,
+                                JsonGenerator jgen, SerializerProvider provider) throws IOException {
+
+
         jgen.writeStartObject();
         CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, klass);
         CommonUtils.Hateoas.Serialize.printTitleAndDescription(jgen, klass);

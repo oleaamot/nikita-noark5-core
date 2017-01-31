@@ -18,6 +18,7 @@ public interface IClassService {
 	Class createClassAssociatedWithClass(String classSystemId, Class klass);
 
 	// -- All READ operations
+    Iterable<Class> findClassByOwnerPaginated(Integer top, Integer skip);
 
 	Iterable<Class> findAll();
 	List<Class> findAll(Sort sort);

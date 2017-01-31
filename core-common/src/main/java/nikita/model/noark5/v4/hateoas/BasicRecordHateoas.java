@@ -18,9 +18,14 @@ public class BasicRecordHateoas implements IHateoasLinks {
 
     protected List<Link> links;
     BasicRecord basicRecord;
+    private Iterable<BasicRecord> basicRecordIterable;
 
     public BasicRecordHateoas(BasicRecord basicRecord){
         this.basicRecord = basicRecord;
+    }
+
+    public BasicRecordHateoas(Iterable<BasicRecord> basicRecordIterable) {
+        this.basicRecordIterable = basicRecordIterable;
     }
 
     public List<Link> getLinks() {
@@ -35,5 +40,13 @@ public class BasicRecordHateoas implements IHateoasLinks {
     }
     public void setBasicRecord(BasicRecord basicRecord) {
         this.basicRecord = basicRecord;
+    }
+
+    public Iterable<BasicRecord> getBasicRecordIterable() {
+        return basicRecordIterable;
+    }
+
+    public void setBasicRecordIterable(Iterable<BasicRecord> basicRecordIterable) {
+        this.basicRecordIterable = basicRecordIterable;
     }
 }

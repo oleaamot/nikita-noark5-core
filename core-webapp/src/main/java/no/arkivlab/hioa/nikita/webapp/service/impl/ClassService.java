@@ -1,8 +1,6 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
-import nikita.model.noark5.v4.CaseFile;
 import nikita.model.noark5.v4.Class;
-import nikita.model.noark5.v4.Series;
 import nikita.repository.n5v4.IClassRepository;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IClassService;
 import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
@@ -18,13 +16,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import static nikita.config.Constants.INFO_CANNOT_ASSOCIATE_WITH_CLOSED_OBJECT;
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
-import static nikita.config.N5ResourceMappings.STATUS_CLOSED;
 
 @Service
 @Transactional
@@ -34,6 +35,12 @@ public class ClassService implements IClassService {
 
     @Autowired
     IClassRepository klassRepository;
+
+    @Autowired
+    EntityManager entityManager;
+
+    //@Value("${nikita-noark5-core.pagination.maxPageSize}")
+    Integer maxPageSize = new Integer(10);
 
     public ClassService() {
     }
@@ -373,13 +380,29 @@ public class ClassService implements IClassService {
     public Class updateClassSetTitle(Long id, String newTitle){
 
         Class klass = klassRepository.findById(id);
-
-
         return klassRepository.save(klass);
     }
 
+    // All READ operations
+    @Override
+    public Iterable<Class> findClassByOwnerPaginated(Integer top, Integer skip) {
+        if (top == null || top > maxPageSize) {
+            top = maxPageSize;
+        }
+        if (skip == null) {
+            skip = 0;
+        }
 
-    // All DELETE operations
+        String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Class> criteriaQuery = criteriaBuilder.createQuery(Class.class);
+        Root<Class> from = criteriaQuery.from(Class.class);
+        CriteriaQuery<Class> select = criteriaQuery.select(from);
 
-
+        criteriaQuery.where(criteriaBuilder.equal(from.get("ownedBy"), loggedInUser));
+        TypedQuery<Class> typedQuery = entityManager.createQuery(select);
+        typedQuery.setFirstResult(skip);
+        typedQuery.setMaxResults(maxPageSize);
+        return typedQuery.getResultList();
+    }
 }

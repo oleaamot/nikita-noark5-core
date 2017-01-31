@@ -20,6 +20,8 @@ public interface IDocumentDescriptionService {
 														  DocumentObject documentObject);
 	// -- All READ operations
 
+    Iterable<DocumentDescription> findDocumentDescriptionByOwnerPaginated(Integer top, Integer skip);
+
 	Iterable<DocumentDescription> findAll();
 	List<DocumentDescription> findAll(Sort sort);
 	Page<DocumentDescription> findAll(Pageable pageable);

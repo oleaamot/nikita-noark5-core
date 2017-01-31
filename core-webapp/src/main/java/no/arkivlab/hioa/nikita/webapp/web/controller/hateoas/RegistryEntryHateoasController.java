@@ -93,4 +93,27 @@ public class RegistryEntryHateoasController {
                 RegistryEntryHateoas(registryEntry);
         return new ResponseEntity<>(registryEntryHateoas, HttpStatus.CREATED);
     }
+
+    @ApiOperation(value = "Retrieves multiple RegistryEntry entities limited by ownership rights",
+            notes = "The field skip tells how many RegistryEntry rows of the result set to ignore (starting at 0), " +
+                    "while top tells how many rows after skip to return. Note if the value of top is greater than " +
+                    "system value nikita-noark5-core.pagination.maxPageSize, then " +
+                    "nikita-noark5-core.pagination.maxPageSize is used.",
+            response = RegistryEntryHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "RegistryEntryHateoas found", response = RegistryEntryHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<RegistryEntryHateoas> findAllRegistryEntry(
+            @RequestParam(name = "top", required = false) Integer top,
+            @RequestParam(name = "skip", required = false) Integer skip) {
+
+        RegistryEntryHateoas registryEntryHateoas = new RegistryEntryHateoas(
+                registryEntryService.findRegistryEntryByOwnerPaginated(top, skip));
+        return new ResponseEntity<>(registryEntryHateoas, HttpStatus.OK);
+    }
 }

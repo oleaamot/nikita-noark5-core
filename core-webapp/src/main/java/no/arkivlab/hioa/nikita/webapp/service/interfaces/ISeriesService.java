@@ -115,5 +115,6 @@ public interface ISeriesService  {
 	// ownedBy
 	List<Series> findByOwnedBy(String ownedBy);
 	List<Series> findByOwnedBy(String ownedBy, Sort sort);
-	Iterable <Series> findSeriesByOwnerPaginated(final int top, final int skip);
+
+    Iterable<Series> findSeriesByOwnerPaginated(Integer top, Integer skip);
 }

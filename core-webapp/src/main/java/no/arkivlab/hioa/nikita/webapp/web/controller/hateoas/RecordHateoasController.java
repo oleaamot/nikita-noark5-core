@@ -86,4 +86,27 @@ public class RecordHateoasController {
                 RecordHateoas(recordService.findBySystemId(recordSystemId));
         return new ResponseEntity<>(recordHateoas, HttpStatus.CREATED);
     }
+
+    @ApiOperation(value = "Retrieves multiple Record entities limited by ownership rights",
+            notes = "The field skip tells how many Record rows of the result set to ignore (starting at 0), " +
+                    "while top tells how many rows after skip to return. Note if the value of top is greater than " +
+                    "system value nikita-noark5-core.pagination.maxPageSize, then " +
+                    "nikita-noark5-core.pagination.maxPageSize is used.",
+            response = RecordHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "RecordHateoas found", response = RecordHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<RecordHateoas> findAllRecord(
+            @RequestParam(name = "top", required = false) Integer top,
+            @RequestParam(name = "skip", required = false) Integer skip) {
+
+        RecordHateoas recordHateoas = new RecordHateoas(
+                recordService.findRecordByOwnerPaginated(top, skip));
+        return new ResponseEntity<>(recordHateoas, HttpStatus.OK);
+    }
 }

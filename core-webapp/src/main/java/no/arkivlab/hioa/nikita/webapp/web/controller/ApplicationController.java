@@ -2,34 +2,31 @@ package no.arkivlab.hioa.nikita.webapp.web.controller;
 
 import com.codahale.metrics.annotation.Counted;
 import io.swagger.annotations.Api;
-
 import no.arkivlab.hioa.nikita.webapp.model.application.ApplicationDetails;
 import no.arkivlab.hioa.nikita.webapp.model.application.ConformityLevel;
-
+import no.arkivlab.hioa.nikita.webapp.model.application.FondsStructureDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static nikita.config.Constants.HATEOAS_API_PATH;
-import static nikita.config.Constants.NOARK_CONFORMANCE_REL;
-import static nikita.config.Constants.NIKITA_CONFORMANCE_REL;
-import static nikita.config.Constants.NOARK5_V4_CONTENT_TYPE;
-import static nikita.config.Constants.NOARK_FONDS_STRUCTURE_PATH;
-import static nikita.config.Constants.NOARK_CASE_HANDLING_PATH;
-import static nikita.config.Constants.SLASH;
+import static nikita.config.Constants.*;
 
 /**
  * REST controller that returns information about the Noark 5 cores conformity to standards.
  */
 @RestController
 @RequestMapping(value = "/")
-@Api(value = "Application", description = "Links to where the various interfaces can be acessed from")
+@Api(value = "Application", description = "Links to where the various interfaces can be accessed from")
 public class ApplicationController {
 
     @Autowired
@@ -56,6 +53,14 @@ public class ApplicationController {
         }
 
         return new ResponseEntity <> (applicationDetails, HttpStatus.OK);
+    }
+
+    @Counted
+    @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH, method = RequestMethod.GET,
+            produces = {NOARK5_V4_CONTENT_TYPE})
+    @ResponseBody
+    public ResponseEntity<FondsStructureDetails> fondsStructure() {
+        return new ResponseEntity<>(new FondsStructureDetails(), HttpStatus.OK);
     }
 
     /**
@@ -87,7 +92,7 @@ public class ApplicationController {
 
         for (int i=0; i<officialConformityLevels.length; i++) {
             ConformityLevel conformityLevel = new ConformityLevel();
-            String href = uri + SLASH + HATEOAS_API_PATH  + SLASH + officialConformityLevels[i];
+            String href = uri + SLASH + HATEOAS_API_PATH + SLASH + officialConformityLevels[i] + SLASH;
             String rel = NOARK_CONFORMANCE_REL + officialConformityLevels[i];
             conformityLevel.setHref(href);
             conformityLevel.setRel(rel);
@@ -101,7 +106,7 @@ public class ApplicationController {
 
         for (int i=0; i<nonOfficialConformityLevels.length; i++) {
             ConformityLevel conformityLevel = new ConformityLevel();
-            String href = uri + SLASH + nonOfficialConformityLevels[i];
+            String href = uri + SLASH + nonOfficialConformityLevels[i] + SLASH;
             String rel = NIKITA_CONFORMANCE_REL + nonOfficialConformityLevels[i];
             conformityLevel.setHref(href);
             conformityLevel.setRel(rel);

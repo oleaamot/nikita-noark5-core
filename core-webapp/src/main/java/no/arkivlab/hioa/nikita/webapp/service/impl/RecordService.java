@@ -15,6 +15,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -34,12 +39,18 @@ public class RecordService implements IRecordService {
     @Autowired
     IRecordRepository recordRepository;
 
+    @Autowired
+    EntityManager entityManager;
+
+    //@Value("${nikita-noark5-core.pagination.maxPageSize}")
+    Integer maxPageSize = new Integer(10);
+
     public RecordService() {
     }
 
     // All CREATE operations
     public Record save(Record record){
-        String username = (String) SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
 
         record.setSystemId(UUID.randomUUID().toString());
@@ -292,7 +303,27 @@ public class RecordService implements IRecordService {
     }
 
 
-    // All DELETE operations
+    // All READ operations
 
+    public Iterable<Record> findRecordByOwnerPaginated(Integer top, Integer skip) {
 
+        if (top == null || top > maxPageSize) {
+            top = maxPageSize;
+        }
+        if (skip == null) {
+            skip = 0;
+        }
+
+        String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Record> criteriaQuery = criteriaBuilder.createQuery(Record.class);
+        Root<Record> from = criteriaQuery.from(Record.class);
+        CriteriaQuery<Record> select = criteriaQuery.select(from);
+
+        criteriaQuery.where(criteriaBuilder.equal(from.get("ownedBy"), loggedInUser));
+        TypedQuery<Record> typedQuery = entityManager.createQuery(select);
+        typedQuery.setFirstResult(skip);
+        typedQuery.setMaxResults(maxPageSize);
+        return typedQuery.getResultList();
+    }
 }

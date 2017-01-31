@@ -11,9 +11,16 @@ public class ClassHateoas implements IHateoasLinks {
 
     protected List<Link> links;
     protected Class klass;
+    private Iterable<Class> classIterable;
 
-    public ClassHateoas(Class klass)
-        {this.klass = klass;}
+    public ClassHateoas(Class klass) {
+        this.klass = klass;
+    }
+
+    public ClassHateoas(Iterable<Class> classIterable) {
+        this.classIterable = classIterable;
+    }
+
 
     public List<Link> getLinks() {
         return links;
@@ -27,5 +34,13 @@ public class ClassHateoas implements IHateoasLinks {
     }
     public void setKlass(Class klass) {
         this.klass = klass;
+    }
+
+    public Iterable<Class> getClassIterable() {
+        return classIterable;
+    }
+
+    public void setClassIterable(Iterable<Class> classIterable) {
+        this.classIterable = classIterable;
     }
 }

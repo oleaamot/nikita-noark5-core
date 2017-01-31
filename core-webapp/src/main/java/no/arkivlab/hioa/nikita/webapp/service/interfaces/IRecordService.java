@@ -18,6 +18,9 @@ public interface IRecordService {
 	Record save(Record record);
 	DocumentDescription createDocumentDescriptionAssociatedWithRecord(String recordSystemId,
 																	  DocumentDescription documentDescription);
+
+    Iterable<Record> findRecordByOwnerPaginated(Integer top, Integer skip);
+
 	// -- All READ operations
 
 	Iterable<Record> findAll();

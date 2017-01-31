@@ -39,8 +39,28 @@ public class CaseFileHateoasSerializer extends StdSerializer<CaseFileHateoas> {
     }
 
     @Override
-    public void serialize(CaseFileHateoas caseFileHateoas, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-        CaseFile caseFile = caseFileHateoas.getCaseFile();
+    public void serialize(CaseFileHateoas caseFileHateoas, JsonGenerator jgen, SerializerProvider provider)
+            throws IOException {
+
+        Iterable<CaseFile> caseFileIterable = caseFileHateoas.getCaseFileIterable();
+        if (caseFileIterable != null) {
+            jgen.writeStartObject();
+            jgen.writeFieldName(CASE_FILE);
+            jgen.writeStartArray();
+            for (CaseFile caseFile : caseFileIterable) {
+                serializeCaseFile(caseFile, caseFileHateoas, jgen, provider);
+            }
+            jgen.writeEndArray();
+            jgen.writeEndObject();
+        } else if (caseFileHateoas.getCaseFile() != null) {
+            serializeCaseFile(caseFileHateoas.getCaseFile(), caseFileHateoas, jgen, provider);
+        }
+    }
+
+    private void serializeCaseFile(CaseFile caseFile, CaseFileHateoas caseFileHateoas,
+                                   JsonGenerator jgen, SerializerProvider provider) throws IOException {
+
+
 
         jgen.writeStartObject();
         if (caseFile.getSystemId() != null) {

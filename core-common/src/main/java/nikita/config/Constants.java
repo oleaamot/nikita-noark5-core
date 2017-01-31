@@ -20,8 +20,8 @@ public final class Constants {
     public static final String USERNAME_ADMIN = "admin";
     public static final String PASSWORD_ADMIN = "pass";
 
+
     // Names of APIs that the core supports
-    public static final String API_PATH = "api";
     public static final String IMPORT_API_PATH = "import-api";
     public static final String HATEOAS_API_PATH = "hateoas-api";
     public static final String GUI_PATH = "gui";
@@ -63,7 +63,10 @@ public final class Constants {
     public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat(NOARK_TIME_FORMAT_PATTERN);
     public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat(NOARK_DATE_TIME_FORMAT_PATTERN);
 
-
+    // OData variable names
+    public static final String TOP = "top";
+    public static final String SKIP = "skip";
+    public static final String DOLLAR = "$";
 
 
     // Strings relating to conformity to Noark 5v4 standard

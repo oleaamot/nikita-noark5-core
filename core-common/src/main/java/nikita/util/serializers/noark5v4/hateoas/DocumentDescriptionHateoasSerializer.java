@@ -36,9 +36,27 @@ public class DocumentDescriptionHateoasSerializer extends StdSerializer<Document
     }
 
     @Override
-    public void serialize(DocumentDescriptionHateoas documentDescriptionHateoas, JsonGenerator jgen,
-                          SerializerProvider provider) throws IOException {
-        DocumentDescription documentDescription = documentDescriptionHateoas.getDocumentDescription();
+    public void serialize(DocumentDescriptionHateoas documentDescriptionHateoas, JsonGenerator jgen, SerializerProvider provider)
+            throws IOException {
+
+        Iterable<DocumentDescription> documentDescriptionIterable = documentDescriptionHateoas.getDocumentDescriptionIterable();
+        if (documentDescriptionIterable != null) {
+            jgen.writeStartObject();
+            jgen.writeFieldName(DOCUMENT_DESCRIPTION);
+            jgen.writeStartArray();
+            for (DocumentDescription documentDescription : documentDescriptionIterable) {
+                serializeDocumentDescription(documentDescription, documentDescriptionHateoas, jgen, provider);
+            }
+            jgen.writeEndArray();
+            jgen.writeEndObject();
+        } else if (documentDescriptionHateoas.getDocumentDescription() != null) {
+            serializeDocumentDescription(documentDescriptionHateoas.getDocumentDescription(), documentDescriptionHateoas, jgen, provider);
+        }
+    }
+
+    private void serializeDocumentDescription(DocumentDescription documentDescription, DocumentDescriptionHateoas documentDescriptionHateoas,
+                                              JsonGenerator jgen, SerializerProvider provider) throws IOException {
+
 
         jgen.writeStartObject();
 

@@ -70,7 +70,7 @@ public class SwaggerConfig {
                     .apis(RequestHandlerSelectors.any())
                     .paths(PathSelectors.any())
                 .build()
-                .pathMapping(Constants.API_PATH)
+                .pathMapping(Constants.HATEOAS_API_PATH)
                 .genericModelSubstitutes(ResponseEntity.class);
 
         watch.stop();
