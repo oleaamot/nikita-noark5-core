@@ -57,7 +57,7 @@ any exceptions).
  	Local: 			http://localhost:8092
  	External: 		http://127.0.1.1:8092
  	contextPath: 	http://127.0.1.1:8092/noark5v4
- 	Application is running with following profile(s): [demo]
+ 	Application is running with following profile(s): [demo] 
 
 
 *Please note that you have to populate the core with some data. In the directory nikita-noark5-core/core-webapp/src/main/resources/curl
