@@ -60,10 +60,10 @@ any exceptions).
  	Application is running with following profile(s): [demo]
 
 
-
 *Please note that you have to populate the core with some data. In the directory nikita-noark5-core/core-webapp/src/main/resources/curl
  you will find a script that runs a series of curl commands that will populate the database with some data. On linux all
-  you have to is ./run_curl.sh from the nikita-noark5-core/core-webapp/src/main/resources/curl directory.*
+  you have to is ./run_curl.sh from the nikita-noark5-core/core-webapp/src/main/resources/curl directory. If you want to use this 
+  script you have to make sure you have jq installed. jq is a JSON command line processor and can be found at (https://github.com/stedolan/jq)*
  
 In accordance with the Noark 5v4 interface standard, the core advertises its services. The can be accessed by:
 
