@@ -114,7 +114,7 @@ public class ClassificationSystemHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = CLASSIFICATION_SYSTEM + SLASH, method = RequestMethod.GET)
     public ResponseEntity<ClassificationSystemHateoas> findAllClassificationSystem(
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {

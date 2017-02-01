@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.google.common.collect.Iterables;
 import nikita.model.noark5.v4.Fonds;
 import nikita.model.noark5.v4.hateoas.FondsHateoas;
 import nikita.util.CommonUtils;
@@ -41,9 +42,9 @@ public class FondsHateoasSerializer extends StdSerializer<FondsHateoas> {
             throws IOException {
 
         Iterable<Fonds> fondsIterable = fondsHateoas.getFondsIterable();
-        if (fondsIterable != null) {
+        if (fondsIterable != null && Iterables.size(fondsIterable) > 0) {
             jgen.writeStartObject();
-            jgen.writeFieldName(FONDS);
+            jgen.writeFieldName("");
             jgen.writeStartArray();
             for (Fonds fonds : fondsIterable) {
                 serializeFonds(fonds, fondsHateoas, jgen, provider);
@@ -53,11 +54,14 @@ public class FondsHateoasSerializer extends StdSerializer<FondsHateoas> {
         } else if (fondsHateoas.getFonds() != null) {
             serializeFonds(fondsHateoas.getFonds(), fondsHateoas, jgen, provider);
         }
+        // It's an empty object, so returning empty Hateoas links _links : []
+        else {
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
+        }
     }
 
     private void serializeFonds(Fonds fonds, FondsHateoas fondsHateoas,
                                 JsonGenerator jgen, SerializerProvider provider) throws IOException {
-
 
         if (fonds != null) {
             jgen.writeStartObject();

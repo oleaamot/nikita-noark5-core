@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.google.common.collect.Iterables;
 import nikita.model.noark5.v4.ClassificationSystem;
 import nikita.model.noark5.v4.hateoas.ClassificationSystemHateoas;
 import nikita.util.CommonUtils;
@@ -40,7 +41,7 @@ public class ClassificationSystemHateoasSerializer extends StdSerializer<Classif
             throws IOException {
 
         Iterable<ClassificationSystem> classificationSystemIterable = classificationSystemHateoas.getClassificationSystemIterable();
-        if (classificationSystemIterable != null) {
+        if (classificationSystemIterable != null && Iterables.size(classificationSystemIterable) > 0) {
             jgen.writeStartObject();
             jgen.writeFieldName(CLASSIFICATION_SYSTEM);
             jgen.writeStartArray();
@@ -51,6 +52,10 @@ public class ClassificationSystemHateoasSerializer extends StdSerializer<Classif
             jgen.writeEndObject();
         } else if (classificationSystemHateoas.getClassificationSystem() != null) {
             serializeClassificationSystem(classificationSystemHateoas.getClassificationSystem(), classificationSystemHateoas, jgen, provider);
+        }
+        // It's an empty object, so returning empty Hateoas links _links : []
+        else {
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
         }
     }
 

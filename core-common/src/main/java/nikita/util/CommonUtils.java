@@ -1333,6 +1333,12 @@ public final class CommonUtils {
                         jgen.writeEndObject();
                     }
                     jgen.writeEndArray();
+                } else {
+                    //_links : []
+                    jgen.writeStartObject();
+                    jgen.writeArrayFieldStart(LINKS);
+                    jgen.writeEndArray();
+                    jgen.writeEndObject();
                 }
             }
 
