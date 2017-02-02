@@ -5,8 +5,9 @@
 curl_files_dir="./";
 
 # Setup common curl options
-curlOpts+=( -s -S --header "Accept:application/vnd.noark5-v4+json" --header "Content-Type:application/vnd.noark5-v4+json" );
-curlPostOpts+=("${curlOpts[@]}" -X POST -b ~/tmp/cookie.txt );
+contentTypeForPost+=(--header "Content-Type:application/vnd.noark5-v4+json");
+curlOpts+=( -s -S --header "Accept:application/vnd.noark5-v4+json");
+curlPostOpts+=("${curlOpts[@]}" "${contentTypeForPost[@]}" -X POST -b ~/tmp/cookie.txt );
 
 # Setup curl options for fonds
 curloptsCreateFonds+=("${curlPostOpts[@]}");
