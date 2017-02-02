@@ -23,7 +23,7 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
 @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH,
-        produces = {NOARK5_V4_CONTENT_TYPE}, consumes = {NOARK5_V4_CONTENT_TYPE})
+        produces = {NOARK5_V4_CONTENT_TYPE})
 public class ClassificationSystemHateoasController {
 
     @Autowired
@@ -46,7 +46,7 @@ public class ClassificationSystemHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = NEW_CLASSIFICATION_SYSTEM)
+    @RequestMapping(method = RequestMethod.POST, value = NEW_CLASSIFICATION_SYSTEM, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<ClassificationSystemHateoas> createClassificationSystemAssociatedWithFile(
             @ApiParam(name = "classificationSystem",
                     value = "Incoming classificationSystem object",
@@ -73,7 +73,8 @@ public class ClassificationSystemHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = CLASSIFICATION_SYSTEM + SLASH +  LEFT_PARENTHESIS +
-            "classificationSystemSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_RECORD)
+            "classificationSystemSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_RECORD,
+            consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<ClassHateoas> createClassAssociatedWithClassificationSystem(
             @ApiParam(name = "classificationSystemSystemId",
                     value = "systemId of classificationSystem to associate the klass with.",

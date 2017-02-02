@@ -26,7 +26,7 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + FILE,
-        produces = {NOARK5_V4_CONTENT_TYPE}, consumes = {NOARK5_V4_CONTENT_TYPE})
+        produces = {NOARK5_V4_CONTENT_TYPE})
 public class FileHateoasController {
 
     @Autowired
@@ -50,7 +50,7 @@ public class FileHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_RECORD)
+            SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<RecordHateoas> createRecordAssociatedWithFile(
             @ApiParam(name = "fileSystemId",
                     value = "systemId of file to associate the record with",
@@ -80,7 +80,7 @@ public class FileHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_BASIC_RECORD)
+            SLASH + NEW_BASIC_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<BasicRecordHateoas> createBasicRecordAssociatedWithFile(
             @ApiParam(name = "fileSystemId",
                     value = "systemId of file to associate the basicRecord with",

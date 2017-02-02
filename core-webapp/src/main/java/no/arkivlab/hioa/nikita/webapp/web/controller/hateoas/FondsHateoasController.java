@@ -26,7 +26,7 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH,
-        produces = {NOARK5_V4_CONTENT_TYPE}, consumes = {NOARK5_V4_CONTENT_TYPE})
+        produces = {NOARK5_V4_CONTENT_TYPE})
 public class FondsHateoasController {
 
     @Autowired
@@ -51,7 +51,7 @@ public class FondsHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = NEW_FONDS)
+    @RequestMapping(method = RequestMethod.POST, value = NEW_FONDS, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<FondsHateoas> createFonds(
             @ApiParam(name = "fonds",
                     value = "Incoming fonds object",
@@ -79,8 +79,7 @@ public class FondsHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = FONDS + SLASH + LEFT_PARENTHESIS +
-            "fondsSystemId" + RIGHT_PARENTHESIS + SLASH
-            + NEW_FONDS)
+            "fondsSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_FONDS, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<FondsHateoas> createFondsAssociatedWithFonds(
             @ApiParam(name = "parentFondsSystemId",
                     value = "systemId of parent fonds to associate the fonds with.",
@@ -113,8 +112,7 @@ public class FondsHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = FONDS + SLASH + LEFT_PARENTHESIS +
-            "fondsSystemId" + RIGHT_PARENTHESIS + SLASH
-            + NEW_SERIES)
+            "fondsSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_SERIES, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<SeriesHateoas> createSeriesAssociatedWithFonds(
             @ApiParam(name = "fondsSystemId",
                     value = "systemId of fonds to associate the series with.",

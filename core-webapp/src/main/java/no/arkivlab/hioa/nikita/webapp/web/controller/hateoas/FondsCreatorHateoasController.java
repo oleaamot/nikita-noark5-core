@@ -24,7 +24,7 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH,
-        produces = {NOARK5_V4_CONTENT_TYPE}, consumes = {NOARK5_V4_CONTENT_TYPE})
+        produces = {NOARK5_V4_CONTENT_TYPE})
 public class FondsCreatorHateoasController {
 
     @Autowired
@@ -49,7 +49,7 @@ public class FondsCreatorHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = NEW_FONDS_CREATOR)
+    @RequestMapping(method = RequestMethod.POST, value = NEW_FONDS_CREATOR, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<FondsCreatorHateoas> createFondsCreator(
             @ApiParam(name = "FondsCreator",
                     value = "Incoming FondsCreator object",
