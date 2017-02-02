@@ -54,7 +54,9 @@ public class FileHateoasSerializer extends StdSerializer<FileHateoas> {
         }
         // It's an empty object, so returning empty Hateoas links _links : []
         else {
+            jgen.writeStartObject();
             CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
+            jgen.writeEndObject();
         }
     }
 

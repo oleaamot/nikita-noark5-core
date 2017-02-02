@@ -31,6 +31,7 @@ public final class Constants {
     public static final String RIGHT_PARENTHESIS = "}";
 
     public static final String NEW_FONDS = "ny-arkiv";
+    public static final String NEW_FONDS_CREATOR = "ny-arkivskaper";
     public static final String NEW_SERIES = "ny-arkivdel";
     public static final String NEW_CLASSIFICATION_SYSTEM = "ny-klassifikasjonsystem";
     public static final String NEW_CLASS = "ny-klasse";

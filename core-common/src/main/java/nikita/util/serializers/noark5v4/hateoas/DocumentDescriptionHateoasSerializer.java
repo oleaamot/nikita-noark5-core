@@ -55,7 +55,9 @@ public class DocumentDescriptionHateoasSerializer extends StdSerializer<Document
         }
         // It's an empty object, so returning empty Hateoas links _links : []
         else {
+            jgen.writeStartObject();
             CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
+            jgen.writeEndObject();
         }
     }
 
