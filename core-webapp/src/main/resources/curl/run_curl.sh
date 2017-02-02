@@ -16,6 +16,7 @@ curloptsCreateFonds+=( --data @"$curl_files_dir"fonds-data.json  'http://localho
 curl -X POST -d username=admin -d password=password -c ~/tmp/cookie.txt 'http://localhost:8092/noark5v4/doLogin';
 systemIDCreatedFonds=$(curl "${curloptsCreateFonds[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created Fonds 1             ($systemIDCreatedFonds) \n";
+echo  "${curloptsCreateFonds[@]}";
 
 # Setup curl options for series
 curloptsCreateSeries+=("${curlPostOpts[@]}");
@@ -80,7 +81,7 @@ printf "created   CaseFile 1          ($systemIDCreatedCaseFile) \n";
 
 # Setup curl options for registryEntry
 curloptsCreateRegistryEntry+=("${curlPostOpts[@]}");
-curloptsCreateRegistryEntry+=( --data @"$curl_files_dir"registry-entry-data.json 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/saksmappe/'$systemIDCreatedCaseFile'/ny-journalpost' )
+curloptsCreateRegistryEntry+=( --data @"$curl_files_dir"registry-entry-data.json 'http://localhost:8092/noark5v4/hateoas-api/sakarkiv/saksmappe/'$systemIDCreatedCaseFile'/ny-journalpost' )
 
 # Create registryEntry 1 associated with a caseFile 1 and capture systemId
 systemIDCreatedRegistryEntry=$(curl "${curloptsCreateRegistryEntry[@]}" | jq '.systemID' | sed 's/\"//g');
@@ -178,12 +179,12 @@ output=$(curl "${curloptsGETSeries[@]}");
 printf "$output \n";
 
 printf " -- Retrieving caseFile with systemID $systemIDCreatedCaseFile \n";
-curloptsGETCaseFile+=( "${curlGetOpts[@]}" 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/saksmappe/'$systemIDCreatedCaseFile)
+curloptsGETCaseFile+=( "${curlGetOpts[@]}" 'http://localhost:8092/noark5v4/hateoas-api/sakarkiv/saksmappe/'$systemIDCreatedCaseFile)
 output=$(curl "${curloptsGETCaseFile[@]}");
 printf "$output \n";
 
 printf " -- Retrieving registryEntry  with systemID $systemIDCreatedRegistryEntry \n";
-curloptsGETRegistryEntry+=( "${curlGetOpts[@]}" 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/journalpost/'$systemIDCreatedRegistryEntry)
+curloptsGETRegistryEntry+=( "${curlGetOpts[@]}" 'http://localhost:8092/noark5v4/hateoas-api/sakarkiv/journalpost/'$systemIDCreatedRegistryEntry)
 output=$(curl "${curloptsGETRegistryEntry[@]}");
 printf "$output \n";
 

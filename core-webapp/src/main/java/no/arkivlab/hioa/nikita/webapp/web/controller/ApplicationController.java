@@ -56,10 +56,16 @@ public class ApplicationController {
     }
 
     @Counted
-    @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH, method = RequestMethod.GET,
-            produces = {NOARK5_V4_CONTENT_TYPE})
+    @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH, method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<FondsStructureDetails> fondsStructure() {
+        return new ResponseEntity<>(new FondsStructureDetails(), HttpStatus.OK);
+    }
+
+    @Counted
+    @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH + SLASH, method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<FondsStructureDetails> caseHandling() {
         return new ResponseEntity<>(new FondsStructureDetails(), HttpStatus.OK);
     }
 
