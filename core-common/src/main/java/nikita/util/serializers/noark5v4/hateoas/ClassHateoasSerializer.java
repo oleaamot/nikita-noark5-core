@@ -49,6 +49,7 @@ public class ClassHateoasSerializer extends StdSerializer<ClassHateoas> {
                 serializeClass(klass, classHateoas, jgen, provider);
             }
             jgen.writeEndArray();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, classHateoas.getLinks());
             jgen.writeEndObject();
         } else if (classHateoas.getKlass() != null) {
             serializeClass(classHateoas.getKlass(), classHateoas, jgen, provider);

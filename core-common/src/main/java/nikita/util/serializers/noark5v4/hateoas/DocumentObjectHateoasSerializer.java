@@ -48,11 +48,12 @@ public class DocumentObjectHateoasSerializer extends StdSerializer<DocumentObjec
                 serializeDocumentObject(documentObject, documentObjectHateoas, jgen, provider);
             }
             jgen.writeEndArray();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, documentObjectHateoas.getLinks());
             jgen.writeEndObject();
         } else if (documentObjectHateoas.getDocumentObject() != null) {
             serializeDocumentObject(documentObjectHateoas.getDocumentObject(), documentObjectHateoas, jgen, provider);
         }
-        // It's an empty object, so returning empty Hateoas links _links : []
+        // It's an empty object, so returning empty Hateoas links
         else {
             jgen.writeStartObject();
             CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);

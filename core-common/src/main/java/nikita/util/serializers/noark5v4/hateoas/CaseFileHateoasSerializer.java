@@ -52,6 +52,7 @@ public class CaseFileHateoasSerializer extends StdSerializer<CaseFileHateoas> {
                 serializeCaseFile(caseFile, caseFileHateoas, jgen, provider);
             }
             jgen.writeEndArray();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, caseFileHateoas.getLinks());
             jgen.writeEndObject();
         } else if (caseFileHateoas.getCaseFile() != null) {
             serializeCaseFile(caseFileHateoas.getCaseFile(), caseFileHateoas, jgen, provider);

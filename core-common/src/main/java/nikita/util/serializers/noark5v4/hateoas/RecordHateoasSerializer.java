@@ -50,6 +50,7 @@ public class RecordHateoasSerializer extends StdSerializer<RecordHateoas> {
                 serializeRecord(record, recordHateoas, jgen, provider);
             }
             jgen.writeEndArray();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, recordHateoas.getLinks());
             jgen.writeEndObject();
         } else if (recordHateoas.getRecord() != null) {
             serializeRecord(recordHateoas.getRecord(), recordHateoas, jgen, provider);

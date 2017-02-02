@@ -50,6 +50,7 @@ public class RegistryEntryHateoasSerializer extends StdSerializer<RegistryEntryH
                 serializeRegistryEntry(registryEntry, registryEntryHateoas, jgen, provider);
             }
             jgen.writeEndArray();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, registryEntryHateoas.getLinks());
             jgen.writeEndObject();
         } else if (registryEntryHateoas.getRegistryEntry() != null) {
             serializeRegistryEntry(registryEntryHateoas.getRegistryEntry(), registryEntryHateoas, jgen, provider);

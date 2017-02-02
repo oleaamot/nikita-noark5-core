@@ -37,10 +37,12 @@ public class ClassificationSystemHateoasSerializer extends StdSerializer<Classif
     }
 
     @Override
-    public void serialize(ClassificationSystemHateoas classificationSystemHateoas, JsonGenerator jgen, SerializerProvider provider)
+    public void serialize(ClassificationSystemHateoas classificationSystemHateoas, JsonGenerator jgen,
+                          SerializerProvider provider)
             throws IOException {
 
-        Iterable<ClassificationSystem> classificationSystemIterable = classificationSystemHateoas.getClassificationSystemIterable();
+        Iterable<ClassificationSystem> classificationSystemIterable =
+                classificationSystemHateoas.getClassificationSystemIterable();
         if (classificationSystemIterable != null && Iterables.size(classificationSystemIterable) > 0) {
             jgen.writeStartObject();
             jgen.writeFieldName(CLASSIFICATION_SYSTEM);
@@ -49,9 +51,11 @@ public class ClassificationSystemHateoasSerializer extends StdSerializer<Classif
                 serializeClassificationSystem(classificationSystem, classificationSystemHateoas, jgen, provider);
             }
             jgen.writeEndArray();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, classificationSystemHateoas.getLinks());
             jgen.writeEndObject();
         } else if (classificationSystemHateoas.getClassificationSystem() != null) {
-            serializeClassificationSystem(classificationSystemHateoas.getClassificationSystem(), classificationSystemHateoas, jgen, provider);
+            serializeClassificationSystem(classificationSystemHateoas.getClassificationSystem(),
+                    classificationSystemHateoas, jgen, provider);
         }
         // It's an empty object, so returning empty Hateoas links _links : []
         else {
@@ -61,7 +65,8 @@ public class ClassificationSystemHateoasSerializer extends StdSerializer<Classif
         }
     }
 
-    private void serializeClassificationSystem(ClassificationSystem classificationSystem, ClassificationSystemHateoas classificationSystemHateoas,
+    private void serializeClassificationSystem(ClassificationSystem classificationSystem,
+                                               ClassificationSystemHateoas classificationSystemHateoas,
                                                JsonGenerator jgen, SerializerProvider provider) throws IOException {
 
 

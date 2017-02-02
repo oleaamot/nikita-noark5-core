@@ -48,6 +48,7 @@ public class FileHateoasSerializer extends StdSerializer<FileHateoas> {
                 serializeFile(file, fileHateoas, jgen, provider);
             }
             jgen.writeEndArray();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, fileHateoas.getLinks());
             jgen.writeEndObject();
         } else if (fileHateoas.getFile() != null) {
             serializeFile(fileHateoas.getFile(), fileHateoas, jgen, provider);

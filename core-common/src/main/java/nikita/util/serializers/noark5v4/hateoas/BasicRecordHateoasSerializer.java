@@ -49,6 +49,7 @@ public class BasicRecordHateoasSerializer extends StdSerializer<BasicRecordHateo
                 serializeBasicRecord(basicRecord, basicRecordHateoas, jgen, provider);
             }
             jgen.writeEndArray();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, basicRecordHateoas.getLinks());
             jgen.writeEndObject();
         } else if (basicRecordHateoas.getBasicRecord() != null) {
             serializeBasicRecord(basicRecordHateoas.getBasicRecord(), basicRecordHateoas, jgen, provider);

@@ -50,6 +50,7 @@ public class SeriesHateoasSerializer extends StdSerializer<SeriesHateoas> {
                 serializeSeries(series, seriesHateoas, jgen, provider);
             }
             jgen.writeEndArray();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, seriesHateoas.getLinks());
             jgen.writeEndObject();
         }
         else if (seriesHateoas.getSeries() != null) {

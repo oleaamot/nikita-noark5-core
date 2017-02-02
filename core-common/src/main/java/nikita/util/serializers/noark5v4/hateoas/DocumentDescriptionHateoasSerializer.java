@@ -49,6 +49,7 @@ public class DocumentDescriptionHateoasSerializer extends StdSerializer<Document
                 serializeDocumentDescription(documentDescription, documentDescriptionHateoas, jgen, provider);
             }
             jgen.writeEndArray();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, documentDescriptionHateoas.getLinks());
             jgen.writeEndObject();
         } else if (documentDescriptionHateoas.getDocumentDescription() != null) {
             serializeDocumentDescription(documentDescriptionHateoas.getDocumentDescription(), documentDescriptionHateoas, jgen, provider);

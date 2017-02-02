@@ -49,6 +49,7 @@ public class FondsHateoasSerializer extends StdSerializer<FondsHateoas> {
                 serializeFonds(fonds, fondsHateoas, jgen, provider);
             }
             jgen.writeEndArray();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, fondsHateoas.getLinks());
             jgen.writeEndObject();
         } else if (fondsHateoas.getFonds() != null) {
             serializeFonds(fondsHateoas.getFonds(), fondsHateoas, jgen, provider);
