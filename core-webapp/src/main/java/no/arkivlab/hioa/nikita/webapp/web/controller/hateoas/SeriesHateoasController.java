@@ -26,7 +26,8 @@ import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
 
 @RestController
-@RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES)
+@RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES,
+        produces = {NOARK5_V4_CONTENT_TYPE}, consumes = {NOARK5_V4_CONTENT_TYPE})
 @Api(value = "SeriesController", description = "Contains CRUD operations for Series. Create operations are only for " +
         "entities that can be associated with a series e.g. File / ClassificationSystem. Update and delete operations" +
         " are on individual series entities identified by systemId. Read operations are either on individual series" +

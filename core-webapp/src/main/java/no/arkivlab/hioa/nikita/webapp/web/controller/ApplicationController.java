@@ -25,7 +25,7 @@ import static nikita.config.Constants.*;
  * REST controller that returns information about the Noark 5 cores conformity to standards.
  */
 @RestController
-@RequestMapping(value = "/")
+@RequestMapping(value = "/", produces = {NOARK5_V4_CONTENT_TYPE}, consumes = {NOARK5_V4_CONTENT_TYPE})
 @Api(value = "Application", description = "Links to where the various interfaces can be accessed from")
 public class ApplicationController {
 
