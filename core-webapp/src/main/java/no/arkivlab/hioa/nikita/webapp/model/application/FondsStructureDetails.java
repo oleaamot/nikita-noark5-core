@@ -26,7 +26,7 @@ public class FondsStructureDetails extends APIDetails {
         // Add support for new-fonds
         aPIDetails.add(new APIDetail(
                 uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + NEW_FONDS,
-                NOARK_CONFORMANCE_REL + NOARK_ADMINISTRATION_PATH + SLASH + NEW_FONDS,
+                NOARK_CONFORMANCE_REL + NOARK_FONDS_STRUCTURE_PATH + SLASH + NEW_FONDS,
                 false,
                 true
         ));
@@ -86,7 +86,7 @@ public class FondsStructureDetails extends APIDetails {
         aPIDetails.add(new APIDetail(
                 uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + BASIC_RECORD +
                         SLASH,
-                NOARK_CONFORMANCE_REL + NOARK_FONDS_STRUCTURE_PATH + BASIC_RECORD,
+                NOARK_CONFORMANCE_REL + NOARK_FONDS_STRUCTURE_PATH + SLASH + BASIC_RECORD,
                 true,
                 true
         ));
@@ -95,7 +95,7 @@ public class FondsStructureDetails extends APIDetails {
         aPIDetails.add(new APIDetail(
                 uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH +
                         DOCUMENT_DESCRIPTION + SLASH,
-                NOARK_CONFORMANCE_REL + NOARK_FONDS_STRUCTURE_PATH + DOCUMENT_DESCRIPTION,
+                NOARK_CONFORMANCE_REL + NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_DESCRIPTION,
                 true,
                 true
         ));
@@ -104,7 +104,7 @@ public class FondsStructureDetails extends APIDetails {
         aPIDetails.add(new APIDetail(
                 uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT
                         + SLASH,
-                NOARK_CONFORMANCE_REL + NOARK_FONDS_STRUCTURE_PATH + DOCUMENT_OBJECT,
+                NOARK_CONFORMANCE_REL + NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT,
                 true,
                 true
         ));
