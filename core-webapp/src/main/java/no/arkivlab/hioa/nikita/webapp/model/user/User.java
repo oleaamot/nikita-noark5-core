@@ -2,8 +2,6 @@ package no.arkivlab.hioa.nikita.webapp.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.envers.Audited;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,6 +9,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+//import org.hibernate.validator.constraints.Email;
+//import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name = "user")
@@ -32,7 +33,7 @@ public class User implements Serializable {
     private String password;
 
     @Transient
-    @NotEmpty(message = "Password confirmation is required.")
+    //@NotEmpty(message = "Password confirmation is required.")
     private String passwordConfirmation;
 
     public String getPasswordConfirmation() {
@@ -66,7 +67,7 @@ public class User implements Serializable {
     boolean accountNonLocked;
 
     @NotNull
-    @Email
+    //@Email
     @Column(length = 100, unique = true)
     private String email;
 

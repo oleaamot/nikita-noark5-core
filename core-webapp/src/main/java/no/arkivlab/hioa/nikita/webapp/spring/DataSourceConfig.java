@@ -38,6 +38,7 @@ public class DataSourceConfig {
         return transactionManager;
     }
 
+
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -60,15 +61,12 @@ public class DataSourceConfig {
         hibernateProperties.setProperty("hibernate.show_sql", env.getProperty("spring.jpa.properties.hibernate.show_sql"));
         hibernateProperties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("spring.jpa.properties.hibernate.hbm2ddl.auto"));
         hibernateProperties.setProperty("hibernate.hbm2ddl.import_files", env.getProperty("spring.jpa.properties.hibernate.hbm2ddl.import_files"));
-        hibernateProperties.setProperty("hibernate.search.default.directory_provider", env.getProperty("spring.jpa.properties.hibernate.search.default.directory_provider"));
-        hibernateProperties.setProperty("hibernate.search.default.indexBase", env.getProperty("spring.jpa.properties.hibernate.search.default.indexBase"));
-        // If we want elasticsearch support, add these
-        //hibernateProperties.setProperty("hibernate.search.default.indexmanager", env.getProperty("spring.jpa.properties.hibernate.search.default.indexmanager"));
-        //hibernateProperties.setProperty("hibernate.search.default.elasticsearch.index_schema_management_strategy", env.getProperty("spring.jpa.properties.hibernate.search.default.elasticsearch.index_schema_management_strategy"));
-        //hibernateProperties.setProperty("hibernate.search.default.elasticsearch.host", "http://localhost:9200");
-
-
-
+        //hibernateProperties.setProperty("hibernate.search.default.directory_provider", env.getProperty("spring.jpa.properties.hibernate.search.default.directory_provider"));
+        //hibernateProperties.setProperty("hibernate.search.default.indexBase", env.getProperty("spring.jpa.properties.hibernate.search.default.indexBase"));
+        // For elasticsearch
+        hibernateProperties.setProperty("hibernate.search.default.indexmanager", env.getProperty("spring.jpa.properties.hibernate.search.default.indexmanager"));
+        hibernateProperties.setProperty("hibernate.search.default.elasticsearch.index_schema_management_strategy", env.getProperty("spring.jpa.properties.hibernate.search.default.elasticsearch.index_schema_management_strategy"));
+        hibernateProperties.setProperty("hibernate.search.default.elasticsearch.host", env.getProperty("spring.jpa.properties.hibernate.search.default.elasticsearch.host"));
         return hibernateProperties;
     }
 

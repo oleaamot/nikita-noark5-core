@@ -1,0 +1,9 @@
+31.01.2017
+
+The pom files were updated to enable elasticsearch support in hibernate.
+
+The following changes were applied:
+
+pom.xml
+
+webapp/pom.xml

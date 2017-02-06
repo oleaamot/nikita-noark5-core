@@ -1,7 +1,6 @@
 package nikita.model.noark5.v4;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
@@ -9,6 +8,9 @@ import nikita.util.deserialisers.SeriesDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -19,6 +21,7 @@ import java.util.Set;
 // Enable soft delete of Series
 @SQLDelete(sql="UPDATE series SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
+@Indexed(index = "series")
 @JsonDeserialize(using = SeriesDeserializer.class)
 public class Series implements INoarkGeneralEntity, IStorageLocation, IDocumentMedium, IClassified, IScreening,
         IDisposal, IDisposalUndertaken, IDeletion {
@@ -35,6 +38,7 @@ public class Series implements INoarkGeneralEntity, IStorageLocation, IDocumentM
      */
     @Column(name = "system_id", unique=true)
     @Audited
+    @Field
     protected String systemId;
 
     /**
@@ -42,6 +46,7 @@ public class Series implements INoarkGeneralEntity, IStorageLocation, IDocumentM
      */
     @Column(name = "title")
     @Audited
+    @Field
     protected String title;
 
     /**
@@ -49,6 +54,7 @@ public class Series implements INoarkGeneralEntity, IStorageLocation, IDocumentM
      */
     @Column(name = "description")
     @Audited
+    @Field
     protected String description;
 
     /**

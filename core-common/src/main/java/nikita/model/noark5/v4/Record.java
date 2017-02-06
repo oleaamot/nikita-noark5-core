@@ -11,9 +11,10 @@ import nikita.util.deserialisers.RecordDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
-import java.lang.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +25,7 @@ import java.util.Set;
 // Enable soft delete of Record
 @SQLDelete(sql = "UPDATE record SET deleted = true WHERE id = ?")
 @Where(clause = "deleted <> true")
+@Indexed(index = "record")
 @JsonDeserialize(using = RecordDeserializer.class)
 public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreateEntity, IClassified, IScreening,
         IDisposal {
@@ -40,6 +42,7 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
      */
     @Column(name = "system_id", unique=true)
     @Audited
+    @Field
     protected String systemId;
 
     /**
@@ -48,6 +51,7 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
+    @Field
     protected Date createdDate;
 
     /**
@@ -55,6 +59,7 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
      */
     @Column(name = "created_by")
     @Audited
+    @Field
     protected String createdBy;
 
     /**
@@ -63,6 +68,7 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
     @Column(name = "archived_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
+    @Field
     protected Date archivedDate;
 
     /**
@@ -70,15 +76,18 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
      */
     @Column(name = "archived_by")
     @Audited
+    @Field
     protected String archivedBy;
 
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
+    @Field
     private Boolean deleted;
 
     @Column(name = "owned_by")
     @Audited
+    @Field
     protected String ownedBy;
 
     // Link to File

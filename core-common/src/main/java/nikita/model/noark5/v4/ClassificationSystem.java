@@ -4,9 +4,10 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
-import java.lang.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +17,7 @@ import java.util.Set;
 // Enable soft delete of ClassificationSystem
 @SQLDelete(sql="UPDATE classification_system SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
+@Indexed(index = "classification_system")
 public class ClassificationSystem implements INoarkGeneralEntity {
 
     private static final long serialVersionUID = 1L;
@@ -30,6 +32,7 @@ public class ClassificationSystem implements INoarkGeneralEntity {
      */
     @Column(name = "system_id", unique=true)
     @Audited
+    @Field
     protected String systemId;
 
     /**
@@ -37,6 +40,7 @@ public class ClassificationSystem implements INoarkGeneralEntity {
      */
     @Column(name = "classification_type")
     @Audited
+    @Field
     protected String classificationType;
 
     /**
@@ -44,6 +48,7 @@ public class ClassificationSystem implements INoarkGeneralEntity {
      */
     @Column(name = "title")
     @Audited
+    @Field
     protected String title;
 
     /**
@@ -51,6 +56,7 @@ public class ClassificationSystem implements INoarkGeneralEntity {
      */
     @Column(name = "description")
     @Audited
+    @Field
     protected String description;
 
     /**
@@ -59,6 +65,7 @@ public class ClassificationSystem implements INoarkGeneralEntity {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
+    @Field
     protected Date createdDate;
 
     /**
@@ -66,6 +73,7 @@ public class ClassificationSystem implements INoarkGeneralEntity {
      */
     @Column(name = "created_by")
     @Audited
+    @Field
     protected String createdBy;
 
     /**
@@ -74,6 +82,7 @@ public class ClassificationSystem implements INoarkGeneralEntity {
     @Column(name = "finalised_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
+    @Field
     protected Date finalisedDate;
 
     /**
@@ -81,15 +90,18 @@ public class ClassificationSystem implements INoarkGeneralEntity {
      */
     @Column(name = "finalised_by")
     @Audited
+    @Field
     protected String finalisedBy;
 
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
+    @Field
     private Boolean deleted;
 
     @Column(name = "owned_by")
     @Audited
+    @Field
     protected String ownedBy;
 
     // Links to Series

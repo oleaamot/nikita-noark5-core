@@ -55,7 +55,7 @@ spring:
             hibernate.search.default.indexBase: target/lucene/indexes
             # Enable these to support elasticsearch, but wait until out of beta!
             hibernate.search.default.indexmanager: elasticsearch
-            hibernate.search.default.elasticsearch.index_schema_management_strategy: CREATE_DELETE # on applicatoin startup, create new index from db
+            hibernate.search.default.elasticsearch.index_schema_management_strategy: CREATE # on applicatoin startup, create new index from db
             hibernate.search.default.elasticsearch.host: https://localhost:9876
 
     mail:

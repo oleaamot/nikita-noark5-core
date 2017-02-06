@@ -15,12 +15,6 @@
 spring:
     application:
         name: HiOA Noark 5 Core (Demo mode)
-    data:
-        elasticsearch:
-            properties:
-                path.home: target/elastic
-                http.enabled: true
-                index.number_of_replicas: 0
     profiles:
         active: demo
     devtools:
@@ -32,7 +26,6 @@ spring:
         database-platform: org.hibernate.dialect.H2Dialect
         database: H2
         show_sql: true
-
         properties:
             hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
@@ -41,13 +34,9 @@ spring:
             hibernate.show_sql: true
             hibernate.hbm2ddl.auto: create-drop
             hibernate.hbm2ddl.import_files: classpath:/db/h2/demo/import.sql # Import some data into the demo
-            hibernate.search.default.directory_provider: filesystem
-            hibernate.search.default.indexBase: target/lucene/indexes
-            # Enable these to support elasticsearch, but wait until out of beta!
             hibernate.search.default.indexmanager: elasticsearch
-            hibernate.search.default.elasticsearch.index_schema_management_strategy: CREATE # on applicatoin startup, create new index from db
-            hibernate.search.default.elasticsearch.host: https://localhost:9876
-
+            hibernate.search.default.elasticsearch.index_schema_management_strategy: RECREATE_DELETE
+            hibernate.search.default.elasticsearch.host: http://localhost:9200
     mail:
         host: localhost
     messages:

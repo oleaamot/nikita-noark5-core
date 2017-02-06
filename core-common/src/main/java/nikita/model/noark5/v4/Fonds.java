@@ -1,12 +1,12 @@
 package nikita.model.noark5.v4;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.IDocumentMedium;
 import nikita.model.noark5.v4.interfaces.IFondsCreator;
 import nikita.model.noark5.v4.interfaces.IStorageLocation;
-import nikita.util.deserialisers.FondsDeserializer;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
+import nikita.util.deserialisers.FondsDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -24,7 +24,7 @@ import java.util.Set;
 // Enable soft delete of Fonds
 @SQLDelete(sql="UPDATE fonds SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-@Indexed (index="Fonds")
+@Indexed(index = "fonds")
 @JsonDeserialize(using = FondsDeserializer.class)
 public class Fonds implements INoarkGeneralEntity, IStorageLocation, IDocumentMedium, IFondsCreator {
 
@@ -40,6 +40,7 @@ public class Fonds implements INoarkGeneralEntity, IStorageLocation, IDocumentMe
      */
     @Column(name = "system_id", unique=true)
     @Audited
+    @Field
     protected String systemId;
 
     /**

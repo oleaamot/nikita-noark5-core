@@ -15,10 +15,18 @@ import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
+import org.hibernate.Session;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
+import org.hibernate.search.elasticsearch.ElasticsearchQueries;
+import org.hibernate.search.query.engine.spi.QueryDescriptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.persistence.EntityManager;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.FONDS;
@@ -28,6 +36,9 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH,
         produces = {NOARK5_V4_CONTENT_TYPE})
 public class FondsHateoasController {
+
+    @Autowired
+    EntityManager entityManager;
 
     @Autowired
     IFondsService fondsService;
@@ -176,4 +187,18 @@ public class FondsHateoasController {
         return new ResponseEntity<>(fondsHateoas, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = FONDS + SLASH + "all" + SLASH)
+    public ResponseEntity<FondsHateoas> findAllFonds(
+            @RequestParam(name = "filter", required = false) String filter) {
+
+        Session session = entityManager.unwrap(Session.class);
+
+        FullTextSession fullTextSession = Search.getFullTextSession(session);
+        QueryDescriptor query = ElasticsearchQueries.fromQueryString("title:test fonds");
+        List<Fonds> result = fullTextSession.createFullTextQuery(query, Fonds.class).list();
+
+        FondsHateoas fondsHateoas = new
+                FondsHateoas(result);
+        return new ResponseEntity<>(fondsHateoas, HttpStatus.OK);
+    }
 }

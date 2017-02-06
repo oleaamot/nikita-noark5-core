@@ -1,0 +1,55 @@
+31.01.2017
+
+This release requires a dependency on elasticsearch instance running.
+
+TODO: Maybe hibernate search will only run from database if elasticsearch is missing??? Need to check this
+
+There are two ways of integrating elasticsearch with the application.
+
+1. via hibernate
+2. via spring-data-elasticsearch
+
+The hibernate route was chosen as the approach. Maybe as the project matures, we might swap out hibernate with
+spring-data-elasticsearch and drop the relational database altogether. We need to think about this though!
+
+We have chosen the latest version of hibernate. This should hit Final in february 17.
+<hibernate-search.version>5.7.0.CR1</hibernate-search.version>
+
+One issue with this is that you must use a elasticsearch version < 5.
+
+We chose 2.4.4 as that seems to have good hibernate-search support.
+
+  https://www.elastic.co/downloads/past-releases/elasticsearch-2-4-4
+
+Hibernate will not support elasticsearch 5.x until hibernate 5.8 or hibernate 6. See:
+
+  http://in.relation.to/2016/11/29/hibernate-search-5-6-0-Beta4-and-5-7-0-Beta1/
+
+
+ce running, elasticsearch was tested using
+
+  curl http://localhost:9200
+
+JSON response OK, everything OK at this point
+
+
+Step 2. Check application settings yml files for elasticsearch properties
+
+After getting elasticsearch/hibernate running, the following exception was thrown
+
+Caused by: org.hibernate.search.exception.SearchException: HSEARCH400024: Timed out while waiting for for index
+'nikita.model.noark5.v4.fonds' to reach status 'green'; status was still 'yellow' after 10000ms.
+
+This appears to be a problem because elasticsearch seems to be expecting to be working in a cluster and wants
+to replicate the data model (??). After an index is created, the health of the cluster is "yellow" causing hibernate to
+throw HSEARCH400024.
+
+The following command fixes the problem:
+
+curl -XPUT 'localhost:9200/_template/replicate_template' -d '
+{
+  "template" : "*",
+  "settings" : {"number_of_replicas" : 0 }
+}
+
+This creates a template for all new indexes setting number_of_replicas=0

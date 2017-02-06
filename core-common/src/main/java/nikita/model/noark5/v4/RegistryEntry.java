@@ -6,6 +6,8 @@ import nikita.util.deserialisers.RegistryEntryDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,6 +20,7 @@ import java.util.Set;
 // Enable soft delete of RegistryEntry
 @SQLDelete(sql="UPDATE registry_entry SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
+@Indexed(index = "registry_entry")
 @JsonDeserialize(using = RegistryEntryDeserializer.class)
 public class RegistryEntry extends BasicRecord implements IElectronicSignature, IPrecedence, ICorrespondencePart,
         ISignOff, IDocumentFlow {
@@ -29,6 +32,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
      */
     @Column(name = "record_year")
     @Audited
+    @Field
     protected Integer recordYear;
 
     /**
@@ -36,6 +40,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
      */
     @Column(name = "record_sequence_number")
     @Audited
+    @Field
     protected Integer recordSequenceNumber;
 
     /**
@@ -43,6 +48,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
      */
     @Column(name = "registry_entry_number")
     @Audited
+    @Field
     protected Integer registryEntryNumber;
 
     /**
@@ -50,6 +56,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
      */
     @Column(name = "registry_entry_type")
     @Audited
+    @Field
     protected String registryEntryType;
 
     /**
@@ -57,6 +64,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
      */
     @Column(name = "record_status")
     @Audited
+    @Field
     protected String recordStatus;
 
     /**
@@ -65,6 +73,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Column(name = "record_date")
     @Temporal(TemporalType.DATE)
     @Audited
+    @Field
     protected Date recordDate;
 
     /**
@@ -73,6 +82,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Column(name = "document_date")
     @Temporal(TemporalType.DATE)
     @Audited
+    @Field
     protected Date documentDate;
 
     /**
@@ -81,6 +91,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Column(name = "received_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
+    @Field
     protected Date receivedDate;
 
     /**
@@ -89,6 +100,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Column(name = "sent_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
+    @Field
     protected Date sentDate;
 
     /**
@@ -97,6 +109,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Column(name = "due_date")
     @Temporal(TemporalType.DATE)
     @Audited
+    @Field
     protected Date dueDate;
 
     /**
@@ -105,6 +118,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Column(name = "freedom_assessment_date")
     @Temporal(TemporalType.DATE)
     @Audited
+    @Field
     protected Date freedomAssessmentDate;
 
     /**
@@ -112,6 +126,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
      */
     @Column(name = "number_of_attachments")
     @Audited
+    @Field
     protected Integer numberOfAttachments;
 
     /**
@@ -134,15 +149,18 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
      */
     @Column(name = "records_management_unit")
     @Audited
+    @Field
     protected String recordsManagementUnit;
 
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
+    @Field
     private Boolean deleted;
 
     @Column(name = "owned_by")
     @Audited
+    @Field
     protected String ownedBy;
 
     // Links to CorrespondencePart

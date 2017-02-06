@@ -10,6 +10,8 @@ import nikita.util.deserialisers.DocumentObjectDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -21,6 +23,7 @@ import java.util.Set;
 // Enable soft delete of DocumentObject
 @SQLDelete(sql="UPDATE document_object SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
+@Indexed(index = "document_object")
 @JsonDeserialize(using = DocumentObjectDeserializer.class)
 public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoarkCreateEntity,
         IElectronicSignature, IConversion
@@ -38,6 +41,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
      */
     @Column(name = "system_id", unique=true)
     @Audited
+    @Field
     protected String systemId;
 
     /**
@@ -45,6 +49,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
      **/
     @Column(name = "version_number")
     @Audited
+    @Field
     protected Integer versionNumber;
 
     /**
@@ -52,6 +57,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
      */
     @Column(name = "variant_format")
     @Audited
+    @Field
     protected String variantFormat;
 
     /**
@@ -59,6 +65,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
      */
     @Column(name = "format")
     @Audited
+    @Field
     protected String format;
 
     /**
@@ -66,6 +73,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
      */
     @Column(name = "format_details")
     @Audited
+    @Field
     protected String formatDetails;
 
     /**
@@ -74,6 +82,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
+    @Field
     protected Date createdDate;
 
     /**
@@ -81,6 +90,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
      */
     @Column(name = "created_by")
     @Audited
+    @Field
     protected String createdBy;
 
     /**
@@ -88,6 +98,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
      */
     @Column(name = "reference_document_file")
     @Audited
+    @Field
     protected String referenceDocumentFile;
 
     /**
@@ -95,6 +106,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
      */
     @Column(name = "checksum")
     @Audited
+    @Field
     protected String checksum;
 
     /**
@@ -102,6 +114,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
      */
     @Column(name = "checksum_algorithm")
     @Audited
+    @Field
     protected String checksumAlgorithm;
 
     /**
@@ -109,15 +122,18 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
      */
     @Column(name = "file_size")
     @Audited
+    @Field
     protected Long fileSize;
 
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
+    @Field
     private Boolean deleted;
 
     @Column(name = "owned_by")
     @Audited
+    @Field
     protected String ownedBy;
 
     // Link to DocumentDescription
