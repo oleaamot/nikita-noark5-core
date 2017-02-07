@@ -99,7 +99,7 @@ public class ApplicationController {
         for (int i=0; i<officialConformityLevels.length; i++) {
             ConformityLevel conformityLevel = new ConformityLevel();
             String href = uri + SLASH + HATEOAS_API_PATH + SLASH + officialConformityLevels[i] + SLASH;
-            String rel = NOARK_CONFORMANCE_REL + officialConformityLevels[i];
+            String rel = NOARK_CONFORMANCE_REL + officialConformityLevels[i] + SLASH;
             conformityLevel.setHref(href);
             conformityLevel.setRel(rel);
             conformityLevelsList.add(conformityLevel);
@@ -113,7 +113,7 @@ public class ApplicationController {
         for (int i=0; i<nonOfficialConformityLevels.length; i++) {
             ConformityLevel conformityLevel = new ConformityLevel();
             String href = uri + SLASH + nonOfficialConformityLevels[i] + SLASH;
-            String rel = NIKITA_CONFORMANCE_REL + nonOfficialConformityLevels[i];
+            String rel = NIKITA_CONFORMANCE_REL + nonOfficialConformityLevels[i] + SLASH;
             conformityLevel.setHref(href);
             conformityLevel.setRel(rel);
             conformityLevelsList.add(conformityLevel);
