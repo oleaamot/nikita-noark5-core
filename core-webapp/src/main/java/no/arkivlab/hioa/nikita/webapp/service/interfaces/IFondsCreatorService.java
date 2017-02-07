@@ -2,12 +2,14 @@ package no.arkivlab.hioa.nikita.webapp.service.interfaces;
 
 import nikita.model.noark5.v4.FondsCreator;
 
+import java.util.List;
+
 public interface IFondsCreatorService {
 
     // -- All CREATE operations
     FondsCreator createNewFondsCreator(FondsCreator fondsCreator);
 
-    Iterable<FondsCreator> findFondsCreatorByOwnerPaginated(Integer top, Integer skip);
+    List<FondsCreator> findFondsCreatorByOwnerPaginated(Integer top, Integer skip);
 
     // -- All READ operations
 

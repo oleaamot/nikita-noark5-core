@@ -42,7 +42,6 @@ public final class Constants {
     public static final String NEW_RECORD = "ny-registrering";
     public static final String NEW_BASIC_RECORD = "ny-basisregistrering";
     public static final String NEW_REGISTRY_ENTRY = "ny-journalpost";
-    public static final String NEW_FONDS_CREATOR = "ny-arkivskaper";
 
 
     public static final String NEW_DOCUMENT_DESCRIPTION = "ny-dokumentbeskrivelse";
