@@ -1318,6 +1318,7 @@ public final class CommonUtils {
             }
 
 
+            // This method assumes that the statObject has already been written
             public static void printHateoasLinks(JsonGenerator jgen, List links) throws IOException {
                 if (links != null) {
                     Iterator<Link> iterator = links.iterator();
@@ -1339,6 +1340,10 @@ public final class CommonUtils {
 
                         jgen.writeEndObject();
                     }
+                    jgen.writeEndArray();
+                } else {
+                    //_links : []
+                    jgen.writeArrayFieldStart(LINKS);
                     jgen.writeEndArray();
                 }
             }

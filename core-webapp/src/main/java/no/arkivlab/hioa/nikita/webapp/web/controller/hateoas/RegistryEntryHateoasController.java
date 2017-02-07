@@ -24,7 +24,8 @@ import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
 import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
-@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + REGISTRY_ENTRY)
+@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH + SLASH + REGISTRY_ENTRY,
+        produces = {NOARK5_V4_CONTENT_TYPE})
 public class RegistryEntryHateoasController {
 
     @Autowired
@@ -48,7 +49,7 @@ public class RegistryEntryHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_DOCUMENT_DESCRIPTION)
+            SLASH + NEW_DOCUMENT_DESCRIPTION, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<DocumentDescriptionHateoas>
     createDocumentDescriptionAssociatedWithRegistryEntry(
             @ApiParam(name = "recordSystemId",

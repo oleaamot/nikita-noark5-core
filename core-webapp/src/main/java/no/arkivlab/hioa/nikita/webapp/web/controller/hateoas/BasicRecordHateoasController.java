@@ -20,7 +20,8 @@ import static nikita.config.N5ResourceMappings.BASIC_RECORD;
 import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
-@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + BASIC_RECORD + SLASH)
+@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + BASIC_RECORD + SLASH,
+        produces = {NOARK5_V4_CONTENT_TYPE})
 public class BasicRecordHateoasController {
 
     @Autowired

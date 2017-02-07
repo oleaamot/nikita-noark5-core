@@ -25,7 +25,7 @@ import static nikita.config.Constants.*;
  * REST controller that returns information about the Noark 5 cores conformity to standards.
  */
 @RestController
-@RequestMapping(value = "/")
+@RequestMapping(value = "/", produces = {NOARK5_V4_CONTENT_TYPE})
 @Api(value = "Application", description = "Links to where the various interfaces can be accessed from")
 public class ApplicationController {
 
@@ -39,7 +39,7 @@ public class ApplicationController {
      */
     // API - All GET Requests (CRUD - READ)
     @Counted
-    @RequestMapping(method = RequestMethod.GET, produces = {NOARK5_V4_CONTENT_TYPE})
+    @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity <ApplicationDetails> identify() {
 
@@ -56,10 +56,16 @@ public class ApplicationController {
     }
 
     @Counted
-    @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH, method = RequestMethod.GET,
-            produces = {NOARK5_V4_CONTENT_TYPE})
+    @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH, method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<FondsStructureDetails> fondsStructure() {
+        return new ResponseEntity<>(new FondsStructureDetails(), HttpStatus.OK);
+    }
+
+    @Counted
+    @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH + SLASH, method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<FondsStructureDetails> caseHandling() {
         return new ResponseEntity<>(new FondsStructureDetails(), HttpStatus.OK);
     }
 
@@ -93,7 +99,7 @@ public class ApplicationController {
         for (int i=0; i<officialConformityLevels.length; i++) {
             ConformityLevel conformityLevel = new ConformityLevel();
             String href = uri + SLASH + HATEOAS_API_PATH + SLASH + officialConformityLevels[i] + SLASH;
-            String rel = NOARK_CONFORMANCE_REL + officialConformityLevels[i];
+            String rel = NOARK_CONFORMANCE_REL + officialConformityLevels[i] + SLASH;
             conformityLevel.setHref(href);
             conformityLevel.setRel(rel);
             conformityLevelsList.add(conformityLevel);
@@ -107,7 +113,7 @@ public class ApplicationController {
         for (int i=0; i<nonOfficialConformityLevels.length; i++) {
             ConformityLevel conformityLevel = new ConformityLevel();
             String href = uri + SLASH + nonOfficialConformityLevels[i] + SLASH;
-            String rel = NIKITA_CONFORMANCE_REL + nonOfficialConformityLevels[i];
+            String rel = NIKITA_CONFORMANCE_REL + nonOfficialConformityLevels[i] + SLASH;
             conformityLevel.setHref(href);
             conformityLevel.setRel(rel);
             conformityLevelsList.add(conformityLevel);

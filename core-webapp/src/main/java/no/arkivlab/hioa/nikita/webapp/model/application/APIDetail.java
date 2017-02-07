@@ -2,15 +2,15 @@ package no.arkivlab.hioa.nikita.webapp.model.application;
 
 import javax.validation.constraints.NotNull;
 
-public class FondsStructureDetail {
+public class APIDetail {
 
     private String href;
     private String rel;
     private Boolean templated;
     private Boolean templatedSpecified;
 
-    public FondsStructureDetail(@NotNull String href, @NotNull String rel,
-                                @NotNull Boolean templated, @NotNull Boolean templatedSpecified) {
+    public APIDetail(@NotNull String href, @NotNull String rel,
+                     @NotNull Boolean templated, @NotNull Boolean templatedSpecified) {
         this.href = href;
         this.rel = rel;
         this.templated = templated;

@@ -19,7 +19,8 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT;
 import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
-@RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT)
+@RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT,
+        produces = {NOARK5_V4_CONTENT_TYPE})
 public class DocumentObjectHateoasController {
 
     @Autowired

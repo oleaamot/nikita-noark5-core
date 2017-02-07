@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.google.common.collect.Iterables;
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.hateoas.ClassHateoas;
 import nikita.util.CommonUtils;
@@ -39,8 +40,13 @@ public class ClassHateoasSerializer extends StdSerializer<ClassHateoas> {
     public void serialize(ClassHateoas classHateoas, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
+<<<<<<< HEAD
         Iterable<Class> classIterable = classHateoas.getclassList();
         if (classIterable != null) {
+=======
+        Iterable<Class> classIterable = classHateoas.getClassIterable();
+        if (classIterable != null && Iterables.size(classIterable) > 0) {
+>>>>>>> master
             jgen.writeStartObject();
             jgen.writeFieldName(CLASS);
             jgen.writeStartArray();
@@ -48,9 +54,16 @@ public class ClassHateoasSerializer extends StdSerializer<ClassHateoas> {
                 serializeClass(klass, classHateoas, jgen, provider);
             }
             jgen.writeEndArray();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, classHateoas.getLinks());
             jgen.writeEndObject();
         } else if (classHateoas.getKlass() != null) {
             serializeClass(classHateoas.getKlass(), classHateoas, jgen, provider);
+        }
+        // It's an empty object, so returning empty Hateoas links _links : []
+        else {
+            jgen.writeStartObject();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
+            jgen.writeEndObject();
         }
     }
 

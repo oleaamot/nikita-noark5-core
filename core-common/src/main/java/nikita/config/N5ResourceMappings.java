@@ -64,7 +64,7 @@ public final class N5ResourceMappings {
     public static final String SERIES_PRECURSOR_EN = "precursor";
 
     // ClassificationSystem
-    public static final String CLASSIFICATION_SYSTEM = "klassifikasjon";
+    public static final String CLASSIFICATION_SYSTEM = "klassifikasjonssystem";
     public static final String CLASSIFICATION_SYSTEM_EN = "classificationSystem";
 
     //  Class

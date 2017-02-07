@@ -23,7 +23,8 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_DESCRIPTION;
 import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
-@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_DESCRIPTION)
+@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_DESCRIPTION,
+        produces = {NOARK5_V4_CONTENT_TYPE})
 public class DocumentDescriptionHateoasController {
 
     @Autowired
@@ -47,7 +48,7 @@ public class DocumentDescriptionHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "documentDescriptionSystemId" +
-            RIGHT_PARENTHESIS + SLASH + NEW_DOCUMENT_OBJECT)
+            RIGHT_PARENTHESIS + SLASH + NEW_DOCUMENT_OBJECT, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<DocumentObjectHateoas>
     createDocumentObjectAssociatedWithDocumentDescription(
             @ApiParam(name = "documentDescriptionSystemId",

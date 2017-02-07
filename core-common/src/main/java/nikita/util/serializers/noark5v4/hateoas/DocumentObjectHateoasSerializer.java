@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.google.common.collect.Iterables;
 import nikita.model.noark5.v4.DocumentObject;
 import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
 import nikita.util.CommonUtils;
@@ -38,8 +39,13 @@ public class DocumentObjectHateoasSerializer extends StdSerializer<DocumentObjec
     public void serialize(DocumentObjectHateoas documentObjectHateoas, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
+<<<<<<< HEAD
         Iterable<DocumentObject> documentObjectIterable = documentObjectHateoas.getDocumentObjectList();
         if (documentObjectIterable != null) {
+=======
+        Iterable<DocumentObject> documentObjectIterable = documentObjectHateoas.getDocumentObjectIterable();
+        if (documentObjectIterable != null && Iterables.size(documentObjectIterable) > 0) {
+>>>>>>> master
             jgen.writeStartObject();
             jgen.writeFieldName(DOCUMENT_OBJECT);
             jgen.writeStartArray();
@@ -47,9 +53,16 @@ public class DocumentObjectHateoasSerializer extends StdSerializer<DocumentObjec
                 serializeDocumentObject(documentObject, documentObjectHateoas, jgen, provider);
             }
             jgen.writeEndArray();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, documentObjectHateoas.getLinks());
             jgen.writeEndObject();
         } else if (documentObjectHateoas.getDocumentObject() != null) {
             serializeDocumentObject(documentObjectHateoas.getDocumentObject(), documentObjectHateoas, jgen, provider);
+        }
+        // It's an empty object, so returning empty Hateoas links
+        else {
+            jgen.writeStartObject();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
+            jgen.writeEndObject();
         }
     }
 
