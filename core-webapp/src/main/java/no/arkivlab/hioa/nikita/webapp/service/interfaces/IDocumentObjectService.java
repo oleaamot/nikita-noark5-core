@@ -18,10 +18,11 @@ public interface IDocumentObjectService {
 
 	// -- All READ operations
 
-    Iterable<DocumentObject> findDocumentObjectByOwnerPaginated(Integer top, Integer skip);
+    List<DocumentObject> findDocumentObjectByOwnerPaginated(Integer top, Integer skip);
 
-	Iterable<DocumentObject> findAll();
-	List<DocumentObject> findAll(Sort sort);
+    List<DocumentObject> findAll();
+
+    List<DocumentObject> findAll(Sort sort);
 	Page<DocumentObject> findAll(Pageable pageable);
 
 	// id

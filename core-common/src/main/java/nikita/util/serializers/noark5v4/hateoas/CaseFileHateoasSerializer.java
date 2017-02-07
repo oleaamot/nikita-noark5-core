@@ -42,7 +42,7 @@ public class CaseFileHateoasSerializer extends StdSerializer<CaseFileHateoas> {
     public void serialize(CaseFileHateoas caseFileHateoas, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
-        Iterable<CaseFile> caseFileIterable = caseFileHateoas.getCaseFileIterable();
+        Iterable<CaseFile> caseFileIterable = caseFileHateoas.getCaseFileList();
         if (caseFileIterable != null) {
             jgen.writeStartObject();
             jgen.writeFieldName(CASE_FILE);

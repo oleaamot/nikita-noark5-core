@@ -40,7 +40,7 @@ public class RecordHateoasSerializer extends StdSerializer<RecordHateoas> {
     public void serialize(RecordHateoas recordHateoas, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
-        Iterable<Record> recordIterable = recordHateoas.getRecordIterable();
+        Iterable<Record> recordIterable = recordHateoas.getRecordList();
         if (recordIterable != null) {
             jgen.writeStartObject();
             jgen.writeFieldName(REGISTRATION);

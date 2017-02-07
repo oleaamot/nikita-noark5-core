@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -32,7 +32,8 @@ import java.util.Arrays;
                 "no.arkivlab.hioa.nikita.webapp.web",
                 "no.arkivlab.hioa.nikita.webapp.run",
                 "no.arkivlab.hioa.nikita.webapp.util.error",
-                "nikita.util.deserialisers"})
+        "nikita.util.deserialisers",
+        "no.arkivlab.hioa.nikita.webapp.handlers.hateoas"})
 public class N5CoreApp extends SpringBootServletInitializer {
 
     private static final Logger logger = LoggerFactory.getLogger(N5CoreApp.class);

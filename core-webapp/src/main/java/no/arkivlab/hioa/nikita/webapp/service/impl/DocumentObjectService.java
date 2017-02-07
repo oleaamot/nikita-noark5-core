@@ -48,7 +48,7 @@ public class DocumentObjectService implements IDocumentObjectService {
     }
 
     // All READ operations
-    public Iterable<DocumentObject> findAll() {
+    public List<DocumentObject> findAll() {
         return documentObjectRepository.findAll();
     }
 
@@ -175,7 +175,7 @@ public class DocumentObjectService implements IDocumentObjectService {
 
     // All READ operations
     @Override
-    public Iterable<DocumentObject> findDocumentObjectByOwnerPaginated(Integer top, Integer skip) {
+    public List<DocumentObject> findDocumentObjectByOwnerPaginated(Integer top, Integer skip) {
 
         if (top == null || top > maxPageSize) {
             top = maxPageSize;

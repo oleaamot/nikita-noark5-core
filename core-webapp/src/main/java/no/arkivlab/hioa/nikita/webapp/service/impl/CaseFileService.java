@@ -19,6 +19,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.List;
 
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 
@@ -68,7 +69,7 @@ public class CaseFileService extends FileService implements ICaseFileService {
 
     // All READ operations
     @Override
-    public Iterable<CaseFile> findCaseFileByOwnerPaginated(Integer top, Integer skip) {
+    public List<CaseFile> findCaseFileByOwnerPaginated(Integer top, Integer skip) {
         if (top == null || top > maxPageSize) {
             top = maxPageSize;
         }

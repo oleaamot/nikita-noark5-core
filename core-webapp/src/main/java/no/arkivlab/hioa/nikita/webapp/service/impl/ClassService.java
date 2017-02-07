@@ -72,7 +72,7 @@ public class ClassService implements IClassService {
     }
 
     // All READ operations
-    public Iterable<Class> findAll() {
+    public List<Class> findAll() {
         return klassRepository.findAll();
     }
 
@@ -385,7 +385,7 @@ public class ClassService implements IClassService {
 
     // All READ operations
     @Override
-    public Iterable<Class> findClassByOwnerPaginated(Integer top, Integer skip) {
+    public List<Class> findClassByOwnerPaginated(Integer top, Integer skip) {
         if (top == null || top > maxPageSize) {
             top = maxPageSize;
         }

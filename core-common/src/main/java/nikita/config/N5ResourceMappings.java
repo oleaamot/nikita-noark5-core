@@ -5,6 +5,7 @@ public final class N5ResourceMappings {
 
     // Commonly used entities for REST request mappings
     public static final String FONDS = "arkiv";
+    public static final String SUB_FONDS = "underarkiv";
     public static final String SERIES = "arkivdel";
     public static final String SERIES_EN = "series";
     public static final String SERIES_REFERENCE = "referanseArkivdel";
@@ -391,6 +392,7 @@ public final class N5ResourceMappings {
     public static final String DOCUMENT_MEDIUM_PHYSICAL = "Fysisk arkiv";
     public static final String DOCUMENT_MEDIUM_ELECTRONIC ="Elektronisk arkiv";
     public static final String DOCUMENT_MEDIUM_MIXED = "Blandet fysisk og elektronisk arkiv";
+
 
     private N5ResourceMappings() {
         throw new AssertionError();

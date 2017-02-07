@@ -17,11 +17,11 @@ public interface IFondsService  {
     Series createSeriesAssociatedWithFonds(String fondsSystemId, Series series);
     Fonds createFondsAssociatedWithFonds(String parentFondsSystemId, Fonds childFonds);
 
-    Iterable<Fonds> findFondsByOwnerPaginated(Integer top, Integer skip);
+    List<Fonds> findFondsByOwnerPaginated(Integer top, Integer skip);
 
     // -- All READ operations
 
-    Iterable<Fonds> findAll();
+    List<Fonds> findAll();
     List<Fonds> findAll(Sort sort);
     Page<Fonds> findAll(Pageable pageable);
 

@@ -2,6 +2,7 @@ package nikita.model.noark5.v4.hateoas;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nikita.model.noark5.v4.CaseFile;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.serializers.noark5v4.hateoas.CaseFileHateoasSerializer;
 
 import java.util.ArrayList;
@@ -15,18 +16,18 @@ import java.util.List;
  *
  */
 @JsonSerialize(using = CaseFileHateoasSerializer.class)
-public class CaseFileHateoas implements IHateoasLinks {
+public class CaseFileHateoas implements IHateoasNoarkObject {
 
     protected List<Link> links = new ArrayList<>();
     CaseFile caseFile;
-    private Iterable<CaseFile> caseFileIterable;
+    private List<CaseFile> caseFileList;
 
     public CaseFileHateoas(CaseFile caseFile){
         this.caseFile = caseFile;
     }
 
-    public CaseFileHateoas(Iterable<CaseFile> caseFileIterable) {
-        this.caseFileIterable = caseFileIterable;
+    public CaseFileHateoas(List<CaseFile> caseFileList) {
+        this.caseFileList = caseFileList;
     }
 
     public List<Link> getLinks() {
@@ -44,11 +45,20 @@ public class CaseFileHateoas implements IHateoasLinks {
         this.caseFile = caseFile;
     }
 
-    public Iterable<CaseFile> getCaseFileIterable() {
-        return caseFileIterable;
+    public List<CaseFile> getCaseFileList() {
+        return caseFileList;
     }
 
-    public void setCaseFileIterable(Iterable<CaseFile> caseFileIterable) {
-        this.caseFileIterable = caseFileIterable;
+    public void setCaseFileList(List<CaseFile> caseFileList) {
+        this.caseFileList = caseFileList;
+    }
+
+    public INoarkSystemIdEntity getSystemIdEntity() {
+        return caseFile;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<INoarkSystemIdEntity> getSystemIdEntityList() {
+        return (ArrayList<INoarkSystemIdEntity>) (ArrayList) caseFileList;
     }
 }

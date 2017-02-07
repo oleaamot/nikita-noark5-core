@@ -22,8 +22,9 @@ public interface ISeriesService  {
 
 	// -- All READ operations
 
-	Iterable<Series> findAll();
-	List<Series> findAll(Sort sort);
+    List<Series> findAll();
+
+    List<Series> findAll(Sort sort);
 	Page<Series> findAll(Pageable pageable);
 
 	// id
@@ -116,5 +117,5 @@ public interface ISeriesService  {
 	List<Series> findByOwnedBy(String ownedBy);
 	List<Series> findByOwnedBy(String ownedBy, Sort sort);
 
-    Iterable<Series> findSeriesByOwnerPaginated(Integer top, Integer skip);
+    List<Series> findSeriesByOwnerPaginated(Integer top, Integer skip);
 }

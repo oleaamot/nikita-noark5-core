@@ -19,12 +19,13 @@ public interface IRecordService {
 	DocumentDescription createDocumentDescriptionAssociatedWithRecord(String recordSystemId,
 																	  DocumentDescription documentDescription);
 
-    Iterable<Record> findRecordByOwnerPaginated(Integer top, Integer skip);
+    List<Record> findRecordByOwnerPaginated(Integer top, Integer skip);
 
 	// -- All READ operations
 
-	Iterable<Record> findAll();
-	List<Record> findAll(Sort sort);
+    List<Record> findAll();
+
+    List<Record> findAll(Sort sort);
 	Page<Record> findAll(Pageable pageable);
 
 	// id

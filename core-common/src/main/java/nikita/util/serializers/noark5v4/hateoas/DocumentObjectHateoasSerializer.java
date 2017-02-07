@@ -38,7 +38,7 @@ public class DocumentObjectHateoasSerializer extends StdSerializer<DocumentObjec
     public void serialize(DocumentObjectHateoas documentObjectHateoas, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
-        Iterable<DocumentObject> documentObjectIterable = documentObjectHateoas.getDocumentObjectIterable();
+        Iterable<DocumentObject> documentObjectIterable = documentObjectHateoas.getDocumentObjectList();
         if (documentObjectIterable != null) {
             jgen.writeStartObject();
             jgen.writeFieldName(DOCUMENT_OBJECT);

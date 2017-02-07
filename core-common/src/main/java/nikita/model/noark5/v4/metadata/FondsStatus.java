@@ -9,16 +9,16 @@ import org.hibernate.envers.Audited;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "document_medium")
+@Table(name = "fonds_status")
 // Enable soft delete of DocumentMedium
-@SQLDelete(sql="UPDATE document_medium SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
-public class DocumentMedium implements INikitaEntity {
+@SQLDelete(sql = "UPDATE fonds_status SET deleted = true WHERE id = ?")
+@Where(clause = "deleted <> true")
+public class FondsStatus implements INikitaEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "pk_document_medium_id", nullable = false, insertable = true, updatable = false)
+    @Column(name = "pk_fonds_status_id", nullable = false, insertable = true, updatable = false)
     protected Long id;
 
     /**

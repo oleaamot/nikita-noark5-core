@@ -14,6 +14,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.List;
 
 @Service
 @Transactional
@@ -29,7 +30,7 @@ public class BasicRecordService extends RecordService implements IBasicRecordSer
 
     // All READ operations
     @Override
-    public Iterable<BasicRecord> findBasicRecordByOwnerPaginated(Integer top, Integer skip) {
+    public List<BasicRecord> findBasicRecordByOwnerPaginated(Integer top, Integer skip) {
 
         if (top == null || top > maxPageSize) {
             top = maxPageSize;

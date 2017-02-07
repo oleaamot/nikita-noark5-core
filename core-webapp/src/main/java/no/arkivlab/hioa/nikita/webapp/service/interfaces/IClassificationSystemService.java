@@ -19,9 +19,9 @@ public interface IClassificationSystemService {
 	Class createClassAssociatedWithClassificationSystem(String classificationSystemSystemId, Class klass);
 
 	// -- All READ operations
-    Iterable<ClassificationSystem> findClassificationSystemByOwnerPaginated(Integer top, Integer skip);
+	List<ClassificationSystem> findClassificationSystemByOwnerPaginated(Integer top, Integer skip);
 
-    Iterable<ClassificationSystem> findAll();
+	List<ClassificationSystem> findAll();
 	List<ClassificationSystem> findAll(Sort sort);
 	Page<ClassificationSystem> findAll(Pageable pageable);
 

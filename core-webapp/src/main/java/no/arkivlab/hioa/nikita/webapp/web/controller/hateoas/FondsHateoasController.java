@@ -12,6 +12,7 @@ import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.hateoas.FondsHateoas;
 import nikita.model.noark5.v4.hateoas.SeriesHateoas;
 import nikita.util.exceptions.NikitaException;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
@@ -24,8 +25,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.EntityManager;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static nikita.config.Constants.*;
@@ -37,16 +41,21 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
         produces = {NOARK5_V4_CONTENT_TYPE})
 public class FondsHateoasController {
 
-    @Autowired
     EntityManager entityManager;
-
-    @Autowired
     IFondsService fondsService;
+    ISeriesService seriesService;
+    IFondsHateoasHandler fondsHateoasHandler;
 
     @Autowired
-    ISeriesService seriesService;
+    public FondsHateoasController(EntityManager entityManager, IFondsService fondsService,
+                                  ISeriesService seriesService, IFondsHateoasHandler fondsHateoasHandler) {
+        this.entityManager = entityManager;
+        this.fondsService = fondsService;
+        this.seriesService = seriesService;
+        this.fondsHateoasHandler = fondsHateoasHandler;
+    }
 
-    // API - All POST Requests (CRUD - CREATE)
+// API - All POST Requests (CRUD - CREATE)
 
     @ApiOperation(value = "Persists a Fonds object", notes = "Returns the newly" +
             " created Fonds object after it is persisted to the database", response = FondsHateoas.class)
@@ -64,12 +73,14 @@ public class FondsHateoasController {
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = NEW_FONDS)
     public ResponseEntity<FondsHateoas> createFonds(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fonds",
                     value = "Incoming fonds object",
                     required = true)
             @RequestBody Fonds fonds)  throws NikitaException {
         Fonds createdFonds = fondsService.createNewFonds(fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(createdFonds);
+        fondsHateoasHandler.addLinksOnCreate(fondsHateoas, request);
         return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
     }
 
@@ -93,6 +104,7 @@ public class FondsHateoasController {
             "fondsSystemId" + RIGHT_PARENTHESIS + SLASH
             + NEW_FONDS)
     public ResponseEntity<FondsHateoas> createFondsAssociatedWithFonds(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "parentFondsSystemId",
                     value = "systemId of parent fonds to associate the fonds with.",
                     required = true)
@@ -104,6 +116,8 @@ public class FondsHateoasController {
             throws NikitaException {
         Fonds createdFonds = fondsService.createFondsAssociatedWithFonds(parentFondsSystemId, fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(createdFonds);
+        fondsHateoasHandler.addLinksOnCreate(fondsHateoas, request);
+
         return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
     }
 
@@ -180,10 +194,13 @@ public class FondsHateoasController {
     @Timed
     @RequestMapping(method = RequestMethod.GET, value = FONDS + SLASH)
     public ResponseEntity<FondsHateoas> findAllFonds(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
         FondsHateoas fondsHateoas = new
                 FondsHateoas(fondsService.findFondsByOwnerPaginated(top, skip));
+        fondsHateoasHandler.addLinksOnRead(fondsHateoas, request);
+
         return new ResponseEntity<>(fondsHateoas, HttpStatus.OK);
     }
 

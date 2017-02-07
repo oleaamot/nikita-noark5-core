@@ -40,7 +40,7 @@ public class FondsHateoasSerializer extends StdSerializer<FondsHateoas> {
     public void serialize(FondsHateoas fondsHateoas, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
-        Iterable<Fonds> fondsIterable = fondsHateoas.getFondsIterable();
+        Iterable<Fonds> fondsIterable = fondsHateoas.getFondsList();
         if (fondsIterable != null) {
             jgen.writeStartObject();
             jgen.writeFieldName(FONDS);

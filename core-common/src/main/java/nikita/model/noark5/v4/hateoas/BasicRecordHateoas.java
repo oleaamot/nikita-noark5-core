@@ -2,8 +2,10 @@ package nikita.model.noark5.v4.hateoas;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nikita.model.noark5.v4.BasicRecord;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.serializers.noark5v4.hateoas.BasicRecordHateoasSerializer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,18 +16,18 @@ import java.util.List;
  *
  */
 @JsonSerialize(using = BasicRecordHateoasSerializer.class)
-public class BasicRecordHateoas implements IHateoasLinks {
+public class BasicRecordHateoas implements IHateoasNoarkObject {
 
-    protected List<Link> links;
+    protected List<Link> links = new ArrayList<>();
     BasicRecord basicRecord;
-    private Iterable<BasicRecord> basicRecordIterable;
+    private List<BasicRecord> basicRecordList;
 
     public BasicRecordHateoas(BasicRecord basicRecord){
         this.basicRecord = basicRecord;
     }
 
-    public BasicRecordHateoas(Iterable<BasicRecord> basicRecordIterable) {
-        this.basicRecordIterable = basicRecordIterable;
+    public BasicRecordHateoas(List<BasicRecord> basicRecordList) {
+        this.basicRecordList = basicRecordList;
     }
 
     public List<Link> getLinks() {
@@ -35,6 +37,10 @@ public class BasicRecordHateoas implements IHateoasLinks {
         this.links = links;
     }
 
+    public void addLink(Link link) {
+        this.links.add(link);
+    }
+
     public BasicRecord getBasicRecord() {
         return basicRecord;
     }
@@ -42,11 +48,20 @@ public class BasicRecordHateoas implements IHateoasLinks {
         this.basicRecord = basicRecord;
     }
 
-    public Iterable<BasicRecord> getBasicRecordIterable() {
-        return basicRecordIterable;
+    public List<BasicRecord> getBasicRecordList() {
+        return basicRecordList;
     }
 
-    public void setBasicRecordIterable(Iterable<BasicRecord> basicRecordIterable) {
-        this.basicRecordIterable = basicRecordIterable;
+    public void setBasicRecordList(List<BasicRecord> basicRecordList) {
+        this.basicRecordList = basicRecordList;
+    }
+
+    public INoarkSystemIdEntity getSystemIdEntity() {
+        return basicRecord;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<INoarkSystemIdEntity> getSystemIdEntityList() {
+        return (ArrayList<INoarkSystemIdEntity>) (ArrayList) basicRecordList;
     }
 }

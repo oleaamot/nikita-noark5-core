@@ -90,7 +90,7 @@ public class FileService implements IFileService {
     }
 
     // All READ operations
-    public Iterable<File> findAll() {
+    public List<File> findAll() {
         return fileRepository.findAll();
     }
 
@@ -420,7 +420,7 @@ public class FileService implements IFileService {
 
     // All READ operations
     @Override
-    public Iterable<File> findFileByOwnerPaginated(Integer top, Integer skip) {
+    public List<File> findFileByOwnerPaginated(Integer top, Integer skip) {
 
         if (top == null || top > maxPageSize) {
             top = maxPageSize;

@@ -39,7 +39,7 @@ public class ClassificationSystemHateoasSerializer extends StdSerializer<Classif
     public void serialize(ClassificationSystemHateoas classificationSystemHateoas, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
-        Iterable<ClassificationSystem> classificationSystemIterable = classificationSystemHateoas.getClassificationSystemIterable();
+        Iterable<ClassificationSystem> classificationSystemIterable = classificationSystemHateoas.getClassificationSystemList();
         if (classificationSystemIterable != null) {
             jgen.writeStartObject();
             jgen.writeFieldName(CLASSIFICATION_SYSTEM);

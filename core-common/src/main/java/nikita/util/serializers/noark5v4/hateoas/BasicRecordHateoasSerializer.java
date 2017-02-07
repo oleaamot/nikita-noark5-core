@@ -39,7 +39,7 @@ public class BasicRecordHateoasSerializer extends StdSerializer<BasicRecordHateo
     public void serialize(BasicRecordHateoas basicRecordHateoas, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
-        Iterable<BasicRecord> basicRecordIterable = basicRecordHateoas.getBasicRecordIterable();
+        Iterable<BasicRecord> basicRecordIterable = basicRecordHateoas.getBasicRecordList();
         if (basicRecordIterable != null) {
             jgen.writeStartObject();
             jgen.writeFieldName(BASIC_RECORD);

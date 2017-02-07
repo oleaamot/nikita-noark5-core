@@ -2,8 +2,10 @@ package nikita.model.noark5.v4.hateoas;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nikita.model.noark5.v4.DocumentDescription;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.serializers.noark5v4.hateoas.DocumentDescriptionHateoasSerializer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,18 +16,18 @@ import java.util.List;
  *
  */
 @JsonSerialize(using = DocumentDescriptionHateoasSerializer.class)
-public class DocumentDescriptionHateoas implements IHateoasLinks {
+public class DocumentDescriptionHateoas implements IHateoasNoarkObject {
 
-    protected List<Link> links;
-    DocumentDescription documentDescription;
-    private Iterable<DocumentDescription> documentDescriptionIterable;
+    protected List<Link> links = new ArrayList<>();
+    private DocumentDescription documentDescription;
+    private List<DocumentDescription> documentDescriptionList;
 
     public DocumentDescriptionHateoas(DocumentDescription documentDescription){
         this.documentDescription = documentDescription;
     }
 
-    public DocumentDescriptionHateoas(Iterable<DocumentDescription> documentDescriptionIterable) {
-        this.documentDescriptionIterable = documentDescriptionIterable;
+    public DocumentDescriptionHateoas(List<DocumentDescription> documentDescriptionList) {
+        this.documentDescriptionList = documentDescriptionList;
     }
 
     public List<Link> getLinks() {
@@ -35,6 +37,10 @@ public class DocumentDescriptionHateoas implements IHateoasLinks {
         this.links = links;
     }
 
+    public void addLink(Link link) {
+        this.links.add(link);
+    }
+
     public DocumentDescription getDocumentDescription() {
         return documentDescription;
     }
@@ -42,11 +48,20 @@ public class DocumentDescriptionHateoas implements IHateoasLinks {
         this.documentDescription = documentDescription;
     }
 
-    public Iterable<DocumentDescription> getDocumentDescriptionIterable() {
-        return documentDescriptionIterable;
+    public List<DocumentDescription> getDocumentDescriptionList() {
+        return documentDescriptionList;
     }
 
-    public void setDocumentDescriptionIterable(Iterable<DocumentDescription> documentDescriptionIterable) {
-        this.documentDescriptionIterable = documentDescriptionIterable;
+    public void setDocumentDescriptionList(List<DocumentDescription> documentDescriptionList) {
+        this.documentDescriptionList = documentDescriptionList;
+    }
+
+    public INoarkSystemIdEntity getSystemIdEntity() {
+        return documentDescription;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<INoarkSystemIdEntity> getSystemIdEntityList() {
+        return (ArrayList<INoarkSystemIdEntity>) (ArrayList) documentDescriptionList;
     }
 }
