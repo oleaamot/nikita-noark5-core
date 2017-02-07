@@ -43,13 +43,11 @@ public class CaseFileHateoasSerializer extends StdSerializer<CaseFileHateoas> {
     public void serialize(CaseFileHateoas caseFileHateoas, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
-<<<<<<< HEAD
+
         Iterable<CaseFile> caseFileIterable = caseFileHateoas.getCaseFileList();
-        if (caseFileIterable != null) {
-=======
-        Iterable<CaseFile> caseFileIterable = caseFileHateoas.getCaseFileIterable();
+        // Iterables.size is performance heavy. You are getting a list now return it!
         if (caseFileIterable != null && Iterables.size(caseFileIterable) > 0) {
->>>>>>> master
+
             jgen.writeStartObject();
             jgen.writeFieldName(CASE_FILE);
             jgen.writeStartArray();

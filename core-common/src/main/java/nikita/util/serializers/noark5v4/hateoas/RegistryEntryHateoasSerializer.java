@@ -41,13 +41,9 @@ public class RegistryEntryHateoasSerializer extends StdSerializer<RegistryEntryH
     public void serialize(RegistryEntryHateoas registryEntryHateoas, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
-<<<<<<< HEAD
+
         Iterable<RegistryEntry> registryEntryIterable = registryEntryHateoas.getRegistryEntryList();
-        if (registryEntryIterable != null) {
-=======
-        Iterable<RegistryEntry> registryEntryIterable = registryEntryHateoas.getRegistryEntryIterable();
         if (registryEntryIterable != null && Iterables.size(registryEntryIterable) > 0) {
->>>>>>> master
             jgen.writeStartObject();
             jgen.writeFieldName(REGISTRY_ENTRY);
             jgen.writeStartArray();

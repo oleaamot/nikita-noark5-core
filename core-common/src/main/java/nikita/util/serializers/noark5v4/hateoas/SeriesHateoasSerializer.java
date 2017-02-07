@@ -41,13 +41,8 @@ public class SeriesHateoasSerializer extends StdSerializer<SeriesHateoas> {
     public void serialize(SeriesHateoas seriesHateoas, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
-<<<<<<< HEAD
         Iterable<Series> seriesIterable = seriesHateoas.getSeriesList();
-        if (seriesIterable != null) {
-=======
-        Iterable <Series> seriesIterable = seriesHateoas.getSeriesIterable();
         if (seriesIterable != null && Iterables.size(seriesIterable) > 0) {
->>>>>>> master
             jgen.writeStartObject();
             jgen.writeFieldName(SERIES);
             jgen.writeStartArray();

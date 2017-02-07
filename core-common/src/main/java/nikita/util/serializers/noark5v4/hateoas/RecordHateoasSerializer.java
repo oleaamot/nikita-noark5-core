@@ -41,13 +41,8 @@ public class RecordHateoasSerializer extends StdSerializer<RecordHateoas> {
     public void serialize(RecordHateoas recordHateoas, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
-<<<<<<< HEAD
         Iterable<Record> recordIterable = recordHateoas.getRecordList();
-        if (recordIterable != null) {
-=======
-        Iterable<Record> recordIterable = recordHateoas.getRecordIterable();
         if (recordIterable != null && Iterables.size(recordIterable) > 0) {
->>>>>>> master
             jgen.writeStartObject();
             jgen.writeFieldName(REGISTRATION);
             jgen.writeStartArray();

@@ -41,14 +41,8 @@ public class ClassificationSystemHateoasSerializer extends StdSerializer<Classif
                           SerializerProvider provider)
             throws IOException {
 
-<<<<<<< HEAD
         Iterable<ClassificationSystem> classificationSystemIterable = classificationSystemHateoas.getClassificationSystemList();
-        if (classificationSystemIterable != null) {
-=======
-        Iterable<ClassificationSystem> classificationSystemIterable =
-                classificationSystemHateoas.getClassificationSystemIterable();
         if (classificationSystemIterable != null && Iterables.size(classificationSystemIterable) > 0) {
->>>>>>> master
             jgen.writeStartObject();
             jgen.writeFieldName(CLASSIFICATION_SYSTEM);
             jgen.writeStartArray();

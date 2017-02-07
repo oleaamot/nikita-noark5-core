@@ -39,13 +39,8 @@ public class FileHateoasSerializer extends StdSerializer<FileHateoas> {
     public void serialize(FileHateoas fileHateoas, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
-<<<<<<< HEAD
         Iterable<File> fileIterable = fileHateoas.getFileList();
-        if (fileIterable != null) {
-=======
-        Iterable<File> fileIterable = fileHateoas.getFileIterable();
         if (fileIterable != null && Iterables.size(fileIterable) > 0) {
->>>>>>> master
             jgen.writeStartObject();
             jgen.writeFieldName(FILE);
             jgen.writeStartArray();
