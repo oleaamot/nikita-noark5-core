@@ -4,6 +4,8 @@ package nikita.model.noark5.v4.hateoas;
  * Created by tsodring on 12/22/16.
  */
 public class Link {
+
+    protected String linkName;
     protected String href;
     protected String rel;
     protected Boolean templated;
@@ -12,6 +14,21 @@ public class Link {
         this.href = href;
         this.rel = rel;
         this.templated = templated;
+    }
+
+    public Link(String linkName, String href, String rel, Boolean templated) {
+        this.linkName = linkName;
+        this.href = href;
+        this.rel = rel;
+        this.templated = templated;
+    }
+
+    public String getLinkName() {
+        return linkName;
+    }
+
+    public void setLinkName(String linkName) {
+        this.linkName = linkName;
     }
 
     public String getHref() {
@@ -40,7 +57,7 @@ public class Link {
 
     @Override
     public String toString() {
-        return "Link{" +
+        return "Link " + linkName + " {" +
                 "href='" + href + '\'' +
                 ", rel='" + rel + '\'' +
                 ", templated=" + templated +

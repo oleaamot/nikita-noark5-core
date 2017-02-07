@@ -2,8 +2,10 @@ package nikita.model.noark5.v4.hateoas;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nikita.model.noark5.v4.Record;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.serializers.noark5v4.hateoas.RecordHateoasSerializer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,18 +16,18 @@ import java.util.List;
  *
  */
 @JsonSerialize(using = RecordHateoasSerializer.class)
-public class RecordHateoas implements IHateoasLinks {
+public class RecordHateoas implements IHateoasNoarkObject {
 
-    protected List<Link> links;
+    protected List<Link> links = new ArrayList<>();
     Record record;
-    private Iterable<Record> recordIterable;
+    private List<Record> recordList;
 
     public RecordHateoas(Record record){
         this.record = record;
     }
 
-    public RecordHateoas(Iterable<Record> recordIterable) {
-        this.recordIterable = recordIterable;
+    public RecordHateoas(List<Record> recordList) {
+        this.recordList = recordList;
     }
 
     public List<Link> getLinks() {
@@ -35,6 +37,10 @@ public class RecordHateoas implements IHateoasLinks {
         this.links = links;
     }
 
+    public void addLink(Link link) {
+        this.links.add(link);
+    }
+
     public Record getRecord() {
         return record;
     }
@@ -42,11 +48,20 @@ public class RecordHateoas implements IHateoasLinks {
         this.record = record;
     }
 
-    public Iterable<Record> getRecordIterable() {
-        return recordIterable;
+    public List<Record> getRecordList() {
+        return recordList;
     }
 
-    public void setRecordIterable(Iterable<Record> recordIterable) {
-        this.recordIterable = recordIterable;
+    public void setRecordList(List<Record> recordList) {
+        this.recordList = recordList;
+    }
+
+    public INoarkSystemIdEntity getSystemIdEntity() {
+        return record;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<INoarkSystemIdEntity> getSystemIdEntityList() {
+        return (ArrayList<INoarkSystemIdEntity>) (ArrayList) recordList;
     }
 }

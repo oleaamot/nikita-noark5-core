@@ -73,7 +73,7 @@ public class ClassificationSystemService implements IClassificationSystemService
     }
 
     // All READ operations
-    public Iterable<ClassificationSystem> findAll() {
+    public List<ClassificationSystem> findAll() {
         return classificationSystemRepository.findAll();
     }
 
@@ -389,7 +389,7 @@ public class ClassificationSystemService implements IClassificationSystemService
 
     // All READ operations
     @Override
-    public Iterable<ClassificationSystem> findClassificationSystemByOwnerPaginated(Integer top, Integer skip) {
+    public List<ClassificationSystem> findClassificationSystemByOwnerPaginated(Integer top, Integer skip) {
         if (top == null || top > maxPageSize) {
             top = maxPageSize;
         }

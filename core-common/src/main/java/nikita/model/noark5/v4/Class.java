@@ -1,13 +1,17 @@
 package nikita.model.noark5.v4;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.IClassified;
 import nikita.model.noark5.v4.interfaces.ICrossReference;
 import nikita.model.noark5.v4.interfaces.IDisposal;
 import nikita.model.noark5.v4.interfaces.IScreening;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
+import nikita.util.deserialisers.ClassDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -19,6 +23,8 @@ import java.util.Set;
 // Enable soft delete of Class
 @SQLDelete(sql="UPDATE class SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
+@Indexed(index = "class")
+@JsonDeserialize(using = ClassDeserializer.class)
 public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClassified, ICrossReference {
 
     private static final long serialVersionUID = 1L;
@@ -37,6 +43,7 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
      */
     @Column(name = "system_id", unique=true)
     @Audited
+    @Field
     protected String systemId;
 
     /**
@@ -44,6 +51,7 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
      */
     @Column(name = "class_id")
     @Audited
+    @Field
     protected String classId;
 
     /**
@@ -51,6 +59,7 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
      */
     @Column(name = "title")
     @Audited
+    @Field
     protected String title;
 
     /**
@@ -58,6 +67,7 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
      */
     @Column(name = "description")
     @Audited
+    @Field
     protected String description;
 
     /**
@@ -66,6 +76,7 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
+    @Field
     protected Date createdDate;
 
     /**
@@ -73,6 +84,7 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
      */
     @Column(name = "created_by")
     @Audited
+    @Field
     protected String createdBy;
 
     /**
@@ -81,6 +93,7 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Column(name = "finalised_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
+    @Field
     protected Date finalisedDate;
 
     /**
@@ -88,15 +101,18 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
      */
     @Column(name = "finalised_by")
     @Audited
+    @Field
     protected String finalisedBy;
 
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
+    @Field
     private Boolean deleted;
 
     @Column(name = "owned_by")
     @Audited
+    @Field
     protected String ownedBy;
 
     // Links to Keywords

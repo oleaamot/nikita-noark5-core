@@ -109,7 +109,7 @@ public class SeriesService implements ISeriesService {
 
     // All READ operations
 
-    public Iterable<Series> findSeriesByOwnerPaginated(Integer top, Integer skip) {
+    public List<Series> findSeriesByOwnerPaginated(Integer top, Integer skip) {
 
         if (top == null || top > maxPageSize) {
             top = maxPageSize;
@@ -134,7 +134,7 @@ public class SeriesService implements ISeriesService {
     // NOTE: I am leaving these methods here for another while. They will probably be replaced
     // by a single CriteriaBuilder approach, but for the moment, they will be left here.
 
-    public Iterable<Series> findAll() {
+    public List<Series> findAll() {
         return seriesRepository.findAll();
     }
 

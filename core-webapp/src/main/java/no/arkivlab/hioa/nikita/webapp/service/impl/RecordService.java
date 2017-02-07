@@ -85,7 +85,7 @@ public class RecordService implements IRecordService {
     }
 
     // All READ operations
-    public Iterable<Record> findAll() {
+    public List<Record> findAll() {
         return recordRepository.findAll();
     }
 
@@ -305,7 +305,7 @@ public class RecordService implements IRecordService {
 
     // All READ operations
 
-    public Iterable<Record> findRecordByOwnerPaginated(Integer top, Integer skip) {
+    public List<Record> findRecordByOwnerPaginated(Integer top, Integer skip) {
 
         if (top == null || top > maxPageSize) {
             top = maxPageSize;

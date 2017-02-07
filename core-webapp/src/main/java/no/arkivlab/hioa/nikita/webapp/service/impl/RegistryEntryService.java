@@ -20,6 +20,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.HashSet;
+import java.util.List;
 
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 
@@ -79,7 +80,7 @@ public class RegistryEntryService extends BasicRecordService implements IRegistr
     }
 
     // All READ operations
-    public Iterable<RegistryEntry> findRegistryEntryByOwnerPaginated(Integer top, Integer skip) {
+    public List<RegistryEntry> findRegistryEntryByOwnerPaginated(Integer top, Integer skip) {
 
         if (top == null || top > maxPageSize) {
             top = maxPageSize;

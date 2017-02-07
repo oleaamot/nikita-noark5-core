@@ -2,23 +2,25 @@ package nikita.model.noark5.v4.hateoas;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nikita.model.noark5.v4.Class;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.serializers.noark5v4.hateoas.ClassHateoasSerializer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonSerialize(using = ClassHateoasSerializer.class)
-public class ClassHateoas implements IHateoasLinks {
+public class ClassHateoas implements IHateoasNoarkObject {
 
-    protected List<Link> links;
+    protected List<Link> links = new ArrayList<>();
     protected Class klass;
-    private Iterable<Class> classIterable;
+    private List<Class> classList;
 
     public ClassHateoas(Class klass) {
         this.klass = klass;
     }
 
-    public ClassHateoas(Iterable<Class> classIterable) {
-        this.classIterable = classIterable;
+    public ClassHateoas(List<Class> classList) {
+        this.classList = classList;
     }
 
 
@@ -29,6 +31,10 @@ public class ClassHateoas implements IHateoasLinks {
         this.links = links;
     }
 
+    public void addLink(Link link) {
+        this.links.add(link);
+    }
+
     public Class getKlass() {
         return klass;
     }
@@ -36,11 +42,20 @@ public class ClassHateoas implements IHateoasLinks {
         this.klass = klass;
     }
 
-    public Iterable<Class> getClassIterable() {
-        return classIterable;
+    public List<Class> getclassList() {
+        return classList;
     }
 
-    public void setClassIterable(Iterable<Class> classIterable) {
-        this.classIterable = classIterable;
+    public void setclassList(List<Class> classList) {
+        this.classList = classList;
+    }
+
+    public INoarkSystemIdEntity getSystemIdEntity() {
+        return klass;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<INoarkSystemIdEntity> getSystemIdEntityList() {
+        return (ArrayList<INoarkSystemIdEntity>) (ArrayList) classList;
     }
 }

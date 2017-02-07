@@ -2,8 +2,10 @@ package nikita.model.noark5.v4.hateoas;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nikita.model.noark5.v4.File;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.serializers.noark5v4.hateoas.FileHateoasSerializer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,18 +16,18 @@ import java.util.List;
  *
  */
 @JsonSerialize(using = FileHateoasSerializer.class)
-public class FileHateoas implements IHateoasLinks {
+public class FileHateoas implements IHateoasNoarkObject {
 
-    protected List<Link> links;
+    protected List<Link> links = new ArrayList<>();
     File file;
-    private Iterable<File> fileIterable;
+    private List<File> fileList;
 
     public FileHateoas(File file){
         this.file = file;
     }
 
-    public FileHateoas(Iterable<File> fileIterable) {
-        this.fileIterable = fileIterable;
+    public FileHateoas(List<File> fileList) {
+        this.fileList = fileList;
     }
 
     public List<Link> getLinks() {
@@ -35,6 +37,10 @@ public class FileHateoas implements IHateoasLinks {
         this.links = links;
     }
 
+    public void addLink(Link link) {
+        this.links.add(link);
+    }
+
     public File getFile() {
         return file;
     }
@@ -42,11 +48,20 @@ public class FileHateoas implements IHateoasLinks {
         this.file = file;
     }
 
-    public Iterable<File> getFileIterable() {
-        return fileIterable;
+    public List<File> getFileList() {
+        return fileList;
     }
 
-    public void setFileIterable(Iterable<File> fileIterable) {
-        this.fileIterable = fileIterable;
+    public void setFileList(List<File> fileList) {
+        this.fileList = fileList;
+    }
+
+    public INoarkSystemIdEntity getSystemIdEntity() {
+        return file;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<INoarkSystemIdEntity> getSystemIdEntityList() {
+        return (ArrayList<INoarkSystemIdEntity>) (ArrayList) fileList;
     }
 }

@@ -7,6 +7,9 @@ import nikita.util.deserialisers.BasicRecordDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,6 +20,7 @@ import java.util.Set;
 // Enable soft delete of BasicRecord
 @SQLDelete(sql="UPDATE basic_record SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
+@Indexed(index = "basic_record")
 @JsonDeserialize(using = BasicRecordDeserializer.class)
 public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleDescriptionEntity,
         IStorageLocation, IKeyword, IComment, ICrossReference, IAuthor {
@@ -28,6 +32,7 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
      */
     @Column(name = "record_id")
     @Audited
+    @Field
     protected String recordId;
 
     /**
@@ -35,6 +40,7 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
      */
     @Column(name = "title")
     @Audited
+    @Field
     protected String title;
 
     /**
@@ -49,6 +55,7 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
      */
     @Column(name = "description")
     @Audited
+    @Field
     protected String description;
 
     /**
@@ -56,15 +63,18 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
      */
     @Column(name = "document_medium")
     @Audited
+    @Field
     protected String documentMedium;
 
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
+    @Field
     private Boolean deleted;
 
     @Column(name = "owned_by")
     @Audited
+    @Field
     protected String ownedBy;
 
     // Link to StorageLocation

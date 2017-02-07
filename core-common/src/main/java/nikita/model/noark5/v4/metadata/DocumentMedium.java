@@ -22,13 +22,6 @@ public class DocumentMedium implements INikitaEntity {
     protected Long id;
 
     /**
-     * M001 - systemID (xs:string)
-     */
-    @Column(name = "system_id", unique=true)
-    @Audited
-    protected String systemId;
-
-    /**
      * M -  (xs:string)
      */
     @Column(name = "code")
@@ -59,14 +52,6 @@ public class DocumentMedium implements INikitaEntity {
     @Override
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getSystemId() {
-        return systemId;
-    }
-
-    public void setSystemId(String systemId) {
-        this.systemId = systemId;
     }
 
     public String getCode() {
@@ -109,7 +94,6 @@ public class DocumentMedium implements INikitaEntity {
     public String toString() {
         return "DocumentMedium{" +
                 "id=" + id +
-                ", systemId='" + systemId + '\'' +
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", deleted=" + deleted +

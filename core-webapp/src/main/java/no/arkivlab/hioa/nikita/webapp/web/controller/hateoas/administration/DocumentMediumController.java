@@ -6,26 +6,22 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
-import nikita.util.exceptions.NikitaException;
-import nikita.model.noark5.v4.hateoas.FondsHateoas;
 import nikita.model.noark5.v4.metadata.DocumentMedium;
-import no.arkivlab.hioa.nikita.webapp.service.interfaces.ICaseFileService;
-import org.springframework.beans.factory.annotation.Autowired;
+import nikita.util.exceptions.NikitaException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import static nikita.config.Constants.*;
-import static nikita.config.Constants.SLASH;
-import static nikita.config.N5ResourceMappings.DOCUMENT_MEDIUM;
-import static nikita.config.N5ResourceMappings.CODE;
+import static nikita.config.N5ResourceMappings.*;
 
 @RestController
-@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_ADMINISTRATION_PATH + SLASH + DOCUMENT_MEDIUM)
+@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH + DOCUMENT_MEDIUM)
 public class DocumentMediumController {
-
-    @Autowired
-    ICaseFileService caseFileService;
 
     // API - All POST Requests (CRUD - CREATE)
 
@@ -33,9 +29,9 @@ public class DocumentMediumController {
             " created DocumentMedium object after it is persisted to the database", response = DocumentMedium.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "DocumentMedium " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
-                    response = FondsHateoas.class),
+                    response = DocumentMedium.class),
             @ApiResponse(code = 201, message = "DocumentMedium " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
-                    response = FondsHateoas.class),
+                    response = DocumentMedium.class),
             @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 404, message = API_MESSAGE_MALFORMED_PAYLOAD),
@@ -45,28 +41,20 @@ public class DocumentMediumController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = SLASH + NEW_DOCUMENT_MEDIUM)
-    public ResponseEntity<DocumentMedium> createDocumentMedium(@RequestBody DocumentMedium documentMedium)  throws NikitaException {
+    public ResponseEntity<DocumentMedium> createDocumentMedium(@RequestBody DocumentMedium documentMedium)
+            throws NikitaException {
         return new ResponseEntity<> (HttpStatus.NOT_IMPLEMENTED);
     }
 
     // API - All GET Requests (CRUD - READ)
 
-    // TODO: Here you have to handle returning an iterator of objects
-    /*
-    @RequestMapping(value = N5ResourceMappings.FONDS + SLASH + "{id}", method = RequestMethod.GET)
-    public ResponseEntity<FondsHateoas> findOne(@PathVariable("id") final Long id) {
-        Fonds fonds = fondsService.findById(id);
-        FondsHateoas fondsHateoas = new FondsHateoas(fonds);
-        return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
-    }
-    */
     @ApiOperation(value = "Gets a particular documentMedium object given a code", notes = "Returns the requested " +
             " documentMedium object", response = DocumentMedium.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "DocumentMedium " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
-                    response = FondsHateoas.class),
+                    response = DocumentMedium.class),
             @ApiResponse(code = 201, message = "DocumentMedium " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
-                    response = FondsHateoas.class),
+                    response = DocumentMedium.class),
             @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 404, message = API_MESSAGE_MALFORMED_PAYLOAD),
@@ -75,11 +63,27 @@ public class DocumentMediumController {
             @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMTNED)})
     @Counted
     @Timed
-
     @RequestMapping(value = CODE + SLASH + "{kode}", method = RequestMethod.GET)
     public ResponseEntity<DocumentMedium> findOne(@PathVariable("kode") final String code) {
         //DocumentMedium documentMedium = documentMediumService.findbyCode(code);
-        //return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
+        //return new ResponseEntity<> (DocumentMedium, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    @ApiOperation(value = "Retrieves all FondsStatus codes", response = DocumentMedium.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "FondsStatus codes found",
+                    response = DocumentMedium.class),
+            @ApiResponse(code = 404, message = "No FondsStatus found"),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.GET, value = FONDS + SLASH)
+    public ResponseEntity<DocumentMedium> findAllDocumentMedium(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request,
+            final HttpServletResponse response) {
         return new ResponseEntity<> (HttpStatus.NOT_IMPLEMENTED);
     }
 }

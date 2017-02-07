@@ -9,5 +9,4 @@ public class HATEOASConstants {
     public static final String REL = "rel";
     public static final String TEMPLATED = "templated";
     public static final String SELF = "self";
-
 }

@@ -2,8 +2,10 @@ package nikita.model.noark5.v4.hateoas;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nikita.model.noark5.v4.RegistryEntry;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.serializers.noark5v4.hateoas.RegistryEntryHateoasSerializer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,18 +16,18 @@ import java.util.List;
  *
  */
 @JsonSerialize(using = RegistryEntryHateoasSerializer.class)
-public class RegistryEntryHateoas implements IHateoasLinks {
+public class RegistryEntryHateoas implements IHateoasNoarkObject {
 
-    protected List<Link> links;
+    protected List<Link> links = new ArrayList<>();
     RegistryEntry registryEntry;
-    private Iterable<RegistryEntry> registryEntryIterable;
+    private List<RegistryEntry> registryEntryList;
 
     public RegistryEntryHateoas(RegistryEntry registryEntry){
         this.registryEntry = registryEntry;
     }
 
-    public RegistryEntryHateoas(Iterable<RegistryEntry> registryEntryIterable) {
-        this.registryEntryIterable = registryEntryIterable;
+    public RegistryEntryHateoas(List<RegistryEntry> registryEntryList) {
+        this.registryEntryList = registryEntryList;
     }
 
     public List<Link> getLinks() {
@@ -35,6 +37,10 @@ public class RegistryEntryHateoas implements IHateoasLinks {
         this.links = links;
     }
 
+    public void addLink(Link link) {
+        this.links.add(link);
+    }
+
     public RegistryEntry getRegistryEntry() {
         return registryEntry;
     }
@@ -42,11 +48,20 @@ public class RegistryEntryHateoas implements IHateoasLinks {
         this.registryEntry = registryEntry;
     }
 
-    public Iterable<RegistryEntry> getRegistryEntryIterable() {
-        return registryEntryIterable;
+    public List<RegistryEntry> getRegistryEntryList() {
+        return registryEntryList;
     }
 
-    public void setRegistryEntryIterable(Iterable<RegistryEntry> registryEntryIterable) {
-        this.registryEntryIterable = registryEntryIterable;
+    public void setRegistryEntryList(List<RegistryEntry> registryEntryList) {
+        this.registryEntryList = registryEntryList;
+    }
+
+    public INoarkSystemIdEntity getSystemIdEntity() {
+        return registryEntry;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<INoarkSystemIdEntity> getSystemIdEntityList() {
+        return (ArrayList<INoarkSystemIdEntity>) (ArrayList) registryEntryList;
     }
 }

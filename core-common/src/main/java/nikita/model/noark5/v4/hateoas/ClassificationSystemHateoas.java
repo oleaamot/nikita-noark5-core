@@ -2,21 +2,23 @@ package nikita.model.noark5.v4.hateoas;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nikita.model.noark5.v4.ClassificationSystem;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.serializers.noark5v4.hateoas.ClassificationSystemHateoasSerializer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonSerialize(using = ClassificationSystemHateoasSerializer.class)
-public class ClassificationSystemHateoas implements IHateoasLinks {
+public class ClassificationSystemHateoas implements IHateoasNoarkObject {
 
-    protected List<Link> links;
+    protected List<Link> links = new ArrayList<>();
     protected ClassificationSystem classificationSystem;
-    private Iterable<ClassificationSystem> classificationSystemIterable;
+    private List<ClassificationSystem> classificationSystemList;
 
     public ClassificationSystemHateoas(ClassificationSystem classificationSystem) {this.classificationSystem = classificationSystem;}
 
-    public ClassificationSystemHateoas(Iterable<ClassificationSystem> classificationSystemIterable) {
-        this.classificationSystemIterable = classificationSystemIterable;
+    public ClassificationSystemHateoas(List<ClassificationSystem> classificationSystemList) {
+        this.classificationSystemList = classificationSystemList;
     }
 
     public List<Link> getLinks() {
@@ -26,6 +28,10 @@ public class ClassificationSystemHateoas implements IHateoasLinks {
         this.links = links;
     }
 
+    public void addLink(Link link) {
+        this.links.add(link);
+    }
+
     public ClassificationSystem getClassificationSystem() {
         return classificationSystem;
     }
@@ -33,11 +39,20 @@ public class ClassificationSystemHateoas implements IHateoasLinks {
         this.classificationSystem = classificationSystem;
     }
 
-    public Iterable<ClassificationSystem> getClassificationSystemIterable() {
-        return classificationSystemIterable;
+    public List<ClassificationSystem> getClassificationSystemList() {
+        return classificationSystemList;
     }
 
-    public void setClassificationSystemIterable(Iterable<ClassificationSystem> classificationSystemIterable) {
-        this.classificationSystemIterable = classificationSystemIterable;
+    public void setClassificationSystemList(List<ClassificationSystem> classificationSystemList) {
+        this.classificationSystemList = classificationSystemList;
+    }
+
+    public INoarkSystemIdEntity getSystemIdEntity() {
+        return classificationSystem;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<INoarkSystemIdEntity> getSystemIdEntityList() {
+        return (ArrayList<INoarkSystemIdEntity>) (ArrayList) classificationSystemList;
     }
 }

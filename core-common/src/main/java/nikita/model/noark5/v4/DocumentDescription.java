@@ -10,6 +10,8 @@ import nikita.util.deserialisers.DocumentDescriptionDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -21,6 +23,7 @@ import java.util.Set;
 // Enable soft delete of DocumentDescription
 @SQLDelete(sql="UPDATE document_description SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
+@Indexed(index = "document_description")
 @JsonDeserialize(using = DocumentDescriptionDeserializer.class)
 public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity, INoarkTitleDescriptionEntity,
         INoarkCreateEntity, IDocumentMedium, IStorageLocation, IDeletion, IScreening, IDisposal, IClassified,
@@ -38,6 +41,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
      */
     @Column(name = "system_id", unique=true)
     @Audited
+    @Field
     protected String systemId;
 
     /**
@@ -45,6 +49,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
      */
     @Column(name = "document_type")
     @Audited
+    @Field
     protected String documentType;
 
     /**
@@ -52,6 +57,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
      */
     @Column(name = "document_status")
     @Audited
+    @Field
     protected String documentStatus;
 
     /**
@@ -59,6 +65,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
      */
     @Column(name = "title")
     @Audited
+    @Field
     protected String title;
 
     /**
@@ -66,6 +73,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
      */
     @Column(name = "description")
     @Audited
+    @Field
     protected String description;
 
     /**
@@ -74,6 +82,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
+    @Field
     protected Date createdDate;
 
     /**
@@ -81,6 +90,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
      */
     @Column(name = "created_by")
     @Audited
+    @Field
     protected String createdBy;
 
     /**
@@ -88,6 +98,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
      */
     @Column(name = "document_medium")
     @Audited
+    @Field
     protected String documentMedium;
 
     /**
@@ -95,6 +106,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
      */
     @Column(name = "associated_with_record_as")
     @Audited
+    @Field
     protected String associatedWithRecordAs;
 
     /**
@@ -102,6 +114,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
      */
     @Column(name = "document_number")
     @Audited
+    @Field
     protected Integer documentNumber;
 
     /**
@@ -110,6 +123,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
     @Column(name = "association_date")
     @Temporal(TemporalType.DATE)
     @Audited
+    @Field
     protected Date associationDate;
 
     /**
@@ -117,15 +131,18 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
      */
     @Column(name = "associated_by")
     @Audited
+    @Field
     protected String associatedBy;
 
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
+    @Field
     private Boolean deleted;
 
     @Column(name = "owned_by")
     @Audited
+    @Field
     protected String ownedBy;
 
     // Links to Records

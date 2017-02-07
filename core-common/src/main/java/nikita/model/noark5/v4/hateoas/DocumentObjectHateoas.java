@@ -2,8 +2,10 @@ package nikita.model.noark5.v4.hateoas;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nikita.model.noark5.v4.DocumentObject;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.serializers.noark5v4.hateoas.DocumentObjectHateoasSerializer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,18 +16,18 @@ import java.util.List;
  *
  */
 @JsonSerialize(using = DocumentObjectHateoasSerializer.class)
-public class DocumentObjectHateoas implements IHateoasLinks {
+public class DocumentObjectHateoas implements IHateoasNoarkObject {
 
-    protected List<Link> links;
+    protected List<Link> links = new ArrayList<>();
     DocumentObject documentObject;
-    private Iterable<DocumentObject> documentObjectIterable;
+    private List<DocumentObject> documentObjectList;
 
     public DocumentObjectHateoas(DocumentObject documentObject){
         this.documentObject = documentObject;
     }
 
-    public DocumentObjectHateoas(Iterable<DocumentObject> documentObjectIterable) {
-        this.documentObjectIterable = documentObjectIterable;
+    public DocumentObjectHateoas(List<DocumentObject> documentObjectList) {
+        this.documentObjectList = documentObjectList;
     }
 
     public List<Link> getLinks() {
@@ -35,6 +37,10 @@ public class DocumentObjectHateoas implements IHateoasLinks {
         this.links = links;
     }
 
+    public void addLink(Link link) {
+        this.links.add(link);
+    }
+
     public DocumentObject getDocumentObject() {
         return documentObject;
     }
@@ -42,11 +48,20 @@ public class DocumentObjectHateoas implements IHateoasLinks {
         this.documentObject = documentObject;
     }
 
-    public Iterable<DocumentObject> getDocumentObjectIterable() {
-        return documentObjectIterable;
+    public List<DocumentObject> getDocumentObjectList() {
+        return documentObjectList;
     }
 
-    public void setDocumentObjectIterable(Iterable<DocumentObject> documentObjectIterable) {
-        this.documentObjectIterable = documentObjectIterable;
+    public void setDocumentObjectList(List<DocumentObject> documentObjectList) {
+        this.documentObjectList = documentObjectList;
+    }
+
+    public INoarkSystemIdEntity getSystemIdEntity() {
+        return documentObject;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<INoarkSystemIdEntity> getSystemIdEntityList() {
+        return (ArrayList<INoarkSystemIdEntity>) (ArrayList) documentObjectList;
     }
 }

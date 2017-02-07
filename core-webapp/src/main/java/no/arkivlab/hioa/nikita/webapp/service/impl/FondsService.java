@@ -146,7 +146,7 @@ public class FondsService implements IFondsService {
     }
 
     // All READ operations
-    public Iterable<Fonds> findAll() {
+    public List<Fonds> findAll() {
         return fondsRepository.findAll();
     }
 
@@ -502,7 +502,7 @@ public class FondsService implements IFondsService {
 
     // All READ operations
 
-    public Iterable<Fonds> findFondsByOwnerPaginated(Integer top, Integer skip) {
+    public List<Fonds> findFondsByOwnerPaginated(Integer top, Integer skip) {
 
         if (top == null || top > maxPageSize) {
             top = maxPageSize;

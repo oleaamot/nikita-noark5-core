@@ -15,6 +15,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.List;
 
 @Service
 @Transactional
@@ -51,7 +52,7 @@ public class FondsCreatorService implements IFondsCreatorService {
 
     // All READ operations
     @Override
-    public Iterable<FondsCreator> findFondsCreatorByOwnerPaginated(Integer top, Integer skip) {
+    public List<FondsCreator> findFondsCreatorByOwnerPaginated(Integer top, Integer skip) {
 
         if (top == null || top > maxPageSize) {
             top = maxPageSize;

@@ -1326,11 +1326,18 @@ public final class CommonUtils {
                     jgen.writeArrayFieldStart(LINKS);
 
                     while (iterator.hasNext()) {
-                        jgen.writeStartObject();
                         Link link = iterator.next();
+                        // Can the startObject have a named object after an array?
+                        if (link.getLinkName() != null) {
+                            String linkName = link.getLinkName();
+                            jgen.writeStartObject(linkName);
+                        } else {
+                            jgen.writeStartObject();
+                        }
                         jgen.writeStringField(HREF, link.getHref());
                         jgen.writeStringField(REL, link.getRel());
-                        jgen.writeStringField(TEMPLATED, link.getRel());
+                        jgen.writeBooleanField(TEMPLATED, link.getTemplated());
+
                         jgen.writeEndObject();
                     }
                     jgen.writeEndArray();

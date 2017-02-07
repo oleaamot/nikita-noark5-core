@@ -77,7 +77,7 @@ public class DocumentDescriptionService implements IDocumentDescriptionService {
     }
 
     // All READ operations
-    public Iterable<DocumentDescription> findAll() {
+    public List<DocumentDescription> findAll() {
         return documentDescriptionRepository.findAll();
     }
 
@@ -333,7 +333,7 @@ public class DocumentDescriptionService implements IDocumentDescriptionService {
 
     // All READ operations
     @Override
-    public Iterable<DocumentDescription> findDocumentDescriptionByOwnerPaginated(Integer top, Integer skip) {
+    public List<DocumentDescription> findDocumentDescriptionByOwnerPaginated(Integer top, Integer skip) {
 
         if (top == null || top > maxPageSize) {
             top = maxPageSize;

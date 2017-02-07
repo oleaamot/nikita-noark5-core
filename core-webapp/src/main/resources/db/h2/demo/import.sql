@@ -7,3 +7,10 @@ INSERT INTO Authority (name) VALUES ('RECORDS_MANAGER');
 insert into User_authority(user_id, authority_name) values (1, 'CASE_HANDLER');
 insert into User_authority(user_id, authority_name) values (2, 'RECORDS_MANAGER');
 insert into User_authority(user_id, authority_name) values (3, 'ADMIN');
+
+insert into document_medium (pk_document_medium_id, code, description, deleted) values (0, 'Fysisk medium ', 'Bare fysiske dokumenter', false);
+insert into document_medium (pk_document_medium_id, code, description, deleted) values (1, 'Elektronisk arkiv', 'Bare elektroniske dokumenter', false);
+insert into document_medium (pk_document_medium_id, code, description, deleted) values (2, 'Blandet fysisk og elektronisk arkiv', '', false);
+
+insert into fonds_status(pk_fonds_status_id, code, deleted) values (0, 'Opprettet', false);
+insert into fonds_status(pk_fonds_status_id, code, deleted) values (1, 'Avsluttet', false);

@@ -8,9 +8,10 @@ import nikita.util.deserialisers.FileDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
-import java.lang.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +22,7 @@ import java.util.Set;
 // Enable soft delete of File
 @SQLDelete(sql="UPDATE file SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
+@Indexed(index = "file")
 @JsonDeserialize(using = FileDeserializer.class)
 public class File implements INoarkGeneralEntity, IDocumentMedium, IStorageLocation, IKeyword, IClassified,
         IDisposal, IScreening, IComment, ICrossReference
@@ -38,6 +40,7 @@ public class File implements INoarkGeneralEntity, IDocumentMedium, IStorageLocat
      */
     @Column(name = "system_id", unique=true)
     @Audited
+    @Field
     protected String systemId;
 
     /**
@@ -45,6 +48,7 @@ public class File implements INoarkGeneralEntity, IDocumentMedium, IStorageLocat
      */
     @Column(name = "file_id")
     @Audited
+    @Field
     protected String fileId;
 
     /**
@@ -52,6 +56,7 @@ public class File implements INoarkGeneralEntity, IDocumentMedium, IStorageLocat
      */
     @Column(name = "title")
     @Audited
+    @Field
     protected String title;
 
     /**
@@ -59,6 +64,7 @@ public class File implements INoarkGeneralEntity, IDocumentMedium, IStorageLocat
      */
     @Column(name = "official_title")
     @Audited
+    @Field
     protected String officialTitle;
 
     /**
@@ -66,6 +72,7 @@ public class File implements INoarkGeneralEntity, IDocumentMedium, IStorageLocat
      */
     @Column(name = "description")
     @Audited
+    @Field
     protected String description;
 
     /**
@@ -81,6 +88,7 @@ public class File implements INoarkGeneralEntity, IDocumentMedium, IStorageLocat
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
+    @Field
     protected Date createdDate;
 
     /**
@@ -96,6 +104,7 @@ public class File implements INoarkGeneralEntity, IDocumentMedium, IStorageLocat
     @Column(name = "finalised_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
+    @Field
     protected Date finalisedDate;
 
     /**
@@ -108,8 +117,10 @@ public class File implements INoarkGeneralEntity, IDocumentMedium, IStorageLocat
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
+    @Field
     private Boolean deleted;
 
+    @Field
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;

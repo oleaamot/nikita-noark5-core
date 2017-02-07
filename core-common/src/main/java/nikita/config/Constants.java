@@ -2,6 +2,8 @@ package nikita.config;
 
 import java.text.SimpleDateFormat;
 
+import static nikita.config.N5ResourceMappings.*;
+
 /**
  * Application constants.
  */
@@ -40,6 +42,7 @@ public final class Constants {
     public static final String NEW_RECORD = "ny-registrering";
     public static final String NEW_BASIC_RECORD = "ny-basisregistrering";
     public static final String NEW_REGISTRY_ENTRY = "ny-journalpost";
+
 
     public static final String NEW_DOCUMENT_DESCRIPTION = "ny-dokumentbeskrivelse";
     public static final String NEW_DOCUMENT_OBJECT = "ny-dokumentobjekt";
@@ -82,7 +85,7 @@ public final class Constants {
     public static final String NIKITA_CONFORMANCE_REL = "http://nikita.arkivlab.no/noark5/v4/";
 
     public static final String NOARK_FONDS_STRUCTURE_PATH = "arkivstruktur";
-    public static final String NOARK_METADATA_PATH = "administration";
+    public static final String NOARK_METADATA_PATH = "metadata";
     public static final String NOARK_ADMINISTRATION_PATH = "administration";
     public static final String NOARK_CASE_HANDLING_PATH = "sakarkiv";
 
@@ -108,7 +111,22 @@ public final class Constants {
     public static final String API_MESSAGE_NOT_IMPLEMTNED = "Not implemented yet";
     public static final String API_MESSAGE_MALFORMED_PAYLOAD = "Incoming data is malformed";
 
-// This is removed each time functionality is implemented
+
+    public static final String REL_METADATA = "http://rel.kxml.no/noark5/v4/api/metadata/";
+    public static final String REL_FONDS_STRUCTURE = "http://rel.kxml.no/noark5/v4/api/arkivstruktur/";
+    public static final String REL_METADATA_DOCUMENT_MEDIUM = REL_METADATA + DOCUMENT_MEDIUM + SLASH;
+    public static final String REL_METADATA_FONDS_STATUS = REL_METADATA + FONDS_STATUS + SLASH;
+    public static final String REL_FONDS_STRUCTURE_FONDS_CREATOR = REL_FONDS_STRUCTURE + FONDS_CREATOR + SLASH;
+    public static final String REL_FONDS_STRUCTURE_SERIES = REL_FONDS_STRUCTURE + SERIES + SLASH;
+    public static final String REL_FONDS_STRUCTURE_FONDS = REL_FONDS_STRUCTURE + FONDS + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_FONDS_CREATOR = REL_FONDS_STRUCTURE + NEW_FONDS_CREATOR + SLASH;
+    public static final String REL_FONDS_STRUCTURE_SUB_FONDS = REL_FONDS_STRUCTURE + SUB_FONDS + SLASH;
+    public static final String REL_FONDS_STRUCTURE_FONDS_STATUS = REL_METADATA + SLASH + FONDS_STATUS + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_SERIES = REL_FONDS_STRUCTURE + NEW_SERIES + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_FONDS = REL_FONDS_STRUCTURE + NEW_FONDS + SLASH;
+
+
+    // This is removed each time functionality is implemented
     private Constants() {
     }
 }
