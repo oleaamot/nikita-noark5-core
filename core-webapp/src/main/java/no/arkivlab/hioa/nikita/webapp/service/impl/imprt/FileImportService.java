@@ -81,7 +81,7 @@ public class FileImportService implements IFileImportService {
         }
         else {
             basicRecord.setReferenceFile(file);
-            persistedBasicRecord = (BasicRecord)recordImportService.save((Record)basicRecord);
+            persistedBasicRecord = (BasicRecord) recordImportService.save(basicRecord);
         }
         return persistedBasicRecord;
     }
