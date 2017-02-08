@@ -23,7 +23,8 @@ import static nikita.config.N5ResourceMappings.CASE_FILE;
 import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
-@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + CASE_FILE)
+@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH + SLASH + CASE_FILE,
+        produces = {NOARK5_V4_CONTENT_TYPE})
 public class CaseFileHateoasController {
 
     @Autowired
@@ -47,7 +48,7 @@ public class CaseFileHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS + SLASH
-            + NEW_REGISTRY_ENTRY)
+            + NEW_REGISTRY_ENTRY, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<RegistryEntryHateoas> createRegistryEntryAssociatedWithFile(
             @ApiParam(name = "fileSystemId",
                     value = "systemId of file to associate the record with",

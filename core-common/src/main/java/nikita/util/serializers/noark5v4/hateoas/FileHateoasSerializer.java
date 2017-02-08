@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.google.common.collect.Iterables;
 import nikita.model.noark5.v4.File;
 import nikita.model.noark5.v4.hateoas.FileHateoas;
 import nikita.util.CommonUtils;
@@ -39,7 +40,7 @@ public class FileHateoasSerializer extends StdSerializer<FileHateoas> {
             throws IOException {
 
         Iterable<File> fileIterable = fileHateoas.getFileList();
-        if (fileIterable != null) {
+        if (fileIterable != null && Iterables.size(fileIterable) > 0) {
             jgen.writeStartObject();
             jgen.writeFieldName(FILE);
             jgen.writeStartArray();
@@ -47,9 +48,16 @@ public class FileHateoasSerializer extends StdSerializer<FileHateoas> {
                 serializeFile(file, fileHateoas, jgen, provider);
             }
             jgen.writeEndArray();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, fileHateoas.getLinks());
             jgen.writeEndObject();
         } else if (fileHateoas.getFile() != null) {
             serializeFile(fileHateoas.getFile(), fileHateoas, jgen, provider);
+        }
+        // It's an empty object, so returning empty Hateoas links _links : []
+        else {
+            jgen.writeStartObject();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
+            jgen.writeEndObject();
         }
     }
 

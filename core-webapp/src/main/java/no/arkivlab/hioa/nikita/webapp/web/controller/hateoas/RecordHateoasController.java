@@ -23,7 +23,8 @@ import static nikita.config.N5ResourceMappings.REGISTRATION;
 import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
-@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + REGISTRATION)
+@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + REGISTRATION,
+        produces = {NOARK5_V4_CONTENT_TYPE})
 public class RecordHateoasController {
 
     @Autowired
@@ -47,7 +48,7 @@ public class RecordHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_DOCUMENT_DESCRIPTION)
+            SLASH + NEW_DOCUMENT_DESCRIPTION, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<DocumentDescriptionHateoas>
     createDocumentDescriptionAssociatedWithRecord(
             @ApiParam(name = "recordSystemId",

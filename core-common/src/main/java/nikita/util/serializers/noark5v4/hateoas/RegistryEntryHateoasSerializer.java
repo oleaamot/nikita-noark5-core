@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.google.common.collect.Iterables;
 import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
 import nikita.util.CommonUtils;
@@ -40,8 +41,9 @@ public class RegistryEntryHateoasSerializer extends StdSerializer<RegistryEntryH
     public void serialize(RegistryEntryHateoas registryEntryHateoas, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
+
         Iterable<RegistryEntry> registryEntryIterable = registryEntryHateoas.getRegistryEntryList();
-        if (registryEntryIterable != null) {
+        if (registryEntryIterable != null && Iterables.size(registryEntryIterable) > 0) {
             jgen.writeStartObject();
             jgen.writeFieldName(REGISTRY_ENTRY);
             jgen.writeStartArray();
@@ -49,9 +51,16 @@ public class RegistryEntryHateoasSerializer extends StdSerializer<RegistryEntryH
                 serializeRegistryEntry(registryEntry, registryEntryHateoas, jgen, provider);
             }
             jgen.writeEndArray();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, registryEntryHateoas.getLinks());
             jgen.writeEndObject();
         } else if (registryEntryHateoas.getRegistryEntry() != null) {
             serializeRegistryEntry(registryEntryHateoas.getRegistryEntry(), registryEntryHateoas, jgen, provider);
+        }
+        // It's an empty object, so returning empty Hateoas links _links : []
+        else {
+            jgen.writeStartObject();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
+            jgen.writeEndObject();
         }
     }
 

@@ -33,15 +33,15 @@ public final class Constants {
     public static final String RIGHT_PARENTHESIS = "}";
 
     public static final String NEW_FONDS = "ny-arkiv";
+    public static final String NEW_FONDS_CREATOR = "ny-arkivskaper";
     public static final String NEW_SERIES = "ny-arkivdel";
-    public static final String NEW_CLASSIFICATION_SYSTEM = "ny-klassifikasjonsystem";
+    public static final String NEW_CLASSIFICATION_SYSTEM = "ny-klassifikasjonssystem";
     public static final String NEW_CLASS = "ny-klasse";
     public static final String NEW_FILE = "ny-mappe";
     public static final String NEW_CASE_FILE = "ny-saksmappe";
     public static final String NEW_RECORD = "ny-registrering";
     public static final String NEW_BASIC_RECORD = "ny-basisregistrering";
     public static final String NEW_REGISTRY_ENTRY = "ny-journalpost";
-    public static final String NEW_FONDS_CREATOR = "ny-arkivskaper";
 
 
     public static final String NEW_DOCUMENT_DESCRIPTION = "ny-dokumentbeskrivelse";

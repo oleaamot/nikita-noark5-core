@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.google.common.collect.Iterables;
 import nikita.model.noark5.v4.CaseFile;
 import nikita.model.noark5.v4.hateoas.CaseFileHateoas;
 import nikita.util.CommonUtils;
@@ -42,8 +43,11 @@ public class CaseFileHateoasSerializer extends StdSerializer<CaseFileHateoas> {
     public void serialize(CaseFileHateoas caseFileHateoas, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
+
         Iterable<CaseFile> caseFileIterable = caseFileHateoas.getCaseFileList();
-        if (caseFileIterable != null) {
+        // Iterables.size is performance heavy. You are getting a list now return it!
+        if (caseFileIterable != null && Iterables.size(caseFileIterable) > 0) {
+
             jgen.writeStartObject();
             jgen.writeFieldName(CASE_FILE);
             jgen.writeStartArray();
@@ -51,9 +55,16 @@ public class CaseFileHateoasSerializer extends StdSerializer<CaseFileHateoas> {
                 serializeCaseFile(caseFile, caseFileHateoas, jgen, provider);
             }
             jgen.writeEndArray();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, caseFileHateoas.getLinks());
             jgen.writeEndObject();
         } else if (caseFileHateoas.getCaseFile() != null) {
             serializeCaseFile(caseFileHateoas.getCaseFile(), caseFileHateoas, jgen, provider);
+        }
+        // It's an empty object, so returning empty Hateoas links _links : []
+        else {
+            jgen.writeStartObject();
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
+            jgen.writeEndObject();
         }
     }
 

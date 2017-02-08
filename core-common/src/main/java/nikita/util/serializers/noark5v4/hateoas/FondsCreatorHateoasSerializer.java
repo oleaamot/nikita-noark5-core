@@ -6,53 +6,51 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.google.common.collect.Iterables;
-import nikita.model.noark5.v4.Fonds;
-import nikita.model.noark5.v4.hateoas.FondsHateoas;
+import nikita.model.noark5.v4.FondsCreator;
+import nikita.model.noark5.v4.hateoas.FondsCreatorHateoas;
 import nikita.util.CommonUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 
-import static nikita.config.N5ResourceMappings.FONDS_STATUS;
+import static nikita.config.N5ResourceMappings.*;
 
 /**
- *
- * Serialise an outgoing Fonds object as JSON.
- *
+ * Serialise an outgoing FondsCreator object as JSON.
+ * <p>
  * Having an own serializer is done to have more fine grained control over the output. We need to be able to especially
  * control the HATEOAS links and the actual format of the HATEOAS links might change over time with the standard. This
  * allows us to be able to easily adapt to any changes
- *
+ * <p>
  * Only Norwegian property names are used on the outgoing JSON property names and are in accordance with the Noark
  * standard.
- *
+ * <p>
  * Note. Only values that are part of the standard are included in the JSON. Properties like 'id' or 'deleted' are not
  * exported
- *
  */
-public class FondsHateoasSerializer extends StdSerializer<FondsHateoas> {
+public class FondsCreatorHateoasSerializer extends StdSerializer<FondsCreatorHateoas> {
 
-    public FondsHateoasSerializer() {
-        super(FondsHateoas.class);
+    public FondsCreatorHateoasSerializer() {
+        super(FondsCreatorHateoas.class);
     }
 
     @Override
-    public void serialize(FondsHateoas fondsHateoas, JsonGenerator jgen, SerializerProvider provider)
+    public void serialize(FondsCreatorHateoas fondsCreatorHateoas, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
-        Iterable<Fonds> fondsIterable = fondsHateoas.getFondsList();
+        Iterable<FondsCreator> fondsIterable = fondsCreatorHateoas.getfondsCreatorList();
         if (fondsIterable != null && Iterables.size(fondsIterable) > 0) {
             jgen.writeStartObject();
             jgen.writeFieldName("");
             jgen.writeStartArray();
-            for (Fonds fonds : fondsIterable) {
-                serializeFonds(fonds, fondsHateoas, jgen, provider);
+            for (FondsCreator fondsCreator : fondsIterable) {
+                serializeFonds(fondsCreator, fondsCreatorHateoas, jgen, provider);
             }
             jgen.writeEndArray();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, fondsHateoas.getLinks());
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, fondsCreatorHateoas.getLinks());
             jgen.writeEndObject();
-        } else if (fondsHateoas.getFonds() != null) {
-            serializeFonds(fondsHateoas.getFonds(), fondsHateoas, jgen, provider);
+        } else if (fondsCreatorHateoas.getFondsCreator() != null) {
+            serializeFonds(fondsCreatorHateoas.getFondsCreator(), fondsCreatorHateoas, jgen, provider);
         }
         // It's an empty object, so returning empty Hateoas links _links : []
         else {
@@ -62,22 +60,21 @@ public class FondsHateoasSerializer extends StdSerializer<FondsHateoas> {
         }
     }
 
-    private void serializeFonds(Fonds fonds, FondsHateoas fondsHateoas,
+    private void serializeFonds(FondsCreator fondsCreator, FondsCreatorHateoas fondsCreatorHateoas,
                                 JsonGenerator jgen, SerializerProvider provider) throws IOException {
 
-        if (fonds != null) {
+        if (fondsCreator != null) {
             jgen.writeStartObject();
-            CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, fonds);
-            CommonUtils.Hateoas.Serialize.printTitleAndDescription(jgen, fonds);
-            if (fonds.getFondsStatus() != null) {
-                jgen.writeStringField(FONDS_STATUS, fonds.getFondsStatus());
+            if (fondsCreator.getFondsCreatorId() != null) {
+                jgen.writeStringField(FONDS_CREATOR_ID, fondsCreator.getFondsCreatorId());
             }
-            CommonUtils.Hateoas.Serialize.printDocumentMedium(jgen, fonds);
-            CommonUtils.Hateoas.Serialize.printStorageLocation(jgen, fonds);
-            CommonUtils.Hateoas.Serialize.printCreateEntity(jgen, fonds);
-            CommonUtils.Hateoas.Serialize.printFinaliseEntity(jgen, fonds);
-            CommonUtils.Hateoas.Serialize.printFondsCreators(jgen, fonds);
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, fondsHateoas.getLinks());
+            if (fondsCreator.getFondsCreatorName() != null) {
+                jgen.writeStringField(FONDS_CREATOR_NAME, fondsCreator.getFondsCreatorName());
+            }
+            if (fondsCreator.getDescription() != null) {
+                jgen.writeStringField(DESCRIPTION, fondsCreator.getDescription());
+            }
+            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, fondsCreatorHateoas.getLinks());
             jgen.writeEndObject();
         }
     }
