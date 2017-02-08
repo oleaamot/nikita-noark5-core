@@ -13,6 +13,7 @@ import nikita.model.noark5.v4.hateoas.FondsHateoas;
 import nikita.model.noark5.v4.hateoas.SeriesHateoas;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
@@ -78,9 +79,11 @@ public class FondsHateoasController {
                     value = "Incoming fonds object",
                     required = true)
             @RequestBody Fonds fonds)  throws NikitaException {
+        //Authorisation authorisation = new Authorisation();
+        //SecurityContextHolder.getContext().getAuthentication().getName();
         Fonds createdFonds = fondsService.createNewFonds(fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(createdFonds);
-        fondsHateoasHandler.addLinksOnCreate(fondsHateoas, request);
+        fondsHateoasHandler.addLinksOnCreate(fondsHateoas, request, new Authorisation());
         return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
     }
 
@@ -116,7 +119,7 @@ public class FondsHateoasController {
             throws NikitaException {
         Fonds createdFonds = fondsService.createFondsAssociatedWithFonds(parentFondsSystemId, fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(createdFonds);
-        fondsHateoasHandler.addLinksOnCreate(fondsHateoas, request);
+        fondsHateoasHandler.addLinksOnCreate(fondsHateoas, request, new Authorisation());
 
         return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
     }
@@ -167,6 +170,7 @@ public class FondsHateoasController {
     @RequestMapping(value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.GET)
     public ResponseEntity<FondsHateoas> findOne(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemId",
                     value = "systemId of fonds to retrieve.",
                     required = true)
@@ -176,6 +180,7 @@ public class FondsHateoasController {
             throw new NoarkEntityNotFoundException("Could not find fonds object with systemID " + fondsSystemId);
         }
         FondsHateoas fondsHateoas = new FondsHateoas(fonds);
+        fondsHateoasHandler.addLinksOnRead(fondsHateoas, request, new Authorisation());
         return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
     }
 
@@ -199,7 +204,7 @@ public class FondsHateoasController {
             @RequestParam(name = "skip", required = false) Integer skip) {
         FondsHateoas fondsHateoas = new
                 FondsHateoas(fondsService.findFondsByOwnerPaginated(top, skip));
-        fondsHateoasHandler.addLinksOnRead(fondsHateoas, request);
+        fondsHateoasHandler.addLinksOnRead(fondsHateoas, request, new Authorisation());
 
         return new ResponseEntity<>(fondsHateoas, HttpStatus.OK);
     }

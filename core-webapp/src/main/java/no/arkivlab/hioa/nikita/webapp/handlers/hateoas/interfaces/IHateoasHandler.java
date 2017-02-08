@@ -2,6 +2,7 @@ package no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces;
 
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
+import no.arkivlab.hioa.nikita.webapp.security.IAuthorisation;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,7 +21,9 @@ public interface IHateoasHandler {
 
     void addEntityLinks(IHateoasNoarkObject hateoasNoarkObject);
 
-    void addLinksOnCreate(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request);
+    void addLinksOnCreate(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+                          IAuthorisation authorisation);
 
-    void addLinksOnRead(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request);
+    void addLinksOnRead(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+                        IAuthorisation authorisation);
 }

@@ -4,6 +4,7 @@ import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
 import nikita.model.noark5.v4.hateoas.Link;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.security.IAuthorisation;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -26,7 +27,7 @@ public class HateoasHandler implements IHateoasHandler {
     protected String contextServletPath = "";
     protected String servletPath = "";
     protected String contextPath = "";
-
+    IAuthorisation authorisation;
 
     public void addLinks(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request) {
         setParameters(request);
@@ -34,16 +35,22 @@ public class HateoasHandler implements IHateoasHandler {
         addEntityLinks(hateoasNoarkObject);
     }
 
-    public void addLinksOnCreate(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request) {
+    public void addLinksOnCreate(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+                                 IAuthorisation authorisation) {
+        this.authorisation = authorisation;
         setParameters(request);
         addSelfLink(hateoasNoarkObject);
         addEntityLinksOnCreate(hateoasNoarkObject);
+        this.authorisation = null;
     }
 
-    public void addLinksOnRead(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request) {
+    public void addLinksOnRead(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+                               IAuthorisation authorisation) {
+        this.authorisation = authorisation;
         setParameters(request);
         addSelfLink(hateoasNoarkObject);
         addEntityLinksOnRead(hateoasNoarkObject);
+        this.authorisation = null;
     }
 
     public void addSelfLink(IHateoasNoarkObject hateoasNoarkObject) {
