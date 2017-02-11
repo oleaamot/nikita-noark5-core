@@ -11,6 +11,7 @@ import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRegistryEntryService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
@@ -18,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
@@ -114,7 +117,8 @@ public class RegistryEntryHateoasController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         RegistryEntryHateoas registryEntryHateoas = new RegistryEntryHateoas(
-                registryEntryService.findRegistryEntryByOwnerPaginated(top, skip));
+                (ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                        registryEntryService.findRegistryEntryByOwnerPaginated(top, skip));
         return new ResponseEntity<>(registryEntryHateoas, HttpStatus.OK);
     }
 }

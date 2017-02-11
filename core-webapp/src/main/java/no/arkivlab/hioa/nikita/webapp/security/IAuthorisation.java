@@ -6,7 +6,16 @@ package no.arkivlab.hioa.nikita.webapp.security;
 public interface IAuthorisation {
 
     boolean canCreateFonds();
-
     boolean canCreateSeries();
+
+    boolean canCreateClassifcationSystem();
+
+    boolean canCreateClassifcationSystemAttachedToSeries();
+
+    boolean canCreateRegistrationAttachedToSeries();
+
+    boolean canCreateRegistrationAttachedToFile();
+
+    boolean canCreateFileAttachedToSeries();
 
 }

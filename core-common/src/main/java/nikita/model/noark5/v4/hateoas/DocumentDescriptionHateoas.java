@@ -1,11 +1,9 @@
 package nikita.model.noark5.v4.hateoas;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.serializers.noark5v4.hateoas.DocumentDescriptionHateoasSerializer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,52 +14,14 @@ import java.util.List;
  *
  */
 @JsonSerialize(using = DocumentDescriptionHateoasSerializer.class)
-public class DocumentDescriptionHateoas implements IHateoasNoarkObject {
+public class DocumentDescriptionHateoas extends HateoasNoarkObject implements IHateoasNoarkObject {
 
-    protected List<Link> links = new ArrayList<>();
-    private DocumentDescription documentDescription;
-    private List<DocumentDescription> documentDescriptionList;
-
-    public DocumentDescriptionHateoas(DocumentDescription documentDescription){
-        this.documentDescription = documentDescription;
+    public DocumentDescriptionHateoas(INoarkSystemIdEntity entity) {
+        super(entity);
     }
 
-    public DocumentDescriptionHateoas(List<DocumentDescription> documentDescriptionList) {
-        this.documentDescriptionList = documentDescriptionList;
+    public DocumentDescriptionHateoas(List<INoarkSystemIdEntity> entityList) {
+        super(entityList);
     }
 
-    public List<Link> getLinks() {
-        return links;
-    }
-    public void setLinks(List<Link> links) {
-        this.links = links;
-    }
-
-    public void addLink(Link link) {
-        this.links.add(link);
-    }
-
-    public DocumentDescription getDocumentDescription() {
-        return documentDescription;
-    }
-    public void setDocumentDescription(DocumentDescription documentDescription) {
-        this.documentDescription = documentDescription;
-    }
-
-    public List<DocumentDescription> getDocumentDescriptionList() {
-        return documentDescriptionList;
-    }
-
-    public void setDocumentDescriptionList(List<DocumentDescription> documentDescriptionList) {
-        this.documentDescriptionList = documentDescriptionList;
-    }
-
-    public INoarkSystemIdEntity getSystemIdEntity() {
-        return documentDescription;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<INoarkSystemIdEntity> getSystemIdEntityList() {
-        return (ArrayList<INoarkSystemIdEntity>) (ArrayList) documentDescriptionList;
-    }
 }

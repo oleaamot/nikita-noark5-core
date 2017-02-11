@@ -9,11 +9,14 @@ import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
 import nikita.model.noark5.v4.BasicRecord;
 import nikita.model.noark5.v4.hateoas.BasicRecordHateoas;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IBasicRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.BASIC_RECORD;
@@ -44,7 +47,7 @@ public class BasicRecordHateoasController {
                     required = true)
             @PathVariable("systemID") final String basicRecordSystemId) {
         BasicRecordHateoas basicRecordHateoas = new
-                BasicRecordHateoas((BasicRecord)basicRecordService.findBySystemId(basicRecordSystemId));
+                BasicRecordHateoas(basicRecordService.findBySystemId(basicRecordSystemId));
         return new ResponseEntity<>(basicRecordHateoas, HttpStatus.CREATED);
     }
 
@@ -67,7 +70,8 @@ public class BasicRecordHateoasController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         BasicRecordHateoas basicRecordHateoas = new
-                BasicRecordHateoas(basicRecordService.findBasicRecordByOwnerPaginated(top, skip));
+                BasicRecordHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                basicRecordService.findBasicRecordByOwnerPaginated(top, skip));
         return new ResponseEntity<>(basicRecordHateoas, HttpStatus.OK);
     }
 }

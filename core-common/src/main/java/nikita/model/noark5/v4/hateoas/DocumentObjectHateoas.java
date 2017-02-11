@@ -1,11 +1,9 @@
 package nikita.model.noark5.v4.hateoas;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import nikita.model.noark5.v4.DocumentObject;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.serializers.noark5v4.hateoas.DocumentObjectHateoasSerializer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,52 +14,14 @@ import java.util.List;
  *
  */
 @JsonSerialize(using = DocumentObjectHateoasSerializer.class)
-public class DocumentObjectHateoas implements IHateoasNoarkObject {
+public class DocumentObjectHateoas extends HateoasNoarkObject implements IHateoasNoarkObject {
 
-    protected List<Link> links = new ArrayList<>();
-    DocumentObject documentObject;
-    private List<DocumentObject> documentObjectList;
-
-    public DocumentObjectHateoas(DocumentObject documentObject){
-        this.documentObject = documentObject;
+    public DocumentObjectHateoas(INoarkSystemIdEntity entity) {
+        super(entity);
     }
 
-    public DocumentObjectHateoas(List<DocumentObject> documentObjectList) {
-        this.documentObjectList = documentObjectList;
+    public DocumentObjectHateoas(List<INoarkSystemIdEntity> entityList) {
+        super(entityList);
     }
 
-    public List<Link> getLinks() {
-        return links;
-    }
-    public void setLinks(List<Link> links) {
-        this.links = links;
-    }
-
-    public void addLink(Link link) {
-        this.links.add(link);
-    }
-
-    public DocumentObject getDocumentObject() {
-        return documentObject;
-    }
-    public void setDocumentObject(DocumentObject documentObject) {
-        this.documentObject = documentObject;
-    }
-
-    public List<DocumentObject> getDocumentObjectList() {
-        return documentObjectList;
-    }
-
-    public void setDocumentObjectList(List<DocumentObject> documentObjectList) {
-        this.documentObjectList = documentObjectList;
-    }
-
-    public INoarkSystemIdEntity getSystemIdEntity() {
-        return documentObject;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<INoarkSystemIdEntity> getSystemIdEntityList() {
-        return (ArrayList<INoarkSystemIdEntity>) (ArrayList) documentObjectList;
-    }
 }

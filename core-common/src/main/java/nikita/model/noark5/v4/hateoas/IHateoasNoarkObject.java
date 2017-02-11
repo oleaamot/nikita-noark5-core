@@ -5,13 +5,15 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import java.util.List;
 
 public interface IHateoasNoarkObject {
-    List<Link> getLinks();
-    void setLinks(List<Link> links);
+    List<Link> getLinks(INoarkSystemIdEntity entity);
 
-    void addLink(Link link);
+    List<INoarkSystemIdEntity> getList();
 
-    INoarkSystemIdEntity getSystemIdEntity();
+    void addLink(INoarkSystemIdEntity entity, Link link);
 
-    List<INoarkSystemIdEntity> getSystemIdEntityList();
+    void addSelfLink(Link selfLink);
 
+    List<Link> getSelfLinks();
+
+    boolean isSingleEntity();
 }

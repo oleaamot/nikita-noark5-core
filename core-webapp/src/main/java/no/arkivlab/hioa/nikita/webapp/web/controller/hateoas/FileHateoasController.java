@@ -13,12 +13,15 @@ import nikita.model.noark5.v4.Record;
 import nikita.model.noark5.v4.hateoas.BasicRecordHateoas;
 import nikita.model.noark5.v4.hateoas.FileHateoas;
 import nikita.model.noark5.v4.hateoas.RecordHateoas;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.FILE;
@@ -135,7 +138,8 @@ public class FileHateoasController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         FileHateoas fileHateoas = new
-                FileHateoas(fileService.findFileByOwnerPaginated(top, skip));
+                FileHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                fileService.findFileByOwnerPaginated(top, skip));
         return new ResponseEntity<>(fileHateoas, HttpStatus.OK);
     }
 }

@@ -3,27 +3,18 @@ package no.arkivlab.hioa.nikita.webapp.web.controller.importAPI;
 import com.codahale.metrics.annotation.Counted;
 import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
-import nikita.config.HATEOASConstants;
 import nikita.model.noark5.v4.CaseFile;
 import nikita.model.noark5.v4.File;
-import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.hateoas.CaseFileHateoas;
 import nikita.model.noark5.v4.hateoas.FileHateoas;
-import nikita.model.noark5.v4.hateoas.Link;
-import nikita.model.noark5.v4.hateoas.SeriesHateoas;
 import nikita.util.exceptions.NikitaException;
-import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.imprt.ISeriesImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
-import static nikita.config.N5ResourceMappings.CASE_FILE;
 import static nikita.config.N5ResourceMappings.SERIES;
 
 @RestController
@@ -113,12 +104,8 @@ public class SeriesImportController {
                 CaseFileHateoas(seriesImportService.createCaseFileAssociatedWithSeries(seriesSystemId, caseFile));
 
         // Looking at adding in the Hateoas links. Just proof of concept to have a reference point will be reimplemented
-        ArrayList <Link> links  = (ArrayList <Link>) caseFileHateoas.getLinks();
-        uri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
-        hrefSelf = uri + HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH +
-                SLASH;
-        String href = hrefSelf + CASE_FILE + SLASH + caseFile.getSystemId();
-        links.add(new Link(HATEOASConstants.SELF, href, true));
+
+
         return new ResponseEntity<>(caseFileHateoas, HttpStatus.CREATED);
     }
 }

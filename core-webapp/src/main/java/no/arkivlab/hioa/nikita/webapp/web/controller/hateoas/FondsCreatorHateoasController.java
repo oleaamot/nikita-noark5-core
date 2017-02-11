@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
 import nikita.model.noark5.v4.FondsCreator;
 import nikita.model.noark5.v4.hateoas.FondsCreatorHateoas;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsCreatorService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.FONDS_CREATOR;
@@ -102,7 +105,8 @@ public class FondsCreatorHateoasController {
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
         FondsCreatorHateoas fondsCreatorHateoas = new
-                FondsCreatorHateoas(fondsCreatorService.findFondsCreatorByOwnerPaginated(top, skip));
+                FondsCreatorHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                fondsCreatorService.findFondsCreatorByOwnerPaginated(top, skip));
         return new ResponseEntity<>(fondsCreatorHateoas, HttpStatus.OK);
     }
 }

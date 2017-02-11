@@ -3,27 +3,32 @@ package no.arkivlab.hioa.nikita.webapp.web.controller.hateoas;
 import com.codahale.metrics.annotation.Counted;
 import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
-import nikita.config.HATEOASConstants;
 import nikita.model.noark5.v4.CaseFile;
 import nikita.model.noark5.v4.File;
 import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.hateoas.CaseFileHateoas;
 import nikita.model.noark5.v4.hateoas.FileHateoas;
-import nikita.model.noark5.v4.hateoas.Link;
 import nikita.model.noark5.v4.hateoas.SeriesHateoas;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.SeriesHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ICaseFileHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
-import static nikita.config.N5ResourceMappings.*;
+import static nikita.config.N5ResourceMappings.SERIES;
+import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
 @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES,
@@ -36,6 +41,12 @@ public class SeriesHateoasController {
 
     @Autowired
     ISeriesService seriesService;
+
+    @Autowired
+    SeriesHateoasHandler seriesHateoasHandler;
+
+    @Autowired
+    ICaseFileHateoasHandler caseFileHateoasHandler;
 
 //    @Value("${nikita-noark5-core.pagination.maxPageSize}")
   //  Integer maxPageSize;
@@ -67,6 +78,7 @@ public class SeriesHateoasController {
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS +
             SLASH + NEW_FILE, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<FileHateoas> createFileAssociatedWithSeries(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesSystemId",
                     value = "systemId of series to associate the caseFile with",
                     required = true)
@@ -98,6 +110,7 @@ public class SeriesHateoasController {
             RIGHT_PARENTHESIS + SLASH + NEW_CASE_FILE, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<CaseFileHateoas>
     createCaseFileAssociatedWithSeries(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesSystemId",
                     value = "systemId of series to associate the caseFile with",
                     required = true)
@@ -110,13 +123,6 @@ public class SeriesHateoasController {
         CaseFileHateoas caseFileHateoas = new
                 CaseFileHateoas(seriesService.createCaseFileAssociatedWithSeries(seriesSystemId, caseFile));
 
-        // Looking at adding in the Hateoas links. Just proof of concept to have a reference point will be reimplemented
-        ArrayList <Link> links  = (ArrayList <Link>) caseFileHateoas.getLinks();
-        uri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
-        hrefSelf = uri + HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH +
-                SLASH;
-        String href = hrefSelf + CASE_FILE + SLASH + caseFile.getSystemId();
-        links.add(new Link(HATEOASConstants.SELF, href, true));
         return new ResponseEntity<>(caseFileHateoas, HttpStatus.CREATED);
     }
 
@@ -131,6 +137,7 @@ public class SeriesHateoasController {
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<SeriesHateoas> findOneSeriesbySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemID of the series to retrieve",
                     required = true)
@@ -141,6 +148,7 @@ public class SeriesHateoasController {
         }
         SeriesHateoas seriesHateoas = new
                 SeriesHateoas(series);
+        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
         return new ResponseEntity<>(seriesHateoas, HttpStatus.CREATED);
     }
 
@@ -159,11 +167,14 @@ public class SeriesHateoasController {
     @Timed
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<SeriesHateoas> findAllSeries(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         SeriesHateoas seriesHateoas = new
-                SeriesHateoas(seriesService.findSeriesByOwnerPaginated(top, skip));
+                SeriesHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                seriesService.findSeriesByOwnerPaginated(top, skip));
+        seriesHateoasHandler.addLinksOnRead(seriesHateoas, request, new Authorisation());
         return new ResponseEntity<>(seriesHateoas, HttpStatus.OK);
     }
 }

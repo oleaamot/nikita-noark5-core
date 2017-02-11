@@ -11,12 +11,20 @@ import nikita.model.noark5.v4.CaseFile;
 import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.hateoas.CaseFileHateoas;
 import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ICaseFileHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ICaseFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.CASE_FILE;
@@ -29,6 +37,9 @@ public class CaseFileHateoasController {
 
     @Autowired
     ICaseFileService caseFileService;
+
+    @Autowired
+    ICaseFileHateoasHandler caseFileHateoasHandler;
 
     // API - All POST Requests (CRUD - CREATE)
 
@@ -76,12 +87,14 @@ public class CaseFileHateoasController {
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<CaseFileHateoas> findOneCaseFilebySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemID of the caseFile to retrieve",
                     required = true)
             @PathVariable("systemID") final String caseFileSystemId) {
         CaseFileHateoas caseFileHateoas = new
-                CaseFileHateoas((CaseFile)caseFileService.findBySystemId(caseFileSystemId));
+                CaseFileHateoas(caseFileService.findBySystemId(caseFileSystemId));
+        caseFileHateoasHandler.addLinks(caseFileHateoas, request, new Authorisation());
         return new ResponseEntity<>(caseFileHateoas, HttpStatus.CREATED);
     }
 
@@ -100,11 +113,16 @@ public class CaseFileHateoasController {
     @Timed
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<CaseFileHateoas> findAllCaseFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         CaseFileHateoas caseFileHateoas = new
-                CaseFileHateoas(caseFileService.findCaseFileByOwnerPaginated(top, skip));
+                CaseFileHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                caseFileService.findCaseFileByOwnerPaginated(top, skip));
+
+        caseFileHateoasHandler.addLinks(caseFileHateoas, request, new Authorisation());
+
         return new ResponseEntity<>(caseFileHateoas, HttpStatus.OK);
     }
 }

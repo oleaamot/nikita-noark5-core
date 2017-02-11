@@ -43,7 +43,6 @@ public class DocumentObjectService implements IDocumentObjectService {
         NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(documentObject);
         NoarkUtils.NoarkEntity.Create.setCreateEntityValues(documentObject);
         NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(documentObject);
-        NoarkUtils.NoarkEntity.Create.setFinaliseEntityValues(documentObject);
         return documentObjectRepository.save(documentObject);
     }
 

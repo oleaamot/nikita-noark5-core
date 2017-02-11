@@ -8,11 +8,14 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.model.noark5.v4.DocumentObject;
 import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT;
@@ -66,7 +69,8 @@ public class DocumentObjectHateoasController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         DocumentObjectHateoas documentObjectHateoas = new
-                DocumentObjectHateoas(documentObjectService.findDocumentObjectByOwnerPaginated(top, skip));
+                DocumentObjectHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                documentObjectService.findDocumentObjectByOwnerPaginated(top, skip));
         return new ResponseEntity<>(documentObjectHateoas, HttpStatus.OK);
     }
 }

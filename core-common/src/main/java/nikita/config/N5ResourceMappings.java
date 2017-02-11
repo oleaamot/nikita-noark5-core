@@ -383,6 +383,9 @@ public final class N5ResourceMappings {
     public static final String AUTHOR = "forfatter";
     public static final String AUTHOR_EN = "author";
 
+
+    public static final String SECONDARY_CLASSIFICATION = "sekundaerklassifikasjon";
+
     // Constant values defined in the Metadata catalogue
 
     public static final String STATUS_OPEN = "Opprettet";

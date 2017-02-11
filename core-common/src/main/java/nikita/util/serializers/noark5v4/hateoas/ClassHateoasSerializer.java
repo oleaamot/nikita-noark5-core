@@ -1,19 +1,13 @@
 package nikita.util.serializers.noark5v4.hateoas;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.google.common.collect.Iterables;
 import nikita.model.noark5.v4.Class;
-import nikita.model.noark5.v4.hateoas.ClassHateoas;
+import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.CommonUtils;
+import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
-
-import static nikita.config.N5ResourceMappings.CLASS;
 
 /**
  *
@@ -30,41 +24,13 @@ import static nikita.config.N5ResourceMappings.CLASS;
  * exported
  *
  */
-public class ClassHateoasSerializer extends StdSerializer<ClassHateoas> {
-
-    public ClassHateoasSerializer() {
-        super(ClassHateoas.class);
-    }
+public class ClassHateoasSerializer extends HateoasSerializer implements IHateoasSerializer {
 
     @Override
-    public void serialize(ClassHateoas classHateoas, JsonGenerator jgen, SerializerProvider provider)
-            throws IOException {
+    public void serializeNoarkEntity(INoarkSystemIdEntity noarkSystemIdEntity,
+                                     HateoasNoarkObject classHateoas, JsonGenerator jgen) throws IOException {
 
-        Iterable<Class> classIterable = classHateoas.getclassList();
-        if (classIterable != null && Iterables.size(classIterable) > 0) {
-            jgen.writeStartObject();
-            jgen.writeFieldName(CLASS);
-            jgen.writeStartArray();
-            for (Class klass : classIterable) {
-                serializeClass(klass, classHateoas, jgen, provider);
-            }
-            jgen.writeEndArray();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, classHateoas.getLinks());
-            jgen.writeEndObject();
-        } else if (classHateoas.getKlass() != null) {
-            serializeClass(classHateoas.getKlass(), classHateoas, jgen, provider);
-        }
-        // It's an empty object, so returning empty Hateoas links _links : []
-        else {
-            jgen.writeStartObject();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
-            jgen.writeEndObject();
-        }
-    }
-
-    private void serializeClass(Class klass, ClassHateoas classHateoas,
-                                JsonGenerator jgen, SerializerProvider provider) throws IOException {
-
+        Class klass = (Class) noarkSystemIdEntity;
 
         jgen.writeStartObject();
         CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, klass);
@@ -75,12 +41,7 @@ public class ClassHateoasSerializer extends StdSerializer<ClassHateoas> {
         CommonUtils.Hateoas.Serialize.printDisposal(jgen, klass);
         CommonUtils.Hateoas.Serialize.printScreening(jgen, klass);
         CommonUtils.Hateoas.Serialize.printClassified(jgen, klass);
-        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, classHateoas.getLinks());
+        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, classHateoas.getLinks(klass));
         jgen.writeEndObject();
-    }
-
-    @Override
-    public JsonNode getSchema(SerializerProvider provider, Type typeHint) throws JsonMappingException {
-        throw new UnsupportedOperationException();
     }
 }

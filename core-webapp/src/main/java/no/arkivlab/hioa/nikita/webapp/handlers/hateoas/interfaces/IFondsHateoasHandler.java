@@ -1,6 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces;
 
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 
 /**
  * Created by tsodring on 2/6/17.
@@ -9,22 +10,20 @@ import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
  */
 public interface IFondsHateoasHandler extends IHateoasHandler {
 
-    void addDocumentMedium(IHateoasNoarkObject hateoasNoarkObject);
+    void addFondsCreator(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addFondsCreator(IHateoasNoarkObject hateoasNoarkObject);
+    void addSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addSeries(IHateoasNoarkObject hateoasNoarkObject);
+    void addFonds(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addFonds(IHateoasNoarkObject hateoasNoarkObject);
+    void addNewFondsCreator(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewFondsCreator(IHateoasNoarkObject hateoasNoarkObject);
+    void addSubFonds(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addSubFonds(IHateoasNoarkObject hateoasNoarkObject);
+    void addFondsStatus(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addFondsStatus(IHateoasNoarkObject hateoasNoarkObject);
+    void addNewFonds(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewFonds(IHateoasNoarkObject hateoasNoarkObject);
-
-    void addNewSeries(IHateoasNoarkObject hateoasNoarkObject);
+    void addNewSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
 }

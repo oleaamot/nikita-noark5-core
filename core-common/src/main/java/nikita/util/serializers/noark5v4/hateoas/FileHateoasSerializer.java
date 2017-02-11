@@ -1,17 +1,13 @@
 package nikita.util.serializers.noark5v4.hateoas;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.google.common.collect.Iterables;
 import nikita.model.noark5.v4.File;
-import nikita.model.noark5.v4.hateoas.FileHateoas;
+import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.CommonUtils;
+import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 
 import static nikita.config.N5ResourceMappings.*;
 
@@ -29,44 +25,18 @@ import static nikita.config.N5ResourceMappings.*;
  * exported
  */
 
-public class FileHateoasSerializer extends StdSerializer<FileHateoas> {
-
-    public FileHateoasSerializer() {
-        super(FileHateoas.class);
-    }
+public class FileHateoasSerializer extends HateoasSerializer implements IHateoasSerializer {
 
     @Override
-    public void serialize(FileHateoas fileHateoas, JsonGenerator jgen, SerializerProvider provider)
-            throws IOException {
+    public void serializeNoarkEntity(INoarkSystemIdEntity noarkSystemIdEntity,
+                                     HateoasNoarkObject fileHateoas, JsonGenerator jgen) throws IOException {
 
-        Iterable<File> fileIterable = fileHateoas.getFileList();
-        if (fileIterable != null && Iterables.size(fileIterable) > 0) {
-            jgen.writeStartObject();
-            jgen.writeFieldName(FILE);
-            jgen.writeStartArray();
-            for (File file : fileIterable) {
-                serializeFile(file, fileHateoas, jgen, provider);
-            }
-            jgen.writeEndArray();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, fileHateoas.getLinks());
-            jgen.writeEndObject();
-        } else if (fileHateoas.getFile() != null) {
-            serializeFile(fileHateoas.getFile(), fileHateoas, jgen, provider);
-        }
-        // It's an empty object, so returning empty Hateoas links _links : []
-        else {
-            jgen.writeStartObject();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
-            jgen.writeEndObject();
-        }
-    }
+        File file = (File) noarkSystemIdEntity;
 
-    private void serializeFile(File file, FileHateoas fileHateoas,
-                               JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
         CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, file);
         CommonUtils.Hateoas.Serialize.printStorageLocation(jgen, file);
-        if (file.getFileId()!= null) {
+        if (file.getFileId() != null) {
             jgen.writeStringField(FILE_ID, file.getFileId());
             if (file.getTitle() != null) {
                 jgen.writeStringField(TITLE, file.getTitle());
@@ -90,12 +60,7 @@ public class FileHateoasSerializer extends StdSerializer<FileHateoas> {
         CommonUtils.Hateoas.Serialize.printDisposal(jgen, file);
         CommonUtils.Hateoas.Serialize.printScreening(jgen, file);
         CommonUtils.Hateoas.Serialize.printClassified(jgen, file);
-        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, fileHateoas.getLinks());
+        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, fileHateoas.getLinks(file));
         jgen.writeEndObject();
-    }
-
-    @Override
-    public JsonNode getSchema(SerializerProvider provider, Type typeHint) throws JsonMappingException {
-        throw new UnsupportedOperationException();
     }
 }

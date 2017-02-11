@@ -1,17 +1,13 @@
 package nikita.util.serializers.noark5v4.hateoas;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.google.common.collect.Iterables;
 import nikita.model.noark5.v4.Fonds;
-import nikita.model.noark5.v4.hateoas.FondsHateoas;
+import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.CommonUtils;
+import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 
 import static nikita.config.N5ResourceMappings.FONDS_STATUS;
 
@@ -30,60 +26,25 @@ import static nikita.config.N5ResourceMappings.FONDS_STATUS;
  * exported
  *
  */
-public class FondsHateoasSerializer extends StdSerializer<FondsHateoas> {
-
-    public FondsHateoasSerializer() {
-        super(FondsHateoas.class);
-    }
+public class FondsHateoasSerializer extends HateoasSerializer implements IHateoasSerializer {
 
     @Override
-    public void serialize(FondsHateoas fondsHateoas, JsonGenerator jgen, SerializerProvider provider)
-            throws IOException {
+    public void serializeNoarkEntity(INoarkSystemIdEntity noarkSystemIdEntity,
+                                     HateoasNoarkObject fondsHateoas, JsonGenerator jgen) throws IOException {
+        Fonds fonds = (Fonds) noarkSystemIdEntity;
 
-        Iterable<Fonds> fondsIterable = fondsHateoas.getFondsList();
-        if (fondsIterable != null && Iterables.size(fondsIterable) > 0) {
-            jgen.writeStartObject();
-            jgen.writeFieldName("");
-            jgen.writeStartArray();
-            for (Fonds fonds : fondsIterable) {
-                serializeFonds(fonds, fondsHateoas, jgen, provider);
-            }
-            jgen.writeEndArray();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, fondsHateoas.getLinks());
-            jgen.writeEndObject();
-        } else if (fondsHateoas.getFonds() != null) {
-            serializeFonds(fondsHateoas.getFonds(), fondsHateoas, jgen, provider);
+        jgen.writeStartObject();
+        CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, fonds);
+        CommonUtils.Hateoas.Serialize.printTitleAndDescription(jgen, fonds);
+        if (fonds.getFondsStatus() != null) {
+            jgen.writeStringField(FONDS_STATUS, fonds.getFondsStatus());
         }
-        // It's an empty object, so returning empty Hateoas links _links : []
-        else {
-            jgen.writeStartObject();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
-            jgen.writeEndObject();
-        }
-    }
-
-    private void serializeFonds(Fonds fonds, FondsHateoas fondsHateoas,
-                                JsonGenerator jgen, SerializerProvider provider) throws IOException {
-
-        if (fonds != null) {
-            jgen.writeStartObject();
-            CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, fonds);
-            CommonUtils.Hateoas.Serialize.printTitleAndDescription(jgen, fonds);
-            if (fonds.getFondsStatus() != null) {
-                jgen.writeStringField(FONDS_STATUS, fonds.getFondsStatus());
-            }
-            CommonUtils.Hateoas.Serialize.printDocumentMedium(jgen, fonds);
-            CommonUtils.Hateoas.Serialize.printStorageLocation(jgen, fonds);
-            CommonUtils.Hateoas.Serialize.printCreateEntity(jgen, fonds);
-            CommonUtils.Hateoas.Serialize.printFinaliseEntity(jgen, fonds);
-            CommonUtils.Hateoas.Serialize.printFondsCreators(jgen, fonds);
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, fondsHateoas.getLinks());
-            jgen.writeEndObject();
-        }
-    }
-
-    @Override
-    public JsonNode getSchema(SerializerProvider provider, Type typeHint) throws JsonMappingException {
-        throw new UnsupportedOperationException();
+        CommonUtils.Hateoas.Serialize.printDocumentMedium(jgen, fonds);
+        CommonUtils.Hateoas.Serialize.printStorageLocation(jgen, fonds);
+        CommonUtils.Hateoas.Serialize.printCreateEntity(jgen, fonds);
+        CommonUtils.Hateoas.Serialize.printFinaliseEntity(jgen, fonds);
+        CommonUtils.Hateoas.Serialize.printFondsCreators(jgen, fonds);
+        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, fondsHateoas.getLinks(fonds));
+        jgen.writeEndObject();
     }
 }

@@ -38,7 +38,7 @@ public class FondsStatusController {
             @ApiResponse(code = 404, message = API_MESSAGE_MALFORMED_PAYLOAD),
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
-            @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMTNED)})
+            @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = SLASH + NEW_DOCUMENT_MEDIUM)
@@ -59,7 +59,7 @@ public class FondsStatusController {
             @ApiResponse(code = 404, message = API_MESSAGE_MALFORMED_PAYLOAD),
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
-            @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMTNED)})
+            @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
     @Timed
     @RequestMapping(value = CODE + SLASH + "{kode}", method = RequestMethod.GET)

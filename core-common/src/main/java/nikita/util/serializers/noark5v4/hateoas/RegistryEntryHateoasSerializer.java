@@ -1,17 +1,13 @@
 package nikita.util.serializers.noark5v4.hateoas;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.google.common.collect.Iterables;
 import nikita.model.noark5.v4.RegistryEntry;
-import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
+import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.CommonUtils;
+import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 
 import static nikita.config.Constants.DATE_FORMAT;
 import static nikita.config.Constants.DATE_TIME_FORMAT;
@@ -31,41 +27,13 @@ import static nikita.config.N5ResourceMappings.*;
  * exported
  */
 
-public class RegistryEntryHateoasSerializer extends StdSerializer<RegistryEntryHateoas> {
-
-    public RegistryEntryHateoasSerializer() {
-        super(RegistryEntryHateoas.class);
-    }
+public class RegistryEntryHateoasSerializer extends HateoasSerializer implements IHateoasSerializer {
 
     @Override
-    public void serialize(RegistryEntryHateoas registryEntryHateoas, JsonGenerator jgen, SerializerProvider provider)
-            throws IOException {
+    public void serializeNoarkEntity(INoarkSystemIdEntity noarkSystemIdEntity,
+                                     HateoasNoarkObject registryEntryHateoas, JsonGenerator jgen) throws IOException {
 
-
-        Iterable<RegistryEntry> registryEntryIterable = registryEntryHateoas.getRegistryEntryList();
-        if (registryEntryIterable != null && Iterables.size(registryEntryIterable) > 0) {
-            jgen.writeStartObject();
-            jgen.writeFieldName(REGISTRY_ENTRY);
-            jgen.writeStartArray();
-            for (RegistryEntry registryEntry : registryEntryIterable) {
-                serializeRegistryEntry(registryEntry, registryEntryHateoas, jgen, provider);
-            }
-            jgen.writeEndArray();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, registryEntryHateoas.getLinks());
-            jgen.writeEndObject();
-        } else if (registryEntryHateoas.getRegistryEntry() != null) {
-            serializeRegistryEntry(registryEntryHateoas.getRegistryEntry(), registryEntryHateoas, jgen, provider);
-        }
-        // It's an empty object, so returning empty Hateoas links _links : []
-        else {
-            jgen.writeStartObject();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
-            jgen.writeEndObject();
-        }
-    }
-
-    private void serializeRegistryEntry(RegistryEntry registryEntry, RegistryEntryHateoas registryEntryHateoas,
-                                        JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        RegistryEntry registryEntry = (RegistryEntry) noarkSystemIdEntity;
 
         jgen.writeStartObject();
 
@@ -142,12 +110,7 @@ public class RegistryEntryHateoasSerializer extends StdSerializer<RegistryEntryH
         CommonUtils.Hateoas.Serialize.printDocumentFlow(jgen, registryEntry);
         CommonUtils.Hateoas.Serialize.printPrecedence(jgen, registryEntry);
         CommonUtils.Hateoas.Serialize.printElectronicSignature(jgen, registryEntry);
-        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, registryEntryHateoas.getLinks());
+        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, registryEntryHateoas.getLinks(registryEntry));
         jgen.writeEndObject();
-    }
-
-    @Override
-    public JsonNode getSchema(SerializerProvider provider, Type typeHint) throws JsonMappingException {
-        throw new UnsupportedOperationException();
     }
 }

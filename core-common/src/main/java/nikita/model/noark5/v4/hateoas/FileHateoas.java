@@ -1,11 +1,9 @@
 package nikita.model.noark5.v4.hateoas;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import nikita.model.noark5.v4.File;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.serializers.noark5v4.hateoas.FileHateoasSerializer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,52 +14,14 @@ import java.util.List;
  *
  */
 @JsonSerialize(using = FileHateoasSerializer.class)
-public class FileHateoas implements IHateoasNoarkObject {
+public class FileHateoas extends HateoasNoarkObject implements IHateoasNoarkObject {
 
-    protected List<Link> links = new ArrayList<>();
-    File file;
-    private List<File> fileList;
-
-    public FileHateoas(File file){
-        this.file = file;
+    public FileHateoas(INoarkSystemIdEntity entity) {
+        super(entity);
     }
 
-    public FileHateoas(List<File> fileList) {
-        this.fileList = fileList;
+    public FileHateoas(List<INoarkSystemIdEntity> entityList) {
+        super(entityList);
     }
 
-    public List<Link> getLinks() {
-        return links;
-    }
-    public void setLinks(List<Link> links) {
-        this.links = links;
-    }
-
-    public void addLink(Link link) {
-        this.links.add(link);
-    }
-
-    public File getFile() {
-        return file;
-    }
-    public void setFile(File file) {
-        this.file = file;
-    }
-
-    public List<File> getFileList() {
-        return fileList;
-    }
-
-    public void setFileList(List<File> fileList) {
-        this.fileList = fileList;
-    }
-
-    public INoarkSystemIdEntity getSystemIdEntity() {
-        return file;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<INoarkSystemIdEntity> getSystemIdEntityList() {
-        return (ArrayList<INoarkSystemIdEntity>) (ArrayList) fileList;
-    }
 }

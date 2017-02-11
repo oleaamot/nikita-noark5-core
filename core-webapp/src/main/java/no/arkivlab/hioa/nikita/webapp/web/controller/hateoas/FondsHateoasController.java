@@ -11,6 +11,7 @@ import nikita.model.noark5.v4.Fonds;
 import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.hateoas.FondsHateoas;
 import nikita.model.noark5.v4.hateoas.SeriesHateoas;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
@@ -31,6 +32,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 import static nikita.config.Constants.*;
@@ -83,7 +85,7 @@ public class FondsHateoasController {
         //SecurityContextHolder.getContext().getAuthentication().getName();
         Fonds createdFonds = fondsService.createNewFonds(fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(createdFonds);
-        fondsHateoasHandler.addLinksOnCreate(fondsHateoas, request, new Authorisation());
+        fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
         return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
     }
 
@@ -100,7 +102,7 @@ public class FondsHateoasController {
             @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type Fonds"),
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
-            @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMTNED)})
+            @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = FONDS + SLASH + LEFT_PARENTHESIS +
@@ -118,7 +120,7 @@ public class FondsHateoasController {
             throws NikitaException {
         Fonds createdFonds = fondsService.createFondsAssociatedWithFonds(parentFondsSystemId, fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(createdFonds);
-        fondsHateoasHandler.addLinksOnCreate(fondsHateoas, request, new Authorisation());
+        fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
 
         return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
     }
@@ -136,7 +138,7 @@ public class FondsHateoasController {
             @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type Series"),
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
-            @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMTNED)})
+            @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = FONDS + SLASH + LEFT_PARENTHESIS +
@@ -178,7 +180,7 @@ public class FondsHateoasController {
             throw new NoarkEntityNotFoundException("Could not find fonds object with systemID " + fondsSystemId);
         }
         FondsHateoas fondsHateoas = new FondsHateoas(fonds);
-        fondsHateoasHandler.addLinksOnRead(fondsHateoas, request, new Authorisation());
+        fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
         return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
     }
 
@@ -201,8 +203,9 @@ public class FondsHateoasController {
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
         FondsHateoas fondsHateoas = new
-                FondsHateoas(fondsService.findFondsByOwnerPaginated(top, skip));
-        fondsHateoasHandler.addLinksOnRead(fondsHateoas, request, new Authorisation());
+                FondsHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                fondsService.findFondsByOwnerPaginated(top, skip));
+        fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
 
         return new ResponseEntity<>(fondsHateoas, HttpStatus.OK);
     }
@@ -218,7 +221,7 @@ public class FondsHateoasController {
         List<Fonds> result = fullTextSession.createFullTextQuery(query, Fonds.class).list();
 
         FondsHateoas fondsHateoas = new
-                FondsHateoas(result);
+                FondsHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList) result);
         return new ResponseEntity<>(fondsHateoas, HttpStatus.OK);
     }
 }

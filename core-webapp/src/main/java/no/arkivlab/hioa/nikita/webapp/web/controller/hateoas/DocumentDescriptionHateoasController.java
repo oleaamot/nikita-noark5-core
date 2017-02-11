@@ -11,12 +11,20 @@ import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.DocumentObject;
 import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentDescriptionHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentDescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.DOCUMENT_DESCRIPTION;
@@ -29,6 +37,9 @@ public class DocumentDescriptionHateoasController {
 
     @Autowired
     IDocumentDescriptionService documentDescriptionService;
+
+    @Autowired
+    IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
 
     // API - All POST Requests (CRUD - CREATE)
 
@@ -51,6 +62,7 @@ public class DocumentDescriptionHateoasController {
             RIGHT_PARENTHESIS + SLASH + NEW_DOCUMENT_OBJECT, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<DocumentObjectHateoas>
     createDocumentObjectAssociatedWithDocumentDescription(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "documentDescriptionSystemId",
                     value = "systemId of documentDescription to associate the documentObject with.",
                     required = true)
@@ -81,12 +93,14 @@ public class DocumentDescriptionHateoasController {
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<DocumentDescriptionHateoas> findOneDocumentDescriptionBySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemID of the documentDescription to retrieve",
                     required = true)
             @PathVariable("systemID") final String documentDescriptionSystemId) {
         DocumentDescriptionHateoas documentDescriptionHateoas = new
                 DocumentDescriptionHateoas(documentDescriptionService.findBySystemId(documentDescriptionSystemId));
+        documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
         return new ResponseEntity<>(documentDescriptionHateoas, HttpStatus.CREATED);
     }
 
@@ -105,11 +119,14 @@ public class DocumentDescriptionHateoasController {
     @Timed
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<DocumentDescriptionHateoas> findAllDocumentDescription(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         DocumentDescriptionHateoas documentDescriptionHateoas = new
-                DocumentDescriptionHateoas(documentDescriptionService.findDocumentDescriptionByOwnerPaginated(top, skip));
+                DocumentDescriptionHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                documentDescriptionService.findDocumentDescriptionByOwnerPaginated(top, skip));
+        documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
         return new ResponseEntity<>(documentDescriptionHateoas, HttpStatus.OK);
     }
 }
