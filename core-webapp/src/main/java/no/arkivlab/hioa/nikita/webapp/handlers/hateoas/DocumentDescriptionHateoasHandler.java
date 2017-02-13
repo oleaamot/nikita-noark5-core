@@ -12,7 +12,7 @@ import static nikita.config.N5ResourceMappings.*;
 /**
  * Created by tsodring on 2/6/17.
  * <p>
- * Used to add RecordHateoas links with Record specific information
+ * Used to add DocumentDescriptionHateoas links with DocumentDescription specific information
  * <p>
  * Not sure if there is a difference in what should be returned of links for various CRUD operations so keeping them
  * separate calls at the moment.

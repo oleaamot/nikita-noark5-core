@@ -12,6 +12,7 @@ public final class N5ResourceMappings {
     public static final String SERIES_REFERENCE_EN = "referenceSeries";
     public static final String FILE = "mappe";
     public static final String CASE_FILE = "saksmappe";
+    public static final String MEETING_FILE = "moetemappe";
     public static final String REGISTRATION = "registrering";
     public static final String BASIC_RECORD = "basisregistrering";
     public static final String REGISTRY_ENTRY = "journalpost";

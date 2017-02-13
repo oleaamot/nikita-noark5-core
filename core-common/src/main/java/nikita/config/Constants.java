@@ -46,33 +46,35 @@ public final class Constants {
 
     // Other arkivstruktur commands
     public static final String FILE_END = "avslutt-mappe";
-    public static final String FILE_EXPAND_TO_CASE_FILE = "utvid-til-saksmappe";
-    public static final String FILE_EXPAND_TO_MEETING_FILE = "utvid-til-moetemappe";
+    public static final String FILE_EXPAND_TO_CASE_FILE = "utvid-til-" + CASE_FILE;
+    public static final String FILE_EXPAND_TO_MEETING_FILE = "utvid-til-" + MEETING_FILE;
     public static final String NEW_COMMENT = "utvid-til-moetemappe";
     public static final String NEW_SUB_FILE = "ny-undermappe";
     public static final String SUB_FILE = "undermappe";
-    public static final String NEW_CROSS_REFERENCE = "ny-kryssreferanse";
+    public static final String NEW_CROSS_REFERENCE = "ny-" + CROSS_REFERENCE;
     public static final String NEW_REFERENCE_CLASS = "ny-klassereferanse";
     public static final String REFERENCE_NEW_SERIES = "ny-arkivdelReferanse";
-    public static final String NEW_CLASSIFIED = "ny-gradering";
-    public static final String NEW_SCREENING = "ny-skjerming";
-    public static final String NEW_DISPOSAL = "ny-kassasjon";
-    public static final String NEW_DISPOSAL_UNDERTAKEN = "ny-utfoertkassasjon";
+    public static final String NEW_CLASSIFIED = "ny-" + CLASSIFIED;
+    public static final String NEW_SCREENING = "ny-" + SCREENING;
+    public static final String NEW_DISPOSAL = "ny-" + DISPOSAL;
+    public static final String NEW_DISPOSAL_UNDERTAKEN = "ny-" + DISPOSAL_UNDERTAKEN;
     public static final String NEW_DELETION = "ny-sletting";
-    public static final String NEW_STORAGE_LOCATION = "ny-oppbevaringsted";
-    public static final String NEW_AUTHOR = "ny-forfatter";
+    public static final String NEW_STORAGE_LOCATION = "ny-" + STORAGE_LOCATION;
+    public static final String NEW_AUTHOR = "ny-" + AUTHOR;
+    public static final String NEW_ELECTRONIC_SIGNATURE = "ny-" + ELECTRONIC_SIGNATURE;
+    public static final String NEW_CONVERSION = "ny-" + CONVERSION;
 
     // Create for new sakarkiv objects
-    public static final String NEW_CASE_FILE = "ny-saksmappe";
-    public static final String NEW_REGISTRY_ENTRY = "ny-journalpost";
-    public static final String NEW_PRECEDENCE = "ny-presedens";
-    public static final String NEW_CASE_PARTY = "ny-sakspart";
+    public static final String NEW_CASE_FILE = "ny-" + CASE_FILE;
+    public static final String NEW_REGISTRY_ENTRY = "ny-" + REGISTRY_ENTRY;
+    public static final String NEW_PRECEDENCE = "ny-" + PRECEDENCE;
+    public static final String NEW_CASE_PARTY = "ny-" + CASE_PARTY;
     public static final String NEW_SECONDARY_CLASSIFICATION = "ny-sekundaerklassifikasjon";
 
     // Create for new administrasjon objects
 
     // // Create for new metadata objects
-    public static final String NEW_DOCUMENT_MEDIUM = "ny-dokumentmedium";
+    public static final String NEW_DOCUMENT_MEDIUM = "ny-" + DOCUMENT_MEDIUM;
 
     // Some user identifiers used for testing
     public static final String TEST_USER_CASE_HANDLER_1 = "test user case handler 1";
@@ -241,8 +243,19 @@ public final class Constants {
     // Author
     public static final String REL_FONDS_STRUCTURE_AUTHOR = REL_FONDS_STRUCTURE + AUTHOR + SLASH;
     public static final String REL_FONDS_STRUCTURE_NEW_AUTHOR = REL_FONDS_STRUCTURE + NEW_AUTHOR + SLASH;
-  
-/*
+
+    // Conversion
+    public static final String REL_FONDS_STRUCTURE_CONVERSION = REL_FONDS_STRUCTURE + CONVERSION + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_CONVERSION = REL_FONDS_STRUCTURE + NEW_CONVERSION + SLASH;
+
+    // ElectronicSignature
+    public static final String REL_FONDS_STRUCTURE_ELECTRONIC_SIGNATURE = REL_FONDS_STRUCTURE + ELECTRONIC_SIGNATURE + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_ELECTRONIC_SIGNATURE = REL_FONDS_STRUCTURE + NEW_ELECTRONIC_SIGNATURE + SLASH;
+
+    // DocumentDescription
+    public static final String REL_FONDS_STRUCTURE_DOCUMENT_DESCRIPTION = REL_FONDS_STRUCTURE + DOCUMENT_DESCRIPTION + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_DOCUMENT_DESCRIPTION = REL_FONDS_STRUCTURE + NEW_DOCUMENT_DESCRIPTION + SLASH;
+    /*
     public static final String REL_FONDS_STRUCTURE_ = REL_FONDS_STRUCTURE +  + SLASH;
     public static final String REL_FONDS_STRUCTURE_ = REL_FONDS_STRUCTURE +  + SLASH;
     public static final String REL_FONDS_STRUCTURE_ = REL_FONDS_STRUCTURE +  + SLASH;

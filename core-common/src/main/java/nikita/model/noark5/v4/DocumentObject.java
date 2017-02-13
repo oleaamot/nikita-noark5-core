@@ -150,6 +150,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
     @OneToMany(mappedBy = "referenceDocumentObject")
     protected Set<Conversion> referenceConversion = new HashSet<Conversion>();
 
+    // Link to ElectronicSignature
     @OneToOne
     @JoinColumn(name="pk_electronic_signature_id")
     protected ElectronicSignature referenceElectronicSignature;
