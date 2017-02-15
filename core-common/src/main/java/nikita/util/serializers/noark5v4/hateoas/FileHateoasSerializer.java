@@ -53,7 +53,7 @@ public class FileHateoasSerializer extends HateoasSerializer implements IHateoas
         CommonUtils.Hateoas.Serialize.printCreateEntity(jgen, file);
         CommonUtils.Hateoas.Serialize.printFinaliseEntity(jgen, file);
         if (file.getReferenceSeries() != null && file.getReferenceSeries().getSystemId() != null) {
-            jgen.writeStringField(SERIES_REFERENCE, file.getReferenceSeries().getSystemId());
+            jgen.writeStringField(REFERENCE_SERIES, file.getReferenceSeries().getSystemId());
         }
         //TODO: CommonCommonUtils.Hateoas.Serialize.printCrossReference(jgen, file.getReferenceCrossReference());
         CommonUtils.Hateoas.Serialize.printComment(jgen, file);

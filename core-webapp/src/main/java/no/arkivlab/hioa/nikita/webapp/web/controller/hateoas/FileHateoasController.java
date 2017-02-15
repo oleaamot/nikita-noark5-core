@@ -15,12 +15,19 @@ import nikita.model.noark5.v4.hateoas.FileHateoas;
 import nikita.model.noark5.v4.hateoas.RecordHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IBasicRecordHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFileHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRecordHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
@@ -34,6 +41,15 @@ public class FileHateoasController {
 
     @Autowired
     IFileService fileService;
+
+    @Autowired
+    IFileHateoasHandler fileHateoasHandler;
+
+    @Autowired
+    IRecordHateoasHandler recordHateoasHandler;
+
+    @Autowired
+    IBasicRecordHateoasHandler basicRecordHateoasHandler;
 
     // API - All POST Requests (CRUD - CREATE)
 
@@ -55,6 +71,7 @@ public class FileHateoasController {
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
             SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<RecordHateoas> createRecordAssociatedWithFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fileSystemId",
                     value = "systemId of file to associate the record with",
                     required = true)
@@ -65,6 +82,7 @@ public class FileHateoasController {
             @RequestBody Record record) throws NikitaException {
         RecordHateoas recordHateoas =
                 new RecordHateoas(fileService.createRecordAssociatedWithFile(fileSystemId, record));
+        recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
         return new ResponseEntity<>(recordHateoas, HttpStatus.CREATED);
     }
     @ApiOperation(value = "Persists a BasicRecord object associated with the given Series systemId",
@@ -85,6 +103,7 @@ public class FileHateoasController {
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
             SLASH + NEW_BASIC_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<BasicRecordHateoas> createBasicRecordAssociatedWithFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fileSystemId",
                     value = "systemId of file to associate the basicRecord with",
                     required = true)
@@ -95,6 +114,7 @@ public class FileHateoasController {
             @RequestBody BasicRecord basicRecord) throws NikitaException {
         BasicRecordHateoas basicRecordHateoas =
                 new BasicRecordHateoas(fileService.createBasicRecordAssociatedWithFile(fileSystemId, basicRecord));
+        basicRecordHateoasHandler.addLinks(basicRecordHateoas, request, new Authorisation());
         return new ResponseEntity<>(basicRecordHateoas, HttpStatus.CREATED);
     }
     
@@ -110,12 +130,14 @@ public class FileHateoasController {
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<FileHateoas> findOneFilebySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemID of the file to retrieve",
                     required = true)
             @PathVariable("systemID") final String fileSystemId) {
         FileHateoas fileHateoas = new
                 FileHateoas(fileService.findBySystemId(fileSystemId));
+        fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
     }
 
@@ -134,12 +156,14 @@ public class FileHateoasController {
     @Timed
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<FileHateoas> findAllFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         FileHateoas fileHateoas = new
                 FileHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
                 fileService.findFileByOwnerPaginated(top, skip));
+        fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         return new ResponseEntity<>(fileHateoas, HttpStatus.OK);
     }
 }

@@ -45,7 +45,6 @@ public class DocumentDescriptionHateoasHandler extends HateoasHandler implements
         addNewReferenceComment(entity, hateoasNoarkObject);
         addReferenceAuthor(entity, hateoasNoarkObject);
         addNewReferenceAuthor(entity, hateoasNoarkObject);
-
     }
 
 

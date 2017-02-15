@@ -385,13 +385,13 @@ public final class CommonUtils {
 
             public static Set<Series> deserialiseReferenceMultipleSeries(ObjectNode objectNode) {
                 Set<Series> referenceSeries = null;
-                JsonNode disposalNode = objectNode.get(SERIES_REFERENCE);
+                JsonNode disposalNode = objectNode.get(REFERENCE_SERIES);
                 if (disposalNode != null) {
                     referenceSeries = new HashSet<>();
                     deserialiseReferenceSeries(referenceSeries, objectNode.deepCopy());
                 }
-                objectNode.remove(SERIES_REFERENCE);
-                objectNode.remove(SERIES_REFERENCE_EN);
+                objectNode.remove(REFERENCE_SERIES);
+                objectNode.remove(REFERENCE_SERIES_EN);
                 return referenceSeries;
 
             }

@@ -37,9 +37,9 @@ public interface IFileHateoasHandler extends IHateoasHandler {
 
     void addNewCrossReference(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addReferenceClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewReferenceClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addReferenceSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 

@@ -26,7 +26,7 @@ public interface ISeriesHateoasHandler extends IHateoasHandler {
 
     void addClassificationSystem(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addArkiv(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addFonds(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addSeriesStatus(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 

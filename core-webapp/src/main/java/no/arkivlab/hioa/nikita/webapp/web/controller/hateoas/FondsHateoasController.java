@@ -14,6 +14,7 @@ import nikita.model.noark5.v4.hateoas.SeriesHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ISeriesHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
@@ -48,14 +49,17 @@ public class FondsHateoasController {
     IFondsService fondsService;
     ISeriesService seriesService;
     IFondsHateoasHandler fondsHateoasHandler;
+    ISeriesHateoasHandler seriesHateoasHandler;
 
     @Autowired
     public FondsHateoasController(EntityManager entityManager, IFondsService fondsService,
-                                  ISeriesService seriesService, IFondsHateoasHandler fondsHateoasHandler) {
+                                  ISeriesService seriesService, IFondsHateoasHandler fondsHateoasHandler,
+                                  ISeriesHateoasHandler seriesHateoasHandler) {
         this.entityManager = entityManager;
         this.fondsService = fondsService;
         this.seriesService = seriesService;
         this.fondsHateoasHandler = fondsHateoasHandler;
+        this.seriesHateoasHandler = seriesHateoasHandler;
     }
 
 // API - All POST Requests (CRUD - CREATE)
@@ -144,6 +148,7 @@ public class FondsHateoasController {
     @RequestMapping(method = RequestMethod.POST, value = FONDS + SLASH + LEFT_PARENTHESIS +
             "fondsSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_SERIES, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<SeriesHateoas> createSeriesAssociatedWithFonds(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fondsSystemId",
                     value = "systemId of fonds to associate the series with.",
                     required = true)
@@ -155,6 +160,7 @@ public class FondsHateoasController {
             throws NikitaException {
         Series seriesCreated = fondsService.createSeriesAssociatedWithFonds(fondsSystemId, series);
         SeriesHateoas seriesHateoas = new SeriesHateoas(seriesCreated);
+        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
         return new ResponseEntity<> (seriesHateoas, HttpStatus.CREATED);
     }
 
@@ -212,6 +218,7 @@ public class FondsHateoasController {
 
     @RequestMapping(method = RequestMethod.GET, value = FONDS + SLASH + "all" + SLASH)
     public ResponseEntity<FondsHateoas> findAllFonds(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "filter", required = false) String filter) {
 
         Session session = entityManager.unwrap(Session.class);
@@ -222,6 +229,7 @@ public class FondsHateoasController {
 
         FondsHateoas fondsHateoas = new
                 FondsHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList) result);
+        fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
         return new ResponseEntity<>(fondsHateoas, HttpStatus.OK);
     }
 }

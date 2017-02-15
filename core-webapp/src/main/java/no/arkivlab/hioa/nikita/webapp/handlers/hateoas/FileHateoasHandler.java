@@ -36,8 +36,8 @@ public class FileHateoasHandler extends HateoasHandler implements IFileHateoasHa
         addNewSubFile(entity, hateoasNoarkObject);
         addCrossReference(entity, hateoasNoarkObject);
         addNewCrossReference(entity, hateoasNoarkObject);
-        addReferenceClass(entity, hateoasNoarkObject);
-        addNewReferenceClass(entity, hateoasNoarkObject);
+        addClass(entity, hateoasNoarkObject);
+        addNewClass(entity, hateoasNoarkObject);
         addReferenceSeries(entity, hateoasNoarkObject);
         addNewReferenceSeries(entity, hateoasNoarkObject);
     }
@@ -135,17 +135,17 @@ public class FileHateoasHandler extends HateoasHandler implements IFileHateoasHa
     }
 
     @Override
-    public void addReferenceClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + FILE + SLASH + entity.getSystemId() + SLASH + REFERENCE_CLASS
-                + SLASH, REL_FONDS_STRUCTURE_REFERENCE_CLASS, false));
+                + SLASH, REL_FONDS_STRUCTURE_CLASS, false));
     }
 
     @Override
-    public void addNewReferenceClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + FILE + SLASH + entity.getSystemId() + SLASH + NEW_REFERENCE_CLASS
-                + SLASH, REL_FONDS_STRUCTURE_NEW_REFERENCE_CLASS, false));
+                + SLASH, REL_FONDS_STRUCTURE_NEW_CLASS, false));
     }
 
     @Override

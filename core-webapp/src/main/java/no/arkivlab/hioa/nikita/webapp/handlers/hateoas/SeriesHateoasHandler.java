@@ -31,7 +31,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
         addRegistration(entity, hateoasNoarkObject);
         addFile(entity, hateoasNoarkObject);
         addClassificationSystem(entity, hateoasNoarkObject);
-        addArkiv(entity, hateoasNoarkObject);
+        addFonds(entity, hateoasNoarkObject);
         addSeriesStatus(entity, hateoasNoarkObject);
         addNewSeries(entity, hateoasNoarkObject);
     }
@@ -125,7 +125,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     }
 
     @Override
-    public void addArkiv(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addFonds(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + FONDS +
                 SLASH + entity.getSystemId() + SLASH + FONDS + SLASH,

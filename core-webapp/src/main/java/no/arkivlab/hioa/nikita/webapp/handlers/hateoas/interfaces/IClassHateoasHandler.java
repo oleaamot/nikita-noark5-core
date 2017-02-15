@@ -6,13 +6,28 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 /**
  * Created by tsodring on 2/6/17.
  * <p>
- * Describe Hateoas links handler
+ * Describe Hateoas links handler for Class
  */
-public interface IRecordHateoasHandler extends IHateoasHandler {
+public interface IClassHateoasHandler extends IHateoasHandler {
 
-    void addReferenceSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewReferenceSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addRegistration(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addClassificationSystem(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addParentClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addSubClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addNewSubClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addKeyword(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addNewKeyword(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addClassified(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 

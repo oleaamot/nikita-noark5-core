@@ -8,8 +8,8 @@ public final class N5ResourceMappings {
     public static final String SUB_FONDS = "underarkiv";
     public static final String SERIES = "arkivdel";
     public static final String SERIES_EN = "series";
-    public static final String SERIES_REFERENCE = "referanseArkivdel";
-    public static final String SERIES_REFERENCE_EN = "referenceSeries";
+    public static final String REFERENCE_SERIES = "referanseArkivdel";
+    public static final String REFERENCE_SERIES_EN = "referenceSeries";
     public static final String FILE = "mappe";
     public static final String CASE_FILE = "saksmappe";
     public static final String MEETING_FILE = "moetemappe";
@@ -73,6 +73,11 @@ public final class N5ResourceMappings {
     public static final String CLASS_EN = "class";
     public static final String CLASS_ID = "klasseID";
     public static final String CLASS_ID_EN = "classId";
+
+    // Note, PARENT_CLASS is not part of the standard
+    public static final String PARENT_CLASS = "overordnetklasse";
+
+    public static final String SUB_CLASS = "underklasse";
 
     // File
     public static final String FILE_ID = "mappeID";

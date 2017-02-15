@@ -38,6 +38,7 @@ public final class Constants {
     public static final String NEW_SERIES = "ny-arkivdel";
     public static final String NEW_CLASSIFICATION_SYSTEM = "ny-klassifikasjonssystem";
     public static final String NEW_CLASS = "ny-klasse";
+    public static final String NEW_SUB_CLASS = "ny-" + SUB_CLASS;
     public static final String NEW_FILE = "ny-mappe";
     public static final String NEW_RECORD = "ny-registrering";
     public static final String NEW_BASIC_RECORD = "ny-basisregistrering";
@@ -63,6 +64,10 @@ public final class Constants {
     public static final String NEW_AUTHOR = "ny-" + AUTHOR;
     public static final String NEW_ELECTRONIC_SIGNATURE = "ny-" + ELECTRONIC_SIGNATURE;
     public static final String NEW_CONVERSION = "ny-" + CONVERSION;
+    public static final String NEW_KEYWORD = "ny-" + KEYWORD;
+    public static final String NEW_SIGN_OFF = "ny-" + SIGN_OFF;
+    public static final String NEW_DOCUMENT_FLOW = "ny-" + DOCUMENT_FLOW;
+    public static final String NEW_CORRESPONDENCE_PART = "ny-" + CORRESPONDENCE_PART;
 
     // Create for new sakarkiv objects
     public static final String NEW_CASE_FILE = "ny-" + CASE_FILE;
@@ -198,13 +203,16 @@ public final class Constants {
     public static final String REL_FONDS_STRUCTURE_NEW_SUB_FILE = REL_FONDS_STRUCTURE + NEW_SUB_FILE + SLASH;
     public static final String REL_FONDS_STRUCTURE_SUB_FILE = REL_FONDS_STRUCTURE + SUB_FILE + SLASH;
 
+    // CrossReference
     public static final String REL_FONDS_STRUCTURE_NEW_CROSS_REFERENCE = REL_FONDS_STRUCTURE + NEW_CROSS_REFERENCE + SLASH;
     public static final String REL_FONDS_STRUCTURE_CROSS_REFERENCE = REL_FONDS_STRUCTURE + CROSS_REFERENCE + SLASH;
 
-    public static final String REL_FONDS_STRUCTURE_REFERENCE_CLASS = REL_FONDS_STRUCTURE + REFERENCE_CLASS + SLASH;
-    public static final String REL_FONDS_STRUCTURE_NEW_REFERENCE_CLASS = REL_FONDS_STRUCTURE + NEW_REFERENCE_CLASS + SLASH;
+    // Class
+    public static final String REL_FONDS_STRUCTURE_CLASS = REL_FONDS_STRUCTURE + REFERENCE_CLASS + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_CLASS = REL_FONDS_STRUCTURE + NEW_REFERENCE_CLASS + SLASH;
 
-    public static final String REL_FONDS_STRUCTURE_REFERENCE_SERIES = REL_FONDS_STRUCTURE + SERIES_REFERENCE + SLASH;
+    // Series
+    public static final String REL_FONDS_STRUCTURE_REFERENCE_SERIES = REL_FONDS_STRUCTURE + REFERENCE_SERIES + SLASH;
     public static final String REL_FONDS_STRUCTURE_NEW_REFERENCE_SERIES = REL_FONDS_STRUCTURE + REFERENCE_NEW_SERIES + SLASH;
 
     // Classified
@@ -255,6 +263,28 @@ public final class Constants {
     // DocumentDescription
     public static final String REL_FONDS_STRUCTURE_DOCUMENT_DESCRIPTION = REL_FONDS_STRUCTURE + DOCUMENT_DESCRIPTION + SLASH;
     public static final String REL_FONDS_STRUCTURE_NEW_DOCUMENT_DESCRIPTION = REL_FONDS_STRUCTURE + NEW_DOCUMENT_DESCRIPTION + SLASH;
+
+    // Keyword
+    public static final String REL_FONDS_STRUCTURE_KEYWORD = REL_FONDS_STRUCTURE + KEYWORD + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_KEYWORD = REL_FONDS_STRUCTURE + NEW_KEYWORD + SLASH;
+
+    // Precedence
+    public static final String REL_FONDS_STRUCTURE_PRECEDENCE = REL_FONDS_STRUCTURE + PRECEDENCE + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_PRECEDENCE = REL_FONDS_STRUCTURE + NEW_PRECEDENCE + SLASH;
+
+    // Keyword
+    public static final String REL_FONDS_STRUCTURE_SIGN_OFF = REL_FONDS_STRUCTURE + SIGN_OFF + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_SIGN_OFF = REL_FONDS_STRUCTURE + NEW_SIGN_OFF + SLASH;
+
+    // DocumentFlow
+    public static final String REL_FONDS_STRUCTURE_DOCUMENT_FLOW = REL_FONDS_STRUCTURE + DOCUMENT_FLOW + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_DOCUMENT_FLOW = REL_FONDS_STRUCTURE + NEW_DOCUMENT_FLOW + SLASH;
+
+    // CorrespondencePart
+    public static final String REL_FONDS_STRUCTURE_CORRESPONDENCE_PART = REL_FONDS_STRUCTURE + CORRESPONDENCE_PART + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_CORRESPONDENCE_PART = REL_FONDS_STRUCTURE + NEW_CORRESPONDENCE_PART + SLASH;
+
+
     /*
     public static final String REL_FONDS_STRUCTURE_ = REL_FONDS_STRUCTURE +  + SLASH;
     public static final String REL_FONDS_STRUCTURE_ = REL_FONDS_STRUCTURE +  + SLASH;

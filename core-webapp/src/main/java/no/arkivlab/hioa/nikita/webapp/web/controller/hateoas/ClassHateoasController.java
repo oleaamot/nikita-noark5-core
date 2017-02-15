@@ -11,12 +11,17 @@ import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.hateoas.ClassHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
@@ -30,6 +35,9 @@ public class ClassHateoasController {
 
     @Autowired
     IClassService classService;
+
+    @Autowired
+    IClassHateoasHandler classHateoasHandler;
 
     // API - All POST Requests (CRUD - CREATE)
 
@@ -51,6 +59,7 @@ public class ClassHateoasController {
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "classificationSystemSystemId" +
             RIGHT_PARENTHESIS + SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<ClassHateoas> createClassAssociatedWithClassificationSystem(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "classificationSystemSystemId",
                     value = "systemId of classificationSystem to associate the klass with.",
                     required = true)
@@ -62,6 +71,7 @@ public class ClassHateoasController {
         ClassHateoas classHateoas = new ClassHateoas(
                 classService.createClassAssociatedWithClass
                         (classSystemId, klass));
+        classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
         return new ResponseEntity<> (classHateoas, HttpStatus.CREATED);
     }
 
@@ -69,12 +79,14 @@ public class ClassHateoasController {
 
     @RequestMapping(value = LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<ClassHateoas> findOne(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemId",
                     value = "systemId of class to retrieve.",
                     required = true)
             @PathVariable("systemID") final String classSystemId) {
         Class klass = classService.findBySystemId(classSystemId);
         ClassHateoas classHateoas = new ClassHateoas(klass);
+        classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
         return new ResponseEntity<> (classHateoas, HttpStatus.CREATED);
     }
 
@@ -93,12 +105,14 @@ public class ClassHateoasController {
     @Timed
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<ClassHateoas> findAllClass(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         ClassHateoas classHateoas = new
                 ClassHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
                 classService.findClassByOwnerPaginated(top, skip));
+        classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
         return new ResponseEntity<>(classHateoas, HttpStatus.OK);
     }
 }

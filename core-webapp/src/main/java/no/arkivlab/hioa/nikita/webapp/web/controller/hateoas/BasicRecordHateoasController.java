@@ -10,12 +10,17 @@ import nikita.config.Constants;
 import nikita.model.noark5.v4.BasicRecord;
 import nikita.model.noark5.v4.hateoas.BasicRecordHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IBasicRecordHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IBasicRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
@@ -30,6 +35,9 @@ public class BasicRecordHateoasController {
     @Autowired
     IBasicRecordService basicRecordService;
 
+    @Autowired
+    IBasicRecordHateoasHandler basicRecordHateoasHandler;
+
     // API - All GET Requests (CRUD - READ)
 
     @ApiOperation(value = "Retrieves a single BasicRecord entity given a systemId", response = BasicRecord.class)
@@ -42,12 +50,14 @@ public class BasicRecordHateoasController {
     @Timed
     @RequestMapping(value = LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<BasicRecordHateoas> findOneBasicRecordBySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemID of the basicRecord to retrieve",
                     required = true)
             @PathVariable("systemID") final String basicRecordSystemId) {
         BasicRecordHateoas basicRecordHateoas = new
                 BasicRecordHateoas(basicRecordService.findBySystemId(basicRecordSystemId));
+        basicRecordHateoasHandler.addLinks(basicRecordHateoas, request, new Authorisation());
         return new ResponseEntity<>(basicRecordHateoas, HttpStatus.CREATED);
     }
 
@@ -66,12 +76,14 @@ public class BasicRecordHateoasController {
     @Timed
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<BasicRecordHateoas> findAllBasicRecord(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         BasicRecordHateoas basicRecordHateoas = new
                 BasicRecordHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
                 basicRecordService.findBasicRecordByOwnerPaginated(top, skip));
+        basicRecordHateoasHandler.addLinks(basicRecordHateoas, request, new Authorisation());
         return new ResponseEntity<>(basicRecordHateoas, HttpStatus.OK);
     }
 }

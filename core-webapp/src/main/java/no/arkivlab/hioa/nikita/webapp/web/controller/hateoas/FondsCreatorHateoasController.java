@@ -11,14 +11,18 @@ import nikita.model.noark5.v4.FondsCreator;
 import nikita.model.noark5.v4.hateoas.FondsCreatorHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsCreatorService;
-import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
@@ -34,7 +38,7 @@ public class FondsCreatorHateoasController {
     IFondsCreatorService fondsCreatorService;
 
     @Autowired
-    ISeriesService seriesService;
+    IFondsHateoasHandler fondsHateoasHandler;
 
     // API - All POST Requests (CRUD - CREATE)
 
@@ -54,13 +58,15 @@ public class FondsCreatorHateoasController {
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = NEW_FONDS_CREATOR, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<FondsCreatorHateoas> createFondsCreator(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "FondsCreator",
                     value = "Incoming FondsCreator object",
                     required = true)
             @RequestBody FondsCreator FondsCreator) throws NikitaException {
         FondsCreator createdFondsCreator = fondsCreatorService.createNewFondsCreator(FondsCreator);
-        FondsCreatorHateoas FondsCreatorHateoas = new FondsCreatorHateoas(createdFondsCreator);
-        return new ResponseEntity<>(FondsCreatorHateoas, HttpStatus.CREATED);
+        FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(createdFondsCreator);
+        fondsHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+        return new ResponseEntity<>(fondsCreatorHateoas, HttpStatus.CREATED);
     }
 
     // API - All GET Requests (CRUD - READ)
@@ -75,6 +81,7 @@ public class FondsCreatorHateoasController {
     @RequestMapping(value = FONDS_CREATOR + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.GET)
     public ResponseEntity<FondsCreatorHateoas> findOne(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemId",
                     value = "systemId of FondsCreator to retrieve.",
                     required = true)
@@ -83,8 +90,9 @@ public class FondsCreatorHateoasController {
         if (FondsCreator == null) {
             throw new NoarkEntityNotFoundException("Could not find FondsCreator object with systemID " + FondsCreatorSystemId);
         }
-        FondsCreatorHateoas FondsCreatorHateoas = new FondsCreatorHateoas(FondsCreator);
-        return new ResponseEntity<>(FondsCreatorHateoas, HttpStatus.CREATED);
+        FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(FondsCreator);
+        fondsHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+        return new ResponseEntity<>(fondsCreatorHateoas, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Retrieves multiple FondsCreator entities limited by ownership rights", notes = "The field skip" +
@@ -102,11 +110,13 @@ public class FondsCreatorHateoasController {
     @Timed
     @RequestMapping(method = RequestMethod.GET, value = FONDS_CREATOR + SLASH)
     public ResponseEntity<FondsCreatorHateoas> findAllFondsCreator(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
         FondsCreatorHateoas fondsCreatorHateoas = new
                 FondsCreatorHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
                 fondsCreatorService.findFondsCreatorByOwnerPaginated(top, skip));
+        fondsHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
         return new ResponseEntity<>(fondsCreatorHateoas, HttpStatus.OK);
     }
 }
