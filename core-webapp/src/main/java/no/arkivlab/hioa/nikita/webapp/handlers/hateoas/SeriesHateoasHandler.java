@@ -83,7 +83,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     public void addNewFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         if (authorisation.canCreateRegistrationAttachedToSeries()) {
             hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                    NOARK_FONDS_STRUCTURE_PATH + SLASH + FILE +
+                    NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES +
                     SLASH + entity.getSystemId() + SLASH + NEW_FILE + SLASH, REL_FONDS_STRUCTURE_NEW_FILE,
                     false));
         }
