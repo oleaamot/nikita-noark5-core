@@ -1,5 +1,8 @@
-all:
+all: run
+
+build:
 	mvn -Dmaven.test.skip=true clean install
+run: build
 	mvn -f core-webapp/pom.xml spring-boot:run
 
 es:
