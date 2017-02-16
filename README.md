@@ -19,14 +19,13 @@ want to compile from.
 Please note that maven will automatically download all dependencies (jar files) and put them in a directory ~/.m2. If 
 you are uncomfortable with this, please check the pom.xml files to find out which jar files will be downloaded.
 
-COMPILE:
-To compile the core, cd into the directory containing the source e.g. ~/git/nikita-noark5-core. Issue command
+COMPILE AND RUN WITH make:
+To compile the core and start it automatically, cd into the directory containing the source e.g. ~/git/nikita-noark5-core.
+Issue the following command
 
-    mvn -Dmaven.test.skip=true clean install
+    make     
 
-NB! See note below for information maven.test.skip.
-
-The program should compile without issues. The output should be similar to:
+The program should compile and start without issues. The compile result should be similar to:
 
  	[INFO] Reactor Summary:
  	[INFO]
@@ -42,7 +41,12 @@ The program should compile without issues. The output should be similar to:
  	[INFO] Final Memory: 42M/509M
  	[INFO] ------------------------------------------------------------------------
 
-RUN:
+NON-MAKE:
+If you do not want to use make you can use mvn directly
+
+    mvn -Dmaven.test.skip=true clean install
+
+
 After that cd to the core-webapp directory
 (e.g. ~/git/nikita-noark5-core/core-webapp) and run
 
