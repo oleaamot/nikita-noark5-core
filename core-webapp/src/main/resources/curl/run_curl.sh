@@ -31,6 +31,9 @@ printf "created  Series 1            ($systemIDCreatedSeries) \n";
 # Setup curl options for file
 curloptsCreateFile+=("${curlPostOpts[@]}");
 curloptsCreateFile+=( --data @"$curl_files_dir"file-data.json  'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkivdel/'$systemIDCreatedSeries'/ny-mappe' )
+echo  "${curloptsCreateFile[@]}";
+exit;
+
 
 # Create a file object and capture the systemId
 systemIDCreatedFile=$(curl "${curloptsCreateFile[@]}" | jq '.systemID' | sed 's/\"//g');

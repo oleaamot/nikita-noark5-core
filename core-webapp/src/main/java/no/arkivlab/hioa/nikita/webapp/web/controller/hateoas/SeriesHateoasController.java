@@ -13,6 +13,7 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.SeriesHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ICaseFileHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFileHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
@@ -31,6 +32,7 @@ import static nikita.config.N5ResourceMappings.SERIES;
 import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
+
 @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES,
         produces = {NOARK5_V4_CONTENT_TYPE})
 @Api(value = "SeriesController", description = "Contains CRUD operations for Series. Create operations are only for " +
@@ -47,6 +49,9 @@ public class SeriesHateoasController {
 
     @Autowired
     ICaseFileHateoasHandler caseFileHateoasHandler;
+
+    @Autowired
+    IFileHateoasHandler fileHateoasHandler;
 
 //    @Value("${nikita-noark5-core.pagination.maxPageSize}")
   //  Integer maxPageSize;
@@ -88,6 +93,7 @@ public class SeriesHateoasController {
                     required = true)
             @RequestBody File file) throws NikitaException {
         FileHateoas fileHateoas = new FileHateoas(seriesService.createFileAssociatedWithSeries(seriesSystemId, file));
+        fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
     }
 
@@ -122,7 +128,7 @@ public class SeriesHateoasController {
 
         CaseFileHateoas caseFileHateoas = new
                 CaseFileHateoas(seriesService.createCaseFileAssociatedWithSeries(seriesSystemId, caseFile));
-
+        caseFileHateoasHandler.addLinks(caseFileHateoas, request, new Authorisation());
         return new ResponseEntity<>(caseFileHateoas, HttpStatus.CREATED);
     }
 
