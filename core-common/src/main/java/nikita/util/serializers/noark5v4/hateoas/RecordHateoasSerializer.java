@@ -1,21 +1,17 @@
 package nikita.util.serializers.noark5v4.hateoas;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.google.common.collect.Iterables;
 import nikita.model.noark5.v4.Record;
-import nikita.model.noark5.v4.hateoas.RecordHateoas;
+import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.CommonUtils;
-import nikita.util.exceptions.NikitaEntityException;
+import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 
 import static nikita.config.Constants.DATE_TIME_FORMAT;
-import static nikita.config.N5ResourceMappings.*;
+import static nikita.config.N5ResourceMappings.RECORD_ARCHIVED_BY;
+import static nikita.config.N5ResourceMappings.RECORD_ARCHIVED_DATE;
 
 /**
  * Serialise an outgoing Record object as JSON.
@@ -31,46 +27,13 @@ import static nikita.config.N5ResourceMappings.*;
  * exported
  */
 
-public class RecordHateoasSerializer extends StdSerializer<RecordHateoas> {
-
-    public RecordHateoasSerializer() {
-        super(RecordHateoas.class);
-    }
+public class RecordHateoasSerializer extends HateoasSerializer implements IHateoasSerializer {
 
     @Override
-    public void serialize(RecordHateoas recordHateoas, JsonGenerator jgen, SerializerProvider provider)
-            throws IOException {
+    public void serializeNoarkEntity(INoarkSystemIdEntity noarkSystemIdEntity,
+                                     HateoasNoarkObject recordHateoas, JsonGenerator jgen) throws IOException {
 
-        Iterable<Record> recordIterable = recordHateoas.getRecordList();
-        if (recordIterable != null && Iterables.size(recordIterable) > 0) {
-            jgen.writeStartObject();
-            jgen.writeFieldName(REGISTRATION);
-            jgen.writeStartArray();
-            for (Record record : recordIterable) {
-                serializeRecord(record, recordHateoas, jgen, provider);
-            }
-            jgen.writeEndArray();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, recordHateoas.getLinks());
-            jgen.writeEndObject();
-        } else if (recordHateoas.getRecord() != null) {
-            serializeRecord(recordHateoas.getRecord(), recordHateoas, jgen, provider);
-        }
-        // It's an empty object, so returning empty Hateoas links _links : []
-        else {
-            jgen.writeStartObject();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
-            jgen.writeEndObject();
-        }
-    }
-
-    private void serializeRecord(Record record, RecordHateoas recordHateoas,
-                                 JsonGenerator jgen, SerializerProvider provider) throws IOException {
-
-        if (record == null) {
-            // TODO: Should we just be serialising an empty string in this case?
-            // This case should never occur. A non existing Record should be exception handled
-            throw new NikitaEntityException("When serializing a Record entity, the entity was null");
-        }
+        Record record = (Record) noarkSystemIdEntity;
 
         jgen.writeStartObject();
         CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, record);
@@ -86,12 +49,7 @@ public class RecordHateoasSerializer extends StdSerializer<RecordHateoas> {
         CommonUtils.Hateoas.Serialize.printDisposal(jgen, record);
         CommonUtils.Hateoas.Serialize.printScreening(jgen, record);
         CommonUtils.Hateoas.Serialize.printClassified(jgen, record);
-        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, recordHateoas.getLinks());
+        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, recordHateoas.getLinks(record));
         jgen.writeEndObject();
-    }
-
-    @Override
-    public JsonNode getSchema(SerializerProvider provider, Type typeHint) throws JsonMappingException {
-        throw new UnsupportedOperationException();
     }
 }

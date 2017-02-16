@@ -17,7 +17,7 @@ curloptsCreateFonds+=( --data @"$curl_files_dir"fonds-data.json  'http://localho
 curl -X POST -d username=admin -d password=password -c ~/tmp/cookie.txt 'http://localhost:8092/noark5v4/doLogin';
 systemIDCreatedFonds=$(curl "${curloptsCreateFonds[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created Fonds 1             ($systemIDCreatedFonds) \n";
-echo  "${curloptsCreateFonds[@]}";
+#echo  "${curloptsCreateFonds[@]}";
 
 # Setup curl options for series
 curloptsCreateSeries+=("${curlPostOpts[@]}");
@@ -26,11 +26,14 @@ curloptsCreateSeries+=( --data @"$curl_files_dir"series-data.json  'http://local
 # Create a series object and capture the systemId
 systemIDCreatedSeries=$(curl "${curloptsCreateSeries[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created  Series 1            ($systemIDCreatedSeries) \n";
-
+#echo  "${curloptsCreateSeries[@]}";
 
 # Setup curl options for file
 curloptsCreateFile+=("${curlPostOpts[@]}");
 curloptsCreateFile+=( --data @"$curl_files_dir"file-data.json  'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkivdel/'$systemIDCreatedSeries'/ny-mappe' )
+echo  "${curloptsCreateFile[@]}";
+exit;
+
 
 # Create a file object and capture the systemId
 systemIDCreatedFile=$(curl "${curloptsCreateFile[@]}" | jq '.systemID' | sed 's/\"//g');

@@ -1,13 +1,13 @@
 package no.arkivlab.hioa.nikita.webapp.util;
 
 
-import nikita.model.noark5.v4.interfaces.*;
+import nikita.model.noark5.v4.interfaces.IDocumentMedium;
 import nikita.model.noark5.v4.interfaces.entities.*;
 import nikita.util.exceptions.NikitaException;
-
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.*;
+import java.util.Date;
+import java.util.UUID;
 
 import static nikita.config.N5ResourceMappings.*;
 
@@ -62,9 +62,9 @@ public final class NoarkUtils {
                 createEntity.setCreatedBy(username);
             }
 
-            public static void setFinaliseEntityValues(INoarkCreateEntity createEntity) {
-                createEntity.setCreatedDate(null);
-                createEntity.setCreatedBy(null);
+            public static void setFinaliseEntityValues(INoarkFinaliseEntity finaliseEntity) {
+                finaliseEntity.setFinalisedDate(null);
+                finaliseEntity.setFinalisedBy(null);
             }
 
 

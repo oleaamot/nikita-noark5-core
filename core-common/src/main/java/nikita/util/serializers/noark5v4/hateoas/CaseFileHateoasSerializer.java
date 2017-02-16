@@ -4,11 +4,11 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.google.common.collect.Iterables;
 import nikita.model.noark5.v4.CaseFile;
-import nikita.model.noark5.v4.hateoas.CaseFileHateoas;
+import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.CommonUtils;
+import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -33,45 +33,13 @@ import static nikita.config.N5ResourceMappings.*;
  *  TODO: You are missing M209 referanseSekundaerKlassifikasjon
  */
 
-public class CaseFileHateoasSerializer extends StdSerializer<CaseFileHateoas> {
-
-    public CaseFileHateoasSerializer() {
-        super(CaseFileHateoas.class);
-    }
+public class CaseFileHateoasSerializer extends HateoasSerializer implements IHateoasSerializer {
 
     @Override
-    public void serialize(CaseFileHateoas caseFileHateoas, JsonGenerator jgen, SerializerProvider provider)
-            throws IOException {
+    public void serializeNoarkEntity(INoarkSystemIdEntity noarkSystemIdEntity,
+                                     HateoasNoarkObject caseFileHateoas, JsonGenerator jgen) throws IOException {
 
-
-        Iterable<CaseFile> caseFileIterable = caseFileHateoas.getCaseFileList();
-        // Iterables.size is performance heavy. You are getting a list now return it!
-        if (caseFileIterable != null && Iterables.size(caseFileIterable) > 0) {
-
-            jgen.writeStartObject();
-            jgen.writeFieldName(CASE_FILE);
-            jgen.writeStartArray();
-            for (CaseFile caseFile : caseFileIterable) {
-                serializeCaseFile(caseFile, caseFileHateoas, jgen, provider);
-            }
-            jgen.writeEndArray();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, caseFileHateoas.getLinks());
-            jgen.writeEndObject();
-        } else if (caseFileHateoas.getCaseFile() != null) {
-            serializeCaseFile(caseFileHateoas.getCaseFile(), caseFileHateoas, jgen, provider);
-        }
-        // It's an empty object, so returning empty Hateoas links _links : []
-        else {
-            jgen.writeStartObject();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
-            jgen.writeEndObject();
-        }
-    }
-
-    private void serializeCaseFile(CaseFile caseFile, CaseFileHateoas caseFileHateoas,
-                                   JsonGenerator jgen, SerializerProvider provider) throws IOException {
-
-
+        CaseFile caseFile = (CaseFile) noarkSystemIdEntity;
 
         jgen.writeStartObject();
         if (caseFile.getSystemId() != null) {
@@ -107,7 +75,7 @@ public class CaseFileHateoasSerializer extends StdSerializer<CaseFileHateoas> {
             jgen.writeStringField(FINALISED_BY, caseFile.getFinalisedBy());
         }
         if (caseFile.getReferenceSeries() != null && caseFile.getReferenceSeries().getSystemId() != null) {
-            jgen.writeStringField(SERIES_REFERENCE, caseFile.getReferenceSeries().getSystemId());
+            jgen.writeStringField(REFERENCE_SERIES, caseFile.getReferenceSeries().getSystemId());
         }
         if (caseFile.getCaseYear() != null) {
             jgen.writeStringField(CASE_YEAR, caseFile.getCaseYear().toString());
@@ -141,7 +109,7 @@ public class CaseFileHateoasSerializer extends StdSerializer<CaseFileHateoas> {
         //CommonCommonUtils.Hateoas.Serialize.printSecondaryClassification(jgen, caseFile);
         CommonUtils.Hateoas.Serialize.printCaseParty(jgen, caseFile);
         CommonUtils.Hateoas.Serialize.printPrecedence(jgen, caseFile);
-        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, caseFileHateoas.getLinks());
+        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, caseFileHateoas.getLinks(caseFile));
         jgen.writeEndObject();
     }
 

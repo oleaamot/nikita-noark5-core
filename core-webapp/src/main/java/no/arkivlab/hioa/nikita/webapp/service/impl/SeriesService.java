@@ -452,7 +452,7 @@ public class SeriesService implements ISeriesService {
 
     // All UPDATE operations
     public Series update(Series series){
-        if (series.getSeriesStatus() == STATUS_CLOSED) {
+        if (series.getSeriesStatus().equals(STATUS_CLOSED)) {
             //throw an exception back
         }
         return seriesRepository.save(series);

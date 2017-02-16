@@ -1,11 +1,9 @@
 package nikita.model.noark5.v4.hateoas;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.serializers.noark5v4.hateoas.RegistryEntryHateoasSerializer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,52 +14,14 @@ import java.util.List;
  *
  */
 @JsonSerialize(using = RegistryEntryHateoasSerializer.class)
-public class RegistryEntryHateoas implements IHateoasNoarkObject {
+public class RegistryEntryHateoas extends HateoasNoarkObject implements IHateoasNoarkObject {
 
-    protected List<Link> links = new ArrayList<>();
-    RegistryEntry registryEntry;
-    private List<RegistryEntry> registryEntryList;
-
-    public RegistryEntryHateoas(RegistryEntry registryEntry){
-        this.registryEntry = registryEntry;
+    public RegistryEntryHateoas(INoarkSystemIdEntity entity) {
+        super(entity);
     }
 
-    public RegistryEntryHateoas(List<RegistryEntry> registryEntryList) {
-        this.registryEntryList = registryEntryList;
+    public RegistryEntryHateoas(List<INoarkSystemIdEntity> entityList) {
+        super(entityList);
     }
 
-    public List<Link> getLinks() {
-        return links;
-    }
-    public void setLinks(List<Link> links) {
-        this.links = links;
-    }
-
-    public void addLink(Link link) {
-        this.links.add(link);
-    }
-
-    public RegistryEntry getRegistryEntry() {
-        return registryEntry;
-    }
-    public void setRegistryEntry(RegistryEntry registryEntry) {
-        this.registryEntry = registryEntry;
-    }
-
-    public List<RegistryEntry> getRegistryEntryList() {
-        return registryEntryList;
-    }
-
-    public void setRegistryEntryList(List<RegistryEntry> registryEntryList) {
-        this.registryEntryList = registryEntryList;
-    }
-
-    public INoarkSystemIdEntity getSystemIdEntity() {
-        return registryEntry;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<INoarkSystemIdEntity> getSystemIdEntityList() {
-        return (ArrayList<INoarkSystemIdEntity>) (ArrayList) registryEntryList;
-    }
 }

@@ -1,17 +1,13 @@
 package nikita.util.serializers.noark5v4.hateoas;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.google.common.collect.Iterables;
 import nikita.model.noark5.v4.DocumentObject;
-import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
+import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.CommonUtils;
+import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 
 import static nikita.config.N5ResourceMappings.*;
 
@@ -29,40 +25,15 @@ import static nikita.config.N5ResourceMappings.*;
  * exported
  */
 
-public class DocumentObjectHateoasSerializer extends StdSerializer<DocumentObjectHateoas> {
-
-    public DocumentObjectHateoasSerializer() {
-        super(DocumentObjectHateoas.class);
-    }
+public class DocumentObjectHateoasSerializer extends HateoasSerializer implements IHateoasSerializer {
 
     @Override
-    public void serialize(DocumentObjectHateoas documentObjectHateoas, JsonGenerator jgen, SerializerProvider provider)
-            throws IOException {
+    public void serializeNoarkEntity(INoarkSystemIdEntity noarkSystemIdEntity,
+                                     HateoasNoarkObject documentObjectHateoas, JsonGenerator jgen
+    ) throws IOException {
 
-        Iterable<DocumentObject> documentObjectIterable = documentObjectHateoas.getDocumentObjectList();
-        if (documentObjectIterable != null && Iterables.size(documentObjectIterable) > 0) {
-            jgen.writeStartObject();
-            jgen.writeFieldName(DOCUMENT_OBJECT);
-            jgen.writeStartArray();
-            for (DocumentObject documentObject : documentObjectIterable) {
-                serializeDocumentObject(documentObject, documentObjectHateoas, jgen, provider);
-            }
-            jgen.writeEndArray();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, documentObjectHateoas.getLinks());
-            jgen.writeEndObject();
-        } else if (documentObjectHateoas.getDocumentObject() != null) {
-            serializeDocumentObject(documentObjectHateoas.getDocumentObject(), documentObjectHateoas, jgen, provider);
-        }
-        // It's an empty object, so returning empty Hateoas links
-        else {
-            jgen.writeStartObject();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
-            jgen.writeEndObject();
-        }
-    }
+        DocumentObject documentObject = (DocumentObject) noarkSystemIdEntity;
 
-    private void serializeDocumentObject(DocumentObject documentObject, DocumentObjectHateoas documentObjectHateoas,
-                                         JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
 
         // handle DocumentObject properties
@@ -95,12 +66,7 @@ public class DocumentObjectHateoasSerializer extends StdSerializer<DocumentObjec
         }
         CommonUtils.Hateoas.Serialize.printElectronicSignature(jgen, documentObject);
         CommonUtils.Hateoas.Serialize.printConversion(jgen, documentObject);
-        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, documentObjectHateoas.getLinks());
+        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, documentObjectHateoas.getLinks(documentObject));
         jgen.writeEndObject();
-    }
-
-    @Override
-    public JsonNode getSchema(SerializerProvider provider, Type typeHint) throws JsonMappingException {
-        throw new UnsupportedOperationException();
     }
 }

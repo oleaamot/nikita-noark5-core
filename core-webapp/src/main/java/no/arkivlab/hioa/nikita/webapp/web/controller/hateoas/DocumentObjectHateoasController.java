@@ -8,11 +8,19 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.model.noark5.v4.DocumentObject;
 import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT;
@@ -26,6 +34,9 @@ public class DocumentObjectHateoasController {
     @Autowired
     IDocumentObjectService documentObjectService;
 
+    @Autowired
+    IDocumentObjectHateoasHandler documentObjectHateoasHandler;
+
     // API - All GET Requests (CRUD - READ)
 
     @ApiOperation(value = "Retrieves a single DocumentObject entity given a systemId", response = DocumentObject.class)
@@ -38,12 +49,14 @@ public class DocumentObjectHateoasController {
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<DocumentObjectHateoas> findOneDocumentObjectBySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemID of the documentObject to retrieve",
                     required = true)
             @PathVariable("systemID") final String documentObjectSystemId) {
         DocumentObjectHateoas documentObjectHateoas = new
                 DocumentObjectHateoas(documentObjectService.findBySystemId(documentObjectSystemId));
+        documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
         return new ResponseEntity<>(documentObjectHateoas, HttpStatus.CREATED);
     }
 
@@ -62,11 +75,14 @@ public class DocumentObjectHateoasController {
     @Timed
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<DocumentObjectHateoas> findAllDocumentObject(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         DocumentObjectHateoas documentObjectHateoas = new
-                DocumentObjectHateoas(documentObjectService.findDocumentObjectByOwnerPaginated(top, skip));
+                DocumentObjectHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                documentObjectService.findDocumentObjectByOwnerPaginated(top, skip));
+        documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
         return new ResponseEntity<>(documentObjectHateoas, HttpStatus.OK);
     }
 }

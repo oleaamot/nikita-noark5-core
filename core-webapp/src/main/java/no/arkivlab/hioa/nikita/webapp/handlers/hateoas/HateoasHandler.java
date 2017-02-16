@@ -2,8 +2,9 @@ package no.arkivlab.hioa.nikita.webapp.handlers.hateoas;
 
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
 import nikita.model.noark5.v4.hateoas.Link;
-import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.security.IAuthorisation;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -26,53 +27,75 @@ public class HateoasHandler implements IHateoasHandler {
     protected String contextServletPath = "";
     protected String servletPath = "";
     protected String contextPath = "";
+    IAuthorisation authorisation;
 
-
-    public void addLinks(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request) {
+    @Override
+    public void addLinks(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+                         IAuthorisation authorisation) {
         setParameters(request);
-        addSelfLink(hateoasNoarkObject);
-        addEntityLinks(hateoasNoarkObject);
-    }
+        this.authorisation = authorisation;
 
-    public void addLinksOnCreate(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request) {
-        setParameters(request);
-        addSelfLink(hateoasNoarkObject);
-        addEntityLinksOnCreate(hateoasNoarkObject);
-    }
-
-    public void addLinksOnRead(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request) {
-        setParameters(request);
-        addSelfLink(hateoasNoarkObject);
-        addEntityLinksOnRead(hateoasNoarkObject);
-    }
-
-    public void addSelfLink(IHateoasNoarkObject hateoasNoarkObject) {
-
-        if (hateoasNoarkObject.getSystemIdEntity() != null) {
-            String systemId = hateoasNoarkObject.getSystemIdEntity().getSystemId();
-            hateoasNoarkObject.addLink(new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                    NOARK_FONDS_STRUCTURE_PATH + SLASH + getEntityType(hateoasNoarkObject.getClass().getName())
-                    + SLASH + systemId + SLASH,
-                    getRelSelfLink(), false));
-        } else if (hateoasNoarkObject.getSystemIdEntityList() != null) {
-
+        Iterable<INoarkSystemIdEntity> entities = hateoasNoarkObject.getList();
+        for (INoarkSystemIdEntity entity : entities) {
+            addSelfLink(entity, hateoasNoarkObject);
+            addEntityLinks(entity, hateoasNoarkObject);
         }
+    }
 
+    @Override
+    public void addLinksOnCreate(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+                                 IAuthorisation authorisation) {
+        addLinks(hateoasNoarkObject, request, authorisation);
+    }
+
+    @Override
+    public void addLinksOnRead(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+                               IAuthorisation authorisation) {
+        addLinks(hateoasNoarkObject, request, authorisation);
+    }
+
+    @Override
+    public void addLinksOnUpdate(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+                                 IAuthorisation authorisation) {
+        addLinks(hateoasNoarkObject, request, authorisation);
+    }
+
+    @Override
+    public void addLinksOnDelete(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+                                 IAuthorisation authorisation) {
+        addLinks(hateoasNoarkObject, request, authorisation);
+    }
+
+    @Override
+    public void addSelfLink(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        String systemId = entity.getSystemId();
+        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH + getEntityType(hateoasNoarkObject.getClass().getName())
+                + SLASH + systemId + SLASH,
+                    getRelSelfLink(), false));
+    }
+
+    @Override
+    public void addDocumentMedium(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH
+                + SLASH + DOCUMENT_MEDIUM + SLASH, REL_METADATA_DOCUMENT_MEDIUM, false));
     }
 
     // Sub class should handle this, empty links otherwise!
-    public void addEntityLinks(IHateoasNoarkObject hateoasNoarkObject) {
+    @Override
+    public void addEntityLinks(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
     }
 
     // Sub class should handle this, empty links otherwise!
-    public void addEntityLinksOnCreate(IHateoasNoarkObject hateoasNoarkObject) {
+    @Override
+    public void addEntityLinksOnCreate(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        addEntityLinks(entity, hateoasNoarkObject);
     }
 
     // Sub class should handle this, empty links otherwise!
-    public void addEntityLinksOnRead(IHateoasNoarkObject hateoasNoarkObject) {
-    }
-
-    public void addGeneralLinks(INoarkGeneralEntity noarkGeneralEntity) {
+    @Override
+    public void addEntityLinksOnRead(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        addEntityLinks(entity, hateoasNoarkObject);
     }
 
     protected String getRelSelfLink() {

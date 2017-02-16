@@ -464,7 +464,7 @@ public class FondsService implements IFondsService {
 
     // All UPDATE operations
     public Fonds update(Fonds fonds){
-        if (fonds.getFondsStatus() == STATUS_CLOSED) {
+        if (fonds.getFondsStatus().equals(STATUS_CLOSED)) {
             //throw an exception back
         }
         return fondsRepository.save(fonds);

@@ -385,13 +385,13 @@ public final class CommonUtils {
 
             public static Set<Series> deserialiseReferenceMultipleSeries(ObjectNode objectNode) {
                 Set<Series> referenceSeries = null;
-                JsonNode disposalNode = objectNode.get(SERIES_REFERENCE);
+                JsonNode disposalNode = objectNode.get(REFERENCE_SERIES);
                 if (disposalNode != null) {
                     referenceSeries = new HashSet<>();
                     deserialiseReferenceSeries(referenceSeries, objectNode.deepCopy());
                 }
-                objectNode.remove(SERIES_REFERENCE);
-                objectNode.remove(SERIES_REFERENCE_EN);
+                objectNode.remove(REFERENCE_SERIES);
+                objectNode.remove(REFERENCE_SERIES_EN);
                 return referenceSeries;
 
             }
@@ -1318,31 +1318,20 @@ public final class CommonUtils {
             }
 
 
-            // This method assumes that the statObject has already been written
-            public static void printHateoasLinks(JsonGenerator jgen, List links) throws IOException {
+            // Note: This method assumes that the startObject has already been written
+            public static void printHateoasLinks(JsonGenerator jgen, List<Link> links) throws IOException {
+
                 if (links != null) {
-                    Iterator<Link> iterator = links.iterator();
-
                     jgen.writeArrayFieldStart(LINKS);
-
-                    while (iterator.hasNext()) {
-                        Link link = iterator.next();
-                        // Can the startObject have a named object after an array?
-                        if (link.getLinkName() != null) {
-                            String linkName = link.getLinkName();
-                            jgen.writeStartObject(linkName);
-                        } else {
-                            jgen.writeStartObject();
-                        }
+                    for (Link link : links) {
+                        jgen.writeStartObject(link.getLinkName());
                         jgen.writeStringField(HREF, link.getHref());
                         jgen.writeStringField(REL, link.getRel());
                         jgen.writeBooleanField(TEMPLATED, link.getTemplated());
-
                         jgen.writeEndObject();
                     }
                     jgen.writeEndArray();
                 } else {
-                    //_links : []
                     jgen.writeArrayFieldStart(LINKS);
                     jgen.writeEndArray();
                 }

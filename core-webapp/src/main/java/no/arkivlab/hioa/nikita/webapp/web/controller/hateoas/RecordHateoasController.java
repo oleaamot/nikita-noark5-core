@@ -11,12 +11,21 @@ import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.Record;
 import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.RecordHateoas;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentDescriptionHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRecordHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.REGISTRATION;
@@ -29,6 +38,12 @@ public class RecordHateoasController {
 
     @Autowired
     IRecordService recordService;
+
+    @Autowired
+    IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
+
+    @Autowired
+    IRecordHateoasHandler recordHateoasHandler;
 
     // API - All POST Requests (CRUD - CREATE)
 
@@ -51,6 +66,7 @@ public class RecordHateoasController {
             SLASH + NEW_DOCUMENT_DESCRIPTION, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<DocumentDescriptionHateoas>
     createDocumentDescriptionAssociatedWithRecord(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "recordSystemId",
                     value = "systemId of record to associate the documentDescription with.",
                     required = true)
@@ -64,6 +80,7 @@ public class RecordHateoasController {
                 new DocumentDescriptionHateoas(
                         recordService.createDocumentDescriptionAssociatedWithRecord(recordSystemId,
                                 documentDescription));
+        documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
         return new ResponseEntity<>(documentDescriptionHateoas, HttpStatus.CREATED);
     }
 
@@ -79,12 +96,14 @@ public class RecordHateoasController {
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<RecordHateoas> findOneRecordbySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemID of the record to retrieve",
                     required = true)
             @PathVariable("systemID") final String recordSystemId) {
         RecordHateoas recordHateoas = new
                 RecordHateoas(recordService.findBySystemId(recordSystemId));
+        recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
         return new ResponseEntity<>(recordHateoas, HttpStatus.CREATED);
     }
 
@@ -103,11 +122,13 @@ public class RecordHateoasController {
     @Timed
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<RecordHateoas> findAllRecord(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
 
-        RecordHateoas recordHateoas = new RecordHateoas(
+        RecordHateoas recordHateoas = new RecordHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
                 recordService.findRecordByOwnerPaginated(top, skip));
+        recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
         return new ResponseEntity<>(recordHateoas, HttpStatus.OK);
     }
 }

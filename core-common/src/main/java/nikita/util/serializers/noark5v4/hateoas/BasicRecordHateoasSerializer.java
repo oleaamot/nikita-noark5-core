@@ -4,11 +4,11 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.google.common.collect.Iterables;
 import nikita.model.noark5.v4.BasicRecord;
-import nikita.model.noark5.v4.hateoas.BasicRecordHateoas;
+import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.CommonUtils;
+import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -30,40 +30,13 @@ import static nikita.config.N5ResourceMappings.*;
  * exported
  */
 
-public class BasicRecordHateoasSerializer extends StdSerializer<BasicRecordHateoas> {
-
-    public BasicRecordHateoasSerializer() {
-        super(BasicRecordHateoas.class);
-    }
+public class BasicRecordHateoasSerializer extends HateoasSerializer implements IHateoasSerializer {
 
     @Override
-    public void serialize(BasicRecordHateoas basicRecordHateoas, JsonGenerator jgen, SerializerProvider provider)
-            throws IOException {
+    public void serializeNoarkEntity(INoarkSystemIdEntity noarkSystemIdEntity,
+                                     HateoasNoarkObject basicRecordHateoas, JsonGenerator jgen) throws IOException {
 
-        Iterable<BasicRecord> basicRecordIterable = basicRecordHateoas.getBasicRecordList();
-        if (basicRecordIterable != null && Iterables.size(basicRecordIterable) > 0) {
-            jgen.writeStartObject();
-            jgen.writeFieldName(BASIC_RECORD);
-            jgen.writeStartArray();
-            for (BasicRecord basicRecord : basicRecordIterable) {
-                serializeBasicRecord(basicRecord, basicRecordHateoas, jgen, provider);
-            }
-            jgen.writeEndArray();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, basicRecordHateoas.getLinks());
-            jgen.writeEndObject();
-        } else if (basicRecordHateoas.getBasicRecord() != null) {
-            serializeBasicRecord(basicRecordHateoas.getBasicRecord(), basicRecordHateoas, jgen, provider);
-        }
-        // It's an empty object, so returning empty Hateoas links _links : []
-        else {
-            jgen.writeStartObject();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
-            jgen.writeEndObject();
-        }
-    }
-
-    private void serializeBasicRecord(BasicRecord basicRecord, BasicRecordHateoas basicRecordHateoas,
-                                      JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        BasicRecord basicRecord = (BasicRecord) noarkSystemIdEntity;
 
         jgen.writeStartObject();
 
@@ -94,7 +67,7 @@ public class BasicRecordHateoasSerializer extends StdSerializer<BasicRecordHateo
         CommonUtils.Hateoas.Serialize.printStorageLocation(jgen, basicRecord);
         CommonUtils.Hateoas.Serialize.printComment(jgen, basicRecord);
         // TODO: FIX THIS CommonCommonUtils.Hateoas.Serialize.printCrossReference(jgen, basicRecord);
-        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, basicRecordHateoas.getLinks());
+        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, basicRecordHateoas.getLinks(basicRecord));
         jgen.writeEndObject();
     }
 

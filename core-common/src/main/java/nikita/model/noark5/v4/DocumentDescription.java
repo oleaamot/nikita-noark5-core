@@ -25,6 +25,7 @@ import java.util.Set;
 @Where(clause="deleted <> true")
 @Indexed(index = "document_description")
 @JsonDeserialize(using = DocumentDescriptionDeserializer.class)
+//TODO: Important! Should DocumentDescription have links to Series???
 public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity, INoarkTitleDescriptionEntity,
         INoarkCreateEntity, IDocumentMedium, IStorageLocation, IDeletion, IScreening, IDisposal, IClassified,
         IDisposalUndertaken, IComment, IElectronicSignature, IAuthor {

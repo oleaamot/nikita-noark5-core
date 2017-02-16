@@ -1,19 +1,13 @@
 package nikita.util.serializers.noark5v4.hateoas;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.google.common.collect.Iterables;
 import nikita.model.noark5.v4.ClassificationSystem;
-import nikita.model.noark5.v4.hateoas.ClassificationSystemHateoas;
+import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.CommonUtils;
+import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
-
-import static nikita.config.N5ResourceMappings.CLASSIFICATION_SYSTEM;
 
 /**
  *
@@ -30,56 +24,18 @@ import static nikita.config.N5ResourceMappings.CLASSIFICATION_SYSTEM;
  * exported
  *
  */
-public class ClassificationSystemHateoasSerializer extends StdSerializer<ClassificationSystemHateoas> {
-
-    public ClassificationSystemHateoasSerializer() {
-        super(ClassificationSystemHateoas.class);
-    }
+public class ClassificationSystemHateoasSerializer extends HateoasSerializer implements IHateoasSerializer {
 
     @Override
-    public void serialize(ClassificationSystemHateoas classificationSystemHateoas, JsonGenerator jgen,
-                          SerializerProvider provider)
-            throws IOException {
-
-        Iterable<ClassificationSystem> classificationSystemIterable = classificationSystemHateoas.getClassificationSystemList();
-        if (classificationSystemIterable != null && Iterables.size(classificationSystemIterable) > 0) {
-            jgen.writeStartObject();
-            jgen.writeFieldName(CLASSIFICATION_SYSTEM);
-            jgen.writeStartArray();
-            for (ClassificationSystem classificationSystem : classificationSystemIterable) {
-                serializeClassificationSystem(classificationSystem, classificationSystemHateoas, jgen, provider);
-            }
-            jgen.writeEndArray();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, classificationSystemHateoas.getLinks());
-            jgen.writeEndObject();
-        } else if (classificationSystemHateoas.getClassificationSystem() != null) {
-            serializeClassificationSystem(classificationSystemHateoas.getClassificationSystem(),
-                    classificationSystemHateoas, jgen, provider);
-        }
-        // It's an empty object, so returning empty Hateoas links _links : []
-        else {
-            jgen.writeStartObject();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
-            jgen.writeEndObject();
-        }
-    }
-
-    private void serializeClassificationSystem(ClassificationSystem classificationSystem,
-                                               ClassificationSystemHateoas classificationSystemHateoas,
-                                               JsonGenerator jgen, SerializerProvider provider) throws IOException {
-
-
+    public void serializeNoarkEntity(INoarkSystemIdEntity classificationSystem,
+                                     HateoasNoarkObject classificationSystemHateoas, JsonGenerator jgen
+    ) throws IOException {
         jgen.writeStartObject();
         CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, classificationSystem);
-        CommonUtils.Hateoas.Serialize.printTitleAndDescription(jgen, classificationSystem);
-        CommonUtils.Hateoas.Serialize.printCreateEntity(jgen, classificationSystem);
-        CommonUtils.Hateoas.Serialize.printFinaliseEntity(jgen, classificationSystem);
-        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, classificationSystemHateoas.getLinks());
+        CommonUtils.Hateoas.Serialize.printTitleAndDescription(jgen, (ClassificationSystem) classificationSystem);
+        CommonUtils.Hateoas.Serialize.printCreateEntity(jgen, (ClassificationSystem) classificationSystem);
+        CommonUtils.Hateoas.Serialize.printFinaliseEntity(jgen, (ClassificationSystem) classificationSystem);
+        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, classificationSystemHateoas.getLinks(classificationSystem));
         jgen.writeEndObject();
-    }
-
-    @Override
-    public JsonNode getSchema(SerializerProvider provider, Type typeHint) throws JsonMappingException {
-        throw new UnsupportedOperationException();
     }
 }

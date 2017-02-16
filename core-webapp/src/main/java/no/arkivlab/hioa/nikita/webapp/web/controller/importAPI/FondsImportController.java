@@ -6,13 +6,11 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import nikita.util.exceptions.NikitaException;
 import nikita.model.noark5.v4.Fonds;
 import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.hateoas.FondsHateoas;
 import nikita.model.noark5.v4.hateoas.SeriesHateoas;
-import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
-import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
+import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.imprt.IFondsImportService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.imprt.ISeriesImportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static nikita.config.Constants.*;
-import static nikita.config.N5ResourceMappings.*;
+import static nikita.config.N5ResourceMappings.FONDS;
 
 @RestController
 @RequestMapping(value = IMPORT_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH,
@@ -74,7 +72,7 @@ public class FondsImportController {
             @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type Fonds"),
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
-            @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMTNED)})
+            @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = FONDS + SLASH + LEFT_PARENTHESIS +
@@ -108,7 +106,7 @@ public class FondsImportController {
             @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type Series"),
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
-            @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMTNED)})
+            @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = FONDS + SLASH + LEFT_PARENTHESIS +

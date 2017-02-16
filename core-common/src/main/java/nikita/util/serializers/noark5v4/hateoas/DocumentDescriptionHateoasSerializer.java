@@ -1,17 +1,13 @@
 package nikita.util.serializers.noark5v4.hateoas;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.google.common.collect.Iterables;
 import nikita.model.noark5.v4.DocumentDescription;
-import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
+import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.CommonUtils;
+import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 
 import static nikita.config.Constants.DATE_FORMAT;
 import static nikita.config.N5ResourceMappings.*;
@@ -30,42 +26,13 @@ import static nikita.config.N5ResourceMappings.*;
  * exported
  */
 
-public class DocumentDescriptionHateoasSerializer extends StdSerializer<DocumentDescriptionHateoas> {
-
-    public DocumentDescriptionHateoasSerializer() {
-        super(DocumentDescriptionHateoas.class);
-    }
+public class DocumentDescriptionHateoasSerializer extends HateoasSerializer implements IHateoasSerializer {
 
     @Override
-    public void serialize(DocumentDescriptionHateoas documentDescriptionHateoas, JsonGenerator jgen, SerializerProvider provider)
-            throws IOException {
-
-        Iterable<DocumentDescription> documentDescriptionIterable = documentDescriptionHateoas.getDocumentDescriptionList();
-        if (documentDescriptionIterable != null && Iterables.size(documentDescriptionIterable) > 0) {
-            jgen.writeStartObject();
-            jgen.writeFieldName(DOCUMENT_DESCRIPTION);
-            jgen.writeStartArray();
-            for (DocumentDescription documentDescription : documentDescriptionIterable) {
-                serializeDocumentDescription(documentDescription, documentDescriptionHateoas, jgen, provider);
-            }
-            jgen.writeEndArray();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, documentDescriptionHateoas.getLinks());
-            jgen.writeEndObject();
-        } else if (documentDescriptionHateoas.getDocumentDescription() != null) {
-            serializeDocumentDescription(documentDescriptionHateoas.getDocumentDescription(), documentDescriptionHateoas, jgen, provider);
-        }
-        // It's an empty object, so returning empty Hateoas links _links : []
-        else {
-            jgen.writeStartObject();
-            CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, null);
-            jgen.writeEndObject();
-        }
-    }
-
-    private void serializeDocumentDescription(DocumentDescription documentDescription, DocumentDescriptionHateoas documentDescriptionHateoas,
-                                              JsonGenerator jgen, SerializerProvider provider) throws IOException {
-
-
+    public void serializeNoarkEntity(INoarkSystemIdEntity noarkEntity,
+                                     HateoasNoarkObject documentDescriptionHateoas, JsonGenerator jgen
+    ) throws IOException {
+        DocumentDescription documentDescription = (DocumentDescription) noarkEntity;
         jgen.writeStartObject();
 
         // handle DocumentDescription properties
@@ -95,12 +62,7 @@ public class DocumentDescriptionHateoasSerializer extends StdSerializer<Document
         CommonUtils.Hateoas.Serialize.printScreening(jgen, documentDescription);
         CommonUtils.Hateoas.Serialize.printClassified(jgen, documentDescription);
         CommonUtils.Hateoas.Serialize.printElectronicSignature(jgen, documentDescription);
-        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, documentDescriptionHateoas.getLinks());
+        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, documentDescriptionHateoas.getLinks(documentDescription));
         jgen.writeEndObject();
-    }
-
-    @Override
-    public JsonNode getSchema(SerializerProvider provider, Type typeHint) throws JsonMappingException {
-        throw new UnsupportedOperationException();
     }
 }

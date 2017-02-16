@@ -11,13 +11,23 @@ import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentDescriptionHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRegistryEntryHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRegistryEntryService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
@@ -30,6 +40,15 @@ public class RegistryEntryHateoasController {
 
     @Autowired
     IRegistryEntryService registryEntryService;
+
+    @Autowired
+    IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
+
+    @Autowired
+    IDocumentObjectHateoasHandler documentObjectHateoasHandler;
+
+    @Autowired
+    IRegistryEntryHateoasHandler registryEntryHateoasHandler;
 
     // API - All POST Requests (CRUD - CREATE)
 
@@ -52,6 +71,7 @@ public class RegistryEntryHateoasController {
             SLASH + NEW_DOCUMENT_DESCRIPTION, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<DocumentDescriptionHateoas>
     createDocumentDescriptionAssociatedWithRegistryEntry(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "recordSystemId",
                     value = "systemId of record/registryEntry to associate the documentDescription with.",
                     required = true)
@@ -65,6 +85,7 @@ public class RegistryEntryHateoasController {
                 new DocumentDescriptionHateoas(
                         registryEntryService.createDocumentDescriptionAssociatedWithRegistryEntry(recordSystemId,
                                 documentDescription));
+        documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
         return new ResponseEntity<>(documentDescriptionHateoas, HttpStatus.CREATED);
     }
 
@@ -80,6 +101,7 @@ public class RegistryEntryHateoasController {
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<RegistryEntryHateoas> findOneRegistryEntryBySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemID of the registryEntry to retrieve",
                     required = true)
@@ -92,6 +114,7 @@ public class RegistryEntryHateoasController {
         }
         RegistryEntryHateoas registryEntryHateoas = new
                 RegistryEntryHateoas(registryEntry);
+        registryEntryHateoasHandler.addLinks(registryEntryHateoas, request, new Authorisation());
         return new ResponseEntity<>(registryEntryHateoas, HttpStatus.CREATED);
     }
 
@@ -110,11 +133,14 @@ public class RegistryEntryHateoasController {
     @Timed
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<RegistryEntryHateoas> findAllRegistryEntry(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         RegistryEntryHateoas registryEntryHateoas = new RegistryEntryHateoas(
-                registryEntryService.findRegistryEntryByOwnerPaginated(top, skip));
+                (ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                        registryEntryService.findRegistryEntryByOwnerPaginated(top, skip));
+        registryEntryHateoasHandler.addLinks(registryEntryHateoas, request, new Authorisation());
         return new ResponseEntity<>(registryEntryHateoas, HttpStatus.OK);
     }
 }
