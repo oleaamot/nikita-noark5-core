@@ -61,6 +61,7 @@ public final class Constants {
     public static final String NEW_DISPOSAL_UNDERTAKEN = "ny-" + DISPOSAL_UNDERTAKEN;
     public static final String NEW_DELETION = "ny-sletting";
     public static final String NEW_STORAGE_LOCATION = "ny-" + STORAGE_LOCATION;
+    public static final String NEW_STORAGE_LOCATIONS = "ny-" + STORAGE_LOCATIONS;
     public static final String NEW_AUTHOR = "ny-" + AUTHOR;
     public static final String NEW_ELECTRONIC_SIGNATURE = "ny-" + ELECTRONIC_SIGNATURE;
     public static final String NEW_CONVERSION = "ny-" + CONVERSION;
@@ -68,6 +69,9 @@ public final class Constants {
     public static final String NEW_SIGN_OFF = "ny-" + SIGN_OFF;
     public static final String NEW_DOCUMENT_FLOW = "ny-" + DOCUMENT_FLOW;
     public static final String NEW_CORRESPONDENCE_PART = "ny-" + CORRESPONDENCE_PART;
+    public static final String NEW_SERIES_SUCCESSOR = "ny-" + SERIES_SUCCESSOR;
+    public static final String NEW_SERIES_PRECURSOR = "ny-" + SERIES_PRECURSOR;
+
 
     // Create for new sakarkiv objects
     public static final String NEW_CASE_FILE = "ny-" + CASE_FILE;
@@ -80,6 +84,10 @@ public final class Constants {
 
     // // Create for new metadata objects
     public static final String NEW_DOCUMENT_MEDIUM = "ny-" + DOCUMENT_MEDIUM;
+
+
+    public static final String SERIES_ASSOCIATE_AS_SUCCESSOR = "referanseArvtager";
+    public static final String SERIES_ASSOCIATE_AS_PRECURSOR = "referanseForloeper";
 
     // Some user identifiers used for testing
     public static final String TEST_USER_CASE_HANDLER_1 = "test user case handler 1";
@@ -180,6 +188,12 @@ public final class Constants {
     // SeriesHateoas REL links
     public static final String REL_METADATA_SERIES_STATUS = REL_METADATA + SERIES_STATUS + SLASH;
 
+    // Series precursor / successor
+    public static final String REL_FONDS_STRUCTURE_SUCCESSOR = REL_FONDS_STRUCTURE + SERIES_SUCCESSOR + SLASH;
+    public static final String REL_FONDS_STRUCTURE_PRECURSOR = REL_FONDS_STRUCTURE + SERIES_PRECURSOR + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_SUCCESSOR = REL_FONDS_STRUCTURE + SERIES_SUCCESSOR + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_PRECURSOR = REL_FONDS_STRUCTURE + SERIES_PRECURSOR + SLASH;
+
     // CaseFileHateoas REL links
     public static final String REL_CASE_HANDLING_NEW_CLASS = REL_FONDS_STRUCTURE + NEW_CLASS + SLASH;
     public static final String REL_CASE_HANDLING_CLASS = REL_FONDS_STRUCTURE + CLASS + SLASH;
@@ -234,6 +248,7 @@ public final class Constants {
     // StorageLocation
     public static final String REL_FONDS_STRUCTURE_STORAGE_LOCATION = REL_FONDS_STRUCTURE + STORAGE_LOCATION + SLASH;
     public static final String REL_FONDS_STRUCTURE_NEW_STORAGE_LOCATION = REL_FONDS_STRUCTURE + NEW_STORAGE_LOCATION + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_STORAGE_LOCATION_LIST = REL_FONDS_STRUCTURE + NEW_STORAGE_LOCATIONS + SLASH;
 
     // DocumentObject
     public static final String REL_FONDS_STRUCTURE_DOCUMENT_OBJECT = REL_FONDS_STRUCTURE + DOCUMENT_OBJECT + SLASH;

@@ -11,9 +11,9 @@ import nikita.model.noark5.v4.hateoas.FileHateoas;
 import nikita.model.noark5.v4.hateoas.SeriesHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.SeriesHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ICaseFileHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFileHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ISeriesHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
@@ -45,7 +45,7 @@ public class SeriesHateoasController {
     ISeriesService seriesService;
 
     @Autowired
-    SeriesHateoasHandler seriesHateoasHandler;
+    ISeriesHateoasHandler seriesHateoasHandler;
 
     @Autowired
     ICaseFileHateoasHandler caseFileHateoasHandler;
@@ -65,10 +65,11 @@ public class SeriesHateoasController {
 
     // API - All POST Requests (CRUD - CREATE)
 
+    // ny-mappe / new-file
     @ApiOperation(value = "Persists a File object associated with the given Series systemId", notes = "Returns the " +
             "newly created file object after it was associated with a Series object and persisted to the database",
             response = FileHateoas.class)
-        @ApiResponses(value = {
+    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "File " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
                     response = FileHateoas.class),
             @ApiResponse(code = 201, message = "File " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
@@ -97,6 +98,7 @@ public class SeriesHateoasController {
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
     }
 
+    // ny-saksmappe / new-casefile
     @ApiOperation(value = "Persists a CaseFile object associated with the given Series systemId", notes = "Returns " +
             "the newly created caseFile object after it was associated with a Series object and persisted to " +
             "the database", response = CaseFileHateoas.class)
@@ -131,6 +133,41 @@ public class SeriesHateoasController {
         caseFileHateoasHandler.addLinks(caseFileHateoas, request, new Authorisation());
         return new ResponseEntity<>(caseFileHateoas, HttpStatus.CREATED);
     }
+
+    // associate series with reference to successor
+    @ApiOperation(value = "Associates a Series object as successor Series systemId", notes = "Returns ", response = SeriesHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Series " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = SeriesHateoas.class),
+            @ApiResponse(code = 201, message = "File " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = SeriesHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type CaseFile"),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "seriesSystemId" +
+            RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_SUCCESSOR, consumes = {NOARK5_V4_CONTENT_TYPE})
+    public ResponseEntity<String> associateSeriesWithSeriesSuccessor(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "seriesSystemId",
+                    value = "systemId of series to associate the caseFile with",
+                    required = true)
+            @PathVariable String seriesSystemId,
+            @ApiParam(name = "series",
+                    value = "Incoming series object",
+                    required = true)
+            @RequestBody Series seriesSuccessor) throws NikitaException {
+
+//        SeriesHateoas seriesHateoas = new
+//                SeriesHateoas(seriesService.associateSeriesWithSeriesSuccessor(seriesSystemId, caseFile));
+//        caseFileHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+
 
     // API - All GET Requests (CRUD - READ)
     @ApiOperation(value = "Retrieves a single Series entity given a systemId", response = Series.class)
