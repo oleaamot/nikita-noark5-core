@@ -37,3 +37,6 @@ docker_run: docker
 	docker run -dit --link elasticsearch ${project}
 docker_push:
 	docker push ${project}
+# Prepare a package which can be used to deploy the application
+package:
+	mvn -Dmaven.test.skip=true package spring-boot:repackage
