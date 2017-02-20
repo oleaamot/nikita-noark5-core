@@ -1,18 +1,8 @@
-FROM openjdk:8
+FROM java:8
+VOLUME /tmp
 
-# Environment variables
-ENV APP_ROOT "/srv/nikita-noark5-core"
+ADD core-webapp/target/core-webapp-0.1.0-spring-boot.jar app.jar
+RUN bash -c 'touch /app.jar'
 
-# Install dependencies
-RUN apt-get update
-RUN apt-get install -y maven git
-
-# Clone source and change the working directory
-RUN git clone https://github.com/HiOA-ABI/nikita-noark5-core.git $APP_ROOT
-WORKDIR $APP_ROOT
-
-# Get the application running
-RUN mvn -Dmaven.test.skip=true clean install
-RUN mvn -f core-webapp/pom.xml spring-boot:run
-
+ENTRYPOINT ["java","-jar","/app.jar"]
 EXPOSE 8092 8082
