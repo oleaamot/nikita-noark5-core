@@ -1,7 +1,9 @@
 # nikita-noark5-core
 ABOUT:
-This is an open source Noark 5v4 core. The core is very much under development and should be seen as a alpha product until
-releases closer to 0.6. The current version is 0.1 and has implemented the arkivstruktur interface of Noark 5v4.  
+
+This is an open source Noark 5v4 core.  This implement a REST based web API for storing av retrieving documents and metadata based on the Norwegian archive standard NOARK 5.
+
+The core is very much under development and should be seen as a alpha product until releases closer to 0.6. The current version is 0.1 and has implemented the arkivstruktur interface of Noark 5v4.  
 
 
 INSTALL:
