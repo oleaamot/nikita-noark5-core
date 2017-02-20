@@ -31,6 +31,7 @@ public final class Constants {
     public static final String SLASH = "/";
     public static final String LEFT_PARENTHESIS = "{";
     public static final String RIGHT_PARENTHESIS = "}";
+    public static final String REF_ID = "$ref?$id=";
 
     // Create for new arkivstruktur objects
     public static final String NEW_FONDS = "ny-arkiv";

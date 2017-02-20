@@ -14,6 +14,8 @@ public interface ISeriesHateoasHandler extends IHateoasHandler {
 
     void addNewFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
+    void addNewCaseFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
     void addNewClassificationSystem(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addSeriesSuccessor(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
@@ -27,6 +29,8 @@ public interface ISeriesHateoasHandler extends IHateoasHandler {
     void addRegistration(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addCaseFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addClassificationSystem(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
