@@ -17,7 +17,7 @@ tt:
 	if ! test -d $(repo_tester_dir); then \
 	  git clone $(repo_tester) $(repo_tester_dir); \
 	fi
-	cd $(repo_tester_dir) && ./runtest --reference
+	cd $(repo_tester_dir) && ./runtest
 
 # This target is only expected to be run once.  If you have created the
 # container but it's not running use `docker start elasticsearch` instead of
