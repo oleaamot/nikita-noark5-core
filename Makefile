@@ -32,7 +32,7 @@ docker:
 	docker build -t ${project} .
 docker_deploy: docker docker_push
 	echo "Pushed to docker, https://hub.docker.com/r/${project}"
-docker_run: docker
+docker_run: build package docker
 	docker start elasticsearch
 	docker run -dit --link elasticsearch ${project}
 docker_push:
