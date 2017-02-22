@@ -71,6 +71,7 @@
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>1.4.1.RELEASE</version>
                     <configuration>
+                      <classifier>spring-boot</classifier>
                         <mainClass>no.arkivlab.hioa.nikita.webapp.run.N5CoreApp</mainClass>
                     </configuration>
                     <executions>
