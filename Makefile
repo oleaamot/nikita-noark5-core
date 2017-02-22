@@ -1,5 +1,5 @@
 # docker build says: reference format: repository name must be lowercase
-project ?=hioa-abi/nikita-noark5-core
+project ?=nikita5/nikita-noark5-core
 repo_tester_dir ?=../noark5-tester
 repo_tester ?=https://github.com/petterreinholdtsen/noark5-tester
 
@@ -31,7 +31,7 @@ es:
 docker:
 	docker build -t ${project} .
 docker_deploy: docker docker_push
-	echo "Pushed to docker"
+	echo "Pushed to docker, https://hub.docker.com/r/${project}"
 docker_run: docker
 	docker start elasticsearch
 	docker run -dit --link elasticsearch ${project}
