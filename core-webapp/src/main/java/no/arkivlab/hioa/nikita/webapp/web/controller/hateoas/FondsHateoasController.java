@@ -8,7 +8,9 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
 import nikita.model.noark5.v4.Fonds;
+import nikita.model.noark5.v4.FondsCreator;
 import nikita.model.noark5.v4.Series;
+import nikita.model.noark5.v4.hateoas.FondsCreatorHateoas;
 import nikita.model.noark5.v4.hateoas.FondsHateoas;
 import nikita.model.noark5.v4.hateoas.SeriesHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
@@ -37,12 +39,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static nikita.config.Constants.*;
-import static nikita.config.N5ResourceMappings.FONDS;
-import static nikita.config.N5ResourceMappings.SYSTEM_ID;
+import static nikita.config.N5ResourceMappings.*;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH,
-        produces = {NOARK5_V4_CONTENT_TYPE})
+        consumes = {NOARK5_V4_CONTENT_TYPE}, produces = {NOARK5_V4_CONTENT_TYPE})
 public class FondsHateoasController {
 
     EntityManager entityManager;
@@ -62,7 +63,7 @@ public class FondsHateoasController {
         this.seriesHateoasHandler = seriesHateoasHandler;
     }
 
-// API - All POST Requests (CRUD - CREATE)
+    // API - All POST Requests (CRUD - CREATE)
 
     @ApiOperation(value = "Persists a Fonds object", notes = "Returns the newly" +
             " created Fonds object after it is persisted to the database", response = FondsHateoas.class)
@@ -110,19 +111,19 @@ public class FondsHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = FONDS + SLASH + LEFT_PARENTHESIS +
-            "fondsSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_FONDS, consumes = {NOARK5_V4_CONTENT_TYPE})
+            "fondsSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_SUB_FONDS, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<FondsHateoas> createFondsAssociatedWithFonds(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "parentFondsSystemId",
+            @ApiParam(name = "fondsSystemId",
                     value = "systemId of parent fonds to associate the fonds with.",
                     required = true)
-            @PathVariable String parentFondsSystemId,
+            @PathVariable String fondsSystemId,
             @ApiParam(name = "fonds",
                     value = "Incoming fonds object",
                     required = true)
             @RequestBody Fonds fonds)
             throws NikitaException {
-        Fonds createdFonds = fondsService.createFondsAssociatedWithFonds(parentFondsSystemId, fonds);
+        Fonds createdFonds = fondsService.createFondsAssociatedWithFonds(fondsSystemId, fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(createdFonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
 
@@ -164,7 +165,43 @@ public class FondsHateoasController {
         return new ResponseEntity<> (seriesHateoas, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Persists a FondsCreator associated with the given Fonds systemId", notes = "Returns" +
+            " the newly created FondsCreator after it was associated with a Fonds and persisted to the " +
+            "database", response = FondsCreatorHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "FondsCreator " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = FondsCreatorHateoas.class),
+            @ApiResponse(code = 201, message = "FondsCreator " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = FondsCreatorHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type FondsCreator"),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
+            @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.POST, value = FONDS + SLASH + LEFT_PARENTHESIS +
+            "fondsSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_FONDS_CREATOR)
+    public ResponseEntity<String> createFondsCreatorAssociatedWithFonds(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "fondsSystemId",
+                    value = "systemId of fonds to associate the series with.",
+                    required = true)
+            @PathVariable String fondsSystemId,
+            @ApiParam(name = "fondsCreator",
+                    value = "Incoming fondsCreator object",
+                    required = true)
+            @RequestBody FondsCreator fondsCreator)
+            throws NikitaException {
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+        //return new ResponseEntity<> (fondsCreatorHateoas, HttpStatus.CREATED);
+    }
+
+
+
     // API - All GET Requests (CRUD - READ)
+    // Get single fonds identified by systemId
     @ApiOperation(value = "Retrieves a single fonds entity given a systemId", response = Fonds.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Fonds returned", response = Fonds.class),
@@ -190,6 +227,94 @@ public class FondsHateoasController {
         return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
     }
 
+    // Create a Fonds object with default values
+    //GET [contextPath][api]/arkivstruktur/ny-arkiv
+    @ApiOperation(value = "Create a Fonds with default values", response = Fonds.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Fonds returned", response = Fonds.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = NEW_FONDS + SLASH, method = RequestMethod.GET)
+    public ResponseEntity<String> createDefaultFonds(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+
+        //return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
+    }
+
+    // Get all fondsCreators associated with fonds identified by systemId
+    @ApiOperation(value = "Retrieves the fondsCreators associated with a Fonds identified by a systemId",
+            response = FondsCreator.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "FondsCreator returned", response = FondsCreator.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + FONDS_CREATOR +
+            SLASH, method = RequestMethod.GET)
+    public ResponseEntity<String> findFondsCreatorAssociatedWithFonds(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemId",
+                    value = "systemId of fonds to retrieve.",
+                    required = true)
+            @PathVariable("systemID") final String fondsSystemId) {
+
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+        //return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
+    }
+
+    // Get all Series associated with Fonds identified by systemId
+    @ApiOperation(value = "Retrieves the Series associated with a Fonds identified by a systemId",
+            response = Series.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Series returned", response = Series.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SERIES +
+            SLASH, method = RequestMethod.GET)
+    public ResponseEntity<String> findSeriesAssociatedWithFonds(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemId",
+                    value = "systemId of Fonds that has Series associated with it.",
+                    required = true)
+            @PathVariable("systemID") final String fondsSystemId) {
+
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+        //return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
+    }
+
+    // Get all Series associated with Fonds identified by systemId
+    @ApiOperation(value = "Retrieves the (sub)Fonds associated with a Fonds identified by a systemId",
+            response = Fonds.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Fonds returned", response = Fonds.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SUB_FONDS +
+            SLASH, method = RequestMethod.GET)
+    public ResponseEntity<String> findSubfondsAssociatedWithFonds(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemId",
+                    value = "systemId of parent Fonds.",
+                    required = true)
+            @PathVariable("systemID") final String fondsSystemId) {
+
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+        //return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
+    }
+
+    // Get all fonds 
     @ApiOperation(value = "Retrieves multiple Fonds entities limited by ownership rights", notes = "The field skip" +
             "tells how many Fonds rows of the result set to ignore (starting at 0), while  top tells how many rows" +
             " after skip to return. Note if the value of top is greater than system value " +

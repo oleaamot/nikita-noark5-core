@@ -16,6 +16,8 @@ public interface IFondsHateoasHandler extends IHateoasHandler {
 
     void addFonds(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
+    void addNewSubFonds(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
     void addNewFondsCreator(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addSubFonds(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);

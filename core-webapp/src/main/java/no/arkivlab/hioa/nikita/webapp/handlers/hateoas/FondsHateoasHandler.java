@@ -25,12 +25,14 @@ public class FondsHateoasHandler extends HateoasHandler implements IFondsHateoas
         addDocumentMedium(entity, hateoasNoarkObject);
         addFondsCreator(entity, hateoasNoarkObject);
         addSeries(entity, hateoasNoarkObject);
-        addFonds(entity, hateoasNoarkObject);
+        // It's not clear why addFonds would be part of this
+        //addFonds(entity, hateoasNoarkObject);
         addNewFondsCreator(entity, hateoasNoarkObject);
         addSubFonds(entity, hateoasNoarkObject);
+        addNewSubFonds(entity, hateoasNoarkObject);
         addFondsStatus(entity, hateoasNoarkObject);
         addNewSeries(entity, hateoasNoarkObject);
-        addNewFonds(entity, hateoasNoarkObject);
+        //addNewFonds(entity, hateoasNoarkObject);
     }
 
     @Override
@@ -75,6 +77,13 @@ public class FondsHateoasHandler extends HateoasHandler implements IFondsHateoas
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + FONDS +
                 SLASH + entity.getSystemId() + SLASH + SUB_FONDS + SLASH, REL_FONDS_STRUCTURE_SUB_FONDS, false));
+
+    }
+
+    public void addNewSubFonds(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH + FONDS + SLASH + entity.getSystemId() + SLASH + NEW_SUB_FONDS +
+                SLASH, REL_FONDS_STRUCTURE_NEW_SUB_FONDS, false));
 
     }
 

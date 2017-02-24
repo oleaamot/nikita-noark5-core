@@ -57,8 +57,8 @@ public final class Constants {
     public static final String NEW_COMMENT = "utvid-til-moetemappe";
     public static final String NEW_SUB_FILE = NEW + DASH + "undermappe";
     public static final String SUB_FILE = SUB + FILE ;
-    public static final String NEW_SUB_FONDS =  NEW + SUB + FONDS;
-    public static final String NEW_CROSS_REFERENCE = NEW + DASH + "" + CROSS_REFERENCE;
+    public static final String NEW_SUB_FONDS = NEW + DASH + SUB + FONDS;
+    public static final String NEW_CROSS_REFERENCE = NEW + DASH + CROSS_REFERENCE;
     public static final String NEW_REFERENCE_CLASS = NEW + DASH + "klassereferanse";
     public static final String REFERENCE_NEW_SERIES = NEW + DASH + "arkivdelReferanse";
     public static final String NEW_CLASSIFIED = NEW + DASH + "" + CLASSIFIED;
@@ -169,6 +169,7 @@ public final class Constants {
     public static final String REL_FONDS_STRUCTURE_FONDS = REL_FONDS_STRUCTURE + FONDS + SLASH;
     public static final String REL_FONDS_STRUCTURE_NEW_FONDS_CREATOR = REL_FONDS_STRUCTURE + NEW_FONDS_CREATOR + SLASH;
     public static final String REL_FONDS_STRUCTURE_SUB_FONDS = REL_FONDS_STRUCTURE + SUB_FONDS + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_SUB_FONDS = REL_FONDS_STRUCTURE + NEW_SUB_FONDS + SLASH;
     public static final String REL_FONDS_STRUCTURE_FONDS_STATUS = REL_METADATA + SLASH + FONDS_STATUS + SLASH;
     public static final String REL_FONDS_STRUCTURE_NEW_FONDS = REL_FONDS_STRUCTURE + NEW_FONDS + SLASH;
 
