@@ -9,6 +9,10 @@ import static nikita.config.N5ResourceMappings.*;
  */
 public final class Constants {
 
+    public static final String NEW = "ny";
+    public static final String DASH = "ny";
+    public static final String SUB = "under";
+
     // Spring profile for development and production
     public static final String SPRING_PROFILE_DEVELOPMENT = "dev";
     public static final String SPRING_PROFILE_DEMO = "demo";
@@ -34,57 +38,58 @@ public final class Constants {
     public static final String REF_ID = "$ref?$id=";
 
     // Create for new arkivstruktur objects
-    public static final String NEW_FONDS = "ny-arkiv";
-    public static final String NEW_FONDS_CREATOR = "ny-arkivskaper";
-    public static final String NEW_SERIES = "ny-arkivdel";
-    public static final String NEW_CLASSIFICATION_SYSTEM = "ny-klassifikasjonssystem";
-    public static final String NEW_CLASS = "ny-klasse";
-    public static final String NEW_SUB_CLASS = "ny-" + SUB_CLASS;
-    public static final String NEW_FILE = "ny-mappe";
-    public static final String NEW_RECORD = "ny-registrering";
-    public static final String NEW_BASIC_RECORD = "ny-basisregistrering";
-    public static final String NEW_DOCUMENT_DESCRIPTION = "ny-dokumentbeskrivelse";
-    public static final String NEW_DOCUMENT_OBJECT = "ny-dokumentobjekt";
+    public static final String NEW_FONDS = NEW + DASH + FONDS;
+    public static final String NEW_FONDS_CREATOR = NEW + DASH + FONDS_CREATOR;
+    public static final String NEW_SERIES = NEW + DASH + SERIES;
+    public static final String NEW_CLASSIFICATION_SYSTEM = NEW + DASH + CLASSIFICATION_SYSTEM;
+    public static final String NEW_CLASS = NEW + DASH + CLASS;
+    public static final String NEW_SUB_CLASS = NEW + DASH + SUB_CLASS;
+    public static final String NEW_FILE = NEW + DASH + FILE;
+    public static final String NEW_RECORD = NEW + DASH + REGISTRATION;
+    public static final String NEW_BASIC_RECORD = NEW + DASH + BASIC_RECORD;
+    public static final String NEW_DOCUMENT_DESCRIPTION = NEW + DASH + DOCUMENT_DESCRIPTION;
+    public static final String NEW_DOCUMENT_OBJECT = NEW + DASH + DOCUMENT_OBJECT;
 
     // Other arkivstruktur commands
     public static final String FILE_END = "avslutt-mappe";
     public static final String FILE_EXPAND_TO_CASE_FILE = "utvid-til-" + CASE_FILE;
     public static final String FILE_EXPAND_TO_MEETING_FILE = "utvid-til-" + MEETING_FILE;
     public static final String NEW_COMMENT = "utvid-til-moetemappe";
-    public static final String NEW_SUB_FILE = "ny-undermappe";
-    public static final String SUB_FILE = "undermappe";
-    public static final String NEW_CROSS_REFERENCE = "ny-" + CROSS_REFERENCE;
-    public static final String NEW_REFERENCE_CLASS = "ny-klassereferanse";
-    public static final String REFERENCE_NEW_SERIES = "ny-arkivdelReferanse";
-    public static final String NEW_CLASSIFIED = "ny-" + CLASSIFIED;
-    public static final String NEW_SCREENING = "ny-" + SCREENING;
-    public static final String NEW_DISPOSAL = "ny-" + DISPOSAL;
-    public static final String NEW_DISPOSAL_UNDERTAKEN = "ny-" + DISPOSAL_UNDERTAKEN;
-    public static final String NEW_DELETION = "ny-sletting";
-    public static final String NEW_STORAGE_LOCATION = "ny-" + STORAGE_LOCATION;
-    public static final String NEW_STORAGE_LOCATIONS = "ny-" + STORAGE_LOCATIONS;
-    public static final String NEW_AUTHOR = "ny-" + AUTHOR;
-    public static final String NEW_ELECTRONIC_SIGNATURE = "ny-" + ELECTRONIC_SIGNATURE;
-    public static final String NEW_CONVERSION = "ny-" + CONVERSION;
-    public static final String NEW_KEYWORD = "ny-" + KEYWORD;
-    public static final String NEW_SIGN_OFF = "ny-" + SIGN_OFF;
-    public static final String NEW_DOCUMENT_FLOW = "ny-" + DOCUMENT_FLOW;
-    public static final String NEW_CORRESPONDENCE_PART = "ny-" + CORRESPONDENCE_PART;
-    public static final String NEW_SERIES_SUCCESSOR = "ny-" + SERIES_SUCCESSOR;
-    public static final String NEW_SERIES_PRECURSOR = "ny-" + SERIES_PRECURSOR;
+    public static final String NEW_SUB_FILE = NEW + DASH + "undermappe";
+    public static final String SUB_FILE = SUB + FILE ;
+    public static final String NEW_SUB_FONDS =  NEW + SUB + FONDS;
+    public static final String NEW_CROSS_REFERENCE = NEW + DASH + "" + CROSS_REFERENCE;
+    public static final String NEW_REFERENCE_CLASS = NEW + DASH + "klassereferanse";
+    public static final String REFERENCE_NEW_SERIES = NEW + DASH + "arkivdelReferanse";
+    public static final String NEW_CLASSIFIED = NEW + DASH + "" + CLASSIFIED;
+    public static final String NEW_SCREENING = NEW + DASH + "" + SCREENING;
+    public static final String NEW_DISPOSAL = NEW + DASH + "" + DISPOSAL;
+    public static final String NEW_DISPOSAL_UNDERTAKEN = NEW + DASH + "" + DISPOSAL_UNDERTAKEN;
+    public static final String NEW_DELETION = NEW + DASH + "sletting";
+    public static final String NEW_STORAGE_LOCATION = NEW + DASH + "" + STORAGE_LOCATION;
+    public static final String NEW_STORAGE_LOCATIONS = NEW + DASH + "" + STORAGE_LOCATIONS;
+    public static final String NEW_AUTHOR = NEW + DASH + "" + AUTHOR;
+    public static final String NEW_ELECTRONIC_SIGNATURE = NEW + DASH + "" + ELECTRONIC_SIGNATURE;
+    public static final String NEW_CONVERSION = NEW + DASH + "" + CONVERSION;
+    public static final String NEW_KEYWORD = NEW + DASH + "" + KEYWORD;
+    public static final String NEW_SIGN_OFF = NEW + DASH + "" + SIGN_OFF;
+    public static final String NEW_DOCUMENT_FLOW = NEW + DASH + "" + DOCUMENT_FLOW;
+    public static final String NEW_CORRESPONDENCE_PART = NEW + DASH + "" + CORRESPONDENCE_PART;
+    public static final String NEW_SERIES_SUCCESSOR = NEW + DASH + "" + SERIES_SUCCESSOR;
+    public static final String NEW_SERIES_PRECURSOR = NEW + DASH + "" + SERIES_PRECURSOR;
 
 
     // Create for new sakarkiv objects
-    public static final String NEW_CASE_FILE = "ny-" + CASE_FILE;
-    public static final String NEW_REGISTRY_ENTRY = "ny-" + REGISTRY_ENTRY;
-    public static final String NEW_PRECEDENCE = "ny-" + PRECEDENCE;
-    public static final String NEW_CASE_PARTY = "ny-" + CASE_PARTY;
-    public static final String NEW_SECONDARY_CLASSIFICATION = "ny-sekundaerklassifikasjon";
+    public static final String NEW_CASE_FILE = NEW + DASH + "" + CASE_FILE;
+    public static final String NEW_REGISTRY_ENTRY = NEW + DASH + "" + REGISTRY_ENTRY;
+    public static final String NEW_PRECEDENCE = NEW + DASH + "" + PRECEDENCE;
+    public static final String NEW_CASE_PARTY = NEW + DASH + "" + CASE_PARTY;
+    public static final String NEW_SECONDARY_CLASSIFICATION = NEW + DASH + "sekundaerklassifikasjon";
 
     // Create for new administrasjon objects
 
     // // Create for new metadata objects
-    public static final String NEW_DOCUMENT_MEDIUM = "ny-" + DOCUMENT_MEDIUM;
+    public static final String NEW_DOCUMENT_MEDIUM = NEW + DASH + DOCUMENT_MEDIUM;
 
 
     public static final String SERIES_ASSOCIATE_AS_SUCCESSOR = "referanseArvtager";
