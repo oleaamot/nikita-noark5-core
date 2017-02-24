@@ -30,7 +30,7 @@ es:
 	curl -XPUT 'localhost:9200/_template/replicate_template' -d '{ "template" : "*", "settings" : {"number_of_replicas" : 0 } }'
 docker:
 	docker build -t ${project} .
-docker_deploy: docker docker_push
+docker_deploy: build package docker docker_push
 	echo "Pushed to docker, https://hub.docker.com/r/${project}"
 docker_run: build package docker
 	docker start elasticsearch
