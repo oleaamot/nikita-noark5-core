@@ -58,9 +58,9 @@ public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("/webapp/login/loginPage");
-        registry.addViewController("/fonds").setViewName("/webapp/noark/fonds/list");
-        registry.addViewController("/gui").setViewName("/webapp/login/loginPage");
+        registry.addViewController("/login").setViewName("webapp/login/loginPage");
+        registry.addViewController("/fonds").setViewName("webapp/noark/fonds/list");
+        registry.addViewController("/gui").setViewName("webapp/login/loginPage");
 
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
