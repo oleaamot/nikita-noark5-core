@@ -10,7 +10,7 @@ import static nikita.config.N5ResourceMappings.*;
 public final class Constants {
 
     public static final String NEW = "ny";
-    public static final String DASH = "ny";
+    public static final String DASH = "-";
     public static final String SUB = "under";
 
     // Spring profile for development and production
