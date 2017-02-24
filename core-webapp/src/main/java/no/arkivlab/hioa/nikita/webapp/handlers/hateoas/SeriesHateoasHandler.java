@@ -147,7 +147,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     public void addNewCaseFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         if (authorisation.canCreateFileAttachedToSeries()) {
             hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                    NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH
+                    NOARK_CASE_HANDLING_PATH + SLASH + entity.getSystemId() + SLASH
                     + NEW_CASE_FILE + SLASH, REL_FONDS_STRUCTURE_NEW_FILE, false));
         }
     }
