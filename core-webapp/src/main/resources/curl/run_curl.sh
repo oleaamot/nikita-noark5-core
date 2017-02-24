@@ -26,7 +26,8 @@ curloptsCreateSeries+=( --data @"$curl_files_dir"series-data.json  'http://local
 # Create a series object and capture the systemId
 systemIDCreatedSeries=$(curl "${curloptsCreateSeries[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created  Series 1            ($systemIDCreatedSeries) \n";
-#echo  "${curloptsCreateSeries[@]}";
+echo  "${curloptsCreateSeries[@]}";
+#exit;
 
 # Setup curl options for file
 curloptsCreateFile+=("${curlPostOpts[@]}");

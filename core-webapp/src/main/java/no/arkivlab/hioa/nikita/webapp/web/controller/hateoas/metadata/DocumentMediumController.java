@@ -1,4 +1,4 @@
-package no.arkivlab.hioa.nikita.webapp.web.controller.hateoas.administration;
+package no.arkivlab.hioa.nikita.webapp.web.controller.hateoas.metadata;
 
 import com.codahale.metrics.annotation.Counted;
 import com.codahale.metrics.annotation.Timed;
@@ -17,7 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static nikita.config.Constants.*;
-import static nikita.config.N5ResourceMappings.*;
+import static nikita.config.N5ResourceMappings.CODE;
+import static nikita.config.N5ResourceMappings.DOCUMENT_MEDIUM;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH + DOCUMENT_MEDIUM)
@@ -43,7 +44,7 @@ public class DocumentMediumController {
     @RequestMapping(method = RequestMethod.POST, value = SLASH + NEW_DOCUMENT_MEDIUM)
     public ResponseEntity<DocumentMedium> createDocumentMedium(@RequestBody DocumentMedium documentMedium)
             throws NikitaException {
-        return new ResponseEntity<> (HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     // API - All GET Requests (CRUD - READ)
@@ -70,20 +71,20 @@ public class DocumentMediumController {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    @ApiOperation(value = "Retrieves all FondsStatus codes", response = DocumentMedium.class)
+    @ApiOperation(value = "Retrieves all DocumentMedium codes", response = DocumentMedium.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "FondsStatus codes found",
+            @ApiResponse(code = 200, message = "DocumentMedium codes found",
                     response = DocumentMedium.class),
-            @ApiResponse(code = 404, message = "No FondsStatus found"),
+            @ApiResponse(code = 404, message = "No DocumentMedium found"),
             @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.GET, value = FONDS + SLASH)
+    @RequestMapping(method = RequestMethod.GET, value = SLASH)
     public ResponseEntity<DocumentMedium> findAllDocumentMedium(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request,
             final HttpServletResponse response) {
-        return new ResponseEntity<> (HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 }
