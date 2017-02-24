@@ -25,7 +25,9 @@ public class FileHateoasHandler extends HateoasHandler implements IFileHateoasHa
 
         addEndFile(entity, hateoasNoarkObject);
         addExpandToCaseFile(entity, hateoasNoarkObject);
+
         addExpandToMeetingFile(entity, hateoasNoarkObject);
+
         addRegistration(entity, hateoasNoarkObject);
         addNewRegistration(entity, hateoasNoarkObject);
         addBasicRecord(entity, hateoasNoarkObject);
@@ -82,7 +84,7 @@ public class FileHateoasHandler extends HateoasHandler implements IFileHateoasHa
     public void addBasicRecord(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + FILE + SLASH + entity.getSystemId() + SLASH + BASIC_RECORD
-                + SLASH, REL_FONDS_STRUCTURE_BASIC_RECORD_, false));
+                + SLASH, REL_FONDS_STRUCTURE_BASIC_RECORD, false));
     }
 
     @Override

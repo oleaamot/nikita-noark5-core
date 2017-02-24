@@ -111,7 +111,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     public void addNewSeriesPrecursor(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH +
-                NEW_SERIES_PRECURSOR + SLASH, REL_FONDS_STRUCTURE_PRECURSOR,
+                NEW_SERIES_PRECURSOR + SLASH, REL_FONDS_STRUCTURE_NEW_PRECURSOR,
                 false));
     }
 
@@ -147,8 +147,8 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     public void addNewCaseFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         if (authorisation.canCreateFileAttachedToSeries()) {
             hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                    NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES     + SLASH + entity.getSystemId() + SLASH
-                    + NEW_CASE_FILE + SLASH, REL_FONDS_STRUCTURE_NEW_FILE, false));
+                    NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH
+                    + NEW_CASE_FILE + SLASH, REL_FONDS_STRUCTURE_NEW_CASE_FILE, false));
         }
     }
     @Override
@@ -193,7 +193,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     public void addCaseFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + CASE_FILE +
-                SLASH + entity.getSystemId() + SLASH + FILE + SLASH, REL_FONDS_STRUCTURE_FILE,
+                SLASH + entity.getSystemId() + SLASH + FILE + SLASH, REL_FONDS_STRUCTURE_CASE_FILE,
                 false));
     }
 

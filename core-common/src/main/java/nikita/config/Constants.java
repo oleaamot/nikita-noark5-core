@@ -61,29 +61,29 @@ public final class Constants {
     public static final String NEW_CROSS_REFERENCE = NEW + DASH + CROSS_REFERENCE;
     public static final String NEW_REFERENCE_CLASS = NEW + DASH + "klassereferanse";
     public static final String REFERENCE_NEW_SERIES = NEW + DASH + "arkivdelReferanse";
-    public static final String NEW_CLASSIFIED = NEW + DASH + "" + CLASSIFIED;
-    public static final String NEW_SCREENING = NEW + DASH + "" + SCREENING;
-    public static final String NEW_DISPOSAL = NEW + DASH + "" + DISPOSAL;
-    public static final String NEW_DISPOSAL_UNDERTAKEN = NEW + DASH + "" + DISPOSAL_UNDERTAKEN;
+    public static final String NEW_CLASSIFIED = NEW + DASH + CLASSIFIED;
+    public static final String NEW_SCREENING = NEW + DASH + SCREENING;
+    public static final String NEW_DISPOSAL = NEW + DASH + DISPOSAL;
+    public static final String NEW_DISPOSAL_UNDERTAKEN = NEW + DASH + DISPOSAL_UNDERTAKEN;
     public static final String NEW_DELETION = NEW + DASH + "sletting";
-    public static final String NEW_STORAGE_LOCATION = NEW + DASH + "" + STORAGE_LOCATION;
-    public static final String NEW_STORAGE_LOCATIONS = NEW + DASH + "" + STORAGE_LOCATIONS;
-    public static final String NEW_AUTHOR = NEW + DASH + "" + AUTHOR;
-    public static final String NEW_ELECTRONIC_SIGNATURE = NEW + DASH + "" + ELECTRONIC_SIGNATURE;
-    public static final String NEW_CONVERSION = NEW + DASH + "" + CONVERSION;
-    public static final String NEW_KEYWORD = NEW + DASH + "" + KEYWORD;
-    public static final String NEW_SIGN_OFF = NEW + DASH + "" + SIGN_OFF;
-    public static final String NEW_DOCUMENT_FLOW = NEW + DASH + "" + DOCUMENT_FLOW;
-    public static final String NEW_CORRESPONDENCE_PART = NEW + DASH + "" + CORRESPONDENCE_PART;
-    public static final String NEW_SERIES_SUCCESSOR = NEW + DASH + "" + SERIES_SUCCESSOR;
-    public static final String NEW_SERIES_PRECURSOR = NEW + DASH + "" + SERIES_PRECURSOR;
+    public static final String NEW_STORAGE_LOCATION = NEW + DASH + STORAGE_LOCATION;
+    public static final String NEW_STORAGE_LOCATIONS = NEW + DASH + STORAGE_LOCATIONS;
+    public static final String NEW_AUTHOR = NEW + DASH + AUTHOR;
+    public static final String NEW_ELECTRONIC_SIGNATURE = NEW + DASH + ELECTRONIC_SIGNATURE;
+    public static final String NEW_CONVERSION = NEW + DASH + CONVERSION;
+    public static final String NEW_KEYWORD = NEW + DASH + KEYWORD;
+    public static final String NEW_SIGN_OFF = NEW + DASH + SIGN_OFF;
+    public static final String NEW_DOCUMENT_FLOW = NEW + DASH + DOCUMENT_FLOW;
+    public static final String NEW_CORRESPONDENCE_PART = NEW + DASH + CORRESPONDENCE_PART;
+    public static final String NEW_SERIES_SUCCESSOR = NEW + DASH + SERIES_SUCCESSOR;
+    public static final String NEW_SERIES_PRECURSOR = NEW + DASH + SERIES_PRECURSOR;
 
 
     // Create for new sakarkiv objects
-    public static final String NEW_CASE_FILE = NEW + DASH + "" + CASE_FILE;
-    public static final String NEW_REGISTRY_ENTRY = NEW + DASH + "" + REGISTRY_ENTRY;
-    public static final String NEW_PRECEDENCE = NEW + DASH + "" + PRECEDENCE;
-    public static final String NEW_CASE_PARTY = NEW + DASH + "" + CASE_PARTY;
+    public static final String NEW_CASE_FILE = NEW + DASH + CASE_FILE;
+    public static final String NEW_REGISTRY_ENTRY = NEW + DASH + REGISTRY_ENTRY;
+    public static final String NEW_PRECEDENCE = NEW + DASH + PRECEDENCE;
+    public static final String NEW_CASE_PARTY = NEW + DASH + CASE_PARTY;
     public static final String NEW_SECONDARY_CLASSIFICATION = NEW + DASH + "sekundaerklassifikasjon";
 
     // Create for new administrasjon objects
@@ -188,6 +188,10 @@ public final class Constants {
     public static final String REL_FONDS_STRUCTURE_NEW_FILE = REL_FONDS_STRUCTURE + NEW_FILE + SLASH;
     public static final String REL_FONDS_STRUCTURE_FILE = REL_FONDS_STRUCTURE + FILE + SLASH;
 
+    public static final String REL_FONDS_STRUCTURE_NEW_CASE_FILE = REL_FONDS_STRUCTURE + NEW_CASE_FILE + SLASH;
+    public static final String REL_FONDS_STRUCTURE_CASE_FILE = REL_FONDS_STRUCTURE + CASE_FILE + SLASH;
+
+
     // Common SeriesHateoas/ClassificationHateoas REL links
     public static final String REL_FONDS_STRUCTURE_NEW_CLASSIFICATION_SYSTEM = REL_FONDS_STRUCTURE + NEW_CLASSIFICATION_SYSTEM + SLASH;
     public static final String REL_FONDS_STRUCTURE_CLASSIFICATION_SYSTEM = REL_FONDS_STRUCTURE + CLASSIFICATION_SYSTEM + SLASH;
@@ -198,8 +202,8 @@ public final class Constants {
     // Series precursor / successor
     public static final String REL_FONDS_STRUCTURE_SUCCESSOR = REL_FONDS_STRUCTURE + SERIES_SUCCESSOR + SLASH;
     public static final String REL_FONDS_STRUCTURE_PRECURSOR = REL_FONDS_STRUCTURE + SERIES_PRECURSOR + SLASH;
-    public static final String REL_FONDS_STRUCTURE_NEW_SUCCESSOR = REL_FONDS_STRUCTURE + SERIES_SUCCESSOR + SLASH;
-    public static final String REL_FONDS_STRUCTURE_NEW_PRECURSOR = REL_FONDS_STRUCTURE + SERIES_PRECURSOR + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_SUCCESSOR = REL_FONDS_STRUCTURE + NEW_SERIES_SUCCESSOR + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_PRECURSOR = REL_FONDS_STRUCTURE + NEW_SERIES_PRECURSOR + SLASH;
 
     // CaseFileHateoas REL links
     public static final String REL_CASE_HANDLING_NEW_CLASS = REL_FONDS_STRUCTURE + NEW_CLASS + SLASH;
@@ -215,8 +219,8 @@ public final class Constants {
     public static final String REL_FONDS_STRUCTURE_EXPAND_TO_CASE_FILE = REL_FONDS_STRUCTURE + FILE_EXPAND_TO_CASE_FILE + SLASH;
     public static final String REL_FONDS_STRUCTURE_EXPAND_TO_MEETING_FILE = REL_FONDS_STRUCTURE + FILE_EXPAND_TO_MEETING_FILE + SLASH;
     public static final String REL_FONDS_STRUCTURE_END_FILE = REL_FONDS_STRUCTURE + FILE_END + SLASH;
-    public static final String REL_FONDS_STRUCTURE_BASIC_RECORD_ = REL_FONDS_STRUCTURE + SLASH;
-    public static final String REL_FONDS_STRUCTURE_NEW_BASIC_RECORD = REL_FONDS_STRUCTURE + SLASH;
+    public static final String REL_FONDS_STRUCTURE_BASIC_RECORD = REL_FONDS_STRUCTURE + SLASH + BASIC_RECORD + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_BASIC_RECORD = REL_FONDS_STRUCTURE + SLASH + NEW_BASIC_RECORD + SLASH;
 
     // Comment
     public static final String REL_FONDS_STRUCTURE_COMMENT = REL_FONDS_STRUCTURE + COMMENT + SLASH;
