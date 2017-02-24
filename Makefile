@@ -34,7 +34,7 @@ docker_deploy: build package docker docker_push
 	echo "Pushed to docker, https://hub.docker.com/r/${project}"
 docker_run: build package docker
 	docker start elasticsearch
-	docker run --network="host" --add-host=moby:127.0.0.1 -dit ${project}
+	docker run --network="host" --add-host=moby:127.0.0.1 ${project}
 docker_push:
 	docker push ${project}
 docker_tail:
