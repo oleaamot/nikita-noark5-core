@@ -34,7 +34,15 @@ public interface IHateoasHandler {
     void addLinksOnDelete(IHateoasNoarkObject hateoasNoarkObject,
                           HttpServletRequest request, IAuthorisation authorisation);
 
+    void addLinksOnNew(IHateoasNoarkObject hateoasNoarkObject,
+                       HttpServletRequest request, IAuthorisation authorisation);
+
+    // In many ways, these should be private
     void addEntityLinksOnCreate(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addEntityLinksOnRead(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addEntityLinksOnNew(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+
 }

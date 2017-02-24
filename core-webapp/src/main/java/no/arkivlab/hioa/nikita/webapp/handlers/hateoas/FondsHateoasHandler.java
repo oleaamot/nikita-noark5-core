@@ -45,6 +45,12 @@ public class FondsHateoasHandler extends HateoasHandler implements IFondsHateoas
         addEntityLinks(entity, hateoasNoarkObject);
     }
 
+    @Override
+    public void addEntityLinksOnNew(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        addDocumentMedium(entity, hateoasNoarkObject);
+    }
+
+
     public void addFondsCreator(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + FONDS +

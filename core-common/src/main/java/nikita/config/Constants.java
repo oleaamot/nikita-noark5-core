@@ -104,6 +104,8 @@ public final class Constants {
     // Some strings used during testing
     public static final String TEST_TITLE = "test title";
     public static final String TEST_DESCRIPTION = "test description";
+    public static final String TEST_ADMINISTRATIVE_UNIT = "test administrative unit";
+
     public static final String NOARK_DATE_FORMAT_PATTERN = "yyyy-MM-dd";
     public static final String NOARK_TIME_FORMAT_PATTERN = "HH:mm:ss";
     public static final String NOARK_DATE_TIME_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss";

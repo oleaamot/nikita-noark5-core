@@ -237,12 +237,43 @@ public class FondsHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = NEW_FONDS + SLASH, method = RequestMethod.GET)
-    public ResponseEntity<String> createDefaultFonds(
+    @RequestMapping(value = NEW_FONDS, method = RequestMethod.GET)
+    public ResponseEntity<FondsHateoas> createDefaultFonds(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
-        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
 
-        //return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
+        Fonds defaultFonds = new Fonds();
+        defaultFonds.setTitle(TEST_TITLE);
+        defaultFonds.setDescription(TEST_DESCRIPTION);
+        defaultFonds.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
+        FondsHateoas fondsHateoas = new
+                FondsHateoas(defaultFonds);
+        fondsHateoasHandler.addLinksOnNew(fondsHateoas, request, new Authorisation());
+        return new ResponseEntity<>(fondsHateoas, HttpStatus.OK);
+    }
+
+    // Create a Series object with default values
+    //GET [contextPath][api]/arkivstruktur/arkiv/SYSTEMID/ny-arkivdel
+    @ApiOperation(value = "Create a Series with default values", response = Series.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Series returned", response = Series.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
+            NEW_SERIES, method = RequestMethod.GET)
+    public ResponseEntity<SeriesHateoas> createDefaultSeries(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
+
+        Series defaultSeries = new Series();
+        defaultSeries.setTitle(TEST_TITLE);
+        defaultSeries.setDescription(TEST_DESCRIPTION);
+        defaultSeries.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
+        SeriesHateoas seriesHateoas = new
+                SeriesHateoas(defaultSeries);
+        seriesHateoasHandler.addLinksOnNew(seriesHateoas, request, new Authorisation());
+        return new ResponseEntity<>(seriesHateoas, HttpStatus.OK);
     }
 
     // Get all fondsCreators associated with fonds identified by systemId

@@ -49,6 +49,18 @@ public class HateoasHandler implements IHateoasHandler {
     }
 
     @Override
+    public void addLinksOnNew(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+                              IAuthorisation authorisation) {
+        setParameters(request);
+        this.authorisation = authorisation;
+
+        Iterable<INoarkSystemIdEntity> entities = hateoasNoarkObject.getList();
+        for (INoarkSystemIdEntity entity : entities) {
+            addEntityLinksOnNew(entity, hateoasNoarkObject);
+        }
+    }
+
+    @Override
     public void addLinksOnRead(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
                                IAuthorisation authorisation) {
         addLinks(hateoasNoarkObject, request, authorisation);
@@ -90,6 +102,11 @@ public class HateoasHandler implements IHateoasHandler {
     @Override
     public void addEntityLinksOnCreate(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         addEntityLinks(entity, hateoasNoarkObject);
+    }
+
+    // Sub class should handle this, empty links otherwise!
+    @Override
+    public void addEntityLinksOnNew(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
     }
 
     // Sub class should handle this, empty links otherwise!

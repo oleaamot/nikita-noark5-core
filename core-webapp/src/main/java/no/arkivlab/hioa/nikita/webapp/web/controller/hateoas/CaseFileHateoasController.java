@@ -14,6 +14,7 @@ import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ICaseFileHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRegistryEntryHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ICaseFileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.CASE_FILE;
@@ -40,6 +42,9 @@ public class CaseFileHateoasController {
 
     @Autowired
     ICaseFileHateoasHandler caseFileHateoasHandler;
+
+    @Autowired
+    IRegistryEntryHateoasHandler registryEntryHateoasHandler;
 
     // API - All POST Requests (CRUD - CREATE)
 
@@ -76,6 +81,30 @@ public class CaseFileHateoasController {
     }
 
     // API - All GET Requests (CRUD - READ)
+
+    // Create a RegistryEntry object with default values
+    //GET [contextPath][api]/arkivstruktur/mappe/SYSTEM_ID/ny-basisregistrering
+    @ApiOperation(value = "Create a RegistryEntry with default values", response = RegistryEntry.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "RegistryEntry returned", response = RegistryEntry.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
+            NEW_BASIC_RECORD, method = RequestMethod.GET)
+    public ResponseEntity<RegistryEntryHateoas> createDefaultRegistryEntry(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
+
+        RegistryEntry defaultRegistryEntry = new RegistryEntry();
+        defaultRegistryEntry.setArchivedBy(TEST_USER_CASE_HANDLER_2);
+        defaultRegistryEntry.setArchivedDate(new Date());
+        RegistryEntryHateoas registryEntryHateoas = new
+                RegistryEntryHateoas(defaultRegistryEntry);
+        registryEntryHateoasHandler.addLinksOnNew(registryEntryHateoas, request, new Authorisation());
+        return new ResponseEntity<>(registryEntryHateoas, HttpStatus.OK);
+    }
 
     @ApiOperation(value = "Retrieves a single CaseFile entity given a systemId", response = CaseFile.class)
     @ApiResponses(value = {

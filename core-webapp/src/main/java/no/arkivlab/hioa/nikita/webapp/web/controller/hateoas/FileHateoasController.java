@@ -29,6 +29,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.FILE;
@@ -119,6 +120,54 @@ public class FileHateoasController {
     }
     
     // API - All GET Requests (CRUD - READ)
+
+    // Create a Record object with default values
+    //GET [contextPath][api]/arkivstruktur/mappe/SYSTEM_ID/ny-registrering
+    @ApiOperation(value = "Create a Record with default values", response = Record.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Record returned", response = Record.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
+            NEW_RECORD, method = RequestMethod.GET)
+    public ResponseEntity<RecordHateoas> createDefaultRecord(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
+
+        Record defaultRecord = new Record();
+        defaultRecord.setArchivedBy(TEST_USER_CASE_HANDLER_2);
+        defaultRecord.setArchivedDate(new Date());
+        RecordHateoas recordHateoas = new
+                RecordHateoas(defaultRecord);
+        recordHateoasHandler.addLinksOnNew(recordHateoas, request, new Authorisation());
+        return new ResponseEntity<>(recordHateoas, HttpStatus.OK);
+    }
+
+    // Create a BasicRecord object with default values
+    //GET [contextPath][api]/arkivstruktur/mappe/SYSTEM_ID/ny-basisregistrering
+    @ApiOperation(value = "Create a BasicRecord with default values", response = BasicRecord.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "BasicRecord returned", response = BasicRecord.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
+            NEW_BASIC_RECORD, method = RequestMethod.GET)
+    public ResponseEntity<BasicRecordHateoas> createDefaultBasicRecord(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
+
+        BasicRecord defaultBasicRecord = new BasicRecord();
+        defaultBasicRecord.setArchivedBy(TEST_USER_CASE_HANDLER_2);
+        defaultBasicRecord.setArchivedDate(new Date());
+        BasicRecordHateoas basicRecordHateoas = new
+                BasicRecordHateoas(defaultBasicRecord);
+        basicRecordHateoasHandler.addLinksOnNew(basicRecordHateoas, request, new Authorisation());
+        return new ResponseEntity<>(basicRecordHateoas, HttpStatus.OK);
+    }
 
     @ApiOperation(value = "Retrieves a single File entity given a systemId", response = File.class)
     @ApiResponses(value = {

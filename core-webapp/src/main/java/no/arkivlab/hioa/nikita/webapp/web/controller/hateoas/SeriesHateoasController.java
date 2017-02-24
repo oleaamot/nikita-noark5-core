@@ -22,6 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
@@ -300,6 +301,60 @@ public class SeriesHateoasController extends NikitaController {
                 SeriesHateoas(series);
         seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
         return new ResponseEntity<>(seriesHateoas, HttpStatus.CREATED);
+    }
+
+    // Create a File object with default values
+    //GET [contextPath][api]/arkivstruktur/arkivdel/SYSTEM_ID/ny-mappe
+    @ApiOperation(value = "Create a File with default values", response = File.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "File returned", response = File.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
+            NEW_FILE, method = RequestMethod.GET)
+    public ResponseEntity<FileHateoas> createDefaultFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
+
+        File defaultFile = new File();
+        defaultFile.setTitle(TEST_TITLE);
+        defaultFile.setDescription(TEST_DESCRIPTION);
+        defaultFile.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
+        FileHateoas fileHateoas = new
+                FileHateoas(defaultFile);
+        fileHateoasHandler.addLinksOnNew(fileHateoas, request, new Authorisation());
+        return new ResponseEntity<>(fileHateoas, HttpStatus.OK);
+    }
+
+    // Create a CaseFile object with default values
+    //GET [contextPath][api]/arkivstruktur/arkivdel/SYSTEM_ID/ny-saksmappe
+    @ApiOperation(value = "Create a CaseFile with default values", response = CaseFile.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "CaseFile returned", response = CaseFile.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
+            NEW_CASE_FILE, method = RequestMethod.GET)
+    public ResponseEntity<CaseFileHateoas> createDefaultCaseFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
+
+        CaseFile defaultCaseFile = new CaseFile();
+        defaultCaseFile.setTitle(TEST_TITLE);
+        defaultCaseFile.setDescription(TEST_DESCRIPTION);
+        defaultCaseFile.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
+        defaultCaseFile.setCaseResponsible(TEST_USER_CASE_HANDLER_1);
+        defaultCaseFile.setAdministrativeUnit(TEST_ADMINISTRATIVE_UNIT);
+        defaultCaseFile.setCaseDate(new Date());
+        defaultCaseFile.setCaseStatus(STATUS_OPEN);
+        CaseFileHateoas caseFileHateoas = new
+                CaseFileHateoas(defaultCaseFile);
+        caseFileHateoasHandler.addLinksOnNew(caseFileHateoas, request, new Authorisation());
+        return new ResponseEntity<>(caseFileHateoas, HttpStatus.OK);
     }
 
     // Retrieve the precursor to a Series given a systemId
