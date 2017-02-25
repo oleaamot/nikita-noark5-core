@@ -62,7 +62,7 @@ exceptions. (Please let us know if there are any exceptions).
 ## Docker
 
     docker run -d -p 9200:9200 elasticsearch:2.4.4 -Des.network.host=0.0.0.0
-    docker run --network=host -dit nikita5/nikita-noark5-core
+    docker run --network="host" --add-host=`hostname`:127.0.0.1 nikita5/nikita-noark5-core
 
 ## Vagrant
 
