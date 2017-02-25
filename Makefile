@@ -39,6 +39,8 @@ docker_push:
 	docker push ${project}
 docker_tail:
 	docker logs `docker ps | grep ${project} | awk ' { print $$1 } '`
+docker_compose:
+	docker-compose up
 # Prepare a package which can be used to deploy the application
 package: build
 	mvn -Dmaven.test.skip=true package spring-boot:repackage
