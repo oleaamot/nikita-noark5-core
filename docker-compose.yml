@@ -1,0 +1,11 @@
+version: '2'
+services:
+  elasticsearch:
+    image: "elasticsearch:2.4.4"
+    ports:
+     - "9200:9200"
+  nikita-noark5-core:
+    image: "nikita5/nikita-noark5-core"
+    ports:
+     - "8092:8092"
+     - "8082:8082"
