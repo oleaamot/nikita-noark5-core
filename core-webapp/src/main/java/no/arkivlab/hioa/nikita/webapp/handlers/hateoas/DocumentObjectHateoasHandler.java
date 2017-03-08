@@ -28,6 +28,7 @@ public class DocumentObjectHateoasHandler extends HateoasHandler implements IDoc
         addReferenceConversion(entity, hateoasNoarkObject);
         addNewReferenceConversion(entity, hateoasNoarkObject);
         addReferenceElectronicSignature(entity, hateoasNoarkObject);
+        addReferenceDocumentFile(entity, hateoasNoarkObject);
         addNewReferenceElectronicSignature(entity, hateoasNoarkObject);
     }
 
@@ -72,5 +73,12 @@ public class DocumentObjectHateoasHandler extends HateoasHandler implements IDoc
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT + SLASH + entity.getSystemId() + SLASH +
                 DOCUMENT_DESCRIPTION + SLASH, REL_FONDS_STRUCTURE_DOCUMENT_DESCRIPTION, false));
+    }
+
+    @Override
+    public void addReferenceDocumentFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT + SLASH + entity.getSystemId() + SLASH +
+                REFERENCE_FILE + SLASH, REL_FONDS_STRUCTURE_DOCUMENT_FILE, false));
     }
 }

@@ -22,5 +22,6 @@ public interface IDocumentObjectHateoasHandler extends IHateoasHandler {
 
     void addNewReferenceElectronicSignature(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
+    void addReferenceDocumentFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 }
 

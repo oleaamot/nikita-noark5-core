@@ -78,6 +78,9 @@ public final class Constants {
     public static final String NEW_SERIES_SUCCESSOR = NEW + DASH + SERIES_SUCCESSOR;
     public static final String NEW_SERIES_PRECURSOR = NEW + DASH + SERIES_PRECURSOR;
 
+    public static final String DOCUMENT_FILE = "fil";
+
+
 
     // Create for new sakarkiv objects
     public static final String NEW_CASE_FILE = NEW + DASH + CASE_FILE;
@@ -314,6 +317,8 @@ public final class Constants {
     public static final String REL_FONDS_STRUCTURE_CORRESPONDENCE_PART = REL_FONDS_STRUCTURE + CORRESPONDENCE_PART + SLASH;
     public static final String REL_FONDS_STRUCTURE_NEW_CORRESPONDENCE_PART = REL_FONDS_STRUCTURE + NEW_CORRESPONDENCE_PART + SLASH;
 
+    // CorrespondencePart
+    public static final String REL_FONDS_STRUCTURE_DOCUMENT_FILE = REL_FONDS_STRUCTURE + DOCUMENT_FILE + SLASH;
 
     /*
     public static final String REL_FONDS_STRUCTURE_ = REL_FONDS_STRUCTURE +  + SLASH;
