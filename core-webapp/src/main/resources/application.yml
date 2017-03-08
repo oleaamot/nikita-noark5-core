@@ -131,3 +131,6 @@ nikita-noark5-core:
         conformity-levels:
              official: arkivstruktur, sakarkiv
              non-official: gui, import-api
+    storage:
+        location: /tmp/dokumenter
+    checksumAlgorithm: SHA-256

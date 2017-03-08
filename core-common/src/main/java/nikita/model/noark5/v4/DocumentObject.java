@@ -125,44 +125,50 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
     @Field
     protected Long fileSize;
 
+    @Column(name = "original_filename")
+    @Audited
+    @Field
+    protected String originalFilename;
+
+    @Column(name = "mime_type")
+    @Audited
+    @Field
+    protected String mimeType;
+    @Column(name = "owned_by")
+    @Audited
+    @Field
+    protected String ownedBy;
+    // Link to DocumentDescription
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "document_object_document_description_id", referencedColumnName = "pk_document_description_id")
+    protected DocumentDescription referenceDocumentDescription;
+    // Link to Record
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "document_object_record_id", referencedColumnName = "pk_record_id")
+    protected Record referenceRecord;
+    // Links to Conversion
+    @OneToMany(mappedBy = "referenceDocumentObject")
+    protected Set<Conversion> referenceConversion = new HashSet<Conversion>();
+    // Link to ElectronicSignature
+    @OneToOne
+    @JoinColumn(name="pk_electronic_signature_id")
+    protected ElectronicSignature referenceElectronicSignature;
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
     @Field
     private Boolean deleted;
 
-    @Column(name = "owned_by")
-    @Audited
-    @Field
-    protected String ownedBy;
-
-    // Link to DocumentDescription
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_object_document_description_id", referencedColumnName = "pk_document_description_id")
-    protected DocumentDescription referenceDocumentDescription;
-
-    // Link to Record
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_object_record_id", referencedColumnName = "pk_record_id")
-    protected Record referenceRecord;
-
-    // Links to Conversion
-    @OneToMany(mappedBy = "referenceDocumentObject")
-    protected Set<Conversion> referenceConversion = new HashSet<Conversion>();
-
-    // Link to ElectronicSignature
-    @OneToOne
-    @JoinColumn(name="pk_electronic_signature_id")
-    protected ElectronicSignature referenceElectronicSignature;
-
     public Long getId() {
         return id;
     }
 
-    @Override
-    public void setId(Long id) {this.id = id; }
-
     public void setId(long id) {
+        this.id = id;
+    }
+
+    @Override
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -254,6 +260,22 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
         this.fileSize = fileSize;
     }
 
+    public String getOriginalFilename() {
+        return originalFilename;
+    }
+
+    public void setOriginalFilename(String originalFilename) {
+        this.originalFilename = originalFilename;
+    }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+
     public Boolean getDeleted() {
         return deleted;
     }
@@ -316,6 +338,8 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
                 ", format='" + format + '\'' +
                 ", variantFormat='" + variantFormat + '\'' +
                 ", versionNumber=" + versionNumber +
+                ", mimeType=" + mimeType +
+                ", originalFilename=" + originalFilename +
                 ", systemId='" + systemId + '\'' +
                 ", id=" + id +
                 '}';

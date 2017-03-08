@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+
+# This is a project internal script used as a basic test mechanism. It will be replaced by a proper testing framework
+# later. Windows users might have problems with /dev/null. See comment below, this script is temporary.
+
 # Put in directory location of json files to populate core with
 #/PATH_TO_PROJECT/nikita-noark5-core/core-webapp/src/main/resources/curl/
 curl_files_dir="./";
@@ -26,15 +30,10 @@ curloptsCreateSeries+=( --data @"$curl_files_dir"series-data.json  'http://local
 # Create a series object and capture the systemId
 systemIDCreatedSeries=$(curl "${curloptsCreateSeries[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created  Series 1            ($systemIDCreatedSeries) \n";
-echo  "${curloptsCreateSeries[@]}";
-#exit;
 
 # Setup curl options for file
 curloptsCreateFile+=("${curlPostOpts[@]}");
 curloptsCreateFile+=( --data @"$curl_files_dir"file-data.json  'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkivdel/'$systemIDCreatedSeries'/ny-mappe' )
-echo  "${curloptsCreateFile[@]}";
-
-
 
 # Create a file object and capture the systemId
 systemIDCreatedFile=$(curl "${curloptsCreateFile[@]}" | jq '.systemID' | sed 's/\"//g');
@@ -68,6 +67,27 @@ curloptsCreateDocumentObject+=( --data @"$curl_files_dir"document-object-data.js
 # Create documentObject 1 associated with file 1 / record 1 / documentDescription 1 /  and capture systemId
 systemIDCreatedDocumentObject=$(curl "${curloptsCreateDocumentObject[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created      DocumentObject      ($systemIDCreatedDocumentObject) associated with ($systemIDCreatedDocumentDescription) \n";
+#echo "${curloptsCreateDocumentObject[@]}" "\n";
+
+# Setup curl options for uploading file associated with documentObject
+# Note /dev/null means this won't work on windows, probably want to pipe the output with >> or similar approach
+# For windows, just remove  -o /dev/null and ignore output on screen
+curlPostFileOpts+=( -s -S -X POST -b ~/tmp/cookie.txt   --header CONTENT-Length:21774 --header Content-Type:application/pdf -o /dev/null  --data-binary "@"$curl_files_dir"test_upload_document.pdf");
+curloptsUploadFile+=("${curlPostFileOpts[@]}");
+curloptsUploadFile+=( -w "%{http_code}" 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/dokumentobjekt/'$systemIDCreatedDocumentObject'/referanseFil' )
+#echo "${curloptsUploadFile[@]} " "\n";
+
+resultFileUpload=$(curl "${curloptsUploadFile[@]}");
+printf "uploaded file to DocumentObject  ($systemIDCreatedDocumentObject) Result $resultFileUpload\n";
+
+
+curlGetFileOpts+=( -s -S -X GET -b ~/tmp/cookie.txt  -o downloaded.pdf -w "%{http_code}");
+curloptsDownloadFile+=("${curlGetFileOpts[@]}");
+curloptsDownloadFile+=( 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/dokumentobjekt/'$systemIDCreatedDocumentObject'/referanseFil' )
+
+resultFileDownload=$(curl "${curloptsUploadFile[@]}");
+#echo "${curloptsDownloadFile[@]}";
+printf "downloaded file from DocumentObject  ($systemIDCreatedDocumentObject) Result $resultFileDownload\n";
 
 curloptsCreateBasicRecord+=("${curlPostOpts[@]}");
 curloptsCreateBasicRecord+=( --data @"$curl_files_dir"basic-record-data.json 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/mappe/'$systemIDCreatedFile'/ny-basisregistrering' )

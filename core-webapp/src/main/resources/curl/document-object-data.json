@@ -1,4 +1,7 @@
 {
+  "filstoerrelse": 21774,
+  "filnavn": "test_upload_document.pdf",
+  "mimeType": "application/pdf",
   "versjonsnummer" : 1,
   "variantformat" : "Arkivformat",
   "format" : "PDF",

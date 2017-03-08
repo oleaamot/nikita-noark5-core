@@ -1,6 +1,5 @@
 package no.arkivlab.hioa.nikita.webapp.config;
 
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -39,6 +38,9 @@ public class WebappProperties {
     private final Saml saml = new Saml();
 
     private final CorsConfiguration cors = new CorsConfiguration();
+    private final Logging logging = new Logging();
+    private final StorageProperties storageProperties = new StorageProperties();
+    private final ChecksumProperties checksumProperties = new ChecksumProperties();
 
     public Async getAsync() {
         return async;
@@ -78,6 +80,18 @@ public class WebappProperties {
 
     public Saml getSaml() {
         return saml;
+    }
+
+    public StorageProperties getStorageProperties() {
+        return storageProperties;
+    }
+
+    public ChecksumProperties getChecksumProperties() {
+        return checksumProperties;
+    }
+
+    public Logging getLogging() {
+        return logging;
     }
 
     public static class Async {
@@ -487,13 +501,6 @@ public class WebappProperties {
         }
     }
 
-
-    private final Logging logging = new Logging();
-
-    public Logging getLogging() {
-        return logging;
-    }
-
     public static class Logging {
 
         private final Logstash logstash = new Logstash();
@@ -562,6 +569,30 @@ public class WebappProperties {
         }
         public void setEntityId(String entityId) {
             this.entityId = entityId;
+        }
+    }
+
+    public class StorageProperties {
+        private String location = "/tmp/upload-dir";
+
+        public String getLocation() {
+            return location;
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
+        }
+    }
+
+    public class ChecksumProperties {
+        private String checksumAlgorithm = "SHA-256";
+
+        public String getChecksumAlgorithm() {
+            return checksumAlgorithm;
+        }
+
+        public void setChecksumAlgorithm(String checksum_algorithm) {
+            this.checksumAlgorithm = checksumAlgorithm;
         }
     }
 }
