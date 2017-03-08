@@ -80,7 +80,7 @@ public class DocumentObjectHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<DocumentObjectHateoas> findAllDocumentObject(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,

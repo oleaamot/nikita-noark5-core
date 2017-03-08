@@ -18,7 +18,6 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjec
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRegistryEntryHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRegistryEntryService;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -100,22 +99,14 @@ public class RegistryEntryHateoasController {
     @Counted
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
-    public ResponseEntity<RegistryEntryHateoas> findOneRegistryEntryBySystemId(
+    public ResponseEntity<String> uploadAndAssociateFileWithDocumentObject(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
-                    value = "systemID of the registryEntry to retrieve",
+                    value = "systemID of the documentObject to associate file with",
                     required = true)
-            @PathVariable("systemID") final String registryEntrySystemId) {
+            @PathVariable("systemID") final String documentObjectSystemId) {
 
-        RegistryEntry registryEntry = (RegistryEntry) registryEntryService.findBySystemId(registryEntrySystemId);
-        if (registryEntry == null) {
-            throw new NoarkEntityNotFoundException(
-                    "Could not find registryEntry object with systemID " + registryEntrySystemId);
-        }
-        RegistryEntryHateoas registryEntryHateoas = new
-                RegistryEntryHateoas(registryEntry);
-        registryEntryHateoasHandler.addLinks(registryEntryHateoas, request, new Authorisation());
-        return new ResponseEntity<>(registryEntryHateoas, HttpStatus.CREATED);
+        return new ResponseEntity<>("File associated with document object", HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Retrieves multiple RegistryEntry entities limited by ownership rights",
