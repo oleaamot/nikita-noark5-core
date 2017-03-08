@@ -14,6 +14,7 @@ import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentDescriptionHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentDescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ public class DocumentDescriptionHateoasController {
 
     @Autowired
     IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
+
+    @Autowired
+    IDocumentObjectHateoasHandler documentObjectHateoasHandler;
 
     // API - All POST Requests (CRUD - CREATE)
 
@@ -77,6 +81,7 @@ public class DocumentDescriptionHateoasController {
                         documentDescriptionService.createDocumentObjectAssociatedWithDocumentDescription(
                                 documentDescriptionSystemId,
                                 documentObject));
+        documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
         return new ResponseEntity<>(documentObjectHateoas, HttpStatus.CREATED);
     }
     
