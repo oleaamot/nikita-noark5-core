@@ -126,6 +126,8 @@ public final class Constants {
     public static final String NOARK_CONFORMANCE_LEVEL_2 = "Nivå 2a – Sakarkiv – obligatoriske krav";
     public static final String NOARK_CONFORMANCE_LEVEL_2_1_a = "Nivå 2.1a – Sakarkiv - valgfrie krav";
 
+    public static final String REFERENCE_FILE = "referanseFil";
+
     // namespace definition
     public static final String NOARK_CONFORMANCE_REL = "http://rel.kxml.no/noark5/v4/api/";
     public static final String NIKITA_CONFORMANCE_REL = "http://nikita.arkivlab.no/noark5/v4/";

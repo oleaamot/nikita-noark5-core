@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import nikita.util.exceptions.NikitaMalformedInputDataException;
 import nikita.model.noark5.v4.DocumentObject;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
-import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
 import nikita.util.CommonUtils;
+import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
+import nikita.util.exceptions.NikitaMalformedInputDataException;
 
 import java.io.IOException;
 
@@ -143,10 +143,31 @@ public class DocumentObjectDeserializer extends JsonDeserializer implements Obli
             key = DOCUMENT_OBJECT_FILE_SIZE_EN;
         }
         if (currentNode != null) {
-            documentObject.setFileSize(Long.getLong(currentNode.textValue()));
+            documentObject.setFileSize(currentNode.asLong());
             objectNode.remove(key);
         }
-
+        // Deserialize filename
+        currentNode = objectNode.get(DOCUMENT_OBJECT_FILE_NAME);
+        key = DOCUMENT_OBJECT_FILE_NAME;
+        if (currentNode == null) {
+            currentNode = objectNode.get(DOCUMENT_OBJECT_FILE_NAME_EN);
+            key = DOCUMENT_OBJECT_FILE_NAME_EN;
+        }
+        if (currentNode != null) {
+            documentObject.setOriginalFilename(currentNode.textValue());
+            objectNode.remove(key);
+        }
+        // Deserialize mimeType
+        currentNode = objectNode.get(DOCUMENT_OBJECT_MIME_TYPE);
+        key = DOCUMENT_OBJECT_MIME_TYPE;
+        if (currentNode == null) {
+            currentNode = objectNode.get(DOCUMENT_OBJECT_MIME_TYPE_EN);
+            key = DOCUMENT_OBJECT_MIME_TYPE_EN;
+        }
+        if (currentNode != null) {
+            documentObject.setMimeType(currentNode.textValue());
+            objectNode.remove(key);
+        }
         checkForObligatoryDocumentObjectValues(documentObject);
 
         // Check that there are no additional values left after processing the tree

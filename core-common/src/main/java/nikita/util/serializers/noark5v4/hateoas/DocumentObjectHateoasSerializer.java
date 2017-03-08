@@ -64,6 +64,12 @@ public class DocumentObjectHateoasSerializer extends HateoasSerializer implement
         if (documentObject.getFileSize() != null) {
             jgen.writeStringField(DOCUMENT_OBJECT_FILE_SIZE, Long.toString(documentObject.getFileSize()));
         }
+        if (documentObject.getOriginalFilename() != null) {
+            jgen.writeStringField(DOCUMENT_OBJECT_FILE_NAME, documentObject.getOriginalFilename());
+        }
+        if (documentObject.getMimeType() != null) {
+            jgen.writeStringField(DOCUMENT_OBJECT_MIME_TYPE, documentObject.getMimeType());
+        }
         CommonUtils.Hateoas.Serialize.printElectronicSignature(jgen, documentObject);
         CommonUtils.Hateoas.Serialize.printConversion(jgen, documentObject);
         CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, documentObjectHateoas.getLinks(documentObject));
