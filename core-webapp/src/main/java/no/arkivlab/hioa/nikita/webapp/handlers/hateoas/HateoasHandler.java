@@ -129,27 +129,27 @@ public class HateoasHandler implements IHateoasHandler {
 
     protected String getEntityType(String className) {
 
-        if (className.endsWith("RegistryEntryHateoas")) {
+        if (className.endsWith("RegistryEntry")) {
             return REGISTRY_ENTRY;
-        } else if (className.endsWith("DocumentDescriptionHateoas")) {
+        } else if (className.endsWith("DocumentDescription")) {
             return DOCUMENT_DESCRIPTION;
-        } else if (className.endsWith("DocumentObjectHateoas")) {
+        } else if (className.endsWith("DocumentObject")) {
             return DOCUMENT_OBJECT;
-        } else if (className.endsWith("CaseFileHateoas")) {
+        } else if (className.endsWith("CaseFile")) {
             return CASE_FILE;
-        } else if (className.endsWith("ClassHateoas")) {
+        } else if (className.endsWith("Class")) {
             return CLASS;
-        } else if (className.endsWith("FondsHateoas")) {
+        } else if (className.endsWith("Fonds")) {
             return FONDS;
-        } else if (className.endsWith("SeriesHateoas")) {
+        } else if (className.endsWith("Series")) {
             return SERIES;
-        } else if (className.endsWith("ClassificationSystemHateoas")) {
+        } else if (className.endsWith("ClassificationSystem")) {
             return CLASSIFICATION_SYSTEM;
-        } else if (className.endsWith("FileHateoas")) {
+        } else if (className.endsWith("File")) {
             return FILE;
-        } else if (className.endsWith("RecordHateoas")) {
+        } else if (className.endsWith("Record")) {
             return REGISTRATION;
-        } else if (className.endsWith("BasicRecordHateoas")) {
+        } else if (className.endsWith("BasicRecord")) {
             return BASIC_RECORD;
         }
         // consider this throwing an excpetion
