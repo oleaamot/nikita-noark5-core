@@ -2,9 +2,11 @@ package nikita.model.noark5.v4.metadata;
 
 
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 
@@ -13,13 +15,21 @@ import javax.persistence.*;
 // Enable soft delete of DocumentMedium
 @SQLDelete(sql="UPDATE document_medium SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class DocumentMedium implements INikitaEntity {
+public class DocumentMedium implements INikitaEntity, INoarkSystemIdEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_document_medium_id", nullable = false, insertable = true, updatable = false)
     protected Long id;
+
+    /**
+     * M001 - systemID (xs:string)
+     */
+    @Column(name = "system_id", unique = true)
+    @Audited
+    @Field
+    protected String systemId;
 
     /**
      * M -  (xs:string)
@@ -34,15 +44,13 @@ public class DocumentMedium implements INikitaEntity {
     @Column(name = "description")
     @Audited
     protected String description;
-
+    @Column(name = "owned_by")
+    @Audited
+    protected String ownedBy;
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
     private Boolean deleted;
-
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
 
     @Override
     public Long getId() {
@@ -52,6 +60,16 @@ public class DocumentMedium implements INikitaEntity {
     @Override
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public String getSystemId() {
+        return systemId;
+    }
+
+    @Override
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
     }
 
     public String getCode() {

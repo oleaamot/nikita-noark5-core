@@ -13,3 +13,13 @@ insert into Authority (name) values ('RECORDS_MANAGER');
 insert into User_authority(user_id, authority_name) values (1, 'CASE_HANDLER');
 insert into User_authority(user_id, authority_name) values (2, 'RECORDS_MANAGER');
 insert into User_authority(user_id, authority_name) values (3, 'ADMIN');
+
+INSERT INTO document_medium (pk_document_medium_id, system_id, code, description, deleted)
+VALUES (0, '48e067ae-d794-4216-8a9d-7cb0ef03472c', 'Fysisk medium', 'Bare fysiske dokumenter', FALSE);
+INSERT INTO document_medium (pk_document_medium_id, system_id, code, description, deleted)
+VALUES (1, '1b617405-9dd6-4187-bee6-81ed4f4a0e1f', 'Elektronisk arkiv', 'Bare elektroniske dokumenter', FALSE);
+INSERT INTO document_medium (pk_document_medium_id, system_id, code, description, deleted)
+VALUES (2, '00d21eea-c231-4542-8e3a-964f441fbbd3', 'Blandet fysisk og elektronisk arkiv', '', FALSE);
+
+INSERT INTO fonds_status (pk_fonds_status_id, code, deleted) VALUES (0, 'Opprettet', FALSE);
+INSERT INTO fonds_status (pk_fonds_status_id, code, deleted) VALUES (1, 'Avsluttet', FALSE);
