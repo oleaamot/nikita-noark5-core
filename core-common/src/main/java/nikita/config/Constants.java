@@ -195,8 +195,8 @@ public final class Constants {
     public static final String REL_FONDS_STRUCTURE_NEW_FILE = REL_FONDS_STRUCTURE + NEW_FILE + SLASH;
     public static final String REL_FONDS_STRUCTURE_FILE = REL_FONDS_STRUCTURE + FILE + SLASH;
 
-    public static final String REL_FONDS_STRUCTURE_NEW_CASE_FILE = REL_FONDS_STRUCTURE + NEW_CASE_FILE + SLASH;
-    public static final String REL_FONDS_STRUCTURE_CASE_FILE = REL_FONDS_STRUCTURE + CASE_FILE + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_CASE_FILE = REL_CASE_HANDLING + NEW_CASE_FILE + SLASH;
+    public static final String REL_FONDS_STRUCTURE_CASE_FILE = REL_CASE_HANDLING + CASE_FILE + SLASH;
 
 
     // Common SeriesHateoas/ClassificationHateoas REL links
