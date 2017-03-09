@@ -181,7 +181,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
      */
     public void addFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + FILE +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES +
                 SLASH + entity.getSystemId() + SLASH + FILE + SLASH, REL_FONDS_STRUCTURE_FILE,
                 false));
     }
@@ -192,8 +192,8 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
      */
     public void addCaseFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + CASE_FILE +
-                SLASH + entity.getSystemId() + SLASH + FILE + SLASH, REL_FONDS_STRUCTURE_CASE_FILE,
+                NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES +
+                SLASH + entity.getSystemId() + SLASH + CASE_FILE + SLASH, REL_FONDS_STRUCTURE_CASE_FILE,
                 false));
     }
 
