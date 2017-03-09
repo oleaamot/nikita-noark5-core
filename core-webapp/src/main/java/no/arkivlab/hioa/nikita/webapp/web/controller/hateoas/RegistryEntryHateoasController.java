@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
 import nikita.model.noark5.v4.DocumentDescription;
-import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
@@ -30,7 +29,6 @@ import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
-import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH + SLASH + REGISTRY_ENTRY,
@@ -68,8 +66,7 @@ public class RegistryEntryHateoasController {
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
             SLASH + NEW_DOCUMENT_DESCRIPTION, consumes = {NOARK5_V4_CONTENT_TYPE})
-    public ResponseEntity<DocumentDescriptionHateoas>
-    createDocumentDescriptionAssociatedWithRegistryEntry(
+    public ResponseEntity<DocumentDescriptionHateoas> createDocumentDescriptionAssociatedWithRegistryEntry(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "recordSystemId",
                     value = "systemId of record/registryEntry to associate the documentDescription with.",
@@ -89,25 +86,6 @@ public class RegistryEntryHateoasController {
     }
 
     // API - All GET Requests (CRUD - READ)
-
-    @ApiOperation(value = "Retrieves a single RegistryEntry entity given a systemId", response = RegistryEntry.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "RegistryEntry returned", response = RegistryEntry.class),
-            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
-            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
-            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
-    @Counted
-    @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
-    public ResponseEntity<String> uploadAndAssociateFileWithDocumentObject(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "systemID",
-                    value = "systemID of the documentObject to associate file with",
-                    required = true)
-            @PathVariable("systemID") final String documentObjectSystemId) {
-
-        return new ResponseEntity<>("File associated with document object", HttpStatus.CREATED);
-    }
 
     @ApiOperation(value = "Retrieves multiple RegistryEntry entities limited by ownership rights",
             notes = "The field skip tells how many RegistryEntry rows of the result set to ignore (starting at 0), " +
