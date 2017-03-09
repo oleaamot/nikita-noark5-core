@@ -19,7 +19,7 @@ public class DocumentMedium implements INikitaEntity, INoarkSystemIdEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pk_document_medium_id", nullable = false, insertable = true, updatable = false)
     protected Long id;
 
