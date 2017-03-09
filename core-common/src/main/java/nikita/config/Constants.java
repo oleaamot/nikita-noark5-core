@@ -54,7 +54,7 @@ public final class Constants {
     public static final String FILE_END = "avslutt-mappe";
     public static final String FILE_EXPAND_TO_CASE_FILE = "utvid-til-" + CASE_FILE;
     public static final String FILE_EXPAND_TO_MEETING_FILE = "utvid-til-" + MEETING_FILE;
-    public static final String NEW_COMMENT = "utvid-til-moetemappe";
+    public static final String NEW_COMMENT = NEW + DASH + COMMENT;
     public static final String NEW_SUB_FILE = NEW + DASH + "undermappe";
     public static final String SUB_FILE = SUB + FILE ;
     public static final String NEW_SUB_FONDS = NEW + DASH + SUB + FONDS;
