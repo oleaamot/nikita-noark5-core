@@ -1317,11 +1317,10 @@ public final class CommonUtils {
                 }
             }
 
-
             // Note: This method assumes that the startObject has already been written
             public static void printHateoasLinks(JsonGenerator jgen, List<Link> links) throws IOException {
 
-                if (links != null) {
+                if (links != null && links.size() > 0) {
                     jgen.writeArrayFieldStart(LINKS);
                     for (Link link : links) {
                         jgen.writeStartObject(link.getLinkName());

@@ -41,7 +41,6 @@ public class HateoasSerializer extends StdSerializer<HateoasNoarkObject> {
             }
             if (!hateoasObject.isSingleEntity()) {
                 jgen.writeEndArray();
-                CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, hateoasObject.getSelfLinks());
                 jgen.writeEndObject();
             }
         }
