@@ -18,7 +18,8 @@ import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.DOCUMENT_MEDIUM;
 
 @RestController
-@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH + DOCUMENT_MEDIUM)
+@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH + DOCUMENT_MEDIUM,
+        produces = {NOARK5_V4_CONTENT_TYPE})
 public class DocumentMediumController {
 
     private IDocumentMediumService documentMediumService;
