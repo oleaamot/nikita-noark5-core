@@ -12,6 +12,8 @@ public interface IRecordHateoasHandler extends IHateoasHandler {
 
     void addReferenceSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
+    void addNewDocumentDescription(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
     void addNewReferenceSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addClassified(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);

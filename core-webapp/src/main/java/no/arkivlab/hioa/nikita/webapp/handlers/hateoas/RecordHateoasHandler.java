@@ -24,6 +24,7 @@ public class RecordHateoasHandler extends HateoasHandler implements IRecordHateo
     public void addEntityLinks(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
 
         addReferenceSeries(entity, hateoasNoarkObject);
+        addNewDocumentDescription(entity, hateoasNoarkObject);
         addNewReferenceSeries(entity, hateoasNoarkObject);
         addClassified(entity, hateoasNoarkObject);
         addNewClassified(entity, hateoasNoarkObject);
@@ -42,6 +43,13 @@ public class RecordHateoasHandler extends HateoasHandler implements IRecordHateo
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + getEntityType(entity.getClass().getName()) + SLASH + entity.getSystemId() + SLASH + REFERENCE_SERIES
                 + SLASH, REL_FONDS_STRUCTURE_REFERENCE_SERIES, false));
+    }
+
+    @Override
+    public void addNewDocumentDescription(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH + getEntityType(entity.getClass().getName()) + SLASH + entity.getSystemId() + SLASH + NEW_DOCUMENT_DESCRIPTION
+                + SLASH, REL_FONDS_STRUCTURE_NEW_DOCUMENT_DESCRIPTION, false));
     }
 
     @Override
