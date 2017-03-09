@@ -43,14 +43,15 @@ import static nikita.config.N5ResourceMappings.*;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH,
-        consumes = {NOARK5_V4_CONTENT_TYPE}, produces = {NOARK5_V4_CONTENT_TYPE})
+        produces = {NOARK5_V4_CONTENT_TYPE})
+@SuppressWarnings("unchecked")
 public class FondsHateoasController {
 
-    EntityManager entityManager;
-    IFondsService fondsService;
-    ISeriesService seriesService;
-    IFondsHateoasHandler fondsHateoasHandler;
-    ISeriesHateoasHandler seriesHateoasHandler;
+    private EntityManager entityManager;
+    private IFondsService fondsService;
+    private ISeriesService seriesService;
+    private IFondsHateoasHandler fondsHateoasHandler;
+    private ISeriesHateoasHandler seriesHateoasHandler;
 
     @Autowired
     public FondsHateoasController(EntityManager entityManager, IFondsService fondsService,
@@ -65,9 +66,11 @@ public class FondsHateoasController {
 
     // API - All POST Requests (CRUD - CREATE)
 
+    // Create a Fonds
+    // POST [contextPath][api]/arkivstruktur/arkiv
     @ApiOperation(value = "Persists a Fonds object", notes = "Returns the newly" +
             " created Fonds object after it is persisted to the database", response = FondsHateoas.class)
-        @ApiResponses(value = {
+    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Fonds " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
                     response = FondsHateoas.class),
             @ApiResponse(code = 201, message = "Fonds " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
@@ -86,15 +89,14 @@ public class FondsHateoasController {
                     value = "Incoming fonds object",
                     required = true)
             @RequestBody Fonds fonds)  throws NikitaException {
-        //Authorisation authorisation = new Authorisation();
-        //SecurityContextHolder.getContext().getAuthentication().getName();
         Fonds createdFonds = fondsService.createNewFonds(fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(createdFonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
         return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
     }
 
-    // TODO: Doublecheck this logic
+    // Create a sub-fonds and associate it with the Fonds identified by systemId
+    // POST [contextPath][api]/arkivstruktur/arkiv/{systemId}/ny-underarkiv
     @ApiOperation(value = "Persists a child Fonds object", notes = "Returns the newly" +
             " created child Fonds object after it is persisted to the database", response = FondsHateoas.class)
     @ApiResponses(value = {
@@ -130,6 +132,8 @@ public class FondsHateoasController {
         return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
     }
 
+    // Create a Series and associate it with the Fonds identified by systemId
+    // POST [contextPath][api]/arkivstruktur/arkiv/{systemId}/ny-arkivdel
     @ApiOperation(value = "Persists a Series object associated with the given Fonds systemId", notes = "Returns" +
             " the newly created Series object after it was associated with a Fonds object and persisted to the " +
             "database", response = SeriesHateoas.class)
@@ -165,9 +169,12 @@ public class FondsHateoasController {
         return new ResponseEntity<> (seriesHateoas, HttpStatus.CREATED);
     }
 
+    // Create a FondsCreator and associate it with the Fonds identified by systemId
+    // POST [contextPath][api]/arkivstruktur/arkiv/{systemId}/ny-arkivskaper
     @ApiOperation(value = "Persists a FondsCreator associated with the given Fonds systemId", notes = "Returns" +
             " the newly created FondsCreator after it was associated with a Fonds and persisted to the " +
             "database", response = FondsCreatorHateoas.class)
+    @SuppressWarnings("unchecked")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "FondsCreator " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
                     response = FondsCreatorHateoas.class),
@@ -182,7 +189,7 @@ public class FondsHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = FONDS + SLASH + LEFT_PARENTHESIS +
-            "fondsSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_FONDS_CREATOR)
+            "fondsSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_FONDS_CREATOR, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<String> createFondsCreatorAssociatedWithFonds(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fondsSystemId",
@@ -198,10 +205,9 @@ public class FondsHateoasController {
         //return new ResponseEntity<> (fondsCreatorHateoas, HttpStatus.CREATED);
     }
 
-
-
     // API - All GET Requests (CRUD - READ)
     // Get single fonds identified by systemId
+    // GET [contextPath][api]/arkivstruktur/arkiv/{systemId}/
     @ApiOperation(value = "Retrieves a single fonds entity given a systemId", response = Fonds.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Fonds returned", response = Fonds.class),
@@ -212,6 +218,7 @@ public class FondsHateoasController {
     @Timed
     @RequestMapping(value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.GET)
+    @SuppressWarnings("unchecked")
     public ResponseEntity<FondsHateoas> findOne(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemId",
@@ -227,32 +234,8 @@ public class FondsHateoasController {
         return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
     }
 
-    // Create a Fonds object with default values
-    //GET [contextPath][api]/arkivstruktur/ny-arkiv
-    @ApiOperation(value = "Create a Fonds with default values", response = Fonds.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Fonds returned", response = Fonds.class),
-            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
-            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
-            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
-    @Counted
-    @Timed
-    @RequestMapping(value = NEW_FONDS, method = RequestMethod.GET)
-    public ResponseEntity<FondsHateoas> createDefaultFonds(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
-
-        Fonds defaultFonds = new Fonds();
-        defaultFonds.setTitle(TEST_TITLE);
-        defaultFonds.setDescription(TEST_DESCRIPTION);
-        defaultFonds.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
-        FondsHateoas fondsHateoas = new
-                FondsHateoas(defaultFonds);
-        fondsHateoasHandler.addLinksOnNew(fondsHateoas, request, new Authorisation());
-        return new ResponseEntity<>(fondsHateoas, HttpStatus.OK);
-    }
-
     // Create a Series object with default values
-    //GET [contextPath][api]/arkivstruktur/arkiv/SYSTEMID/ny-arkivdel
+    //GET [contextPath][api]/arkivstruktur/arkiv/{systemId}/ny-arkivdel
     @ApiOperation(value = "Create a Series with default values", response = Series.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Series returned", response = Series.class),
@@ -277,6 +260,7 @@ public class FondsHateoasController {
     }
 
     // Get all fondsCreators associated with fonds identified by systemId
+    // GET [contextPath][api]/arkivstruktur/arkiv/{systemId}/arkivskaper/
     @ApiOperation(value = "Retrieves the fondsCreators associated with a Fonds identified by a systemId",
             response = FondsCreator.class)
     @ApiResponses(value = {
@@ -300,6 +284,7 @@ public class FondsHateoasController {
     }
 
     // Get all Series associated with Fonds identified by systemId
+    // GET [contextPath][api]/arkivstruktur/arkiv/{systemId}/arkivdel/
     @ApiOperation(value = "Retrieves the Series associated with a Fonds identified by a systemId",
             response = Series.class)
     @ApiResponses(value = {
@@ -322,7 +307,8 @@ public class FondsHateoasController {
         //return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
     }
 
-    // Get all Series associated with Fonds identified by systemId
+    // Get all Sub-fonds associated with a Fonds identified by systemId
+    // GET [contextPath][api]/arkivstruktur/arkiv/{systemId}/underarkiv/
     @ApiOperation(value = "Retrieves the (sub)Fonds associated with a Fonds identified by a systemId",
             response = Fonds.class)
     @ApiResponses(value = {
@@ -345,7 +331,8 @@ public class FondsHateoasController {
         //return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
     }
 
-    // Get all fonds 
+    // Get all fonds
+    // GET [contextPath][api]/arkivstruktur/arkiv/
     @ApiOperation(value = "Retrieves multiple Fonds entities limited by ownership rights", notes = "The field skip" +
             "tells how many Fonds rows of the result set to ignore (starting at 0), while  top tells how many rows" +
             " after skip to return. Note if the value of top is greater than system value " +
@@ -372,6 +359,9 @@ public class FondsHateoasController {
         return new ResponseEntity<>(fondsHateoas, HttpStatus.OK);
     }
 
+    // Find all fonds using elasticsearch ... This is experimental and not part of the standard
+    // No swagger documentation on this. If we decide to drop db for es, then all re
+    // GET [contextPath][api]/arkivstruktur/arkiv/all/
     @RequestMapping(method = RequestMethod.GET, value = FONDS + SLASH + "all" + SLASH)
     public ResponseEntity<FondsHateoas> findAllFonds(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -386,6 +376,33 @@ public class FondsHateoasController {
         FondsHateoas fondsHateoas = new
                 FondsHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList) result);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
+        return new ResponseEntity<>(fondsHateoas, HttpStatus.OK);
+    }
+
+    // Create a suggested Fonds (like a template) object with default values (nothing persisted)
+    // GET [contextPath][api]/arkivstruktur/ny-arkiv
+    @ApiOperation(value = "Suggests the contents of a new Fonds object", notes = "Returns a pre-filled Fonds object" +
+            " with values relevant for the logged-in user", response = FondsHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Fonds " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = FondsHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.GET, value = NEW_FONDS)
+    public ResponseEntity<FondsHateoas> getFondsTemplate(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response
+    ) throws NikitaException {
+        Fonds suggestedFonds = new Fonds();
+        // TODO: This should be replaced with configurable data based on whoever is logged in
+        //       Currently just returns the test values
+        suggestedFonds.setTitle(TEST_TITLE);
+        suggestedFonds.setDescription(TEST_DESCRIPTION);
+        suggestedFonds.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
+        FondsHateoas fondsHateoas = new FondsHateoas(suggestedFonds);
+        fondsHateoasHandler.addLinksOnNew(fondsHateoas, request, new Authorisation());
         return new ResponseEntity<>(fondsHateoas, HttpStatus.OK);
     }
 }
