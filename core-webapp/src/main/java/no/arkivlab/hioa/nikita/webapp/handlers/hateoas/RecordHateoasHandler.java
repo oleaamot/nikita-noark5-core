@@ -25,6 +25,9 @@ public class RecordHateoasHandler extends HateoasHandler implements IRecordHateo
 
         addReferenceSeries(entity, hateoasNoarkObject);
         addNewDocumentDescription(entity, hateoasNoarkObject);
+        addDocumentDescription(entity, hateoasNoarkObject);
+        addNewDocumentObject(entity, hateoasNoarkObject);
+        addDocumentObject(entity, hateoasNoarkObject);
         addNewReferenceSeries(entity, hateoasNoarkObject);
         addClassified(entity, hateoasNoarkObject);
         addNewClassified(entity, hateoasNoarkObject);
@@ -50,6 +53,29 @@ public class RecordHateoasHandler extends HateoasHandler implements IRecordHateo
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + getEntityType(entity.getClass().getName()) + SLASH + entity.getSystemId() + SLASH + NEW_DOCUMENT_DESCRIPTION
                 + SLASH, REL_FONDS_STRUCTURE_NEW_DOCUMENT_DESCRIPTION, false));
+    }
+
+    @Override
+    public void addDocumentDescription(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH + getEntityType(entity.getClass().getName()) + SLASH +
+                entity.getSystemId() + SLASH + DOCUMENT_DESCRIPTION
+                + SLASH, REL_FONDS_STRUCTURE_DOCUMENT_DESCRIPTION, false));
+    }
+
+    @Override
+    public void addNewDocumentObject(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH + getEntityType(entity.getClass().getName()) + SLASH + entity.getSystemId() + SLASH + NEW_DOCUMENT_OBJECT
+                + SLASH, REL_FONDS_STRUCTURE_NEW_DOCUMENT_OBJECT, false));
+    }
+
+    @Override
+    public void addDocumentObject(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH + getEntityType(entity.getClass().getName()) + SLASH +
+                entity.getSystemId() + SLASH + DOCUMENT_OBJECT
+                + SLASH, REL_FONDS_STRUCTURE_DOCUMENT_OBJECT, false));
     }
 
     @Override
