@@ -55,9 +55,10 @@ public class FileHateoasController {
 
     // API - All POST Requests (CRUD - CREATE)
 
-
-    @ApiOperation(value = "Persists a Record object associated with the given Series systemId",
-            notes = "Returns the newly created record object after it was associated with a File object and " +
+    // Create a Record with default values
+    // POST [contextPath][api]/arkivstruktur/mappe/{systemId}/ny-registrering
+    @ApiOperation(value = "Persists a Record associated with the given Series systemId",
+            notes = "Returns the newly created record after it was associated with a File and " +
                     "persisted to the database", response = RecordHateoas.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Record " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
@@ -80,7 +81,7 @@ public class FileHateoasController {
                     required = true)
             @PathVariable String fileSystemId,
             @ApiParam(name = "Record",
-                    value = "Incoming record object",
+                    value = "Incoming record",
                     required = true)
             @RequestBody Record record) throws NikitaException {
         RecordHateoas recordHateoas =
@@ -89,8 +90,10 @@ public class FileHateoasController {
         return new ResponseEntity<>(recordHateoas, HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Persists a BasicRecord object associated with the given Series systemId",
-            notes = "Returns the newly created basicRecord object after it was associated with a File object and " +
+    // Create a BasicRecord with default values
+    // POST [contextPath][api]/arkivstruktur/mappe/{systemId}/ny-basisregistrering
+    @ApiOperation(value = "Persists a BasicRecord associated with the given Series systemId",
+            notes = "Returns the newly created basicRecord after it was associated with a File and " +
                     "persisted to the database", response = BasicRecordHateoas.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "BasicRecord " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
@@ -113,7 +116,7 @@ public class FileHateoasController {
                     required = true)
             @PathVariable String fileSystemId,
             @ApiParam(name = "BasicRecord",
-                    value = "Incoming basicRecord object",
+                    value = "Incoming basicRecord",
                     required = true)
             @RequestBody BasicRecord basicRecord) throws NikitaException {
         BasicRecordHateoas basicRecordHateoas =
@@ -124,8 +127,8 @@ public class FileHateoasController {
 
     // API - All GET Requests (CRUD - READ)
 
-    // Create a Record object with default values
-    // GET [contextPath][api]/arkivstruktur/mappe/SYSTEM_ID/ny-registrering
+    // Create a Record with default values
+    // GET [contextPath][api]/arkivstruktur/mappe/{systemId}/ny-registrering
     @ApiOperation(value = "Create a Record with default values", response = Record.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Record returned", response = Record.class),
@@ -148,8 +151,8 @@ public class FileHateoasController {
         return new ResponseEntity<>(recordHateoas, HttpStatus.OK);
     }
 
-    // Create a BasicRecord object with default values
-    //GET [contextPath][api]/arkivstruktur/mappe/SYSTEM_ID/ny-basisregistrering
+    // Create a BasicRecord with default values
+    // GET [contextPath][api]/arkivstruktur/mappe/{systemId}/ny-basisregistrering
     @ApiOperation(value = "Create a BasicRecord with default values", response = BasicRecord.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "BasicRecord returned", response = BasicRecord.class),
@@ -172,6 +175,8 @@ public class FileHateoasController {
         return new ResponseEntity<>(basicRecordHateoas, HttpStatus.OK);
     }
 
+    // Retrieve a file identified by a systemId
+    // GET [contextPath][api]/arkivstruktur/mappe/{systemId}
     @ApiOperation(value = "Retrieves a single File entity given a systemId", response = File.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "File returned", response = File.class),
@@ -193,6 +198,8 @@ public class FileHateoasController {
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
     }
 
+    // Retrieves a file identified by a systemId
+    // GET [contextPath][api]/arkivstruktur/mappe
     @ApiOperation(value = "Retrieves multiple File entities limited by ownership rights", notes = "The field skip" +
             "tells how many File rows of the result set to ignore (starting at 0), while  top tells how many rows" +
             " after skip to return. Note if the value of top is greater than system value " +
@@ -207,7 +214,7 @@ public class FileHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<FileHateoas> findAllFile(
+    public ResponseEntity<FileHateoas> findAllFiles(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
