@@ -17,7 +17,6 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentDescr
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRecordHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRecordService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,14 +35,17 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
         produces = {NOARK5_V4_CONTENT_TYPE})
 public class RecordHateoasController {
 
-    @Autowired
-    IRecordService recordService;
+    private IRecordService recordService;
+    private IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
+    private IRecordHateoasHandler recordHateoasHandler;
 
-    @Autowired
-    IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
-
-    @Autowired
-    IRecordHateoasHandler recordHateoasHandler;
+    public RecordHateoasController(IRecordService recordService,
+                                   IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler,
+                                   IRecordHateoasHandler recordHateoasHandler) {
+        this.recordService = recordService;
+        this.documentDescriptionHateoasHandler = documentDescriptionHateoasHandler;
+        this.recordHateoasHandler = recordHateoasHandler;
+    }
 
     // API - All POST Requests (CRUD - CREATE)
 
