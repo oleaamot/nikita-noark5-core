@@ -20,7 +20,6 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFileHateoasHa
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRecordHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFileService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,19 +39,22 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
         produces = {NOARK5_V4_CONTENT_TYPE})
 public class FileHateoasController {
 
-    @Autowired
-    IFileService fileService;
+    private IFileService fileService;
+    private IFileHateoasHandler fileHateoasHandler;
+    private IRecordHateoasHandler recordHateoasHandler;
+    private IBasicRecordHateoasHandler basicRecordHateoasHandler;
 
-    @Autowired
-    IFileHateoasHandler fileHateoasHandler;
-
-    @Autowired
-    IRecordHateoasHandler recordHateoasHandler;
-
-    @Autowired
-    IBasicRecordHateoasHandler basicRecordHateoasHandler;
+    public FileHateoasController(IFileService fileService, IFileHateoasHandler fileHateoasHandler,
+                                 IRecordHateoasHandler recordHateoasHandler,
+                                 IBasicRecordHateoasHandler basicRecordHateoasHandler) {
+        this.fileService = fileService;
+        this.fileHateoasHandler = fileHateoasHandler;
+        this.recordHateoasHandler = recordHateoasHandler;
+        this.basicRecordHateoasHandler = basicRecordHateoasHandler;
+    }
 
     // API - All POST Requests (CRUD - CREATE)
+
 
     @ApiOperation(value = "Persists a Record object associated with the given Series systemId",
             notes = "Returns the newly created record object after it was associated with a File object and " +
@@ -86,6 +88,7 @@ public class FileHateoasController {
         recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
         return new ResponseEntity<>(recordHateoas, HttpStatus.CREATED);
     }
+
     @ApiOperation(value = "Persists a BasicRecord object associated with the given Series systemId",
             notes = "Returns the newly created basicRecord object after it was associated with a File object and " +
                     "persisted to the database", response = BasicRecordHateoas.class)
@@ -118,11 +121,11 @@ public class FileHateoasController {
         basicRecordHateoasHandler.addLinks(basicRecordHateoas, request, new Authorisation());
         return new ResponseEntity<>(basicRecordHateoas, HttpStatus.CREATED);
     }
-    
+
     // API - All GET Requests (CRUD - READ)
 
     // Create a Record object with default values
-    //GET [contextPath][api]/arkivstruktur/mappe/SYSTEM_ID/ny-registrering
+    // GET [contextPath][api]/arkivstruktur/mappe/SYSTEM_ID/ny-registrering
     @ApiOperation(value = "Create a Record with default values", response = Record.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Record returned", response = Record.class),
