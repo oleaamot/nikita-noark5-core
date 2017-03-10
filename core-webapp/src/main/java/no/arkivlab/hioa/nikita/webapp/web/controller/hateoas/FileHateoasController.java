@@ -9,10 +9,7 @@ import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
 import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.Class;
-import nikita.model.noark5.v4.hateoas.BasicRecordHateoas;
-import nikita.model.noark5.v4.hateoas.CaseFileHateoas;
-import nikita.model.noark5.v4.hateoas.FileHateoas;
-import nikita.model.noark5.v4.hateoas.RecordHateoas;
+import nikita.model.noark5.v4.hateoas.*;
 import nikita.model.noark5.v4.interfaces.entities.ICrossReferenceEntity;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
@@ -610,6 +607,29 @@ public class FileHateoasController {
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SECONDARY_CLASSIFICATION,
             method = RequestMethod.GET)
     public ResponseEntity<String> findSecondaryClassAssociatedWithFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the File to retrieve secondary Class for",
+                    required = true)
+            @PathVariable("systemID") final String fileSystemId) {
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    // Retrieve all secondary Series associated with a File
+    // GET [contextPath][api]/arkivstruktur/mappe/{systemId}/referanseArkivdel
+    // http://rel.kxml.no/noark5/v4/api/arkivstruktur/referanseArkivdel/
+    @ApiOperation(value = "Retrieves all secondary Series associated with a File identified by a systemId",
+            response = SeriesHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Series returned", response = SeriesHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + REFERENCE_SERIES,
+            method = RequestMethod.GET)
+    public ResponseEntity<String> findSecondarySeriesAssociatedWithFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemID of the File to retrieve secondary Class for",
