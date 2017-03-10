@@ -37,26 +37,18 @@ import static nikita.config.N5ResourceMappings.*;
         "entities or pageable iterable sets of series")
 public class SeriesHateoasController extends NikitaController {
 
-    @Autowired
-    ISeriesService seriesService;
+    private ISeriesService seriesService;
+    private ISeriesHateoasHandler seriesHateoasHandler;
+    private ICaseFileHateoasHandler caseFileHateoasHandler;
+    private IFileHateoasHandler fileHateoasHandler;
 
     @Autowired
-    ISeriesHateoasHandler seriesHateoasHandler;
-
-    @Autowired
-    ICaseFileHateoasHandler caseFileHateoasHandler;
-
-    @Autowired
-    IFileHateoasHandler fileHateoasHandler;
-
-//    @Value("${nikita-noark5-core.pagination.maxPageSize}")
-  //  Integer maxPageSize;
-
-    String uri;
-    String hrefSelf;
-
-    public SeriesHateoasController() {
-
+    public SeriesHateoasController(ISeriesService seriesService, ISeriesHateoasHandler seriesHateoasHandler,
+                                   ICaseFileHateoasHandler caseFileHateoasHandler, IFileHateoasHandler fileHateoasHandler) {
+        this.seriesService = seriesService;
+        this.seriesHateoasHandler = seriesHateoasHandler;
+        this.caseFileHateoasHandler = caseFileHateoasHandler;
+        this.fileHateoasHandler = fileHateoasHandler;
     }
 
     // API - All POST Requests (CRUD - CREATE)
