@@ -62,7 +62,7 @@ public final class Constants {
     public static final String NEW_SUB_FONDS = NEW + DASH + SUB + FONDS;
     public static final String NEW_CROSS_REFERENCE = NEW + DASH + CROSS_REFERENCE;
     public static final String NEW_REFERENCE_CLASS = NEW + DASH + "klassereferanse";
-    public static final String REFERENCE_NEW_SERIES = NEW + DASH + "arkivdelReferanse";
+    public static final String REFERENCE_NEW_SERIES = NEW + DASH + "referanseArkivdel";
     public static final String NEW_CLASSIFIED = NEW + DASH + CLASSIFIED;
     public static final String NEW_SCREENING = NEW + DASH + SCREENING;
     public static final String NEW_DISPOSAL = NEW + DASH + DISPOSAL;
