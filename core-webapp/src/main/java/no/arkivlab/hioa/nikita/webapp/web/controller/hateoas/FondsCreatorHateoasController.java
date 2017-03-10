@@ -34,14 +34,21 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
         produces = {NOARK5_V4_CONTENT_TYPE})
 public class FondsCreatorHateoasController {
 
-    @Autowired
-    IFondsCreatorService fondsCreatorService;
+    private IFondsCreatorService fondsCreatorService;
+    private IFondsHateoasHandler fondsHateoasHandler;
 
     @Autowired
-    IFondsHateoasHandler fondsHateoasHandler;
+    public FondsCreatorHateoasController(IFondsCreatorService fondsCreatorService,
+                                         IFondsHateoasHandler fondsHateoasHandler) {
+        this.fondsCreatorService = fondsCreatorService;
+        this.fondsHateoasHandler = fondsHateoasHandler;
+
+    }
 
     // API - All POST Requests (CRUD - CREATE)
 
+    // Create a new FondsCreator
+    // POST [contextPath][api]/arkivstruktur/arkivskaper
     @ApiOperation(value = "Persists a FondsCreator object", notes = "Returns the newly" +
             " created FondsCreator object after it is persisted to the database", response = FondsCreatorHateoas.class)
     @ApiResponses(value = {
@@ -70,6 +77,9 @@ public class FondsCreatorHateoasController {
     }
 
     // API - All GET Requests (CRUD - READ)
+
+    // Get a FondsCreator identified by a systemId
+    // GET [contextPath][api]/arkivstruktur/arkivskaper/{systemId}
     @ApiOperation(value = "Retrieves a single FondsCreator entity given a systemId", response = FondsCreator.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "FondsCreator returned", response = FondsCreator.class),
@@ -79,7 +89,7 @@ public class FondsCreatorHateoasController {
     @Counted
     @Timed
     @RequestMapping(value = FONDS_CREATOR + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
-            method = RequestMethod.GET)
+            method = RequestMethod.GET, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<FondsCreatorHateoas> findOne(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemId",
@@ -88,13 +98,16 @@ public class FondsCreatorHateoasController {
             @PathVariable("systemID") final String FondsCreatorSystemId) {
         FondsCreator FondsCreator = fondsCreatorService.findBySystemId(FondsCreatorSystemId);
         if (FondsCreator == null) {
-            throw new NoarkEntityNotFoundException("Could not find FondsCreator object with systemID " + FondsCreatorSystemId);
+            throw new NoarkEntityNotFoundException("Could not find FondsCreator object with systemID " +
+                    FondsCreatorSystemId);
         }
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(FondsCreator);
         fondsHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
         return new ResponseEntity<>(fondsCreatorHateoas, HttpStatus.CREATED);
     }
 
+    // Get all FondsCreator
+    // GET [contextPath][api]/arkivstruktur/arkivskaper/
     @ApiOperation(value = "Retrieves multiple FondsCreator entities limited by ownership rights", notes = "The field skip" +
             "tells how many FondsCreator rows of the result set to ignore (starting at 0), while  top tells how many rows" +
             " after skip to return. Note if the value of top is greater than system value " +
@@ -118,5 +131,35 @@ public class FondsCreatorHateoasController {
                 fondsCreatorService.findFondsCreatorByOwnerPaginated(top, skip));
         fondsHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
         return new ResponseEntity<>(fondsCreatorHateoas, HttpStatus.OK);
+    }
+
+    // API - All PUT Requests (CRUD - UPDATE)
+
+    // Updates a FondsCreator identified by a systemId
+    // PUT [contextPath][api]/arkivstruktur/arkivskaper/{systemId}
+    @ApiOperation(value = "Updates a FondsCreator identified by a systemId with new values",
+            response = FondsCreator.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "FondsCreator updated", response = FondsCreator.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = FONDS_CREATOR + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
+            method = RequestMethod.PUT, consumes = {NOARK5_V4_CONTENT_TYPE})
+    public ResponseEntity<String> updateFondsCreator(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemId",
+                    value = "systemId of FondsCreator to retrieve.",
+                    required = true)
+            @PathVariable("systemID") final String FondsCreatorSystemId) {
+        /*FondsCreator FondsCreator = fondsCreatorService.findBySystemId(FondsCreatorSystemId);
+        if (FondsCreator == null) {
+            throw new NoarkEntityNotFoundException("Could not find FondsCreator object with systemID " + FondsCreatorSystemId);
+        }
+        FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(FondsCreator);
+        fondsHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());*/
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 }
