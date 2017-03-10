@@ -7,12 +7,13 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
-import nikita.model.noark5.v4.BasicRecord;
-import nikita.model.noark5.v4.File;
-import nikita.model.noark5.v4.Record;
+import nikita.model.noark5.v4.*;
+import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.hateoas.BasicRecordHateoas;
+import nikita.model.noark5.v4.hateoas.CaseFileHateoas;
 import nikita.model.noark5.v4.hateoas.FileHateoas;
 import nikita.model.noark5.v4.hateoas.RecordHateoas;
+import nikita.model.noark5.v4.interfaces.entities.ICrossReferenceEntity;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IBasicRecordHateoasHandler;
@@ -31,8 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static nikita.config.Constants.*;
-import static nikita.config.N5ResourceMappings.FILE;
-import static nikita.config.N5ResourceMappings.SYSTEM_ID;
+import static nikita.config.N5ResourceMappings.*;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + FILE,
@@ -55,8 +55,9 @@ public class FileHateoasController {
 
     // API - All POST Requests (CRUD - CREATE)
 
-    // Create a Record with default values
+    // Create a Record
     // POST [contextPath][api]/arkivstruktur/mappe/{systemId}/ny-registrering
+    // REL http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-registrering/
     @ApiOperation(value = "Persists a Record associated with the given Series systemId",
             notes = "Returns the newly created record after it was associated with a File and " +
                     "persisted to the database", response = RecordHateoas.class)
@@ -90,8 +91,9 @@ public class FileHateoasController {
         return new ResponseEntity<>(recordHateoas, HttpStatus.CREATED);
     }
 
-    // Create a BasicRecord with default values
+    // Create a BasicRecord
     // POST [contextPath][api]/arkivstruktur/mappe/{systemId}/ny-basisregistrering
+    // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-basisregistrering/
     @ApiOperation(value = "Persists a BasicRecord associated with the given Series systemId",
             notes = "Returns the newly created basicRecord after it was associated with a File and " +
                     "persisted to the database", response = BasicRecordHateoas.class)
@@ -125,7 +127,281 @@ public class FileHateoasController {
         return new ResponseEntity<>(basicRecordHateoas, HttpStatus.CREATED);
     }
 
+    // Create a CrossReference
+    // POST [contextPath][api]/arkivstruktur/mappe/{systemId}/ny-kryssreferanse
+    // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-kryssreferanse/
+    @ApiOperation(value = "Persists a BasicRecord associated with the given Series systemId",
+            notes = "Returns the newly created basicRecord after it was associated with a File and " +
+                    "persisted to the database", response = BasicRecordHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "BasicRecord " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = BasicRecordHateoas.class),
+            @ApiResponse(code = 201, message = "BasicRecord " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = BasicRecordHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type BasicRecord"),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+            SLASH + NEW_CROSS_REFERENCE, consumes = {NOARK5_V4_CONTENT_TYPE})
+    public ResponseEntity<String> createCrossReferenceAssociatedWithFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "fileSystemId",
+                    value = "systemId of file to associate the basicRecord with",
+                    required = true)
+            @PathVariable String fileSystemId,
+            @ApiParam(name = "ICrossReferenceEntity",
+                    value = "Noark entity that support cross reference functionality",
+                    required = true)
+            @RequestBody ICrossReferenceEntity crossReferenceEntity) throws NikitaException {
+
+        // Think about how to handle if cross reference is to Record or class. Do we need
+        // to specify this in the URL
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    // Create a (sub) File
+    // POST [contextPath][api]/arkivstruktur/mappe/{systemId}/ny-undermappe
+    // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-undermappe/
+    @ApiOperation(value = "Create a new File and associate it, with the given File identified by systemId, as a " +
+            "(sub)File", notes = "Returns the newly created (sub)File after it was associated with a File and " +
+            "persisted to the database", response = FileHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = FILE + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = FileHateoas.class),
+            @ApiResponse(code = 201, message = FILE + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = FileHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type " + FILE),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+            SLASH + NEW_SUB_FILE, consumes = {NOARK5_V4_CONTENT_TYPE})
+    public ResponseEntity<String> createSubFileAssociatedWithFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "fileSystemId",
+                    value = "systemId of the parent file",
+                    required = true)
+            @PathVariable String fileSystemId,
+            @ApiParam(name = "File",
+                    value = "File to be (sub)File",
+                    required = true)
+            @RequestBody File file) throws NikitaException {
+
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    // Add a Comment to a File
+    // POST [contextPath][api]/arkivstruktur/mappe/{systemId}/ny-merknad
+    // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-merknad/
+    @ApiOperation(value = "Associates a Comment with a File identified by fileSystemId",
+            notes = "Returns the File with the comment associated with it", response = FileHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = COMMENT + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = FileHateoas.class),
+            @ApiResponse(code = 201, message = COMMENT + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = FileHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type " + COMMENT),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+            SLASH + NEW_COMMENT, consumes = {NOARK5_V4_CONTENT_TYPE})
+    public ResponseEntity<String> addCommentToFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "fileSystemId",
+                    value = "systemId of File to associate the Comment with",
+                    required = true)
+            @PathVariable String fileSystemId,
+            @ApiParam(name = "Comment",
+                    value = "comment",
+                    required = true)
+            @RequestBody Comment comment) throws NikitaException {
+        //TODO: What do we return here? File + comment? comment?
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    // Add a Class to a File
+    // POST [contextPath][api]/arkivstruktur/mappe/{systemId}/ny-klasse
+    // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-klasse/
+    @ApiOperation(value = "Associates a Class with a File identified by fileSystemId",
+            notes = "Returns the File with the Class associated with it", response = FileHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = CLASS + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = FileHateoas.class),
+            @ApiResponse(code = 201, message = CLASS + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = FileHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type " + CLASS),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+            SLASH + NEW_CLASS, consumes = {NOARK5_V4_CONTENT_TYPE})
+    public ResponseEntity<String> addClassToFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "fileSystemId",
+                    value = "systemId of File to associate the Class with",
+                    required = true)
+            @PathVariable String fileSystemId,
+            @ApiParam(name = "klass",
+                    value = "Class",
+                    required = true)
+            @RequestBody Class klass) throws NikitaException {
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    // Add a reference to a secondary Series associated with the File
+    // POST [contextPath][api]/arkivstruktur/mappe/{systemId}/ny-referanseArkivdel
+    // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-referanseArkivdel/
+    @ApiOperation(value = "Associates a Secondary Series with a File identified by fileSystemId",
+            notes = "Returns the File after the secondary Series is successfully associated with it." +
+                    "Note a secondary series allows a File to be associated with another Series.",
+            response = FileHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = CLASS + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = FileHateoas.class),
+            @ApiResponse(code = 201, message = CLASS + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = FileHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type " + CLASS),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+            SLASH + NEW_REFERENCE_SERIES, consumes = {NOARK5_V4_CONTENT_TYPE})
+    public ResponseEntity<String> addReferenceSeriesToFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "fileSystemId",
+                    value = "systemId of File to associate the secondary Series with",
+                    required = true)
+            @PathVariable String fileSystemId,
+            @ApiParam(name = "Series",
+                    value = "series",
+                    required = true)
+            @RequestBody Series series) throws NikitaException {
+        //TODO: What do we return here? File + comment? comment?
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    // Add a secondary Class to a File
+    // POST [contextPath][api]/arkivstruktur/mappe/{systemId}/ny-sekundaerklassifikasjon
+    // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-sekundaerklassifikasjon/
+    @ApiOperation(value = "Associates a Class with a File identified by fileSystemId as secondary Class",
+            notes = "Returns the File with the Class associated with it. Note a File can only have one Class " +
+                    "associated with it, but can have multiple secondary Class associated with it. An example" +
+                    "is the use of K-Koder on case-handling and a secondary classification of person",
+            response = FileHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = COMMENT + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = FileHateoas.class),
+            @ApiResponse(code = 201, message = COMMENT + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = FileHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type " + CLASS),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+            SLASH + NEW_SECONDARY_CLASSIFICATION, consumes = {NOARK5_V4_CONTENT_TYPE})
+    public ResponseEntity<String> addReferenceToSecondaryClassToFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "fileSystemId",
+                    value = "systemId of File to associate the secondary Class with",
+                    required = true)
+            @PathVariable String fileSystemId,
+            @ApiParam(name = "klass",
+                    value = "Class",
+                    required = true)
+            @RequestBody Class klass) throws NikitaException {
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
     // API - All GET Requests (CRUD - READ)
+
+    // Retrieve all Records associated with File identified by systemId
+    // GET [contextPath][api]/arkivstruktur/mappe/{systemId}/registrering
+    // REL http://rel.kxml.no/noark5/v4/api/arkivstruktur/registrering/
+    @ApiOperation(value = "Retrieve all Record associated with a File identified by systemId",
+            response = RecordHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Record returned", response = RecordHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + REGISTRATION,
+            method = RequestMethod.GET)
+    public ResponseEntity<String> findAllRecordsAssociatedWithFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the file to retrieve associated Record",
+                    required = true)
+            @PathVariable("systemID") final String fileSystemId) {
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    // Retrieve all BasicRecords associated with File identified by systemId
+    // GET [contextPath][api]/arkivstruktur/mappe/{systemId}/basisregistrering
+    // REL http://rel.kxml.no/noark5/v4/api/arkivstruktur/basisregistrering/
+    @ApiOperation(value = "Retrieve all BasicRecord associated with a File identified by systemId",
+            response = BasicRecordHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "BasicRecord returned", response = BasicRecordHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + BASIC_RECORD,
+            method = RequestMethod.GET)
+    public ResponseEntity<String> findAllBasicRecordsAssociatedWithFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the file to retrieve associated BasicRecord",
+                    required = true)
+            @PathVariable("systemID") final String fileSystemId) {
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    // Retrieve all BasicRecords associated with File identified by systemId
+    // GET [contextPath][api]/arkivstruktur/mappe/{systemId}/undermappe
+    // REL http://rel.kxml.no/noark5/v4/api/arkivstruktur/undermappe/
+    @ApiOperation(value = "Retrieve all (sub) File associated with a File identified by systemId",
+            response = BasicRecordHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "BasicRecord returned", response = BasicRecordHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SUB_FILE,
+            method = RequestMethod.GET)
+    public ResponseEntity<String> findAllSubFileAssociatedWithFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the file to retrieve associated (sub)File",
+                    required = true)
+            @PathVariable("systemID") final String fileSystemId) {
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
 
     // Create a Record with default values
     // GET [contextPath][api]/arkivstruktur/mappe/{systemId}/ny-registrering
@@ -195,7 +471,7 @@ public class FileHateoasController {
         FileHateoas fileHateoas = new
                 FileHateoas(fileService.findBySystemId(fileSystemId));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
-        return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
+        return new ResponseEntity<>(fileHateoas, HttpStatus.OK);
     }
 
     // Retrieves a file identified by a systemId
@@ -226,9 +502,125 @@ public class FileHateoasController {
         return new ResponseEntity<>(fileHateoas, HttpStatus.OK);
     }
 
-    // API - All GET Requests (CRUD - READ)
+    // Retrieve all Comments associated with a File
+    // GET [contextPath][api]/arkivstruktur/mappe/{systemId}/merknad
+    // http://rel.kxml.no/noark5/v4/api/arkivstruktur/merknad/
+    @ApiOperation(value = "Retrieves all Comments associated with a File identified by a systemId",
+            response = FileHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "File returned", response = FileHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + COMMENT,
+            method = RequestMethod.GET)
+    public ResponseEntity<String> findAllCommentsAssociatedWithFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the file to retrieve comments for",
+                    required = true)
+            @PathVariable("systemID") final String fileSystemId) {
+        //return new ResponseEntity<>(commentHateoas, HttpStatus.OK);
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
 
-    // Create a Record with default values
+    // Retrieve all CrossReference associated with a File
+    // GET [contextPath][api]/arkivstruktur/mappe/{systemId}/kryssreferanse
+    // http://rel.kxml.no/noark5/v4/api/arkivstruktur/kryssreferanse/
+    @ApiOperation(value = "Retrieves all CrossReference associated with a File identified by a systemId",
+            response = FileHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "File returned", response = FileHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + CROSS_REFERENCE,
+            method = RequestMethod.GET)
+    public ResponseEntity<String> findAllCrossReferenceAssociatedWithFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the File to retrieve CrossReferences for",
+                    required = true)
+            @PathVariable("systemID") final String fileSystemId) {
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    // Retrieve the Class associated with a File
+    // GET [contextPath][api]/arkivstruktur/mappe/{systemId}/klasse
+    // http://rel.kxml.no/noark5/v4/api/arkivstruktur/klasse/
+    @ApiOperation(value = "Retrieves the Class associated with a File identified by a systemId",
+            response = FileHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "File returned", response = FileHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + CLASS,
+            method = RequestMethod.GET)
+    public ResponseEntity<String> findClassAssociatedWithFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the File to retrieve a Class for",
+                    required = true)
+            @PathVariable("systemID") final String fileSystemId) {
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    // Retrieve the Series associated with a File
+    // GET [contextPath][api]/arkivstruktur/mappe/{systemId}/arkivdel
+    // http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivdel/
+    @ApiOperation(value = "Retrieves the Series associated with a File identified by a systemId",
+            response = FileHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "File returned", response = FileHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SERIES,
+            method = RequestMethod.GET)
+    public ResponseEntity<String> findSeriesAssociatedWithFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the File to retrieve a Class for",
+                    required = true)
+            @PathVariable("systemID") final String fileSystemId) {
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    // Retrieve all Class associated with a File as secondary classification
+    // GET [contextPath][api]/arkivstruktur/mappe/{systemId}/sekundaerklassifikasjon
+    // http://rel.kxml.no/noark5/v4/api/arkivstruktur/sekundaerklassifikasjon/
+    @ApiOperation(value = "Retrieves all secondary Class associated with a File identified by a systemId",
+            response = FileHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "File returned", response = FileHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SECONDARY_CLASSIFICATION,
+            method = RequestMethod.GET)
+    public ResponseEntity<String> findSecondaryClassAssociatedWithFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the File to retrieve secondary Class for",
+                    required = true)
+            @PathVariable("systemID") final String fileSystemId) {
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    // API - All PUT Requests (CRUD - UPDATE)
+
+    // Update a File with given values
     // PUT [contextPath][api]/arkivstruktur/mappe/{systemId}
     @ApiOperation(value = "Updates a File identified by a given systemId", notes = "Returns the newly updated file",
             response = FileHateoas.class)
@@ -244,18 +636,115 @@ public class FileHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.PUT, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
             SLASH + FILE, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<String> updateFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fileSystemId",
                     value = "systemId of file to update",
                     required = true)
-            @PathVariable String seriesSystemId,
+            @PathVariable String fileSystemId,
             @ApiParam(name = "File",
                     value = "Incoming file object",
                     required = true)
             @RequestBody File file) throws NikitaException {
+        /*FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
+        fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
+        return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);*/
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    // Finalise a File
+    // PUT [contextPath][api]/arkivstruktur/mappe/{systemId}/avslutt-mappe
+    // REL http://rel.kxml.no/noark5/v4/api/arkivstruktur/avslutt-mappe/
+    @ApiOperation(value = "Updates a File identified by a given systemId", notes = "Returns the newly updated file",
+            response = FileHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "File " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = FileHateoas.class),
+            @ApiResponse(code = 201, message = "File " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = FileHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type File"),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.PUT, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+            SLASH + FILE_END)
+    public ResponseEntity<String> finaliseFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "fileSystemId",
+                    value = "systemId of file to update",
+                    required = true)
+            @PathVariable String fileSystemId) throws NikitaException {
+        /*FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
+        fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
+        return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);*/
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    // Expand a File to a CaseFile
+    // PUT [contextPath][api]/arkivstruktur/mappe/{systemId}/utvid-til-saksmappe
+    // REL http://rel.kxml.no/noark5/v4/api/arkivstruktur/utvid-til-saksmappe/
+    @ApiOperation(value = "Expands a File identified by a systemId to a CaseFile", notes = "Returns the newly updated " +
+            "CaseFile",
+            response = CaseFileHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "CaseFile " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = CaseFileHateoas.class),
+            @ApiResponse(code = 201, message = "CaseFile " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = CaseFileHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type File"),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+            SLASH + FILE_EXPAND_TO_CASE_FILE)
+    public ResponseEntity<String> expandFileToCaseFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "fileSystemId",
+                    value = "systemId of file to expand",
+                    required = true)
+            @PathVariable String fileSystemId) throws NikitaException {
+        /*FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
+        fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
+        return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);*/
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    // Expand a File to a MeetingFile
+    // PUT [contextPath][api]/arkivstruktur/mappe/{systemId}/utvid-til-moetemappe
+    // REL http://rel.kxml.no/noark5/v4/api/arkivstruktur/utvid-til-moetemappe/
+    // TODO: At implementation time, we are missing MeetingFileHateoas. Leaving as CaseFileHateoas
+    // just to allow continued compilation
+    @ApiOperation(value = "Expands a File identified by a systemId to a MeetingFile", notes = "Returns the newly " +
+            "updated MeetingFile. Note TODO in FileHateoasController. Fix this before swagger is published",
+            response = CaseFileHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "CaseFile " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = CaseFileHateoas.class),
+            @ApiResponse(code = 201, message = "CaseFile " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = CaseFileHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type File"),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+            SLASH + FILE_EXPAND_TO_MEETING_FILE)
+    public ResponseEntity<String> expandFileToMeetingFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "fileSystemId",
+                    value = "systemId of file to expand",
+                    required = true)
+            @PathVariable String fileSystemId) throws NikitaException {
         /*FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);*/

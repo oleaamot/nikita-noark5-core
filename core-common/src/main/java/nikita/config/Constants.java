@@ -49,6 +49,8 @@ public final class Constants {
     public static final String NEW_BASIC_RECORD = NEW + DASH + BASIC_RECORD;
     public static final String NEW_DOCUMENT_DESCRIPTION = NEW + DASH + DOCUMENT_DESCRIPTION;
     public static final String NEW_DOCUMENT_OBJECT = NEW + DASH + DOCUMENT_OBJECT;
+    public static final String NEW_REFERENCE_SERIES = NEW + DASH + REFERENCE_SERIES;
+
 
     // Other arkivstruktur commands
     public static final String FILE_END = "avslutt-mappe";
