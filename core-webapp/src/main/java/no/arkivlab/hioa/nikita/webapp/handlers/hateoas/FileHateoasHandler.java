@@ -153,7 +153,7 @@ public class FileHateoasHandler extends HateoasHandler implements IFileHateoasHa
     @Override
     public void addReferenceSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + FILE + SLASH + entity.getSystemId() + SLASH + CASE_STATUS
+                NOARK_FONDS_STRUCTURE_PATH + SLASH + FILE + SLASH + entity.getSystemId() + SLASH + SERIES
                 + SLASH, REL_FONDS_STRUCTURE_REFERENCE_SERIES, false));
     }
 
