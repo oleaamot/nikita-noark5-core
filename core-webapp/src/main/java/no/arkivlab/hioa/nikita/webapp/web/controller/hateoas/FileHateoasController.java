@@ -225,4 +225,40 @@ public class FileHateoasController {
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         return new ResponseEntity<>(fileHateoas, HttpStatus.OK);
     }
+
+    // API - All GET Requests (CRUD - READ)
+
+    // Create a Record with default values
+    // PUT [contextPath][api]/arkivstruktur/mappe/{systemId}
+    @ApiOperation(value = "Updates a File identified by a given systemId", notes = "Returns the newly updated file",
+            response = FileHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "File " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = FileHateoas.class),
+            @ApiResponse(code = 201, message = "File " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = FileHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type File"),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+            SLASH + FILE, consumes = {NOARK5_V4_CONTENT_TYPE})
+    public ResponseEntity<String> updateFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "fileSystemId",
+                    value = "systemId of file to update",
+                    required = true)
+            @PathVariable String seriesSystemId,
+            @ApiParam(name = "File",
+                    value = "Incoming file object",
+                    required = true)
+            @RequestBody File file) throws NikitaException {
+        /*FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
+        fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
+        return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);*/
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
 }
