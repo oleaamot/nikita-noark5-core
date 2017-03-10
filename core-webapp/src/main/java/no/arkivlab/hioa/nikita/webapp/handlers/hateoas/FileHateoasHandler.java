@@ -25,9 +25,7 @@ public class FileHateoasHandler extends HateoasHandler implements IFileHateoasHa
 
         addEndFile(entity, hateoasNoarkObject);
         addExpandToCaseFile(entity, hateoasNoarkObject);
-
         addExpandToMeetingFile(entity, hateoasNoarkObject);
-
         addRegistration(entity, hateoasNoarkObject);
         addNewRegistration(entity, hateoasNoarkObject);
         addBasicRecord(entity, hateoasNoarkObject);
@@ -42,6 +40,8 @@ public class FileHateoasHandler extends HateoasHandler implements IFileHateoasHa
         addNewClass(entity, hateoasNoarkObject);
         addReferenceSeries(entity, hateoasNoarkObject);
         addNewReferenceSeries(entity, hateoasNoarkObject);
+        addReferenceSecondaryClassification(entity, hateoasNoarkObject);
+        addNewReferenceSecondaryClassification(entity, hateoasNoarkObject);
     }
 
     @Override
@@ -161,6 +161,20 @@ public class FileHateoasHandler extends HateoasHandler implements IFileHateoasHa
     public void addNewReferenceSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + FILE + SLASH + entity.getSystemId() + SLASH +
-                NEW_SECONDARY_CLASSIFICATION + SLASH, REL_FONDS_STRUCTURE_NEW_REFERENCE_SERIES, false));
+                NEW_SERIES + SLASH, REL_FONDS_STRUCTURE_NEW_REFERENCE_SERIES, false));
+    }
+
+    @Override
+    public void addReferenceSecondaryClassification(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH + FILE + SLASH + entity.getSystemId() + SLASH +
+                SECONDARY_CLASSIFICATION + SLASH, REL_FONDS_STRUCTURE_SECONDARY_CLASSIFICATION, false));
+    }
+
+    @Override
+    public void addNewReferenceSecondaryClassification(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH + FILE + SLASH + entity.getSystemId() + SLASH +
+                NEW_SERIES + SLASH, REL_FONDS_STRUCTURE_NEW_SECONDARY_CLASSIFICATION, false));
     }
 }

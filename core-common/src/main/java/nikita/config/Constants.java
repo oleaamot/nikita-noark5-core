@@ -320,18 +320,10 @@ public final class Constants {
     // CorrespondencePart
     public static final String REL_FONDS_STRUCTURE_DOCUMENT_FILE = REL_FONDS_STRUCTURE + DOCUMENT_FILE + SLASH;
 
-    /*
-    public static final String REL_FONDS_STRUCTURE_ = REL_FONDS_STRUCTURE +  + SLASH;
-    public static final String REL_FONDS_STRUCTURE_ = REL_FONDS_STRUCTURE +  + SLASH;
-    public static final String REL_FONDS_STRUCTURE_ = REL_FONDS_STRUCTURE +  + SLASH;
-    public static final String REL_FONDS_STRUCTURE_ = REL_FONDS_STRUCTURE +  + SLASH;
-    public static final String REL_FONDS_STRUCTURE_ = REL_FONDS_STRUCTURE +  + SLASH;
-    public static final String REL_FONDS_STRUCTURE_ = REL_FONDS_STRUCTURE +  + SLASH;
-    public static final String REL_FONDS_STRUCTURE_ = REL_FONDS_STRUCTURE +  + SLASH;
-    public static final String REL_FONDS_STRUCTURE_ = REL_FONDS_STRUCTURE +  + SLASH;
-*/
+    // SecondaryClassification
+    public static final String REL_FONDS_STRUCTURE_SECONDARY_CLASSIFICATION = REL_FONDS_STRUCTURE + SECONDARY_CLASSIFICATION + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_SECONDARY_CLASSIFICATION = REL_FONDS_STRUCTURE + NEW_SECONDARY_CLASSIFICATION + SLASH;
 
-    // This is removed each time functionality is implemented
     private Constants() {
     }
 }
