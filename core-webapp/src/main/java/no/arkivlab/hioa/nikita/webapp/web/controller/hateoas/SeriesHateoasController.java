@@ -28,7 +28,6 @@ import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
 
 @RestController
-
 @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES,
         produces = {NOARK5_V4_CONTENT_TYPE})
 @Api(value = "SeriesController", description = "Contains CRUD operations for Series. Create operations are only for " +
@@ -53,7 +52,8 @@ public class SeriesHateoasController extends NikitaController {
 
     // API - All POST Requests (CRUD - CREATE)
 
-    // ny-mappe / new-file
+    // Create a new file
+    // POST [contextPath][api]/arkivstruktur/arkivdel/ny-mappe/
     @ApiOperation(value = "Persists a File object associated with the given Series systemId", notes = "Returns the " +
             "newly created file object after it was associated with a Series object and persisted to the database",
             response = FileHateoas.class)
@@ -70,7 +70,7 @@ public class SeriesHateoasController extends NikitaController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_FILE, consumes = {NOARK5_V4_CONTENT_TYPE})
+            SLASH + NEW_FILE + SLASH, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<FileHateoas> createFileAssociatedWithSeries(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesSystemId",
@@ -86,7 +86,9 @@ public class SeriesHateoasController extends NikitaController {
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
     }
 
-    // ny-saksmappe / new-casefile
+    // Create a new casefile
+    // POST [contextPath][api]/arkivstruktur/arkivdel/ny-saksmappe/
+    // This currently is supported in the standard, but probably will be later
     @ApiOperation(value = "Persists a CaseFile object associated with the given Series systemId", notes = "Returns " +
             "the newly created caseFile object after it was associated with a Series object and persisted to " +
             "the database", response = CaseFileHateoas.class)
@@ -102,10 +104,9 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "seriesSystemId" +
-            RIGHT_PARENTHESIS + SLASH + NEW_CASE_FILE, consumes = {NOARK5_V4_CONTENT_TYPE})
-    public ResponseEntity<CaseFileHateoas>
-    createCaseFileAssociatedWithSeries(
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS + SLASH
+            + NEW_CASE_FILE + SLASH, consumes = {NOARK5_V4_CONTENT_TYPE})
+    public ResponseEntity<CaseFileHateoas> createCaseFileAssociatedWithSeries(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesSystemId",
                     value = "systemId of series to associate the caseFile with",
@@ -122,7 +123,8 @@ public class SeriesHateoasController extends NikitaController {
         return new ResponseEntity<>(caseFileHateoas, HttpStatus.CREATED);
     }
 
-    // ny-mappe / new-record
+    // Create a new record
+    // POST [contextPath][api]/arkivstruktur/arkivdel/ny-registrering/
     @ApiOperation(value = "Persists a Record object associated with the given Series systemId", notes = "Returns the " +
             "newly created record object after it was associated with a Series object and persisted to the database",
             response = RecordHateoas.class)
@@ -139,7 +141,7 @@ public class SeriesHateoasController extends NikitaController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE})
+            SLASH + NEW_RECORD + SLASH, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<String> createRecordAssociatedWithSeries(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesSystemId",
@@ -152,12 +154,13 @@ public class SeriesHateoasController extends NikitaController {
             @RequestBody Record record) throws NikitaException {
         //RecordHateoas recordHateoas = new RecordHateoas(seriesService.createRecordAssociatedWithSeries(seriesSystemId, record));
         //recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
-        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.CREATED);
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
-
     // API - All PUT Requests (CRUD - UPDATE)
+
     // Associate Series with reference to successor
+    // PUT [contextPath][api]/arkivstruktur/arkivdel/{systemIdArvtager}/referanseArvtager/
     @ApiOperation(value = "Associates a Series object (successor) as a successor to another Series object (precursor)" +
             "identified by seriesPrecursorSystemId. ", notes = "Automatically sets the reverse relationship. " +
             "Associates a precursor relationship as the same time. Returns both the successor as well as the precursor",
@@ -165,7 +168,7 @@ public class SeriesHateoasController extends NikitaController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Series " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
                     response = SeriesHateoas.class),
-            @ApiResponse(code = 201, message = "Series " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED, // TODO: ASSOCIATED???
+            @ApiResponse(code = 201, message = "Series " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
                     response = SeriesHateoas.class),
             @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
@@ -195,6 +198,7 @@ public class SeriesHateoasController extends NikitaController {
     }
 
     // Associate Series with reference to precursor
+    // PUT [contextPath][api]/arkivstruktur/arkivdel/{systemIdForloeper}/referanseForloeper/
     @ApiOperation(value = "Associates a Series object (precursor) as precursor to a Series object (successor)" +
             "identified by seriesSuccessorSystemId. ", notes = "Automatically sets the reverse relationship. " +
             "Associates a successor relationship as the same time. Returns both the successor as well as the precursor",
@@ -212,7 +216,7 @@ public class SeriesHateoasController extends NikitaController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.PUT, value = LEFT_PARENTHESIS + "seriesSuccessorSystemId" +
-            RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_PRECURSOR, consumes = {NOARK5_V4_CONTENT_TYPE})
+            RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_PRECURSOR + SLASH, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<String> associateSeriesWithSeriesSuccessor(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesSuccessorSystemId",
@@ -231,7 +235,8 @@ public class SeriesHateoasController extends NikitaController {
     }
 
 
-    // Associate ClassificationSystem with reference to precursor
+    // Associate ClassificationSystem to identified Series
+    // PUT [contextPath][api]/arkivstruktur/arkivdel/{systemId}/ny-klassifikasjonssystem/
     @ApiOperation(value = "Associates a ClassificationSystem with a Series", notes = "Association can only occur if "
             + "nothing (record, file) has been associated with the Series", response = ClassificationSystemHateoas.class)
     @ApiResponses(value = {
@@ -248,7 +253,7 @@ public class SeriesHateoasController extends NikitaController {
     @Timed
     @RequestMapping(method = RequestMethod.PUT, value = LEFT_PARENTHESIS + "seriesSystemId" +
             RIGHT_PARENTHESIS + SLASH + NEW_CLASSIFICATION_SYSTEM, consumes = {NOARK5_V4_CONTENT_TYPE})
-    public ResponseEntity<String> associateClassificationSystemWithClassificationSystemSuccessor(
+    public ResponseEntity<String> associateSeriesWithClassificationSystem(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesSystemId",
                     value = "The systemId of the Series",
@@ -265,11 +270,10 @@ public class SeriesHateoasController extends NikitaController {
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
-
-
     // API - All GET Requests (CRUD - READ)
 
     // Retrieve a Series given a systemId
+    // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/
     @ApiOperation(value = "Retrieves a single Series entity given a systemId", response = Series.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Series returned", response = Series.class),
@@ -278,7 +282,8 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH,
+            method = RequestMethod.GET)
     public ResponseEntity<SeriesHateoas> findOneSeriesbySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
@@ -296,7 +301,7 @@ public class SeriesHateoasController extends NikitaController {
     }
 
     // Create a File object with default values
-    //GET [contextPath][api]/arkivstruktur/arkivdel/SYSTEM_ID/ny-mappe
+    // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/ny-mappe/
     @ApiOperation(value = "Create a File with default values", response = File.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "File returned", response = File.class),
@@ -305,8 +310,8 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
-            NEW_FILE, method = RequestMethod.GET)
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_FILE + SLASH,
+            method = RequestMethod.GET)
     public ResponseEntity<FileHateoas> createDefaultFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
 
@@ -321,7 +326,7 @@ public class SeriesHateoasController extends NikitaController {
     }
 
     // Create a CaseFile object with default values
-    //GET [contextPath][api]/arkivstruktur/arkivdel/SYSTEM_ID/ny-saksmappe
+    // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/ny-saksmappe/
     @ApiOperation(value = "Create a CaseFile with default values", response = CaseFile.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "CaseFile returned", response = CaseFile.class),
@@ -330,8 +335,8 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
-            NEW_CASE_FILE, method = RequestMethod.GET)
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_CASE_FILE + SLASH,
+            method = RequestMethod.GET)
     public ResponseEntity<CaseFileHateoas> createDefaultCaseFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
 
@@ -350,6 +355,7 @@ public class SeriesHateoasController extends NikitaController {
     }
 
     // Retrieve the precursor to a Series given a systemId
+    // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/forloeper/
     @ApiOperation(value = "Retrieves a Series that is the precursor to the series identified by seriesSystemId",
             response = Series.class)
     @ApiResponses(value = {
@@ -359,9 +365,9 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SERIES_PRECURSOR + SLASH
-            , method = RequestMethod.GET)
-    public ResponseEntity<String> findPrecursorToSeriesbySystemId(
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SERIES_PRECURSOR + SLASH,
+            method = RequestMethod.GET)
+    public ResponseEntity<String> findPrecursorToSeriesBySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = " seriesSystemId",
                     value = "systemId of the series to retrieve",
@@ -378,6 +384,7 @@ public class SeriesHateoasController extends NikitaController {
     }
 
     // Retrieve the successor to a Series given a systemId
+    // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/arvtager/
     @ApiOperation(value = "Retrieves a Series that is the successor to the series identified by seriesSystemId",
             response = Series.class)
     @ApiResponses(value = {
@@ -389,7 +396,7 @@ public class SeriesHateoasController extends NikitaController {
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SERIES_SUCCESSOR + SLASH,
             method = RequestMethod.GET)
-    public ResponseEntity<String> findSuccessorToSeriesbySystemId(
+    public ResponseEntity<String> findSuccessorToSeriesBySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = " seriesSystemId",
                     value = "systemId of the series to retrieve",
@@ -406,6 +413,7 @@ public class SeriesHateoasController extends NikitaController {
     }
 
     // Retrieve the Fonds associated with a Series given a systemId of the Series
+    // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/arkiv/
     @ApiOperation(value = "Retrieves the Fonds associated wth a Series given a systemId of the Series",
             response = Fonds.class)
     @ApiResponses(value = {
@@ -436,6 +444,7 @@ public class SeriesHateoasController extends NikitaController {
     }
 
     // Retrieve the ClassificationSystem associated with a Series given a systemId of the Series
+    // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/klassifikasjonssystem/
     @ApiOperation(value = "Retrieves the ClassificationSystem associated wth a Series given a systemId of " +
             "the Series", response = ClassificationSystem.class)
     @ApiResponses(value = {
@@ -466,6 +475,7 @@ public class SeriesHateoasController extends NikitaController {
     }
 
     // Retrieve all Series (paginated)
+    // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/klassifikasjonssystem/
     @ApiOperation(value = "Retrieves multiple Series entities limited by ownership rights", notes = "The field skip" +
             "tells how many Series rows of the result set to ignore (starting at 0), while  top tells how many rows" +
             " after skip to return. Note if the value of top is greater than system value " +
@@ -493,6 +503,8 @@ public class SeriesHateoasController extends NikitaController {
     }
 
     // Retrieve all Records associated with a Series (paginated)
+    // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/registrering/
+    // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/registrering/?top=5&skip=1
     @ApiOperation(value = "Retrieves a lit of Records associated with a Series", notes = "The field skip" +
             "tells how many Record rows of the result set to ignore (starting at 0), while  top tells how many rows" +
             " after skip to return. Note if the value of top is greater than system value " +
@@ -506,8 +518,8 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
-            REGISTRATION + SLASH, method = RequestMethod.GET)
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + REGISTRATION + SLASH,
+            method = RequestMethod.GET)
     public ResponseEntity<String> findAllRecordAssociatedWithRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
@@ -522,6 +534,8 @@ public class SeriesHateoasController extends NikitaController {
     }
 
     // Retrieve all Files associated with a Series (paginated)
+    // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/mappe/
+    // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/mappe/?top=5&skip=1
     @ApiOperation(value = "Retrieves a lit of Files associated with a Series", notes = "The field skip" +
             "tells how many File rows of the result set to ignore (starting at 0), while  top tells how many rows" +
             " after skip to return. Note if the value of top is greater than system value " +
@@ -535,8 +549,8 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
-            FILE + SLASH, method = RequestMethod.GET)
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + FILE + SLASH,
+            method = RequestMethod.GET)
     public ResponseEntity<String> findAllFileAssociatedWithFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
@@ -547,10 +561,12 @@ public class SeriesHateoasController extends NikitaController {
                 fileService.findFileByOwnerPaginated(top, skip));
         fileHateoasHandler.addLinksOnRead(fileHateoas, request, new Authorisation());
       */
-        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.OK);
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
     // Retrieve all CaseFiles associated with a Series (paginated)
+    // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/saksmappe/
+    // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/saksmappe/?top=5&skip=1
     @ApiOperation(value = "Retrieves a lit of CaseFiles associated with a Series", notes = "The field skip" +
             "tells how many CaseFile rows of the result set to ignore (starting at 0), while  top tells how many rows" +
             " after skip to return. Note if the value of top is greater than system value " +
@@ -564,8 +580,8 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
-            CASE_FILE + SLASH, method = RequestMethod.GET)
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + CASE_FILE + SLASH,
+            method = RequestMethod.GET)
     public ResponseEntity<String> findAllCaseFileAssociatedWithCaseFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
@@ -576,7 +592,6 @@ public class SeriesHateoasController extends NikitaController {
                 caseFileService.findCaseFileByOwnerPaginated(top, skip));
         caseFileHateoasHandler.addLinksOnRead(caseFileHateoas, request, new Authorisation());
       */
-        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.OK);
+        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
-
 }

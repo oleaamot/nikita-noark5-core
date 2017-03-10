@@ -33,7 +33,7 @@ printf "created  Series 1            ($systemIDCreatedSeries) \n";
 
 # Setup curl options for file
 curloptsCreateFile+=("${curlPostOpts[@]}");
-curloptsCreateFile+=( --data @"$curl_files_dir"file-data.json  'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkivdel/'$systemIDCreatedSeries'/ny-mappe' )
+curloptsCreateFile+=( --data @"$curl_files_dir"file-data.json  'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkivdel/'$systemIDCreatedSeries'/ny-mappe/' )
 
 # Create a file object and capture the systemId
 systemIDCreatedFile=$(curl "${curloptsCreateFile[@]}" | jq '.systemID' | sed 's/\"//g');
@@ -98,7 +98,7 @@ printf "created    BasicRecord 1            ($systemIDCreatedBasicRecord) associ
 
 # Setup curl options for caseFile
 curloptsCreateCaseFile+=("${curlPostOpts[@]}");
-curloptsCreateCaseFile+=( --data @"$curl_files_dir"case-file-data.json  'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkivdel/'$systemIDCreatedSeries'/ny-saksmappe' )
+curloptsCreateCaseFile+=( --data @"$curl_files_dir"case-file-data.json  'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkivdel/'$systemIDCreatedSeries'/ny-saksmappe/' )
 
 # Create caseFile 1 associated with series 1 and capture systemId
 systemIDCreatedCaseFile=$(curl "${curloptsCreateCaseFile[@]}" | jq '.systemID' | sed 's/\"//g');
@@ -199,7 +199,7 @@ output=$(curl "${curloptsGETFonds[@]}");
 printf "$output \n";
 
 printf " -- Retrieving series with systemID $systemIDCreatedSeries \n";
-curloptsGETSeries+=( "${curlGetOpts[@]}" 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkivdel/'$systemIDCreatedSeries)
+curloptsGETSeries+=( "${curlGetOpts[@]}" 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkivdel/'$systemIDCreatedSeries/)
 output=$(curl "${curloptsGETSeries[@]}");
 printf "$output \n";
 
