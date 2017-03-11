@@ -89,6 +89,7 @@ public final class Constants {
     public static final String NEW_REGISTRY_ENTRY = NEW + DASH + REGISTRY_ENTRY;
     public static final String NEW_PRECEDENCE = NEW + DASH + PRECEDENCE;
     public static final String NEW_CASE_PARTY = NEW + DASH + CASE_PARTY;
+    public static final String NEW_CASE_STATUS = NEW + DASH + CASE_STATUS;
     public static final String NEW_SECONDARY_CLASSIFICATION = NEW + DASH + "sekundaerklassifikasjon";
 
     // Create for new administrasjon objects
@@ -222,6 +223,7 @@ public final class Constants {
     public static final String REL_CASE_HANDLING_CASE_PARTY = REL_CASE_HANDLING + CASE_PARTY + SLASH;
     public static final String REL_CASE_HANDLING_NEW_CASE_PARTY = REL_CASE_HANDLING + NEW_CASE_PARTY + SLASH;
     public static final String REL_CASE_HANDLING_SECONDARY_CLASSIFICATION = REL_CASE_HANDLING + SECONDARY_CLASSIFICATION + SLASH;
+    public static final String REL_CASE_HANDLING_NEW_SECONDARY_CLASSIFICATION = REL_CASE_HANDLING + NEW_SECONDARY_CLASSIFICATION + SLASH;
     public static final String REL_METADATA_CASE_STATUS = REL_METADATA + CASE_STATUS + SLASH;
 
     // FileHateoas REL links
