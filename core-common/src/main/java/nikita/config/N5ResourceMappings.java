@@ -426,9 +426,13 @@ public final class N5ResourceMappings {
     public static final String DOCUMENT_STATUS_FINALISED = "Dokumentet er ferdigstilt\"";
 
     // M700 variantformat
+
     public static final String PRODUCTION_VERSION = "Produksjonsformat";
     public static final String ARCHIVE_VERSION = "Arkivformat";
     public static final String SCREENED_VERSION = "Dokument hvor deler av innholdet er skjermet";
+
+    public static final String FORMAT = "format";
+    public static final String VARIANT_FORMAT = "variantformat";
 
     private N5ResourceMappings() {
         throw new AssertionError();

@@ -93,8 +93,6 @@ public final class Constants {
     public static final String NEW_SECONDARY_CLASSIFICATION = NEW + DASH + "sekundaerklassifikasjon";
 
     // Create for new administrasjon objects
-
-    // // Create for new metadata objects
     public static final String NEW_DOCUMENT_MEDIUM = NEW + DASH + DOCUMENT_MEDIUM;
 
 
@@ -182,9 +180,6 @@ public final class Constants {
     public static final String REL_FONDS_STRUCTURE_NEW_SUB_FONDS = REL_FONDS_STRUCTURE + NEW_SUB_FONDS + SLASH;
     public static final String REL_FONDS_STRUCTURE_FONDS_STATUS = REL_METADATA + SLASH + FONDS_STATUS + SLASH;
     public static final String REL_FONDS_STRUCTURE_NEW_FONDS = REL_FONDS_STRUCTURE + NEW_FONDS + SLASH;
-
-    // Common FondsHateoas/SeriesHateoas REL links
-    public static final String REL_METADATA_DOCUMENT_MEDIUM = REL_METADATA + DOCUMENT_MEDIUM + SLASH;
 
     // Common FondsHateoas/SeriesHateoas REL links
     public static final String REL_FONDS_STRUCTURE_NEW_SERIES = REL_FONDS_STRUCTURE + NEW_SERIES + SLASH;
@@ -327,6 +322,11 @@ public final class Constants {
     // SecondaryClassification
     public static final String REL_FONDS_STRUCTURE_SECONDARY_CLASSIFICATION = REL_FONDS_STRUCTURE + SECONDARY_CLASSIFICATION + SLASH;
     public static final String REL_FONDS_STRUCTURE_NEW_SECONDARY_CLASSIFICATION = REL_FONDS_STRUCTURE + NEW_SECONDARY_CLASSIFICATION + SLASH;
+
+    // Metadata RELS
+    public static final String REL_METADATA_DOCUMENT_MEDIUM = REL_METADATA + DOCUMENT_MEDIUM + SLASH;
+    public static final String REL_METADATA_VARIANT_FORMAT = REL_METADATA + VARIANT_FORMAT + SLASH;
+    public static final String REL_METADATA_FORMAT = REL_METADATA + FORMAT + SLASH;
 
     private Constants() {
     }
