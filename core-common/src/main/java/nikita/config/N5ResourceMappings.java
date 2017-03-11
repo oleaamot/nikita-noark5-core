@@ -411,6 +411,24 @@ public final class N5ResourceMappings {
     public static final String DOCUMENT_MEDIUM_ELECTRONIC ="Elektronisk arkiv";
     public static final String DOCUMENT_MEDIUM_MIXED = "Blandet fysisk og elektronisk arkiv";
 
+    // M217 tilknyttetRegistreringSom
+    public static final String MAIN_DOCUMENT = "Hoveddokument";
+    public static final String ATTACHMENT = "Vedlegg";
+
+    // M083 dokumenttype
+    public static final String LETTER = "Brev";
+    public static final String CIRCULAR = "Rundskriv";
+    public static final String INVOICE = "Faktura";
+    public static final String CONFIRMATION = "Ordrebekreftelser";
+
+    // M054 dokumentstatus
+    public static final String DOCUMENT_STATUS_EDIT = "Dokumentet er under redigering";
+    public static final String DOCUMENT_STATUS_FINALISED = "Dokumentet er ferdigstilt\"";
+
+    // M700 variantformat
+    public static final String PRODUCTION_VERSION = "Produksjonsformat";
+    public static final String ARCHIVE_VERSION = "Arkivformat";
+    public static final String SCREENED_VERSION = "Dokument hvor deler av innholdet er skjermet";
 
     private N5ResourceMappings() {
         throw new AssertionError();
