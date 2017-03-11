@@ -17,6 +17,12 @@ import static nikita.config.N5ResourceMappings.*;
  * Not sure if there is a difference in what should be returned of links for various CRUD operations so keeping them
  * separate calls at the moment.
  */
+// TODO : Find out about how to handle secondary entities. They should be returned embedded within the primary
+//        entity, but updating / adding will require rel/hrefs
+//        Temporarily removing displaying secondary entities, but leaving the addNew
+//        Commenting out rather than deleting them because we are unsure if they are needed or not
+//        It seems that secondary entities are generated as hateoas links if they have odata support
+//        So we could reintroduce them when we get odata support
 @Component("classHateoasHandler")
 public class ClassHateoasHandler extends HateoasHandler implements IClassHateoasHandler {
 
@@ -30,17 +36,17 @@ public class ClassHateoasHandler extends HateoasHandler implements IClassHateoas
         addParentClass(entity, hateoasNoarkObject);
         addSubClass(entity, hateoasNoarkObject);
         addNewSubClass(entity, hateoasNoarkObject);
-        addKeyword(entity, hateoasNoarkObject);
+//        addKeyword(entity, hateoasNoarkObject);
         addNewKeyword(entity, hateoasNoarkObject);
-        addClassified(entity, hateoasNoarkObject);
+//        addClassified(entity, hateoasNoarkObject);
         addNewClassified(entity, hateoasNoarkObject);
-        addDisposal(entity, hateoasNoarkObject);
+//        addDisposal(entity, hateoasNoarkObject);
         addNewDisposal(entity, hateoasNoarkObject);
-        addDisposalUndertaken(entity, hateoasNoarkObject);
+//        addDisposalUndertaken(entity, hateoasNoarkObject);
         addNewDisposalUndertaken(entity, hateoasNoarkObject);
-        addDeletion(entity, hateoasNoarkObject);
+//        addDeletion(entity, hateoasNoarkObject);
         addNewDeletion(entity, hateoasNoarkObject);
-        addScreening(entity, hateoasNoarkObject);
+//        addScreening(entity, hateoasNoarkObject);
         addNewScreening(entity, hateoasNoarkObject);
     }
 

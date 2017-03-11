@@ -25,6 +25,10 @@ public interface ICaseFileHateoasHandler extends IHateoasHandler {
 
     void addCaseStatus(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
+    void addNewCaseStatus(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
     void addSecondaryClassification(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addNewSecondaryClassification(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
 }

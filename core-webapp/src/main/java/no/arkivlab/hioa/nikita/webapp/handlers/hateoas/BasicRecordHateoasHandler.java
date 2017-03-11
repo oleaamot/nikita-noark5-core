@@ -17,6 +17,12 @@ import static nikita.config.N5ResourceMappings.*;
  * Not sure if there is a difference in what should be returned of links for various CRUD operations so keeping them
  * separate calls at the moment.
  */
+// TODO : Find out about how to handle secondary entities. They should be returned embedded within the primary
+//        entity, but updating / adding will require rel/hrefs
+//        Temporarily removing displaying secondary entities, but leaving the addNew
+//        Commenting out rather than deleting them because we are unsure if they are needed or not
+//        It seems that secondary entities are generated as hateoas links if they have odata support
+//        So we could reintroduce them when we get odata support
 @Component("basicRecordHateoasHandler")
 public class BasicRecordHateoasHandler extends RecordHateoasHandler implements IBasicRecordHateoasHandler {
 
@@ -24,15 +30,15 @@ public class BasicRecordHateoasHandler extends RecordHateoasHandler implements I
     public void addEntityLinks(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
 
         super.addEntityLinks(entity, hateoasNoarkObject);
-        addStorageLocation(entity, hateoasNoarkObject);
+        //addStorageLocation(entity, hateoasNoarkObject);
         addNewStorageLocation(entity, hateoasNoarkObject);
-        addComment(entity, hateoasNoarkObject);
+        //addComment(entity, hateoasNoarkObject);
         addNewComment(entity, hateoasNoarkObject);
-        addAuthor(entity, hateoasNoarkObject);
+        //addAuthor(entity, hateoasNoarkObject);
         addNewAuthor(entity, hateoasNoarkObject);
-        addCrossReference(entity, hateoasNoarkObject);
+        //addCrossReference(entity, hateoasNoarkObject);
         addNewCrossReference(entity, hateoasNoarkObject);
-        addKeyword(entity, hateoasNoarkObject);
+        //addKeyword(entity, hateoasNoarkObject);
         addNewKeyword(entity, hateoasNoarkObject);
     }
 

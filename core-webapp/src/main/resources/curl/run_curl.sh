@@ -103,6 +103,8 @@ curloptsCreateCaseFile+=( --data @"$curl_files_dir"case-file2-data.json  'http:/
 # Create caseFile 1 associated with series 1 and capture systemId
 systemIDCreatedCaseFile=$(curl "${curloptsCreateCaseFile[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created   CaseFile 1          ($systemIDCreatedCaseFile) \n";
+echo "${curloptsCreateCaseFile[@]}";
+exit;
 
 # Setup curl options for registryEntry
 curloptsCreateRegistryEntry+=("${curlPostOpts[@]}");
