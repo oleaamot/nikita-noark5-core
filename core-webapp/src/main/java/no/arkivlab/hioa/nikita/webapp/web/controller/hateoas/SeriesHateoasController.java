@@ -344,6 +344,11 @@ public class SeriesHateoasController extends NikitaController {
 
         CaseFile defaultCaseFile = new CaseFile();
         defaultCaseFile.setTitle(TEST_TITLE);
+        defaultCaseFile.setOfficialTitle(TEST_TITLE);
+        defaultCaseFile.setFileId("2017/01");
+        defaultCaseFile.setDescription(TEST_DESCRIPTION);
+        defaultCaseFile.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
+        defaultCaseFile.setTitle(TEST_TITLE);
         defaultCaseFile.setDescription(TEST_DESCRIPTION);
         defaultCaseFile.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
         defaultCaseFile.setCaseResponsible(TEST_USER_CASE_HANDLER_1);
