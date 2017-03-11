@@ -23,15 +23,20 @@ public class DocumentObjectHateoasHandler extends HateoasHandler implements IDoc
     @Override
     public void addEntityLinks(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
 
+        // links for primary entities
+        // link to record/documentdescription is one or the other
         addRecord(entity, hateoasNoarkObject);
         addDocumentDescription(entity, hateoasNoarkObject);
+        // links for secondary entities
         addConversion(entity, hateoasNoarkObject);
         addNewConversion(entity, hateoasNoarkObject);
         addElectronicSignature(entity, hateoasNoarkObject);
         addReferenceDocumentFile(entity, hateoasNoarkObject);
         addNewElectronicSignature(entity, hateoasNoarkObject);
+        // links for metadata entites
+        addVariantFormat(entity, hateoasNoarkObject);
+        addFormat(entity, hateoasNoarkObject);
     }
-
 
     @Override
     public void addRecord(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
@@ -80,5 +85,17 @@ public class DocumentObjectHateoasHandler extends HateoasHandler implements IDoc
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT + SLASH + entity.getSystemId() + SLASH +
                 REFERENCE_FILE + SLASH, REL_FONDS_STRUCTURE_DOCUMENT_FILE, false));
+    }
+
+    @Override
+    public void addVariantFormat(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
+                NOARK_METADATA_PATH + SLASH + VARIANT_FORMAT, REL_METADATA_VARIANT_FORMAT, false));
+    }
+
+    @Override
+    public void addFormat(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
+                NOARK_METADATA_PATH + SLASH + FORMAT, REL_METADATA_FORMAT, false));
     }
 }
