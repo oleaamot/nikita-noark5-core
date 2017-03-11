@@ -19,6 +19,7 @@ import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentDescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -28,8 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
-import static nikita.config.N5ResourceMappings.DOCUMENT_DESCRIPTION;
-import static nikita.config.N5ResourceMappings.SYSTEM_ID;
+import static nikita.config.N5ResourceMappings.*;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_DESCRIPTION,
@@ -133,5 +133,33 @@ public class DocumentDescriptionHateoasController {
                 documentDescriptionService.findDocumentDescriptionByOwnerPaginated(top, skip));
         documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
         return new ResponseEntity<>(documentDescriptionHateoas, HttpStatus.OK);
+    }
+
+    // Create a DocumentObject with default values
+    // GET [contextPath][api]/arkivstruktur/dokumentbeskrivelse/{systemId}/ny-dokumentobjekt
+    @ApiOperation(value = "Create a DocumentObject with default values", response = DocumentObjectHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "DocumentObject returned", response = DocumentObjectHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
+            NEW_DOCUMENT_OBJECT, method = RequestMethod.GET)
+    public ResponseEntity<DocumentObjectHateoas> createDefaultDocumentObject(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
+
+        DocumentObject defaultDocumentObject = new DocumentObject();
+        // This is just temporary code as this will have to be replaced if this ever goes into production
+        defaultDocumentObject.setMimeType(MediaType.APPLICATION_XML.toString());
+        defaultDocumentObject.setVariantFormat(PRODUCTION_VERSION);
+        defaultDocumentObject.setFormat("XML");
+        defaultDocumentObject.setVersionNumber(1);
+
+        DocumentObjectHateoas documentObjectHateoas = new
+                DocumentObjectHateoas(defaultDocumentObject);
+        documentObjectHateoasHandler.addLinksOnNew(documentObjectHateoas, request, new Authorisation());
+        return new ResponseEntity<>(documentObjectHateoas, HttpStatus.OK);
     }
 }
