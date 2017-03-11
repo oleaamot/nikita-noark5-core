@@ -317,6 +317,8 @@ public class SeriesHateoasController extends NikitaController {
 
         File defaultFile = new File();
         defaultFile.setTitle(TEST_TITLE);
+        defaultFile.setOfficialTitle(TEST_TITLE);
+        defaultFile.setFileId("2017/01");
         defaultFile.setDescription(TEST_DESCRIPTION);
         defaultFile.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
         FileHateoas fileHateoas = new
@@ -455,7 +457,7 @@ public class SeriesHateoasController extends NikitaController {
     @Counted
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + CLASSIFICATION_SYSTEM
-            + SLASH, method = RequestMethod.GET)
+            , method = RequestMethod.GET)
     public ResponseEntity<String> findClassificationSystemAssociatedWithSeriesBySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
@@ -518,7 +520,7 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + REGISTRATION + SLASH,
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + REGISTRATION,
             method = RequestMethod.GET)
     public ResponseEntity<String> findAllRecordAssociatedWithRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -549,7 +551,7 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + FILE + SLASH,
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + FILE,
             method = RequestMethod.GET)
     public ResponseEntity<String> findAllFileAssociatedWithFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -580,7 +582,7 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + CASE_FILE + SLASH,
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + CASE_FILE,
             method = RequestMethod.GET)
     public ResponseEntity<String> findAllCaseFileAssociatedWithCaseFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
