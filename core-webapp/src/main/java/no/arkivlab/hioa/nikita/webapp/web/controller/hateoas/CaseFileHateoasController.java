@@ -93,13 +93,14 @@ public class CaseFileHateoasController {
     @Counted
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
-            NEW_BASIC_RECORD, method = RequestMethod.GET)
+            NEW_REGISTRY_ENTRY, method = RequestMethod.GET)
     public ResponseEntity<RegistryEntryHateoas> createDefaultRegistryEntry(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
 
         RegistryEntry defaultRegistryEntry = new RegistryEntry();
-        defaultRegistryEntry.setArchivedBy(TEST_USER_CASE_HANDLER_2);
-        defaultRegistryEntry.setArchivedDate(new Date());
+        defaultRegistryEntry.setDescription(TEST_DESCRIPTION);
+        defaultRegistryEntry.setTitle(TEST_TITLE);
+        defaultRegistryEntry.setDocumentDate(new Date());
         RegistryEntryHateoas registryEntryHateoas = new
                 RegistryEntryHateoas(defaultRegistryEntry);
         registryEntryHateoasHandler.addLinksOnNew(registryEntryHateoas, request, new Authorisation());
