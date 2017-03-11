@@ -52,5 +52,9 @@ public interface IDocumentDescriptionHateoasHandler extends IHateoasHandler {
 
     void addNewAuthor(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
+    void addDocumentType(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addDocumentStatus(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
 }
 

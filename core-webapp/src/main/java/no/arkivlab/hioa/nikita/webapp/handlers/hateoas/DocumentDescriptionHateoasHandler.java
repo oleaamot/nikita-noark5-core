@@ -23,29 +23,31 @@ public class DocumentDescriptionHateoasHandler extends HateoasHandler implements
     @Override
     public void addEntityLinks(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
 
+        // links for primary entities
         addRecord(entity, hateoasNoarkObject);
         addDocumentObject(entity, hateoasNoarkObject);
         addNewDocumentObject(entity, hateoasNoarkObject);
-        addReferenceSeries(entity, hateoasNoarkObject);
-        addNewReferenceSeries(entity, hateoasNoarkObject);
-        // addClassified(entity, hateoasNoarkObject);
+        // links for secondary entities M:1
         addNewClassified(entity, hateoasNoarkObject);
-        // addDisposal(entity, hateoasNoarkObject);
         addNewDisposal(entity, hateoasNoarkObject);
-        // addDisposalUndertaken(entity, hateoasNoarkObject);
         addNewDisposalUndertaken(entity, hateoasNoarkObject);
-        //addDeletion(entity, hateoasNoarkObject);
         addNewDeletion(entity, hateoasNoarkObject);
-        //addScreening(entity, hateoasNoarkObject);
         addNewScreening(entity, hateoasNoarkObject);
-        //addStorageLocation(entity, hateoasNoarkObject);
+        // links for secondary entities 1:M
+        addStorageLocation(entity, hateoasNoarkObject);
         addNewStorageLocation(entity, hateoasNoarkObject);
         addComment(entity, hateoasNoarkObject);
         addNewComment(entity, hateoasNoarkObject);
         addAuthor(entity, hateoasNoarkObject);
         addNewAuthor(entity, hateoasNoarkObject);
+        // links for metadata entities
+        addDocumentMedium(entity, hateoasNoarkObject);
+        addDocumentType(entity, hateoasNoarkObject);
+        addDocumentStatus(entity, hateoasNoarkObject);
+        // links for reference entities
+        addReferenceSeries(entity, hateoasNoarkObject);
+        addNewReferenceSeries(entity, hateoasNoarkObject);
     }
-
 
     @Override
     public void addReferenceSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
@@ -192,5 +194,17 @@ public class DocumentDescriptionHateoasHandler extends HateoasHandler implements
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_DESCRIPTION + SLASH + entity.getSystemId() + SLASH +
                 NEW_DOCUMENT_OBJECT + SLASH, REL_FONDS_STRUCTURE_NEW_DOCUMENT_OBJECT, false));
+    }
+
+    @Override
+    public void addDocumentType(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
+                NOARK_METADATA_PATH + SLASH + DOCUMENT_STATUS, REL_METADATA_DOCUMENT_STATUS, false));
+    }
+
+    @Override
+    public void addDocumentStatus(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
+                NOARK_METADATA_PATH + SLASH + DOCUMENT_TYPE, REL_METADATA_DOCUMENT_TYPE, false));
     }
 }
