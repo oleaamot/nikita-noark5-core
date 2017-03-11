@@ -33,7 +33,7 @@ public class DocumentObjectHateoasHandler extends HateoasHandler implements IDoc
         addElectronicSignature(entity, hateoasNoarkObject);
         addReferenceDocumentFile(entity, hateoasNoarkObject);
         addNewElectronicSignature(entity, hateoasNoarkObject);
-        // links for metadata entites
+        // links for metadata entities
         addVariantFormat(entity, hateoasNoarkObject);
         addFormat(entity, hateoasNoarkObject);
     }
