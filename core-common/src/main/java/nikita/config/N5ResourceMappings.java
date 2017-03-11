@@ -433,6 +433,8 @@ public final class N5ResourceMappings {
 
     public static final String FORMAT = "format";
     public static final String VARIANT_FORMAT = "variantformat";
+    public static final String DOCUMENT_STATUS = "dokumentstatus";
+    public static final String DOCUMENT_TYPE = "dokumenttype";
 
     private N5ResourceMappings() {
         throw new AssertionError();
