@@ -12,8 +12,6 @@ public interface IDocumentDescriptionHateoasHandler extends IHateoasHandler {
 
     void addReferenceRecord(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewReferenceRecord(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
-
     void addReferenceDocumentObject(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addNewReferenceDocumentObject(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);

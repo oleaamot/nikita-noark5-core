@@ -24,7 +24,6 @@ public class DocumentDescriptionHateoasHandler extends HateoasHandler implements
     public void addEntityLinks(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
 
         addReferenceRecord(entity, hateoasNoarkObject);
-        addNewReferenceRecord(entity, hateoasNoarkObject);
         addReferenceDocumentObject(entity, hateoasNoarkObject);
         addNewReferenceDocumentObject(entity, hateoasNoarkObject);
         addReferenceSeries(entity, hateoasNoarkObject);
@@ -67,13 +66,6 @@ public class DocumentDescriptionHateoasHandler extends HateoasHandler implements
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_DESCRIPTION + SLASH + entity.getSystemId() + SLASH +
                 REGISTRATION + SLASH, REL_FONDS_STRUCTURE_RECORD, false));
-    }
-
-    @Override
-    public void addNewReferenceRecord(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
-        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_DESCRIPTION + SLASH + entity.getSystemId() + SLASH +
-                NEW_RECORD + SLASH, REL_FONDS_STRUCTURE_NEW_RECORD, false));
     }
 
     @Override
