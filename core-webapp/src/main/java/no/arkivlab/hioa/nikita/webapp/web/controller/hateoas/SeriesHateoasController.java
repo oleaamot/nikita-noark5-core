@@ -70,7 +70,7 @@ public class SeriesHateoasController extends NikitaController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_FILE + SLASH, consumes = {NOARK5_V4_CONTENT_TYPE})
+            SLASH + NEW_FILE, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<FileHateoas> createFileAssociatedWithSeries(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesSystemId",
@@ -105,7 +105,7 @@ public class SeriesHateoasController extends NikitaController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS + SLASH
-            + NEW_CASE_FILE + SLASH, consumes = {NOARK5_V4_CONTENT_TYPE})
+            + NEW_CASE_FILE, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<CaseFileHateoas> createCaseFileAssociatedWithSeries(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesSystemId",
@@ -141,7 +141,7 @@ public class SeriesHateoasController extends NikitaController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_RECORD + SLASH, consumes = {NOARK5_V4_CONTENT_TYPE})
+            SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<String> createRecordAssociatedWithSeries(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesSystemId",
@@ -178,7 +178,7 @@ public class SeriesHateoasController extends NikitaController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.PUT, value = LEFT_PARENTHESIS + "seriesPrecursorSystemId" +
-            RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_SUCCESSOR + SLASH, consumes = {NOARK5_V4_CONTENT_TYPE})
+            RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_SUCCESSOR, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<String> associateSeriesWithSeriesPrecursor(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesPrecursorSystemId",
@@ -216,7 +216,7 @@ public class SeriesHateoasController extends NikitaController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.PUT, value = LEFT_PARENTHESIS + "seriesSuccessorSystemId" +
-            RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_PRECURSOR + SLASH, consumes = {NOARK5_V4_CONTENT_TYPE})
+            RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_PRECURSOR, consumes = {NOARK5_V4_CONTENT_TYPE})
     public ResponseEntity<String> associateSeriesWithSeriesSuccessor(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesSuccessorSystemId",
@@ -282,7 +282,7 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH,
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.GET)
     public ResponseEntity<SeriesHateoas> findOneSeriesbySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -310,7 +310,7 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_FILE + SLASH,
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_FILE,
             method = RequestMethod.GET)
     public ResponseEntity<FileHateoas> createDefaultFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
@@ -335,7 +335,7 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_CASE_FILE + SLASH,
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_CASE_FILE,
             method = RequestMethod.GET)
     public ResponseEntity<CaseFileHateoas> createDefaultCaseFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
@@ -365,7 +365,7 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SERIES_PRECURSOR + SLASH,
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SERIES_PRECURSOR,
             method = RequestMethod.GET)
     public ResponseEntity<String> findPrecursorToSeriesBySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -394,7 +394,7 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SERIES_SUCCESSOR + SLASH,
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SERIES_SUCCESSOR,
             method = RequestMethod.GET)
     public ResponseEntity<String> findSuccessorToSeriesBySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -423,7 +423,7 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + FONDS + SLASH,
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + FONDS,
             method = RequestMethod.GET)
     public ResponseEntity<String> findFondsAssociatedWithSeriesBySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
