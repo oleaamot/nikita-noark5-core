@@ -20,6 +20,7 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRecordHateoas
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRecordService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -43,9 +44,11 @@ public class RecordHateoasController {
 
     public RecordHateoasController(IRecordService recordService,
                                    IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler,
+                                   IDocumentObjectHateoasHandler documentObjectHateoasHandler,
                                    IRecordHateoasHandler recordHateoasHandler) {
         this.recordService = recordService;
         this.documentDescriptionHateoasHandler = documentDescriptionHateoasHandler;
+        this.documentObjectHateoasHandler = documentObjectHateoasHandler;
         this.recordHateoasHandler = recordHateoasHandler;
     }
 
@@ -420,4 +423,59 @@ public class RecordHateoasController {
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
+    // Create a DocumentDescription with default values
+    // GET [contextPath][api]/arkivstruktur/resgistrering/{systemId}/ny-dokumentbeskrivelse
+    @ApiOperation(value = "Create a DocumentDescription with default values", response = DocumentDescriptionHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "DocumentDescription returned", response = DocumentDescriptionHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
+            NEW_DOCUMENT_DESCRIPTION, method = RequestMethod.GET)
+    public ResponseEntity<DocumentDescriptionHateoas> createDefaultDocumentDescription(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
+
+        DocumentDescription defaultDocumentDescription = new DocumentDescription();
+
+        defaultDocumentDescription.setAssociatedWithRecordAs(MAIN_DOCUMENT);
+        defaultDocumentDescription.setTitle(TEST_TITLE);
+        defaultDocumentDescription.setDocumentType(LETTER);
+        defaultDocumentDescription.setDocumentStatus(DOCUMENT_STATUS_FINALISED);
+        defaultDocumentDescription.setDescription(TEST_DESCRIPTION);
+
+        DocumentDescriptionHateoas documentDescriptionHateoas = new
+                DocumentDescriptionHateoas(defaultDocumentDescription);
+        documentDescriptionHateoasHandler.addLinksOnNew(documentDescriptionHateoas, request, new Authorisation());
+        return new ResponseEntity<>(documentDescriptionHateoas, HttpStatus.OK);
+    }
+
+    // Create a DocumentObject with default values
+    // GET [contextPath][api]/arkivstruktur/resgistrering/{systemId}/ny-dokumentobjekt
+    @ApiOperation(value = "Create a DocumentObject with default values", response = DocumentObjectHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "DocumentObject returned", response = DocumentObjectHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
+            NEW_DOCUMENT_OBJECT, method = RequestMethod.GET)
+    public ResponseEntity<DocumentObjectHateoas> createDefaultDocumentObject(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
+
+        DocumentObject defaultDocumentObject = new DocumentObject();
+        // This is just temporary code as this will have to be replaced if this ever goes into production
+        defaultDocumentObject.setMimeType(MediaType.APPLICATION_XML.toString());
+        defaultDocumentObject.setVariantFormat(PRODUCTION_VERSION);
+        defaultDocumentObject.setFormat("XML");
+
+        DocumentObjectHateoas documentObjectHateoas = new
+                DocumentObjectHateoas(defaultDocumentObject);
+        documentObjectHateoasHandler.addLinksOnNew(documentObjectHateoas, request, new Authorisation());
+        return new ResponseEntity<>(documentObjectHateoas, HttpStatus.OK);
+    }
 }
