@@ -23,53 +23,53 @@ public class DocumentObjectHateoasHandler extends HateoasHandler implements IDoc
     @Override
     public void addEntityLinks(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
 
-        addReferenceRecord(entity, hateoasNoarkObject);
-        addReferenceDocumentDescription(entity, hateoasNoarkObject);
-        addReferenceConversion(entity, hateoasNoarkObject);
-        addNewReferenceConversion(entity, hateoasNoarkObject);
-        addReferenceElectronicSignature(entity, hateoasNoarkObject);
+        addRecord(entity, hateoasNoarkObject);
+        addDocumentDescription(entity, hateoasNoarkObject);
+        addConversion(entity, hateoasNoarkObject);
+        addNewConversion(entity, hateoasNoarkObject);
+        addElectronicSignature(entity, hateoasNoarkObject);
         addReferenceDocumentFile(entity, hateoasNoarkObject);
-        addNewReferenceElectronicSignature(entity, hateoasNoarkObject);
+        addNewElectronicSignature(entity, hateoasNoarkObject);
     }
 
 
     @Override
-    public void addReferenceRecord(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addRecord(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT + SLASH + entity.getSystemId() + SLASH +
                 REGISTRATION + SLASH, REL_FONDS_STRUCTURE_RECORD, false));
     }
 
     @Override
-    public void addReferenceConversion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addConversion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT + SLASH + entity.getSystemId() + SLASH +
                 CONVERSION + SLASH, REL_FONDS_STRUCTURE_CONVERSION, false));
     }
 
     @Override
-    public void addNewReferenceConversion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewConversion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT + SLASH + entity.getSystemId() + SLASH +
                 NEW_CONVERSION + SLASH, REL_FONDS_STRUCTURE_NEW_CONVERSION, false));
     }
 
     @Override
-    public void addReferenceElectronicSignature(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addElectronicSignature(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT + SLASH + entity.getSystemId() + SLASH +
                 ELECTRONIC_SIGNATURE + SLASH, REL_FONDS_STRUCTURE_ELECTRONIC_SIGNATURE, false));
     }
 
     @Override
-    public void addNewReferenceElectronicSignature(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewElectronicSignature(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT + SLASH + entity.getSystemId() + SLASH +
                 NEW_ELECTRONIC_SIGNATURE + SLASH, REL_FONDS_STRUCTURE_NEW_ELECTRONIC_SIGNATURE, false));
     }
 
     @Override
-    public void addReferenceDocumentDescription(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addDocumentDescription(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT + SLASH + entity.getSystemId() + SLASH +
                 DOCUMENT_DESCRIPTION + SLASH, REL_FONDS_STRUCTURE_DOCUMENT_DESCRIPTION, false));

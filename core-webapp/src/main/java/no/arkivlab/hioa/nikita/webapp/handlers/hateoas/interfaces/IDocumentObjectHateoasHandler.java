@@ -10,17 +10,17 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
  */
 public interface IDocumentObjectHateoasHandler extends IHateoasHandler {
 
-    void addReferenceRecord(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addRecord(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addReferenceDocumentDescription(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addDocumentDescription(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addReferenceConversion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addConversion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewReferenceConversion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewConversion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addReferenceElectronicSignature(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addElectronicSignature(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewReferenceElectronicSignature(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewElectronicSignature(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addReferenceDocumentFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 }
