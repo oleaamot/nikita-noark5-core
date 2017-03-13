@@ -70,6 +70,10 @@ public final class N5ResourceMappings {
     // ClassificationSystem
     public static final String CLASSIFICATION_SYSTEM = "klassifikasjonssystem";
     public static final String CLASSIFICATION_SYSTEM_EN = "classificationSystem";
+    // Not known if officaly recognised as part of Noark 5 or just something
+    // seen in interface standard
+    public static final String SECONDARY_CLASSIFICATION_SYSTEM = "sekundaerklassifikasjonssystem";
+    public static final String SECONDARY_CLASSIFICATION_SYSTEM_EN = "secondaryClassificationSystem";
 
     //  Class
     public static final String CLASS = "klasse";
@@ -435,6 +439,11 @@ public final class N5ResourceMappings {
     public static final String VARIANT_FORMAT = "variantformat";
     public static final String DOCUMENT_STATUS = "dokumentstatus";
     public static final String DOCUMENT_TYPE = "dokumenttype";
+
+
+    public static final String CLASSIFICATION_SYSTEM_TYPE = "dokumenttype";
+
+
 
     private N5ResourceMappings() {
         throw new AssertionError();

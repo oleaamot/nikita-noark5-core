@@ -42,6 +42,7 @@ public final class Constants {
     public static final String NEW_FONDS_CREATOR = NEW + DASH + FONDS_CREATOR;
     public static final String NEW_SERIES = NEW + DASH + SERIES;
     public static final String NEW_CLASSIFICATION_SYSTEM = NEW + DASH + CLASSIFICATION_SYSTEM;
+    public static final String NEW_SECONDARY_CLASSIFICATION_SYSTEM = NEW + DASH + CLASSIFICATION_SYSTEM;
     public static final String NEW_CLASS = NEW + DASH + CLASS;
     public static final String NEW_SUB_CLASS = NEW + DASH + SUB_CLASS;
     public static final String NEW_FILE = NEW + DASH + FILE;
@@ -329,6 +330,9 @@ public final class Constants {
     public static final String REL_METADATA_FORMAT = REL_METADATA + FORMAT + SLASH;
     public static final String REL_METADATA_DOCUMENT_STATUS = REL_METADATA + DOCUMENT_STATUS + SLASH;
     public static final String REL_METADATA_DOCUMENT_TYPE = REL_METADATA + FORMAT + SLASH;
+    // M086 dokumenttype
+    public static final String REL_METADATA_CLASSIFICATION_SYSTEM_TYPE = REL_METADATA + CLASSIFICATION_SYSTEM_TYPE + SLASH;
+    //public static final String REL_METADATA_CLASSIFICATION_SYSTEM_TYPE = REL_METADATA + CLASSIFICATION_SYSTEM + SLASH;
 
     private Constants() {
     }
