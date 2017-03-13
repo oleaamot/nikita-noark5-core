@@ -31,9 +31,6 @@ public class HateoasSerializer extends StdSerializer<HateoasNoarkObject> {
         if (list.size() > 0) {
 
             if (!hateoasObject.isSingleEntity()) {
-                jgen.writeStartObject();
-                // TODO: Not sure if this is needed, will find out when specification matures
-                jgen.writeFieldName("");
                 jgen.writeStartArray();
             }
             for (INoarkSystemIdEntity entity : list) {
@@ -41,7 +38,6 @@ public class HateoasSerializer extends StdSerializer<HateoasNoarkObject> {
             }
             if (!hateoasObject.isSingleEntity()) {
                 jgen.writeEndArray();
-                jgen.writeEndObject();
             }
         }
         // It's an empty object, so just returning Hateoas self links
