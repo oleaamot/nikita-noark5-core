@@ -165,6 +165,12 @@ public class DocumentObjectHateoasController {
                         + documentObject);
             }
 
+            if (null == documentObject.getFileSize()) {
+                throw new StorageException("Attempt to upload a document with a content-length set in the header ("
+                        + contentLength + "), but the value in documentObject has not been set (== null).  The " +
+                        "document was attempted to be associated with " + documentObject);
+            }
+
             if (!contentLength.equals(documentObject.getFileSize())) {
                 throw new StorageException("Attempt to upload a document with a content-length set in the header ("
                         + contentLength + ") that is not the same as the value in documentObject (" +

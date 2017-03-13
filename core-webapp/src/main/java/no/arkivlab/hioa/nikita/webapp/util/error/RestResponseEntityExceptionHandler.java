@@ -3,7 +3,7 @@ package no.arkivlab.hioa.nikita.webapp.util.error;
 
 import nikita.util.exceptions.NikitaMalformedInputDataException;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.StorageFileNotFoundException;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.StorageException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +27,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+
+//    private static final Logger logger = LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);
 
     public RestResponseEntityExceptionHandler() {
         super();
@@ -97,14 +99,17 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
-    @ExceptionHandler(StorageFileNotFoundException.class)
-    public ResponseEntity handleStorageFileNotFound(StorageFileNotFoundException exc) {
-        // TODO : Maybe add a better description
-        return ResponseEntity.notFound().build();
+    @ExceptionHandler(StorageException.class)
+    public ResponseEntity<Object> handleStorageException(final RuntimeException ex, final WebRequest request) {
+        logger.error("500 Status Code", ex);
+        logger.error(request.getDescription(true), ex);
+
+        return handleExceptionInternal(ex, message(HttpStatus.BAD_REQUEST, ex), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
 
     private ApiError message(final HttpStatus httpStatus, final Exception ex) {
+        logger.error("REST Exception occurred " + ex.getMessage());
         final String message = ex.getMessage() == null ? ex.getClass().getSimpleName() : ex.getMessage();
         final String devMessage = ExceptionUtils.getRootCauseMessage(ex);
         final String devStackTrace = ex.toString();
