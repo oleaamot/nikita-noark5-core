@@ -107,7 +107,7 @@ public class ClassificationSystemHateoasHandler extends HateoasHandler implement
     @Override
     public void addClassificationType(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_METADATA_PATH + SLASH + FILE + SLASH + entity.getSystemId() + SLASH + CASE_STATUS
+                NOARK_METADATA_PATH + SLASH + FILE + SLASH + entity.getSystemId() + SLASH + CLASSIFICATION_SYSTEM_TYPE
                 + SLASH, REL_METADATA_CLASSIFICATION_SYSTEM_TYPE, false));
     }
 }
