@@ -142,8 +142,8 @@ public final class Constants {
     public static final String NOARK_ADMINISTRATION_PATH = "administration";
     public static final String NOARK_CASE_HANDLING_PATH = "sakarkiv";
 
-    public static final String NIKITA_CONTENT_TYPE = "http://nikita.arkivlab.no/noark5/v4/";
     public static final String NOARK5_V4_CONTENT_TYPE = "application/vnd.noark5-v4+json";
+    public static final String NOARK5_V4_CONTENT_TYPE_XML = "application/vnd.noark5-v4+xml";
 
     public static final String INFO_CANNOT_CREATE_OBJECT = "Cannot create ";
     public static final String INFO_CANNOT_FIND_OBJECT = "Cannot find object of type ";
@@ -242,6 +242,9 @@ public final class Constants {
     // Class
     public static final String REL_FONDS_STRUCTURE_CLASS = REL_FONDS_STRUCTURE + REFERENCE_CLASS + SLASH;
     public static final String REL_FONDS_STRUCTURE_NEW_CLASS = REL_FONDS_STRUCTURE + NEW_REFERENCE_CLASS + SLASH;
+
+    public static final String REL_FONDS_STRUCTURE_SUB_CLASS = REL_FONDS_STRUCTURE + SUB + CLASS + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_SUB_CLASS = REL_FONDS_STRUCTURE + NEW + DASH + SUB + CLASS + SLASH + SLASH;
 
     // Series
     public static final String REL_FONDS_STRUCTURE_REFERENCE_SERIES = REL_FONDS_STRUCTURE + REFERENCE_SERIES + SLASH;
