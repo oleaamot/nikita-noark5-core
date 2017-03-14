@@ -31,7 +31,7 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH,
-        produces = {NOARK5_V4_CONTENT_TYPE})
+        produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 public class FondsCreatorHateoasController {
 
     private IFondsCreatorService fondsCreatorService;
@@ -63,7 +63,7 @@ public class FondsCreatorHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = NEW_FONDS_CREATOR, consumes = {NOARK5_V4_CONTENT_TYPE})
+    @RequestMapping(method = RequestMethod.POST, value = NEW_FONDS_CREATOR, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<FondsCreatorHateoas> createFondsCreator(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "FondsCreator",
@@ -89,7 +89,7 @@ public class FondsCreatorHateoasController {
     @Counted
     @Timed
     @RequestMapping(value = FONDS_CREATOR + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
-            method = RequestMethod.GET, consumes = {NOARK5_V4_CONTENT_TYPE})
+            method = RequestMethod.GET, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<FondsCreatorHateoas> findOne(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemId",
@@ -147,7 +147,7 @@ public class FondsCreatorHateoasController {
     @Counted
     @Timed
     @RequestMapping(value = FONDS_CREATOR + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
-            method = RequestMethod.PUT, consumes = {NOARK5_V4_CONTENT_TYPE})
+            method = RequestMethod.PUT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> updateFondsCreator(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemId",

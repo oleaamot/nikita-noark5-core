@@ -29,7 +29,7 @@ import static nikita.config.N5ResourceMappings.*;
 
 @RestController
 @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES,
-        produces = {NOARK5_V4_CONTENT_TYPE})
+        produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 @Api(value = "SeriesController", description = "Contains CRUD operations for Series. Create operations are only for " +
         "entities that can be associated with a series e.g. File / ClassificationSystem. Update and delete operations" +
         " are on individual series entities identified by systemId. Read operations are either on individual series" +
@@ -70,7 +70,7 @@ public class SeriesHateoasController extends NikitaController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_FILE, consumes = {NOARK5_V4_CONTENT_TYPE})
+            SLASH + NEW_FILE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<FileHateoas> createFileAssociatedWithSeries(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesSystemId",
@@ -105,7 +105,7 @@ public class SeriesHateoasController extends NikitaController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS + SLASH
-            + NEW_CASE_FILE, consumes = {NOARK5_V4_CONTENT_TYPE})
+            + NEW_CASE_FILE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<CaseFileHateoas> createCaseFileAssociatedWithSeries(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesSystemId",
@@ -141,7 +141,7 @@ public class SeriesHateoasController extends NikitaController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE})
+            SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> createRecordAssociatedWithSeries(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesSystemId",
@@ -178,7 +178,7 @@ public class SeriesHateoasController extends NikitaController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.PUT, value = LEFT_PARENTHESIS + "seriesPrecursorSystemId" +
-            RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_SUCCESSOR, consumes = {NOARK5_V4_CONTENT_TYPE})
+            RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_SUCCESSOR, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> associateSeriesWithSeriesPrecursor(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesPrecursorSystemId",
@@ -216,7 +216,7 @@ public class SeriesHateoasController extends NikitaController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.PUT, value = LEFT_PARENTHESIS + "seriesSuccessorSystemId" +
-            RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_PRECURSOR, consumes = {NOARK5_V4_CONTENT_TYPE})
+            RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_PRECURSOR, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> associateSeriesWithSeriesSuccessor(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesSuccessorSystemId",
@@ -252,7 +252,7 @@ public class SeriesHateoasController extends NikitaController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.PUT, value = LEFT_PARENTHESIS + "seriesSystemId" +
-            RIGHT_PARENTHESIS + SLASH + NEW_CLASSIFICATION_SYSTEM, consumes = {NOARK5_V4_CONTENT_TYPE})
+            RIGHT_PARENTHESIS + SLASH + NEW_CLASSIFICATION_SYSTEM, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> associateSeriesWithClassificationSystem(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "seriesSystemId",

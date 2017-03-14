@@ -24,14 +24,11 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
+import static nikita.config.Constants.*;
+import static nikita.config.N5ResourceMappings.FONDS;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static nikita.config.Constants.SLASH;
-import static nikita.config.Constants.HATEOAS_API_PATH;
-import static nikita.config.Constants.NOARK_FONDS_STRUCTURE_PATH;
-import static nikita.config.Constants.NOARK5_V4_CONTENT_TYPE;
-
-import static nikita.config.N5ResourceMappings.FONDS;
 
 
 /**
@@ -117,8 +114,8 @@ public class WebappRestTestJSON {
         createObjectHeaders.add("Cookie", sessionId);
 
         // set content types to JSON
-        createObjectHeaders.setContentType(new MediaType("application", NOARK5_V4_CONTENT_TYPE));
-        createObjectHeaders.setAccept(Arrays.asList(new MediaType("application", NOARK5_V4_CONTENT_TYPE)));
+        createObjectHeaders.setContentType(new MediaType("application", NOARK5_V4_CONTENT_TYPE_JSON));
+        createObjectHeaders.setAccept(Arrays.asList(new MediaType("application", NOARK5_V4_CONTENT_TYPE_JSON)));
 
         HttpEntity<String> fondsEntity = new HttpEntity<>(fondsJson, createObjectHeaders);
         String fondsURI = addressApplication + FONDS;

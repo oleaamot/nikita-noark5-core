@@ -30,7 +30,7 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + CLASS + SLASH,
-        produces = {NOARK5_V4_CONTENT_TYPE})
+        produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 public class ClassHateoasController {
 
     @Autowired
@@ -57,7 +57,7 @@ public class ClassHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "classificationSystemSystemId" +
-            RIGHT_PARENTHESIS + SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE})
+            RIGHT_PARENTHESIS + SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<ClassHateoas> createClassAssociatedWithClassificationSystem(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "classificationSystemSystemId",

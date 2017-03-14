@@ -15,7 +15,7 @@ import static nikita.config.Constants.*;
  */
 
 @RestController
-@RequestMapping(produces = {NOARK5_V4_CONTENT_TYPE}, method = RequestMethod.GET)
+@RequestMapping(produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML}, method = RequestMethod.GET)
 public class TempController {
 
     @RequestMapping(value = NOARK_CASE_HANDLING_PATH + SLASH)

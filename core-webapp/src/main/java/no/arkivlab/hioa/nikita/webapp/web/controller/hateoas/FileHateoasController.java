@@ -33,7 +33,7 @@ import static nikita.config.N5ResourceMappings.*;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + FILE,
-        produces = {NOARK5_V4_CONTENT_TYPE})
+        produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 public class FileHateoasController {
 
     private IFileService fileService;
@@ -71,7 +71,7 @@ public class FileHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE})
+            SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<RecordHateoas> createRecordAssociatedWithFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fileSystemId",
@@ -107,7 +107,7 @@ public class FileHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_BASIC_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE})
+            SLASH + NEW_BASIC_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<BasicRecordHateoas> createBasicRecordAssociatedWithFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fileSystemId",
@@ -143,7 +143,7 @@ public class FileHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_CROSS_REFERENCE, consumes = {NOARK5_V4_CONTENT_TYPE})
+            SLASH + NEW_CROSS_REFERENCE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> createCrossReferenceAssociatedWithFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fileSystemId",
@@ -179,7 +179,7 @@ public class FileHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_SUB_FILE, consumes = {NOARK5_V4_CONTENT_TYPE})
+            SLASH + NEW_SUB_FILE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> createSubFileAssociatedWithFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fileSystemId",
@@ -212,7 +212,7 @@ public class FileHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_COMMENT, consumes = {NOARK5_V4_CONTENT_TYPE})
+            SLASH + NEW_COMMENT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addCommentToFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fileSystemId",
@@ -245,7 +245,7 @@ public class FileHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_CLASS, consumes = {NOARK5_V4_CONTENT_TYPE})
+            SLASH + NEW_CLASS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addClassToFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fileSystemId",
@@ -279,7 +279,7 @@ public class FileHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_REFERENCE_SERIES, consumes = {NOARK5_V4_CONTENT_TYPE})
+            SLASH + NEW_REFERENCE_SERIES, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addReferenceSeriesToFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fileSystemId",
@@ -315,7 +315,7 @@ public class FileHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_SECONDARY_CLASSIFICATION, consumes = {NOARK5_V4_CONTENT_TYPE})
+            SLASH + NEW_SECONDARY_CLASSIFICATION, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addReferenceToSecondaryClassToFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fileSystemId",
@@ -657,7 +657,7 @@ public class FileHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.PUT, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
-            SLASH + FILE, consumes = {NOARK5_V4_CONTENT_TYPE})
+            SLASH + FILE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> updateFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fileSystemId",

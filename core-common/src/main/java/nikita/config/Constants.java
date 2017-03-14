@@ -142,8 +142,8 @@ public final class Constants {
     public static final String NOARK_ADMINISTRATION_PATH = "administration";
     public static final String NOARK_CASE_HANDLING_PATH = "sakarkiv";
 
-    public static final String NOARK5_V4_CONTENT_TYPE = "application/vnd.noark5-v4+json";
-    public static final String NOARK5_V4_CONTENT_TYPE_XML = "application/vnd.noark5-v4+xml";
+    public static final String NOARK5_V4_CONTENT_TYPE_JSON = "application/vnd.noark5-v4+json";
+    public static final String NOARK5_V4_CONTENT_TYPE_JSON_XML = "application/vnd.noark5-v4+xml";
 
     public static final String INFO_CANNOT_CREATE_OBJECT = "Cannot create ";
     public static final String INFO_CANNOT_FIND_OBJECT = "Cannot find object of type ";

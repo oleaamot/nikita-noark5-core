@@ -43,7 +43,7 @@ import static nikita.config.N5ResourceMappings.*;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH,
-        produces = {NOARK5_V4_CONTENT_TYPE})
+        produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 @SuppressWarnings("unchecked")
 public class FondsHateoasController {
 
@@ -82,7 +82,7 @@ public class FondsHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = NEW_FONDS, consumes = {NOARK5_V4_CONTENT_TYPE})
+    @RequestMapping(method = RequestMethod.POST, value = NEW_FONDS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<FondsHateoas> createFonds(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fonds",
@@ -113,7 +113,7 @@ public class FondsHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = FONDS + SLASH + LEFT_PARENTHESIS +
-            "fondsSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_SUB_FONDS, consumes = {NOARK5_V4_CONTENT_TYPE})
+            "fondsSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_SUB_FONDS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<FondsHateoas> createFondsAssociatedWithFonds(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fondsSystemId",
@@ -151,7 +151,7 @@ public class FondsHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = FONDS + SLASH + LEFT_PARENTHESIS +
-            "fondsSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_SERIES, consumes = {NOARK5_V4_CONTENT_TYPE})
+            "fondsSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_SERIES, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<SeriesHateoas> createSeriesAssociatedWithFonds(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fondsSystemId",
@@ -189,7 +189,7 @@ public class FondsHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = FONDS + SLASH + LEFT_PARENTHESIS +
-            "fondsSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_FONDS_CREATOR, consumes = {NOARK5_V4_CONTENT_TYPE})
+            "fondsSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_FONDS_CREATOR, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> createFondsCreatorAssociatedWithFonds(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fondsSystemId",
