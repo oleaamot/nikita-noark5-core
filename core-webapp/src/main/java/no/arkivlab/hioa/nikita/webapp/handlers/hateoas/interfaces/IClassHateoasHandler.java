@@ -10,12 +10,13 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
  */
 public interface IClassHateoasHandler extends IHateoasHandler {
 
-
-    void addSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
-
     void addRegistration(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
+    void addNewRegistration(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
     void addFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addNewFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addClassificationSystem(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
@@ -25,27 +26,27 @@ public interface IClassHateoasHandler extends IHateoasHandler {
 
     void addNewSubClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
+    void addClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addNewClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
     void addKeyword(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addNewKeyword(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addClassified(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
-
     void addNewClassified(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
-
-    void addDisposal(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addNewDisposal(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addDisposalUndertaken(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
-
     void addNewDisposalUndertaken(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
-
-    void addDeletion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addNewDeletion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addScreening(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
-
     void addNewScreening(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addCrossReference(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addNewCrossReference(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+
 }
