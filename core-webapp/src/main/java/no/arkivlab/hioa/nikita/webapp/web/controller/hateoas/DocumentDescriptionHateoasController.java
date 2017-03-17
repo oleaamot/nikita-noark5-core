@@ -177,7 +177,7 @@ public class DocumentDescriptionHateoasController {
     @Counted
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
-            NEW_DOCUMENT_OBJECT, method = RequestMethod.GET)
+            DOCUMENT_OBJECT, method = RequestMethod.GET)
     public ResponseEntity<DocumentObjectHateoas> findAllDocumentDescriptionAssociatedWithRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
