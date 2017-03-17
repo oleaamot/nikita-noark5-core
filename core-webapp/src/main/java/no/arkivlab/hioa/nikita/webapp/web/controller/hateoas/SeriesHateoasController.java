@@ -558,17 +558,22 @@ public class SeriesHateoasController extends NikitaController {
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + FILE,
             method = RequestMethod.GET)
-    public ResponseEntity<String> findAllFileAssociatedWithFile(
+    public ResponseEntity<FileHateoas> findAllFileAssociatedWithSeries(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
-            @RequestParam(name = "skip", required = false) Integer skip) {
-    /*
-        FileHateoas fileHateoas = new
-                FileHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
-                fileService.findFileByOwnerPaginated(top, skip));
-        fileHateoasHandler.addLinksOnRead(fileHateoas, request, new Authorisation());
-      */
-        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+            @RequestParam(name = "skip", required = false) Integer skip,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the series to retrieve",
+                    required = true)
+            @PathVariable("systemID") final String seriesSystemId) {
+
+        Series series = seriesService.findBySystemId(seriesSystemId);
+        if (series == null) {
+            throw new NoarkEntityNotFoundException("Could not find series object with systemID " + seriesSystemId);
+        }
+        FileHateoas fileHateoas = new FileHateoas(new ArrayList<> (series.getReferenceFile()));
+        fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
+        return new ResponseEntity<>(fileHateoas, HttpStatus.OK);
     }
 
     // Retrieve all CaseFiles associated with a Series (paginated)
