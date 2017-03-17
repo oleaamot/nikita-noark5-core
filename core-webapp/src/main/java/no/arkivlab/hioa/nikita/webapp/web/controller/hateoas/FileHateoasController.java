@@ -18,6 +18,7 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFileHateoasHa
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRecordHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFileService;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -345,13 +346,21 @@ public class FileHateoasController {
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + REGISTRATION,
             method = RequestMethod.GET)
-    public ResponseEntity<String> findAllRecordsAssociatedWithFile(
+    public ResponseEntity<RecordHateoas> findAllRecordsAssociatedWithFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemID of the file to retrieve associated Record",
                     required = true)
             @PathVariable("systemID") final String fileSystemId) {
-        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+
+        File file = fileService.findBySystemId(fileSystemId);
+        if (file == null) {
+            throw new NoarkEntityNotFoundException("Could not find File object with systemID " + fileSystemId);
+        }
+        RecordHateoas recordHateoas = new
+                RecordHateoas(new ArrayList<> (file.getReferenceRecord()));
+        recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
+        return new ResponseEntity<>(recordHateoas, HttpStatus.OK);
     }
 
     // Retrieve all BasicRecords associated with File identified by systemId
