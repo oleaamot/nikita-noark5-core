@@ -19,6 +19,7 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjec
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRecordHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRecordService;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -477,5 +478,34 @@ public class RecordHateoasController {
                 DocumentObjectHateoas(defaultDocumentObject);
         documentObjectHateoasHandler.addLinksOnNew(documentObjectHateoas, request, new Authorisation());
         return new ResponseEntity<>(documentObjectHateoas, HttpStatus.OK);
+    }
+
+    // Retrieve all DocumentDescriptions associated with a Record identified by systemId
+    // GET [contextPath][api]/arkivstruktur/resgistrering/{systemId}/dokumentbeskrivelse
+    @ApiOperation(value = "Retrieves a lit of DocumentDescriptions associated with a Record",
+            response = DocumentDescriptionHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "DocumentDescription returned", response = DocumentDescriptionHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
+            DOCUMENT_DESCRIPTION, method = RequestMethod.GET)
+    public ResponseEntity<DocumentDescriptionHateoas> findAllDocumentDescriptionAssociatedWithRecord (
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the file to retrieve associated Record",
+                    required = true)
+            @PathVariable("systemID") final String recordSystemId) {
+        Record record  = recordService.findBySystemId(recordSystemId);
+        if (record == null) {
+            throw new NoarkEntityNotFoundException("Could not find File object with systemID " + recordSystemId);
+        }
+        DocumentDescriptionHateoas documentDescriptionHateoas = new
+                DocumentDescriptionHateoas(new ArrayList<>(record.getReferenceDocumentDescription()));
+        documentDescriptionHateoasHandler.addLinksOnNew(documentDescriptionHateoas, request, new Authorisation());
+        return new ResponseEntity<>(documentDescriptionHateoas, HttpStatus.OK);
     }
 }
