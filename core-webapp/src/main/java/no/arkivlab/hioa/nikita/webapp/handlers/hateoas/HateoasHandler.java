@@ -3,6 +3,7 @@ package no.arkivlab.hioa.nikita.webapp.handlers.hateoas;
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
 import nikita.model.noark5.v4.hateoas.Link;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.CommonUtils;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.IAuthorisation;
 import org.springframework.stereotype.Component;
@@ -39,6 +40,14 @@ public class HateoasHandler implements IHateoasHandler {
         for (INoarkSystemIdEntity entity : entities) {
             addSelfLink(entity, hateoasNoarkObject);
             addEntityLinks(entity, hateoasNoarkObject);
+        }
+        // If hateoasNoarkObject is a list add a self link.
+        // { "entity": [], "_links": [] }
+        if (!hateoasNoarkObject.isSingleEntity()) {
+            Link selfLink = new Link(contextPath + HATEOAS_API_PATH + SLASH +
+                    NOARK_FONDS_STRUCTURE_PATH + SLASH + getEntityType(hateoasNoarkObject.getClass().getName())
+                    + SLASH, getRelSelfLink(), false);
+            hateoasNoarkObject.addSelfLink(selfLink);
         }
     }
 
@@ -128,55 +137,7 @@ public class HateoasHandler implements IHateoasHandler {
     }
 
     protected String getEntityType(String className) {
-
-        if (className.endsWith("RegistryEntry")) {
-            return REGISTRY_ENTRY;
-        } else if (className.endsWith("RegistryEntryHateoas")) {
-            return REGISTRY_ENTRY;
-        } else if (className.endsWith("DocumentDescription")) {
-            return DOCUMENT_DESCRIPTION;
-        } else if (className.endsWith("DocumentDescriptionHateoas")) {
-            return DOCUMENT_DESCRIPTION;
-        } else if (className.endsWith("DocumentObject")) {
-            return DOCUMENT_OBJECT;
-        } else if (className.endsWith("DocumentObjectHateoas")) {
-            return DOCUMENT_OBJECT;
-        } else if (className.endsWith("CaseFile")) {
-            return CASE_FILE;
-        } else if (className.endsWith("CaseFileHateoas")) {
-            return CASE_FILE;
-        } else if (className.endsWith("Class")) {
-            return CLASS;
-        } else if (className.endsWith("ClassHateoas")) {
-            return CLASS;
-        } else if (className.endsWith("Fonds")) {
-            return FONDS;
-        } else if (className.endsWith("FondsHateoas")) {
-            return FONDS;
-        } else if (className.endsWith("Series")) {
-            return SERIES;
-        } else if (className.endsWith("SeriesHateoas")) {
-            return SERIES;
-        } else if (className.endsWith("ClassificationSystem")) {
-            return CLASSIFICATION_SYSTEM;
-        } else if (className.endsWith("ClassificationSystemHateoas")) {
-            return CLASSIFICATION_SYSTEM;
-        } else if (className.endsWith("File")) {
-            return FILE;
-        } else if (className.endsWith("FileHateoas")) {
-            return FILE;
-        } else if (className.endsWith("Record")) {
-            return REGISTRATION;
-        } else if (className.endsWith("RecordHateoas")) {
-            return REGISTRATION;
-        } else if (className.endsWith("BasicRecord")) {
-            return BASIC_RECORD;
-        } else if (className.endsWith("BasicRecordHateoas")) {
-            return BASIC_RECORD;
-        }
-
-        // consider this throwing an excpetion
-        return "unknown_entity";
+        return CommonUtils.Hateoas.getEntityType(className);
     }
 }
 

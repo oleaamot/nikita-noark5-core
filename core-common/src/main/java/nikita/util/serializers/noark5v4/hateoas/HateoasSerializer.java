@@ -26,11 +26,18 @@ public class HateoasSerializer extends StdSerializer<HateoasNoarkObject> {
     @Override
     public void serialize(HateoasNoarkObject hateoasObject, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
-
+        // For lists the output should be
+        //  { "entity": [], "_links": [] }
+        // An empty list should produce
+        // { "entity": [], "_links": [] }
+        // An entity should produce
+        // { "field" : "value", "_links": [] }
+        // No such thing as an empty entity
         List<INoarkSystemIdEntity> list = hateoasObject.getList();
         if (list.size() > 0) {
-
             if (!hateoasObject.isSingleEntity()) {
+                jgen.writeStartObject();
+                jgen.writeFieldName(CommonUtils.Hateoas.getEntityType(hateoasObject));
                 jgen.writeStartArray();
             }
             for (INoarkSystemIdEntity entity : list) {
@@ -38,6 +45,8 @@ public class HateoasSerializer extends StdSerializer<HateoasNoarkObject> {
             }
             if (!hateoasObject.isSingleEntity()) {
                 jgen.writeEndArray();
+                CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, hateoasObject.getSelfLinks());
+                jgen.writeEndObject();
             }
         }
         // It's an empty object, so just returning Hateoas self links

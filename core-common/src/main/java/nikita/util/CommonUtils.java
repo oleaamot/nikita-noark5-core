@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import nikita.model.noark5.v4.*;
+import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
 import nikita.model.noark5.v4.hateoas.Link;
 import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.interfaces.entities.*;
@@ -27,10 +28,73 @@ public final class CommonUtils {
     private CommonUtils() {
     }
 
+
+
+
     public static final class Hateoas {
 
         //TODO: Need to look at handling execeptions here. Thye aer not caught and converted to a suitable message
         // back to the caller
+
+        public static String getEntityType(HateoasNoarkObject hateoasObject) {
+            if (hateoasObject != null) {
+                return getEntityType(hateoasObject.getClass().getName());
+            }
+            else return "unknown_entity";
+        }
+
+        public static String getEntityType(String className) {
+
+            if (className.endsWith("RegistryEntry")) {
+                return REGISTRY_ENTRY;
+            } else if (className.endsWith("RegistryEntryHateoas")) {
+                return REGISTRY_ENTRY;
+            } else if (className.endsWith("DocumentDescription")) {
+                return DOCUMENT_DESCRIPTION;
+            } else if (className.endsWith("DocumentDescriptionHateoas")) {
+                return DOCUMENT_DESCRIPTION;
+            } else if (className.endsWith("DocumentObject")) {
+                return DOCUMENT_OBJECT;
+            } else if (className.endsWith("DocumentObjectHateoas")) {
+                return DOCUMENT_OBJECT;
+            } else if (className.endsWith("CaseFile")) {
+                return CASE_FILE;
+            } else if (className.endsWith("CaseFileHateoas")) {
+                return CASE_FILE;
+            } else if (className.endsWith("Class")) {
+                return CLASS;
+            } else if (className.endsWith("ClassHateoas")) {
+                return CLASS;
+            } else if (className.endsWith("Fonds")) {
+                return FONDS;
+            } else if (className.endsWith("FondsHateoas")) {
+                return FONDS;
+            } else if (className.endsWith("Series")) {
+                return SERIES;
+            } else if (className.endsWith("SeriesHateoas")) {
+                return SERIES;
+            } else if (className.endsWith("ClassificationSystem")) {
+                return CLASSIFICATION_SYSTEM;
+            } else if (className.endsWith("ClassificationSystemHateoas")) {
+                return CLASSIFICATION_SYSTEM;
+            } else if (className.endsWith("File")) {
+                return FILE;
+            } else if (className.endsWith("FileHateoas")) {
+                return FILE;
+            } else if (className.endsWith("Record")) {
+                return REGISTRATION;
+            } else if (className.endsWith("RecordHateoas")) {
+                return REGISTRATION;
+            } else if (className.endsWith("BasicRecord")) {
+                return BASIC_RECORD;
+            } else if (className.endsWith("BasicRecordHateoas")) {
+                return BASIC_RECORD;
+            }
+
+            // consider this throwing an excpetion
+            return "unknown_entity";
+        }
+
 
         public static final class Deserialize {
 
