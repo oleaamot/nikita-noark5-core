@@ -296,15 +296,21 @@ public class FondsHateoasController {
     @Timed
     @RequestMapping(value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SERIES +
             SLASH, method = RequestMethod.GET)
-    public ResponseEntity<String> findSeriesAssociatedWithFonds(
+    public ResponseEntity<SeriesHateoas> findSeriesAssociatedWithFonds(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemId",
                     value = "systemId of Fonds that has Series associated with it.",
                     required = true)
             @PathVariable("systemID") final String fondsSystemId) {
 
-        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
-        //return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
+        Fonds fonds = fondsService.findBySystemId(fondsSystemId);
+        if (fonds == null) {
+            throw new NoarkEntityNotFoundException("Could not find series object with systemID " + fondsSystemId);
+        }
+        SeriesHateoas seriesHateoas = new
+                SeriesHateoas(new ArrayList<> (fonds.getReferenceSeries()));
+        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
+        return new ResponseEntity<>(seriesHateoas, HttpStatus.OK);
     }
 
     // Get all Sub-fonds associated with a Fonds identified by systemId
