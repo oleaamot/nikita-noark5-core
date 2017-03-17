@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.DocumentObject;
+import nikita.model.noark5.v4.Record;
 import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
@@ -17,6 +18,7 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentDescr
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentDescriptionService;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -84,7 +86,7 @@ public class DocumentDescriptionHateoasController {
         documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
         return new ResponseEntity<>(documentObjectHateoas, HttpStatus.CREATED);
     }
-    
+
     // API - All GET Requests (CRUD - READ)
 
     @ApiOperation(value = "Retrieves a single DocumentDescription entity given a systemId", response =
@@ -159,6 +161,37 @@ public class DocumentDescriptionHateoasController {
 
         DocumentObjectHateoas documentObjectHateoas = new
                 DocumentObjectHateoas(defaultDocumentObject);
+        documentObjectHateoasHandler.addLinksOnNew(documentObjectHateoas, request, new Authorisation());
+        return new ResponseEntity<>(documentObjectHateoas, HttpStatus.OK);
+    }
+
+    // Retrieve all DocumentObjects associated with a DocumentDescription identified by systemId
+    // GET [contextPath][api]/arkivstruktur/dokumentbeskrivelse/{systemId}/dokumentobjekt
+    @ApiOperation(value = "Retrieves a list of DocumentObjects associated with a DocumentDescription",
+            response = DocumentObjectHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "DocumentObject returned", response = DocumentObjectHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
+            NEW_DOCUMENT_OBJECT, method = RequestMethod.GET)
+    public ResponseEntity<DocumentObjectHateoas> findAllDocumentDescriptionAssociatedWithRecord(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the file to retrieve associated Record",
+                    required = true)
+            @PathVariable("systemID") final String documentDescriptionSystemId) {
+
+        DocumentDescription documentDescription = documentDescriptionService.findBySystemId(documentDescriptionSystemId);
+        if (documentDescription == null) {
+            throw new NoarkEntityNotFoundException("Could not find DocumentDescription object with systemID " +
+                    documentDescriptionSystemId);
+        }
+        DocumentObjectHateoas documentObjectHateoas = new
+                DocumentObjectHateoas(new ArrayList<>(documentDescription.getReferenceDocumentObject()));
         documentObjectHateoasHandler.addLinksOnNew(documentObjectHateoas, request, new Authorisation());
         return new ResponseEntity<>(documentObjectHateoas, HttpStatus.OK);
     }
