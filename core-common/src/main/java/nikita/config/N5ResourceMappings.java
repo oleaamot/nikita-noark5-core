@@ -267,7 +267,7 @@ public final class N5ResourceMappings {
     public static final String DISPOSAL_DATE_EN = "disposalDate";
 
     // DisposalUndertaken
-    public static final String DISPOSAL_UNDERTAKEN = "ufoertKassasjon";
+    public static final String DISPOSAL_UNDERTAKEN = "utfoertKassasjon";
     public static final String DISPOSAL_UNDERTAKEN_EN = "disposalUndertaken";
     public static final String DISPOSAL_UNDERTAKEN_BY = "kassertAv";
     public static final String DISPOSAL_UNDERTAKEN_BY_EN = "disposalBy";
