@@ -20,10 +20,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 
@@ -79,6 +76,8 @@ public class RecordService implements IRecordService {
                 documentDescription.setReferenceRecord(records);
             }
             records.add(record);
+            Set<DocumentDescription> documentDescriptions = record.getReferenceDocumentDescription();
+            documentDescriptions.add(documentDescription);
             persistedDocumentDescription = documentDescriptionService.save(documentDescription);
         }
         return persistedDocumentDescription;
