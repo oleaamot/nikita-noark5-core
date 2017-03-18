@@ -505,7 +505,7 @@ public class RecordHateoasController {
         }
         DocumentDescriptionHateoas documentDescriptionHateoas = new
                 DocumentDescriptionHateoas(new ArrayList<>(record.getReferenceDocumentDescription()));
-        documentDescriptionHateoasHandler.addLinksOnNew(documentDescriptionHateoas, request, new Authorisation());
+        documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
         return new ResponseEntity<>(documentDescriptionHateoas, HttpStatus.OK);
     }
 }
