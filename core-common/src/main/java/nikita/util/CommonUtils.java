@@ -67,8 +67,12 @@ public final class CommonUtils {
                 return CLASS;
             } else if (className.endsWith("Fonds")) {
                 return FONDS;
+            } else if (className.endsWith("FondsCreator")) {
+                return FONDS_CREATOR;
             } else if (className.endsWith("FondsHateoas")) {
                 return FONDS;
+            } else if (className.endsWith("FondsCreatorHateoas")) {
+                return FONDS_CREATOR;
             } else if (className.endsWith("Series")) {
                 return SERIES;
             } else if (className.endsWith("SeriesHateoas")) {
