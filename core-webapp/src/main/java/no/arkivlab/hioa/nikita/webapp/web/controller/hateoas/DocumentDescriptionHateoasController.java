@@ -192,7 +192,7 @@ public class DocumentDescriptionHateoasController {
         }
         DocumentObjectHateoas documentObjectHateoas = new
                 DocumentObjectHateoas(new ArrayList<>(documentDescription.getReferenceDocumentObject()));
-        documentObjectHateoasHandler.addLinksOnNew(documentObjectHateoas, request, new Authorisation());
+        documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
         return new ResponseEntity<>(documentObjectHateoas, HttpStatus.OK);
     }
 }
