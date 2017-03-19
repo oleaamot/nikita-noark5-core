@@ -276,9 +276,9 @@ public class RecordHateoasController {
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
-    // Add a disposalUndertaken (ufoertKassasjon) to a Record
-    // POST [contextPath][api]/arkivstruktur/registrering/{systemId}/ny-ufoertKassasjon
-    // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-ufoertKassasjon/
+    // Add a disposalUndertaken (utfoertKassasjon) to a Record
+    // POST [contextPath][api]/arkivstruktur/registrering/{systemId}/ny-utfoertKassasjon
+    // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-utfoertKassasjon/
     @ApiOperation(value = "Associates a DisposalUndertaken with a Record identified by recordSystemId",
             notes = "Returns the Record after the DisposalUndertaken is successfully associated with it." +
                     "Note a Record can only have one DisposalUndertaken. Update via PUT",
