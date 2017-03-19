@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import nikita.util.exceptions.NikitaMalformedInputDataException;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
-import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
 import nikita.util.CommonUtils;
+import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
+import nikita.util.exceptions.NikitaMalformedInputDataException;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -64,58 +64,31 @@ public class DocumentDescriptionDeserializer extends JsonDeserializer implements
 
         // Deserialize documentType
         JsonNode currentNode = objectNode.get(DOCUMENT_DESCRIPTION_DOCUMENT_TYPE);
-        String key = DOCUMENT_DESCRIPTION_DOCUMENT_TYPE;
-        if (currentNode == null) {
-            currentNode = objectNode.get(DOCUMENT_DESCRIPTION_DOCUMENT_TYPE_EN);
-            key = DOCUMENT_DESCRIPTION_DOCUMENT_TYPE_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             documentDescription.setDocumentType(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(DOCUMENT_DESCRIPTION_DOCUMENT_TYPE);
         }
-
         // Deserialize documentStatus
-        currentNode = objectNode.get(DOCUMENT_DESCRIPTION_);
-        key = DOCUMENT_DESCRIPTION_;
-        if (currentNode == null) {
-            currentNode = objectNode.get(DOCUMENT_DESCRIPTION_DOCUMENT_STATUS_EN);
-            key = DOCUMENT_DESCRIPTION_DOCUMENT_STATUS_EN;
-        }
-        if (currentNode != null) {
+        currentNode = objectNode.get(DOCUMENT_DESCRIPTION_STATUS);
+        if (null != currentNode) {
             documentDescription.setDocumentStatus(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(DOCUMENT_DESCRIPTION_STATUS);
         }
-
         // Deserialize associatedWithRecordAs
         currentNode = objectNode.get(DOCUMENT_DESCRIPTION_ASSOCIATED_WITH_RECORD_AS);
-        key = DOCUMENT_DESCRIPTION_ASSOCIATED_WITH_RECORD_AS;
-        if (currentNode == null) {
-            currentNode = objectNode.get(DOCUMENT_DESCRIPTION_ASSOCIATED_WITH_RECORD_AS_EN);
-            key = DOCUMENT_DESCRIPTION_ASSOCIATED_WITH_RECORD_AS_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             documentDescription.setAssociatedWithRecordAs(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(DOCUMENT_DESCRIPTION_ASSOCIATED_WITH_RECORD_AS);
         }
         // Deserialize documentNumber
         currentNode = objectNode.get(DOCUMENT_DESCRIPTION_DOCUMENT_NUMBER);
-        key = DOCUMENT_DESCRIPTION_DOCUMENT_NUMBER;
-        if (currentNode == null) {
-            currentNode = objectNode.get(DOCUMENT_DESCRIPTION_DOCUMENT_NUMBER_EN);
-            key = DOCUMENT_DESCRIPTION_DOCUMENT_NUMBER_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             documentDescription.setDocumentNumber(Integer.getInteger(currentNode.textValue()));
-            objectNode.remove(key);
+            objectNode.remove(DOCUMENT_DESCRIPTION_DOCUMENT_NUMBER);
         }
         // Deserialize associationDate
         currentNode = objectNode.get(DOCUMENT_DESCRIPTION_ASSOCIATION_DATE);
-        key = DOCUMENT_DESCRIPTION_ASSOCIATION_DATE;
-        if (currentNode == null) {
-            currentNode = objectNode.get(DOCUMENT_DESCRIPTION_ASSOCIATION_DATE_EN);
-            key = DOCUMENT_DESCRIPTION_ASSOCIATION_DATE_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             try {
                 Date parsedDate = CommonUtils.Hateoas.Deserialize.dateTimeFormat.parse(currentNode.textValue());
                 documentDescription.setAssociationDate(parsedDate);
@@ -125,24 +98,16 @@ public class DocumentDescriptionDeserializer extends JsonDeserializer implements
                         "has a malformed tilknyttetDato/associationDate. Make sure format is " +
                         NOARK_DATE_FORMAT_PATTERN);
             }
-            objectNode.remove(key);
+            objectNode.remove(DOCUMENT_DESCRIPTION_ASSOCIATION_DATE);
         }
-
         // Deserialize associatedBy
         currentNode = objectNode.get(DOCUMENT_DESCRIPTION_ASSOCIATED_BY);
-        key = DOCUMENT_DESCRIPTION_ASSOCIATED_BY;
-        if (currentNode == null) {
-            currentNode = objectNode.get(DOCUMENT_DESCRIPTION_ASSOCIATED_BY_EN);
-            key = DOCUMENT_DESCRIPTION_ASSOCIATED_BY_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             documentDescription.setAssociatedBy(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(DOCUMENT_DESCRIPTION_ASSOCIATED_BY);
         }
-
         // Deserialize general documentDescription properties
         CommonUtils.Hateoas.Deserialize.deserialiseDocumentMedium(documentDescription, objectNode);
-
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {

@@ -6,15 +6,16 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import nikita.util.exceptions.NikitaMalformedInputDataException;
 import nikita.model.noark5.v4.File;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
-import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
 import nikita.util.CommonUtils;
+import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
+import nikita.util.exceptions.NikitaMalformedInputDataException;
 
 import java.io.IOException;
 
-import static nikita.config.N5ResourceMappings.*;
+import static nikita.config.N5ResourceMappings.FILE_ID;
+import static nikita.config.N5ResourceMappings.FILE_PUBLIC_TITLE;
 
 /**
  * Created by tsodring on 1/6/17.
@@ -60,28 +61,16 @@ public class FileDeserializer extends JsonDeserializer implements ObligatoryProp
 
         // Deserialize fileId
         JsonNode currentNode = objectNode.get(FILE_ID);
-        String key = FILE_ID;
-        if (currentNode == null) {
-            currentNode = objectNode.get(FILE_ID_EN);
-            key = FILE_ID_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             file.setFileId(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(FILE_ID);
         }
-
         // Deserialize officialTitle
         currentNode = objectNode.get(FILE_PUBLIC_TITLE);
-        key = FILE_PUBLIC_TITLE;
-        if (currentNode == null) {
-            currentNode = objectNode.get(FILE_PUBLIC_TITLE_EN);
-            key = FILE_PUBLIC_TITLE_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             file.setOfficialTitle(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(FILE_PUBLIC_TITLE);
         }
-
         // TODO: FIX THIS CommonCommonUtils.Hateoas.Deserialize.deserialiseCrossReference(file, objectNode);
         CommonUtils.Hateoas.Deserialize.deserialiseComments(file, objectNode);
         file.setReferenceDisposal(CommonUtils.Hateoas.Deserialize.deserialiseDisposal(objectNode));

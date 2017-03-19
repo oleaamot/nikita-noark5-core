@@ -41,7 +41,7 @@ public class DocumentDescriptionHateoasSerializer extends HateoasSerializer impl
             jgen.writeStringField(DOCUMENT_DESCRIPTION_DOCUMENT_TYPE, documentDescription.getDocumentType());
         }
         if (documentDescription.getDocumentStatus() != null) {
-            jgen.writeStringField(DOCUMENT_DESCRIPTION_, documentDescription.getDocumentStatus());
+            jgen.writeStringField(DOCUMENT_DESCRIPTION_STATUS, documentDescription.getDocumentStatus());
         }
         CommonUtils.Hateoas.Serialize.printTitleAndDescription(jgen, documentDescription);
         if (documentDescription.getDocumentNumber() != null) {

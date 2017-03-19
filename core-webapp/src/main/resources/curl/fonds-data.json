@@ -1,6 +1,6 @@
 {
-  "title" : "Title of the test fonds",
-  "description" : "Description of the test fonds",
+  "tittel": "Title of the test fonds",
+  "beskrivelse": "Description of the test fonds",
   "oppbevaringsted" : [ "location 1", "location2", "location3" ],
-  "documentMedium" : "Elektronisk arkiv"
+  "dokumentmedium": "Elektronisk arkiv"
 }

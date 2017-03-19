@@ -6,18 +6,19 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import nikita.util.exceptions.NikitaMalformedInputDataException;
 import nikita.model.noark5.v4.Record;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
-import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
 import nikita.util.CommonUtils;
+import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
+import nikita.util.exceptions.NikitaMalformedInputDataException;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
 import static nikita.config.Constants.NOARK_DATE_FORMAT_PATTERN;
-import static nikita.config.N5ResourceMappings.*;
+import static nikita.config.N5ResourceMappings.RECORD_ARCHIVED_BY;
+import static nikita.config.N5ResourceMappings.RECORD_ARCHIVED_DATE;
 import static nikita.util.CommonUtils.Hateoas.Deserialize;
 
 /**
@@ -61,37 +62,24 @@ public class RecordDeserializer extends JsonDeserializer implements ObligatoryPr
         // Deserialise general properties
         CommonUtils.Hateoas.Deserialize.deserialiseNoarkSystemIdEntity (record, objectNode);
         CommonUtils.Hateoas.Deserialize.deserialiseNoarkCreateEntity(record, objectNode);
-
         // Deserialize archivedBy
         JsonNode currentNode = objectNode.get(RECORD_ARCHIVED_BY);
-        String key = RECORD_ARCHIVED_BY;
-        if (currentNode == null) {
-            currentNode = objectNode.get(RECORD_ARCHIVED_BY_EN);
-            key = RECORD_ARCHIVED_BY_EN;
-        }
         if (currentNode != null) {
             record.setArchivedBy(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(RECORD_ARCHIVED_BY);
         }
-
         // Deserialize archivedDate
         currentNode = objectNode.get(RECORD_ARCHIVED_DATE);
-        key = RECORD_ARCHIVED_DATE;
-        if (currentNode == null) {
-            currentNode = objectNode.get(RECORD_ARCHIVED_DATE_EN);
-            key = RECORD_ARCHIVED_DATE_EN;
-        }
         if (currentNode != null) {
             try {
                 Date parsedDate = Deserialize.dateTimeFormat.parse(currentNode.textValue());
                 record.setArchivedDate(parsedDate);
+                objectNode.remove(RECORD_ARCHIVED_DATE);
             }
             catch (ParseException e) {
                 throw new NikitaMalformedInputDataException("The Record object you tried to create " +
-                        "has a malformed arkivertDato/archivedDate. Make sure format is " +
-                        NOARK_DATE_FORMAT_PATTERN);
+                        "has a malformed arkivertDato/archivedDate. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
             }
-            objectNode.remove(key);
         }
 
         // TODO: Handle deserialize of referanseArkivdel

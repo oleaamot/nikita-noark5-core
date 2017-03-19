@@ -108,14 +108,9 @@ public final class CommonUtils {
             public static void deserialiseDocumentMedium(IDocumentMedium documentMediumEntity, ObjectNode objectNode) {
                 // Deserialize documentMedium
                 JsonNode currentNode = objectNode.get(DOCUMENT_MEDIUM);
-                String key = DOCUMENT_MEDIUM;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(DOCUMENT_MEDIUM_EN);
-                    key = DOCUMENT_MEDIUM_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     documentMediumEntity.setDocumentMedium(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(DOCUMENT_MEDIUM);
                 }
             }
 
@@ -123,27 +118,17 @@ public final class CommonUtils {
                                                               ObjectNode objectNode) {
                 // Deserialize Deserialize systemId
                 JsonNode currentNode = objectNode.get(SYSTEM_ID);
-                String key = SYSTEM_ID;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(SYSTEM_ID_EN);
-                    key = SYSTEM_ID_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     noarkSystemIdEntity.setSystemId(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(SYSTEM_ID);
                 }
             }
 
             public static void deserialiseKeyword(IKeyword keywordEntity, ObjectNode objectNode) {
-
                 // Deserialize keyword
                 JsonNode currentNode = objectNode.get(KEYWORD);
-                String key = KEYWORD;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(KEYWORD_EN);
-                    key = KEYWORD_EN;
-                }
-                if (currentNode != null) {
+
+                if (null != currentNode) {
                     HashSet<Keyword> keywords = new HashSet<>();
                     if (currentNode.isArray()) {
                         currentNode.iterator();
@@ -155,7 +140,7 @@ public final class CommonUtils {
                         }
                         keywordEntity.setReferenceKeyword(keywords);
                     }
-                    objectNode.remove(key);
+                    objectNode.remove(KEYWORD);
                 }
             }
 
@@ -164,12 +149,7 @@ public final class CommonUtils {
 
                 // Deserialize author
                 JsonNode currentNode = objectNode.get(AUTHOR);
-                String key = AUTHOR;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(AUTHOR);
-                    key = AUTHOR;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     HashSet<Author> authors = new HashSet<>();
                     if (currentNode.isArray()) {
                         currentNode.iterator();
@@ -182,21 +162,16 @@ public final class CommonUtils {
                         }
                         authorEntity.setReferenceAuthor(authors);
                     }
-                    objectNode.remove(key);
+                    objectNode.remove(AUTHOR);
                 }
             }
 
             public static void deserialiseStorageLocation(IStorageLocation storageLocationEntity,
                                                           ObjectNode objectNode) {
-
                 // Deserialize storageLocation
                 JsonNode currentNode = objectNode.get(STORAGE_LOCATION);
-                String key = STORAGE_LOCATION;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(STORAGE_LOCATION_EN);
-                    key = STORAGE_LOCATION_EN;
-                }
-                if (currentNode != null) {
+
+                if (null != currentNode) {
                     HashSet<StorageLocation> storageLocations = new HashSet<>();
                     if (currentNode.isArray()) {
                         currentNode.iterator();
@@ -209,7 +184,7 @@ public final class CommonUtils {
                         }
                         storageLocationEntity.setReferenceStorageLocation(storageLocations);
                     }
-                    objectNode.remove(key);
+                    objectNode.remove(STORAGE_LOCATION);
                 }
             }
 
@@ -217,12 +192,7 @@ public final class CommonUtils {
                                                             ObjectNode objectNode) {
                 // Deserialize createdDate
                 JsonNode currentNode = objectNode.get(CREATED_DATE);
-                String key = CREATED_DATE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CREATED_DATE_EN);
-                    key = CREATED_DATE_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     try {
                         Date parsedDate = dateTimeFormat.parse(currentNode.textValue());
                         noarkCreateEntity.setCreatedDate(parsedDate);
@@ -231,19 +201,14 @@ public final class CommonUtils {
                                 "has a malformed opprettetData/createdDate. Make sure format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
-                    objectNode.remove(key);
+                    objectNode.remove(CREATED_DATE);
                 }
 
                 // Deserialize createdBy
                 currentNode = objectNode.get(CREATED_BY);
-                key = CREATED_BY;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CREATED_BY_EN);
-                    key = CREATED_BY_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     noarkCreateEntity.setCreatedBy(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CREATED_BY);
                 }
             }
 
@@ -251,12 +216,7 @@ public final class CommonUtils {
                                                               ObjectNode objectNode) {
                 // Deserialize finalisedDate
                 JsonNode currentNode = objectNode.get(FINALISED_DATE);
-                String key = FINALISED_DATE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(FINALISED_DATE_EN);
-                    key = FINALISED_DATE_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     try {
                         Date parsedDate = dateTimeFormat.parse(currentNode.textValue());
                         finaliseEntity.setFinalisedDate(parsedDate);
@@ -265,49 +225,32 @@ public final class CommonUtils {
                                 "has a malformed avsluttetData/finalisedDate. Make sure format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
-                    objectNode.remove(key);
+                    objectNode.remove(FINALISED_DATE);
                 }
 
                 // Deserialize finalisedBy
                 currentNode = objectNode.get(FINALISED_BY);
-                key = FINALISED_BY;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(FINALISED_BY_EN);
-                    key = FINALISED_BY_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     finaliseEntity.setFinalisedBy(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(FINALISED_BY);
                 }
-
             }
 
             public static void deserialiseNoarkTitleDescriptionEntity(INoarkTitleDescriptionEntity
                                                                               titleDescriptionEntity,
                                                                       ObjectNode objectNode) {
-
                 // Deserialize title
                 JsonNode currentNode = objectNode.get(TITLE);
-                String key = TITLE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(TITLE_EN);
-                    key = TITLE_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     titleDescriptionEntity.setTitle(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(TITLE);
                 }
 
                 // Deserialize description
                 currentNode = objectNode.get(DESCRIPTION);
-                key = DESCRIPTION;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(DESCRIPTION_EN);
-                    key = DESCRIPTION_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     titleDescriptionEntity.setDescription(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(DESCRIPTION);
                 }
             }
 
@@ -347,41 +290,25 @@ public final class CommonUtils {
 
                 // Deserialize referenceToRecord
                 JsonNode currentNode = objectNode.get(CROSS_REFERENCE_RECORD);
-                String key = CROSS_REFERENCE_RECORD;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CROSS_REFERENCE_RECORD_EN);
-                    key = CROSS_REFERENCE_RECORD_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     crossReferenceEntity.setReferenceToRecord(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CROSS_REFERENCE_RECORD);
                 }
 
                 // Deserialize referenceToFile
                 currentNode = objectNode.get(CROSS_REFERENCE_FILE);
-                key = CROSS_REFERENCE_FILE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CROSS_REFERENCE_FILE_EN);
-                    key = CROSS_REFERENCE_FILE_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     crossReferenceEntity.setReferenceToFile(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CROSS_REFERENCE_FILE);
                 }
 
                 // Deserialize referenceToClass
                 currentNode = objectNode.get(CROSS_REFERENCE_CLASS);
-                key = CROSS_REFERENCE_CLASS;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CROSS_REFERENCE_CLASS_EN);
-                    key = CROSS_REFERENCE_CLASS_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     crossReferenceEntity.setReferenceToClass(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CROSS_REFERENCE_CLASS);
                 }
                 objectNode.remove(CROSS_REFERENCE);
-                objectNode.remove(CROSS_REFERENCE_EN);
             }
 
             public static void deserialiseComments(IComment commentObject, ObjectNode objectNode) {
@@ -392,38 +319,22 @@ public final class CommonUtils {
             }
 
             public static void deserialiseCommentEntity(ICommentEntity commentEntity, ObjectNode objectNode) {
-
                 // Deserialize commentText
                 JsonNode currentNode = objectNode.get(COMMENT_TEXT);
-                String key = COMMENT_TEXT;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(COMMENT_TEXT_EN);
-                    key = COMMENT_TEXT_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     commentEntity.setCommentText(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(COMMENT_TEXT);
                 }
                 // Deserialize commentType
                 currentNode = objectNode.get(COMMENT_TYPE);
-                key = COMMENT_TYPE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(COMMENT_TYPE_EN);
-                    key = COMMENT_TYPE_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     commentEntity.setCommentType(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(COMMENT_TYPE);
                 }
 
                 // Deserialize commentDate
                 currentNode = objectNode.get(COMMENT_DATE);
-                key = COMMENT_DATE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(COMMENT_DATE_EN);
-                    key = COMMENT_DATE_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     try {
                         Date parsedDate = dateFormat.parse(currentNode.textValue());
                         commentEntity.setCommentDate(parsedDate);
@@ -432,41 +343,30 @@ public final class CommonUtils {
                                 "has a malformed merknadsdato/commentDate. Make sure the format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
-                    objectNode.remove(key);
+                    objectNode.remove(COMMENT_DATE);
                 }
                 // Deserialize commentRegisteredBy
                 currentNode = objectNode.get(COMMENT_REGISTERED_BY);
-                key = COMMENT_REGISTERED_BY;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(COMMENT_REGISTERED_BY_EN);
-                    key = COMMENT_REGISTERED_BY_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     commentEntity.setCommentRegisteredBy(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(COMMENT_REGISTERED_BY);
                 }
-
                 objectNode.remove(COMMENT);
-                objectNode.remove(COMMENT_EN);
             }
 
 
             public static Set<Series> deserialiseReferenceMultipleSeries(ObjectNode objectNode) {
                 Set<Series> referenceSeries = null;
-                JsonNode disposalNode = objectNode.get(REFERENCE_SERIES);
-                if (disposalNode != null) {
+                JsonNode node = objectNode.get(REFERENCE_SERIES);
+                if (node != null) {
                     referenceSeries = new HashSet<>();
                     deserialiseReferenceSeries(referenceSeries, objectNode.deepCopy());
                 }
                 objectNode.remove(REFERENCE_SERIES);
-                objectNode.remove(REFERENCE_SERIES_EN);
                 return referenceSeries;
-
             }
 
-
             public static void deserialiseReferenceSeries(Set<Series> referenceSeries, ObjectNode objectNode) {
-
 
             }
 
@@ -478,66 +378,43 @@ public final class CommonUtils {
                     deserialiseDisposalEntity(disposal, objectNode);
                 }
                 objectNode.remove(DISPOSAL);
-                objectNode.remove(DISPOSAL_EN);
                 return disposal;
-
             }
 
             public static void deserialiseDisposalEntity(IDisposalEntity disposalEntity, ObjectNode objectNode) {
 
                 // Deserialize disposalDecision
                 JsonNode currentNode = objectNode.get(DISPOSAL_DECISION);
-                String key = DISPOSAL_DECISION;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(DISPOSAL_DECISION_EN);
-                    key = DISPOSAL_DECISION_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     disposalEntity.setDisposalDecision(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(DISPOSAL_DECISION);
                 }
                 // Deserialize disposalAuthority(
                 currentNode = objectNode.get(DISPOSAL_AUTHORITY);
-                key = DISPOSAL_AUTHORITY;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(DISPOSAL_AUTHORITY_EN);
-                    key = DISPOSAL_AUTHORITY_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     disposalEntity.setDisposalAuthority(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(DISPOSAL_AUTHORITY);
                 }
                 // Deserialize preservationTime
                 currentNode = objectNode.get(DISPOSAL_PRESERVATION_TIME);
-                key = DISPOSAL_PRESERVATION_TIME;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(DISPOSAL_PRESERVATION_TIME_EN);
-                    key = DISPOSAL_PRESERVATION_TIME_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     disposalEntity.setPreservationTime(Integer.getInteger(currentNode.textValue()));
-                    objectNode.remove(key);
+                    objectNode.remove(DISPOSAL_PRESERVATION_TIME);
                 }
                 // Deserialize disposalDate
                 currentNode = objectNode.get(DISPOSAL_DATE);
-                key = DISPOSAL_DATE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(DISPOSAL_DATE_EN);
-                    key = DISPOSAL_DATE_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     try {
                         Date parsedDate = dateFormat.parse(currentNode.textValue());
                         disposalEntity.setDisposalDate(parsedDate);
+                        objectNode.remove(DISPOSAL_DATE);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The Disposal object you tried to create " +
                                 "has a malformed kassasjonsdato/disposalDate. Make sure the format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
-                    objectNode.remove(key);
                 }
                 objectNode.remove(DISPOSAL);
-                objectNode.remove(DISPOSAL_EN);
             }
 
             public static DisposalUndertaken deserialiseDisposalUndertaken(ObjectNode objectNode) {
@@ -548,7 +425,6 @@ public final class CommonUtils {
                     deserialiseDisposalUndertakenEntity(disposalUndertaken, objectNode);
                 }
                 objectNode.remove(DISPOSAL_UNDERTAKEN);
-                objectNode.remove(DISPOSAL_UNDERTAKEN_EN);
                 return disposalUndertaken;
             }
 
@@ -556,24 +432,14 @@ public final class CommonUtils {
                                                                    ObjectNode objectNode) {
                 // Deserialize disposalBy
                 JsonNode currentNode = objectNode.get(DISPOSAL_UNDERTAKEN_BY);
-                String key = DISPOSAL_UNDERTAKEN_BY;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(DISPOSAL_UNDERTAKEN_BY_EN);
-                    key = DISPOSAL_UNDERTAKEN_BY_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     disposalUndertakenEntity.setDisposalBy(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(DISPOSAL_UNDERTAKEN_BY);
                 }
 
                 // Deserialize disposalDate
                 currentNode = objectNode.get(DISPOSAL_UNDERTAKEN_DATE);
-                key = DISPOSAL_UNDERTAKEN_DATE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(DISPOSAL_UNDERTAKEN_DATE);
-                    key = DISPOSAL_UNDERTAKEN_DATE;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     try {
                         Date parsedDate = dateFormat.parse(currentNode.textValue());
                         disposalUndertakenEntity.setDisposalDate(parsedDate);
@@ -582,10 +448,8 @@ public final class CommonUtils {
                                 "create has a malformed kassasjonsdato/disposalDate. Make sure the format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
-                    objectNode.remove(key);
+                    objectNode.remove(DISPOSAL_UNDERTAKEN_DATE);
                 }
-                objectNode.remove(DISPOSAL_UNDERTAKEN_DATE);
-                objectNode.remove(DISPOSAL_UNDERTAKEN_DATE_EN);
             }
 
             public static Deletion deserialiseDeletion(ObjectNode objectNode) {
@@ -601,36 +465,21 @@ public final class CommonUtils {
             public static void deserialiseDeletionEntity(IDeletionEntity deletionEntity, ObjectNode objectNode) {
                 // Deserialize deletionBy
                 JsonNode currentNode = objectNode.get(DELETION_BY);
-                String key = DELETION_BY;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(DELETION_BY_EN);
-                    key = DELETION_BY_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     deletionEntity.setDeletionBy(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(DELETION_BY);
                 }
 
                 // Deserialize deletionType
                 currentNode = objectNode.get(DELETION_TYPE);
-                key = DELETION_TYPE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(DELETION_TYPE_EN);
-                    key = DELETION_TYPE_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     deletionEntity.setDeletionType(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(DELETION_TYPE);
                 }
 
                 // Deserialize deletionDate
                 currentNode = objectNode.get(DELETION_DATE);
-                key = DELETION_DATE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(DELETION_DATE_EN);
-                    key = DELETION_DATE;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     try {
                         Date parsedDate = dateFormat.parse(currentNode.textValue());
                         deletionEntity.setDeletionDate(parsedDate);
@@ -639,12 +488,10 @@ public final class CommonUtils {
                                 "has a malformed slettetDato/deletionDate. Make sure the format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
-                    objectNode.remove(key);
+                    objectNode.remove(DELETION_DATE);
                 }
                 objectNode.remove(DELETION);
-                objectNode.remove(DELETION_EN);
             }
-
 
             public static void deserialiseCaseParties(ICaseParty casePartyObject, ObjectNode objectNode) {
                 Set<CaseParty> caseParties = casePartyObject.getReferenceCaseParty();
@@ -652,7 +499,6 @@ public final class CommonUtils {
                     for (CaseParty caseParty : caseParties) {
                         deserialiseCaseParty(caseParty, objectNode);
                         objectNode.remove(CASE_PARTY);
-                        objectNode.remove(CASE_PARTY_EN);
                     }
                 }
             }
@@ -661,129 +507,69 @@ public final class CommonUtils {
 
                 // Deserialize casePartyId
                 JsonNode currentNode = objectNode.get(CASE_PARTY_ID);
-                String key = CASE_PARTY_ID;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CASE_PARTY_ID_EN);
-                    key = CASE_PARTY_ID_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     casePartyEntity.setCasePartyId(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CASE_PARTY_ID);
                 }
-
                 // Deserialize casePartyName
                 currentNode = objectNode.get(CASE_PARTY_NAME);
-                key = CASE_PARTY_NAME;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CASE_PARTY_NAME_EN);
-                    key = CASE_PARTY_NAME_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     casePartyEntity.setCasePartyName(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CASE_PARTY_NAME);
                 }
-
                 // Deserialize casePartyRole
                 currentNode = objectNode.get(CASE_PARTY_ROLE);
-                key = CASE_PARTY_ROLE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CASE_PARTY_ROLE_EN);
-                    key = CASE_PARTY_ROLE_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     casePartyEntity.setCasePartyRole(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CASE_PARTY_ROLE);
                 }
-
                 // Deserialize postalAddress
                 currentNode = objectNode.get(CASE_PARTY_POSTAL_ADDRESS);
-                key = CASE_PARTY_POSTAL_ADDRESS;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CASE_PARTY_POSTAL_ADDRESS_EN);
-                    key = CASE_PARTY_POSTAL_ADDRESS_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     casePartyEntity.setPostalAddress(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CASE_PARTY_POSTAL_ADDRESS);
                 }
-
                 // Deserialize postCode
                 currentNode = objectNode.get(CASE_PARTY_POST_CODE);
-                key = CASE_PARTY_POST_CODE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CASE_PARTY_POST_CODE_EN);
-                    key = CASE_PARTY_POST_CODE_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     casePartyEntity.setPostCode(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CASE_PARTY_POST_CODE);
                 }
-
                 // Deserialize postalTown
                 currentNode = objectNode.get(CASE_PARTY_POSTAL_TOWN);
-                key = CASE_PARTY_POSTAL_TOWN;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CASE_PARTY_POSTAL_TOWN);
-                    key = CASE_PARTY_POSTAL_TOWN_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     casePartyEntity.setPostalTown(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CASE_PARTY_POSTAL_TOWN);
                 }
-
                 // Deserialize foreignAddress
                 currentNode = objectNode.get(CASE_PARTY_FOREIGN_ADDRESS);
-                key = CASE_PARTY_FOREIGN_ADDRESS;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CASE_PARTY_FOREIGN_ADDRESS_EN);
-                    key = CASE_PARTY_FOREIGN_ADDRESS_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     casePartyEntity.setForeignAddress(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CASE_PARTY_FOREIGN_ADDRESS);
                 }
-
                 // Deserialize emailAddress
                 currentNode = objectNode.get(CASE_PARTY_EMAIL_ADDRESS);
-                key = CASE_PARTY_EMAIL_ADDRESS;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CASE_PARTY_EMAIL_ADDRESS_EN);
-                    key = CASE_PARTY_EMAIL_ADDRESS_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     casePartyEntity.setEmailAddress(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CASE_PARTY_EMAIL_ADDRESS);
                 }
-
                 // Deserialize telephoneNumber
                 currentNode = objectNode.get(CASE_PARTY_TELEPHONE_NUMBER);
-                key = CASE_PARTY_TELEPHONE_NUMBER;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CASE_PARTY_TELEPHONE_NUMBER_EN);
-                    key = CASE_PARTY_TELEPHONE_NUMBER_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     casePartyEntity.setTelephoneNumber(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CASE_PARTY_TELEPHONE_NUMBER);
                 }
-
                 // Deserialize contactPerson
                 currentNode = objectNode.get(CASE_PARTY_CONTACT_PERSON);
-                key = CASE_PARTY_CONTACT_PERSON;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CASE_PARTY_CONTACT_PERSON_EN);
-                    key = CASE_PARTY_CONTACT_PERSON_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     casePartyEntity.setContactPerson(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CASE_PARTY_CONTACT_PERSON);
                 }
             }
 
             public static Set<Precedence> deserialisePrecedences(ObjectNode objectNode) {
-
-                objectNode.remove(PRECEDENCE);
-                objectNode.remove(PRECEDENCE_EN);
+//                objectNode.remove(PRECEDENCE);
+                // TODO : Looks like I'm missing!!!
                 return null;
             }
 
@@ -795,12 +581,7 @@ public final class CommonUtils {
 
                 // Deserialize precedenceDate
                 JsonNode currentNode = objectNode.get(PRECEDENCE_DATE);
-                String key = PRECEDENCE_DATE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(PRECEDENCE_DATE_EN);
-                    key = PRECEDENCE_DATE_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     try {
                         Date parsedDate = dateFormat.parse(currentNode.textValue());
                         precedenceEntity.setPrecedenceDate(parsedDate);
@@ -809,65 +590,35 @@ public final class CommonUtils {
                                 "has a malformed presedensDato/precedenceDate. Make sure the format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
-                    objectNode.remove(key);
+                    objectNode.remove(PRECEDENCE_DATE);
                 }
-
                 // Deserialize precedenceAuthority
                 currentNode = objectNode.get(PRECEDENCE_AUTHORITY);
-                key = PRECEDENCE_AUTHORITY;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(PRECEDENCE_AUTHORITY_EN);
-                    key = PRECEDENCE_AUTHORITY_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     precedenceEntity.setPrecedenceAuthority(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(PRECEDENCE_AUTHORITY);
                 }
-
                 // Deserialize sourceOfLaw
                 currentNode = objectNode.get(PRECEDENCE_SOURCE_OF_LAW);
-                key = PRECEDENCE_SOURCE_OF_LAW;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(PRECEDENCE_SOURCE_OF_LAW_EN);
-                    key = PRECEDENCE_SOURCE_OF_LAW_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     precedenceEntity.setSourceOfLaw(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(PRECEDENCE_SOURCE_OF_LAW);
                 }
-
                 // Deserialize precedenceApprovedBy
                 currentNode = objectNode.get(PRECEDENCE_APPROVED_BY);
-                key = PRECEDENCE_APPROVED_BY;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(PRECEDENCE_APPROVED_BY_EN);
-                    key = PRECEDENCE_APPROVED_BY_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     precedenceEntity.setPrecedenceApprovedBy(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(PRECEDENCE_APPROVED_BY);
                 }
-
                 // Deserialize precedenceStatus
                 currentNode = objectNode.get(PRECEDENCE_STATUS);
-                key = PRECEDENCE_STATUS;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(PRECEDENCE_STATUS_EN);
-                    key = PRECEDENCE_STATUS_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     precedenceEntity.setPrecedenceStatus(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(PRECEDENCE_STATUS);
                 }
-
                 // Deserialize precedenceApprovedDate
                 currentNode = objectNode.get(PRECEDENCE_APPROVED_DATE);
-                key = PRECEDENCE_APPROVED_DATE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(PRECEDENCE_APPROVED_DATE_EN);
-                    key = PRECEDENCE_APPROVED_DATE_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     try {
                         Date parsedDate = dateFormat.parse(currentNode.textValue());
                         precedenceEntity.setPrecedenceApprovedDate(parsedDate);
@@ -876,25 +627,26 @@ public final class CommonUtils {
                                 "has a malformed presedensGodkjentDato/precedenceApprovedDate. Make sure the format " +
                                 "is " + NOARK_DATE_FORMAT_PATTERN);
                     }
-                    objectNode.remove(key);
+                    objectNode.remove(PRECEDENCE_APPROVED_DATE);
                 }
-
             }
 
             public static Set<CaseParty> deserialiseCaseParties(ObjectNode objectNode) {
                 HashSet<CaseParty> caseParties = new HashSet<>();
                 JsonNode jsonCorrespondenceParts = objectNode.get(CORRESPONDENCE_PART);
 
+                // TODO: I seem tobe missing my body of code ...
 /*                for (CorrespondencePart correspondencePart: caseParties) {
                     deserialiseCorrespondencePart(correspondencePart, objectNode);
                     objectNode.remove(CORRESPONDENCE_PART);
-                    objectNode.remove(CORRESPONDENCE_PART_EN);
                 }
 */
                 return caseParties;
             }
 
             public static Set<CorrespondencePart> deserialiseCorrespondencePart(ObjectNode objectNode) {
+                // TODO: I seem tobe missing my body of code ...
+
                 /*HashSet<CorrespondencePart> correspondenceParts = new HashSet<> ();
 
                 JsonNode jsonCorrespondenceParts = objectNode.get(CORRESPONDENCE_PART);
@@ -908,138 +660,71 @@ public final class CommonUtils {
 
             public static void deserialiseCorrespondencePartEntity(ICorrespondencePartEntity correspondencePartEntity,
                                                                    ObjectNode objectNode) {
-
-
                 // Deserialize correspondencePartId
                 JsonNode currentNode = objectNode.get(CORRESPONDENCE_PART_TYPE);
-                String key = CORRESPONDENCE_PART_TYPE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CORRESPONDENCE_PART_TYPE_EN);
-                    key = CORRESPONDENCE_PART_TYPE_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     correspondencePartEntity.setCorrespondencePartType(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CORRESPONDENCE_PART_TYPE);
                 }
-
                 // Deserialize correspondencePartName
                 currentNode = objectNode.get(CORRESPONDENCE_PART_NAME);
-                key = CORRESPONDENCE_PART_NAME;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CORRESPONDENCE_PART_NAME_EN);
-                    key = CORRESPONDENCE_PART_NAME_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     correspondencePartEntity.setCorrespondencePartName(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CORRESPONDENCE_PART_NAME);
                 }
-
                 // Deserialize postalAddress
                 currentNode = objectNode.get(CORRESPONDENCE_PART_POSTAL_ADDRESS);
-                key = CORRESPONDENCE_PART_POSTAL_ADDRESS;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CORRESPONDENCE_PART_POSTAL_ADDRESS_EN);
-                    key = CORRESPONDENCE_PART_POSTAL_ADDRESS_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     correspondencePartEntity.setPostalAddress(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CORRESPONDENCE_PART_POSTAL_ADDRESS);
                 }
-
                 // Deserialize postCode
                 currentNode = objectNode.get(CORRESPONDENCE_PART_POST_CODE);
-                key = CORRESPONDENCE_PART_POST_CODE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CORRESPONDENCE_PART_POST_CODE_EN);
-                    key = CORRESPONDENCE_PART_POST_CODE_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     correspondencePartEntity.setPostCode(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CORRESPONDENCE_PART_POST_CODE);
                 }
-
                 // Deserialize postalTown
                 currentNode = objectNode.get(CORRESPONDENCE_PART_POSTAL_TOWN);
-                key = CORRESPONDENCE_PART_POSTAL_TOWN;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CORRESPONDENCE_PART_POSTAL_TOWN);
-                    key = CORRESPONDENCE_PART_POSTAL_TOWN_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     correspondencePartEntity.setPostalTown(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CORRESPONDENCE_PART_POSTAL_TOWN);
                 }
-
                 // Deserialize country
                 currentNode = objectNode.get(CORRESPONDENCE_PART_COUNTRY);
-                key = CORRESPONDENCE_PART_COUNTRY;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CORRESPONDENCE_PART_COUNTRY_EN);
-                    key = CORRESPONDENCE_PART_COUNTRY_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     correspondencePartEntity.setCountry(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CORRESPONDENCE_PART_COUNTRY);
                 }
-
                 // Deserialize emailAddress
                 currentNode = objectNode.get(CORRESPONDENCE_PART_EMAIL_ADDRESS);
-                key = CORRESPONDENCE_PART_EMAIL_ADDRESS;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CORRESPONDENCE_PART_EMAIL_ADDRESS_EN);
-                    key = CORRESPONDENCE_PART_EMAIL_ADDRESS_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     correspondencePartEntity.setEmailAddress(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CORRESPONDENCE_PART_EMAIL_ADDRESS);
                 }
-
                 // Deserialize telephoneNumber
                 currentNode = objectNode.get(CORRESPONDENCE_PART_TELEPHONE_NUMBER);
-                key = CORRESPONDENCE_PART_TELEPHONE_NUMBER;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CORRESPONDENCE_PART_TELEPHONE_NUMBER_EN);
-                    key = CORRESPONDENCE_PART_TELEPHONE_NUMBER_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     correspondencePartEntity.setTelephoneNumber(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CORRESPONDENCE_PART_TELEPHONE_NUMBER);
                 }
-
                 // Deserialize contactPerson
                 currentNode = objectNode.get(CORRESPONDENCE_PART_CONTACT_PERSON);
-                key = CORRESPONDENCE_PART_CONTACT_PERSON;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CORRESPONDENCE_PART_CONTACT_PERSON_EN);
-                    key = CORRESPONDENCE_PART_CONTACT_PERSON_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     correspondencePartEntity.setContactPerson(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CORRESPONDENCE_PART_CONTACT_PERSON);
                 }
-
                 // Deserialize administrativeUnit
                 currentNode = objectNode.get(CORRESPONDENCE_PART_ADMINISTRATIVE_UNIT);
-                key = CORRESPONDENCE_PART_ADMINISTRATIVE_UNIT;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CORRESPONDENCE_PART_ADMINISTRATIVE_UNIT_EN);
-                    key = CORRESPONDENCE_PART_ADMINISTRATIVE_UNIT_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     correspondencePartEntity.setAdministrativeUnit(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CORRESPONDENCE_PART_ADMINISTRATIVE_UNIT);
                 }
-
                 // Deserialize caseHandler
                 currentNode = objectNode.get(CORRESPONDENCE_PART_CASE_HANDLER);
-                key = CORRESPONDENCE_PART_CASE_HANDLER;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CORRESPONDENCE_PART_CASE_HANDLER_EN);
-                    key = CORRESPONDENCE_PART_CASE_HANDLER_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     correspondencePartEntity.setCaseHandler(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CORRESPONDENCE_PART_CASE_HANDLER);
                 }
             }
 
@@ -1053,38 +738,21 @@ public final class CommonUtils {
             public static void deserialiseFondsCreator(IFondsCreatorEntity fondsCreatorEntity, ObjectNode objectNode) {
                 // Deserialize fondsCreatorId
                 JsonNode currentNode = objectNode.get(FONDS_CREATOR_ID);
-                String key = FONDS_CREATOR_ID;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(FONDS_CREATOR_ID_EN);
-                    key = FONDS_CREATOR_ID_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     fondsCreatorEntity.setFondsCreatorId(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(FONDS_CREATOR_ID);
                 }
-
                 // Deserialize fondsCreatorName
                 currentNode = objectNode.get(FONDS_CREATOR_NAME);
-                key = FONDS_CREATOR_NAME;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(FONDS_CREATOR_NAME_EN);
-                    key = FONDS_CREATOR_NAME_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     fondsCreatorEntity.setFondsCreatorName(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(FONDS_CREATOR_NAME);
                 }
-
                 // Deserialize description
                 currentNode = objectNode.get(DESCRIPTION);
-                key = DESCRIPTION;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(DESCRIPTION_EN);
-                    key = DESCRIPTION_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     fondsCreatorEntity.setDescription(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(DESCRIPTION);
                 }
             }
 
@@ -1096,67 +764,37 @@ public final class CommonUtils {
                     deserialiseScreeningEntity(screening, screeningNode.deepCopy());
                 }
                 objectNode.remove(SCREENING);
-                objectNode.remove(SCREENING_EN);
                 return screening;
             }
 
             public static void deserialiseScreeningEntity(IScreeningEntity screeningEntity, ObjectNode objectNode) {
                 // Deserialize accessRestriction
                 JsonNode currentNode = objectNode.get(SCREENING_ACCESS_RESTRICTION);
-                String key = SCREENING_ACCESS_RESTRICTION;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(SCREENING_ACCESS_RESTRICTION_EN);
-                    key = SCREENING_ACCESS_RESTRICTION_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     screeningEntity.setAccessRestriction(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(SCREENING_ACCESS_RESTRICTION);
                 }
-
                 // Deserialize screeningAuthority
                 currentNode = objectNode.get(SCREENING_AUTHORITY);
-                key = SCREENING_AUTHORITY;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(SCREENING_AUTHORITY_EN);
-                    key = SCREENING_AUTHORITY_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     screeningEntity.setScreeningAuthority(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(SCREENING_AUTHORITY);
                 }
-
                 // Deserialize screeningMetadata
                 currentNode = objectNode.get(SCREENING_METADATA);
-                key = SCREENING_METADATA;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(SCREENING_METADATA_EN);
-                    key = SCREENING_METADATA_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     screeningEntity.setScreeningMetadata(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(SCREENING_METADATA);
                 }
-
                 // Deserialize screeningDocument
                 currentNode = objectNode.get(SCREENING_DOCUMENT);
-                key = SCREENING_DOCUMENT;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(SCREENING_DOCUMENT_EN);
-                    key = SCREENING_DOCUMENT_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     screeningEntity.setScreeningDocument(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(SCREENING_DOCUMENT);
                 }
-
                 // Deserialize screeningExpiresDate
                 currentNode = objectNode.get(SCREENING_EXPIRES_DATE);
-                key = SCREENING_EXPIRES_DATE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(SCREENING_EXPIRES_DATE_EN);
-                    key = SCREENING_EXPIRES_DATE_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     try {
                         Date parsedDate = dateFormat.parse(currentNode.textValue());
                         screeningEntity.setScreeningExpiresDate(parsedDate);
@@ -1166,22 +804,15 @@ public final class CommonUtils {
                                 " format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
-                    objectNode.remove(key);
+                    objectNode.remove(SCREENING_EXPIRES_DATE);
                 }
-
                 // Deserialize screeningDuration
                 currentNode = objectNode.get(SCREENING_DURATION);
-                key = SCREENING_DURATION;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(SCREENING_DURATION_EN);
-                    key = SCREENING_DURATION_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     screeningEntity.setScreeningDuration(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(SCREENING_DURATION);
                 }
                 objectNode.remove(SCREENING);
-                objectNode.remove(SCREENING_EN);
             }
 
             public static Classified deserialiseClassified(ObjectNode objectNode) {
@@ -1191,9 +822,8 @@ public final class CommonUtils {
                     classified = new Classified();
                     deserialiseClassifiedEntity(classified, classifiedNode.deepCopy());
                 }
-                //TODO: Only remove if the hastset is actually empty, otherwise let it go back up with the extra values
+                //TODO: Only remove if the hashset is actually empty, otherwise let it go back up with the extra values
                 objectNode.remove(CLASSIFIED);
-                objectNode.remove(CLASSIFIED_EN);
                 return classified;
             }
 
@@ -1201,24 +831,13 @@ public final class CommonUtils {
 
                 // Deserialize classification
                 JsonNode currentNode = objectNode.get(CLASSIFICATION);
-                String key = CLASSIFICATION;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CLASSIFICATION_EN);
-                    key = CLASSIFICATION_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     classifiedEntity.setClassification(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CLASSIFICATION);
                 }
-
                 // Deserialize classificationDate
                 currentNode = objectNode.get(CLASSIFICATION_DATE);
-                key = CLASSIFICATION_DATE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CLASSIFICATION_DATE_EN);
-                    key = CLASSIFICATION_DATE_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     try {
                         Date parsedDate = dateFormat.parse(currentNode.textValue());
                         classifiedEntity.setClassificationDate(parsedDate);
@@ -1227,29 +846,18 @@ public final class CommonUtils {
                                 "has a malformed graderingsdato/classificationDate. Make sure the format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
-                    objectNode.remove(key);
+                    objectNode.remove(CLASSIFICATION_DATE);
                 }
 
                 // Deserialize classificationBy
                 currentNode = objectNode.get(CLASSIFICATION_BY);
-                key = CLASSIFICATION_BY;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CLASSIFICATION_BY_EN);
-                    key = CLASSIFICATION_BY_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     classifiedEntity.setClassificationBy(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CLASSIFICATION_BY);
                 }
-
                 // Deserialize classificationDowngradedDate
                 currentNode = objectNode.get(CLASSIFICATION_DOWNGRADED_DATE);
-                key = CLASSIFICATION_DOWNGRADED_DATE;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CLASSIFICATION_DOWNGRADED_DATE_EN);
-                    key = CLASSIFICATION_DOWNGRADED_DATE_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     try {
                         Date parsedDate = dateFormat.parse(currentNode.textValue());
                         classifiedEntity.setClassificationDowngradedDate(parsedDate);
@@ -1259,23 +867,16 @@ public final class CommonUtils {
                                 "format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
-                    objectNode.remove(key);
+                    objectNode.remove(CLASSIFICATION_DOWNGRADED_DATE);
                 }
                 // Deserialize
                 currentNode = objectNode.get(CLASSIFICATION_DOWNGRADED_BY);
-                key = CLASSIFICATION_DOWNGRADED_BY;
-                if (currentNode == null) {
-                    currentNode = objectNode.get(CLASSIFICATION_DOWNGRADED_BY_EN);
-                    key = CLASSIFICATION_DOWNGRADED_BY_EN;
-                }
-                if (currentNode != null) {
+                if (null != currentNode) {
                     classifiedEntity.setClassificationDowngradedBy(currentNode.textValue());
-                    objectNode.remove(key);
+                    objectNode.remove(CLASSIFICATION_DOWNGRADED_BY);
                 }
                 objectNode.remove(CLASSIFIED);
-                objectNode.remove(CLASSIFIED_EN);
             }
-
         }
 
         public static final class Serialize {

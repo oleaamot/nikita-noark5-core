@@ -6,13 +6,15 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import nikita.util.exceptions.NikitaMalformedInputDataException;
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
-import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
 import nikita.util.CommonUtils;
+import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
+import nikita.util.exceptions.NikitaMalformedInputDataException;
+
 import java.io.IOException;
-import static nikita.config.N5ResourceMappings.*;
+
+import static nikita.config.N5ResourceMappings.CLASS_ID;
 
 /**
  * Created by tsodring on 1/6/17.
@@ -56,14 +58,9 @@ public class ClassDeserializer extends JsonDeserializer implements ObligatoryPro
 
         // Deserialize klassStatus
         JsonNode currentNode = objectNode.get(CLASS_ID);
-        String key = CLASS_ID;
-        if (currentNode == null) {
-            currentNode = objectNode.get(CLASS_ID_EN);
-            key = CLASS_ID_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             klass.setClassId(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(CLASS_ID);
         }
 
         // Check that all obligatory values are present

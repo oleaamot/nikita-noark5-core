@@ -1,8 +1,13 @@
 {
-  "officialTitle" : "Public title of the test file",
-  "title" : "Title of the test file",
-  "description" : "Description of the test file",
-  "keyword" : ["keyword 1", "keyword 2", "keyword 3"],
+  "offentligTittel": "Public title of the test file",
+  "mappeID": "2017/01",
+  "tittel": "Title of the test file",
+  "beskrivelse": "Description of the test file",
+  "noekkelord": [
+    "keyword 1",
+    "keyword 2",
+    "keyword 3"
+  ],
   "oppbevaringsted" : [ "location 1", "location2", "location3" ],
-  "documentMedium" : "Elektronisk arkiv"
+  "dokumentmedium": "Elektronisk arkiv"
 }

@@ -6,15 +6,15 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import nikita.util.exceptions.NikitaMalformedInputDataException;
 import nikita.model.noark5.v4.Fonds;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
-import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
 import nikita.util.CommonUtils;
+import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
+import nikita.util.exceptions.NikitaMalformedInputDataException;
 
 import java.io.IOException;
 
-import static nikita.config.N5ResourceMappings.*;
+import static nikita.config.N5ResourceMappings.FONDS_STATUS;
 
 /**
  * Created by tsodring on 1/6/17.
@@ -63,14 +63,9 @@ public class FondsDeserializer extends JsonDeserializer implements ObligatoryPro
 
         // Deserialize seriesStatus
         JsonNode currentNode = objectNode.get(FONDS_STATUS);
-        String key = FONDS_STATUS;
-        if (currentNode == null) {
-            currentNode = objectNode.get(FONDS_STATUS_EN);
-            key = FONDS_STATUS_EN;
-        }
         if (currentNode != null) {
             fonds.setFondsStatus(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(FONDS_STATUS);
         }
 
         // Check that all obligatory values are present

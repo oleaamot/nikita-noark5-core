@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import nikita.util.exceptions.NikitaMalformedInputDataException;
 import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
-import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
 import nikita.util.CommonUtils;
+import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
+import nikita.util.exceptions.NikitaMalformedInputDataException;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -22,29 +22,29 @@ import static nikita.util.CommonUtils.Hateoas.Deserialize;
 
 /**
  * Created by tsodring on 1/6/17.
- *
+ * <p>
  * Deserialise an incoming Series JSON object.
- *
+ * <p>
  * Having a own deserialiser is done to have more fine grained control over the input. This allows us to be less strict
  * with property names, allowing for both English and Norwegian property names
- *
+ * <p>
  * Both English and Norwegian property names can be used in the incoming JSON as well as there being no requirement with
  * regards to small and large letters in property names.
- *
+ * <p>
  * Note this implementation expects that the Series object to deserialise is in compliance with the Noark standard where
- * certain properties i.e. createdBy and createdDate are set by the core, not the caller. This deserializer will not 
+ * certain properties i.e. createdBy and createdDate are set by the core, not the caller. This deserializer will not
  * enforce this and will deserialize a series object correctly. This is because e.g the import interface will require
  * such functionality.
- *
- *  - Testing of compliance of properties is handled by the core, either in SeriesController or SeriesService
- * 
- * Note. Currently we do not include 'id' or 'deleted' properties. 'id' is a primary key and it is assumed this is 
+ * <p>
+ * - Testing of compliance of properties is handled by the core, either in SeriesController or SeriesService
+ * <p>
+ * Note. Currently we do not include 'id' or 'deleted' properties. 'id' is a primary key and it is assumed this is
  * taken care of by the DBMS and 'deleted' is a field internal to the core to handle soft delete. Importing soft deleted
  * objects is something we do not consider necessary.
- *
+ * <p>
  * Note:
- *  - Unknown property values in the JSON will trigger an exception
- *  - Missing obligatory property values in the JSON will trigger an exception
+ * - Unknown property values in the JSON will trigger an exception
+ * - Missing obligatory property values in the JSON will trigger an exception
  */
 public class SeriesDeserializer extends JsonDeserializer implements ObligatoryPropertiesCheck {
 
@@ -64,85 +64,56 @@ public class SeriesDeserializer extends JsonDeserializer implements ObligatoryPr
 
         // Deserialize seriesStatus
         JsonNode currentNode = objectNode.get(SERIES_STATUS);
-        String key = SERIES_STATUS;
-        if (currentNode == null) {
-            currentNode = objectNode.get(SERIES_STATUS_EN);
-            key = SERIES_STATUS_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             series.setSeriesStatus(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(SERIES_STATUS);
         }
-
         // Deserialize seriesStartDate
         currentNode = objectNode.get(SERIES_START_DATE);
-        key = SERIES_START_DATE;
-        if (currentNode == null) {
-            currentNode = objectNode.get(SERIES_START_DATE_EN);
-            key = SERIES_START_DATE_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             try {
                 Date parsedDate = Deserialize.dateFormat.parse(currentNode.textValue());
                 series.setSeriesStartDate(parsedDate);
+                objectNode.remove(SERIES_START_DATE);
             } catch (ParseException e) {
                 throw new NikitaMalformedInputDataException("The series object you tried to create " +
                         "has a malformed arkivperiodeStartDato/seriesStartDate. Make sure format is " +
                         NOARK_DATE_FORMAT_PATTERN);
             }
-            objectNode.remove(key);
         }
-
         // Deserialize seriesEndDate
         currentNode = objectNode.get(SERIES_END_DATE);
-        key = SERIES_END_DATE;
-        if (currentNode == null) {
-            currentNode = objectNode.get(SERIES_END_DATE_EN);
-            key = SERIES_END_DATE_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             try {
                 Date parsedDate = Deserialize.dateFormat.parse(currentNode.textValue());
                 series.setSeriesEndDate(parsedDate);
+                objectNode.remove(SERIES_END_DATE);
             } catch (ParseException e) {
                 throw new NikitaMalformedInputDataException("The series object you tried to create " +
                         "has a malformed arkivperiodeSluttDato/seriesEndDate. Make sure format is " +
                         NOARK_DATE_FORMAT_PATTERN);
             }
-            objectNode.remove(key);
         }
-
         // Deserialize referencePrecursor
         currentNode = objectNode.get(SERIES_PRECURSOR);
-        key = SERIES_PRECURSOR;
-        if (currentNode == null) {
-            currentNode = objectNode.get(SERIES_PRECURSOR_EN);
-            key = SERIES_PRECURSOR_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             Series seriesPrecursor = new Series();
             seriesPrecursor.setSystemId(currentNode.textValue());
             series.setReferencePrecursor(seriesPrecursor);
             // TODO: Does this imply that the current series object is the successor?
             // I would not set it here, as the service class has to check that
             // the seriesPrecursor object actually exists
-            objectNode.remove(key);
+            objectNode.remove(SERIES_PRECURSOR);
         }
-
-        // Deserialize
+        // Deserialize referenceSuccessor
         currentNode = objectNode.get(SERIES_SUCCESSOR);
-        key = SERIES_SUCCESSOR;
-        if (currentNode == null) {
-            currentNode = objectNode.get(SERIES_SUCCESSOR_EN);
-            key = SERIES_SUCCESSOR_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             Series seriesSuccessor = new Series();
             seriesSuccessor.setSystemId(currentNode.textValue());
             series.setReferenceSuccessor(seriesSuccessor);
             // TODO: Does this imply that the current series object is the precursor?
             // I would not set it here, as the service class should do this
-            objectNode.remove(key);
+            objectNode.remove(SERIES_SUCCESSOR);
         }
         series.setReferenceDisposal(CommonUtils.Hateoas.Deserialize.deserialiseDisposal(objectNode));
         series.setReferenceDisposalUndertaken(CommonUtils.Hateoas.Deserialize.deserialiseDisposalUndertaken(objectNode));

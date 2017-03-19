@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import nikita.util.exceptions.NikitaMalformedInputDataException;
 import nikita.model.noark5.v4.BasicRecord;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
-import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
 import nikita.util.CommonUtils;
+import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
+import nikita.util.exceptions.NikitaMalformedInputDataException;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -64,83 +64,53 @@ public class BasicRecordDeserializer extends JsonDeserializer implements Obligat
 
         // Deserialize archivedBy
         JsonNode currentNode = objectNode.get(RECORD_ARCHIVED_BY);
-        String key = RECORD_ARCHIVED_BY;
-        if (currentNode == null) {
-            currentNode = objectNode.get(RECORD_ARCHIVED_BY_EN);
-            key = RECORD_ARCHIVED_BY_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             basicRecord.setArchivedBy(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(RECORD_ARCHIVED_BY);
         }
 
         // Deserialize archivedDate
         currentNode = objectNode.get(RECORD_ARCHIVED_DATE);
-        key = RECORD_ARCHIVED_DATE;
-        if (currentNode == null) {
-            currentNode = objectNode.get(RECORD_ARCHIVED_DATE_EN);
-            key = RECORD_ARCHIVED_DATE_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             try {
                 Date parsedDate = Deserialize.dateTimeFormat.parse(currentNode.textValue());
                 basicRecord.setArchivedDate(parsedDate);
+                objectNode.remove(RECORD_ARCHIVED_DATE);
             }
             catch (ParseException e) {
                 throw new NikitaMalformedInputDataException("The BasicRecord object you tried to create " +
                         "has a malformed arkivertDato/archivedDate. Make sure format is " +
                         NOARK_DATE_FORMAT_PATTERN);
             }
-            objectNode.remove(key);
         }
 
         // Deserialize general basicRecord properties
 
         // Deserialize recordId
         currentNode = objectNode.get(BASIC_RECORD_ID);
-        key = BASIC_RECORD_ID;
-        if (currentNode == null) {
-            currentNode = objectNode.get(BASIC_RECORD_ID_EN);
-            key = BASIC_RECORD_ID_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             basicRecord.setRecordId(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(BASIC_RECORD_ID);
         }
         // Deserialize title (not using utils to preserve order)
         currentNode = objectNode.get(TITLE);
-        key = TITLE;
-        if (currentNode == null) {
-            currentNode = objectNode.get(TITLE_EN);
-            key = TITLE_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             basicRecord.setTitle(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(TITLE);
         }
 
         // Deserialize  officialTitle
         currentNode = objectNode.get(FILE_PUBLIC_TITLE);
-        key = FILE_PUBLIC_TITLE;
-        if (currentNode == null) {
-            currentNode = objectNode.get(FILE_PUBLIC_TITLE_EN);
-            key = FILE_PUBLIC_TITLE_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             basicRecord.setOfficialTitle(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(FILE_PUBLIC_TITLE);
         }
 
         // Deserialize description
         currentNode = objectNode.get(DESCRIPTION);
-        key = DESCRIPTION;
-        if (currentNode == null) {
-            currentNode = objectNode.get(DESCRIPTION_EN);
-            key = DESCRIPTION_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             basicRecord.setDescription(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(DESCRIPTION);
         }
         CommonUtils.Hateoas.Deserialize.deserialiseDocumentMedium(basicRecord, objectNode);
         CommonUtils.Hateoas.Deserialize.deserialiseAuthor(basicRecord, objectNode);

@@ -58,118 +58,66 @@ public class DocumentObjectDeserializer extends JsonDeserializer implements Obli
         CommonUtils.Hateoas.Deserialize.deserialiseNoarkSystemIdEntity (documentObject, objectNode);
         // Deserialize versionNumber
         JsonNode currentNode = objectNode.get(DOCUMENT_OBJECT_VERSION_NUMBER);
-        String key = DOCUMENT_OBJECT_VERSION_NUMBER;
-        if (currentNode == null) {
-            currentNode = objectNode.get(DOCUMENT_OBJECT_VERSION_NUMBER_EN);
-            key = DOCUMENT_OBJECT_VERSION_NUMBER_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             documentObject.setVersionNumber(Integer.valueOf(currentNode.intValue()));
-            objectNode.remove(key);
+            objectNode.remove(DOCUMENT_OBJECT_VERSION_NUMBER);
         }
-
         // Deserialize variantFormat
         currentNode = objectNode.get(DOCUMENT_OBJECT_VARIANT_FORMAT);
-        key = DOCUMENT_OBJECT_VARIANT_FORMAT;
-        if (currentNode == null) {
-            currentNode = objectNode.get(DOCUMENT_OBJECT_VARIANT_FORMAT_EN);
-            key = DOCUMENT_OBJECT_VARIANT_FORMAT_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             documentObject.setVariantFormat(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(DOCUMENT_OBJECT_VARIANT_FORMAT);
         }
         // Deserialize format
         currentNode = objectNode.get(DOCUMENT_OBJECT_FORMAT);
-        key = DOCUMENT_OBJECT_FORMAT;
-        if (currentNode == null) {
-            currentNode = objectNode.get(DOCUMENT_OBJECT_FORMAT_EN);
-            key = DOCUMENT_OBJECT_FORMAT_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             documentObject.setFormat(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(DOCUMENT_OBJECT_FORMAT);
         }
         // Deserialize formatDetails
         currentNode = objectNode.get(DOCUMENT_OBJECT_FORMAT_DETAILS);
-        key = DOCUMENT_OBJECT_FORMAT_DETAILS;
-        if (currentNode == null) {
-            currentNode = objectNode.get(DOCUMENT_OBJECT_FORMAT_DETAILS_EN);
-            key = DOCUMENT_OBJECT_FORMAT_DETAILS_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             documentObject.setFormatDetails(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(DOCUMENT_OBJECT_FORMAT_DETAILS);
         }
         CommonUtils.Hateoas.Deserialize.deserialiseNoarkCreateEntity(documentObject, objectNode);
         // Deserialize referenceDocumentFile
         currentNode = objectNode.get(DOCUMENT_OBJECT_REFERENCE_DOCUMENT_FILE);
-        key = DOCUMENT_OBJECT_REFERENCE_DOCUMENT_FILE;
-        if (currentNode == null) {
-            currentNode = objectNode.get(DOCUMENT_OBJECT_REFERENCE_DOCUMENT_FILE_EN);
-            key = DOCUMENT_OBJECT_REFERENCE_DOCUMENT_FILE_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             documentObject.setReferenceDocumentFile(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(DOCUMENT_OBJECT_REFERENCE_DOCUMENT_FILE);
         }
         // Deserialize checksum
         currentNode = objectNode.get(DOCUMENT_OBJECT_CHECKSUM);
-        key = DOCUMENT_OBJECT_CHECKSUM;
-        if (currentNode == null) {
-            currentNode = objectNode.get(DOCUMENT_OBJECT_CHECKSUM_EN);
-            key = DOCUMENT_OBJECT_CHECKSUM_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             documentObject.setChecksum(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(DOCUMENT_OBJECT_CHECKSUM);
         }
         // Deserialize checksumAlgorithm
         currentNode = objectNode.get(DOCUMENT_OBJECT_CHECKSUM_ALGORITHM);
-        key = DOCUMENT_OBJECT_CHECKSUM_ALGORITHM;
-        if (currentNode == null) {
-            currentNode = objectNode.get(DOCUMENT_OBJECT_CHECKSUM_ALGORITHM_EN);
-            key = DOCUMENT_OBJECT_CHECKSUM_ALGORITHM_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             documentObject.setChecksumAlgorithm(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(DOCUMENT_OBJECT_CHECKSUM_ALGORITHM);
         }
         // Deserialize fileSize
         currentNode = objectNode.get(DOCUMENT_OBJECT_FILE_SIZE);
-        key = DOCUMENT_OBJECT_FILE_SIZE;
-        if (currentNode == null) {
-            currentNode = objectNode.get(DOCUMENT_OBJECT_FILE_SIZE_EN);
-            key = DOCUMENT_OBJECT_FILE_SIZE_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             documentObject.setFileSize(currentNode.asLong());
-            objectNode.remove(key);
+            objectNode.remove(DOCUMENT_OBJECT_FILE_SIZE);
         }
         // Deserialize filename
         currentNode = objectNode.get(DOCUMENT_OBJECT_FILE_NAME);
-        key = DOCUMENT_OBJECT_FILE_NAME;
-        if (currentNode == null) {
-            currentNode = objectNode.get(DOCUMENT_OBJECT_FILE_NAME_EN);
-            key = DOCUMENT_OBJECT_FILE_NAME_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             documentObject.setOriginalFilename(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(DOCUMENT_OBJECT_FILE_NAME);
         }
         // Deserialize mimeType
         currentNode = objectNode.get(DOCUMENT_OBJECT_MIME_TYPE);
-        key = DOCUMENT_OBJECT_MIME_TYPE;
-        if (currentNode == null) {
-            currentNode = objectNode.get(DOCUMENT_OBJECT_MIME_TYPE_EN);
-            key = DOCUMENT_OBJECT_MIME_TYPE_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             documentObject.setMimeType(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(DOCUMENT_OBJECT_MIME_TYPE);
         }
         checkForObligatoryDocumentObjectValues(documentObject);
-
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {

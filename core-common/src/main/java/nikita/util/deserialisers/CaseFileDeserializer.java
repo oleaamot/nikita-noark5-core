@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import nikita.util.exceptions.NikitaMalformedInputDataException;
 import nikita.model.noark5.v4.CaseFile;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
-import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
 import nikita.util.CommonUtils;
+import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
+import nikita.util.exceptions.NikitaMalformedInputDataException;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -63,28 +63,16 @@ public class CaseFileDeserializer extends JsonDeserializer implements Obligatory
 
         // Deserialize fileId
         JsonNode currentNode = objectNode.get(FILE_ID);
-        String key = FILE_ID;
-        if (currentNode == null) {
-            currentNode = objectNode.get(FILE_ID_EN);
-            key = FILE_ID_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             caseFile.setFileId(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(FILE_ID);
         }
-
         // Deserialize officialTitle
         currentNode = objectNode.get(FILE_PUBLIC_TITLE);
-        key = FILE_PUBLIC_TITLE;
-        if (currentNode == null) {
-            currentNode = objectNode.get(FILE_PUBLIC_TITLE_EN);
-            key = FILE_PUBLIC_TITLE_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             caseFile.setOfficialTitle(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(FILE_PUBLIC_TITLE);
         }
-
         caseFile.setReferenceCrossReference(CommonUtils.Hateoas.Deserialize.deserialiseCrossReferences(objectNode));
         CommonUtils.Hateoas.Deserialize.deserialiseComments(caseFile, objectNode);
         caseFile.setReferenceDisposal(CommonUtils.Hateoas.Deserialize.deserialiseDisposal(objectNode));
@@ -94,128 +82,72 @@ public class CaseFileDeserializer extends JsonDeserializer implements Obligatory
         // Deserialise general properties for CaseFile
         // Deserialize caseYear
         currentNode = objectNode.get(CASE_YEAR);
-        key = CASE_YEAR;
-        if (currentNode == null) {
-            currentNode = objectNode.get(CASE_YEAR_EN);
-            key = CASE_YEAR_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             caseFile.setCaseYear(Integer.getInteger(currentNode.textValue()));
-            objectNode.remove(key);
+            objectNode.remove(CASE_YEAR);
         }
-
         // Deserialize caseSequenceNumber
         currentNode = objectNode.get(CASE_SEQUENCE_NUMBER);
-        key = CASE_SEQUENCE_NUMBER;
-        if (currentNode == null) {
-            currentNode = objectNode.get(CASE_SEQUENCE_NUMBER_EN);
-            key = CASE_SEQUENCE_NUMBER_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             caseFile.setCaseSequenceNumber(Integer.getInteger(currentNode.textValue()));
-            objectNode.remove(key);
+            objectNode.remove(CASE_SEQUENCE_NUMBER);
         }
-
         // Deserialize caseDate
         currentNode = objectNode.get(CASE_DATE);
-        key = CASE_DATE;
-        if (currentNode == null) {
-            currentNode = objectNode.get(CASE_DATE_EN);
-            key = CASE_DATE_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             try {
                 Date parsedDate = CommonUtils.Hateoas.Deserialize.dateFormat.parse(currentNode.textValue());
                 caseFile.setCaseDate(parsedDate);
+                objectNode.remove(CASE_DATE);
             }
             catch (ParseException e) {
                 throw new NikitaMalformedInputDataException("The caseFile object you tried to create " +
                         "has a malformed saksDato/caseDate. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
-
             }
-            objectNode.remove(key);
         }
-        // Deserialize
+        // Deserialize administrativeUnit
         currentNode = objectNode.get(CASE_ADMINISTRATIVE_UNIT);
-        key = CASE_ADMINISTRATIVE_UNIT;
-        if (currentNode == null) {
-            currentNode = objectNode.get(CASE_ADMINISTRATIVE_UNIT_EN);
-            key = CASE_ADMINISTRATIVE_UNIT_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             caseFile.setAdministrativeUnit(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(CASE_ADMINISTRATIVE_UNIT);
         }
-
         // Deserialize caseResponsible
         currentNode = objectNode.get(CASE_RESPONSIBLE);
-        key = CASE_RESPONSIBLE;
-        if (currentNode == null) {
-            currentNode = objectNode.get(CASE_RESPONSIBLE_EN);
-            key = CASE_RESPONSIBLE_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             caseFile.setCaseResponsible(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(CASE_RESPONSIBLE);
         }
-
         // Deserialize recordsManagementUnit
         currentNode = objectNode.get(CASE_RECORDS_MANAGEMENT_UNIT);
-        key = CASE_RECORDS_MANAGEMENT_UNIT;
-        if (currentNode == null) {
-            currentNode = objectNode.get(CASE_RECORDS_MANAGEMENT_UNIT_EN);
-            key = CASE_RECORDS_MANAGEMENT_UNIT_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             caseFile.setRecordsManagementUnit(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(CASE_RECORDS_MANAGEMENT_UNIT);
         }
-
         // Deserialize caseStatus
         currentNode = objectNode.get(CASE_STATUS);
-        key = CASE_STATUS;
-        if (currentNode == null) {
-            currentNode = objectNode.get(CASE_STATUS_EN);
-            key = CASE_STATUS_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             caseFile.setCaseStatus(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(CASE_STATUS);
         }
-
         // Deserialize loanedDate
         currentNode = objectNode.get(CASE_LOANED_DATE);
-        key = CASE_LOANED_DATE;
-        if (currentNode == null) {
-            currentNode = objectNode.get(CASE_LOANED_DATE_EN);
-            key = CASE_LOANED_DATE_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             try {
                 Date parsedDate = CommonUtils.Hateoas.Deserialize.dateFormat.parse(currentNode.textValue());
                 caseFile.setLoanedDate(parsedDate);
+                objectNode.remove(CASE_LOANED_DATE);
             }
             catch (ParseException e) {
-
                 throw new NikitaMalformedInputDataException("The caseFile object you tried to create " +
                         "has a malformed utlaantDato/loanedDate. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
-
             }
-            objectNode.remove(key);
         }
-
         // Deserialize loanedTo
         currentNode = objectNode.get(CASE_LOANED_TO);
-        key = CASE_LOANED_TO;
-        if (currentNode == null) {
-            currentNode = objectNode.get(CASE_LOANED_TO_EN);
-            key = CASE_LOANED_TO_EN;
-        }
-        if (currentNode != null) {
+        if (null != currentNode) {
             caseFile.setLoanedTo(currentNode.textValue());
-            objectNode.remove(key);
+            objectNode.remove(CASE_LOANED_TO);
         }
-
         // Check that all obligatory values are present
         checkForObligatoryNoarkValues(caseFile);
         checkForObligatoryCaseFileValues(caseFile);
