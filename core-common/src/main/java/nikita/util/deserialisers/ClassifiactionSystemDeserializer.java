@@ -60,8 +60,8 @@ public class ClassifiactionSystemDeserializer extends JsonDeserializer implement
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The ClassificationSystem object you tried to create is " +
-                    "malformed. The following objects are not recognised as ClassificationSystem properties [" +
+            throw new NikitaMalformedInputDataException("The klassifikasjonssystem you tried to create is " +
+                    "malformed. The following fields are not recognised as klassifikasjonssystem fields [" +
                     CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
         }
         return classificationSystem;
@@ -75,8 +75,8 @@ public class ClassifiactionSystemDeserializer extends JsonDeserializer implement
     public void checkForObligatoryNoarkValues(INoarkGeneralEntity noarkEntity) {
 
         if (noarkEntity.getTitle() == null) {
-            throw new NikitaMalformedInputDataException("The ClassificationSystem object you tried to create is " +
-                    "malformed. The title field is mandatory, and you have submitted an empty value.");
+            throw new NikitaMalformedInputDataException("The klassifikasjonssystem you tried to create is " +
+                    "malformed. The tittel field is mandatory, and you have submitted an empty value.");
         }
     }
 }

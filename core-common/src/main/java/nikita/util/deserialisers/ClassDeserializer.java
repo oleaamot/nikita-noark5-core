@@ -56,7 +56,7 @@ public class ClassDeserializer extends JsonDeserializer implements ObligatoryPro
         // Deserialise general properties
         CommonUtils.Hateoas.Deserialize.deserialiseNoarkEntity(klass, objectNode);
 
-        // Deserialize klassStatus
+        // Deserialize classId
         JsonNode currentNode = objectNode.get(CLASS_ID);
         if (null != currentNode) {
             klass.setClassId(currentNode.textValue());
@@ -69,8 +69,8 @@ public class ClassDeserializer extends JsonDeserializer implements ObligatoryPro
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The Class object you tried to create is malformed. The "
-                    + "following objects are not recognised as Class properties [" +
+            throw new NikitaMalformedInputDataException("The klasse you tried to create is malformed. The "
+                    + "following fields are not recognised as klasse fields [" +
                     CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
         }
         return klass;
@@ -84,8 +84,8 @@ public class ClassDeserializer extends JsonDeserializer implements ObligatoryPro
     public void checkForObligatoryNoarkValues(INoarkGeneralEntity noarkEntity) {
 
         if (noarkEntity.getTitle() == null) {
-            throw new NikitaMalformedInputDataException("The Class object you tried to create is malformed. The "
-                    + "title field is mandatory, and you have submitted an empty value.");
+            throw new NikitaMalformedInputDataException("The klasse you tried to create is malformed. The "
+                    + "tittel field is mandatory, and you have submitted an empty value.");
         }
     }
 }

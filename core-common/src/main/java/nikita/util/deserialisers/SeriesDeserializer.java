@@ -33,7 +33,7 @@ import static nikita.util.CommonUtils.Hateoas.Deserialize;
  * <p>
  * Note this implementation expects that the Series object to deserialise is in compliance with the Noark standard where
  * certain properties i.e. createdBy and createdDate are set by the core, not the caller. This deserializer will not
- * enforce this and will deserialize a series object correctly. This is because e.g the import interface will require
+ * enforce this and will deserialize a arkivdel correctly. This is because e.g the import interface will require
  * such functionality.
  * <p>
  * - Testing of compliance of properties is handled by the core, either in SeriesController or SeriesService
@@ -76,8 +76,8 @@ public class SeriesDeserializer extends JsonDeserializer implements ObligatoryPr
                 series.setSeriesStartDate(parsedDate);
                 objectNode.remove(SERIES_START_DATE);
             } catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The series object you tried to create " +
-                        "has a malformed arkivperiodeStartDato/seriesStartDate. Make sure format is " +
+                throw new NikitaMalformedInputDataException("The arkivdel you tried to create " +
+                        "has a malformed arkivperiodeStartDato. Make sure format is " +
                         NOARK_DATE_FORMAT_PATTERN);
             }
         }
@@ -89,8 +89,8 @@ public class SeriesDeserializer extends JsonDeserializer implements ObligatoryPr
                 series.setSeriesEndDate(parsedDate);
                 objectNode.remove(SERIES_END_DATE);
             } catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The series object you tried to create " +
-                        "has a malformed arkivperiodeSluttDato/seriesEndDate. Make sure format is " +
+                throw new NikitaMalformedInputDataException("The arkivdel you tried to create " +
+                        "has a malformed arkivperiodeSluttDato. Make sure format is " +
                         NOARK_DATE_FORMAT_PATTERN);
             }
         }
@@ -100,7 +100,7 @@ public class SeriesDeserializer extends JsonDeserializer implements ObligatoryPr
             Series seriesPrecursor = new Series();
             seriesPrecursor.setSystemId(currentNode.textValue());
             series.setReferencePrecursor(seriesPrecursor);
-            // TODO: Does this imply that the current series object is the successor?
+            // TODO: Does this imply that the current arkivdel is the successor?
             // I would not set it here, as the service class has to check that
             // the seriesPrecursor object actually exists
             objectNode.remove(SERIES_PRECURSOR);
@@ -111,7 +111,7 @@ public class SeriesDeserializer extends JsonDeserializer implements ObligatoryPr
             Series seriesSuccessor = new Series();
             seriesSuccessor.setSystemId(currentNode.textValue());
             series.setReferenceSuccessor(seriesSuccessor);
-            // TODO: Does this imply that the current series object is the precursor?
+            // TODO: Does this imply that the current arkivdel is the precursor?
             // I would not set it here, as the service class should do this
             objectNode.remove(SERIES_SUCCESSOR);
         }
@@ -127,8 +127,8 @@ public class SeriesDeserializer extends JsonDeserializer implements ObligatoryPr
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The Series object you tried to create is malformed. The "
-                    + "following objects are not recognised as Series properties [" +
+            throw new NikitaMalformedInputDataException("The arkivdel you tried to create is malformed. The "
+                    + "following fields are not recognised as arkivdel fields [" +
                     CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
         }
         return series;
@@ -142,8 +142,8 @@ public class SeriesDeserializer extends JsonDeserializer implements ObligatoryPr
     public void checkForObligatoryNoarkValues(INoarkGeneralEntity noarkEntity) {
 
         if (noarkEntity.getTitle() == null) {
-            throw new NikitaMalformedInputDataException("The Series object you tried to create is malformed. The "
-                    + "title field is mandatory, and you have submitted an empty value.");
+            throw new NikitaMalformedInputDataException("The arkivdel you tried to create is malformed. The "
+                    + "tittel field is mandatory, and you have submitted an empty value.");
         }
     }
 }

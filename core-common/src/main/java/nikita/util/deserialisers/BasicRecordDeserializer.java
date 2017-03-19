@@ -68,7 +68,6 @@ public class BasicRecordDeserializer extends JsonDeserializer implements Obligat
             basicRecord.setArchivedBy(currentNode.textValue());
             objectNode.remove(RECORD_ARCHIVED_BY);
         }
-
         // Deserialize archivedDate
         currentNode = objectNode.get(RECORD_ARCHIVED_DATE);
         if (null != currentNode) {
@@ -78,14 +77,11 @@ public class BasicRecordDeserializer extends JsonDeserializer implements Obligat
                 objectNode.remove(RECORD_ARCHIVED_DATE);
             }
             catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The BasicRecord object you tried to create " +
-                        "has a malformed arkivertDato/archivedDate. Make sure format is " +
-                        NOARK_DATE_FORMAT_PATTERN);
+                throw new NikitaMalformedInputDataException("The basisregistrering you tried to create " +
+                        "has a malformed arkivertDato. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
             }
         }
-
         // Deserialize general basicRecord properties
-
         // Deserialize recordId
         currentNode = objectNode.get(BASIC_RECORD_ID);
         if (null != currentNode) {
@@ -98,14 +94,12 @@ public class BasicRecordDeserializer extends JsonDeserializer implements Obligat
             basicRecord.setTitle(currentNode.textValue());
             objectNode.remove(TITLE);
         }
-
         // Deserialize  officialTitle
         currentNode = objectNode.get(FILE_PUBLIC_TITLE);
         if (null != currentNode) {
             basicRecord.setOfficialTitle(currentNode.textValue());
             objectNode.remove(FILE_PUBLIC_TITLE);
         }
-
         // Deserialize description
         currentNode = objectNode.get(DESCRIPTION);
         if (null != currentNode) {
@@ -117,8 +111,8 @@ public class BasicRecordDeserializer extends JsonDeserializer implements Obligat
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The BasicRecord object you tried to create is malformed. The "
-                    + "following objects are not recognised as BasicRecord properties [" +
+            throw new NikitaMalformedInputDataException("The basisregistrering you tried to create is malformed. The "
+                    + "following fields are not recognised as basisregistrering fields [" +
                     CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
         }
         return basicRecord;

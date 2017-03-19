@@ -94,9 +94,8 @@ public class DocumentDescriptionDeserializer extends JsonDeserializer implements
                 documentDescription.setAssociationDate(parsedDate);
             }
             catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The DocumentDescription object you tried to create " +
-                        "has a malformed tilknyttetDato/associationDate. Make sure format is " +
-                        NOARK_DATE_FORMAT_PATTERN);
+                throw new NikitaMalformedInputDataException("The dokumentbeskrivelse you tried to create " +
+                        "has a malformed tilknyttetDato. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
             }
             objectNode.remove(DOCUMENT_DESCRIPTION_ASSOCIATION_DATE);
         }
@@ -111,8 +110,8 @@ public class DocumentDescriptionDeserializer extends JsonDeserializer implements
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The DocumentDescription object you tried to create is malformed. The "
-                    + "following objects are not recognised as DocumentDescription properties [" +
+            throw new NikitaMalformedInputDataException("The dokumentbeskrivelse you tried to create is malformed. The "
+                    + "following fields are not recognised as dokumentbeskrivelse fields[" +
                     CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
         }
         return documentDescription;
@@ -128,20 +127,20 @@ public class DocumentDescriptionDeserializer extends JsonDeserializer implements
 
     public void checkForObligatoryDocumentDescriptionValues(DocumentDescription documentDescription) {
         if (documentDescription.getDocumentStatus() == null) {
-            throw new NikitaMalformedInputDataException("The DocumentDescription object you tried to create is " +
-                    "malformed. The documentStatus field is mandatory, and you have submitted an empty value.");
+            throw new NikitaMalformedInputDataException("The dokumentbeskrivelse you tried to create is " +
+                    "malformed. The documentstatus field is mandatory, and you have submitted an empty value.");
         }
         if (documentDescription.getDocumentType() == null) {
-            throw new NikitaMalformedInputDataException("The DocumentDescription object you tried to create is " +
-                    "malformed. The documentType field is mandatory, and you have submitted an empty value.");
+            throw new NikitaMalformedInputDataException("The dokumentbeskrivelse you tried to create is " +
+                    "malformed. The documenttype field is mandatory, and you have submitted an empty value.");
         }
         if (documentDescription.getTitle() == null) {
-            throw new NikitaMalformedInputDataException("The DocumentDescription object you tried to create is " +
-                    "malformed. The title field is mandatory, and you have submitted an empty value.");
+            throw new NikitaMalformedInputDataException("The dokumentbeskrivelse you tried to create is " +
+                    "malformed. The tittel field is mandatory, and you have submitted an empty value.");
         }
         if (documentDescription.getAssociatedWithRecordAs() == null) {
-            throw new NikitaMalformedInputDataException("The DocumentDescription object you tried to create is " +
-                    "malformed. The associatedWithRecordAs field is mandatory, and you have submitted an empty value.");
+            throw new NikitaMalformedInputDataException("The dokumentbeskrivelse you tried to create is " +
+                    "malformed. The tilknyttetRegistreringSom field is mandatory, and you have submitted an empty value.");
         }
     }
 

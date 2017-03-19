@@ -101,8 +101,8 @@ public class CaseFileDeserializer extends JsonDeserializer implements Obligatory
                 objectNode.remove(CASE_DATE);
             }
             catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The caseFile object you tried to create " +
-                        "has a malformed saksDato/caseDate. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
+                throw new NikitaMalformedInputDataException("The saksmappe you tried to create " +
+                        "has a malformed saksDato. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
             }
         }
         // Deserialize administrativeUnit
@@ -138,8 +138,8 @@ public class CaseFileDeserializer extends JsonDeserializer implements Obligatory
                 objectNode.remove(CASE_LOANED_DATE);
             }
             catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The caseFile object you tried to create " +
-                        "has a malformed utlaantDato/loanedDate. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
+                throw new NikitaMalformedInputDataException("The saksmappe you tried to create " +
+                        "has a malformed utlaantDato. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
             }
         }
         // Deserialize loanedTo
@@ -155,8 +155,8 @@ public class CaseFileDeserializer extends JsonDeserializer implements Obligatory
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The caseFile object you tried to create is malformed. The "
-                    + "following objects are not recognised as caseFile properties [" +
+            throw new NikitaMalformedInputDataException("The saksmappe object you tried to create is malformed. The "
+                    + "following fields are not recognised as saksmappe fields [" +
                     CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
         }
 
@@ -172,10 +172,9 @@ public class CaseFileDeserializer extends JsonDeserializer implements Obligatory
      * The only field that is mandatory, according to arkivstruktur.xsd, when creating the object is 'title'
      */
     public void checkForObligatoryNoarkValues(INoarkGeneralEntity noarkEntity) {
-
         if (noarkEntity.getTitle() == null) {
-            throw new NikitaMalformedInputDataException("The File object you tried to create is malformed. The "
-                    + "title field is mandatory, and you have submitted an empty value.");
+            throw new NikitaMalformedInputDataException("The saksmappe you tried to create is malformed. The "
+                    + "tittel field is mandatory, and you have submitted an empty value.");
         }
     }
 
@@ -184,25 +183,24 @@ public class CaseFileDeserializer extends JsonDeserializer implements Obligatory
     public void checkForObligatoryCaseFileValues(CaseFile caseFile) {
 
         if (caseFile.getFileId() == null) {
-            throw new NikitaMalformedInputDataException("The File object you tried to create is malformed. The "
-                    + "mappeId/fileId field is mandatory, and you have submitted an empty value.");
+            throw new NikitaMalformedInputDataException("The saksmappe you tried to create is malformed. The "
+                    + "mappeID field is mandatory, and you have submitted an empty value.");
         }
         if (caseFile.getCaseDate() == null) {
-            throw new NikitaMalformedInputDataException("The File object you tried to create is malformed. The "
-                    + "saksdato/caseDate field is mandatory, and you have submitted an empty value.");
+            throw new NikitaMalformedInputDataException("The saksmappe you tried to create is malformed. The "
+                    + "saksDato field is mandatory, and you have submitted an empty value.");
         }
         if (caseFile.getAdministrativeUnit() == null) {
-            throw new NikitaMalformedInputDataException("The File object you tried to create is malformed. The "
-                    + "field administrativEnhet/administrativeUnit is mandatory, and you have submitted an " +
-                    "empty value.");
+            throw new NikitaMalformedInputDataException("The saksmappe you tried to create is malformed. The "
+                    + "field administrativEnhet is mandatory, and you have submitted an empty value.");
         }
         if (caseFile.getCaseResponsible() == null) {
-            throw new NikitaMalformedInputDataException("The File object you tried to create is malformed. The "
-                    + "saksansvarlig/caseResponsible field is mandatory, and you have submitted an empty value.");
+            throw new NikitaMalformedInputDataException("The saksmappe  you tried to create is malformed. The "
+                    + "saksansvarlig field is mandatory, and you have submitted an empty value.");
         }
         if (caseFile.getCaseStatus() == null) {
-            throw new NikitaMalformedInputDataException("The File object you tried to create is malformed. The "
-                    + "saksstatus/caseStatus field is mandatory, and you have submitted an empty value.");
+            throw new NikitaMalformedInputDataException("The saksmappe you tried to create is malformed. The "
+                    + "saksstatus field is mandatory, and you have submitted an empty value.");
         }
     }
 }

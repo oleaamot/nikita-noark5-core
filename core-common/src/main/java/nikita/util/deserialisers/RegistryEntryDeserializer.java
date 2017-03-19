@@ -76,9 +76,8 @@ public class RegistryEntryDeserializer extends JsonDeserializer implements Oblig
                 registryEntry.setArchivedDate(parsedDate);
                 objectNode.remove(RECORD_ARCHIVED_DATE);
             } catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The RegistryEntry object you tried to create " +
-                        "has a malformed arkivertDato/archivedDate. Make sure format is " +
-                        NOARK_DATE_FORMAT_PATTERN);
+                throw new NikitaMalformedInputDataException("The journalpost object you tried to create " +
+                        "has a malformed arkivertDato. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
             }
         }
         // Deserialize general basicRecord properties
@@ -147,8 +146,8 @@ public class RegistryEntryDeserializer extends JsonDeserializer implements Oblig
                 objectNode.remove(REGISTRY_ENTRY_DATE);
             } catch (ParseException e) {
 
-                throw new NikitaMalformedInputDataException("The registryEntry object you tried to create " +
-                        "has a malformed journaldato/recordDate. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
+                throw new NikitaMalformedInputDataException("The journalpost you tried to create " +
+                        "has a malformed journaldato. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
             }
         }
         // Deserialize documentDate
@@ -160,8 +159,8 @@ public class RegistryEntryDeserializer extends JsonDeserializer implements Oblig
                 objectNode.remove(REGISTRY_ENTRY_DOCUMENT_DATE);
             } catch (ParseException e) {
 
-                throw new NikitaMalformedInputDataException("The registryEntry object you tried to create " +
-                        "has a malformed dokumentetsDato/documentDate. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
+                throw new NikitaMalformedInputDataException("The journalpost you tried to create " +
+                        "has a malformed dokumentetsDato. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
             }
         }
 
@@ -173,8 +172,8 @@ public class RegistryEntryDeserializer extends JsonDeserializer implements Oblig
                 registryEntry.setReceivedDate(parsedDate);
                 objectNode.remove(REGISTRY_ENTRY_RECEIVED_DATE);
             } catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The registryEntry object you tried to create " +
-                        "has a malformed mottattDato/receivedDate. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
+                throw new NikitaMalformedInputDataException("The journalpost you tried to create " +
+                        "has a malformed mottattDato. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
             }
         }
 
@@ -187,8 +186,8 @@ public class RegistryEntryDeserializer extends JsonDeserializer implements Oblig
                 objectNode.remove(REGISTRY_ENTRY_SENT_DATE);
             } catch (ParseException e) {
 
-                throw new NikitaMalformedInputDataException("The registryEntry object you tried to create " +
-                        "has a malformed sendtDate/sentDate. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
+                throw new NikitaMalformedInputDataException("The journalpost you tried to create " +
+                        "has a malformed sendtDate. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
             }
         }
         // Deserialize dueDate
@@ -199,8 +198,8 @@ public class RegistryEntryDeserializer extends JsonDeserializer implements Oblig
                 registryEntry.setDueDate(parsedDate);
                 objectNode.remove(REGISTRY_ENTRY_DUE_DATE);
             } catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The registryEntry object you tried to create " +
-                        "has a malformed forfallsdato/dueDate. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
+                throw new NikitaMalformedInputDataException("The journalpost you tried to create " +
+                        "has a malformed forfallsdato. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
             }
         }
         // Deserialize freedomAssessmentDate
@@ -211,8 +210,8 @@ public class RegistryEntryDeserializer extends JsonDeserializer implements Oblig
                 registryEntry.setFreedomAssessmentDate(parsedDate);
                 objectNode.remove(REGISTRY_ENTRY_RECORD_FREEDOM_ASSESSMENT_DATE);
             } catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The registryEntry object you tried to create " +
-                        "has a malformed /. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
+                throw new NikitaMalformedInputDataException("The journalpost you tried to create " +
+                        "has a malformed offentlighetsvurdertDato. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
             }
         }
         // Deserialize numberOfAttachments
@@ -229,8 +228,8 @@ public class RegistryEntryDeserializer extends JsonDeserializer implements Oblig
                 registryEntry.setLoanedDate(parsedDate);
                 objectNode.remove(CASE_LOANED_DATE);
             } catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The registryEntry object you tried to create " +
-                        "has a malformed utlaantDato/loanedDate. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
+                throw new NikitaMalformedInputDataException("The journalpost you tried to create " +
+                        "has a malformed utlaantDato. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
             }
         }
         // Deserialize loanedTo
@@ -245,8 +244,8 @@ public class RegistryEntryDeserializer extends JsonDeserializer implements Oblig
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The RegistryEntry object you tried to create is malformed. The "
-                    + "following objects are not recognised as RegistryEntry properties [" +
+            throw new NikitaMalformedInputDataException("The journalpost you tried to create is malformed. The "
+                    + "following fields are not recognised as journalpost fields [" +
                     CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
         }
         return registryEntry;

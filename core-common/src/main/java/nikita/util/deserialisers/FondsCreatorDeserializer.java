@@ -59,8 +59,8 @@ public class FondsCreatorDeserializer extends JsonDeserializer implements Obliga
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The FondsCreator object you tried to create is malformed. The "
-                    + "following objects are not recognised as FondsCreator properties [" +
+            throw new NikitaMalformedInputDataException("The arkivskaper you tried to create is malformed. The "
+                    + "following fields are not recognised as arkivskaper fields [" +
                     CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
         }
 

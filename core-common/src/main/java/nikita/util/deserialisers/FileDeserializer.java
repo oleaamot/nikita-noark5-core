@@ -84,8 +84,8 @@ public class FileDeserializer extends JsonDeserializer implements ObligatoryProp
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The File object you tried to create is malformed. The "
-                    + "following objects are not recognised as File properties [" +
+            throw new NikitaMalformedInputDataException("The mappe you tried to create is malformed. The "
+                    + "following fields are not recognised as mappe fields  [" +
                     CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
         }
         return file;
@@ -100,20 +100,20 @@ public class FileDeserializer extends JsonDeserializer implements ObligatoryProp
     public void checkForObligatoryNoarkValues(INoarkGeneralEntity noarkEntity) {
 
         if (noarkEntity.getTitle() == null) {
-            throw new NikitaMalformedInputDataException("The File object you tried to create is malformed. The "
-                    + "title field is mandatory, and you have submitted an empty value.");
+            throw new NikitaMalformedInputDataException("The mappe you tried to create is malformed. The "
+                    + "tittel field is mandatory, and you have submitted an empty value.");
         }
     }
     /**
      *
-     * The only caseFile field that is mandatory, according to arkivstruktur.xsd, when creating the object is
+     * The only file field that is mandatory, according to arkivstruktur.xsd, when creating the object is
      * 'fileId'
      */
     public void checkForObligatoryFileValues(File file) {
 
         if (file.getFileId() == null) {
-            throw new NikitaMalformedInputDataException("The File object you tried to create is malformed. The "
-                    + "fileId field is mandatory, and you have submitted an empty value.");
+            throw new NikitaMalformedInputDataException("The mappe you tried to create is malformed. The "
+                    + "mappeID field is mandatory, and you have submitted an empty value.");
         }
     }
 }

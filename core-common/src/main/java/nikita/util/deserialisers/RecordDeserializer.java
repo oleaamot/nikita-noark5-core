@@ -77,8 +77,8 @@ public class RecordDeserializer extends JsonDeserializer implements ObligatoryPr
                 objectNode.remove(RECORD_ARCHIVED_DATE);
             }
             catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The Record object you tried to create " +
-                        "has a malformed arkivertDato/archivedDate. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
+                throw new NikitaMalformedInputDataException("The registrering you tried to create " +
+                        "has a malformed arkivertDato. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
             }
         }
 
@@ -92,8 +92,8 @@ public class RecordDeserializer extends JsonDeserializer implements ObligatoryPr
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The Record object you tried to create is malformed. The "
-                    + "following objects are not recognised as Record properties [" +
+            throw new NikitaMalformedInputDataException("The registrering you tried to create is malformed. The "
+                    + "following fields are not recognised as registrering fields [" +
                     CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
         }
         return record;

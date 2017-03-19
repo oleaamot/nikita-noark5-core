@@ -121,8 +121,8 @@ public class DocumentObjectDeserializer extends JsonDeserializer implements Obli
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The DocumentObject object you tried to create is malformed. The "
-                    + "following objects are not recognised as DocumentObject properties [" +
+            throw new NikitaMalformedInputDataException("The dokumentobjekt you tried to create is malformed. The "
+                    + "following fields are not recognised as dokumentobjekt fields [" +
                     CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
         }
         return documentObject;
@@ -138,15 +138,15 @@ public class DocumentObjectDeserializer extends JsonDeserializer implements Obli
 
     public void checkForObligatoryDocumentObjectValues(DocumentObject documentObject) {
         if (documentObject.getVersionNumber() == null) {
-            throw new NikitaMalformedInputDataException("The DocumentObject object you tried to create is " +
-                    "malformed. The versionNumber field is mandatory, and you have submitted an empty value.");
+            throw new NikitaMalformedInputDataException("The dokumentobjekt you tried to create is " +
+                    "malformed. The versjonsnummer field is mandatory, and you have submitted an empty value.");
         }
         if (documentObject.getVariantFormat() == null) {
-            throw new NikitaMalformedInputDataException("The DocumentObject object you tried to create is " +
-                    "malformed. The variantFormat field is mandatory, and you have submitted an empty value.");
+            throw new NikitaMalformedInputDataException("The dokumentobjekt you tried to create is " +
+                    "malformed. The variantformat field is mandatory, and you have submitted an empty value.");
         }
         if (documentObject.getFormat() == null) {
-            throw new NikitaMalformedInputDataException("The DocumentObject object you tried to create is " +
+            throw new NikitaMalformedInputDataException("The dokumentobjekt you tried to create is " +
                     "malformed. The format field is mandatory, and you have submitted an empty value.");
         }
     }
