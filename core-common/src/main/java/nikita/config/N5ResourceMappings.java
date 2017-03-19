@@ -203,7 +203,7 @@ public final class N5ResourceMappings {
     public static final String DOCUMENT_DESCRIPTION_ASSOCIATION_DATE_EN = "associationDate";
     public static final String DOCUMENT_DESCRIPTION_DOCUMENT_TYPE = "dokumenttype";
     public static final String DOCUMENT_DESCRIPTION_DOCUMENT_TYPE_EN = "documentType";
-    public static final String DOCUMENT_DESCRIPTION_ = "dokumentstatus";
+    public static final String DOCUMENT_DESCRIPTION_STATUS = "dokumentstatus";
     public static final String DOCUMENT_DESCRIPTION_DOCUMENT_STATUS_EN = "documentStatus";
     public static final String DOCUMENT_DESCRIPTION_ASSOCIATED_WITH_RECORD_AS = "tilknyttetRegistreringSom";
     public static final String DOCUMENT_DESCRIPTION_ASSOCIATED_WITH_RECORD_AS_EN = "associatedWithRecordAs";
