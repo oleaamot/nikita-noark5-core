@@ -10,6 +10,6 @@ Release 0.2 UNRELEASED
  * Changed JSON output for object lists.
  * ...
 
-Release 0.1 2016-??-??:
+Release 0.1 2017-01-31
 -----------------------
  * Able to store archive metadata.
