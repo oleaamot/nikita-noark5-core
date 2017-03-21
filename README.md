@@ -4,11 +4,11 @@ This is an open source Noark 5v4 core.  This implement a REST based web API for 
 
 The core is very much under development and should be seen as a alpha product until releases closer to 0.6. The current version is 0.1 and has implemented the arkivstruktur interface of Noark 5v4.  
 
-Read [INSTALL](Install.md) to get started.
+Read [INSTALL](docs/general/Install.md) to get started.
 
 ## Contributing
 
-You are encouraged to contribute. You can either hack on the code and send pull requests or join us on [IRC](http://webchat.freenode.net?randomnick=1&channels=%23nikita&uio=d4) for discussions. Feedback is greatly appreciated. The project has an open ethos and welcomes all forms of feedback. The project maintains a mailing list (https://lists.nuug.no/mailman/listinfo/nikita-noark) and issues can be raised via github (https://github.com/HiOA-ABI/nikita-noark5-core/issues). Look at [Starter bugs](./Starter-bugs.md) for some suggestions on things to do.
+You are encouraged to contribute. You can either hack on the code and send pull requests or join us on [IRC](http://webchat.freenode.net?randomnick=1&channels=%23nikita&uio=d4) for discussions. Feedback is greatly appreciated. The project has an open ethos and welcomes all forms of feedback. The project maintains a mailing list (https://lists.nuug.no/mailman/listinfo/nikita-noark) and issues can be raised via github (https://github.com/HiOA-ABI/nikita-noark5-core/issues). Look at [Starter bugs](./docs/general/Starter-bugs.md) for some suggestions on things to do.
 
 ## Miscellaneous
 
