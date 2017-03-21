@@ -61,11 +61,10 @@ exceptions. (Please let us know if there are any exceptions).
 
 ## Docker
 
-    docker run -d -p 9200:9200 elasticsearch:2.4.4 -Des.network.host=0.0.0.0
-    curl http://localhost:9200
-    curl -XPUT 'localhost:9200/_template/replicate_template' -d '{ "template" : "*", "settings" : {"number_of_replicas" : 0 } }'
-    docker run --network="host" --add-host=`hostname`:127.0.0.1 nikita5/nikita-noark5-core
-    docker run --network="host" --add-host=`hostname`:127.0.0.1 nikita5/noark5-tester
+There are several containers required to get the application up, you can start them all
+with the script below
+
+    scripts/start-containers
 
 ## Vagrant
 
