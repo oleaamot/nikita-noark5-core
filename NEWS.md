@@ -13,6 +13,7 @@ Release 0.2 UNRELEASED
  * Now able to receive and store uploaded files in the archive.
  * Changed JSON output for object lists to have relations in _links.
  * Now uses correct MIME type application/vnd.noark5-v4+json.
+ * Added support for docker container images
  * ...
 
 Release 0.1 2017-01-31
