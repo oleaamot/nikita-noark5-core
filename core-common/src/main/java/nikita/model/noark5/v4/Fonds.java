@@ -1,6 +1,7 @@
 package nikita.model.noark5.v4;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.IDocumentMedium;
 import nikita.model.noark5.v4.interfaces.IFondsCreator;
@@ -46,10 +47,12 @@ public class Fonds implements INoarkGeneralEntity, IStorageLocation, IDocumentMe
     /**
      * M020 - tittel (xs:string)
      */
+
     @Column(name = "title")
     @Audited
     @Field
     @Boost (1.3f)
+    @JsonProperty("tittel")
     protected String title;
 
     /**
@@ -113,6 +116,9 @@ public class Fonds implements INoarkGeneralEntity, IStorageLocation, IDocumentMe
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
+
+    @Column(name = "etag")
+    protected String eTag;
 
     // Links to Series
     @OneToMany(mappedBy = "referenceFonds")
@@ -237,6 +243,10 @@ public class Fonds implements INoarkGeneralEntity, IStorageLocation, IDocumentMe
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public Set<Series> getReferenceSeries() {
         return referenceSeries;
     }
@@ -280,11 +290,20 @@ public class Fonds implements INoarkGeneralEntity, IStorageLocation, IDocumentMe
 
     @Override
     public String toString() {
-        return "Fonds [id=" + id + ", systemId=" + systemId + ", title="
-                + title + ", description=" + description + ", fondsStatus="
-                + fondsStatus + ", documentMedium=" + documentMedium
-                + ", createdDate=" + createdDate + ", createdBy=" + createdBy
-                + ", finalisedDate=" + finalisedDate + ", finalisedBy="
-                + finalisedBy + ", deleted=" + deleted + "]";
+        return "Fonds{" +
+                "id=" + id +
+                ", systemId='" + systemId + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", fondsStatus='" + fondsStatus + '\'' +
+                ", documentMedium='" + documentMedium + '\'' +
+                ", createdDate=" + createdDate +
+                ", createdBy='" + createdBy + '\'' +
+                ", finalisedDate=" + finalisedDate +
+                ", finalisedBy='" + finalisedBy + '\'' +
+                ", deleted=" + deleted +
+                ", ownedBy='" + ownedBy + '\'' +
+                ", eTag='" + eTag + '\'' +
+                '}';
     }
 }

@@ -49,6 +49,9 @@ public class SignOff implements Serializable {
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     /** M215 referanseAvskrivesAvJournalpost */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="system_id")
@@ -112,6 +115,10 @@ public class SignOff implements Serializable {
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public RegistryEntry getReferenceSignedOffRecord() {
         return referenceSignedOffRecord;
     }
@@ -142,6 +149,7 @@ public class SignOff implements Serializable {
                 "signOffMethod='" + signOffMethod + '\'' +
                 ", signOffBy='" + signOffBy + '\'' +
                 ", signOffDate=" + signOffDate +
+                ", eTag='" + eTag + '\'' +
                 ", id=" + id +
                 '}';
     }

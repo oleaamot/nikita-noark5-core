@@ -104,6 +104,9 @@ public class ClassificationSystem implements INoarkGeneralEntity {
     @Field
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Links to Series
     @OneToMany(mappedBy = "referenceClassificationSystem")
     protected Set<Series> referenceSeries = new HashSet<Series>();
@@ -199,6 +202,10 @@ public class ClassificationSystem implements INoarkGeneralEntity {
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public Set<Series> getReferenceSeries() {
         return referenceSeries;
     }
@@ -223,6 +230,7 @@ public class ClassificationSystem implements INoarkGeneralEntity {
                 + createdDate + ", createdBy=" + createdBy + ", finalisedDate="
                 + finalisedDate + ", finalisedBy=" + finalisedBy
                 + ", referenceSeries=" + referenceSeries + ", referenceClass="
+                + ", eTag='" + eTag + '\''
                 + referenceClass + "]";
     }
 

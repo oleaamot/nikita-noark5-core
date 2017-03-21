@@ -126,6 +126,9 @@ public class Series implements INoarkGeneralEntity, IStorageLocation, IDocumentM
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Links to StorageLocations
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "series_storage_location", joinColumns = @JoinColumn(name = "f_pk_series_id",
@@ -305,6 +308,10 @@ public class Series implements INoarkGeneralEntity, IStorageLocation, IDocumentM
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public Set<StorageLocation> getReferenceStorageLocation() {
         return referenceStorageLocation;
     }
@@ -425,6 +432,7 @@ public class Series implements INoarkGeneralEntity, IStorageLocation, IDocumentM
                 ", description='" + description + '\'' +
                 ", title='" + title + '\'' +
                 ", systemId='" + systemId + '\'' +
+                ", eTag='" + eTag + '\'' +
                 ", id=" + id +
                 '}';
     }

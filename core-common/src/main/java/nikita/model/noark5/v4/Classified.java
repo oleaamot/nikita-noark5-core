@@ -72,8 +72,10 @@ public class Classified implements INikitaEntity, INoarkSystemIdEntity, IClassif
     @Audited
     protected String ownedBy;
 
-    // Links to Series
+    @Column(name = "etag")
+    protected String eTag;
 
+    // Links to Series
     @OneToMany(mappedBy = "referenceClassified")
     protected Set<Series> referenceSeries = new HashSet<Series>();
 
@@ -167,6 +169,10 @@ public class Classified implements INikitaEntity, INoarkSystemIdEntity, IClassif
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public Set<Series> getReferenceSeries() {
         return referenceSeries;
     }
@@ -216,6 +222,7 @@ public class Classified implements INikitaEntity, INoarkSystemIdEntity, IClassif
                 ", classificationBy='" + classificationBy + '\'' +
                 ", classificationDowngradedDate=" + classificationDowngradedDate +
                 ", classificationDowngradedBy='" + classificationDowngradedBy + '\'' +
+                ", eTag='" + eTag + '\'' +
                 '}';
     }
 }

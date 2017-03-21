@@ -48,6 +48,9 @@ public class Deletion implements IDeletionEntity {
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Links to Series
     @OneToMany(mappedBy = "referenceDeletion")
     protected Set<Series> referenceSeries = new HashSet<Series>();
@@ -104,6 +107,10 @@ public class Deletion implements IDeletionEntity {
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public Set<Series> getReferenceSeries() {
         return referenceSeries;
     }
@@ -127,6 +134,7 @@ public class Deletion implements IDeletionEntity {
                 ", deletionBy='" + deletionBy + '\'' +
                 ", deletionType='" + deletionType + '\'' +
                 ", id=" + id +
+                ", eTag='" + eTag + '\'' +
                 '}';
     }
 }

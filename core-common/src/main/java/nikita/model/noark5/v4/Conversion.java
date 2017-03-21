@@ -60,6 +60,9 @@ public class Conversion {
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Link to DocumentObject
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "conversion_document_object_id", referencedColumnName = "pk_document_object_id")
@@ -137,6 +140,10 @@ public class Conversion {
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public DocumentObject getReferenceDocumentObject() {
         return referenceDocumentObject;
     }
@@ -155,6 +162,7 @@ public class Conversion {
                 ", convertedToFormat='" + convertedToFormat + '\'' +
                 ", conversionTool='" + conversionTool + '\'' +
                 ", conversionComment='" + conversionComment + '\'' +
+                ", eTag='" + eTag + '\'' +
                 '}';
     }
 }

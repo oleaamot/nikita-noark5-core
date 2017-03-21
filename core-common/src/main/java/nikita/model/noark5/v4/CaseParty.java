@@ -106,6 +106,9 @@ public class CaseParty implements ICasePartyEntity {
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Links to CaseFiles
     @ManyToMany(mappedBy = "referenceCaseParty")
     protected Set<CaseFile> referenceCaseFile = new HashSet<CaseFile>();
@@ -214,6 +217,10 @@ public class CaseParty implements ICasePartyEntity {
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public Set<CaseFile> getReferenceCaseFile() {
         return referenceCaseFile;
     }
@@ -227,7 +234,7 @@ public class CaseParty implements ICasePartyEntity {
         return "CaseParty{" +
                 "id=" + id +
                 ", casePartyId='" + casePartyId + '\'' +
-                ", $casePartyName='" + casePartyName + '\'' +
+                ", casePartyName='" + casePartyName + '\'' +
                 ", casePartyRole='" + casePartyRole + '\'' +
                 ", postalAddress='" + postalAddress + '\'' +
                 ", postCode='" + postCode + '\'' +
@@ -236,6 +243,7 @@ public class CaseParty implements ICasePartyEntity {
                 ", emailAddress='" + emailAddress + '\'' +
                 ", telephoneNumber='" + telephoneNumber + '\'' +
                 ", contactPerson='" + contactPerson + '\'' +
+                ", eTag='" + eTag + '\'' +
                 '}';
     }
 }

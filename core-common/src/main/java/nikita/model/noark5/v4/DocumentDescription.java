@@ -146,6 +146,9 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
     @Field
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Links to Records
     @ManyToMany(mappedBy = "referenceDocumentDescription")
     protected Set<Record> referenceRecord = new HashSet<Record>();
@@ -302,6 +305,10 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public Integer getDocumentNumber() {
         return documentNumber;
     }
@@ -454,6 +461,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
                 ", documentStatus='" + documentStatus + '\'' +
                 ", documentType='" + documentType + '\'' +
                 ", systemId='" + systemId + '\'' +
+                ", eTag='" + eTag + '\'' +
                 ", id=" + id +
                 '}';
     }

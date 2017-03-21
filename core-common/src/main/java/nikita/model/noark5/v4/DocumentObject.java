@@ -134,10 +134,15 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
     @Audited
     @Field
     protected String mimeType;
+
     @Column(name = "owned_by")
     @Audited
     @Field
     protected String ownedBy;
+
+    @Column(name = "etag")
+    protected String eTag;
+
     // Link to DocumentDescription
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_object_document_description_id", referencedColumnName = "pk_document_description_id")
@@ -292,6 +297,10 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public DocumentDescription getReferenceDocumentDescription() {
         return referenceDocumentDescription;
     }
@@ -341,6 +350,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
                 ", mimeType=" + mimeType +
                 ", originalFilename=" + originalFilename +
                 ", systemId='" + systemId + '\'' +
+                ", eTag='" + eTag + '\'' +
                 ", id=" + id +
                 '}';
     }

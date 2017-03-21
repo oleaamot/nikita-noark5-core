@@ -115,6 +115,9 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Field
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Links to Keywords
     @ManyToMany
     @JoinTable(name = "class_keyword", joinColumns = @JoinColumn(name = "f_pk_class_id",
@@ -248,6 +251,10 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public Set<Keyword> getReferenceKeyword() {
         return referenceKeyword;
     }
@@ -349,6 +356,7 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
                 ", classId='" + classId + '\'' +
                 ", systemId='" + systemId + '\'' +
                 ", id=" + id +
+                ", eTag='" + eTag + '\'' +
                 '}';
     }
 }

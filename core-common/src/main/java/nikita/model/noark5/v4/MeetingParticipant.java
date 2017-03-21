@@ -44,6 +44,9 @@ public class MeetingParticipant implements Serializable {
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Link to MeetingFile
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_participant_file_id", referencedColumnName = "pk_file_id")
@@ -89,6 +92,10 @@ public class MeetingParticipant implements Serializable {
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public MeetingFile getReferenceMeetingFile() {
         return referenceMeetingFile;
     }
@@ -102,6 +109,7 @@ public class MeetingParticipant implements Serializable {
         return "MeetingParticipant{" +
                 "meetingParticipantFunction='" + meetingParticipantFunction + '\'' +
                 ", meetingParticipantName='" + meetingParticipantName + '\'' +
+                ", eTag='" + eTag + '\'' +
                 ", id=" + id +
                 '}';
     }

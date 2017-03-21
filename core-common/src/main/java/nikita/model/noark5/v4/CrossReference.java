@@ -49,6 +49,9 @@ public class CrossReference implements ICrossReferenceEntity {
     @Column(name="record_system_id")
     protected String referenceToRecord;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Link to Class
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cross_reference_class_id", referencedColumnName = "pk_class_id")
@@ -87,6 +90,10 @@ public class CrossReference implements ICrossReferenceEntity {
     public void setOwnedBy(String ownedBy) {
         this.ownedBy = ownedBy;
     }
+
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
 
     @Override
     public String getReferenceToClass() {
@@ -137,5 +144,18 @@ public class CrossReference implements ICrossReferenceEntity {
 
     public void setReferenceBasicRecord(Record referenceBasicRecord) {
         this.referenceBasicRecord = referenceBasicRecord;
+    }
+
+    @Override
+    public String toString() {
+        return "CrossReference{" +
+                "id=" + id +
+                ", deleted=" + deleted +
+                ", ownedBy='" + ownedBy + '\'' +
+                ", referenceToClass='" + referenceToClass + '\'' +
+                ", referenceToFile='" + referenceToFile + '\'' +
+                ", referenceToRecord='" + referenceToRecord + '\'' +
+                ", eTag='" + eTag + '\'' +
+                '}';
     }
 }

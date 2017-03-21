@@ -57,6 +57,9 @@ public class Disposal implements IDisposalEntity {
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Links to Series
     @OneToMany(mappedBy = "referenceDisposal")
     protected Set<Series> referenceSeries = new HashSet<Series>();
@@ -133,6 +136,10 @@ public class Disposal implements IDisposalEntity {
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public Set<Series> getReferenceSeries() {
         return referenceSeries;
     }
@@ -180,6 +187,7 @@ public class Disposal implements IDisposalEntity {
                 ", preservationTime=" + preservationTime +
                 ", disposalAuthority='" + disposalAuthority + '\'' +
                 ", disposalDecision='" + disposalDecision + '\'' +
+                ", eTag='" + eTag + '\'' +
                 ", id=" + id +
                 '}';
     }

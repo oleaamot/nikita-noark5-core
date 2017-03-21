@@ -43,6 +43,9 @@ public class DisposalUndertaken implements IDisposalUndertakenEntity {
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Links to Series
     @ManyToMany(mappedBy = "referenceDisposalUndertaken")
     protected Set<Series> referenceSeries = new HashSet<Series>();
@@ -90,6 +93,9 @@ public class DisposalUndertaken implements IDisposalUndertakenEntity {
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
 
     public Set<Series> getReferenceSeries() {
         return referenceSeries;
@@ -111,6 +117,7 @@ public class DisposalUndertaken implements IDisposalUndertakenEntity {
     public String toString() {
         return "DisposalUndertaken{" +
                 "id=" + id +
+                ", eTag='" + eTag + '\'' +
                 ", disposalBy='" + disposalBy + '\'' +
                 ", disposalDate=" + disposalDate +
                 '}';

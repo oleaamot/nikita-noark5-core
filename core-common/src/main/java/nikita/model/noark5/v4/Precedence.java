@@ -117,6 +117,9 @@ public class Precedence implements IPrecedenceEntity {
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Link to RegistryEntry
     @ManyToMany(mappedBy = "referencePrecedence")
     protected Set<RegistryEntry> referenceRegistryEntry = new HashSet<RegistryEntry >();
@@ -245,6 +248,10 @@ public class Precedence implements IPrecedenceEntity {
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public Set<RegistryEntry> getReferenceRegistryEntry() {
         return referenceRegistryEntry;
     }
@@ -276,6 +283,7 @@ public class Precedence implements IPrecedenceEntity {
                 ", createdBy='" + createdBy + '\'' +
                 ", createdDate=" + createdDate +
                 ", precedenceDate='" + precedenceDate + '\'' +
+                ", eTag='" + eTag + '\'' +
                 ", id=" + id +
                 '}';
     }

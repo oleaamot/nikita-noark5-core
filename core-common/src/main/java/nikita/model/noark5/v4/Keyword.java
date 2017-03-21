@@ -47,6 +47,9 @@ public class Keyword implements Serializable {
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Links to Class
     @ManyToMany(mappedBy = "referenceKeyword")
     protected Set<Class> referenceClass = new HashSet<Class>();
@@ -91,6 +94,10 @@ public class Keyword implements Serializable {
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public Set<Class> getReferenceClass() {
         return referenceClass;
     }
@@ -120,6 +127,7 @@ public class Keyword implements Serializable {
         return "Keyword{" +
                 "keyword='" + keyword + '\'' +
                 ", systemId='" + systemId + '\'' +
+                ", eTag='" + eTag + '\'' +
                 ", id=" + id +
                 '}';
     }

@@ -61,6 +61,9 @@ public class Comment implements ICommentEntity {
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Link to File
     @ManyToMany(mappedBy = "referenceComment")
     protected Set<File> referenceFile = new HashSet<File>();
@@ -129,6 +132,10 @@ public class Comment implements ICommentEntity {
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public Set<File> getReferenceFile() {
         return referenceFile;
     }
@@ -161,6 +168,7 @@ public class Comment implements ICommentEntity {
                 ", commentType='" + commentType + '\'' +
                 ", commentDate=" + commentDate +
                 ", commentRegisteredBy='" + commentRegisteredBy + '\'' +
+                ", eTag='" + eTag + '\'' +
                 '}';
     }
 }

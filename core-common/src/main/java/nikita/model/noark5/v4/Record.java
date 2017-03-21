@@ -90,6 +90,9 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
     @Field
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Link to File
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "record_file_id", referencedColumnName = "pk_file_id")
@@ -196,6 +199,10 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public File getReferenceFile() {
         return referenceFile;
     }
@@ -276,6 +283,7 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
                 ", createdBy='" + createdBy + '\'' +
                 ", createdDate=" + createdDate +
                 ", systemId='" + systemId + '\'' +
+                ", eTag='" + eTag + '\'' +
                 ", id=" + id +
                 '}';
     }

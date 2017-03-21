@@ -114,11 +114,11 @@ public class WebappRestTestJSON {
         createObjectHeaders.add("Cookie", sessionId);
 
         // set content types to JSON
-        createObjectHeaders.setContentType(new MediaType("application", NOARK5_V4_CONTENT_TYPE_JSON));
-        createObjectHeaders.setAccept(Arrays.asList(new MediaType("application", NOARK5_V4_CONTENT_TYPE_JSON)));
+        createObjectHeaders.setContentType(new MediaType("application", "vnd.noark5-v4+json"));
+        createObjectHeaders.setAccept(Arrays.asList(new MediaType("application", "vnd.noark5-v4+json")));
 
         HttpEntity<String> fondsEntity = new HttpEntity<>(fondsJson, createObjectHeaders);
-        String fondsURI = addressApplication + FONDS;
+        String fondsURI = addressApplication + NEW_FONDS;
 
         // Attempt to create the fonds object
         ResponseEntity<Fonds> responseFondsCreate = restTemplate.exchange(fondsURI, HttpMethod.POST, fondsEntity, Fonds.class);

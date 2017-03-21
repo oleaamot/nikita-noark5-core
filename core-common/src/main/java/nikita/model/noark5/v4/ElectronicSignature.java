@@ -59,6 +59,9 @@ public class ElectronicSignature implements Serializable {
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     @OneToOne
     @JoinColumn(name="pk_record_id")
     protected RegistryEntry referenceRegistryEntry;
@@ -127,6 +130,10 @@ public class ElectronicSignature implements Serializable {
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public RegistryEntry getReferenceRegistryEntry() {
         return referenceRegistryEntry;
     }
@@ -155,6 +162,7 @@ public class ElectronicSignature implements Serializable {
     public String toString() {
         return "ElectronicSignature{" +
                 "id=" + id +
+                ", eTag='" + eTag + '\'' +
                 ", electronicSignatureSecurityLevel='" + electronicSignatureSecurityLevel + '\'' +
                 ", electronicSignatureVerified='" + electronicSignatureVerified + '\'' +
                 '}';

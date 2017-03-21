@@ -63,6 +63,9 @@ public class FondsCreator implements IFondsCreatorEntity {
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Links to Fonds
     @ManyToMany(mappedBy = "referenceFondsCreator")
     protected Set<Fonds> referenceFonds = new HashSet<Fonds>();
@@ -99,6 +102,30 @@ public class FondsCreator implements IFondsCreatorEntity {
         this.description = description;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public String getOwnedBy() {
+        return ownedBy;
+    }
+
+    public void setOwnedBy(String ownedBy) {
+        this.ownedBy = ownedBy;
+    }
+
+    public String geteTag() {
+        return eTag;
+    }
+
+    public void seteTag(String eTag) {
+        this.eTag = eTag;
+    }
+
     public Set<Fonds> getReferenceFonds() {
         return referenceFonds;
     }
@@ -114,6 +141,7 @@ public class FondsCreator implements IFondsCreatorEntity {
                 ", fondsCreatorName='" + fondsCreatorName + '\'' +
                 ", fondsCreatorId='" + fondsCreatorId + '\'' +
                 ", systemId='" + systemId + '\'' +
+                ", eTag='" + eTag + '\'' +
                 ", id=" + id +
                 '}';
     }

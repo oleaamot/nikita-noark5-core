@@ -73,6 +73,9 @@ public class DocumentFlow implements Serializable {
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Link to Series
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "work_flow_registry_entry_id", referencedColumnName = "pk_record_id")
@@ -150,6 +153,10 @@ public class DocumentFlow implements Serializable {
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public RegistryEntry getReferenceRegistryEntry() {
         return referenceRegistryEntry;
     }
@@ -167,6 +174,7 @@ public class DocumentFlow implements Serializable {
                 ", flowReceivedDate=" + flowReceivedDate +
                 ", flowFrom='" + flowFrom + '\'' +
                 ", flowTo='" + flowTo + '\'' +
+                ", eTag='" + eTag + '\'' +
                 ", id=" + id +
                 '}';
     }

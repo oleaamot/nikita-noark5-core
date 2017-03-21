@@ -87,6 +87,8 @@ public class CorrespondencePart implements ICorrespondencePartEntity {
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
 
     // Links to Record
     @ManyToMany(mappedBy = "referenceCorrespondencePart")
@@ -204,6 +206,10 @@ public class CorrespondencePart implements ICorrespondencePartEntity {
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public Set<RegistryEntry> getReferenceRegistryEntry() {
         return referenceRegistryEntry;
     }
@@ -227,6 +233,7 @@ public class CorrespondencePart implements ICorrespondencePartEntity {
                 ", correspondencePartName='" + correspondencePartName + '\'' +
                 ", correspondencePartType='" + correspondencePartType + '\'' +
                 ", id=" + id +
+                ", eTag='" + eTag + '\'' +
                 '}';
     }
 }

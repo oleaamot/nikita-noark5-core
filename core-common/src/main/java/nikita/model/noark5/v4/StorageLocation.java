@@ -50,6 +50,9 @@ public class StorageLocation implements Serializable {
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Links to Fonds
     @ManyToMany(mappedBy = "referenceStorageLocation")
     @JsonIgnore
@@ -112,6 +115,10 @@ public class StorageLocation implements Serializable {
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public Set<Series> getReferenceSeries() {
         return referenceSeries;
     }
@@ -146,7 +153,13 @@ public class StorageLocation implements Serializable {
 
     @Override
     public String toString() {
-        return "IStorageLocation [id=" + id + ", systemId=" + systemId + "]";
+        return "StorageLocation{" +
+                "id=" + id +
+                ", systemId='" + systemId + '\'' +
+                ", storageLocation='" + storageLocation + '\'' +
+                ", deleted=" + deleted +
+                ", ownedBy='" + ownedBy + '\'' +
+                ", eTag='" + eTag + '\'' +
+                '}';
     }
-
 }

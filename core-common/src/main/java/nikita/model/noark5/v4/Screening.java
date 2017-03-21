@@ -77,6 +77,9 @@ public class Screening implements IScreeningEntity {
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Links to Series
     @ManyToMany(mappedBy = "referenceScreening")
     protected Set<Series> referenceSeries = new HashSet<Series>();
@@ -169,6 +172,10 @@ public class Screening implements IScreeningEntity {
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     public Set<Series> getReferenceSeries() {
         return referenceSeries;
     }
@@ -218,6 +225,7 @@ public class Screening implements IScreeningEntity {
                 ", screeningMetadata='" + screeningMetadata + '\'' +
                 ", screeningAuthority='" + screeningAuthority + '\'' +
                 ", accessRestriction='" + accessRestriction + '\'' +
+                ", eTag='" + eTag + '\'' +
                 ", id=" + id +
                 '}';
     }

@@ -46,6 +46,9 @@ public class Author implements INikitaEntity {
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Links to BasicRecords
     @ManyToMany(mappedBy = "referenceAuthor")
     protected Set<BasicRecord> referenceBasicRecord = new HashSet<BasicRecord>();
@@ -86,6 +89,10 @@ public class Author implements INikitaEntity {
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     @Override
     public Long getId() {
         return id;
@@ -115,6 +122,7 @@ public class Author implements INikitaEntity {
     public String toString() {
         return "Author{" +
                 "author='" + author + '\'' +
+                ", eTag='" + eTag + '\'' +
                 ", systemId='" + systemId + '\'' +
                 ", id=" + id +
                 '}';

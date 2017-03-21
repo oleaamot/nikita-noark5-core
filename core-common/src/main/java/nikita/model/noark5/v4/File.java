@@ -125,6 +125,9 @@ public class File implements INoarkGeneralEntity, IDocumentMedium, IStorageLocat
     @Audited
     protected String ownedBy;
 
+    @Column(name = "etag")
+    protected String eTag;
+
     // Link to StorageLocation
     @ManyToMany (cascade=CascadeType.ALL)
     @JoinTable(name = "file_storage_location", joinColumns = @JoinColumn(name = "f_pk_file_id",
@@ -291,6 +294,10 @@ public class File implements INoarkGeneralEntity, IDocumentMedium, IStorageLocat
         this.ownedBy = ownedBy;
     }
 
+    public String geteTag() { return eTag;}
+
+    public void seteTag(String eTag) { this.eTag = eTag; }
+
     @Override
     public Classified getReferenceClassified() {
         return referenceClassified;
@@ -411,6 +418,7 @@ public class File implements INoarkGeneralEntity, IDocumentMedium, IStorageLocat
                 ", title='" + title + '\'' +
                 ", fileId='" + fileId + '\'' +
                 ", systemId='" + systemId + '\'' +
+                ", eTag='" + eTag + '\'' +
                 ", id=" + id +
                 '}';
     }
