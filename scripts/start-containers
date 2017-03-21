@@ -1,0 +1,35 @@
+#!/bin/bash
+
+function wait_on_x()
+{
+  echo "Waiting on $1"
+  sleep $2
+}
+
+echo "This might take some minutes, sit back and relax with a beverage"
+
+# Stop the running containers
+docker stop elasticsearch server tester
+
+# Remove them
+docker rm elasticsearch server tester
+
+# Pull in latest version
+docker pull elasticsearch:2.4.4
+docker pull nikita5/noark5-tester
+docker pull nikita5/nikita-noark5-core
+
+# Get elasticsearch up
+docker run --name=elasticsearch -d -p 9200:9200 elasticsearch:2.4.4 -Des.network.host=0.0.0.0
+wait_on_x elasticsearch 10
+curl http://localhost:9200
+curl -XPUT 'localhost:9200/_template/replicate_template' -d '{ "template" : "*", "settings" : {"number_of_replicas" : 0 } }'
+
+# Get the main application up
+docker run --name=server -d --network="host" --add-host=`hostname`:127.0.0.1 nikita5/nikita-noark5-core
+wait_on_x server 45
+
+# Run test
+docker run --name=tester --network="host" --add-host=`hostname`:127.0.0.1 nikita5/noark5-tester
+
+# TODO: add web container when ready
