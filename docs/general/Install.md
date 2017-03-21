@@ -65,6 +65,7 @@ exceptions. (Please let us know if there are any exceptions).
     curl http://localhost:9200
     curl -XPUT 'localhost:9200/_template/replicate_template' -d '{ "template" : "*", "settings" : {"number_of_replicas" : 0 } }'
     docker run --network="host" --add-host=`hostname`:127.0.0.1 nikita5/nikita-noark5-core
+    docker run --network="host" --add-host=`hostname`:127.0.0.1 nikita5/noark5-tester
 
 ## Vagrant
 
