@@ -8,7 +8,7 @@ Read [INSTALL](Install.md) to get started.
 
 ## Contributing
 
-You are encouraged to contribute. You can either hack on the code and send pull requests or join us on [IRC](http://webchat.freenode.net?randomnick=1&channels=%23nikita&uio=d4) for discussions. Feedback is greatly appreciated. The project has an open ethos and welcomes all forms of feedback. The project maintains a mailing list (https://lists.nuug.no/mailman/listinfo/nikita-noark) and issues can be raised via github (https://github.com/HiOA-ABI/nikita-noark5-core/issues).
+You are encouraged to contribute. You can either hack on the code and send pull requests or join us on [IRC](http://webchat.freenode.net?randomnick=1&channels=%23nikita&uio=d4) for discussions. Feedback is greatly appreciated. The project has an open ethos and welcomes all forms of feedback. The project maintains a mailing list (https://lists.nuug.no/mailman/listinfo/nikita-noark) and issues can be raised via github (https://github.com/HiOA-ABI/nikita-noark5-core/issues). Look at [Starter bugs](./Starter-bugs.md) for some suggestions on things to do.
 
 ## Miscellaneous
 
