@@ -26,7 +26,11 @@ curl http://localhost:9200
 curl -XPUT 'localhost:9200/_template/replicate_template' -d '{ "template" : "*", "settings" : {"number_of_replicas" : 0 } }'
 
 # Get the main application up
-docker run --name=server -d --network="host" --add-host=`hostname`:127.0.0.1 nikita5/nikita-noark5-core
+if [[ `uname` == "Darwin" ]]; then
+  docker run --name=server -d --network="host" --add-host=moby:127.0.0.1 nikita5/nikita-noark5-core
+else
+  docker run --name=server -d --network="host" --add-host=`hostname`:127.0.0.1 nikita5/nikita-noark5-core
+fi
 wait_on_x server 45
 
 # Run test
