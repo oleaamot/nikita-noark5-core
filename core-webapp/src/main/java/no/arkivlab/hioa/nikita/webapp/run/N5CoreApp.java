@@ -29,6 +29,7 @@ import java.util.Arrays;
 // Extending SpringBootServletInitializer allows N5CoreApp to be run
 // both from spring-boot, but also as a normal web application (sans web.xml)
 @ComponentScan({"no.arkivlab.hioa.nikita.webapp.spring.datasource",
+        "no.arkivlab.hioa.nikita.webapp.spring.security",
                 "no.arkivlab.hioa.nikita.webapp.web",
                 "no.arkivlab.hioa.nikita.webapp.run",
                 "no.arkivlab.hioa.nikita.webapp.util.error",
@@ -37,9 +38,6 @@ import java.util.Arrays;
 public class N5CoreApp extends SpringBootServletInitializer {
 
     private static final Logger logger = LoggerFactory.getLogger(N5CoreApp.class);
-
-    @Autowired
-    DataSourceConfig dataSourceConfig;
     private final static Object[] CONFIGS = { // @formatter:off
     		N5CoreApp.class,
             ContextConfig.class,
@@ -56,6 +54,8 @@ public class N5CoreApp extends SpringBootServletInitializer {
             AppWebMvcConfiguration.class,
      //       SwaggerConfig.class
     		}; // @formatter:on
+    @Autowired
+    DataSourceConfig dataSourceConfig;
 
     /**
      * Main method, used to run the application.

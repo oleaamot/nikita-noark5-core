@@ -1,8 +1,8 @@
 package no.arkivlab.hioa.nikita.webapp.spring;
 
+import no.arkivlab.hioa.nikita.webapp.spring.security.AppAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    AppAuthenticationSuccessHandler appAuthenticationSuccessHandler;
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -40,8 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .formLogin().
             loginPage("/login").permitAll()
-            .defaultSuccessUrl("/user", true).
-            loginProcessingUrl("/doLogin")
+                .successHandler(appAuthenticationSuccessHandler)
+                //.defaultSuccessUrl("/user", true).
+                .loginProcessingUrl("/doLogin")
 
         .and()
         .logout().permitAll().logoutUrl("/logout")
@@ -52,3 +55,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     } // @formatter:on
 
 }
+/*
+
+    protected void configure(HttpSecurity http) throws Exception { // @formatter:off
+        http
+                .authorizeRequests()
+                .antMatchers("/").permitAll() // allow access to conformity details
+                .antMatchers("/signup", "/user/register", "/webapp/login/**").permitAll()
+                // filters on role access for arkiv
+                /*.antMatchers(HttpMethod.POST, FONDS + SLASH + "**").hasAuthority(ROLE_RECORDS_MANAGER)
+                .antMatchers(HttpMethod.PUT, FONDS + SLASH + "**").hasAuthority(ROLE_RECORDS_MANAGER)
+                .antMatchers(HttpMethod.PATCH, FONDS + SLASH + "**").hasAuthority(ROLE_RECORDS_MANAGER)
+                .antMatchers(HttpMethod.GET, FONDS + SLASH + "**").hasAnyAuthority()
+                        .formLogin().
+                        loginPage("/login").permitAll()
+                        .defaultSuccessUrl("/user", true)
+                        //   .successHandler(appAuthenticationSuccessHandler)
+                        .loginProcessingUrl("/doLogin")
+
+                        //authentication-success-handler-ref="myAuthenticationSuccessHandler"/>
+
+ */

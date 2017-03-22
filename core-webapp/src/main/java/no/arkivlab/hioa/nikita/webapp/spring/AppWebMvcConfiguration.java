@@ -1,11 +1,10 @@
 package no.arkivlab.hioa.nikita.webapp.spring;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.Ordered;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -19,9 +18,11 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.data.web.config.EnableSpringDataWebSupport;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.Ordered;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @EnableWebMvc
 @EnableSpringDataWebSupport
@@ -58,7 +59,6 @@ public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("webapp/login/loginPage");
         registry.addViewController("/fonds").setViewName("webapp/noark/fonds/list");
         registry.addViewController("/gui").setViewName("webapp/login/loginPage");
 

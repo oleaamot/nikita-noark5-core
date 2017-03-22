@@ -21,11 +21,20 @@ public final class Constants {
     public static final String SPRING_PROFILE_NO_SWAGGER = "no-swagger";
     public static final String SYSTEM_ACCOUNT = "system";
 
-
-    // Application demo/dev/test user and password
     public static final String USERNAME_ADMIN = "admin";
-    public static final String PASSWORD_ADMIN = "pass";
+    public static final String PASSWORD_ADMIN = "password";
 
+    // Definition of Authorities / Roles
+    // Equivalent of the Arkivansvarlig role
+    public static final String ROLE_RECORDS_MANAGER = "RECORDS_MANAGER";
+    // Equivalent of the Arkivar role
+    public static final String ROLE_RECORDS_KEEPER = "RECORDS_KEEPER";
+    // Equivalent of the Saksbehandler role
+    public static final String ROLE_CASE_HANDLER = "CASE_HANDLER";
+    // Equivalent of the Leder role
+    public static final String ROLE_LEADER = "LEADER";
+    // Not part of standard, basically a guest that has limited access
+    public static final String ROLE_GUEST = "GUEST";
 
     // Names of APIs that the core supports
     public static final String IMPORT_API_PATH = "import-api";
@@ -82,8 +91,6 @@ public final class Constants {
     public static final String NEW_SERIES_PRECURSOR = NEW + DASH + SERIES_PRECURSOR;
 
     public static final String DOCUMENT_FILE = "fil";
-
-
 
     // Create for new sakarkiv objects
     public static final String NEW_CASE_FILE = NEW + DASH + CASE_FILE;
