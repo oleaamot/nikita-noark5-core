@@ -4,8 +4,10 @@
   "description": "Web UI for nikita",
   "main": "server.js",
   "dependencies": {
+    "angular": "^1.6.3",
     "body-parser": "^1.17.1",
-    "express": "^4.15.0"
+    "express": "^4.15.0",
+    "material-design-lite": "^1.3.0"
   },
   "devDependencies": {},
   "scripts": {
