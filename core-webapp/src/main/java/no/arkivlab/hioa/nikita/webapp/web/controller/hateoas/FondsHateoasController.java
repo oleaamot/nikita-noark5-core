@@ -40,6 +40,7 @@ import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
+import static org.springframework.http.HttpHeaders.ETAG;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH,
@@ -92,6 +93,7 @@ public class FondsHateoasController {
         Fonds createdFonds = fondsService.createNewFonds(fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(createdFonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
+        response.setHeader(ETAG, fonds.geteTag());
         return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
     }
 
