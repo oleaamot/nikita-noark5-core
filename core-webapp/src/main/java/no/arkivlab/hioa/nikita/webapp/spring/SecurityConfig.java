@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .formLogin().
             loginPage("/login").permitAll()
-                .successHandler(appAuthenticationSuccessHandler)
+                // .successHandler(appAuthenticationSuccessHandler)
                 //.defaultSuccessUrl("/user", true).
                 .loginProcessingUrl("/doLogin")
 
