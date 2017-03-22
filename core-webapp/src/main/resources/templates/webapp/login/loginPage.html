@@ -14,6 +14,20 @@
 
         <div th:if="${param.error}" class="alert alert-danger">Invalid username and password.</div>
         <div th:if="${param.logout}" class="alert alert-success">You have been logged out.</div>
+        <div th:if="${baseUrl}" class="alert alert-success">
+            <p>baseUrl: </p>
+            <div th:text="${baseUrl}">The baseUrl ...</div>
+            <br/>
+            <p>contextPath: </p>
+            <div th:text="${contextPath}">The contextPath ...</div>
+            <br/>
+            <p>api: </p>
+            <div th:text="${api}">The api ...</div>
+            <br/>
+            <p>startingPoint: </p>
+            <div th:text="${startingPoint}">The starting point ...</div>
+            <br/>
+        </div>
 
         <form th:action="@{/doLogin}" method="post" class="form-horizontal">
             <div class="form-group">
