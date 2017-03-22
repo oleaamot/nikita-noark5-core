@@ -11,7 +11,9 @@ command line processor and can be found at (https://github.com/stedolan/jq)*
 In accordance with the Noark 5v4 interface standard, the core advertises its
 services. The can be accessed by:
 
-    curl --header Accept:application/vnd.noark5-v4+json --header Content-Type:application/vnd.noark5-v4+json -X GET http://localhost:8092/noark5v4/
+    curl --header Accept:application/vnd.noark5-v4+json \
+      --header Content-Type:application/vnd.noark5-v4+json \
+      -X GET http://localhost:8092/noark5v4/
 
 A number of services are reported here, some are still in early development.
 The service at  http://localhost:8092/noark5v4/hateoas-api/arkivstruktur is the
@@ -30,14 +32,18 @@ starting with the 'nosecurity' profile
      
 Logging on to the core is done with the following command:
 
-    curl -i -X POST -d username=admin -d password=password -c cookie.txt http://localhost:8092/noark5v4/doLogin
+    curl -i -X POST -d username=admin -d password=password -c cookie.txt \
+      http://localhost:8092/noark5v4/doLogin
 
 This will create a file called *cookie.txt* with your session information.
 Subsequent calls to the core will use this session information.
 
 If you then run
     
-    curl --header Accept:application/vnd.noark5-v4+json --header Content-Type:application/vnd.noark5-v4+json -X GET  -b cookie.txt  http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/
+    curl --header Accept:application/vnd.noark5-v4+json \
+      --header Content-Type:application/vnd.noark5-v4+json \
+      -X GET -b cookie.txt \
+      http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/
 
 You should get a list of Noark entities you can interact with.  These are all
 mapped to findAll calls and are automatically paginated. They do not have a
@@ -54,7 +60,10 @@ next/previous link at the moment
 
 Next you can query the core for the various Noark entities. e.g.
 
-    curl v --header Accept:application/vnd.noark5-v4+json --header Content-Type:application/vnd.noark5-v4+json -X GET  -b cookie.txt http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkiv/
+    curl v --header Accept:application/vnd.noark5-v4+json \
+      --header Content-Type:application/vnd.noark5-v4+json \
+      -X GET -b cookie.txt \
+      http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkiv/
 
 
 Quick note on profiles.
