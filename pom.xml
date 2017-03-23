@@ -12,7 +12,6 @@
     <modules>
         <module>core-common</module>
         <module>core-webapp</module>
-        <module>client-test-webapp-rest</module>
     </modules>
 
     <parent>
