@@ -1,6 +1,5 @@
 package nikita.model.noark5.v4.metadata;
 
-
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -9,14 +8,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-// Noark 5v4 arkivstatus
+// Noark 5v4 Flytstatus
 @Entity
-@Table(name = "fonds_status")
-// Enable soft delete of FondsStatus
-@SQLDelete(sql = "UPDATE fonds_status SET deleted = true WHERE id = ?")
+@Table(name = "flow_status")
+// Enable soft delete
+@SQLDelete(sql = "UPDATE flow_status SET delete" +
+        "d = true WHERE id = ?")
 @Where(clause = "deleted <> true")
-@AttributeOverride(name = "id", column = @Column(name = "pk_fonds_status_id"))
-public class FondsStatus extends MetadataSuperClass {
+@AttributeOverride(name = "id", column = @Column(name = "pk_flow_status_id"))
+public class FlowStatus extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;
-
 }
