@@ -3,11 +3,17 @@ package no.arkivlab.hioa.nikita.webapp.spring;
 import no.arkivlab.hioa.nikita.webapp.spring.security.AppAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+
+import static nikita.config.Constants.ROLE_RECORDS_MANAGER;
+import static nikita.config.Constants.SLASH;
+import static nikita.config.N5ResourceMappings.FONDS;
+import static nikita.config.PATHPatterns.PATTERN_NEW_FONDS_STRUCTURE_ALL;
 
 @Profile("!nosecurity")
 @EnableWebSecurity
@@ -38,6 +44,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // The swaggerUI related stuff. No authorisation required to see it.
                 .antMatchers("/v2/api-docs/**", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**").permitAll()
                 // besides the above all request MUST be authenticated
+                // filters on role access for arkiv
+                .antMatchers(HttpMethod.POST, PATTERN_NEW_FONDS_STRUCTURE_ALL).hasAuthority(ROLE_RECORDS_MANAGER)
+                .antMatchers(HttpMethod.GET, PATTERN_NEW_FONDS_STRUCTURE_ALL).hasAuthority(ROLE_RECORDS_MANAGER)
+                .antMatchers(HttpMethod.PUT, FONDS + SLASH + "**").hasAuthority(ROLE_RECORDS_MANAGER)
+                .antMatchers(HttpMethod.PATCH, FONDS + SLASH + "**").hasAuthority(ROLE_RECORDS_MANAGER)
                 .anyRequest().authenticated()
         .and()
         .formLogin().

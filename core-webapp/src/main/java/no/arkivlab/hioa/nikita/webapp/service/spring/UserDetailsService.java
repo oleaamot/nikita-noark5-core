@@ -1,20 +1,20 @@
 package no.arkivlab.hioa.nikita.webapp.service.spring;
 
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.UserExistsException;
+import no.arkivlab.hioa.nikita.webapp.model.user.Authority;
 import no.arkivlab.hioa.nikita.webapp.model.user.User;
+import no.arkivlab.hioa.nikita.webapp.repository.user.UserRepository;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.UserExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-import no.arkivlab.hioa.nikita.webapp.repository.user.UserRepository;
 
-import java.util.Collection;
+import java.util.*;
 
 @Service
 @Transactional
@@ -43,12 +43,15 @@ public class UserDetailsService implements org.springframework.security.core.use
 
 
     public Collection<? extends GrantedAuthority> getAuthorities(User user) {
+        Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
+        Set<Authority> auths = user.getAuthorities();
 
-        String roles = StringUtils.collectionToCommaDelimitedString(user.getAuthorities());
-        // TODO: If the user has no role, then what? Probably have to give anonymous role,
-        // but this is something that should be logged as ERROR
-        //logger.error("User " + user.getUsername() + " has no defined roles.");
-        return AuthorityUtils.commaSeparatedStringToAuthorityList(roles);
+        for (Authority auth : auths) {
+            setAuths.add(new SimpleGrantedAuthority(auth.getName()));
+        }
+
+        List<GrantedAuthority> result = new ArrayList<GrantedAuthority>(setAuths);
+        return result;
     }
 
     public User registerNewUser(User user) throws UserExistsException {
