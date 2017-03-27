@@ -53,8 +53,7 @@ next/previous link at the moment
       "_links" : [ {
         "href" : "http://localhost:8092/noark5v4/hateoas-api/arkiv/",
         "rel" : "http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkiv",
-        "templated" : true,
-        "reltemplatedSpecified" : true
+        "templated" : true
       } ]
      }
 

@@ -19,7 +19,6 @@ public class CaseHandlingDetails extends APIDetails {
         aPIDetails.add(new APIDetail(
                 uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH + SLASH + CASE_FILE + SLASH,
                 NOARK_CONFORMANCE_REL + NOARK_CASE_HANDLING_PATH + SLASH + CASE_FILE + SLASH,
-                true,
                 true
         ));
 
@@ -28,7 +27,6 @@ public class CaseHandlingDetails extends APIDetails {
                 uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH + SLASH + REGISTRY_ENTRY
                         + SLASH,
                 NOARK_CONFORMANCE_REL + NOARK_CASE_HANDLING_PATH + SLASH + REGISTRY_ENTRY + SLASH,
-                true,
                 true
         ));
     }

@@ -7,14 +7,12 @@ public class APIDetail {
     private String href;
     private String rel;
     private Boolean templated;
-    private Boolean templatedSpecified;
 
     public APIDetail(@NotNull String href, @NotNull String rel,
-                     @NotNull Boolean templated, @NotNull Boolean templatedSpecified) {
+                     @NotNull Boolean templated) {
         this.href = href;
         this.rel = rel;
         this.templated = templated;
-        this.templatedSpecified = templatedSpecified;
     }
 
     public String getHref() {
@@ -41,21 +39,12 @@ public class APIDetail {
         this.templated = templated;
     }
 
-    public Boolean getTemplatedSpecified() {
-        return templatedSpecified;
-    }
-
-    public void setTemplatedSpecified(Boolean templatedSpecified) {
-        this.templatedSpecified = templatedSpecified;
-    }
-
     @Override
     public String toString() {
         return "FondsStructureDetail{" +
                 "href='" + href + '\'' +
                 ", rel='" + rel + '\'' +
                 ", templated=" + templated +
-                ", templatedSpecified=" + templatedSpecified +
                 '}';
     }
 }
