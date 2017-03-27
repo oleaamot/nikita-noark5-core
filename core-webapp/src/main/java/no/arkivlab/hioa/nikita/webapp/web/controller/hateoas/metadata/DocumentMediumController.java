@@ -32,7 +32,7 @@ public class DocumentMediumController {
     // API - All POST Requests (CRUD - CREATE)
 
     // Creates a new documentmedium
-    // POST [contextPath][api]/metatdata/dockumentmedium/ny-dokumentmedium
+    // POST [contextPath][api]/metadata/dockumentmedium/ny-dokumentmedium
     @ApiOperation(value = "Persists a new DocumentMedium object", notes = "Returns the newly" +
             " created DocumentMedium object after it is persisted to the database", response = DocumentMedium.class)
     @ApiResponses(value = {
@@ -58,7 +58,7 @@ public class DocumentMediumController {
     // API - All GET Requests (CRUD - READ)
 
     // Retrieves all documentMedium
-    // GET [contextPath][api]/metatdata/dockumentmedium/
+    // GET [contextPath][api]/metadata/dockumentmedium/
     @ApiOperation(value = "Retrieves all DocumentMedium ", response = DocumentMedium.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "DocumentMedium codes found",
@@ -76,7 +76,7 @@ public class DocumentMediumController {
     }
 
     // Retrieves a given documentMedium identified by a systemId
-    // GET [contextPath][api]/metatdata/dockumentmedium/{systemId}/
+    // GET [contextPath][api]/metadata/dockumentmedium/{systemId}/
     @ApiOperation(value = "Gets documentMedium identified by its systemId", notes = "Returns the requested " +
             " documentMedium object", response = DocumentMedium.class)
     @ApiResponses(value = {
@@ -105,7 +105,7 @@ public class DocumentMediumController {
 
 
     // Retrieves all documentMedium that use a given code
-    // GET [contextPath][api]/metatdata/dockumentmedium/{kode}/
+    // GET [contextPath][api]/metadata/dockumentmedium/{kode}/
     @ApiOperation(value = "Gets all documentMedium that use a given code", notes = "Returns the requested " +
             " documentMedium objects", response = DocumentMedium.class)
     @ApiResponses(value = {
@@ -128,7 +128,7 @@ public class DocumentMediumController {
     }
 
     // Retrieves all documentMedium that use a given description
-    // GET [contextPath][api]/metatdata/dockumentmedium/{description}/
+    // GET [contextPath][api]/metadata/dockumentmedium/{description}/
     // Note, this most likely will be replaced by a keyword search
     @ApiOperation(value = "Retrieves all DocumentMedium that have a given description", response = DocumentMedium.class)
     @ApiResponses(value = {
