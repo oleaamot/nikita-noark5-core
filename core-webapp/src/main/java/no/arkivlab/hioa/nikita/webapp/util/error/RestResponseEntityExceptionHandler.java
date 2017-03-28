@@ -1,6 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.util.error;
 
 
+import nikita.util.exceptions.NikitaMalformedHeaderException;
 import nikita.util.exceptions.NikitaMalformedInputDataException;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.StorageException;
@@ -102,6 +103,14 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(StorageException.class)
     public ResponseEntity<Object> handleStorageException(final RuntimeException ex, final WebRequest request) {
         logger.error("500 Status Code", ex);
+        logger.error(request.getDescription(true), ex);
+
+        return handleExceptionInternal(ex, message(HttpStatus.BAD_REQUEST, ex), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(NikitaMalformedHeaderException.class)
+    public ResponseEntity<Object> handleMalformedHeaderExcpetion(final RuntimeException ex, final WebRequest request) {
+        logger.error("400 Status Code", ex);
         logger.error(request.getDescription(true), ex);
 
         return handleExceptionInternal(ex, message(HttpStatus.BAD_REQUEST, ex), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
