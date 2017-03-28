@@ -21,7 +21,7 @@ let controller = app.controller('MainController', ['$scope', '$http', function (
     method: 'GET',
     url: base_url
   }).then(function successCallback(response) {
-    console.log(response.data);
+    $scope.links = response.data._links;
   }, function errorCallback(response) {
     // TODO: what should we do when it fails?
   });
