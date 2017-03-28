@@ -241,12 +241,11 @@ public class Fonds implements INoarkGeneralEntity, IStorageLocation, IDocumentMe
     }
 
     public void setVersion(Long version) {
-/*
-if (this.version != version) {
+
+        if (this.version != version) {
             throw new RuntimeException("Concurrency Exception. Old version [" + this.version + "], new version "
             + "[" + version + "]");
         }
-        */
         this.version = version;
     }
 
