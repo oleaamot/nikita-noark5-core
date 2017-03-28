@@ -19,12 +19,26 @@
       </header>
       <main class="mdl-layout__content">
       <div class="page-content">
-	<center><h3>hva skal vi vise her?</h3></center>
+	<div id="links_table_group">
+	<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+	  <thead>
+	    <tr>
+	      <th>href</th>
+	      <th>rel</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr ng-repeat="l in links"class="mdl-data-table__cell--non-numeric">
+	      <td class="mdl-data-table__cell--non-numeric">{{ l.href }}</td>
+	      <td class="mdl-data-table__cell--non-numeric">{{ l.rel }}</td>
+	    </tr>
+	  </tbody>
+	</table>
+	</div>
 	<p><a href="login.html">logg inn</a><p>
 	<hr>
 	<p>Denne webklient er del av
 	  <a href="https://github.com/HiOA-ABI/nikita-noark5-core/">Nikita Noark 5 kjerne</a>, en fri programvareimplementasjon av Noark 5 tjenestegrensesnitt.</p>
-
       </div>
       </main>
     </div>
