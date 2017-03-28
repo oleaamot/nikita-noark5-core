@@ -5,10 +5,6 @@ package nikita.util.exceptions;
  */
 public class NikitaMalformedInputDataException extends NikitaException {
 
-    public NikitaMalformedInputDataException() {
-        super();
-    }
-
     public NikitaMalformedInputDataException(String message) {
         super(message);
     }
