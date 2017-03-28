@@ -2,6 +2,7 @@ package no.arkivlab.hioa.nikita.webapp.spring;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import no.arkivlab.hioa.nikita.webapp.web.interceptor.NikitaETAGInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
@@ -168,6 +169,7 @@ public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
+        registry.addInterceptor(new NikitaETAGInterceptor());
     }
 
 }

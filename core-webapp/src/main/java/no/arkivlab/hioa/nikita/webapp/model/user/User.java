@@ -14,76 +14,53 @@ import java.util.Set;
 //import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
-@Table(name = "user")
+@Table(name = "nikita_user")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @NotNull
-    @Column(unique = true, nullable = false)
-    private String username;
-
-    @JsonIgnore
-    @NotNull
-    @Column(name = "password_hash", length = 60)
-    private String password;
-
-    @Transient
-    //@NotEmpty(message = "Password confirmation is required.")
-    private String passwordConfirmation;
-
-    public String getPasswordConfirmation() {
-        return passwordConfirmation;
-    }
-
-    public void setPasswordConfirmation(String passwordConfirmation) {
-        this.passwordConfirmation = passwordConfirmation;
-    }
-
-    @Column(name = "first_name", length = 50)
-    private String firstName;
-
-    @Column(name = "last_name", length = 50)
-    private String lastName;
-
-    @NotNull
-    @Column(name = "enabled", nullable = false)
-    boolean enabled;
-
-    @NotNull
-    @Column(name = "account_non_expired", nullable = false)
-    boolean accountNonExpired;
-
-    @NotNull
-    @Column(name = "credentials_non_expired", nullable = false)
-    boolean credentialsNonExpired;
-
-    @NotNull
-    @Column(name = "account_non_locked", nullable = false)
-    boolean accountNonLocked;
-
-    @NotNull
-    //@Email
-    @Column(length = 100, unique = true)
-    private String email;
-
-
-    @Column(name = "lang_key", length = 5)
-    private String langKey;
-
     @Column(name = "account_created_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
     protected Date createdDate;
-
+    @NotNull
+    @Column(name = "enabled", nullable = false)
+    boolean enabled;
+    @NotNull
+    @Column(name = "account_non_expired", nullable = false)
+    boolean accountNonExpired;
+    @NotNull
+    @Column(name = "credentials_non_expired", nullable = false)
+    boolean credentialsNonExpired;
+    @NotNull
+    @Column(name = "account_non_locked", nullable = false)
+    boolean accountNonLocked;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @NotNull
+    @Column(unique = true, nullable = false)
+    private String username;
+    @JsonIgnore
+    @NotNull
+    @Column(name = "password_hash", length = 60)
+    private String password;
+    @Transient
+    //@NotEmpty(message = "Password confirmation is required.")
+    private String passwordConfirmation;
+    @Column(name = "first_name", length = 50)
+    private String firstName;
+    @Column(name = "last_name", length = 50)
+    private String lastName;
+    @NotNull
+    //@Email
+    @Column(length = 100, unique = true)
+    private String email;
+    @Column(name = "lang_key", length = 5)
+    private String langKey;
     @JsonIgnore
     @ManyToMany
     @JoinTable(
-            name = "user_authority",
+            name = "nikita_user_authority",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
 
@@ -91,6 +68,14 @@ public class User implements Serializable {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public String getPasswordConfirmation() {
+        return passwordConfirmation;
+    }
+
+    public void setPasswordConfirmation(String passwordConfirmation) {
+        this.passwordConfirmation = passwordConfirmation;
     }
 
     public Long getId() {
