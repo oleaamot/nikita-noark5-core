@@ -48,6 +48,18 @@ public class FondsService implements IFondsService {
     //@Value("${nikita-noark5-core.pagination.maxPageSize}")
     Integer maxPageSize = new Integer(10);
 
+    @Override
+    public Fonds handleUpdate(String systemId, Long version, Fonds incomingFonds) {
+        Fonds existingFonds = fondsRepository.findBySystemId(systemId);
+        // Here copy all the values you are allowed to copy ....
+        existingFonds.setDescription(incomingFonds.getDescription());
+        existingFonds.setTitle(incomingFonds.getTitle());
+        existingFonds.setVersion(version);
+        fondsRepository.save(existingFonds);
+        return existingFonds;
+    }
+
+
     // All CREATE operations
 
     /**
@@ -523,5 +535,16 @@ public class FondsService implements IFondsService {
         typedQuery.setMaxResults(maxPageSize);
 
         return typedQuery.getResultList();
+    }
+
+    /**
+     * Persists a updated fonds to the database.
+     *
+     * @param fonds fonds object with some values set
+     * @return the newly persisted fonds object
+     */
+    @Override
+    public Fonds updateFonds(Fonds fonds) {
+        return fondsRepository.save(fonds);
     }
 }

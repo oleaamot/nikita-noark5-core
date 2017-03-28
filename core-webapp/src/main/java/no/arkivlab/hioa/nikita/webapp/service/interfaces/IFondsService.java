@@ -12,6 +12,8 @@ import java.util.List;
 
 public interface IFondsService  {
 
+    Fonds handleUpdate(String systemId, Long version, Fonds incomingFonds);
+
     // -- All CREATE operations
     Fonds createNewFonds(Fonds fonds);
     Series createSeriesAssociatedWithFonds(String fondsSystemId, Series series);
@@ -115,4 +117,7 @@ public interface IFondsService  {
     List<Fonds> findByOwnedBy(String ownedBy);
     List<Fonds> findByOwnedBy(String ownedBy, Sort sort);
     Page<Fonds> findByOwnedBy(String ownedBy, Pageable pageable);
+
+    // -- All UPDATE operations
+    Fonds updateFonds(Fonds fonds);
 }

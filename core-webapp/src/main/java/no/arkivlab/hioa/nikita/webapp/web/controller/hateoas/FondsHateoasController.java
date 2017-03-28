@@ -93,8 +93,10 @@ public class FondsHateoasController {
         Fonds createdFonds = fondsService.createNewFonds(fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(createdFonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
-        response.setHeader(ETAG, fonds.geteTag());
-        return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
+        response.setHeader(ETAG, fonds.getVersion().toString());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(createdFonds.getVersion().toString())
+                .body(fondsHateoas);
     }
 
     // Create a sub-fonds and associate it with the Fonds identified by systemId
@@ -131,7 +133,9 @@ public class FondsHateoasController {
         FondsHateoas fondsHateoas = new FondsHateoas(createdFonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
 
-        return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(createdFonds.getVersion().toString())
+                .body(fondsHateoas);
     }
 
     // Create a Series and associate it with the Fonds identified by systemId
@@ -168,7 +172,9 @@ public class FondsHateoasController {
         Series seriesCreated = fondsService.createSeriesAssociatedWithFonds(fondsSystemId, series);
         SeriesHateoas seriesHateoas = new SeriesHateoas(seriesCreated);
         seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
-        return new ResponseEntity<> (seriesHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(seriesCreated.getVersion().toString())
+                .body(seriesHateoas);
     }
 
     // Create a FondsCreator and associate it with the Fonds identified by systemId
@@ -233,7 +239,9 @@ public class FondsHateoasController {
         }
         FondsHateoas fondsHateoas = new FondsHateoas(fonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
-        return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.OK)
+                .eTag(fonds.getVersion().toString())
+                .body(fondsHateoas);
     }
 
     // Create a Series object with default values
@@ -412,5 +420,43 @@ public class FondsHateoasController {
         FondsHateoas fondsHateoas = new FondsHateoas(suggestedFonds);
         fondsHateoasHandler.addLinksOnNew(fondsHateoas, request, new Authorisation());
         return new ResponseEntity<>(fondsHateoas, HttpStatus.OK);
+    }
+
+    // API - All PUT Requests (CRUD - UPDATE)
+    // Update a Fonds
+    // PUT [contextPath][api]/arkivstruktur/arkiv
+    @ApiOperation(value = "Updates a Fonds object", notes = "Returns the newly" +
+            " update Fonds object after it is persisted to the database", response = FondsHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Fonds " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = FondsHateoas.class),
+            @ApiResponse(code = 201, message = "Fonds " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = FondsHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type Fonds"),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.PUT, value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
+            RIGHT_PARENTHESIS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    public ResponseEntity<FondsHateoas> updateFonds(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemId",
+                    value = "systemId of parent fonds to associate the fonds with.",
+                    required = true)
+            @PathVariable String systemID,
+            @ApiParam(name = "fonds",
+                    value = "Incoming fonds object",
+                    required = true)
+            @RequestBody Fonds fonds) throws NikitaException {
+
+        Fonds updatedFonds = fondsService.handleUpdate(systemID, Long.parseLong(request.getHeader(ETAG)), fonds);
+        FondsHateoas fondsHateoas = new FondsHateoas(updatedFonds);
+        fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(updatedFonds.getVersion().toString())
+                .body(fondsHateoas);
     }
 }
