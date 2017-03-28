@@ -33,26 +33,22 @@ public class DisposalUndertaken implements IDisposalUndertakenEntity {
     @Column(name = "disposal_date")
     @Audited
     protected Date disposalDate;
-
+    @Column(name = "owned_by")
+    @Audited
+    protected String ownedBy;
+    @Version
+    @Column(name = "version")
+    protected Long version;
+    // Links to Series
+    @ManyToMany(mappedBy = "referenceDisposalUndertaken")
+    protected Set<Series> referenceSeries = new HashSet<Series>();
+    // Links to DocumentDescription
+    @ManyToMany(mappedBy = "referenceDisposalUndertaken")
+    protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
     private Boolean deleted;
-
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
-    // Links to Series
-    @ManyToMany(mappedBy = "referenceDisposalUndertaken")
-    protected Set<Series> referenceSeries = new HashSet<Series>();
-
-    // Links to DocumentDescription
-    @ManyToMany(mappedBy = "referenceDisposalUndertaken")
-    protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
 
     public Long getId() {
         return id;
@@ -93,9 +89,13 @@ public class DisposalUndertaken implements IDisposalUndertakenEntity {
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public Set<Series> getReferenceSeries() {
         return referenceSeries;
@@ -117,7 +117,7 @@ public class DisposalUndertaken implements IDisposalUndertakenEntity {
     public String toString() {
         return "DisposalUndertaken{" +
                 "id=" + id +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 ", disposalBy='" + disposalBy + '\'' +
                 ", disposalDate=" + disposalDate +
                 '}';

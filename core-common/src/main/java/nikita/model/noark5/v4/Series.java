@@ -116,85 +116,71 @@ public class Series implements INoarkGeneralEntity, IStorageLocation, IDocumentM
     @Temporal(TemporalType.DATE)
     @Audited
     protected Date seriesEndDate;
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
-
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
+    @Version
+    @Column(name = "version")
+    protected Long version;
     // Links to StorageLocations
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "series_storage_location", joinColumns = @JoinColumn(name = "f_pk_series_id",
             referencedColumnName = "pk_series_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
             referencedColumnName = "pk_storage_location_id"))
     protected Set<StorageLocation> referenceStorageLocation = new HashSet<StorageLocation>();
-
     // Link to Fonds
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "series_fonds_id", referencedColumnName = "pk_fonds_id")
     @JsonIgnore
     protected Fonds referenceFonds;
-
     // Link to precursor Series
     @OneToOne(fetch = FetchType.LAZY)
     protected Series referencePrecursor;
-
     // Link to successor Series
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "referencePrecursor")
     protected Series referenceSuccessor;
-
     // Link to ClassificationSystem
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "series_classification_system_id", referencedColumnName = "pk_classification_system_id")
     protected ClassificationSystem referenceClassificationSystem;
-
     // Links to Files
     @JsonIgnore
     @OneToMany(mappedBy = "referenceSeries")
     protected Set<File> referenceFile = new HashSet<File>();
-
     // Links to Records
     @OneToMany(mappedBy = "referenceSeries")
     @JsonIgnore
     protected Set<Record> referenceRecord = new HashSet<Record>();
-
     // Links to Classified
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "series_classified_id", referencedColumnName = "pk_classified_id")
     @JsonIgnore
     protected Classified referenceClassified;
-
     // Link to Disposal
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "series_disposal_id", referencedColumnName = "pk_disposal_id")
     @JsonIgnore
     protected Disposal referenceDisposal;
-
     // Link to Screening
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "series_screening_id", referencedColumnName = "pk_screening_id")
     @JsonIgnore
     protected Screening referenceScreening;
-
     // Link to DisposalUndertaken
     @ManyToOne (cascade=CascadeType.PERSIST)
     @JoinColumn(name = "document_description_disposal_undertaken_id",
             referencedColumnName = "pk_disposal_undertaken_id")
     @JsonIgnore
     protected DisposalUndertaken referenceDisposalUndertaken;
-
     // Link to Deletion
     @ManyToOne (cascade=CascadeType.PERSIST)
     @JoinColumn(name = "document_description_deletion_id", referencedColumnName = "pk_deletion_id")
     @JsonIgnore
     protected Deletion referenceDeletion;
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    private Boolean deleted;
 
     public Long getId() {
         return id;
@@ -308,9 +294,13 @@ public class Series implements INoarkGeneralEntity, IStorageLocation, IDocumentM
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public Set<StorageLocation> getReferenceStorageLocation() {
         return referenceStorageLocation;
@@ -432,7 +422,7 @@ public class Series implements INoarkGeneralEntity, IStorageLocation, IDocumentM
                 ", description='" + description + '\'' +
                 ", title='" + title + '\'' +
                 ", systemId='" + systemId + '\'' +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 ", id=" + id +
                 '}';
     }

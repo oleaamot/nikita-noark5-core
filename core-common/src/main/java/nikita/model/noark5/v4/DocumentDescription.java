@@ -134,43 +134,31 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
     @Audited
     @Field
     protected String associatedBy;
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    @Field
-    private Boolean deleted;
-
     @Column(name = "owned_by")
     @Audited
     @Field
     protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
+    @Version
+    @Column(name = "version")
+    protected Long version;
     // Links to Records
     @ManyToMany(mappedBy = "referenceDocumentDescription")
     protected Set<Record> referenceRecord = new HashSet<Record>();
-
     // Links to DocumentObjects
     @OneToMany(mappedBy = "referenceDocumentDescription")
     protected Set<DocumentObject> referenceDocumentObject = new HashSet<DocumentObject>();
-
     // Links to Comments
     @ManyToMany
     @JoinTable(name = "document_description_comment", joinColumns = @JoinColumn(name = "f_pk_document_description_id",
             referencedColumnName = "pk_document_description_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_comment_id", referencedColumnName = "pk_comment_id"))
     protected Set<Comment> referenceComment = new HashSet<Comment>();
-
     // Links to Authors
     @ManyToMany
     @JoinTable(name = "document_description_author", joinColumns = @JoinColumn(name = "f_pk_document_description_id",
             referencedColumnName = "pk_document_description_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_author_id", referencedColumnName = "pk_author_id"))
     protected Set<Author> referenceAuthor = new HashSet<Author>();
-
     // Link to StorageLocation
     @ManyToMany (cascade=CascadeType.ALL)
     @JoinTable(name = "document_description_storage_location", joinColumns = @JoinColumn(
@@ -178,42 +166,44 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
             inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
             referencedColumnName = "pk_storage_location_id"))
     protected Set<StorageLocation> referenceStorageLocation = new HashSet<StorageLocation>();
-
     // Link to Classified
     @ManyToOne (cascade=CascadeType.ALL)
     @JoinColumn(name = "document_description_classified_id", referencedColumnName = "pk_classified_id")
     protected Classified referenceClassified;
-
-    
     // Link to Disposal
     @ManyToOne (cascade=CascadeType.ALL)
     @JoinColumn(name = "document_description_disposal_id", referencedColumnName = "pk_disposal_id")
     protected Disposal referenceDisposal;
-
     // Link to DisposalUndertaken
     @ManyToOne (cascade=CascadeType.ALL)
     @JoinColumn(name = "document_description_disposal_undertaken_id",
             referencedColumnName = "pk_disposal_undertaken_id")
     protected DisposalUndertaken referenceDisposalUndertaken;
-
     // Link to Deletion
     @ManyToOne (cascade=CascadeType.ALL)
     @JoinColumn(name = "document_description_deletion_id", referencedColumnName = "pk_deletion_id")
     protected Deletion referenceDeletion;
-
     // Link to Screening
     @ManyToOne (cascade=CascadeType.ALL)
     @JoinColumn(name = "document_description_screening_id", referencedColumnName = "pk_screening_id")
     protected Screening referenceScreening;
-
     @OneToOne
     @JoinColumn(name="pk_electronic_signature_id")
     protected ElectronicSignature referenceElectronicSignature;
-
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    @Field
+    private Boolean deleted;
 
     public Long getId() {
         return id;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -289,6 +279,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
     public void setAssociatedWithRecordAs(String associatedWithRecordAs) {
         this.associatedWithRecordAs = associatedWithRecordAs;
     }
+
     public Boolean getDeleted() {
         return deleted;
     }
@@ -305,9 +296,13 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public Integer getDocumentNumber() {
         return documentNumber;
@@ -345,7 +340,6 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
         this.referenceRecord.add(record);
     }
 
-
     public Set<DocumentObject> getReferenceDocumentObject() {
         return referenceDocumentObject;
     }
@@ -381,10 +375,6 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
     @Override
     public void setReferenceStorageLocation(Set<StorageLocation> referenceStorageLocation) {
         this.referenceStorageLocation = referenceStorageLocation;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     @Override
@@ -461,7 +451,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
                 ", documentStatus='" + documentStatus + '\'' +
                 ", documentType='" + documentType + '\'' +
                 ", systemId='" + systemId + '\'' +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 ", id=" + id +
                 '}';
     }

@@ -6,7 +6,6 @@ import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.lang.*;
 
 @Entity
 @Table(name = "cross_reference")
@@ -21,51 +20,43 @@ public class CrossReference implements ICrossReferenceEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_cross_reference_id", nullable = false, insertable = true, updatable = false)
     protected Long id;
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
-
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
-
     /** M219 - referanseTilKlasse (xs:string)
      * points to systemId of the referenced Class
      **/
     @Column(name="class_system_id")
     protected String referenceToClass;
-
     /** M210 - referanseTilMappe (xs:string)
      * points to systemId of the referenced File
      **/
     @Column(name="file_system_id")
     protected String referenceToFile;
-
     /** M212 - referanseTilRegistrering (xs:string)
      * points to systemId of the referenced Record
      **/
     @Column(name="record_system_id")
     protected String referenceToRecord;
-
-    @Column(name = "etag")
-    protected String eTag;
-
+    @Version
+    @Column(name = "version")
+    protected Long version;
     // Link to Class
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cross_reference_class_id", referencedColumnName = "pk_class_id")
     protected Class referenceClass;
-
     // Link to File
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cross_reference_file_id", referencedColumnName = "pk_file_id")
     protected File referenceFile;
-
     // Link to BasicRecord
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cross_reference_basic_record_id", referencedColumnName = "pk_record_id")
     protected Record referenceBasicRecord;
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    private Boolean deleted;
 
     public Long getId() {
         return id;
@@ -91,9 +82,13 @@ public class CrossReference implements ICrossReferenceEntity {
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     @Override
     public String getReferenceToClass() {
@@ -155,7 +150,7 @@ public class CrossReference implements ICrossReferenceEntity {
                 ", referenceToClass='" + referenceToClass + '\'' +
                 ", referenceToFile='" + referenceToFile + '\'' +
                 ", referenceToRecord='" + referenceToRecord + '\'' +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 '}';
     }
 }

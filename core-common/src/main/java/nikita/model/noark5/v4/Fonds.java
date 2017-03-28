@@ -107,45 +107,38 @@ public class Fonds implements INoarkGeneralEntity, IStorageLocation, IDocumentMe
     @Column(name = "finalised_by")
     @Audited
     protected String finalisedBy;
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
-
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
+    @Version
+    @Column(name = "version")
+    protected Long version;
     // Links to Series
     @OneToMany(mappedBy = "referenceFonds")
     @JsonIgnore
     protected Set<Series> referenceSeries = new HashSet<Series>();
-
     // Link to parent Fonds
     @ManyToOne(fetch = FetchType.LAZY)
     protected Fonds referenceParentFonds;
-
     // Links to child Fonds
     @OneToMany(mappedBy = "referenceParentFonds", fetch = FetchType.LAZY)
     protected Set<Fonds> referenceChildFonds = new HashSet<Fonds>();
-
     // Links to StorageLocations
     @ManyToMany (cascade=CascadeType.ALL)
     @JoinTable(name = "fonds_storage_location", joinColumns = @JoinColumn(name = "f_pk_fonds_id",
             referencedColumnName = "pk_fonds_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
             referencedColumnName = "pk_storage_location_id"))
     protected Set<StorageLocation> referenceStorageLocation = new HashSet<StorageLocation>();
-
     // Links to FondsCreators
     @ManyToMany
     @JoinTable(name = "fonds_fonds_creator", joinColumns = @JoinColumn(name = "f_pk_fonds_id",
             referencedColumnName = "pk_fonds_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_fonds_creator_id",
             referencedColumnName = "pk_fonds_creator_id"))
     protected Set<FondsCreator> referenceFondsCreator = new HashSet<FondsCreator>();
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    private Boolean deleted;
 
     public Long getId() {
         return id;
@@ -243,9 +236,19 @@ public class Fonds implements INoarkGeneralEntity, IStorageLocation, IDocumentMe
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+/*
+if (this.version != version) {
+            throw new RuntimeException("Concurrency Exception. Old version [" + this.version + "], new version "
+            + "[" + version + "]");
+        }
+        */
+        this.version = version;
+    }
 
     public Set<Series> getReferenceSeries() {
         return referenceSeries;
@@ -303,7 +306,7 @@ public class Fonds implements INoarkGeneralEntity, IStorageLocation, IDocumentMe
                 ", finalisedBy='" + finalisedBy + '\'' +
                 ", deleted=" + deleted +
                 ", ownedBy='" + ownedBy + '\'' +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 '}';
     }
 }

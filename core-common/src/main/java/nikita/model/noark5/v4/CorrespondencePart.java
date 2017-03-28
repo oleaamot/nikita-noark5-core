@@ -77,22 +77,19 @@ public class CorrespondencePart implements ICorrespondencePartEntity {
     @Column(name = "case_handler")
     @Audited
     protected String caseHandler;
-
+    @Column(name = "owned_by")
+    @Audited
+    protected String ownedBy;
+    @Version
+    @Column(name = "version")
+    protected Long version;
+    // Links to Record
+    @ManyToMany(mappedBy = "referenceCorrespondencePart")
+    protected Set<RegistryEntry> referenceRegistryEntry = new HashSet<RegistryEntry>();
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
     private Boolean deleted;
-
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
-    // Links to Record
-    @ManyToMany(mappedBy = "referenceCorrespondencePart")
-    protected Set<RegistryEntry> referenceRegistryEntry = new HashSet<RegistryEntry>();
 
     public Long getId() {
         return id;
@@ -206,9 +203,13 @@ public class CorrespondencePart implements ICorrespondencePartEntity {
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public Set<RegistryEntry> getReferenceRegistryEntry() {
         return referenceRegistryEntry;
@@ -233,7 +234,7 @@ public class CorrespondencePart implements ICorrespondencePartEntity {
                 ", correspondencePartName='" + correspondencePartName + '\'' +
                 ", correspondencePartType='" + correspondencePartType + '\'' +
                 ", id=" + id +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 '}';
     }
 }

@@ -63,23 +63,20 @@ public class DocumentFlow implements Serializable {
     @Column(name = "flow_comment")
     @Audited
     protected String flowComment;
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
-
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
+    @Version
+    @Column(name = "version")
+    protected Long version;
     // Link to Series
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "work_flow_registry_entry_id", referencedColumnName = "pk_record_id")
     protected RegistryEntry referenceRegistryEntry;
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    private Boolean deleted;
 
     public Long getId() {
         return id;
@@ -153,9 +150,13 @@ public class DocumentFlow implements Serializable {
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public RegistryEntry getReferenceRegistryEntry() {
         return referenceRegistryEntry;
@@ -174,7 +175,7 @@ public class DocumentFlow implements Serializable {
                 ", flowReceivedDate=" + flowReceivedDate +
                 ", flowFrom='" + flowFrom + '\'' +
                 ", flowTo='" + flowTo + '\'' +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 ", id=" + id +
                 '}';
     }

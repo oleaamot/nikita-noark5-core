@@ -96,22 +96,19 @@ public class CaseParty implements ICasePartyEntity {
     @Column(name = "contact_person")
     @Audited
     protected String contactPerson;
-
+    @Column(name = "owned_by")
+    @Audited
+    protected String ownedBy;
+    @Version
+    @Column(name = "version")
+    protected Long version;
+    // Links to CaseFiles
+    @ManyToMany(mappedBy = "referenceCaseParty")
+    protected Set<CaseFile> referenceCaseFile = new HashSet<CaseFile>();
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
     private Boolean deleted;
-
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
-    // Links to CaseFiles
-    @ManyToMany(mappedBy = "referenceCaseParty")
-    protected Set<CaseFile> referenceCaseFile = new HashSet<CaseFile>();
 
     public long getId() {
         return id;
@@ -217,9 +214,13 @@ public class CaseParty implements ICasePartyEntity {
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public Set<CaseFile> getReferenceCaseFile() {
         return referenceCaseFile;
@@ -243,7 +244,7 @@ public class CaseParty implements ICasePartyEntity {
                 ", emailAddress='" + emailAddress + '\'' +
                 ", telephoneNumber='" + telephoneNumber + '\'' +
                 ", contactPerson='" + contactPerson + '\'' +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 '}';
     }
 }

@@ -38,26 +38,22 @@ public class Deletion implements IDeletionEntity {
     @Column(name = "deletion_date")
     @Audited
     protected Date deletionDate;
-
+    @Column(name = "owned_by")
+    @Audited
+    protected String ownedBy;
+    @Version
+    @Column(name = "version")
+    protected Long version;
+    // Links to Series
+    @OneToMany(mappedBy = "referenceDeletion")
+    protected Set<Series> referenceSeries = new HashSet<Series>();
+    // Links to DocumentDescription
+    @OneToMany(mappedBy = "referenceDeletion")
+    protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
     private Boolean deleted;
-
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
-    // Links to Series
-    @OneToMany(mappedBy = "referenceDeletion")
-    protected Set<Series> referenceSeries = new HashSet<Series>();
-
-    // Links to DocumentDescription
-    @OneToMany(mappedBy = "referenceDeletion")
-    protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
 
     public Long getId() {
         return id;
@@ -107,9 +103,13 @@ public class Deletion implements IDeletionEntity {
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public Set<Series> getReferenceSeries() {
         return referenceSeries;
@@ -134,7 +134,7 @@ public class Deletion implements IDeletionEntity {
                 ", deletionBy='" + deletionBy + '\'' +
                 ", deletionType='" + deletionType + '\'' +
                 ", id=" + id +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 '}';
     }
 }

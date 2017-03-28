@@ -21,59 +21,49 @@ import java.util.Set;
 public class StorageLocation implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "pk_storage_location_id", nullable = false, insertable = true, updatable = false)
-    private long id;
-
     /**
      * M001 - systemID (xs:string)
      */
     @Column(name = "system_id", unique=true)
     @Audited
     protected String systemId;
-
     /**
      * M301 - oppbevaringssted (xs:string)
      */
     @Column(name = "storage_location")
     @Audited
     protected String storageLocation;
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
-
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
+    @Version
+    @Column(name = "version")
+    protected Long version;
     // Links to Fonds
     @ManyToMany(mappedBy = "referenceStorageLocation")
     @JsonIgnore
     protected Set<Fonds> referenceFonds = new HashSet<Fonds>();
-
     // Links to Series
     @ManyToMany(mappedBy = "referenceStorageLocation")
     protected Set<Series> referenceSeries = new HashSet<Series>();
-
     // Links to Files
     @OneToMany(mappedBy = "referenceStorageLocation")
     protected Set<File> referenceFile = new HashSet<File>();
-
     // Links to BasicRecords
     @ManyToMany(mappedBy = "referenceStorageLocation")
     @JsonIgnore
     protected Set<BasicRecord> referenceBasicRecord = new HashSet<>();
-
     @ManyToMany(mappedBy = "referenceStorageLocation")
     @JsonIgnore
     protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<>();
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "pk_storage_location_id", nullable = false, insertable = true, updatable = false)
+    private long id;
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    private Boolean deleted;
 
     public String getSystemId() {
         return systemId;
@@ -115,9 +105,13 @@ public class StorageLocation implements Serializable {
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public Set<Series> getReferenceSeries() {
         return referenceSeries;
@@ -159,7 +153,7 @@ public class StorageLocation implements Serializable {
                 ", storageLocation='" + storageLocation + '\'' +
                 ", deleted=" + deleted +
                 ", ownedBy='" + ownedBy + '\'' +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 '}';
     }
 }

@@ -113,89 +113,75 @@ public class File implements INoarkGeneralEntity, IDocumentMedium, IStorageLocat
     @Column(name = "finalised_by")
     @Audited
     protected String finalisedBy;
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    @Field
-    private Boolean deleted;
-
     @Field
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
+    @Version
+    @Column(name = "version")
+    protected Long version;
     // Link to StorageLocation
     @ManyToMany (cascade=CascadeType.ALL)
     @JoinTable(name = "file_storage_location", joinColumns = @JoinColumn(name = "f_pk_file_id",
             referencedColumnName = "pk_file_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
             referencedColumnName = "pk_storage_location_id"))
     protected Set<StorageLocation> referenceStorageLocation = new HashSet<StorageLocation>();
-
     // Links to Keywords
     @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(name = "file_keyword", joinColumns = @JoinColumn(name = "f_pk_file_id",
             referencedColumnName = "pk_file_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_keyword_id",
             referencedColumnName = "pk_keyword_id"))
     protected Set<Keyword> referenceKeyword = new HashSet<Keyword>();
-
     // Link to parent File
     @ManyToOne(fetch = FetchType.LAZY)
     protected File referenceParentFile;
-
     // Links to child Files
     @OneToMany(mappedBy = "referenceParentFile")
     protected Set<File> referenceChildFile = new HashSet<File>();
-
     // Link to Series
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_series_id", referencedColumnName = "pk_series_id")
     protected Series referenceSeries;
-
     // Link to Class
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_class_id", referencedColumnName = "pk_class_id")
     protected Class referenceClass;
-
     // Links to Records
     @OneToMany(mappedBy = "referenceFile")
     protected Set<Record> referenceRecord = new HashSet<Record>();
-
     // Links to Comments
     @ManyToMany (cascade=CascadeType.PERSIST)
     @JoinTable(name = "file_comment", joinColumns = @JoinColumn(name = "f_pk_file_id",
             referencedColumnName = "pk_file_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_comment_id",
             referencedColumnName = "pk_comment_id"))
     protected Set<Comment> referenceComment = new HashSet<Comment>();
-
     // Links to Classified
     @ManyToOne (cascade=CascadeType.PERSIST)
     @JoinColumn(name = "file_classified_id", referencedColumnName = "pk_classified_id")
     @JsonIgnore
     protected Classified referenceClassified;
-
     // Link to Disposal
     @ManyToOne (cascade=CascadeType.PERSIST)
     @JoinColumn(name = "file_disposal_id", referencedColumnName = "pk_disposal_id")
     protected Disposal referenceDisposal;
-
     // Link to Screening
     @ManyToOne (cascade=CascadeType.PERSIST)
     @JoinColumn(name = "file_screening_id", referencedColumnName = "pk_screening_id")
     protected Screening referenceScreening;
-
     @OneToMany(mappedBy = "referenceFile")
     protected Set<CrossReference> referenceCrossReference;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    @Field
+    private Boolean deleted;
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getSystemId() {
@@ -294,9 +280,13 @@ public class File implements INoarkGeneralEntity, IDocumentMedium, IStorageLocat
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     @Override
     public Classified getReferenceClassified() {
@@ -319,13 +309,13 @@ public class File implements INoarkGeneralEntity, IDocumentMedium, IStorageLocat
     }
 
     @Override
-    public void setReferenceScreening(Screening referenceScreening) {
-        this.referenceScreening = referenceScreening;
+    public Screening getReferenceScreening() {
+        return referenceScreening;
     }
 
     @Override
-    public Screening getReferenceScreening() {
-        return referenceScreening;
+    public void setReferenceScreening(Screening referenceScreening) {
+        this.referenceScreening = referenceScreening;
     }
 
     @Override
@@ -418,7 +408,7 @@ public class File implements INoarkGeneralEntity, IDocumentMedium, IStorageLocat
                 ", title='" + title + '\'' +
                 ", fileId='" + fileId + '\'' +
                 ", systemId='" + systemId + '\'' +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 ", id=" + id +
                 '}';
     }

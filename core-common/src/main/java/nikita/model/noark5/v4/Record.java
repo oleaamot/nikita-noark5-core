@@ -78,36 +78,25 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
     @Audited
     @Field
     protected String archivedBy;
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    @Field
-    private Boolean deleted;
-
     @Column(name = "owned_by")
     @Audited
     @Field
     protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
+    @Version
+    @Column(name = "version")
+    protected Long version;
     // Link to File
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "record_file_id", referencedColumnName = "pk_file_id")
     protected File referenceFile;
-
     // Link to Series
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "record_series_id", referencedColumnName = "pk_series_id")
     protected Series referenceSeries;
-
     // Link to Class
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "record_class_id", referencedColumnName = "pk_class_id")
     protected Class referenceClass;
-
     // Links to DocumentDescriptions
     @ManyToMany
     @JoinTable(name = "record_document_description", joinColumns = @JoinColumn(name = "f_pk_record_id",
@@ -115,32 +104,33 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
             inverseJoinColumns = @JoinColumn(name = "f_pk_document_description_id",
                     referencedColumnName = "pk_document_description_id"))
     protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
-
     // Links to DocumentObjects
     @OneToMany(mappedBy = "referenceRecord", fetch = FetchType.LAZY)
     protected Set<DocumentObject> referenceDocumentObject = new HashSet<DocumentObject>();
-
     // Links to Classified
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "record_classified_id", referencedColumnName = "pk_classified_id")
     protected Classified referenceClassified;
-
     // Link to Disposal
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "record_disposal_id", referencedColumnName = "pk_disposal_id")
     protected Disposal referenceDisposal;
-
     // Link to Screening
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "record_screening_id", referencedColumnName = "pk_screening_id")
     protected Screening referenceScreening;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    @Field
+    private Boolean deleted;
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getSystemId() {
@@ -199,9 +189,13 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public File getReferenceFile() {
         return referenceFile;
@@ -266,13 +260,13 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
     }
 
     @Override
-    public void setReferenceScreening(Screening referenceScreening) {
-        this.referenceScreening = referenceScreening;
+    public Screening getReferenceScreening() {
+        return referenceScreening;
     }
 
     @Override
-    public Screening getReferenceScreening() {
-        return referenceScreening;
+    public void setReferenceScreening(Screening referenceScreening) {
+        this.referenceScreening = referenceScreening;
     }
 
     @Override
@@ -283,7 +277,7 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
                 ", createdBy='" + createdBy + '\'' +
                 ", createdDate=" + createdDate +
                 ", systemId='" + systemId + '\'' +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 ", id=" + id +
                 '}';
     }

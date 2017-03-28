@@ -50,23 +50,20 @@ public class Conversion {
     @Column(name = "conversion_comment")
     @Audited
     protected String conversionComment;
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
-
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
+    @Version
+    @Column(name = "version")
+    protected Long version;
     // Link to DocumentObject
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "conversion_document_object_id", referencedColumnName = "pk_document_object_id")
     protected DocumentObject referenceDocumentObject;
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    private Boolean deleted;
 
     public Long getId() {
         return id;
@@ -140,9 +137,13 @@ public class Conversion {
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public DocumentObject getReferenceDocumentObject() {
         return referenceDocumentObject;
@@ -162,7 +163,7 @@ public class Conversion {
                 ", convertedToFormat='" + convertedToFormat + '\'' +
                 ", conversionTool='" + conversionTool + '\'' +
                 ", conversionComment='" + conversionComment + '\'' +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 '}';
     }
 }

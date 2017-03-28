@@ -6,7 +6,6 @@ import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.lang.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -67,38 +66,31 @@ public class Screening implements IScreeningEntity {
     @Column(name = "screening_duration")
     @Audited
     protected String screeningDuration;
-
+    @Column(name = "owned_by")
+    @Audited
+    protected String ownedBy;
+    @Version
+    @Column(name = "version")
+    protected Long version;
+    // Links to Series
+    @ManyToMany(mappedBy = "referenceScreening")
+    protected Set<Series> referenceSeries = new HashSet<Series>();
+    // Links to Class
+    @ManyToMany(mappedBy = "referenceScreening")
+    protected Set<Class> referenceClass = new HashSet<Class>();
+    // Links to File
+    @ManyToMany(mappedBy = "referenceScreening")
+    protected Set<File> referenceFile = new HashSet<File>();
+    // Links to Record
+    @ManyToMany(mappedBy = "referenceScreening")
+    protected Set<Record> referenceRecord = new HashSet<Record>();
+    // Links to DocumentDescription
+    @ManyToMany(mappedBy = "referenceScreening")
+    protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
     private Boolean deleted;
-
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
-    // Links to Series
-    @ManyToMany(mappedBy = "referenceScreening")
-    protected Set<Series> referenceSeries = new HashSet<Series>();
-
-    // Links to Class
-    @ManyToMany(mappedBy = "referenceScreening")
-    protected Set<Class> referenceClass = new HashSet<Class>();
-
-    // Links to File
-    @ManyToMany(mappedBy = "referenceScreening")
-    protected Set<File> referenceFile = new HashSet<File>();
-
-    // Links to Record
-    @ManyToMany(mappedBy = "referenceScreening")
-    protected Set<Record> referenceRecord = new HashSet<Record>();
-
-    // Links to DocumentDescription
-    @ManyToMany(mappedBy = "referenceScreening")
-    protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
 
     public Long getId() {
         return id;
@@ -172,9 +164,13 @@ public class Screening implements IScreeningEntity {
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public Set<Series> getReferenceSeries() {
         return referenceSeries;
@@ -225,7 +221,7 @@ public class Screening implements IScreeningEntity {
                 ", screeningMetadata='" + screeningMetadata + '\'' +
                 ", screeningAuthority='" + screeningAuthority + '\'' +
                 ", accessRestriction='" + accessRestriction + '\'' +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 ", id=" + id +
                 '}';
     }

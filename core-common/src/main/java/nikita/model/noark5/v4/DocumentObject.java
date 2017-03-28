@@ -140,8 +140,9 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
     @Field
     protected String ownedBy;
 
-    @Column(name = "etag")
-    protected String eTag;
+    @Version
+    @Column(name = "version")
+    protected Long version;
 
     // Link to DocumentDescription
     @ManyToOne(fetch = FetchType.LAZY)
@@ -168,12 +169,12 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
         return id;
     }
 
-    public void setId(long id) {
+    @Override
+    public void setId(Long id) {
         this.id = id;
     }
 
-    @Override
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -297,9 +298,13 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public DocumentDescription getReferenceDocumentDescription() {
         return referenceDocumentDescription;
@@ -350,7 +355,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
                 ", mimeType=" + mimeType +
                 ", originalFilename=" + originalFilename +
                 ", systemId='" + systemId + '\'' +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 ", id=" + id +
                 '}';
     }

@@ -6,7 +6,6 @@ import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.lang.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,30 +36,25 @@ public class Keyword implements Serializable {
     @Column(name = "keyword")
     @Audited
     protected String keyword;
-
+    @Column(name = "owned_by")
+    @Audited
+    protected String ownedBy;
+    @Version
+    @Column(name = "version")
+    protected Long version;
+    // Links to Class
+    @ManyToMany(mappedBy = "referenceKeyword")
+    protected Set<Class> referenceClass = new HashSet<Class>();
+    // Links to File
+    @ManyToMany(mappedBy = "referenceKeyword")
+    protected Set<File> referenceFile = new HashSet<File>();
+    // Links to BasicRecord
+    @ManyToMany(mappedBy = "referenceKeyword")
+    protected Set<BasicRecord> referenceBasicRecord = new HashSet<BasicRecord>();
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
     private Boolean deleted;
-
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
-    // Links to Class
-    @ManyToMany(mappedBy = "referenceKeyword")
-    protected Set<Class> referenceClass = new HashSet<Class>();
-
-    // Links to File
-    @ManyToMany(mappedBy = "referenceKeyword")
-    protected Set<File> referenceFile = new HashSet<File>();
-
-    // Links to BasicRecord
-    @ManyToMany(mappedBy = "referenceKeyword")
-    protected Set<BasicRecord> referenceBasicRecord = new HashSet<BasicRecord>();
 
     public String getSystemId() {
         return systemId;
@@ -94,9 +88,13 @@ public class Keyword implements Serializable {
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public Set<Class> getReferenceClass() {
         return referenceClass;
@@ -127,7 +125,7 @@ public class Keyword implements Serializable {
         return "Keyword{" +
                 "keyword='" + keyword + '\'' +
                 ", systemId='" + systemId + '\'' +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 ", id=" + id +
                 '}';
     }

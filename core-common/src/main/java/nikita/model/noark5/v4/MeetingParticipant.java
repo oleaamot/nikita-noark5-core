@@ -34,23 +34,20 @@ public class MeetingParticipant implements Serializable {
     @Column(name = "meeting_participant_function")
     @Audited
     protected String meetingParticipantFunction;
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
-
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
+    @Version
+    @Column(name = "version")
+    protected Long version;
     // Link to MeetingFile
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_participant_file_id", referencedColumnName = "pk_file_id")
     protected MeetingFile referenceMeetingFile;
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    private Boolean deleted;
 
     public Long getId() {
         return id;
@@ -92,9 +89,13 @@ public class MeetingParticipant implements Serializable {
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public MeetingFile getReferenceMeetingFile() {
         return referenceMeetingFile;
@@ -109,7 +110,7 @@ public class MeetingParticipant implements Serializable {
         return "MeetingParticipant{" +
                 "meetingParticipantFunction='" + meetingParticipantFunction + '\'' +
                 ", meetingParticipantName='" + meetingParticipantName + '\'' +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 ", id=" + id +
                 '}';
     }

@@ -43,6 +43,9 @@ public class MetadataSuperClass implements INikitaEntity, INoarkSystemIdEntity, 
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
+    @Version
+    @Column(name = "version")
+    protected Long version;
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
@@ -109,12 +112,23 @@ public class MetadataSuperClass implements INikitaEntity, INoarkSystemIdEntity, 
     }
 
     @Override
+    public Long getVersion() {
+        return version;
+    }
+
+    @Override
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    @Override
     public String toString() {
         return this.getClass().getName() + " {" +
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", deleted=" + deleted +
+                ", version=" + version +
                 ", ownedBy='" + ownedBy + '\'' +
                 '}';
     }

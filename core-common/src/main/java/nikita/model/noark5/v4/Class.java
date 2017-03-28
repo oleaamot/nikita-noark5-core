@@ -28,16 +28,10 @@ import java.util.Set;
 public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClassified, ICrossReference {
 
     private static final long serialVersionUID = 1L;
-
-    public Class() {
-        super();
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_class_id", nullable = false, insertable = true, updatable = false)
     protected Long id;
-
     /**
      * M001 - systemID (xs:string)
      */
@@ -45,7 +39,6 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Audited
     @Field
     protected String systemId;
-
     /**
      * M002 - klasseID (xs:string)
      */
@@ -53,7 +46,6 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Audited
     @Field
     protected String classId;
-
     /**
      * M020 - tittel (xs:string)
      */
@@ -61,7 +53,6 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Audited
     @Field
     protected String title;
-
     /**
      * M021 - beskrivelse (xs:string)
      */
@@ -69,7 +60,6 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Audited
     @Field
     protected String description;
-
     /**
      * M600 - opprettetDato (xs:dateTime)
      */
@@ -78,7 +68,6 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Audited
     @Field
     protected Date createdDate;
-
     /**
      * M601 - opprettetAv (xs:string)
      */
@@ -86,7 +75,6 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Audited
     @Field
     protected String createdBy;
-
     /**
      * M602 - avsluttetDato (xs:dateTime)
      */
@@ -95,7 +83,6 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Audited
     @Field
     protected Date finalisedDate;
-
     /**
      * M603 - avsluttetAv (xs:string)
      */
@@ -103,72 +90,65 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Audited
     @Field
     protected String finalisedBy;
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    @Field
-    private Boolean deleted;
-
     @Column(name = "owned_by")
     @Audited
     @Field
     protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
+    @Version
+    @Column(name = "version")
+    protected Long version;
     // Links to Keywords
     @ManyToMany
     @JoinTable(name = "class_keyword", joinColumns = @JoinColumn(name = "f_pk_class_id",
             referencedColumnName = "pk_class_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_keyword_id",
             referencedColumnName = "pk_keyword_id"))
     protected Set<Keyword> referenceKeyword = new HashSet<Keyword>();
-
     // Link to ClassificationSystem
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_classification_system_id", referencedColumnName = "pk_classification_system_id")
     protected ClassificationSystem referenceClassificationSystem;
-
     // Link to parent Class
     @ManyToOne(fetch = FetchType.LAZY)
     protected Class referenceParentClass;
-
     // Links to child Classes
     @OneToMany(mappedBy = "referenceParentClass")
     protected Set<Class> referenceChildClass = new HashSet<Class>();
-
     // Links to Files
     @OneToMany(mappedBy = "referenceClass")
     protected Set<File> referenceFile = new HashSet<File>();
-
     // Links to Records
     @OneToMany(mappedBy = "referenceClass")
     protected Set<Record> referenceRecord = new HashSet<Record>();
-
     // Links to Classified
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "class_classified_id", referencedColumnName = "pk_classified_id")
     protected Classified referenceClassified;
-
     // Link to Disposal
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "class_disposal_id", referencedColumnName = "pk_disposal_id")
     protected Disposal referenceDisposal;
-
     // Link to Screening
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "class_screening_id", referencedColumnName = "pk_screening_id")
     protected Screening referenceScreening;
-
     @OneToMany(mappedBy = "referenceClass")
     protected Set<CrossReference> referenceCrossReference;
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    @Field
+    private Boolean deleted;
+
+    public Class() {
+        super();
+    }
+
+    public Long getId() {
+        return id;
+    }
 
     public void setId(Long id) {
         this.id = id;
-    }
-    public Long getId() {
-        return id;
     }
 
     public String getSystemId() {
@@ -251,9 +231,13 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public Set<Keyword> getReferenceKeyword() {
         return referenceKeyword;
@@ -356,7 +340,7 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
                 ", classId='" + classId + '\'' +
                 ", systemId='" + systemId + '\'' +
                 ", id=" + id +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 '}';
     }
 }

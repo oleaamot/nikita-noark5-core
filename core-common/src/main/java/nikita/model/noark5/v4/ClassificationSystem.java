@@ -92,34 +92,31 @@ public class ClassificationSystem implements INoarkGeneralEntity {
     @Audited
     @Field
     protected String finalisedBy;
-
+    @Column(name = "owned_by")
+    @Audited
+    @Field
+    protected String ownedBy;
+    @Version
+    @Column(name = "version")
+    protected Long version;
+    // Links to Series
+    @OneToMany(mappedBy = "referenceClassificationSystem")
+    protected Set<Series> referenceSeries = new HashSet<Series>();
+    // Links to child Classes
+    @OneToMany(mappedBy = "referenceClassificationSystem")
+    protected Set<Class> referenceClass = new HashSet<Class>();
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
     @Field
     private Boolean deleted;
 
-    @Column(name = "owned_by")
-    @Audited
-    @Field
-    protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
-    // Links to Series
-    @OneToMany(mappedBy = "referenceClassificationSystem")
-    protected Set<Series> referenceSeries = new HashSet<Series>();
-
-    // Links to child Classes
-    @OneToMany(mappedBy = "referenceClassificationSystem")
-    protected Set<Class> referenceClass = new HashSet<Class>();
+    public Long getId() {
+        return id;
+    }
 
     public void setId(Long id) {
         this.id = id;
-    }
-    public Long getId() {
-        return id;
     }
 
     public String getSystemId() {
@@ -202,9 +199,13 @@ public class ClassificationSystem implements INoarkGeneralEntity {
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public Set<Series> getReferenceSeries() {
         return referenceSeries;
@@ -230,7 +231,7 @@ public class ClassificationSystem implements INoarkGeneralEntity {
                 + createdDate + ", createdBy=" + createdBy + ", finalisedDate="
                 + finalisedDate + ", finalisedBy=" + finalisedBy
                 + ", referenceSeries=" + referenceSeries + ", referenceClass="
-                + ", eTag='" + eTag + '\''
+                + ", version='" + version + '\''
                 + referenceClass + "]";
     }
 

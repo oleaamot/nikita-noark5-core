@@ -107,26 +107,22 @@ public class Precedence implements IPrecedenceEntity {
     @Column(name = "precedence_status")
     @Audited
     protected String precedenceStatus;
-
+    @Column(name = "owned_by")
+    @Audited
+    protected String ownedBy;
+    @Version
+    @Column(name = "version")
+    protected Long version;
+    // Link to RegistryEntry
+    @ManyToMany(mappedBy = "referencePrecedence")
+    protected Set<RegistryEntry> referenceRegistryEntry = new HashSet<RegistryEntry >();
+    // Links to CaseFiles
+    @ManyToMany(mappedBy = "referencePrecedence")
+    protected Set<CaseFile> referenceCaseFile = new HashSet<CaseFile>();
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
     private Boolean deleted;
-
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
-    // Link to RegistryEntry
-    @ManyToMany(mappedBy = "referencePrecedence")
-    protected Set<RegistryEntry> referenceRegistryEntry = new HashSet<RegistryEntry >();
-
-    // Links to CaseFiles
-    @ManyToMany(mappedBy = "referencePrecedence")
-    protected Set<CaseFile> referenceCaseFile = new HashSet<CaseFile>();
 
     public Long getId() {
         return id;
@@ -248,9 +244,13 @@ public class Precedence implements IPrecedenceEntity {
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public Set<RegistryEntry> getReferenceRegistryEntry() {
         return referenceRegistryEntry;
@@ -283,7 +283,7 @@ public class Precedence implements IPrecedenceEntity {
                 ", createdBy='" + createdBy + '\'' +
                 ", createdDate=" + createdDate +
                 ", precedenceDate='" + precedenceDate + '\'' +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 ", id=" + id +
                 '}';
     }

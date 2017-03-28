@@ -39,33 +39,28 @@ public class SignOff implements Serializable {
     @Column(name = "sign_off_method")
     @Audited
     protected String signOffMethod;
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
-
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
+    @Version
+    @Column(name = "version")
+    protected Long version;
     /** M215 referanseAvskrivesAvJournalpost */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="system_id")
     protected RegistryEntry referenceSignedOffRecord;
-
     /** M??? - referanseAvskrivesAvKorrespondansepart
      * Note this is new to v4, I think. Missing Metatdata number */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="pk_record_id")
     protected CorrespondencePart referenceSignedOffCorrespondencePart;
-
     // Links to RegistryEnty
     @ManyToMany(mappedBy = "referenceSignOff")
     protected Set<RegistryEntry> referenceRecord = new HashSet<RegistryEntry>();
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    private Boolean deleted;
 
     public Long getId() {
         return id;
@@ -115,9 +110,13 @@ public class SignOff implements Serializable {
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public RegistryEntry getReferenceSignedOffRecord() {
         return referenceSignedOffRecord;
@@ -149,7 +148,7 @@ public class SignOff implements Serializable {
                 "signOffMethod='" + signOffMethod + '\'' +
                 ", signOffBy='" + signOffBy + '\'' +
                 ", signOffDate=" + signOffDate +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 ", id=" + id +
                 '}';
     }

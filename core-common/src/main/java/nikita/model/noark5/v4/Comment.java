@@ -51,30 +51,25 @@ public class Comment implements ICommentEntity {
     @Column(name = "comment_registered_by")
     @Audited
     protected String commentRegisteredBy;
-
+    @Column(name = "owned_by")
+    @Audited
+    protected String ownedBy;
+    @Version
+    @Column(name = "version")
+    protected Long version;
+    // Link to File
+    @ManyToMany(mappedBy = "referenceComment")
+    protected Set<File> referenceFile = new HashSet<File>();
+    // Links to BasicRecord
+    @ManyToMany(mappedBy = "referenceComment")
+    protected Set<BasicRecord> referenceRecord = new HashSet<BasicRecord>();
+    // Link to DocumentDescription
+    @ManyToMany(mappedBy = "referenceComment")
+    protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
     private Boolean deleted;
-
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
-    // Link to File
-    @ManyToMany(mappedBy = "referenceComment")
-    protected Set<File> referenceFile = new HashSet<File>();
-
-    // Links to BasicRecord
-    @ManyToMany(mappedBy = "referenceComment")
-    protected Set<BasicRecord> referenceRecord = new HashSet<BasicRecord>();
-
-    // Link to DocumentDescription
-    @ManyToMany(mappedBy = "referenceComment")
-    protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
 
     public Long getId() {
         return id;
@@ -132,9 +127,13 @@ public class Comment implements ICommentEntity {
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public Set<File> getReferenceFile() {
         return referenceFile;
@@ -168,7 +167,7 @@ public class Comment implements ICommentEntity {
                 ", commentType='" + commentType + '\'' +
                 ", commentDate=" + commentDate +
                 ", commentRegisteredBy='" + commentRegisteredBy + '\'' +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 '}';
     }
 }

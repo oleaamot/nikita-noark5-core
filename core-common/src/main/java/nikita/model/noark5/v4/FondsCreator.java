@@ -53,22 +53,19 @@ public class FondsCreator implements IFondsCreatorEntity {
     @Column(name = "description")
     @Audited
     protected String description;
-
+    @Column(name = "owned_by")
+    @Audited
+    protected String ownedBy;
+    @Version
+    @Column(name = "version")
+    protected Long version;
+    // Links to Fonds
+    @ManyToMany(mappedBy = "referenceFondsCreator")
+    protected Set<Fonds> referenceFonds = new HashSet<Fonds>();
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
     private Boolean deleted;
-
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
-    // Links to Fonds
-    @ManyToMany(mappedBy = "referenceFondsCreator")
-    protected Set<Fonds> referenceFonds = new HashSet<Fonds>();
 
     public String getSystemId() {
         return systemId;
@@ -118,12 +115,12 @@ public class FondsCreator implements IFondsCreatorEntity {
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() {
-        return eTag;
+    public Long getVersion() {
+        return version;
     }
 
-    public void seteTag(String eTag) {
-        this.eTag = eTag;
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     public Set<Fonds> getReferenceFonds() {
@@ -141,7 +138,7 @@ public class FondsCreator implements IFondsCreatorEntity {
                 ", fondsCreatorName='" + fondsCreatorName + '\'' +
                 ", fondsCreatorId='" + fondsCreatorId + '\'' +
                 ", systemId='" + systemId + '\'' +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 ", id=" + id +
                 '}';
     }

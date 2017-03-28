@@ -49,30 +49,25 @@ public class ElectronicSignature implements Serializable {
     @Column(name = "verified_by")
     @Audited
     protected String verifiedBy;
-
+    @Column(name = "owned_by")
+    @Audited
+    protected String ownedBy;
+    @Version
+    @Column(name = "version")
+    protected Long version;
+    @OneToOne
+    @JoinColumn(name="pk_record_id")
+    protected RegistryEntry referenceRegistryEntry;
+    @OneToOne
+    @JoinColumn(name="pk_document_object_id")
+    protected DocumentObject referenceDocumentObject;
+    @OneToOne
+    @JoinColumn(name="pk_document_description_id")
+    protected DocumentDescription referenceDocumentDescription;
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
     private Boolean deleted;
-
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
-
-    @Column(name = "etag")
-    protected String eTag;
-
-    @OneToOne
-    @JoinColumn(name="pk_record_id")
-    protected RegistryEntry referenceRegistryEntry;
-
-    @OneToOne
-    @JoinColumn(name="pk_document_object_id")
-    protected DocumentObject referenceDocumentObject;
-
-    @OneToOne
-    @JoinColumn(name="pk_document_description_id")
-    protected DocumentDescription referenceDocumentDescription;
 
     public Long getId() {
         return id;
@@ -130,9 +125,13 @@ public class ElectronicSignature implements Serializable {
         this.ownedBy = ownedBy;
     }
 
-    public String geteTag() { return eTag;}
+    public Long getVersion() {
+        return version;
+    }
 
-    public void seteTag(String eTag) { this.eTag = eTag; }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     public RegistryEntry getReferenceRegistryEntry() {
         return referenceRegistryEntry;
@@ -162,7 +161,7 @@ public class ElectronicSignature implements Serializable {
     public String toString() {
         return "ElectronicSignature{" +
                 "id=" + id +
-                ", eTag='" + eTag + '\'' +
+                ", version='" + version + '\'' +
                 ", electronicSignatureSecurityLevel='" + electronicSignatureSecurityLevel + '\'' +
                 ", electronicSignatureVerified='" + electronicSignatureVerified + '\'' +
                 '}';
