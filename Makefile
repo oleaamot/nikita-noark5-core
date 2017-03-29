@@ -44,3 +44,5 @@ docker_compose:
 # Prepare a package which can be used to deploy the application
 package: build
 	mvn -Dmaven.test.skip=true package spring-boot:repackage
+stop-containers:
+	docker stop server web elasticsearch
