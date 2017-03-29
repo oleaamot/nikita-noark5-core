@@ -1,5 +1,5 @@
 # docker build says: reference format: repository name must be lowercase
-project ?=nikita5/nikita-noark5-core
+project ?=hioaabi/nikita-noark5-core
 repo_tester_dir ?=../noark5-tester
 repo_tester ?=https://github.com/petterreinholdtsen/noark5-tester
 

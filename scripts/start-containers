@@ -17,7 +17,7 @@ docker rm elasticsearch server tester web
 # Pull in latest version
 docker pull elasticsearch:2.4.4
 docker pull nikita5/noark5-tester
-docker pull nikita5/nikita-noark5-core
+docker pull hioaabi/nikita-noark5-core
 docker pull nikita5/web
 
 # Get elasticsearch up
@@ -28,9 +28,9 @@ curl -XPUT 'localhost:9200/_template/replicate_template' -d '{ "template" : "*",
 
 # Get the main application up
 if [[ `uname` == "Darwin" ]]; then
-  docker run --name=server -d --network="host" --add-host=moby:127.0.0.1 nikita5/nikita-noark5-core
+  docker run --name=server -d --network="host" --add-host=moby:127.0.0.1 hioaabi/nikita-noark5-core
 else
-  docker run --name=server -d --network="host" --add-host=`hostname`:127.0.0.1 nikita5/nikita-noark5-core
+  docker run --name=server -d --network="host" --add-host=`hostname`:127.0.0.1 hioaabi/nikita-noark5-core
 fi
 wait_on_x server 45
 
