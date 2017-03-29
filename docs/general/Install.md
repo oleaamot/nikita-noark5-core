@@ -68,6 +68,6 @@ with the script below
 
 ## Vagrant
 
-    vagrant up
+    make vagrant
     vagrant ssh
     cd /vagrant && make run

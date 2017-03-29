@@ -9,15 +9,16 @@ function wait_on_x()
 echo "This might take some minutes, sit back and relax with a beverage"
 
 # Stop the running containers
-docker stop elasticsearch server tester
+docker stop elasticsearch server tester web
 
 # Remove them
-docker rm elasticsearch server tester
+docker rm elasticsearch server tester web
 
 # Pull in latest version
 docker pull elasticsearch:2.4.4
 docker pull nikita5/noark5-tester
 docker pull nikita5/nikita-noark5-core
+docker pull nikita5/web
 
 # Get elasticsearch up
 docker run --name=elasticsearch -d -p 9200:9200 elasticsearch:2.4.4 -Des.network.host=0.0.0.0
@@ -36,4 +37,5 @@ wait_on_x server 45
 # Run test
 docker run --name=tester --network="host" --add-host=`hostname`:127.0.0.1 nikita5/noark5-tester
 
-# TODO: add web container when ready
+# Run web UI
+docker run --name=web -d -p 3000:3000 nikita5/web
