@@ -4,6 +4,7 @@ package no.arkivlab.hioa.nikita.webapp.web.controller.hateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
 import nikita.util.exceptions.NikitaException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URL;
 import java.util.List;
 
@@ -55,5 +56,15 @@ public class NikitaController {
     public INoarkGeneralEntity handleResolutionOfIncomingURLExternal() {
 
         return null;
+    }
+
+    /**
+     * Check that eTag is present in header. If not throw a 400 Bad request error
+     * with a description
+     */
+
+    protected void checkIncomingPUTRequest(HttpServletRequest request) {
+
+
     }
 }
