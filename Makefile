@@ -46,3 +46,6 @@ package: build
 	mvn -Dmaven.test.skip=true package spring-boot:repackage
 stop-containers:
 	docker stop server web elasticsearch
+vagrant:
+	vagrant box update
+	vagrant up
