@@ -5,7 +5,7 @@ services:
     ports:
      - "9200:9200"
   nikita-noark5-core:
-    image: "nikita5/nikita-noark5-core"
+    image: "hioaabi/nikita-noark5-core"
     ports:
      - "8092:8092"
      - "8082:8082"
