@@ -1,0 +1,21 @@
+#!/bin/bash
+
+project=hioaabi/nikita-noark5-core
+
+# In order to also run this locally clean up containers to prevent name collisions.
+docker stop elasticsearch server tester
+docker rm elasticsearch server tester
+
+# Get elasticsearch up
+docker run --name=elasticsearch -d -p 9200:9200 elasticsearch:2.4.4 -Des.network.host=0.0.0.0
+sleep 10
+curl http://localhost:9200
+curl -XPUT 'localhost:9200/_template/replicate_template' -d '{ "template" : "*", "settings" : {"number_of_replicas" : 0 } }'
+
+# Build local container and start it.
+docker build -t $project .
+docker run --name=server -d --network="host" --add-host=`hostname`:127.0.0.1 $project
+sleep 45
+
+# Run test
+docker run --name=tester --network="host" --add-host=`hostname`:127.0.0.1 nikita5/noark5-tester
