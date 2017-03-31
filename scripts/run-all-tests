@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# TODO: replace start containers with manually building
+time scripts/start-containers
+
+# Add new test scripts below and please time it.

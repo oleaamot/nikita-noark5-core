@@ -4,4 +4,4 @@ services:
   - docker
 
 script:
-- ./scripts/start-containers
+- ./scripts/run-all-tests
