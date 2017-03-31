@@ -2,11 +2,21 @@ let app = angular.module('nikita', []);
 
 // TODO: use endpoint class
 let base_url = "http://localhost:8092/noark5v4/";
-let login_url = base_url + "doLogin";
+let login_url = base_url + "/auth";
 let sign_up_url = base_url + "signup";
 
+// TODO: use class for token
+var SetUserToken = function(t) {
+  localStorage.setItem("token", t);
+}
+
+var GetUserToken = function(t) {
+  return localStorage.getItem("token");
+}
 
 let controller = app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
+  $scope.token = GetUserToken();
+  console.log("token="+$scope.token);
   $scope.app_version = "xyz";
   $http({
     method: 'GET',
@@ -28,6 +38,8 @@ let controller = app.controller('MainController', ['$scope', '$http', function (
 }]);
 
 let login = app.controller('LoginController', ['$scope', '$http', function($scope, $http) {
+  $scope.token = GetUserToken();
+  console.log("token="+$scope.token);
   console.log("LoginController");
   $scope.send_form = function() {
     console.log($scope.password);
@@ -35,17 +47,12 @@ let login = app.controller('LoginController', ['$scope', '$http', function($scop
     $http({
       url: login_url,
       method: "POST",
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      data: {username: $scope.username, password: $scope.password },
+      headers: {'Content-Type': 'application/json'},
+      data: { username: $scope.username, password: $scope.password },
     }).then(function(data, status, headers, config) {
-      console.log("success");
-      console.log(data);
-      $scope.status = status;
+	SetUserToken(data.data.token);
     }, function(data, status, headers, config) {
-      console.log(headers);
-      console.log(status);
-      console.log(config);
-      console.log(data);
+      alert(data);
     });
   };
 }]);
