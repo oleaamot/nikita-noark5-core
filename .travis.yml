@@ -5,3 +5,6 @@ services:
 
 script:
 - ./scripts/run-all-tests
+
+notifications:
+  irc: "chat.freenode.net#nikita"
