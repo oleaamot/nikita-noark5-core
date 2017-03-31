@@ -1,6 +1,6 @@
 # Logging in
 
-The core uses a [JWT](https://tools.ietf.org/html/rfc7519) approach to logging in. The following [blogpost])(https://www.toptal.com/java/rest-security-with-jwt-spring-security-and-java) gives
+The core uses a [JWT](https://tools.ietf.org/html/rfc7519) approach to logging in. The following [blogpost](https://www.toptal.com/java/rest-security-with-jwt-spring-security-and-java) gives
 a nice overview of what this entails. There is an associated github [repository](https://github.com/szerhusenBC/jwt-spring-security-demo) that implements this. 
 
 The following JSON example shows the login payload for a user logging in with the username 'admin' and password 
