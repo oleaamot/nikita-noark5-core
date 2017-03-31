@@ -23,6 +23,9 @@ tt:
 # container but it's not running use `docker start elasticsearch` instead of
 # rerunning this target.
 es:
+	# TODO: instead of stoping and removing it, check if it already is running and abort.
+	-docker stop elasticsearch
+	-docker rm elasticsearch
 	docker run -d --name=elasticsearch -p 9200:9200 elasticsearch:2.4.4 -Des.network.host=0.0.0.0
 	# It might take some seconds to get up the elasticsearch container
 	sleep 10
@@ -32,8 +35,7 @@ docker:
 	docker build -t ${project} .
 docker_deploy: docker docker_push
 	echo "Pushed to docker, https://hub.docker.com/r/${project}"
-docker_run: docker
-	docker start elasticsearch
+docker_run: es docker
 	docker run --network="host" --add-host=$(shell hostname):127.0.0.1 ${project}
 docker_push:
 	docker push ${project}
