@@ -1,9 +1,0 @@
-{
-  "systemID" : "439c5223-2f18-4d77-bdad-e0487d5fb4d8",
-  "tittel" : "Title of the test series",
-  "beskrivelse" : "Description of the test series",
-  "dokumentmedium" : "Elektronisk arkiv",
-  "oppbevaringsted" : [ "location 1", "location2", "location3" ],
-  "opprettetDato" : "2017-01-27T12:45:17",
-  "opprettetAv" : "admin"
-}

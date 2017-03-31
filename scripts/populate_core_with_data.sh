@@ -2,14 +2,21 @@
 
 
 # This is a project internal script used as a basic test mechanism. It will be replaced by a proper testing framework
-# later. Windows users might have problems with /dev/null. See comment below, this script is temporary.
+# later.
 
 # Put in directory location of json files to populate core with
-#/PATH_TO_PROJECT/nikita-noark5-core/core-webapp/src/main/resources/curl/
+#$1 should be set to /PATH_TO_PROJECT/nikita-noark5-core/scripts/json-example-data
+# or simple ./populate_core_with_data.sh ./json-example-data
 curl_files_dir=$1;
 
 # Pick up directory with JSON files
 if [[ -n "$curl_files_dir" ]]; then
+    length=${#curl_files_dir}
+    length=$(expr $length - 1)
+    if [ "${curl_files_dir:length}" != "/" ]; then
+      echo "Adding missing trailing slash"
+      curl_files_dir=$curl_files_dir"/"
+    fi
     echo "running with json files in $curl_files_dir";
 else
     echo "usage: $0 directory";
@@ -34,7 +41,7 @@ curlPostOpts+=("${curlOpts[@]}" "${contentTypeForPost[@]}" -X POST -b /tmp/cooki
 curloptsCreateFonds+=("${curlPostOpts[@]}");
 curloptsCreateFonds+=( --data @"$curl_files_dir"fonds-data.json  'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/ny-arkiv' );
 
-curlPostOpts+=("${curlOpts[@]}" "${contentTypeForPost[@]}" -X POST -b /tmp/cookie.txt );
+curlPostOpts+=("${curlOpts[@]}" "${contentTypeForPost[@]}" -X POST );
 # Create a fonds object and capture the systemId
 systemIDCreatedFonds=$(curl "${curloptsCreateFonds[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created Fonds 1             ($systemIDCreatedFonds) \n";
