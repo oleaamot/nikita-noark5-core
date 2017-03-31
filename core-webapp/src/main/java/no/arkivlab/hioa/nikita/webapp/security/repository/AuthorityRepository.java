@@ -1,7 +1,7 @@
-package no.arkivlab.hioa.nikita.webapp.repository.user;
+package no.arkivlab.hioa.nikita.webapp.security.repository;
 
 
-import no.arkivlab.hioa.nikita.webapp.model.user.Authority;
+import no.arkivlab.hioa.nikita.webapp.model.security.Authority;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

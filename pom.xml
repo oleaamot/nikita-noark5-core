@@ -136,6 +136,7 @@
 
         <!-- <spring.version>4.2.8.RELEASE</spring.version> -->
 
+        <jjwt.version>0.7.0</jjwt.version>
 
         <odata.version>4.3.0</odata.version>
 

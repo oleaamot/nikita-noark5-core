@@ -1,6 +1,6 @@
 package no.arkivlab.hioa.nikita.webapp.util.validation;
 
-import no.arkivlab.hioa.nikita.webapp.model.user.User;
+import no.arkivlab.hioa.nikita.webapp.model.security.User;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -15,7 +15,9 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
     @Override
     public boolean isValid(final Object obj, final ConstraintValidatorContext context) {
         final User user = (User) obj;
-        return user.getPassword().equals(user.getPasswordConfirmation());
+
+        // TODO: IMPORTANT TEMP update ....
+        return false; //user.getPassword().equals(user.getPasswordConfirmation());
     }
 
 }

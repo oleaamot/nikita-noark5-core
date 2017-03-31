@@ -33,6 +33,8 @@ import java.util.Arrays;
                 "no.arkivlab.hioa.nikita.webapp.web",
                 "no.arkivlab.hioa.nikita.webapp.run",
                 "no.arkivlab.hioa.nikita.webapp.util.error",
+        "no.arkivlab.hioa.nikita.webapp.security",
+
         "nikita.util.deserialisers",
         "no.arkivlab.hioa.nikita.webapp.handlers.hateoas"})
 public class N5CoreApp extends SpringBootServletInitializer {

@@ -40,7 +40,7 @@ spring:
             hibernate.hbm2ddl.import_files: classpath:/db/postgres/prod/import.sql # Import some data into the demo
             hibernate.dialect: org.hibernate.dialect.PostgreSQL82Dialect
             hibernate.show_sql: false
-            hibernate.hbm2ddl.auto: create-drop
+            hibernate.hbm2ddl.auto: create
             # Enable these to support elasticsearch, but wait until out of beta!
             #hibernate.search.default.indexmanager: elasticsearch
             #hibernate.search.default.elasticsearch.index_schema_management_strategy: MERGE # on applicatoin startup, use existing index
@@ -52,7 +52,14 @@ spring:
         cache-seconds: 1
     thymeleaf:
         cache: false
-
+jwt:
+  header: Authorization
+  secret: mySecret
+  expiration: 604800
+  route:
+    authentication:
+      path: auth
+      refresh: refresh
 server:
     contextPath: /noark5v4
     port: 8092

@@ -6,19 +6,36 @@
 
 # Put in directory location of json files to populate core with
 #/PATH_TO_PROJECT/nikita-noark5-core/core-webapp/src/main/resources/curl/
-curl_files_dir="./";
+curl_files_dir=$1;
+
+# Pick up directory with JSON files
+if [[ -n "$curl_files_dir" ]]; then
+    echo "running with json files in $curl_files_dir";
+else
+    echo "usage: $0 directory";
+    exit;
+fi
+
+# login to the core using the JWT method
+authToken=$(curl -s --header Content-Type:application/json -X POST  --data '{"username" : "admin", "password" : "password"}' http://localhost:8092/noark5v4/auth | jq '.token' | sed 's/\"//g');
+
+# Note It seems to returning the word "null" if empty
+if [ $authToken = "null" ]; then
+    echo "Did not get a proper token back from the core."
+    exit;
+fi
 
 # Setup common curl options
 contentTypeForPost+=(--header "Content-Type:application/vnd.noark5-v4+json");
-curlOpts+=( -s -S --header "Accept:application/vnd.noark5-v4+json");
+curlOpts+=( -s --header "Accept:application/vnd.noark5-v4+json" --header Authorization:$authToken);
 curlPostOpts+=("${curlOpts[@]}" "${contentTypeForPost[@]}" -X POST -b /tmp/cookie.txt );
 
 # Setup curl options for fonds
 curloptsCreateFonds+=("${curlPostOpts[@]}");
 curloptsCreateFonds+=( --data @"$curl_files_dir"fonds-data.json  'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/ny-arkiv' );
 
+curlPostOpts+=("${curlOpts[@]}" "${contentTypeForPost[@]}" -X POST -b /tmp/cookie.txt );
 # Create a fonds object and capture the systemId
-curl -X POST -d username=admin -d password=password -c /tmp/cookie.txt 'http://localhost:8092/noark5v4/doLogin';
 systemIDCreatedFonds=$(curl "${curloptsCreateFonds[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created Fonds 1             ($systemIDCreatedFonds) \n";
 #echo  "${curloptsCreateFonds[@]}";

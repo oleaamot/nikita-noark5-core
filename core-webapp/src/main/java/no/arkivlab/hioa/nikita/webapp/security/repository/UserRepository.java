@@ -1,6 +1,6 @@
-package no.arkivlab.hioa.nikita.webapp.repository.user;
+package no.arkivlab.hioa.nikita.webapp.security.repository;
 
-import no.arkivlab.hioa.nikita.webapp.model.user.User;
+import no.arkivlab.hioa.nikita.webapp.model.security.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

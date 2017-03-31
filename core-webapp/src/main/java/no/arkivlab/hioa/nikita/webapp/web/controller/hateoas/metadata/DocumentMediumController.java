@@ -30,7 +30,6 @@ public class DocumentMediumController {
     }
 
     // API - All POST Requests (CRUD - CREATE)
-
     // Creates a new documentmedium
     // POST [contextPath][api]/metadata/dockumentmedium/ny-dokumentmedium
     @ApiOperation(value = "Persists a new DocumentMedium object", notes = "Returns the newly" +
@@ -56,7 +55,6 @@ public class DocumentMediumController {
     }
 
     // API - All GET Requests (CRUD - READ)
-
     // Retrieves all documentMedium
     // GET [contextPath][api]/metadata/dockumentmedium/
     @ApiOperation(value = "Retrieves all DocumentMedium ", response = DocumentMedium.class)
@@ -97,7 +95,30 @@ public class DocumentMediumController {
         DocumentMedium documentMediumList = documentMediumService.findBySystemId(systemId);
         return new ResponseEntity<>(documentMediumList, HttpStatus.OK);
     }
-
+/*
+    // API - All PUT Requests (CRUD - UPDATE)
+    // Update a documentmedium
+    // PUT [contextPath][api]/metatdata/dockumentmedium/
+    @ApiOperation(value = "Updates a DocumentMedium object", notes = "Returns the newly" +
+            " updated DocumentMedium object after it is persisted to the database", response = DocumentMedium.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "DocumentMedium " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = DocumentMedium.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_MALFORMED_PAYLOAD),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
+            @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.PUT, value = SLASH + DOCUMENT_MEDIUM)
+    public ResponseEntity<DocumentMedium> updateDocumentMedium(@RequestBody DocumentMedium documentMedium)
+            throws NikitaException {
+        DocumentMedium newDocumentMedium = documentMediumService.updateDocumentMedium(documentMedium);
+        return new ResponseEntity<>(newDocumentMedium, HttpStatus.OK);
+    }
+*/
     /*
     Leaving the methods here commented out, but we need to support search ogn code and des
     cription
