@@ -12,6 +12,7 @@
     <modules>
         <module>core-common</module>
         <module>core-webapp</module>
+        <module>core-extraction</module>
     </modules>
 
     <parent>
