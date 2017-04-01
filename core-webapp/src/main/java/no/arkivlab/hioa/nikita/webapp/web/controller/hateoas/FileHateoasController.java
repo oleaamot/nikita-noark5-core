@@ -83,10 +83,12 @@ public class FileHateoasController {
                     value = "Incoming record",
                     required = true)
             @RequestBody Record record) throws NikitaException {
-        RecordHateoas recordHateoas =
-                new RecordHateoas(fileService.createRecordAssociatedWithFile(fileSystemId, record));
+        Record createdRecord = fileService.createRecordAssociatedWithFile(fileSystemId, record);
+        RecordHateoas recordHateoas = new RecordHateoas(createdRecord);
         recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
-        return new ResponseEntity<>(recordHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(createdRecord.getVersion().toString())
+                .body(recordHateoas);
     }
 
     // Create a BasicRecord
@@ -119,10 +121,12 @@ public class FileHateoasController {
                     value = "Incoming basicRecord",
                     required = true)
             @RequestBody BasicRecord basicRecord) throws NikitaException {
-        BasicRecordHateoas basicRecordHateoas =
-                new BasicRecordHateoas(fileService.createBasicRecordAssociatedWithFile(fileSystemId, basicRecord));
+        BasicRecord createdBasicRecord = fileService.createBasicRecordAssociatedWithFile(fileSystemId, basicRecord);
+        BasicRecordHateoas basicRecordHateoas = new BasicRecordHateoas(createdBasicRecord);
         basicRecordHateoasHandler.addLinks(basicRecordHateoas, request, new Authorisation());
-        return new ResponseEntity<>(basicRecordHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(createdBasicRecord.getVersion().toString())
+                .body(basicRecordHateoas);
     }
 
     // Create a CrossReference
@@ -151,11 +155,14 @@ public class FileHateoasController {
                     value = "systemId of file to associate the basicRecord with",
                     required = true)
             @PathVariable String fileSystemId,
-            @ApiParam(name = "ICrossReferenceEntity",
+            @ApiParam(name = "crossReferenceEntity",
                     value = "Noark entity that support cross reference functionality",
                     required = true)
             @RequestBody ICrossReferenceEntity crossReferenceEntity) throws NikitaException {
 
+        //return ResponseEntity.status(HttpStatus.CREATED)
+        //        .eTag(crossReference.getVersion().toString())
+        //        .body(crossReferenceHateoas);
         // Think about how to handle if cross reference is to Record or class. Do we need
         // to specify this in the URL
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
@@ -192,6 +199,9 @@ public class FileHateoasController {
                     required = true)
             @RequestBody File file) throws NikitaException {
 
+        //return ResponseEntity.status(HttpStatus.CREATED)
+        //        .eTag(createdFile.getVersion().toString())
+        //        .body(fileHateoas);
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -225,6 +235,9 @@ public class FileHateoasController {
                     required = true)
             @RequestBody Comment comment) throws NikitaException {
         //TODO: What do we return here? File + comment? comment?
+        //        return ResponseEntity.status(HttpStatus.CREATED)
+//                .eTag(comment.getVersion().toString())
+//                .body(commentHateoas);
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -257,6 +270,9 @@ public class FileHateoasController {
                     value = "Class",
                     required = true)
             @RequestBody Class klass) throws NikitaException {
+        //        return ResponseEntity.status(HttpStatus.CREATED)
+//                .eTag(createdClass.getVersion().toString())
+//                .body(classHateoas);
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -291,7 +307,10 @@ public class FileHateoasController {
                     value = "series",
                     required = true)
             @RequestBody Series series) throws NikitaException {
-        //TODO: What do we return here? File + comment? comment?
+        //TODO: What do we return here? File ? maybe just 200 OK
+        //return ResponseEntity.status(HttpStatus.CREATED)
+        //        .eTag(file.getVersion().toString())
+        //       .body(fileHateoas);
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -468,19 +487,22 @@ public class FileHateoasController {
     @Counted
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
-    public ResponseEntity<FileHateoas> findOneFilebySystemId(
+    public ResponseEntity<FileHateoas> findOneFileBySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemID of the file to retrieve",
                     required = true)
             @PathVariable("systemID") final String fileSystemId) {
-        FileHateoas fileHateoas = new
-                FileHateoas(fileService.findBySystemId(fileSystemId));
+        File file = fileService.findBySystemId(fileSystemId);
+        // TODO: If null return not found exception
+        FileHateoas fileHateoas = new FileHateoas(file);
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
-        return new ResponseEntity<>(fileHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(file.getVersion().toString())
+                .body(fileHateoas);
     }
 
-    // Retrieves a file identified by a systemId
+    // Retrieves all files
     // GET [contextPath][api]/arkivstruktur/mappe
     @ApiOperation(value = "Retrieves multiple File entities limited by ownership rights", notes = "The field skip" +
             "tells how many File rows of the result set to ignore (starting at 0), while  top tells how many rows" +
@@ -598,6 +620,9 @@ public class FileHateoasController {
                     value = "systemID of the File to retrieve a Class for",
                     required = true)
             @PathVariable("systemID") final String fileSystemId) {
+        //return ResponseEntity.status(HttpStatus.CREATED)
+        //        .eTag(series.getVersion().toString())
+        //        .body(seriesHateoas);
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -621,6 +646,9 @@ public class FileHateoasController {
                     value = "systemID of the File to retrieve secondary Class for",
                     required = true)
             @PathVariable("systemID") final String fileSystemId) {
+        //return ResponseEntity.status(HttpStatus.CREATED)
+        //        .eTag(klass.getVersion().toString())
+        //        .body(classHateoas);
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -679,7 +707,11 @@ public class FileHateoasController {
             @RequestBody File file) throws NikitaException {
         /*FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
-        return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);*/
+        return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(updatedFile.getVersion().toString())
+                .body(fileHateoas);
+        */
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -710,7 +742,10 @@ public class FileHateoasController {
             @PathVariable String fileSystemId) throws NikitaException {
         /*FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
-        return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);*/
+        return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(finalisedFile.getVersion().toString())
+                .body(fileHateoas);*/
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -742,7 +777,11 @@ public class FileHateoasController {
             @PathVariable String fileSystemId) throws NikitaException {
         /*FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
-        return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);*/
+        return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(expandedFile.getVersion().toString())
+                .body(caseFileHateoas);
+        */
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -776,7 +815,11 @@ public class FileHateoasController {
             @PathVariable String fileSystemId) throws NikitaException {
         /*FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
-        return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);*/
+        return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(expandedFile.getVersion().toString())
+                .body(meetingFileHateoas);
+        */
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 }

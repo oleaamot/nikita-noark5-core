@@ -10,11 +10,11 @@ import nikita.config.Constants;
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.hateoas.ClassHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IClassService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,14 +33,16 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 public class ClassHateoasController {
 
-    @Autowired
     IClassService classService;
-
-    @Autowired
     IClassHateoasHandler classHateoasHandler;
 
-    // API - All POST Requests (CRUD - CREATE)
+    public ClassHateoasController(IClassService classService, IClassHateoasHandler classHateoasHandler) {
+        this.classService = classService;
+        this.classHateoasHandler = classHateoasHandler;
+    }
 
+    // API - All POST Requests (CRUD - CREATE)
+    // POST [contextPath][api]/arkivstruktur/klassifikasjonsystem/{systemID}/ny-underklass
     @ApiOperation(value = "Persists a Class object associated with the (other) given Class systemId",
             notes = "Returns the newly created class object after it was associated with a class" +
                     "object and persisted to the database", response = ClassHateoas.class)
@@ -57,7 +59,7 @@ public class ClassHateoasController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "classificationSystemSystemId" +
-            RIGHT_PARENTHESIS + SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+            RIGHT_PARENTHESIS + SLASH + NEW_SUB_CLASS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<ClassHateoas> createClassAssociatedWithClassificationSystem(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "classificationSystemSystemId",
@@ -67,12 +69,13 @@ public class ClassHateoasController {
             @ApiParam(name = "klass",
                     value = "Incoming class object",
                     required = true)
-            @RequestBody Class klass)  throws NikitaException {
-        ClassHateoas classHateoas = new ClassHateoas(
-                classService.createClassAssociatedWithClass
-                        (classSystemId, klass));
+            @RequestBody Class klass) throws NikitaException {
+        Class createdClass = classService.createClassAssociatedWithClass(classSystemId, klass);
+        ClassHateoas classHateoas = new ClassHateoas(createdClass);
         classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
-        return new ResponseEntity<> (classHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(createdClass.getVersion().toString())
+                .body(classHateoas);
     }
 
     // API - All GET Requests (CRUD - READ)
@@ -85,9 +88,14 @@ public class ClassHateoasController {
                     required = true)
             @PathVariable("systemID") final String classSystemId) {
         Class klass = classService.findBySystemId(classSystemId);
+        if (klass == null) {
+            throw new NikitaEntityNotFoundException(classSystemId);
+        }
         ClassHateoas classHateoas = new ClassHateoas(klass);
         classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
-        return new ResponseEntity<> (classHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.OK)
+                .eTag(klass.getVersion().toString())
+                .body(classHateoas);
     }
 
     @ApiOperation(value = "Retrieves multiple Class entities limited by ownership rights", notes = "The field skip" +

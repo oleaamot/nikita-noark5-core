@@ -9,17 +9,16 @@ import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.DocumentObject;
-import nikita.model.noark5.v4.Record;
 import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentDescriptionHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentDescriptionService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,14 +37,17 @@ import static nikita.config.N5ResourceMappings.*;
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 public class DocumentDescriptionHateoasController {
 
-    @Autowired
-    IDocumentDescriptionService documentDescriptionService;
+    private IDocumentDescriptionService documentDescriptionService;
+    private IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
+    private IDocumentObjectHateoasHandler documentObjectHateoasHandler;
 
-    @Autowired
-    IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
-
-    @Autowired
-    IDocumentObjectHateoasHandler documentObjectHateoasHandler;
+    public DocumentDescriptionHateoasController(IDocumentDescriptionService documentDescriptionService,
+                                                IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler,
+                                                IDocumentObjectHateoasHandler documentObjectHateoasHandler) {
+        this.documentDescriptionService = documentDescriptionService;
+        this.documentDescriptionHateoasHandler = documentDescriptionHateoasHandler;
+        this.documentObjectHateoasHandler = documentObjectHateoasHandler;
+    }
 
     // API - All POST Requests (CRUD - CREATE)
 
@@ -53,13 +55,13 @@ public class DocumentDescriptionHateoasController {
             notes = "Returns the newly created documentObject after it was associated with a DocumentDescription" +
                     " object and persisted to the database", response = DocumentDescriptionHateoas.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "File " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+            @ApiResponse(code = 200, message = "DocumentObject " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
                     response = DocumentDescriptionHateoas.class),
-            @ApiResponse(code = 201, message = "File " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+            @ApiResponse(code = 201, message = "DocumentObject " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
                     response = DocumentDescriptionHateoas.class),
             @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
-            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type Record"),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type DocumentObject"),
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
@@ -78,13 +80,13 @@ public class DocumentDescriptionHateoasController {
                     required = true)
             @RequestBody DocumentObject documentObject)
             throws NikitaException {
-        DocumentObjectHateoas documentObjectHateoas =
-                new DocumentObjectHateoas(
-                        documentDescriptionService.createDocumentObjectAssociatedWithDocumentDescription(
-                                documentDescriptionSystemId,
-                                documentObject));
+        DocumentObject createdDocumentObject = documentDescriptionService.createDocumentObjectAssociatedWithDocumentDescription(
+                documentDescriptionSystemId, documentObject);
+        DocumentObjectHateoas documentObjectHateoas = new DocumentObjectHateoas(documentObject);
         documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
-        return new ResponseEntity<>(documentObjectHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(createdDocumentObject.getVersion().toString())
+                .body(documentObjectHateoas);
     }
 
     // API - All GET Requests (CRUD - READ)
@@ -105,10 +107,16 @@ public class DocumentDescriptionHateoasController {
                     value = "systemID of the documentDescription to retrieve",
                     required = true)
             @PathVariable("systemID") final String documentDescriptionSystemId) {
+        DocumentDescription documentDescription = documentDescriptionService.findBySystemId(documentDescriptionSystemId);
+        if (documentDescription == null) {
+            throw new NikitaEntityNotFoundException(documentDescriptionSystemId);
+        }
         DocumentDescriptionHateoas documentDescriptionHateoas = new
-                DocumentDescriptionHateoas(documentDescriptionService.findBySystemId(documentDescriptionSystemId));
+                DocumentDescriptionHateoas(documentDescription);
         documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
-        return new ResponseEntity<>(documentDescriptionHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.OK)
+                .eTag(documentDescription.getVersion().toString())
+                .body(documentDescriptionHateoas);
     }
 
     @ApiOperation(value = "Retrieves multiple DocumentDescription entities limited by ownership rights", notes = "The field skip" +

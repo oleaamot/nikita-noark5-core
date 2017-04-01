@@ -61,10 +61,16 @@ public class DocumentObjectHateoasController {
                     value = "systemID of the documentObject to retrieve",
                     required = true)
             @PathVariable("systemID") final String documentObjectSystemId) {
+        DocumentObject createdDocumentObject = documentObjectService.findBySystemId(documentObjectSystemId);
+        if (createdDocumentObject == null) {
+            throw new NikitaEntityNotFoundException(documentObjectSystemId);
+        }
         DocumentObjectHateoas documentObjectHateoas = new
-                DocumentObjectHateoas(documentObjectService.findBySystemId(documentObjectSystemId));
+                DocumentObjectHateoas(createdDocumentObject);
         documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
-        return new ResponseEntity<>(documentObjectHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(createdDocumentObject.getVersion().toString())
+                .body(documentObjectHateoas);
     }
 
     @ApiOperation(value = "Retrieves multiple DocumentObject entities limited by ownership rights", notes = "The field skip" +
@@ -111,7 +117,6 @@ public class DocumentObjectHateoasController {
                     required = true)
             @PathVariable("systemID") final String documentObjectSystemId) {
         DocumentObject documentObject = documentObjectService.findBySystemId(documentObjectSystemId);
-
         if (documentObject == null) {
             throw new NikitaEntityNotFoundException(documentObjectSystemId);
         }
@@ -144,7 +149,6 @@ public class DocumentObjectHateoasController {
             @PathVariable("systemID") final String documentObjectSystemId) {
         try {
             DocumentObject documentObject = documentObjectService.findBySystemId(documentObjectSystemId);
-
             if (documentObject == null) {
                 throw new NikitaEntityNotFoundException(documentObjectSystemId);
             }

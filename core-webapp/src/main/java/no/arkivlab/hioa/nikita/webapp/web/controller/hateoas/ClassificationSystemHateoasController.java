@@ -11,12 +11,12 @@ import nikita.model.noark5.v4.ClassificationSystem;
 import nikita.model.noark5.v4.hateoas.ClassHateoas;
 import nikita.model.noark5.v4.hateoas.ClassificationSystemHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassificationSystemHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IClassificationSystemService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,14 +35,17 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 public class ClassificationSystemHateoasController {
 
-    @Autowired
-    IClassificationSystemService classificationSystemService;
+    private IClassificationSystemService classificationSystemService;
+    private IClassificationSystemHateoasHandler classificationSystemHateoasHandler;
+    private IClassHateoasHandler classHateoasHandler;
 
-    @Autowired
-    IClassificationSystemHateoasHandler classificationSystemHateoasHandler;
-
-    @Autowired
-    IClassHateoasHandler classHateoasHandler;
+    public ClassificationSystemHateoasController(IClassificationSystemService classificationSystemService,
+                                                 IClassificationSystemHateoasHandler classificationSystemHateoasHandler,
+                                                 IClassHateoasHandler classHateoasHandler) {
+        this.classificationSystemService = classificationSystemService;
+        this.classificationSystemHateoasHandler = classificationSystemHateoasHandler;
+        this.classHateoasHandler = classHateoasHandler;
+    }
 
     // API - All POST Requests (CRUD - CREATE)
 
@@ -67,11 +70,15 @@ public class ClassificationSystemHateoasController {
             @ApiParam(name = "classificationSystem",
                     value = "Incoming classificationSystem object",
                     required = true)
-            @RequestBody ClassificationSystem classificationSystem)  throws NikitaException {
-        ClassificationSystemHateoas classificationSystemHateoas = new ClassificationSystemHateoas(
-                classificationSystemService.createNewClassificationSystem(classificationSystem));
+            @RequestBody ClassificationSystem classificationSystem) throws NikitaException {
+        ClassificationSystem createdClassificationSystem =
+                classificationSystemService.createNewClassificationSystem(classificationSystem);
+        ClassificationSystemHateoas classificationSystemHateoas = new
+                ClassificationSystemHateoas(createdClassificationSystem);
         classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, request, new Authorisation());
-        return new ResponseEntity<> (classificationSystemHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(createdClassificationSystem.getVersion().toString())
+                .body(classificationSystemHateoas);
     }
 
     @ApiOperation(value = "Persists a Class object associated with the given ClassificationSystem systemId",
@@ -89,7 +96,7 @@ public class ClassificationSystemHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = CLASSIFICATION_SYSTEM + SLASH +  LEFT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = CLASSIFICATION_SYSTEM + SLASH + LEFT_PARENTHESIS +
             "classificationSystemSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_RECORD,
             consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<ClassHateoas> createClassAssociatedWithClassificationSystem(
@@ -101,27 +108,35 @@ public class ClassificationSystemHateoasController {
             @ApiParam(name = "klass",
                     value = "Incoming class object",
                     required = true)
-            @RequestBody Class klass)  throws NikitaException {
-        ClassHateoas classHateoas = new ClassHateoas(
-                classificationSystemService.createClassAssociatedWithClassificationSystem
-                (classificationSystemSystemId, klass));
+            @RequestBody Class klass) throws NikitaException {
+        Class createdClass =
+                classificationSystemService.createClassAssociatedWithClassificationSystem(classificationSystemSystemId,
+                        klass);
+        ClassHateoas classHateoas = new ClassHateoas(createdClass);
         classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
-        return new ResponseEntity<> (classHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(createdClass.getVersion().toString())
+                .body(classHateoas);
     }
     // API - All GET Requests (CRUD - READ)
 
     @RequestMapping(value = CLASSIFICATION_SYSTEM + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
             RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<ClassificationSystemHateoas> findOne(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemId",
                     value = "systemId of classificationSystem to retrieve.",
                     required = true)
             @PathVariable("systemID") final String classificationSystemId) {
         ClassificationSystem classificationSystem = classificationSystemService.findBySystemId(classificationSystemId);
+        if (classificationSystem == null) {
+            throw new NikitaEntityNotFoundException(classificationSystemId);
+        }
         ClassificationSystemHateoas classificationSystemHateoas = new ClassificationSystemHateoas(classificationSystem);
         classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, request, new Authorisation());
-        return new ResponseEntity<> (classificationSystemHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(classificationSystem.getVersion().toString())
+                .body(classificationSystemHateoas);
     }
 
     @ApiOperation(value = "Retrieves multiple ClassificationSystem entities limited by ownership rights", notes = "The field skip" +
@@ -139,7 +154,7 @@ public class ClassificationSystemHateoasController {
     @Timed
     @RequestMapping(value = CLASSIFICATION_SYSTEM + SLASH, method = RequestMethod.GET)
     public ResponseEntity<ClassificationSystemHateoas> findAllClassificationSystem(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
 

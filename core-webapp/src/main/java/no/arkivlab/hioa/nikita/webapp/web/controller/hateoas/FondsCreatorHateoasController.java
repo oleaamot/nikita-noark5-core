@@ -11,11 +11,10 @@ import nikita.model.noark5.v4.FondsCreator;
 import nikita.model.noark5.v4.hateoas.FondsCreatorHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsCreatorHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsCreatorService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,14 +34,12 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 public class FondsCreatorHateoasController {
 
     private IFondsCreatorService fondsCreatorService;
-    private IFondsHateoasHandler fondsHateoasHandler;
+    private IFondsCreatorHateoasHandler fondsCreatorHateoasHandler;
 
-    @Autowired
     public FondsCreatorHateoasController(IFondsCreatorService fondsCreatorService,
-                                         IFondsHateoasHandler fondsHateoasHandler) {
+                                         IFondsCreatorHateoasHandler fondsCreatorHateoasHandler) {
         this.fondsCreatorService = fondsCreatorService;
-        this.fondsHateoasHandler = fondsHateoasHandler;
-
+        this.fondsCreatorHateoasHandler = fondsCreatorHateoasHandler;
     }
 
     // API - All POST Requests (CRUD - CREATE)
@@ -72,8 +69,10 @@ public class FondsCreatorHateoasController {
             @RequestBody FondsCreator FondsCreator) throws NikitaException {
         FondsCreator createdFondsCreator = fondsCreatorService.createNewFondsCreator(FondsCreator);
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(createdFondsCreator);
-        fondsHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
-        return new ResponseEntity<>(fondsCreatorHateoas, HttpStatus.CREATED);
+        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(createdFondsCreator.getVersion().toString())
+                .body(fondsCreatorHateoas);
     }
 
     // API - All GET Requests (CRUD - READ)
@@ -95,15 +94,17 @@ public class FondsCreatorHateoasController {
             @ApiParam(name = "systemId",
                     value = "systemId of FondsCreator to retrieve.",
                     required = true)
-            @PathVariable("systemID") final String FondsCreatorSystemId) {
-        FondsCreator FondsCreator = fondsCreatorService.findBySystemId(FondsCreatorSystemId);
-        if (FondsCreator == null) {
+            @PathVariable("systemID") final String fondsCreatorSystemId) {
+        FondsCreator fondsCreator = fondsCreatorService.findBySystemId(fondsCreatorSystemId);
+        if (fondsCreator == null) {
             throw new NoarkEntityNotFoundException("Could not find FondsCreator object with systemID " +
-                    FondsCreatorSystemId);
+                    fondsCreatorSystemId);
         }
-        FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(FondsCreator);
-        fondsHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
-        return new ResponseEntity<>(fondsCreatorHateoas, HttpStatus.CREATED);
+        FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(fondsCreator);
+        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+        return ResponseEntity.status(HttpStatus.OK)
+                .eTag(fondsCreator.getVersion().toString())
+                .body(fondsCreatorHateoas);
     }
 
     // Get all FondsCreator
@@ -129,7 +130,7 @@ public class FondsCreatorHateoasController {
         FondsCreatorHateoas fondsCreatorHateoas = new
                 FondsCreatorHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
                 fondsCreatorService.findFondsCreatorByOwnerPaginated(top, skip));
-        fondsHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
         return new ResponseEntity<>(fondsCreatorHateoas, HttpStatus.OK);
     }
 
@@ -159,7 +160,12 @@ public class FondsCreatorHateoasController {
             throw new NoarkEntityNotFoundException("Could not find FondsCreator object with systemID " + FondsCreatorSystemId);
         }
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(FondsCreator);
-        fondsHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());*/
+        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+                return ResponseEntity.status(HttpStatus.OK)
+                .eTag(fondsCreator.getVersion().toString())
+                .body(fondsCreatorHateoas);
+
+        */
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 }

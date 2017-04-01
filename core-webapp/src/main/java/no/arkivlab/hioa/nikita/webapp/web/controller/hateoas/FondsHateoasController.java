@@ -26,7 +26,6 @@ import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.elasticsearch.ElasticsearchQueries;
 import org.hibernate.search.query.engine.spi.QueryDescriptor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +53,6 @@ public class FondsHateoasController {
     private IFondsHateoasHandler fondsHateoasHandler;
     private ISeriesHateoasHandler seriesHateoasHandler;
 
-    @Autowired
     public FondsHateoasController(EntityManager entityManager, IFondsService fondsService,
                                   ISeriesService seriesService, IFondsHateoasHandler fondsHateoasHandler,
                                   ISeriesHateoasHandler seriesHateoasHandler) {
@@ -210,7 +208,10 @@ public class FondsHateoasController {
             @RequestBody FondsCreator fondsCreator)
             throws NikitaException {
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
-        //return new ResponseEntity<> (fondsCreatorHateoas, HttpStatus.CREATED);
+//        return ResponseEntity.status(HttpStatus.CREATED)
+//                .eTag(createdFonds.getVersion().toString())
+//                .body(fondsCreatorHateoas);
+
     }
 
     // API - All GET Requests (CRUD - READ)
@@ -239,6 +240,7 @@ public class FondsHateoasController {
         }
         FondsHateoas fondsHateoas = new FondsHateoas(fonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
+
         return ResponseEntity.status(HttpStatus.OK)
                 .eTag(fonds.getVersion().toString())
                 .body(fondsHateoas);
@@ -290,7 +292,9 @@ public class FondsHateoasController {
             @PathVariable("systemID") final String fondsSystemId) {
 
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
-        //return new ResponseEntity<> (fondsHateoas, HttpStatus.CREATED);
+        //return ResponseEntity.status(HttpStatus.OK)
+        //        .eTag(fonds.getVersion().toString())
+        //        .body(fondsHateoas);
     }
 
     // Get all Series associated with Fonds identified by systemId

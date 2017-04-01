@@ -25,7 +25,7 @@ import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 
 @Service
 @Transactional
-public class CaseFileService extends FileService implements ICaseFileService {
+public class CaseFileService implements ICaseFileService {
 
     private static final Logger logger = LoggerFactory.getLogger(CaseFileService.class);
 
@@ -49,6 +49,11 @@ public class CaseFileService extends FileService implements ICaseFileService {
         NoarkUtils.NoarkEntity.Create.setNoarkEntityValues(caseFile);
         NoarkUtils.NoarkEntity.Create.checkDocumentMediumValid(caseFile);
         return caseFileRepository.save(caseFile);
+    }
+
+    // systemId
+    public CaseFile findBySystemId(String systemId) {
+        return caseFileRepository.findBySystemId(systemId);
     }
 
     @Override

@@ -1,10 +1,10 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
 import nikita.model.noark5.v4.BasicRecord;
+import nikita.repository.n5v4.IBasicRecordRepository;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IBasicRecordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,15 +18,19 @@ import java.util.List;
 
 @Service
 @Transactional
-public class BasicRecordService extends RecordService implements IBasicRecordService {
+public class BasicRecordService implements IBasicRecordService {
 
     private static final Logger logger = LoggerFactory.getLogger(BasicRecordService.class);
 
-    @Autowired
     EntityManager entityManager;
-
+    IBasicRecordRepository basicRecordRepository;
     //@Value("${nikita-noark5-core.pagination.maxPageSize}")
     Integer maxPageSize = new Integer(10);
+
+    public BasicRecordService(EntityManager entityManager, IBasicRecordRepository basicRecordRepository) {
+        this.entityManager = entityManager;
+        this.basicRecordRepository = basicRecordRepository;
+    }
 
     // All READ operations
     @Override
@@ -52,4 +56,8 @@ public class BasicRecordService extends RecordService implements IBasicRecordSer
         return typedQuery.getResultList();
     }
 
+    // systemId
+    public BasicRecord findBySystemId(String systemId) {
+        return basicRecordRepository.findBySystemId(systemId);
+    }
 }

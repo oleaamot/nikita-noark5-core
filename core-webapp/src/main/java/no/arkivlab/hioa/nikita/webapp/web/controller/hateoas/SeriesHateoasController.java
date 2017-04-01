@@ -13,7 +13,6 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ISeriesHateoas
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +40,6 @@ public class SeriesHateoasController extends NikitaController {
     private ICaseFileHateoasHandler caseFileHateoasHandler;
     private IFileHateoasHandler fileHateoasHandler;
 
-    @Autowired
     public SeriesHateoasController(ISeriesService seriesService, ISeriesHateoasHandler seriesHateoasHandler,
                                    ICaseFileHateoasHandler caseFileHateoasHandler, IFileHateoasHandler fileHateoasHandler) {
         this.seriesService = seriesService;
@@ -81,9 +79,12 @@ public class SeriesHateoasController extends NikitaController {
                     value = "Incoming file object",
                     required = true)
             @RequestBody File file) throws NikitaException {
-        FileHateoas fileHateoas = new FileHateoas(seriesService.createFileAssociatedWithSeries(seriesSystemId, file));
+        File createdFile = seriesService.createFileAssociatedWithSeries(seriesSystemId, file);
+        FileHateoas fileHateoas = new FileHateoas(createdFile);
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
-        return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(createdFile.getVersion().toString())
+                .body(fileHateoas);
     }
 
     // Create a new casefile
@@ -116,11 +117,12 @@ public class SeriesHateoasController extends NikitaController {
                     value = "Incoming caseFile object",
                     required = true)
             @RequestBody CaseFile caseFile) throws NikitaException {
-
-        CaseFileHateoas caseFileHateoas = new
-                CaseFileHateoas(seriesService.createCaseFileAssociatedWithSeries(seriesSystemId, caseFile));
+        CaseFile createdCaseFile = seriesService.createCaseFileAssociatedWithSeries(seriesSystemId, caseFile);
+        CaseFileHateoas caseFileHateoas = new CaseFileHateoas(createdCaseFile);
         caseFileHateoasHandler.addLinks(caseFileHateoas, request, new Authorisation());
-        return new ResponseEntity<>(caseFileHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(createdCaseFile.getVersion().toString())
+                .body(caseFileHateoas);
     }
 
     // Create a new record
@@ -154,6 +156,9 @@ public class SeriesHateoasController extends NikitaController {
             @RequestBody Record record) throws NikitaException {
         //RecordHateoas recordHateoas = new RecordHateoas(seriesService.createRecordAssociatedWithSeries(seriesSystemId, record));
         //recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
+        //  return ResponseEntity.status(HttpStatus.CREATED)
+        //.eTag(createdRecord.getVersion().toString())
+        //.body(recordHateoas);
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -194,6 +199,9 @@ public class SeriesHateoasController extends NikitaController {
 //        SeriesHateoas seriesHateoas = new
 //                SeriesHateoas(seriesService.associateSeriesWithSeriesSuccessor(seriesPrecursorSys temId, urlToSeriesSuccessor));
 //        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
+//   return ResponseEntity.status(HttpStatus.CREATED)
+//                .eTag(series.getVersion().toString())
+//                .body(seriesHateoas);
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -231,6 +239,9 @@ public class SeriesHateoasController extends NikitaController {
 //        SeriesHateoas seriesHateoas = new
 //                SeriesHateoas(seriesService.associateSeriesWithSeriesSuccessor(seriesSystemId, caseFile));
 //        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
+//   return ResponseEntity.status(HttpStatus.CREATED)
+//                .eTag(series.getVersion().toString())
+//                .body(seriesHateoas);
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -267,6 +278,9 @@ public class SeriesHateoasController extends NikitaController {
 //        ClassificationSystemHateoas classificationSystemHateoas = new
 //                ClassificationSystemHateoas(classificationSystemService.associateClassificationSystemWithClassificationSystemSuccessor(classificationSystemSystemId, caseFile));
 //        classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, request, new Authorisation());
+//   return ResponseEntity.status(HttpStatus.CREATED)
+//                .eTag(classificationSystem.getVersion().toString())
+//                .body(classificationSystemHateoas);
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -297,7 +311,9 @@ public class SeriesHateoasController extends NikitaController {
         SeriesHateoas seriesHateoas = new
                 SeriesHateoas(series);
         seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
-        return new ResponseEntity<>(seriesHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(series.getVersion().toString())
+                .body(seriesHateoas);
     }
 
     // Create a File object with default values
@@ -387,6 +403,9 @@ public class SeriesHateoasController extends NikitaController {
         SeriesHateoas seriesHateoas = new
                 SeriesHateoas(series);
         seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());*/
+//        return ResponseEntity.status(HttpStatus.CREATED)
+//                .eTag(series.getVersion().toString())
+//                .body(seriesHateoas);
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -416,6 +435,9 @@ public class SeriesHateoasController extends NikitaController {
         SeriesHateoas seriesHateoas = new
                 SeriesHateoas(series);
         seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());*/
+//        return ResponseEntity.status(HttpStatus.CREATED)
+//                .eTag(series.getVersion().toString())
+//                .body(seriesHateoas);
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -447,6 +469,9 @@ public class SeriesHateoasController extends NikitaController {
                 SeriesHateoas(series);
         seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
         */
+//        return ResponseEntity.status(HttpStatus.CREATED)
+//                .eTag(series.getVersion().toString())
+//                .body(seriesHateoas);
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -478,6 +503,9 @@ public class SeriesHateoasController extends NikitaController {
                 SeriesHateoas(series);
         seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
         */
+//   return ResponseEntity.status(HttpStatus.CREATED)
+//                .eTag(classificationSystem.getVersion().toString())
+//                .body(classificationSystemHateoas);
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -543,7 +571,7 @@ public class SeriesHateoasController extends NikitaController {
     // Retrieve all Files associated with a Series (paginated)
     // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/mappe/
     // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/mappe/?top=5&skip=1
-    @ApiOperation(value = "Retrieves a lit of Files associated with a Series", notes = "The field skip" +
+    @ApiOperation(value = "Retrieves a list of Files associated with a Series", notes = "The field skip" +
             "tells how many File rows of the result set to ignore (starting at 0), while  top tells how many rows" +
             " after skip to return. Note if the value of top is greater than system value " +
             " nikita-noark5-core.pagination.maxPageSize, then nikita-noark5-core.pagination.maxPageSize is used. ",
@@ -579,7 +607,7 @@ public class SeriesHateoasController extends NikitaController {
     // Retrieve all CaseFiles associated with a Series (paginated)
     // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/saksmappe/
     // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/saksmappe/?top=5&skip=1
-    @ApiOperation(value = "Retrieves a lit of CaseFiles associated with a Series", notes = "The field skip" +
+    @ApiOperation(value = "Retrieves a list of CaseFiles associated with a Series", notes = "The field skip" +
             "tells how many CaseFile rows of the result set to ignore (starting at 0), while  top tells how many rows" +
             " after skip to return. Note if the value of top is greater than system value " +
             " nikita-noark5-core.pagination.maxPageSize, then nikita-noark5-core.pagination.maxPageSize is used. ",

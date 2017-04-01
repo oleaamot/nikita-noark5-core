@@ -13,7 +13,6 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IBasicRecordHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IBasicRecordService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,11 +31,14 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 public class BasicRecordHateoasController {
 
-    @Autowired
     IBasicRecordService basicRecordService;
-
-    @Autowired
     IBasicRecordHateoasHandler basicRecordHateoasHandler;
+
+    public BasicRecordHateoasController(IBasicRecordService basicRecordService,
+                                        IBasicRecordHateoasHandler basicRecordHateoasHandler) {
+        this.basicRecordService = basicRecordService;
+        this.basicRecordHateoasHandler = basicRecordHateoasHandler;
+    }
 
     // API - All GET Requests (CRUD - READ)
 
@@ -55,10 +57,12 @@ public class BasicRecordHateoasController {
                     value = "systemID of the basicRecord to retrieve",
                     required = true)
             @PathVariable("systemID") final String basicRecordSystemId) {
-        BasicRecordHateoas basicRecordHateoas = new
-                BasicRecordHateoas(basicRecordService.findBySystemId(basicRecordSystemId));
+        BasicRecord createdBasicRecord = basicRecordService.findBySystemId(basicRecordSystemId);
+        BasicRecordHateoas basicRecordHateoas = new BasicRecordHateoas(createdBasicRecord);
         basicRecordHateoasHandler.addLinks(basicRecordHateoas, request, new Authorisation());
-        return new ResponseEntity<>(basicRecordHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(createdBasicRecord.getVersion().toString())
+                .body(basicRecordHateoas);
     }
 
     @ApiOperation(value = "Retrieves multiple BasicRecord entities limited by ownership rights", notes = "The field skip" +

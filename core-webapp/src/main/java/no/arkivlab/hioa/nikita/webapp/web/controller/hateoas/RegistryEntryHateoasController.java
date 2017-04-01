@@ -17,7 +17,6 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjec
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRegistryEntryHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRegistryEntryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,20 +34,23 @@ import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 public class RegistryEntryHateoasController {
 
-    @Autowired
-    IRegistryEntryService registryEntryService;
+    private IRegistryEntryService registryEntryService;
+    private IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
+    private IDocumentObjectHateoasHandler documentObjectHateoasHandler;
+    private IRegistryEntryHateoasHandler registryEntryHateoasHandler;
 
-    @Autowired
-    IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
-
-    @Autowired
-    IDocumentObjectHateoasHandler documentObjectHateoasHandler;
-
-    @Autowired
-    IRegistryEntryHateoasHandler registryEntryHateoasHandler;
+    public RegistryEntryHateoasController(IRegistryEntryService registryEntryService,
+                                          IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler,
+                                          IDocumentObjectHateoasHandler documentObjectHateoasHandler,
+                                          IRegistryEntryHateoasHandler registryEntryHateoasHandler) {
+        this.registryEntryService = registryEntryService;
+        this.documentDescriptionHateoasHandler = documentDescriptionHateoasHandler;
+        this.documentObjectHateoasHandler = documentObjectHateoasHandler;
+        this.registryEntryHateoasHandler = registryEntryHateoasHandler;
+    }
 
     // API - All POST Requests (CRUD - CREATE)
-
+    // POST [contextPath][api]/arkivstruktur/journalpost/{systemId}/ny-dokumentbeskrivelse/
     @ApiOperation(value = "Persists a DocumentDescription object associated with the given RegistryEntry systemId",
             notes = "Returns the newly created documentDescription object after it was associated with a " +
                     "RegistryEntry object and persisted to the database", response = DocumentDescriptionHateoas.class)
@@ -77,16 +79,18 @@ public class RegistryEntryHateoasController {
                     required = true)
             @RequestBody DocumentDescription documentDescription)
             throws NikitaException {
+        DocumentDescription createdDocumentDescription = registryEntryService.createDocumentDescriptionAssociatedWithRegistryEntry(recordSystemId,
+                documentDescription);
         DocumentDescriptionHateoas documentDescriptionHateoas =
-                new DocumentDescriptionHateoas(
-                        registryEntryService.createDocumentDescriptionAssociatedWithRegistryEntry(recordSystemId,
-                                documentDescription));
+                new DocumentDescriptionHateoas(documentDescription);
         documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
-        return new ResponseEntity<>(documentDescriptionHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(createdDocumentDescription.getVersion().toString())
+                .body(documentDescriptionHateoas);
     }
 
     // API - All GET Requests (CRUD - READ)
-
+    // GET [contextPath][api]/arkivstruktur/journalpost/
     @ApiOperation(value = "Retrieves multiple RegistryEntry entities limited by ownership rights",
             notes = "The field skip tells how many RegistryEntry rows of the result set to ignore (starting at 0), " +
                     "while top tells how many rows after skip to return. Note if the value of top is greater than " +

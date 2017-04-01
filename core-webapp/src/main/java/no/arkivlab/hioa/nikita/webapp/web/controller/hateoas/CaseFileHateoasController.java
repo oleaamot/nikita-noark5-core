@@ -12,12 +12,12 @@ import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.hateoas.CaseFileHateoas;
 import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ICaseFileHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRegistryEntryHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ICaseFileService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,14 +37,17 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 public class CaseFileHateoasController {
 
-    @Autowired
     ICaseFileService caseFileService;
-
-    @Autowired
     ICaseFileHateoasHandler caseFileHateoasHandler;
-
-    @Autowired
     IRegistryEntryHateoasHandler registryEntryHateoasHandler;
+
+    public CaseFileHateoasController(ICaseFileService caseFileService,
+                                     ICaseFileHateoasHandler caseFileHateoasHandler,
+                                     IRegistryEntryHateoasHandler registryEntryHateoasHandler) {
+        this.caseFileService = caseFileService;
+        this.caseFileHateoasHandler = caseFileHateoasHandler;
+        this.registryEntryHateoasHandler = registryEntryHateoasHandler;
+    }
 
     // API - All POST Requests (CRUD - CREATE)
 
@@ -74,10 +77,12 @@ public class CaseFileHateoasController {
                     value = "Incoming registryEntry object",
                     required = true)
             @RequestBody RegistryEntry registryEntry)  throws NikitaException {
-        RegistryEntryHateoas registryEntryHateoas =
-                new RegistryEntryHateoas(caseFileService.createRegistryEntryAssociatedWithCaseFile(
-                        fileSystemId, registryEntry));
-        return new ResponseEntity<> (registryEntryHateoas, HttpStatus.CREATED);
+        RegistryEntry createdRegistryEntry = caseFileService.createRegistryEntryAssociatedWithCaseFile(fileSystemId,
+                registryEntry);
+        RegistryEntryHateoas registryEntryHateoas = new RegistryEntryHateoas(createdRegistryEntry);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(createdRegistryEntry.getVersion().toString())
+                .body(registryEntryHateoas);
     }
 
     // API - All GET Requests (CRUD - READ)
@@ -122,10 +127,16 @@ public class CaseFileHateoasController {
                     value = "systemID of the caseFile to retrieve",
                     required = true)
             @PathVariable("systemID") final String caseFileSystemId) {
+        CaseFile caseFile = caseFileService.findBySystemId(caseFileSystemId);
+        if (caseFile == null) {
+            throw new NikitaEntityNotFoundException(caseFileSystemId);
+        }
         CaseFileHateoas caseFileHateoas = new
-                CaseFileHateoas(caseFileService.findBySystemId(caseFileSystemId));
+                CaseFileHateoas(caseFile);
         caseFileHateoasHandler.addLinks(caseFileHateoas, request, new Authorisation());
-        return new ResponseEntity<>(caseFileHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.OK)
+                .eTag(caseFile.getVersion().toString())
+                .body(caseFileHateoas);
     }
 
     @ApiOperation(value = "Retrieves multiple CaseFile entities limited by ownership rights", notes = "The field skip" +
@@ -152,7 +163,6 @@ public class CaseFileHateoasController {
                 caseFileService.findCaseFileByOwnerPaginated(top, skip));
 
         caseFileHateoasHandler.addLinks(caseFileHateoas, request, new Authorisation());
-
         return new ResponseEntity<>(caseFileHateoas, HttpStatus.OK);
     }
 }

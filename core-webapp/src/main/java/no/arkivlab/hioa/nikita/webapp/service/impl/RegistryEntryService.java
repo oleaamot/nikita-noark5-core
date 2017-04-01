@@ -9,7 +9,6 @@ import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,21 +25,22 @@ import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 
 @Service
 @Transactional
-public class RegistryEntryService extends BasicRecordService implements IRegistryEntryService {
+public class RegistryEntryService implements IRegistryEntryService {
 
     private static final Logger logger = LoggerFactory.getLogger(RegistryEntryService.class);
-
-    @Autowired
-    DocumentDescriptionService documentDescriptionService;
-
-    @Autowired
-    IRegistryEntryRepository registryEntryRepository;
-
-    @Autowired
-    EntityManager entityManager;
-
     //@Value("${nikita-noark5-core.pagination.maxPageSize}")
     Integer maxPageSize = new Integer(10);
+    private DocumentDescriptionService documentDescriptionService;
+    private IRegistryEntryRepository registryEntryRepository;
+    private EntityManager entityManager;
+
+    public RegistryEntryService(DocumentDescriptionService documentDescriptionService,
+                                IRegistryEntryRepository registryEntryRepository,
+                                EntityManager entityManager) {
+        this.documentDescriptionService = documentDescriptionService;
+        this.registryEntryRepository = registryEntryRepository;
+        this.entityManager = entityManager;
+    }
 
     public RegistryEntryService() {
     }
@@ -100,5 +100,10 @@ public class RegistryEntryService extends BasicRecordService implements IRegistr
         typedQuery.setFirstResult(skip);
         typedQuery.setMaxResults(maxPageSize);
         return typedQuery.getResultList();
+    }
+
+    // systemId
+    public RegistryEntry findBySystemId(String systemId) {
+        return registryEntryRepository.findBySystemId(systemId);
     }
 }

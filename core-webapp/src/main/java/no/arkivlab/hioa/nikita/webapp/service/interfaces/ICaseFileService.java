@@ -7,10 +7,12 @@ import nikita.model.noark5.v4.RegistryEntry;
 import java.util.List;
 
 
-public interface ICaseFileService extends IFileService{
+public interface ICaseFileService {
 
 	CaseFile save(CaseFile caseFile);
 	RegistryEntry createRegistryEntryAssociatedWithCaseFile(String fileSystemId, RegistryEntry registryEntry);
 
-	List<CaseFile> findCaseFileByOwnerPaginated(Integer top, Integer skip);
+    CaseFile findBySystemId(String systemId);
+
+    List<CaseFile> findCaseFileByOwnerPaginated(Integer top, Integer skip);
 }
