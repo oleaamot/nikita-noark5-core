@@ -2,7 +2,6 @@ package nikita.model.noark5.v4.metadata;
 
 import nikita.model.noark5.v4.interfaces.entities.IMetadataEntity;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -12,7 +11,7 @@ import javax.persistence.*;
  * Created by tsodring on 3/23/17.
  */
 @MappedSuperclass
-public class MetadataSuperClass implements INikitaEntity, INoarkSystemIdEntity, IMetadataEntity {
+public class MetadataSuperClass implements INikitaEntity, IMetadataEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,12 +39,15 @@ public class MetadataSuperClass implements INikitaEntity, INoarkSystemIdEntity, 
     @Column(name = "description")
     @Audited
     protected String description;
+
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
+
     @Version
     @Column(name = "version")
     protected Long version;
+
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited

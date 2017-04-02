@@ -102,6 +102,7 @@ public final class Constants {
 
     // Create for new administrasjon objects
     public static final String NEW_DOCUMENT_MEDIUM = NEW + DASH + DOCUMENT_MEDIUM;
+    public static final String NEW_FONDS_STATUS = NEW + DASH + FONDS_STATUS;
 
 
     public static final String SERIES_ASSOCIATE_AS_SUCCESSOR = "referanseArvtager";
@@ -156,6 +157,12 @@ public final class Constants {
     public static final String INFO_CANNOT_FIND_OBJECT = "Cannot find object of type ";
     public static final String INFO_CANNOT_ASSOCIATE_WITH_CLOSED_OBJECT = "Cannot associate with a closed object";
     public static final String INFO_INVALID_STRUCTURE = "Invalid Noark structure";
+
+    public static final String TEMPLATE_FONDS_STATUS_CODE = "Opprettet";
+    public static final String TEMPLATE_FONDS_STATUS_DESCRIPTION = "Arkivet er opprettet og i aktiv bruk";
+    public static final String TEMPLATE_DOCUMENT_MEDIUM_CODE = "Elektronisk arkiv";
+    public static final String TEMPLATE_DOCUMENT_MEDIUM_DESCRIPTION = "Bare elektroniske dokumenter";
+
 
     public static final int UUIDLength = 32;
 

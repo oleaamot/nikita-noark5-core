@@ -15,6 +15,8 @@ public interface IDocumentMediumService {
 
     DocumentMedium findBySystemId(String systemId);
 
+    DocumentMedium update(DocumentMedium documentMedium);
+
     List<DocumentMedium> findByDescription(String description);
 
     List<DocumentMedium> findByCode(String code);

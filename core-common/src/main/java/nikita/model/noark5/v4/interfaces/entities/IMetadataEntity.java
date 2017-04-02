@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  *
  */
-public interface IMetadataEntity extends Serializable {
+public interface IMetadataEntity extends INoarkSystemIdEntity, Serializable {
 
     String getCode();
 
