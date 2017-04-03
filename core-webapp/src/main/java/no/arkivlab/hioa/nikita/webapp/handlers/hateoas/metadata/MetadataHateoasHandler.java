@@ -43,7 +43,7 @@ public class MetadataHateoasHandler extends HateoasHandler implements IMetadataH
     public void addNewCode(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_METADATA_PATH + SLASH + NEW + DASH + detectType(entity),
-                REL_METADATA + NEW + DASH + detectType(entity), false));
+                REL_METADATA + NEW + DASH + detectType(entity) + SLASH, false));
     }
 
     private String detectType(INoarkSystemIdEntity entity) {
