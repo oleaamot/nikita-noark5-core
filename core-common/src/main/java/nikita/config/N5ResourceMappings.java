@@ -140,7 +140,7 @@ public final class N5ResourceMappings {
     public static final String DOCUMENT_OBJECT_FORMAT_DETAILS = "formatDetaljer";
     public static final String DOCUMENT_OBJECT_REFERENCE_DOCUMENT_FILE = "referanseDokumentfil";
     public static final String DOCUMENT_OBJECT_CHECKSUM = "sjekksum";
-    public static final String DOCUMENT_OBJECT_CHECKSUM_ALGORITHM = "sjekksumAlgoritme ";
+    public static final String DOCUMENT_OBJECT_CHECKSUM_ALGORITHM = "sjekksumAlgoritme";
     public static final String DOCUMENT_OBJECT_FILE_SIZE = "filstoerrelse";
     // The following may or may not be part of the official standard. Sent an email to find out
     // but are specified in n5v4 tjenestegrensesnitt, but nit in metadata catalogues and therefore lack official
