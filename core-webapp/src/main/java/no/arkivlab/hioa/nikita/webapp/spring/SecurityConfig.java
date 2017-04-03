@@ -21,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import static nikita.config.Constants.ROLE_RECORDS_MANAGER;
 import static nikita.config.Constants.SLASH;
 import static nikita.config.N5ResourceMappings.FONDS;
-import static nikita.config.PATHPatterns.PATTERN_NEW_FONDS_STRUCTURE_ALL;
+import static nikita.config.PATHPatterns.*;
 
 @Profile("!nosecurity")
 @Configuration
@@ -65,7 +65,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests()
                 //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers(HttpMethod.GET, PATTERN_FONDS_STRUCTURE_PATH).permitAll()
                 .antMatchers("/auth/**").permitAll()
+                // GET [api]/metadata/**, public to read basic structure
+                .antMatchers(HttpMethod.GET, PATTERN_METADATA_PATH).permitAll()
                 .antMatchers("/").permitAll() // allow access to conformity details
                 // The following will like be removed soon ...
                 .antMatchers("/signup", "/user/register", "/webapp/login/**").permitAll()
@@ -79,6 +82,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, PATTERN_NEW_FONDS_STRUCTURE_ALL).hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.PUT, FONDS + SLASH + "**").hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.PATCH, FONDS + SLASH + "**").hasAuthority(ROLE_RECORDS_MANAGER)
+                // POST PUT PATCH DELETE [api]/metadata/**, need admin
+                .antMatchers(HttpMethod.PATCH, PATTERN_METADATA_PATH).hasAuthority(ROLE_RECORDS_MANAGER)
+                .antMatchers(HttpMethod.PUT, PATTERN_METADATA_PATH).hasAuthority(ROLE_RECORDS_MANAGER)
+                .antMatchers(HttpMethod.POST, PATTERN_METADATA_PATH).hasAuthority(ROLE_RECORDS_MANAGER)
+                .antMatchers(HttpMethod.DELETE, PATTERN_METADATA_PATH).hasAuthority(ROLE_RECORDS_MANAGER)
 
                 // allow anonymous resource requests
                 .antMatchers(
