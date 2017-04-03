@@ -49,6 +49,11 @@ public class DocumentMediumService implements IDocumentMediumService {
         return documentMediumRepository.findAll();
     }
 
+    @Override
+    public List<DocumentMedium> findAll2() {
+        return documentMediumRepository.findAll();
+    }
+
     // find by systemId
 
     /**

@@ -16,7 +16,7 @@ import java.util.List;
 public interface MetadataRepository<INoarkSystemIdEntity, ID extends Serializable> extends
         CrudRepository<INoarkSystemIdEntity, Long> {
 
-    Iterable<INoarkSystemIdEntity> findAll();
+    List<INoarkSystemIdEntity> findAll();
 
     INoarkSystemIdEntity findBySystemId(String systemId);
 

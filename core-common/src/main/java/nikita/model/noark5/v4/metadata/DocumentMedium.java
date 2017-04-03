@@ -1,5 +1,6 @@
 package nikita.model.noark5.v4.metadata;
 
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -15,6 +16,6 @@ import javax.persistence.Table;
 @SQLDelete(sql="UPDATE document_medium SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_document_medium_id"))
-public class DocumentMedium extends MetadataSuperClass {
+public class DocumentMedium extends MetadataSuperClass implements INoarkSystemIdEntity {
     private static final long serialVersionUID = 1L;
 }

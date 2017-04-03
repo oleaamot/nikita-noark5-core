@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import static nikita.config.Constants.*;
 import static nikita.config.HATEOASConstants.SELF;
-import static nikita.config.N5ResourceMappings.*;
+import static nikita.config.N5ResourceMappings.DOCUMENT_MEDIUM;
 
 /**
  * Created by tsodring on 2/6/17.
@@ -44,9 +44,8 @@ public class HateoasHandler implements IHateoasHandler {
         // If hateoasNoarkObject is a list add a self link.
         // { "entity": [], "_links": [] }
         if (!hateoasNoarkObject.isSingleEntity() && hateoasNoarkObject.getList().size() > 0) {
-
-            String uri = request.getRequestURI();
-            Link selfLink = new Link(uri, getRelSelfLink(), false);
+            StringBuffer url = request.getRequestURL();
+            Link selfLink = new Link(url.toString(), getRelSelfLink(), false);
             hateoasNoarkObject.addSelfLink(selfLink);
         }
     }

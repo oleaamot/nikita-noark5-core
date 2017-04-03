@@ -6,12 +6,18 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
+import nikita.model.noark5.v4.hateoas.metadata.MetadataHateoas;
 import nikita.model.noark5.v4.metadata.DocumentMedium;
 import nikita.util.exceptions.NikitaException;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.metadata.IMetadataHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.metadata.IDocumentMediumService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.DOCUMENT_MEDIUM;
@@ -22,9 +28,12 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_MEDIUM;
 public class DocumentMediumController {
 
     private IDocumentMediumService documentMediumService;
+    private IMetadataHateoasHandler metadataHateoasHandler;
 
-    public DocumentMediumController(IDocumentMediumService documentMediumService) {
+    public DocumentMediumController(IDocumentMediumService documentMediumService,
+                                    IMetadataHateoasHandler metadataHateoasHandler) {
         this.documentMediumService = documentMediumService;
+        this.metadataHateoasHandler = metadataHateoasHandler;
     }
 
     // API - All POST Requests (CRUD - CREATE)
@@ -46,10 +55,16 @@ public class DocumentMediumController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = SLASH + NEW_DOCUMENT_MEDIUM)
-    public ResponseEntity<DocumentMedium> createDocumentMedium(@RequestBody DocumentMedium documentMedium)
+    public ResponseEntity<MetadataHateoas> createDocumentMedium(
+            HttpServletRequest request,
+            @RequestBody DocumentMedium documentMedium)
             throws NikitaException {
         DocumentMedium newDocumentMedium = documentMediumService.createNewDocumentMedium(documentMedium);
-        return new ResponseEntity<>(newDocumentMedium, HttpStatus.CREATED);
+        MetadataHateoas metadataHateoas = new MetadataHateoas(newDocumentMedium);
+        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(newDocumentMedium.getVersion().toString())
+                .body(metadataHateoas);
     }
 
     // API - All GET Requests (CRUD - READ)
@@ -66,9 +81,12 @@ public class DocumentMediumController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.GET, value = SLASH)
-    public ResponseEntity<Iterable<DocumentMedium>> findAll() {
-        Iterable<DocumentMedium> documentMediumList = documentMediumService.findAll();
-        return new ResponseEntity<>(documentMediumList, HttpStatus.OK);
+    public ResponseEntity<MetadataHateoas> findAll(HttpServletRequest request) {
+        //ArrayList <DocumentMedium> documentMediumList = (ArrayList<DocumentMedium>) documentMediumService.findAll2();
+        MetadataHateoas metadataHateoas = new MetadataHateoas(new ArrayList<>(documentMediumService.findAll2()));
+        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(metadataHateoas);
     }
 
     // Retrieves a given documentMedium identified by a systemId
@@ -89,9 +107,14 @@ public class DocumentMediumController {
     @Counted
     @Timed
     @RequestMapping(value = SLASH + "{systemID}" + SLASH, method = RequestMethod.GET)
-    public ResponseEntity<DocumentMedium> findBySystemId(@PathVariable("systemID") final String systemId) {
-        DocumentMedium documentMediumList = documentMediumService.findBySystemId(systemId);
-        return new ResponseEntity<>(documentMediumList, HttpStatus.OK);
+    public ResponseEntity<MetadataHateoas> findBySystemId(@PathVariable("systemID") final String systemId,
+                                                          HttpServletRequest request) {
+        DocumentMedium documentMedium = documentMediumService.findBySystemId(systemId);
+        MetadataHateoas metadataHateoas = new MetadataHateoas(documentMedium);
+        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(documentMedium.getVersion().toString())
+                .body(metadataHateoas);
     }
 
     // Create a suggested documentMedium(like a template) with default values (nothing persisted)

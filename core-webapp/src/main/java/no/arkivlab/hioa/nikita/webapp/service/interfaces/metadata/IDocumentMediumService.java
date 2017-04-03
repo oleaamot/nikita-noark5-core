@@ -13,6 +13,8 @@ public interface IDocumentMediumService {
 
     Iterable<DocumentMedium> findAll();
 
+    List<DocumentMedium> findAll2();
+
     DocumentMedium findBySystemId(String systemId);
 
     DocumentMedium update(DocumentMedium documentMedium);
