@@ -13,6 +13,7 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IBasicRecordHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IBasicRecordService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +32,9 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 public class BasicRecordHateoasController {
 
-    IBasicRecordService basicRecordService;
-    IBasicRecordHateoasHandler basicRecordHateoasHandler;
+    private IBasicRecordService basicRecordService;
+    private IBasicRecordHateoasHandler basicRecordHateoasHandler;
+    private ApplicationEventPublisher applicationEventPublisher;
 
     public BasicRecordHateoasController(IBasicRecordService basicRecordService,
                                         IBasicRecordHateoasHandler basicRecordHateoasHandler) {

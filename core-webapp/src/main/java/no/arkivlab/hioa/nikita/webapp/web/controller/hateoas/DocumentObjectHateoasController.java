@@ -14,6 +14,7 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjec
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentObjectService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.StorageException;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,11 +37,14 @@ public class DocumentObjectHateoasController {
 
     private IDocumentObjectService documentObjectService;
     private IDocumentObjectHateoasHandler documentObjectHateoasHandler;
+    private ApplicationEventPublisher applicationEventPublisher;
 
     public DocumentObjectHateoasController(IDocumentObjectService documentObjectService,
-                                           IDocumentObjectHateoasHandler documentObjectHateoasHandler) {
+                                           IDocumentObjectHateoasHandler documentObjectHateoasHandler,
+                                           ApplicationEventPublisher applicationEventPublisher) {
         this.documentObjectService = documentObjectService;
         this.documentObjectHateoasHandler = documentObjectHateoasHandler;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     // API - All GET Requests (CRUD - READ)

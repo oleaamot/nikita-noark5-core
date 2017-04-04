@@ -20,6 +20,8 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRecordHateoas
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRecordService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,16 +44,20 @@ public class RecordHateoasController {
     private IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
     private IDocumentObjectHateoasHandler documentObjectHateoasHandler;
     private IRecordHateoasHandler recordHateoasHandler;
+    private ApplicationEventPublisher applicationEventPublisher;
 
     public RecordHateoasController(IRecordService recordService,
                                    IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler,
                                    IDocumentObjectHateoasHandler documentObjectHateoasHandler,
-                                   IRecordHateoasHandler recordHateoasHandler) {
+                                   IRecordHateoasHandler recordHateoasHandler,
+                                   ApplicationEventPublisher applicationEventPublisher) {
         this.recordService = recordService;
         this.documentDescriptionHateoasHandler = documentDescriptionHateoasHandler;
         this.documentObjectHateoasHandler = documentObjectHateoasHandler;
         this.recordHateoasHandler = recordHateoasHandler;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
+
 
     // API - All POST Requests (CRUD - CREATE)
 
@@ -93,6 +99,7 @@ public class RecordHateoasController {
         DocumentDescriptionHateoas documentDescriptionHateoas =
                 new DocumentDescriptionHateoas(createdDocumentDescription);
         documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdDocumentDescription));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(createdDocumentDescription.getVersion().toString())
                 .body(documentDescriptionHateoas);
@@ -136,6 +143,7 @@ public class RecordHateoasController {
                         recordService.createDocumentObjectAssociatedWithRecord(recordSystemId,
                                 documentObject));
         documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
            return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(createdDocumentObject.getVersion().toString())
                 .body(documentObjectHateoas);
@@ -174,6 +182,7 @@ public class RecordHateoasController {
                     value = "series",
                     required = true)
             @RequestBody Series series) throws NikitaException {
+        // applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
 //        return ResponseEntity.status(HttpStatus.CREATED)
 //                .eTag(series.getVersion().toString())
 //                .body(seriesHateoas);
@@ -212,6 +221,7 @@ public class RecordHateoasController {
                     value = "classified",
                     required = true)
             @RequestBody Classified classified) throws NikitaException {
+        //applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
 //        return ResponseEntity.status(HttpStatus.CREATED)
 //                .eTag(classified.getVersion().toString())
 //                .body(classifiedHateoas);
@@ -249,6 +259,7 @@ public class RecordHateoasController {
                     value = "disposal",
                     required = true)
             @RequestBody Disposal disposal) throws NikitaException {
+        // applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
         //TODO: What do we return here? Record + comment? comment?
         //        return ResponseEntity.status(HttpStatus.CREATED)
 //                .eTag(comment.getVersion().toString())
@@ -287,6 +298,7 @@ public class RecordHateoasController {
                     value = "screening",
                     required = true)
             @RequestBody Screening screening) throws NikitaException {
+        // applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
 //        TODO: What do we return here? Record + screening? screening?
 //        return ResponseEntity.status(HttpStatus.CREATED)
 //                .eTag(screening.getVersion().toString())
@@ -325,6 +337,7 @@ public class RecordHateoasController {
                     value = "disposalUndertaken",
                     required = true)
             @RequestBody DisposalUndertaken disposalUndertaken) throws NikitaException {
+        // applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
         //TODO: What do we return here? Record + disposalUndertaken? disposalUndertaken?
 //        return ResponseEntity.status(HttpStatus.CREATED)
 //                .eTag(disposalUndertaken.getVersion().toString())
@@ -363,7 +376,8 @@ public class RecordHateoasController {
                     value = "deletion",
                     required = true)
             @RequestBody Deletion deletion) throws NikitaException {
-        //TODO: This is more to carry out a deletion fo files. You don't just add a deletion to Record
+        //TODO: This is more to carry out a deletion of files. You don't just add a deletion to Record
+        //applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
 //        return ResponseEntity.status(HttpStatus.CREATED)
 //                .eTag(deletion.getVersion().toString())
 //                .body(deletionHateoas);
@@ -516,13 +530,13 @@ public class RecordHateoasController {
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             DOCUMENT_DESCRIPTION, method = RequestMethod.GET)
-    public ResponseEntity<DocumentDescriptionHateoas> findAllDocumentDescriptionAssociatedWithRecord (
+    public ResponseEntity<DocumentDescriptionHateoas> findAllDocumentDescriptionAssociatedWithRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemID of the file to retrieve associated Record",
                     required = true)
             @PathVariable("systemID") final String recordSystemId) {
-        Record record  = recordService.findBySystemId(recordSystemId);
+        Record record = recordService.findBySystemId(recordSystemId);
         if (record == null) {
             throw new NoarkEntityNotFoundException("Could not find File object with systemID " + recordSystemId);
         }

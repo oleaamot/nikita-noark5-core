@@ -14,6 +14,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -21,27 +22,28 @@ import java.util.Arrays;
 
 
 @SpringBootApplication(exclude = { // @formatter:off
-   //     SecurityAutoConfiguration.class
+        //     SecurityAutoConfiguration.class
 //        , ErrorMvcAutoConfiguration.class
 })// @formatter:on
 
 
-// Extending SpringBootServletInitializer allows N5CoreApp to be run
-// both from spring-boot, but also as a normal web application (sans web.xml)
+//Enabling asynchronous handling for application events
+@EnableAsync
 @ComponentScan({"no.arkivlab.hioa.nikita.webapp.spring.datasource",
         "no.arkivlab.hioa.nikita.webapp.spring.security",
-                "no.arkivlab.hioa.nikita.webapp.web",
-                "no.arkivlab.hioa.nikita.webapp.run",
-                "no.arkivlab.hioa.nikita.webapp.util.error",
+        "no.arkivlab.hioa.nikita.webapp.web",
+        "no.arkivlab.hioa.nikita.webapp.run",
+        "no.arkivlab.hioa.nikita.webapp.util.error",
         "no.arkivlab.hioa.nikita.webapp.security",
-
         "nikita.util.deserialisers",
         "no.arkivlab.hioa.nikita.webapp.handlers.hateoas"})
+// Extending SpringBootServletInitializer allows N5CoreApp to be run
+// both from spring-boot, but also as a normal web application (sans web.xml)
 public class N5CoreApp extends SpringBootServletInitializer {
 
     private static final Logger logger = LoggerFactory.getLogger(N5CoreApp.class);
     private final static Object[] CONFIGS = { // @formatter:off
-    		N5CoreApp.class,
+            N5CoreApp.class,
             ContextConfig.class,
             DataSourceConfig.class,
             DemoDataSource.class,
@@ -54,8 +56,8 @@ public class N5CoreApp extends SpringBootServletInitializer {
             ServletConfig.class,
             //Pac4JConfig.class,
             AppWebMvcConfiguration.class,
-     //       SwaggerConfig.class
-    		}; // @formatter:on
+            //       SwaggerConfig.class
+    }; // @formatter:on
     @Autowired
     DataSourceConfig dataSourceConfig;
 
@@ -73,7 +75,7 @@ public class N5CoreApp extends SpringBootServletInitializer {
         context.getBean(AfterApplicationStartup.class).afterApplicationStarts();
         Environment env = context.getEnvironment();
 
-        String [] activeProfiles = env.getActiveProfiles();
+        String[] activeProfiles = env.getActiveProfiles();
         String profilesAsString = Arrays.toString(activeProfiles);
         logger.info("\n----------------------------------------------------------\n\t" +
                         "Application '{}' is running! Access URLs:\n\t" +
@@ -90,7 +92,7 @@ public class N5CoreApp extends SpringBootServletInitializer {
                 env.getProperty("server.port"),
                 env.getProperty("server.contextPath"),
                 profilesAsString
-                );
+        );
 
         String configServerStatus = env.getProperty("configserver.status");
         logger.info("\n----------------------------------------------------------\n\t" +
@@ -101,9 +103,9 @@ public class N5CoreApp extends SpringBootServletInitializer {
         if (profilesAsString != null && profilesAsString.contains("de")) {
             logger.info("\n----------------------------------------------------------\n\t" +
                             "Dev/demo mode: In-memory database ({}) in use. See http://localhost:8082 . Use following JDBC-string: jdbc:h2:mem:n5DemoDb/jdbc:h2:mem:n5DevDb" +
-                    "\n----------------------------------------------------------",
+                            "\n----------------------------------------------------------",
                     env.getProperty("spring.jpa.database")
-                    );
+            );
         }
     }
 }

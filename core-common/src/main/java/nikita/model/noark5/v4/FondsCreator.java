@@ -24,7 +24,7 @@ public class FondsCreator implements IFondsCreatorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_fonds_creator_id", nullable = false, insertable = true, updatable = false)
-    protected long id;
+    protected Long id;
 
     /**
      * M001 - systemID (xs:string)
@@ -53,9 +53,11 @@ public class FondsCreator implements IFondsCreatorEntity {
     @Column(name = "description")
     @Audited
     protected String description;
+
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
+
     @Version
     @Column(name = "version")
     protected Long version;
@@ -66,6 +68,16 @@ public class FondsCreator implements IFondsCreatorEntity {
     @Column(name = "deleted")
     @Audited
     private Boolean deleted;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getSystemId() {
         return systemId;

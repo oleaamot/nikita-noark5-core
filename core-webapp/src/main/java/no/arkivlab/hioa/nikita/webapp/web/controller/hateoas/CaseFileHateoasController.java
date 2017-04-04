@@ -18,6 +18,8 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ICaseFileHateo
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRegistryEntryHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ICaseFileService;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,16 +39,16 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 public class CaseFileHateoasController {
 
-    ICaseFileService caseFileService;
-    ICaseFileHateoasHandler caseFileHateoasHandler;
-    IRegistryEntryHateoasHandler registryEntryHateoasHandler;
+    private ICaseFileService caseFileService;
+    private ICaseFileHateoasHandler caseFileHateoasHandler;
+    private IRegistryEntryHateoasHandler registryEntryHateoasHandler;
+    private ApplicationEventPublisher applicationEventPublisher;
 
-    public CaseFileHateoasController(ICaseFileService caseFileService,
-                                     ICaseFileHateoasHandler caseFileHateoasHandler,
-                                     IRegistryEntryHateoasHandler registryEntryHateoasHandler) {
+    public CaseFileHateoasController(ICaseFileService caseFileService, ICaseFileHateoasHandler caseFileHateoasHandler, IRegistryEntryHateoasHandler registryEntryHateoasHandler, ApplicationEventPublisher applicationEventPublisher) {
         this.caseFileService = caseFileService;
         this.caseFileHateoasHandler = caseFileHateoasHandler;
         this.registryEntryHateoasHandler = registryEntryHateoasHandler;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     // API - All POST Requests (CRUD - CREATE)
@@ -80,6 +82,7 @@ public class CaseFileHateoasController {
         RegistryEntry createdRegistryEntry = caseFileService.createRegistryEntryAssociatedWithCaseFile(fileSystemId,
                 registryEntry);
         RegistryEntryHateoas registryEntryHateoas = new RegistryEntryHateoas(createdRegistryEntry);
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdRegistryEntry));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(createdRegistryEntry.getVersion().toString())
                 .body(registryEntryHateoas);

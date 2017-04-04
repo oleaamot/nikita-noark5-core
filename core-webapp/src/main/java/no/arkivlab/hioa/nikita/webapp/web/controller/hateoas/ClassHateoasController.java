@@ -15,6 +15,8 @@ import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IClassService;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,10 +37,14 @@ public class ClassHateoasController {
 
     IClassService classService;
     IClassHateoasHandler classHateoasHandler;
+    private ApplicationEventPublisher applicationEventPublisher;
 
-    public ClassHateoasController(IClassService classService, IClassHateoasHandler classHateoasHandler) {
+    public ClassHateoasController(IClassService classService,
+                                  IClassHateoasHandler classHateoasHandler,
+                                  ApplicationEventPublisher applicationEventPublisher) {
         this.classService = classService;
         this.classHateoasHandler = classHateoasHandler;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     // API - All POST Requests (CRUD - CREATE)
@@ -73,6 +79,7 @@ public class ClassHateoasController {
         Class createdClass = classService.createClassAssociatedWithClass(classSystemId, klass);
         ClassHateoas classHateoas = new ClassHateoas(createdClass);
         classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdClass));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(createdClass.getVersion().toString())
                 .body(classHateoas);

@@ -19,6 +19,8 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjec
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentDescriptionService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -40,13 +42,16 @@ public class DocumentDescriptionHateoasController {
     private IDocumentDescriptionService documentDescriptionService;
     private IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
     private IDocumentObjectHateoasHandler documentObjectHateoasHandler;
+    private ApplicationEventPublisher applicationEventPublisher;
 
     public DocumentDescriptionHateoasController(IDocumentDescriptionService documentDescriptionService,
                                                 IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler,
-                                                IDocumentObjectHateoasHandler documentObjectHateoasHandler) {
+                                                IDocumentObjectHateoasHandler documentObjectHateoasHandler,
+                                                ApplicationEventPublisher applicationEventPublisher) {
         this.documentDescriptionService = documentDescriptionService;
         this.documentDescriptionHateoasHandler = documentDescriptionHateoasHandler;
         this.documentObjectHateoasHandler = documentObjectHateoasHandler;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     // API - All POST Requests (CRUD - CREATE)
@@ -84,6 +89,7 @@ public class DocumentDescriptionHateoasController {
                 documentDescriptionSystemId, documentObject);
         DocumentObjectHateoas documentObjectHateoas = new DocumentObjectHateoas(documentObject);
         documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdDocumentObject));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(createdDocumentObject.getVersion().toString())
                 .body(documentObjectHateoas);

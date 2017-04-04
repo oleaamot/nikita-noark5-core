@@ -15,6 +15,8 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsCreatorH
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsCreatorService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,11 +37,14 @@ public class FondsCreatorHateoasController {
 
     private IFondsCreatorService fondsCreatorService;
     private IFondsCreatorHateoasHandler fondsCreatorHateoasHandler;
+    private ApplicationEventPublisher applicationEventPublisher;
 
     public FondsCreatorHateoasController(IFondsCreatorService fondsCreatorService,
-                                         IFondsCreatorHateoasHandler fondsCreatorHateoasHandler) {
+                                         IFondsCreatorHateoasHandler fondsCreatorHateoasHandler,
+                                         ApplicationEventPublisher applicationEventPublisher) {
         this.fondsCreatorService = fondsCreatorService;
         this.fondsCreatorHateoasHandler = fondsCreatorHateoasHandler;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     // API - All POST Requests (CRUD - CREATE)
@@ -70,6 +75,7 @@ public class FondsCreatorHateoasController {
         FondsCreator createdFondsCreator = fondsCreatorService.createNewFondsCreator(FondsCreator);
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(createdFondsCreator);
         fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdFondsCreator));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(createdFondsCreator.getVersion().toString())
                 .body(fondsCreatorHateoas);
@@ -155,7 +161,9 @@ public class FondsCreatorHateoasController {
                     value = "systemId of FondsCreator to retrieve.",
                     required = true)
             @PathVariable("systemID") final String FondsCreatorSystemId) {
-        /*FondsCreator FondsCreator = fondsCreatorService.findBySystemId(FondsCreatorSystemId);
+        /*
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, ));
+        FondsCreator FondsCreator = fondsCreatorService.findBySystemId(FondsCreatorSystemId);
         if (FondsCreator == null) {
             throw new NoarkEntityNotFoundException("Could not find FondsCreator object with systemID " + FondsCreatorSystemId);
         }

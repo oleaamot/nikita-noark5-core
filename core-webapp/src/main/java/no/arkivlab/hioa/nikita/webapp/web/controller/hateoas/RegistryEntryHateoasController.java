@@ -17,6 +17,8 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjec
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRegistryEntryHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRegistryEntryService;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,15 +40,19 @@ public class RegistryEntryHateoasController {
     private IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
     private IDocumentObjectHateoasHandler documentObjectHateoasHandler;
     private IRegistryEntryHateoasHandler registryEntryHateoasHandler;
+    private ApplicationEventPublisher applicationEventPublisher;
+
 
     public RegistryEntryHateoasController(IRegistryEntryService registryEntryService,
                                           IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler,
                                           IDocumentObjectHateoasHandler documentObjectHateoasHandler,
-                                          IRegistryEntryHateoasHandler registryEntryHateoasHandler) {
+                                          IRegistryEntryHateoasHandler registryEntryHateoasHandler,
+                                          ApplicationEventPublisher applicationEventPublisher) {
         this.registryEntryService = registryEntryService;
         this.documentDescriptionHateoasHandler = documentDescriptionHateoasHandler;
         this.documentObjectHateoasHandler = documentObjectHateoasHandler;
         this.registryEntryHateoasHandler = registryEntryHateoasHandler;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     // API - All POST Requests (CRUD - CREATE)
@@ -84,6 +90,7 @@ public class RegistryEntryHateoasController {
         DocumentDescriptionHateoas documentDescriptionHateoas =
                 new DocumentDescriptionHateoas(documentDescription);
         documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdDocumentDescription));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(createdDocumentDescription.getVersion().toString())
                 .body(documentDescriptionHateoas);

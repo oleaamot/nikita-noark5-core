@@ -17,6 +17,8 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassHateoasH
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassificationSystemHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IClassificationSystemService;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,13 +40,16 @@ public class ClassificationSystemHateoasController {
     private IClassificationSystemService classificationSystemService;
     private IClassificationSystemHateoasHandler classificationSystemHateoasHandler;
     private IClassHateoasHandler classHateoasHandler;
+    private ApplicationEventPublisher applicationEventPublisher;
 
     public ClassificationSystemHateoasController(IClassificationSystemService classificationSystemService,
                                                  IClassificationSystemHateoasHandler classificationSystemHateoasHandler,
-                                                 IClassHateoasHandler classHateoasHandler) {
+                                                 IClassHateoasHandler classHateoasHandler,
+                                                 ApplicationEventPublisher applicationEventPublisher) {
         this.classificationSystemService = classificationSystemService;
         this.classificationSystemHateoasHandler = classificationSystemHateoasHandler;
         this.classHateoasHandler = classHateoasHandler;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     // API - All POST Requests (CRUD - CREATE)
@@ -76,6 +81,7 @@ public class ClassificationSystemHateoasController {
         ClassificationSystemHateoas classificationSystemHateoas = new
                 ClassificationSystemHateoas(createdClassificationSystem);
         classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdClassificationSystem));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(createdClassificationSystem.getVersion().toString())
                 .body(classificationSystemHateoas);
@@ -114,6 +120,7 @@ public class ClassificationSystemHateoasController {
                         klass);
         ClassHateoas classHateoas = new ClassHateoas(createdClass);
         classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdClass));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(createdClass.getVersion().toString())
                 .body(classHateoas);

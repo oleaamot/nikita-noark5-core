@@ -19,6 +19,8 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRecordHateoas
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFileService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,14 +43,18 @@ public class FileHateoasController {
     private IFileHateoasHandler fileHateoasHandler;
     private IRecordHateoasHandler recordHateoasHandler;
     private IBasicRecordHateoasHandler basicRecordHateoasHandler;
+    private ApplicationEventPublisher applicationEventPublisher;
 
-    public FileHateoasController(IFileService fileService, IFileHateoasHandler fileHateoasHandler,
+    public FileHateoasController(IFileService fileService,
+                                 IFileHateoasHandler fileHateoasHandler,
                                  IRecordHateoasHandler recordHateoasHandler,
-                                 IBasicRecordHateoasHandler basicRecordHateoasHandler) {
+                                 IBasicRecordHateoasHandler basicRecordHateoasHandler,
+                                 ApplicationEventPublisher applicationEventPublisher) {
         this.fileService = fileService;
         this.fileHateoasHandler = fileHateoasHandler;
         this.recordHateoasHandler = recordHateoasHandler;
         this.basicRecordHateoasHandler = basicRecordHateoasHandler;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     // API - All POST Requests (CRUD - CREATE)
@@ -86,6 +92,7 @@ public class FileHateoasController {
         Record createdRecord = fileService.createRecordAssociatedWithFile(fileSystemId, record);
         RecordHateoas recordHateoas = new RecordHateoas(createdRecord);
         recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdRecord));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(createdRecord.getVersion().toString())
                 .body(recordHateoas);
@@ -124,6 +131,7 @@ public class FileHateoasController {
         BasicRecord createdBasicRecord = fileService.createBasicRecordAssociatedWithFile(fileSystemId, basicRecord);
         BasicRecordHateoas basicRecordHateoas = new BasicRecordHateoas(createdBasicRecord);
         basicRecordHateoasHandler.addLinks(basicRecordHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdBasicRecord));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(createdBasicRecord.getVersion().toString())
                 .body(basicRecordHateoas);
@@ -160,6 +168,7 @@ public class FileHateoasController {
                     required = true)
             @RequestBody ICrossReferenceEntity crossReferenceEntity) throws NikitaException {
 
+        // applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
         //return ResponseEntity.status(HttpStatus.CREATED)
         //        .eTag(crossReference.getVersion().toString())
         //        .body(crossReferenceHateoas);
@@ -198,7 +207,7 @@ public class FileHateoasController {
                     value = "File to be (sub)File",
                     required = true)
             @RequestBody File file) throws NikitaException {
-
+        // applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
         //return ResponseEntity.status(HttpStatus.CREATED)
         //        .eTag(createdFile.getVersion().toString())
         //        .body(fileHateoas);
@@ -235,6 +244,7 @@ public class FileHateoasController {
                     required = true)
             @RequestBody Comment comment) throws NikitaException {
         //TODO: What do we return here? File + comment? comment?
+        // applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
         //        return ResponseEntity.status(HttpStatus.CREATED)
 //                .eTag(comment.getVersion().toString())
 //                .body(commentHateoas);
@@ -270,6 +280,7 @@ public class FileHateoasController {
                     value = "Class",
                     required = true)
             @RequestBody Class klass) throws NikitaException {
+        // applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
         //        return ResponseEntity.status(HttpStatus.CREATED)
 //                .eTag(createdClass.getVersion().toString())
 //                .body(classHateoas);
@@ -308,6 +319,7 @@ public class FileHateoasController {
                     required = true)
             @RequestBody Series series) throws NikitaException {
         //TODO: What do we return here? File ? maybe just 200 OK
+        // applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
         //return ResponseEntity.status(HttpStatus.CREATED)
         //        .eTag(file.getVersion().toString())
         //       .body(fileHateoas);
@@ -346,6 +358,7 @@ public class FileHateoasController {
                     value = "Class",
                     required = true)
             @RequestBody Class klass) throws NikitaException {
+        // applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -740,7 +753,10 @@ public class FileHateoasController {
                     value = "systemId of file to update",
                     required = true)
             @PathVariable String fileSystemId) throws NikitaException {
-        /*FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
+
+        /*
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, ));
+        FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -775,7 +791,9 @@ public class FileHateoasController {
                     value = "systemId of file to expand",
                     required = true)
             @PathVariable String fileSystemId) throws NikitaException {
-        /*FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
+        /*
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, ));
+        FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -813,7 +831,8 @@ public class FileHateoasController {
                     value = "systemId of file to expand",
                     required = true)
             @PathVariable String fileSystemId) throws NikitaException {
-        /*FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
+        /* applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, ));
+        FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
         return ResponseEntity.status(HttpStatus.CREATED)

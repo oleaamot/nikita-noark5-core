@@ -21,11 +21,14 @@ import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
 import org.hibernate.Session;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.elasticsearch.ElasticsearchQueries;
 import org.hibernate.search.query.engine.spi.QueryDescriptor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,15 +55,20 @@ public class FondsHateoasController {
     private ISeriesService seriesService;
     private IFondsHateoasHandler fondsHateoasHandler;
     private ISeriesHateoasHandler seriesHateoasHandler;
+    private ApplicationEventPublisher applicationEventPublisher;
 
-    public FondsHateoasController(EntityManager entityManager, IFondsService fondsService,
-                                  ISeriesService seriesService, IFondsHateoasHandler fondsHateoasHandler,
-                                  ISeriesHateoasHandler seriesHateoasHandler) {
+    public FondsHateoasController(EntityManager entityManager,
+                                  IFondsService fondsService,
+                                  ISeriesService seriesService,
+                                  IFondsHateoasHandler fondsHateoasHandler,
+                                  ISeriesHateoasHandler seriesHateoasHandler,
+                                  ApplicationEventPublisher applicationEventPublisher) {
         this.entityManager = entityManager;
         this.fondsService = fondsService;
         this.seriesService = seriesService;
         this.fondsHateoasHandler = fondsHateoasHandler;
         this.seriesHateoasHandler = seriesHateoasHandler;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     // API - All POST Requests (CRUD - CREATE)
@@ -87,11 +95,12 @@ public class FondsHateoasController {
             @ApiParam(name = "fonds",
                     value = "Incoming fonds object",
                     required = true)
-            @RequestBody Fonds fonds)  throws NikitaException {
+            @RequestBody Fonds fonds) throws NikitaException {
         Fonds createdFonds = fondsService.createNewFonds(fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(createdFonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
         response.setHeader(ETAG, fonds.getVersion().toString());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdFonds));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(createdFonds.getVersion().toString())
                 .body(fondsHateoas);
@@ -130,7 +139,7 @@ public class FondsHateoasController {
         Fonds createdFonds = fondsService.createFondsAssociatedWithFonds(fondsSystemId, fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(createdFonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
-
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdFonds));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(createdFonds.getVersion().toString())
                 .body(fondsHateoas);
@@ -170,6 +179,7 @@ public class FondsHateoasController {
         Series seriesCreated = fondsService.createSeriesAssociatedWithFonds(fondsSystemId, series);
         SeriesHateoas seriesHateoas = new SeriesHateoas(seriesCreated);
         seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, seriesCreated));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(seriesCreated.getVersion().toString())
                 .body(seriesHateoas);
@@ -207,6 +217,7 @@ public class FondsHateoasController {
                     required = true)
             @RequestBody FondsCreator fondsCreator)
             throws NikitaException {
+        //applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, fondsCreatorCreated));
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
 //        return ResponseEntity.status(HttpStatus.CREATED)
 //                .eTag(createdFonds.getVersion().toString())
@@ -322,7 +333,7 @@ public class FondsHateoasController {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + fondsSystemId);
         }
         SeriesHateoas seriesHateoas = new
-                SeriesHateoas(new ArrayList<> (fonds.getReferenceSeries()));
+                SeriesHateoas(new ArrayList<>(fonds.getReferenceSeries()));
         seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
         return new ResponseEntity<>(seriesHateoas, HttpStatus.OK);
     }
@@ -455,10 +466,10 @@ public class FondsHateoasController {
                     value = "Incoming fonds object",
                     required = true)
             @RequestBody Fonds fonds) throws NikitaException {
-
         Fonds updatedFonds = fondsService.handleUpdate(systemID, Long.parseLong(request.getHeader(ETAG)), fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(updatedFonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedFonds));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(updatedFonds.getVersion().toString())
                 .body(fondsHateoas);
