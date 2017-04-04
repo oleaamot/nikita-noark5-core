@@ -130,12 +130,11 @@ public class DocumentMediumController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.GET, value = NEW_DOCUMENT_MEDIUM)
-    public ResponseEntity<MetadataHateoas> getDocumentMediumTemplate(HttpServletRequest request) {
+    public ResponseEntity<MetadataHateoas> getDocumentMediumTemplate() {
         DocumentMedium documentMedium = new DocumentMedium();
         documentMedium.setCode(TEMPLATE_DOCUMENT_MEDIUM_CODE);
         documentMedium.setDescription(TEMPLATE_DOCUMENT_MEDIUM_DESCRIPTION);
         MetadataHateoas metadataHateoas = new MetadataHateoas(documentMedium);
-        metadataHateoasHandler.addLinksOnNew(metadataHateoas, request, new Authorisation());
         return new ResponseEntity<>(metadataHateoas, HttpStatus.OK);
     }
 
