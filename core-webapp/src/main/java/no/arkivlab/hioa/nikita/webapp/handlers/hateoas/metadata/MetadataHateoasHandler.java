@@ -33,6 +33,13 @@ public class MetadataHateoasHandler extends HateoasHandler implements IMetadataH
     }
 
     @Override
+    public void addEntityLinksOnNew(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
+                NOARK_METADATA_PATH + SLASH + NEW + DASH + detectType(entity),
+                getRelSelfLink(), false));
+    }
+
+    @Override
     public void addCode(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_METADATA_PATH + SLASH + detectType(entity) + SLASH + entity.getSystemId() + SLASH,

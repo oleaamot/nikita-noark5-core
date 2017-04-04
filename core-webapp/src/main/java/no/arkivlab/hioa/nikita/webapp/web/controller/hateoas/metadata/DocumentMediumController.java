@@ -130,11 +130,13 @@ public class DocumentMediumController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.GET, value = NEW_DOCUMENT_MEDIUM)
-    public ResponseEntity<DocumentMedium> getDocumentMediumTemplate() {
+    public ResponseEntity<MetadataHateoas> getDocumentMediumTemplate(HttpServletRequest request) {
         DocumentMedium documentMedium = new DocumentMedium();
         documentMedium.setCode(TEMPLATE_DOCUMENT_MEDIUM_CODE);
         documentMedium.setDescription(TEMPLATE_DOCUMENT_MEDIUM_DESCRIPTION);
-        return new ResponseEntity<>(documentMedium, HttpStatus.OK);
+        MetadataHateoas metadataHateoas = new MetadataHateoas(documentMedium);
+        metadataHateoasHandler.addLinksOnNew(metadataHateoas, request, new Authorisation());
+        return new ResponseEntity<>(metadataHateoas, HttpStatus.OK);
     }
 
     // API - All PUT Requests (CRUD - UPDATE)
@@ -153,12 +155,12 @@ public class DocumentMediumController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.PUT, value = DOCUMENT_MEDIUM + SLASH + DOCUMENT_MEDIUM)
-    public ResponseEntity<DocumentMedium> updateDocumentMedium(@RequestBody DocumentMedium documentMedium,
-                                                               HttpServletRequest request)
+    public ResponseEntity<MetadataHateoas> updateDocumentMedium(@RequestBody DocumentMedium documentMedium,
+                                                                HttpServletRequest request)
             throws NikitaException {
         DocumentMedium newDocumentMedium = documentMediumService.update(documentMedium);
         MetadataHateoas metadataHateoas = new MetadataHateoas(documentMedium);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
-        return new ResponseEntity<>(newDocumentMedium, HttpStatus.OK);
+        return new ResponseEntity<>(metadataHateoas, HttpStatus.OK);
     }
 }
