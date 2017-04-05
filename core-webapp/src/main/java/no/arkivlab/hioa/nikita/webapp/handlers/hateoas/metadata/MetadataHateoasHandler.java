@@ -29,7 +29,6 @@ public class MetadataHateoasHandler extends HateoasHandler implements IMetadataH
     @Override
     public void addEntityLinks(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         addCode(entity, hateoasNoarkObject);
-        addNewCode(entity, hateoasNoarkObject);
     }
 
     @Override
