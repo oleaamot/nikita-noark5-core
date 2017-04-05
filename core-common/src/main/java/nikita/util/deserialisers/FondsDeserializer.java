@@ -59,7 +59,6 @@ public class FondsDeserializer extends JsonDeserializer implements ObligatoryPro
         CommonUtils.Hateoas.Deserialize.deserialiseNoarkEntity(fonds, objectNode);
         CommonUtils.Hateoas.Deserialize.deserialiseDocumentMedium(fonds, objectNode);
         CommonUtils.Hateoas.Deserialize.deserialiseStorageLocation(fonds, objectNode);
-        fonds.setReferenceFondsCreator(CommonUtils.Hateoas.Deserialize.deserialiseFondsCreators(objectNode));
 
         // Deserialize seriesStatus
         JsonNode currentNode = objectNode.get(FONDS_STATUS);
