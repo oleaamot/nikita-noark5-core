@@ -1,6 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
 import nikita.model.noark5.v4.Fonds;
+import nikita.model.noark5.v4.FondsCreator;
 import nikita.model.noark5.v4.Series;
 import nikita.repository.n5v4.IFondsRepository;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
@@ -10,7 +11,6 @@ import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundExcepti
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkInvalidStructureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -35,18 +35,23 @@ import static nikita.config.N5ResourceMappings.STATUS_OPEN;
 public class FondsService implements IFondsService {
 
     private static final Logger logger = LoggerFactory.getLogger(FondsService.class);
-
-    @Autowired
-    IFondsRepository fondsRepository;
-
-    @Autowired
-    SeriesService seriesService;
-
-    @Autowired
-    EntityManager entityManager;
-
+    // TODO: Trying to pick up property from yaml file, but not working ...
     //@Value("${nikita-noark5-core.pagination.maxPageSize}")
     Integer maxPageSize = new Integer(10);
+    private IFondsRepository fondsRepository;
+    private SeriesService seriesService;
+    private FondsCreatorService fondsCreatorService;
+    private EntityManager entityManager;
+
+    public FondsService(IFondsRepository fondsRepository,
+                        SeriesService seriesService,
+                        FondsCreatorService fondsCreatorService,
+                        EntityManager entityManager) {
+        this.fondsRepository = fondsRepository;
+        this.seriesService = seriesService;
+        this.fondsCreatorService = fondsCreatorService;
+        this.entityManager = entityManager;
+    }
 
     @Override
     public Fonds handleUpdate(String systemId, Long version, Fonds incomingFonds) {
@@ -155,6 +160,21 @@ public class FondsService implements IFondsService {
             persistedSeries = seriesService.save(series);
         }
         return persistedSeries;
+    }
+
+    public FondsCreator createFondsCreatorAssociatedWithFonds(String fondsSystemId, FondsCreator fondsCreator) {
+        Fonds fonds = fondsRepository.findBySystemId(fondsSystemId);
+
+        if (fonds == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " Fonds, using fondsSystemId " + fondsSystemId;
+            logger.info(info);
+            throw new NoarkEntityNotFoundException(info);
+        }
+
+        fondsCreatorService.createNewFondsCreator(fondsCreator);
+        fondsCreator.addFonds(fonds);
+        fonds.getReferenceFondsCreator().add(fondsCreator);
+        return fondsCreator;
     }
 
     // All READ operations

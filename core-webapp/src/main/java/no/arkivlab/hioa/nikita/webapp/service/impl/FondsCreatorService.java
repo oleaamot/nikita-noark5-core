@@ -1,11 +1,14 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
+import nikita.model.noark5.v4.Fonds;
 import nikita.model.noark5.v4.FondsCreator;
 import nikita.repository.n5v4.IFondsCreatorRepository;
+import nikita.repository.n5v4.IFondsRepository;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsCreatorService;
+import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,23 +20,30 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
+import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
+import static nikita.config.N5ResourceMappings.STATUS_OPEN;
+
 @Service
 @Transactional
 public class FondsCreatorService implements IFondsCreatorService {
 
     private static final Logger logger = LoggerFactory.getLogger(FondsCreatorService.class);
-
-    @Autowired
-    IFondsCreatorRepository fondsCreatorRepository;
-
-    @Autowired
-    SeriesService seriesService;
-
-    @Autowired
-    EntityManager entityManager;
-
     //@Value("${nikita-noark5-core.pagination.maxPageSize}")
     Integer maxPageSize = new Integer(10);
+    private IFondsCreatorRepository fondsCreatorRepository;
+    private IFondsRepository fondsRepository;
+    private SeriesService seriesService;
+    private EntityManager entityManager;
+
+    public FondsCreatorService(IFondsCreatorRepository fondsCreatorRepository,
+                               IFondsRepository fondsRepository,
+                               SeriesService seriesService,
+                               EntityManager entityManager) {
+        this.fondsCreatorRepository = fondsCreatorRepository;
+        this.fondsRepository = fondsRepository;
+        this.seriesService = seriesService;
+        this.entityManager = entityManager;
+    }
 
     // All CREATE operations
 
@@ -46,9 +56,33 @@ public class FondsCreatorService implements IFondsCreatorService {
      */
     @Override
     public FondsCreator createNewFondsCreator(FondsCreator fondsCreator) {
+        NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(fondsCreator);
+        NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(fondsCreator);
         return fondsCreatorRepository.save(fondsCreator);
     }
 
+    @Override
+    public Fonds createFondsAssociatedWithFondsCreator(String fondsCreatorSystemId, Fonds fonds) {
+        FondsCreator fondsCreator = getFondsCreator(fondsCreatorSystemId);
+        NoarkUtils.NoarkEntity.Create.checkDocumentMediumValid(fonds);
+        NoarkUtils.NoarkEntity.Create.setNoarkEntityValues(fonds);
+        fonds.setFondsStatus(STATUS_OPEN);
+        NoarkUtils.NoarkEntity.Create.setFinaliseEntityValues(fonds);
+        fonds.getReferenceFondsCreator().add(fondsCreator);
+        fondsCreator.getReferenceFonds().add(fonds);
+        fondsRepository.save(fonds);
+        return fonds;
+    }
+
+    protected FondsCreator getFondsCreator(String fondsCreatorSystemId) {
+        FondsCreator fondsCreator = fondsCreatorRepository.findBySystemId(fondsCreatorSystemId);
+        if (fondsCreator == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " FondsCreator, using systemId " + fondsCreatorSystemId;
+            logger.info(info);
+            throw new NoarkEntityNotFoundException(info);
+        }
+        return fondsCreator;
+    }
 
     // All READ operations
     @Override

@@ -110,6 +110,7 @@ public class Fonds implements INoarkGeneralEntity, IStorageLocation, IDocumentMe
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
+
     @Version
     @Column(name = "version")
     protected Long version;

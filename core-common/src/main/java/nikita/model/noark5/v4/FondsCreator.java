@@ -14,8 +14,8 @@ import java.util.Set;
 @Entity
 @Table(name = "fonds_creator")
 // Enable soft delete of Fonds
-@SQLDelete(sql="UPDATE fonds_creator SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+@SQLDelete(sql = "UPDATE fonds_creator SET deleted = true WHERE id = ?")
+@Where(clause = "deleted <> true")
 @JsonDeserialize(using = FondsCreatorDeserializer.class)
 public class FondsCreator implements IFondsCreatorEntity {
 
@@ -29,7 +29,7 @@ public class FondsCreator implements IFondsCreatorEntity {
     /**
      * M001 - systemID (xs:string)
      */
-    @Column(name = "system_id", unique=true)
+    @Column(name = "system_id", unique = true)
     @Audited
     protected String systemId;
 
@@ -141,6 +141,10 @@ public class FondsCreator implements IFondsCreatorEntity {
 
     public void setReferenceFonds(Set<Fonds> referenceFonds) {
         this.referenceFonds = referenceFonds;
+    }
+
+    public void addFonds(Fonds fonds) {
+        referenceFonds.add(fonds);
     }
 
     @Override

@@ -7,15 +7,20 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
+import nikita.model.noark5.v4.Fonds;
 import nikita.model.noark5.v4.FondsCreator;
 import nikita.model.noark5.v4.hateoas.FondsCreatorHateoas;
+import nikita.model.noark5.v4.hateoas.FondsHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsCreatorHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsCreatorService;
+import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,21 +41,27 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 public class FondsCreatorHateoasController {
 
     private IFondsCreatorService fondsCreatorService;
+    private IFondsService fondsService;
     private IFondsCreatorHateoasHandler fondsCreatorHateoasHandler;
+    private IFondsHateoasHandler fondsHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
 
     public FondsCreatorHateoasController(IFondsCreatorService fondsCreatorService,
+                                         IFondsService fondsService,
                                          IFondsCreatorHateoasHandler fondsCreatorHateoasHandler,
+                                         IFondsHateoasHandler fondsHateoasHandler,
                                          ApplicationEventPublisher applicationEventPublisher) {
         this.fondsCreatorService = fondsCreatorService;
+        this.fondsService = fondsService;
         this.fondsCreatorHateoasHandler = fondsCreatorHateoasHandler;
+        this.fondsHateoasHandler = fondsHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
     // API - All POST Requests (CRUD - CREATE)
 
     // Create a new FondsCreator
-    // POST [contextPath][api]/arkivstruktur/arkivskaper
+    // POST [contextPath][api]/arkivstruktur/ny-arkivskaper
     @ApiOperation(value = "Persists a FondsCreator object", notes = "Returns the newly" +
             " created FondsCreator object after it is persisted to the database", response = FondsCreatorHateoas.class)
     @ApiResponses(value = {
@@ -71,14 +82,52 @@ public class FondsCreatorHateoasController {
             @ApiParam(name = "FondsCreator",
                     value = "Incoming FondsCreator object",
                     required = true)
-            @RequestBody FondsCreator FondsCreator) throws NikitaException {
-        FondsCreator createdFondsCreator = fondsCreatorService.createNewFondsCreator(FondsCreator);
-        FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(createdFondsCreator);
+            @RequestBody FondsCreator fondsCreator) throws NikitaException {
+        fondsCreatorService.createNewFondsCreator(fondsCreator);
+        FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(fondsCreator);
         fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
-        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdFondsCreator));
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, fondsCreator));
         return ResponseEntity.status(HttpStatus.CREATED)
-                .eTag(createdFondsCreator.getVersion().toString())
+                .eTag(fondsCreator.getVersion().toString())
                 .body(fondsCreatorHateoas);
+    }
+
+    // Create a new fonds
+    // POST [contextPath][api]/arkivstruktur/arkivskaper/{systemID}/ny-arkiv
+    @ApiOperation(value = "Persists a new Fonds associated with a FondsCreator", notes = "Returns the newly" +
+            " created Fonds after it is associated with the Fonds and persisted to the database",
+            response = FondsCreatorHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Fonds " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = FondsHateoas.class),
+            @ApiResponse(code = 201, message = "Fonds " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = FondsHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.POST, value = FONDS_CREATOR + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
+            RIGHT_PARENTHESIS + SLASH + NEW_FONDS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    public ResponseEntity<FondsHateoas> createFondsAssociatedWithFondsCreator(
+            HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemId",
+                    value = "systemId of FondsCreator to associate the Fonds with.",
+                    required = true)
+            @PathVariable String systemID,
+            @ApiParam(name = "fonds",
+                    value = "Incoming fonds object",
+                    required = true)
+            @RequestBody Fonds fonds) throws NikitaException {
+
+        fondsCreatorService.createFondsAssociatedWithFondsCreator(systemID, fonds);
+        FondsHateoas fondsHateoas = new FondsHateoas(fonds);
+        fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, fonds));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(fonds.getVersion().toString())
+                .body(fondsHateoas);
     }
 
     // API - All GET Requests (CRUD - READ)

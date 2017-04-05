@@ -35,17 +35,34 @@ fi
 # Setup common curl options
 contentTypeForPost+=(--header "Content-Type:application/vnd.noark5-v4+json");
 curlOpts+=( -s --header "Accept:application/vnd.noark5-v4+json" --header Authorization:$authToken);
-curlPostOpts+=("${curlOpts[@]}" "${contentTypeForPost[@]}" -X POST -b /tmp/cookie.txt );
+curlPostOpts+=("${curlOpts[@]}" "${contentTypeForPost[@]}" -X POST );
 
 # Setup curl options for fonds
 curloptsCreateFonds+=("${curlPostOpts[@]}");
 curloptsCreateFonds+=( --data @"$curl_files_dir"fonds-data.json  'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/ny-arkiv' );
 
-curlPostOpts+=("${curlOpts[@]}" "${contentTypeForPost[@]}" -X POST );
 # Create a fonds object and capture the systemId
 systemIDCreatedFonds=$(curl "${curloptsCreateFonds[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created Fonds 1             ($systemIDCreatedFonds) \n";
 #echo  "${curloptsCreateFonds[@]}";
+
+# Setup curl options for fondsCreator from root
+curloptsCreateFondsCreatorFromRoot+=("${curlPostOpts[@]}");
+curloptsCreateFondsCreatorFromRoot+=( --data @"$curl_files_dir"fonds-creator-data.json  'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/ny-arkivskaper' );
+systemIDCreatedFondsCreator=$(curl "${curloptsCreateFondsCreatorFromRoot[@]}" | jq '.systemID' | sed 's/\"//g');
+printf "created FondsCreator 1(root)($systemIDCreatedFondsCreator) \n";
+
+# Setup curl options for fondsCreator from existing fonds
+curloptsCreateFondsCreator+=("${curlPostOpts[@]}");
+curloptsCreateFondsCreator+=( --data @"$curl_files_dir"fonds-creator-data.json  'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkiv/'$systemIDCreatedFonds'/ny-arkivskaper' );
+systemIDCreatedFondsCreator=$(curl "${curloptsCreateFondsCreator[@]}" | jq '.systemID' | sed 's/\"//g');
+printf "created FondsCreator 2(arkiv)($systemIDCreatedFondsCreator) \n";
+
+# Setup curl options for fonds from existing fondsCreator
+curloptsCreateFondsFromFondsCreator+=("${curlPostOpts[@]}");
+curloptsCreateFondsFromFondsCreator+=( --data @"$curl_files_dir"fonds-data.json  'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkivskaper/'$systemIDCreatedFondsCreator'/ny-arkiv' );
+systemIDCreatedFonds=$(curl "${curloptsCreateFondsFromFondsCreator[@]}" | jq '.systemID' | sed 's/\"//g');
+printf "created Fonds 2(arkivskaper)($systemIDCreatedFonds) \n";
 
 # Setup curl options for series
 curloptsCreateSeries+=("${curlPostOpts[@]}");
@@ -97,14 +114,13 @@ printf "created      DocumentObject      ($systemIDCreatedDocumentObject) associ
 # Setup curl options for uploading file associated with documentObject
 # Note /dev/null means this won't work on windows, probably want to pipe the output with >> or similar approach
 # For windows, just remove  -o /dev/null and ignore output on screen
-curlPostFileOpts+=( -s -S -X POST -b /tmp/cookie.txt   --header CONTENT-Length:21774 --header Content-Type:application/pdf -o /dev/null  --data-binary "@"$curl_files_dir"test_upload_document.pdf");
+curlPostFileOpts+=( -s  -X POST --header "Accept:application/vnd.noark5-v4+json" --header Authorization:$authToken --header CONTENT-Length:21774 --header Content-Type:application/pdf -o /dev/null  --data-binary "@"$curl_files_dir"test_upload_document.pdf");
 curloptsUploadFile+=("${curlPostFileOpts[@]}");
 curloptsUploadFile+=( -w "%{http_code}" 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/dokumentobjekt/'$systemIDCreatedDocumentObject'/referanseFil' )
 #echo "${curloptsUploadFile[@]} ";
 
 resultFileUpload=$(curl "${curloptsUploadFile[@]}");
 printf "uploaded file to DocumentObject  ($systemIDCreatedDocumentObject) Result $resultFileUpload\n";
-
 
 curlGetFileOpts+=( -s -S -X GET -b /tmp/cookie.txt  -o downloaded.pdf -w "%{http_code}");
 curloptsDownloadFile+=("${curlGetFileOpts[@]}");
@@ -136,6 +152,7 @@ curloptsCreateRegistryEntry+=( --data @"$curl_files_dir"registry-entry-data.json
 
 # Create registryEntry 1 associated with a caseFile 1 and capture systemId
 systemIDCreatedRegistryEntry=$(curl "${curloptsCreateRegistryEntry[@]}" | jq '.systemID' | sed 's/\"//g');
+#echo "${curloptsCreateRegistryEntry[@]}";
 printf "created    RegistryEntry 1     ($systemIDCreatedRegistryEntry) associated with ($systemIDCreatedCaseFile)\n";
 
 # Create documentDescription 1 associated with a caseFile 1 / registryEntry 1 and capture systemId

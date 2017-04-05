@@ -206,7 +206,7 @@ public class FondsHateoasController {
     @Timed
     @RequestMapping(method = RequestMethod.POST, value = FONDS + SLASH + LEFT_PARENTHESIS +
             "fondsSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_FONDS_CREATOR, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
-    public ResponseEntity<String> createFondsCreatorAssociatedWithFonds(
+    public ResponseEntity<FondsCreatorHateoas> createFondsCreatorAssociatedWithFonds(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fondsSystemId",
                     value = "systemId of fonds to associate the series with.",
@@ -217,11 +217,14 @@ public class FondsHateoasController {
                     required = true)
             @RequestBody FondsCreator fondsCreator)
             throws NikitaException {
-        //applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, fondsCreatorCreated));
-        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
-//        return ResponseEntity.status(HttpStatus.CREATED)
-//                .eTag(createdFonds.getVersion().toString())
-//                .body(fondsCreatorHateoas);
+        fondsService.createFondsCreatorAssociatedWithFonds(fondsSystemId, fondsCreator);
+        FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(fondsCreator);
+        fondsHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+        response.setHeader(ETAG, fondsCreator.getVersion().toString());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, fondsCreator));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(fondsCreator.getVersion().toString())
+                .body(fondsCreatorHateoas);
 
     }
 

@@ -2,6 +2,7 @@ package no.arkivlab.hioa.nikita.webapp.service.interfaces;
 
 
 import nikita.model.noark5.v4.Fonds;
+import nikita.model.noark5.v4.FondsCreator;
 import nikita.model.noark5.v4.Series;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,8 @@ public interface IFondsService  {
     Fonds createNewFonds(Fonds fonds);
     Series createSeriesAssociatedWithFonds(String fondsSystemId, Series series);
     Fonds createFondsAssociatedWithFonds(String parentFondsSystemId, Fonds childFonds);
+
+    FondsCreator createFondsCreatorAssociatedWithFonds(String fondsSystemId, FondsCreator fondsCreator);
 
     List<Fonds> findFondsByOwnerPaginated(Integer top, Integer skip);
 

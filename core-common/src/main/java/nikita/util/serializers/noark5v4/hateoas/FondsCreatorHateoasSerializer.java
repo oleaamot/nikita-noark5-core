@@ -33,6 +33,9 @@ public class FondsCreatorHateoasSerializer extends HateoasSerializer implements 
         FondsCreator fondsCreator = (FondsCreator) noarkSystemIdEntity;
 
         jgen.writeStartObject();
+        if (fondsCreator.getSystemId() != null) {
+            jgen.writeStringField(SYSTEM_ID, fondsCreator.getSystemId());
+        }
         if (fondsCreator.getFondsCreatorId() != null) {
             jgen.writeStringField(FONDS_CREATOR_ID, fondsCreator.getFondsCreatorId());
         }
