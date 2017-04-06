@@ -32,8 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
-import static nikita.config.N5ResourceMappings.FONDS_CREATOR;
-import static nikita.config.N5ResourceMappings.SYSTEM_ID;
+import static nikita.config.N5ResourceMappings.*;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH,
@@ -215,4 +214,34 @@ public class FondsCreatorHateoasController {
                 .eTag(createdFonds.getVersion().toString())
                 .body(fondsCreatorHateoas);
     }
+
+    // Create a suggested FondsCreator (like a template) object with default values (nothing persisted)
+    // GET [contextPath][api]/arkivstruktur/arkiv/{systemID}/ny-arkivskaper
+    // GET [contextPath][api]/arkivstruktur/ny-arkivskaper
+    @ApiOperation(value = "Suggests the contents of a new FondsCreator", notes = "Returns a pre-filled FondsCreator" +
+            " with values relevant for the logged-in user", response = FondsCreatorHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "FondsCreator " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = FondsCreatorHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.GET, value = {NEW_FONDS_CREATOR, FONDS + SLASH + LEFT_PARENTHESIS +
+            SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_FONDS_CREATOR})
+    public ResponseEntity<FondsCreatorHateoas> getFondsCreatorTemplate(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response
+    ) throws NikitaException {
+        FondsCreator suggestedFondsCreator = new FondsCreator();
+        // TODO: This should be replaced with configurable data based on whoever is logged in
+        //       Currently just returns the test values
+        suggestedFondsCreator.setFondsCreatorId("123456789");
+        suggestedFondsCreator.setDescription("Eksempel kommune");
+        suggestedFondsCreator.setFondsCreatorName("Eksempel kommune ligger i eksempel fylke nord for nord");
+        FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(suggestedFondsCreator);
+        fondsHateoasHandler.addLinksOnNew(fondsCreatorHateoas, request, new Authorisation());
+        return new ResponseEntity<>(fondsCreatorHateoas, HttpStatus.OK);
+    }
+
 }
