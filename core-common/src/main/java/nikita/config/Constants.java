@@ -149,6 +149,12 @@ public final class Constants {
     public static final String NOARK_METADATA_PATH = "metadata";
     public static final String NOARK_ADMINISTRATION_PATH = "administration";
     public static final String NOARK_CASE_HANDLING_PATH = "sakarkiv";
+    public static final String NOARK_LOGGING_PATH = "loggingogpsoring";
+
+    public static final String LOGIN_REL_PATH = "login";
+    public static final String LOGIN_PATH = "auth";
+    // Logging using JWT / RFC7519
+    public static final String LOGIN_JWT = "rfc7519";
 
     public static final String NOARK5_V4_CONTENT_TYPE_JSON = "application/vnd.noark5-v4+json";
     public static final String NOARK5_V4_CONTENT_TYPE_JSON_XML = "application/vnd.noark5-v4+xml";
