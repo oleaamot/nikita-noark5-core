@@ -31,7 +31,7 @@ import static nikita.config.N5ResourceMappings.CLASS;
 import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
-@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + CLASS + SLASH,
+@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + CLASS,
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 public class ClassHateoasController {
 
@@ -64,7 +64,7 @@ public class ClassHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "classificationSystemSystemId" +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "classificationSystemSystemId" +
             RIGHT_PARENTHESIS + SLASH + NEW_SUB_CLASS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<ClassHateoas> createClassAssociatedWithClassificationSystem(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -87,7 +87,7 @@ public class ClassHateoasController {
 
     // API - All GET Requests (CRUD - READ)
 
-    @RequestMapping(value = LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<ClassHateoas> findOne(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemId",

@@ -79,7 +79,7 @@ public class RecordHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
             SLASH + NEW_DOCUMENT_DESCRIPTION, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<DocumentDescriptionHateoas>
     createDocumentDescriptionAssociatedWithRecord(
@@ -124,8 +124,8 @@ public class RecordHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_DOCUMENT_OBJECT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS
+            + SLASH + NEW_DOCUMENT_OBJECT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> createDocumentObjectAssociatedWithRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "recordSystemId",
@@ -170,8 +170,8 @@ public class RecordHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_REFERENCE_SERIES, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS
+            + SLASH + NEW_REFERENCE_SERIES, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addReferenceSeriesToRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "recordSystemId",
@@ -209,8 +209,8 @@ public class RecordHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_CLASSIFIED, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS
+            + SLASH + NEW_CLASSIFIED, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addNewClassifiedToRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "recordSystemId",
@@ -247,8 +247,8 @@ public class RecordHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_DISPOSAL, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS
+            + SLASH + NEW_DISPOSAL, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addNewDisposalToRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "recordSystemId",
@@ -286,8 +286,8 @@ public class RecordHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_SCREENING, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS
+            + SLASH + NEW_SCREENING, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addNewScreeningToRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "recordSystemId",
@@ -325,8 +325,8 @@ public class RecordHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_DISPOSAL_UNDERTAKEN, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS
+            + SLASH + NEW_DISPOSAL_UNDERTAKEN, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addNewDisposalUndertakenToRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "recordSystemId",
@@ -364,8 +364,8 @@ public class RecordHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
-            SLASH + NEW_DELETION, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS
+            + SLASH + NEW_DELETION, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addNewDeletionToRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "recordSystemId",

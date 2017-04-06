@@ -44,7 +44,10 @@ public class CaseFileHateoasController {
     private IRegistryEntryHateoasHandler registryEntryHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
 
-    public CaseFileHateoasController(ICaseFileService caseFileService, ICaseFileHateoasHandler caseFileHateoasHandler, IRegistryEntryHateoasHandler registryEntryHateoasHandler, ApplicationEventPublisher applicationEventPublisher) {
+    public CaseFileHateoasController(ICaseFileService caseFileService,
+                                     ICaseFileHateoasHandler caseFileHateoasHandler,
+                                     IRegistryEntryHateoasHandler registryEntryHateoasHandler,
+                                     ApplicationEventPublisher applicationEventPublisher) {
         this.caseFileService = caseFileService;
         this.caseFileHateoasHandler = caseFileHateoasHandler;
         this.registryEntryHateoasHandler = registryEntryHateoasHandler;
@@ -68,8 +71,8 @@ public class CaseFileHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS + SLASH
-            + NEW_REGISTRY_ENTRY, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS
+            + SLASH + NEW_REGISTRY_ENTRY, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<RegistryEntryHateoas> createRegistryEntryAssociatedWithFile(
             @ApiParam(name = "fileSystemId",
                     value = "systemId of file to associate the record with",

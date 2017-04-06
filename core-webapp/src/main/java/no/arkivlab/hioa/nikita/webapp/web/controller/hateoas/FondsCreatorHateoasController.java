@@ -177,7 +177,7 @@ public class FondsCreatorHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.GET, value = FONDS_CREATOR + SLASH)
+    @RequestMapping(method = RequestMethod.GET, value = FONDS_CREATOR)
     public ResponseEntity<FondsCreatorHateoas> findAllFondsCreator(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,

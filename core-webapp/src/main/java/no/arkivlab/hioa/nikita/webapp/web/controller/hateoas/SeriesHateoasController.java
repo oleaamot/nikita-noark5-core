@@ -74,7 +74,7 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS +
             SLASH + NEW_FILE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<FileHateoas> createFileAssociatedWithSeries(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -113,7 +113,7 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS + SLASH
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS + SLASH
             + NEW_CASE_FILE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<CaseFileHateoas> createCaseFileAssociatedWithSeries(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -151,7 +151,7 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS +
             SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> createRecordAssociatedWithSeries(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -192,7 +192,7 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.PUT, value = LEFT_PARENTHESIS + "seriesPrecursorSystemId" +
+    @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + "seriesPrecursorSystemId" +
             RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_SUCCESSOR, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> associateSeriesWithSeriesPrecursor(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -234,7 +234,7 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.PUT, value = LEFT_PARENTHESIS + "seriesSuccessorSystemId" +
+    @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + "seriesSuccessorSystemId" +
             RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_PRECURSOR, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> associateSeriesWithSeriesSuccessor(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -274,7 +274,7 @@ public class SeriesHateoasController extends NikitaController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.PUT, value = LEFT_PARENTHESIS + "seriesSystemId" +
+    @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + "seriesSystemId" +
             RIGHT_PARENTHESIS + SLASH + NEW_CLASSIFICATION_SYSTEM, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> associateSeriesWithClassificationSystem(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,

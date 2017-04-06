@@ -72,7 +72,7 @@ public class RegistryEntryHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
             SLASH + NEW_DOCUMENT_DESCRIPTION, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<DocumentDescriptionHateoas> createDocumentDescriptionAssociatedWithRegistryEntry(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,

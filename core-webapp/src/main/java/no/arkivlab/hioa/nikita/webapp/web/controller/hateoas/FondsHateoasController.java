@@ -270,7 +270,7 @@ public class FondsHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
+    @RequestMapping(value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             NEW_SERIES, method = RequestMethod.GET)
     public ResponseEntity<SeriesHateoas> createDefaultSeries(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
@@ -380,7 +380,7 @@ public class FondsHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.GET, value = FONDS + SLASH)
+    @RequestMapping(method = RequestMethod.GET, value = FONDS)
     public ResponseEntity<FondsHateoas> findAllFonds(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,

@@ -69,7 +69,8 @@ public class ClassificationSystemHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = NEW_CLASSIFICATION_SYSTEM, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    @RequestMapping(method = RequestMethod.POST, value = NEW_CLASSIFICATION_SYSTEM,
+            consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<ClassificationSystemHateoas> createClassificationSystemAssociatedWithFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "classificationSystem",
@@ -159,7 +160,7 @@ public class ClassificationSystemHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = CLASSIFICATION_SYSTEM + SLASH, method = RequestMethod.GET)
+    @RequestMapping(value = CLASSIFICATION_SYSTEM, method = RequestMethod.GET)
     public ResponseEntity<ClassificationSystemHateoas> findAllClassificationSystem(
             HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,

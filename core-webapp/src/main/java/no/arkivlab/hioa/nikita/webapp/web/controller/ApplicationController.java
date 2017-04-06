@@ -56,14 +56,14 @@ public class ApplicationController {
     }
 
     @Counted
-    @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH, method = RequestMethod.GET)
+    @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH, method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<FondsStructureDetails> fondsStructure() {
         return new ResponseEntity<>(new FondsStructureDetails(), HttpStatus.OK);
     }
 
     @Counted
-    @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH + SLASH, method = RequestMethod.GET)
+    @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH, method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<FondsStructureDetails> caseHandling() {
         return new ResponseEntity<>(new FondsStructureDetails(), HttpStatus.OK);
@@ -99,21 +99,7 @@ public class ApplicationController {
         for (int i=0; i<officialConformityLevels.length; i++) {
             ConformityLevel conformityLevel = new ConformityLevel();
             String href = uri + SLASH + HATEOAS_API_PATH + SLASH + officialConformityLevels[i] + SLASH;
-            String rel = NOARK_CONFORMANCE_REL + officialConformityLevels[i] + SLASH;
-            conformityLevel.setHref(href);
-            conformityLevel.setRel(rel);
-            conformityLevelsList.add(conformityLevel);
-        }
-
-        // Here we add the addresses for services that the core supports that are not officially part of the standard
-        // interface descriptions like byggesak, masseimport may become standardised later, but unofficial interfaces
-        // can be listed here
-        String[] nonOfficialConformityLevels = env.getProperty("nikita-noark5-core.details.conformity-levels.non-official", String[].class);
-
-        for (int i=0; i<nonOfficialConformityLevels.length; i++) {
-            ConformityLevel conformityLevel = new ConformityLevel();
-            String href = uri + SLASH + nonOfficialConformityLevels[i] + SLASH;
-            String rel = NIKITA_CONFORMANCE_REL + nonOfficialConformityLevels[i] + SLASH;
+            String rel = NOARK_CONFORMANCE_REL + officialConformityLevels[i];
             conformityLevel.setHref(href);
             conformityLevel.setRel(rel);
             conformityLevelsList.add(conformityLevel);

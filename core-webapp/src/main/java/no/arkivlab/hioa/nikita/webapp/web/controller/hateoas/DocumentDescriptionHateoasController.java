@@ -71,7 +71,7 @@ public class DocumentDescriptionHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "documentDescriptionSystemId" +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "documentDescriptionSystemId" +
             RIGHT_PARENTHESIS + SLASH + NEW_DOCUMENT_OBJECT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<DocumentObjectHateoas>
     createDocumentObjectAssociatedWithDocumentDescription(
