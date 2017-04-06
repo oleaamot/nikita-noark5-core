@@ -5,10 +5,13 @@ import io.swagger.annotations.Api;
 import no.arkivlab.hioa.nikita.webapp.model.application.ApplicationDetails;
 import no.arkivlab.hioa.nikita.webapp.model.application.ConformityLevel;
 import no.arkivlab.hioa.nikita.webapp.model.application.FondsStructureDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static nikita.config.Constants.*;
@@ -29,6 +31,7 @@ import static nikita.config.Constants.*;
 @Api(value = "Application", description = "Links to where the various interfaces can be accessed from")
 public class ApplicationController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ApplicationController.class);
     @Autowired
     Environment env;
 
@@ -42,16 +45,14 @@ public class ApplicationController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity <ApplicationDetails> identify() {
-
         ApplicationDetails applicationDetails;
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        try {
+        if (!username.equals("anonymousUser")) {
             applicationDetails = new ApplicationDetails(getConformityLevels());
+        } else {
+            applicationDetails = new ApplicationDetails(getLoginInformation());
         }
-        catch (Exception e) {
-            return new ResponseEntity <> (HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
         return new ResponseEntity <> (applicationDetails, HttpStatus.OK);
     }
 
@@ -70,41 +71,67 @@ public class ApplicationController {
     }
 
     /**
-     * reads the application-PROFILE.yml file and picks up the official conformity levels, but also any additional
-     * interfaces that the core supports (api/gui etc). Returns this as an List of ConformityObjects
+     * Creates a list of the supported supported login methods.
+     * These are: JWT
      *
      * @return
-     * @throws Exception if there is a problem reading the contents from the property yaml files
      */
 
-    protected List<ConformityLevel> getConformityLevels() throws Exception {
+    protected List<ConformityLevel> getLoginInformation() {
+        String uri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
+        ArrayList<ConformityLevel> loginInformation = new ArrayList(1);
+        ConformityLevel loginJWT = new ConformityLevel();
+        loginJWT.setHref(uri + SLASH + LOGIN_PATH);
+        loginJWT.setRel(NOARK_CONFORMANCE_REL + LOGIN_REL_PATH + SLASH + LOGIN_JWT + SLASH);
+        loginInformation.add(loginJWT);
+        return loginInformation;
+    }
+
+    /**
+     * Creates a list of the officially supported resource links.
+     * These are: arkivstruktur, sakarkiv, metadata, administrasjon and loggingogsporing
+     *
+     * @return
+     */
+
+    protected List<ConformityLevel> getConformityLevels() {
 
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
-        String[] officialConformityLevels = env.getProperty("nikita-noark5-core.details.conformity-levels.official", String[].class);
-        ArrayList <ConformityLevel> conformityLevelsList = new ArrayList<>();
-        // If we later have other conformity levels, you will need to include description values here
-        // this can be things like mass-import conformity or byggesakarkiv etc
-        // This should be the only place you have to add support for this.
-        // The namespaces may change, which means we might have to rebuild the yaml files and how we build conformity
-        // descriptions. Currently the namespace is hardcoded in NOARK_CONFORMANCE_REL =
-        // "http://rel.kxml.no/noark5/v4/api/"; and the conformity description (e.g. sakarkiv) is added
+        ArrayList<ConformityLevel> conformityLevels = new ArrayList(5);
 
-        // Approach. Sort the list of conformity levels from the application-PROFILE.yaml file
-        // and make sure you have the order sorted in the correct order in code
-        Arrays.sort(officialConformityLevels);
-        if (!Arrays.equals(officialConformityLevels, new String[]{NOARK_FONDS_STRUCTURE_PATH, NOARK_CASE_HANDLING_PATH})) {
-            throw new Exception("Minimum number of conformance levels not supported.");
-        }
+        // ConformityLevel : arkivstruktur
+        ConformityLevel conformityLevelFondsStructure = new ConformityLevel();
+        conformityLevelFondsStructure.setHref(uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH);
+        conformityLevelFondsStructure.setRel(NOARK_CONFORMANCE_REL + NOARK_FONDS_STRUCTURE_PATH + SLASH);
+        conformityLevels.add(conformityLevelFondsStructure);
 
-        for (int i=0; i<officialConformityLevels.length; i++) {
-            ConformityLevel conformityLevel = new ConformityLevel();
-            String href = uri + SLASH + HATEOAS_API_PATH + SLASH + officialConformityLevels[i] + SLASH;
-            String rel = NOARK_CONFORMANCE_REL + officialConformityLevels[i];
-            conformityLevel.setHref(href);
-            conformityLevel.setRel(rel);
-            conformityLevelsList.add(conformityLevel);
-        }
+        // ConformityLevel : sakarkiv
+        ConformityLevel conformityLevelCaseHandling = new ConformityLevel();
+        conformityLevelCaseHandling.setHref(uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH);
+        conformityLevelCaseHandling.setRel(NOARK_CONFORMANCE_REL + NOARK_CASE_HANDLING_PATH + SLASH);
+        conformityLevels.add(conformityLevelCaseHandling);
 
-        return conformityLevelsList;
+        // ConformityLevel : metadata
+        ConformityLevel conformityLevelMetadata = new ConformityLevel();
+        conformityLevelMetadata.setHref(uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH);
+        conformityLevelMetadata.setRel(NOARK_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH);
+        conformityLevels.add(conformityLevelMetadata);
+
+        /*
+        // These will be added as the development progresses.
+        // They are not really specified properly in the interface standard.
+        // ConformityLevel : administrasjon
+        ConformityLevel conformityLevelAdministration = new ConformityLevel();
+        conformityLevelAdministration.setHref(uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_ADMINISTRATION_PATH);
+        conformityLevelAdministration.setRel(NOARK_CONFORMANCE_REL + NOARK_ADMINISTRATION_PATH + SLASH);
+        conformityLevels.add(conformityLevelAdministration);
+
+        // ConformityLevel : loggingogsporing
+        ConformityLevel conformityLevelLogging = new ConformityLevel();
+        conformityLevelLogging.setHref(uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_LOGGING_PATH);
+        conformityLevelLogging.setRel(NOARK_CONFORMANCE_REL + NOARK_LOGGING_PATH + SLASH);
+        conformityLevels.add(conformityLevelLogging);
+        */
+        return conformityLevels;
     }
 }

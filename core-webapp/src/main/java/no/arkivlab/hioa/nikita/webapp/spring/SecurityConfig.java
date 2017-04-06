@@ -69,7 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/**").permitAll()
                 // GET [api]/metadata/**, public to read basic structure
                 .antMatchers(HttpMethod.GET, PATTERN_METADATA_PATH).permitAll()
-                .antMatchers("/").permitAll() // allow access to conformity details
+                // Allow people to see the root of application
+                .antMatchers(HttpMethod.GET, "/").permitAll()
                 // The following will like be removed soon ...
                 .antMatchers("/signup", "/user/register", "/webapp/login/**").permitAll()
                 // The metrics configuration is visible to all
@@ -92,7 +93,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // allow anonymous resource requests
                 .antMatchers(
                         HttpMethod.GET,
-                        "/",
                         "/*.html",
                         "/favicon.ico",
                         "/**/*.html",
