@@ -115,7 +115,7 @@ public class ApplicationController {
         // ConformityLevel : metadata
         ConformityLevel conformityLevelMetadata = new ConformityLevel();
         conformityLevelMetadata.setHref(uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH);
-        conformityLevelMetadata.setRel(NOARK_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH);
+        conformityLevelMetadata.setRel(NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH);
         conformityLevels.add(conformityLevelMetadata);
 
         /*
