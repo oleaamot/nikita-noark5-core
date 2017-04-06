@@ -425,7 +425,8 @@ public class FondsHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.GET, value = NEW_FONDS)
+    @RequestMapping(method = RequestMethod.GET, value = {NEW_FONDS, FONDS_CREATOR + SLASH + LEFT_PARENTHESIS +
+            SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_FONDS})
     public ResponseEntity<FondsHateoas> getFondsTemplate(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response
     ) throws NikitaException {
