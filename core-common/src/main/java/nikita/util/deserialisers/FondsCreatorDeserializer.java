@@ -78,6 +78,16 @@ public class FondsCreatorDeserializer extends JsonDeserializer implements Obliga
      *
      * FondsCreator is not a INoarkGeneralEntity
      */
-    public void checkForObligatoryFondsCreatorValues(FondsCreator fondsCreator) {}
+    public void checkForObligatoryFondsCreatorValues(FondsCreator fondsCreator) {
+
+        if (fondsCreator.getFondsCreatorId() == null) {
+            throw new NikitaMalformedInputDataException("The arkivskaper you tried to create is malformed. The "
+                    + "arkivskaperID field is mandatory, and you have submitted an empty value.");
+        }
+        if (fondsCreator.getFondsCreatorName() == null) {
+            throw new NikitaMalformedInputDataException("The arkivskaper you tried to create is malformed. The "
+                    + "arkivskaperNavn field is mandatory, and you have submitted an empty value.");
+        }
+    }
 
 }
