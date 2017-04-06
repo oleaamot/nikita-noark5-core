@@ -2,9 +2,7 @@ package no.arkivlab.hioa.nikita.webapp.web.controller;
 
 import com.codahale.metrics.annotation.Counted;
 import io.swagger.annotations.Api;
-import no.arkivlab.hioa.nikita.webapp.model.application.ApplicationDetails;
-import no.arkivlab.hioa.nikita.webapp.model.application.ConformityLevel;
-import no.arkivlab.hioa.nikita.webapp.model.application.FondsStructureDetails;
+import no.arkivlab.hioa.nikita.webapp.model.application.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -60,10 +58,17 @@ public class ApplicationController {
     }
 
     @Counted
+    @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH, method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<MetadataDetails> metadataPath() {
+        return new ResponseEntity<>(new MetadataDetails(), HttpStatus.OK);
+    }
+
+    @Counted
     @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH, method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<FondsStructureDetails> caseHandling() {
-        return new ResponseEntity<>(new FondsStructureDetails(), HttpStatus.OK);
+    public ResponseEntity<CaseHandlingDetails> caseHandling() {
+        return new ResponseEntity<>(new CaseHandlingDetails(), HttpStatus.OK);
     }
 
     /**
