@@ -7,8 +7,6 @@ import no.arkivlab.hioa.nikita.webapp.model.application.ConformityLevel;
 import no.arkivlab.hioa.nikita.webapp.model.application.FondsStructureDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,8 +30,6 @@ import static nikita.config.Constants.*;
 public class ApplicationController {
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationController.class);
-    @Autowired
-    Environment env;
 
     /**
      * identify the interfaces the core supports
