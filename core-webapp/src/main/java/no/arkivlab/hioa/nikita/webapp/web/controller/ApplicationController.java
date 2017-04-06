@@ -78,7 +78,7 @@ public class ApplicationController {
         ArrayList<ConformityLevel> loginInformation = new ArrayList(1);
         ConformityLevel loginJWT = new ConformityLevel();
         loginJWT.setHref(uri + SLASH + LOGIN_PATH);
-        loginJWT.setRel(NOARK_CONFORMANCE_REL + LOGIN_REL_PATH + SLASH + LOGIN_JWT + SLASH);
+        loginJWT.setRel(NIKITA_CONFORMANCE_REL + LOGIN_REL_PATH + SLASH + LOGIN_JWT + SLASH);
         loginInformation.add(loginJWT);
         return loginInformation;
     }
