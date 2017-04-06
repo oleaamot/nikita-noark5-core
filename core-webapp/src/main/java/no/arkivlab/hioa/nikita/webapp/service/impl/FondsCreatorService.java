@@ -4,6 +4,7 @@ import nikita.model.noark5.v4.Fonds;
 import nikita.model.noark5.v4.FondsCreator;
 import nikita.repository.n5v4.IFondsCreatorRepository;
 import nikita.repository.n5v4.IFondsRepository;
+import nikita.util.exceptions.NikitaMalformedInputDataException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsCreatorService;
 import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
@@ -18,6 +19,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
@@ -63,7 +65,7 @@ public class FondsCreatorService implements IFondsCreatorService {
 
     @Override
     public Fonds createFondsAssociatedWithFondsCreator(String fondsCreatorSystemId, Fonds fonds) {
-        FondsCreator fondsCreator = getFondsCreator(fondsCreatorSystemId);
+        FondsCreator fondsCreator = getFondsCreatorOrThrow(fondsCreatorSystemId);
         NoarkUtils.NoarkEntity.Create.checkDocumentMediumValid(fonds);
         NoarkUtils.NoarkEntity.Create.setNoarkEntityValues(fonds);
         fonds.setFondsStatus(STATUS_OPEN);
@@ -74,7 +76,15 @@ public class FondsCreatorService implements IFondsCreatorService {
         return fonds;
     }
 
-    protected FondsCreator getFondsCreator(String fondsCreatorSystemId) {
+    /**
+     * Internal helper method. Rather than having a find and try catch in multiple methods, we have it here once.
+     * If you call this, be aware that you will only ever get a valid FondsCreator back. If there is no valid
+     * FondsCreator, an exception is thrown
+     *
+     * @param fondsCreatorSystemId
+     * @return
+     */
+    protected FondsCreator getFondsCreatorOrThrow(String fondsCreatorSystemId) {
         FondsCreator fondsCreator = fondsCreatorRepository.findBySystemId(fondsCreatorSystemId);
         if (fondsCreator == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " FondsCreator, using systemId " + fondsCreatorSystemId;
@@ -107,6 +117,18 @@ public class FondsCreatorService implements IFondsCreatorService {
         typedQuery.setMaxResults(maxPageSize);
 
         return typedQuery.getResultList();
+    }
+
+    @Override
+    public FondsCreator updateFondsCreator(@NotNull FondsCreator fondsCreatorUpdate) {
+        if (fondsCreatorUpdate.getSystemId() != null) {
+            FondsCreator existingFondsCreator = getFondsCreatorOrThrow(fondsCreatorUpdate.getSystemId());
+            existingFondsCreator.setDescription(fondsCreatorUpdate.getDescription());
+            existingFondsCreator.setFondsCreatorId(fondsCreatorUpdate.getFondsCreatorId());
+            existingFondsCreator.setFondsCreatorName(fondsCreatorUpdate.getFondsCreatorName());
+            return existingFondsCreator;
+        }
+        throw new NikitaMalformedInputDataException("Attempt to update arkivskaper, but systemID is missing");
     }
 
     @Override

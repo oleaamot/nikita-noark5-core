@@ -25,6 +25,10 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
      */
     private List<INoarkSystemIdEntity> entityList = new ArrayList<>();
 
+    // Just testing this out
+    private Iterable<INoarkSystemIdEntity> selfLinksItr;
+
+
     /**
      * A Map of noark entities -> Hateoas links e.g fonds with links
      */
@@ -35,7 +39,6 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
      * 1 because currently we're only adding self link, a List because this might change
      */
     private List<Link> selfLinks = new ArrayList<>(1);
-
     /**
      * Whether or not the Hateaos object contains a single entity or a list of entities. For simplicity a list is
      * used even if the query generated a single result. Makes coding other places easier
@@ -50,6 +53,12 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
         this.entityList.addAll(entityList);
         singleEntity = false;
     }
+
+    public HateoasNoarkObject(Iterable<INoarkSystemIdEntity> selfLinksItr) {
+        this.selfLinksItr = selfLinksItr;
+        singleEntity = false;
+    }
+
 
     @Override
     public List<Link> getLinks(INoarkSystemIdEntity entity) {

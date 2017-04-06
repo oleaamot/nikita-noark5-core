@@ -120,7 +120,6 @@ public class FondsCreatorHateoasController {
                     value = "Incoming fonds object",
                     required = true)
             @RequestBody Fonds fonds) throws NikitaException {
-
         fondsCreatorService.createFondsAssociatedWithFondsCreator(systemID, fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(fonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
@@ -144,9 +143,8 @@ public class FondsCreatorHateoasController {
     @Timed
     @RequestMapping(value = FONDS_CREATOR + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.GET, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
-    public ResponseEntity<FondsCreatorHateoas> findOne(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "systemId",
+    public ResponseEntity<FondsCreatorHateoas> findOne(HttpServletRequest request,
+                                                       @ApiParam(name = "systemId",
                     value = "systemId of FondsCreator to retrieve.",
                     required = true)
             @PathVariable("systemID") final String fondsCreatorSystemId) {
@@ -204,25 +202,17 @@ public class FondsCreatorHateoasController {
     @Timed
     @RequestMapping(value = FONDS_CREATOR + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.PUT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
-    public ResponseEntity<String> updateFondsCreator(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "systemId",
-                    value = "systemId of FondsCreator to retrieve.",
+    public ResponseEntity<FondsCreatorHateoas> updateFondsCreator(HttpServletRequest request,
+                                                                  @ApiParam(name = "fondsCreator",
+                                                                          value = "Incoming fondsCreator object",
                     required = true)
-            @PathVariable("systemID") final String FondsCreatorSystemId) {
-        /*
-        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, ));
-        FondsCreator FondsCreator = fondsCreatorService.findBySystemId(FondsCreatorSystemId);
-        if (FondsCreator == null) {
-            throw new NoarkEntityNotFoundException("Could not find FondsCreator object with systemID " + FondsCreatorSystemId);
-        }
-        FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(FondsCreator);
+                                                                  @RequestBody FondsCreator fondsCreator) {
+        FondsCreator createdFonds = fondsCreatorService.updateFondsCreator(fondsCreator);
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, createdFonds));
+        FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(createdFonds);
         fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
-                return ResponseEntity.status(HttpStatus.OK)
-                .eTag(fondsCreator.getVersion().toString())
+        return ResponseEntity.status(HttpStatus.OK)
+                .eTag(createdFonds.getVersion().toString())
                 .body(fondsCreatorHateoas);
-
-        */
-        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 }
