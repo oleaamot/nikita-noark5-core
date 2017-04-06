@@ -17,7 +17,7 @@ public class MetadataDetails extends APIDetails {
         // Add support for dokumentmedium
         aPIDetails.add(new APIDetail(
                 uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH + DOCUMENT_MEDIUM,
-                NOARK_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH + DOCUMENT_MEDIUM + SLASH,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH + DOCUMENT_MEDIUM + SLASH,
                 true
         ));
 
