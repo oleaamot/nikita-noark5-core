@@ -98,7 +98,7 @@ public class HateoasHandler implements IHateoasHandler {
     @Override
     public void addDocumentMedium(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH
-                + SLASH + DOCUMENT_MEDIUM + SLASH, REL_METADATA_DOCUMENT_MEDIUM, false));
+                + SLASH + DOCUMENT_MEDIUM, REL_METADATA_DOCUMENT_MEDIUM, false));
     }
 
     // Sub class should handle this, empty links otherwise!
