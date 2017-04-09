@@ -133,6 +133,13 @@ public class ApplicationController {
         conformityLevelLogging.setRel(NOARK_CONFORMANCE_REL + NOARK_LOGGING_PATH + SLASH);
         conformityLevels.add(conformityLevelLogging);
         */
+
+        /* Show login relation to allow user change also when logged in. */
+        ConformityLevel loginJWT = new ConformityLevel();
+        loginJWT.setHref(uri + SLASH + LOGIN_PATH);
+        loginJWT.setRel(NIKITA_CONFORMANCE_REL + LOGIN_REL_PATH + SLASH + LOGIN_JWT + SLASH);
+        conformityLevels.add(loginJWT);
+
         return conformityLevels;
     }
 }
