@@ -15,6 +15,7 @@ import nikita.model.noark5.v4.hateoas.FondsHateoas;
 import nikita.model.noark5.v4.hateoas.SeriesHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsCreatorHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ISeriesHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
@@ -54,6 +55,7 @@ public class FondsHateoasController {
     private IFondsService fondsService;
     private ISeriesService seriesService;
     private IFondsHateoasHandler fondsHateoasHandler;
+    private IFondsCreatorHateoasHandler fondsCreatorHateoasHandler;
     private ISeriesHateoasHandler seriesHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
 
@@ -61,17 +63,19 @@ public class FondsHateoasController {
                                   IFondsService fondsService,
                                   ISeriesService seriesService,
                                   IFondsHateoasHandler fondsHateoasHandler,
+                                  IFondsCreatorHateoasHandler fondsCreatorHateoasHandler,
                                   ISeriesHateoasHandler seriesHateoasHandler,
                                   ApplicationEventPublisher applicationEventPublisher) {
         this.entityManager = entityManager;
         this.fondsService = fondsService;
         this.seriesService = seriesService;
         this.fondsHateoasHandler = fondsHateoasHandler;
+        this.fondsCreatorHateoasHandler = fondsCreatorHateoasHandler;
         this.seriesHateoasHandler = seriesHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    // API - All POST Requests (CRUD - CREATE)
+// API - All POST Requests (CRUD - CREATE)
 
     // Create a Fonds
     // POST [contextPath][api]/arkivstruktur/arkiv
@@ -219,7 +223,7 @@ public class FondsHateoasController {
             throws NikitaException {
         fondsService.createFondsCreatorAssociatedWithFonds(fondsSystemId, fondsCreator);
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(fondsCreator);
-        fondsHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
         response.setHeader(ETAG, fondsCreator.getVersion().toString());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, fondsCreator));
         return ResponseEntity.status(HttpStatus.CREATED)
