@@ -84,7 +84,7 @@ public class ApplicationController {
      * @return
      */
 
-    protected void addLoginInformation(ArrayList<ConformityLevel> conformityLevels) {
+    protected void addLoginInformation(List<ConformityLevel> conformityLevels) {
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
         ConformityLevel loginJWT = new ConformityLevel();
         loginJWT.setHref(uri + SLASH + LOGIN_PATH);
@@ -99,7 +99,7 @@ public class ApplicationController {
      * @return
      */
 
-    protected void addConformityLevels(ArrayList<ConformityLevel> conformityLevels) {
+    protected void addConformityLevels(List<ConformityLevel> conformityLevels) {
 
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
 
