@@ -69,7 +69,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/**").permitAll()
                 // GET [api]/metadata/**, public to read basic structure
                 .antMatchers(HttpMethod.GET, PATTERN_METADATA_PATH).permitAll()
-                // Allow people to see the root of application
+                // Allow OPTIONS command on root
+                .antMatchers(HttpMethod.OPTIONS, "/").permitAll()
+                // Allow GET on root of application
                 .antMatchers(HttpMethod.GET, "/").permitAll()
                 // The following will like be removed soon ...
                 .antMatchers("/signup", "/user/register", "/webapp/login/**").permitAll()
