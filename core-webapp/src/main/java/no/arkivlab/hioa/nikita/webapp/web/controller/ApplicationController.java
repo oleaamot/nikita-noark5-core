@@ -40,13 +40,19 @@ public class ApplicationController {
     @ResponseBody
     public ResponseEntity <ApplicationDetails> identify() {
         ApplicationDetails applicationDetails;
+        ArrayList<ConformityLevel> conformityLevels = new ArrayList(10);
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         if (!username.equals("anonymousUser")) {
-            applicationDetails = new ApplicationDetails(getConformityLevels());
-        } else {
-            applicationDetails = new ApplicationDetails(getLoginInformation());
+            addConformityLevels(conformityLevels);
         }
+
+        /* Show login relation also for logged in users to allow user
+         * change also when logged in.
+         */
+        addLoginInformation(conformityLevels);
+
+        applicationDetails = new ApplicationDetails(conformityLevels);
         return new ResponseEntity <> (applicationDetails, HttpStatus.OK);
     }
 
@@ -78,14 +84,12 @@ public class ApplicationController {
      * @return
      */
 
-    protected List<ConformityLevel> getLoginInformation() {
+    protected void addLoginInformation(List<ConformityLevel> conformityLevels) {
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
-        ArrayList<ConformityLevel> loginInformation = new ArrayList(1);
         ConformityLevel loginJWT = new ConformityLevel();
         loginJWT.setHref(uri + SLASH + LOGIN_PATH);
         loginJWT.setRel(NIKITA_CONFORMANCE_REL + LOGIN_REL_PATH + SLASH + LOGIN_JWT + SLASH);
-        loginInformation.add(loginJWT);
-        return loginInformation;
+        conformityLevels.add(loginJWT);
     }
 
     /**
@@ -95,10 +99,9 @@ public class ApplicationController {
      * @return
      */
 
-    protected List<ConformityLevel> getConformityLevels() {
+    protected void addConformityLevels(List<ConformityLevel> conformityLevels) {
 
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
-        ArrayList<ConformityLevel> conformityLevels = new ArrayList(5);
 
         // ConformityLevel : arkivstruktur
         ConformityLevel conformityLevelFondsStructure = new ConformityLevel();
@@ -133,13 +136,5 @@ public class ApplicationController {
         conformityLevelLogging.setRel(NOARK_CONFORMANCE_REL + NOARK_LOGGING_PATH + SLASH);
         conformityLevels.add(conformityLevelLogging);
         */
-
-        /* Show login relation to allow user change also when logged in. */
-        ConformityLevel loginJWT = new ConformityLevel();
-        loginJWT.setHref(uri + SLASH + LOGIN_PATH);
-        loginJWT.setRel(NIKITA_CONFORMANCE_REL + LOGIN_REL_PATH + SLASH + LOGIN_JWT + SLASH);
-        conformityLevels.add(loginJWT);
-
-        return conformityLevels;
     }
 }
