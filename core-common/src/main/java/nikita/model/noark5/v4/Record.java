@@ -19,6 +19,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.REGISTRATION;
+
 @Entity
 @Table(name = "record")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -195,6 +197,11 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return REGISTRATION;
     }
 
     public File getReferenceFile() {

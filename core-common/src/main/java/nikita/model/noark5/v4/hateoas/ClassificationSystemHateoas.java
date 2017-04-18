@@ -6,6 +6,8 @@ import nikita.util.serializers.noark5v4.hateoas.ClassificationSystemHateoasSeria
 
 import java.util.List;
 
+import static nikita.config.N5ResourceMappings.CLASSIFICATION_SYSTEM;
+
 @JsonSerialize(using = ClassificationSystemHateoasSerializer.class)
 public class ClassificationSystemHateoas extends HateoasNoarkObject implements IHateoasNoarkObject {
 
@@ -14,7 +16,6 @@ public class ClassificationSystemHateoas extends HateoasNoarkObject implements I
     }
 
     public ClassificationSystemHateoas(List<INoarkSystemIdEntity> entityList) {
-        super(entityList);
+        super(entityList, CLASSIFICATION_SYSTEM);
     }
-
 }

@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.FONDS;
+
 @Entity
 @Table(name = "fonds")
 // Enable soft delete of Fonds
@@ -248,6 +250,11 @@ public class Fonds implements INoarkGeneralEntity, IStorageLocation, IDocumentMe
             + "[" + version + "]");
         }
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return FONDS;
     }
 
     public Set<Series> getReferenceSeries() {

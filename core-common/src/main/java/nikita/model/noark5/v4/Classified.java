@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.CLASSIFIED;
+
 /**
  * Created by tsodring on 4/10/16.
  */
@@ -61,27 +63,35 @@ public class Classified implements INikitaEntity, INoarkSystemIdEntity, IClassif
     @Column(name = "classification_downgraded_by")
     @Audited
     protected String classificationDowngradedBy;
+
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
+
     @Version
     @Column(name = "version")
     protected Long version;
+
     // Links to Series
     @OneToMany(mappedBy = "referenceClassified")
     protected Set<Series> referenceSeries = new HashSet<Series>();
+
     // Links to Klass
     @OneToMany(mappedBy = "referenceClassified")
     protected Set<Class> referenceClass = new HashSet<Class>();
+
     // Links to File
     @OneToMany(mappedBy = "referenceClassified")
     protected Set<File> referenceFile = new HashSet<File>();
+
     // Links to Record
     @OneToMany(mappedBy = "referenceClassified")
     protected Set<Record> referenceRecord = new HashSet<Record>();
+
     // Links to DocumentDescription
     @OneToMany(mappedBy = "referenceClassified")
     protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
+
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
@@ -167,6 +177,11 @@ public class Classified implements INikitaEntity, INoarkSystemIdEntity, IClassif
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return CLASSIFIED;
     }
 
     public Set<Series> getReferenceSeries() {

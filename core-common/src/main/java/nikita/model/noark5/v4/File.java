@@ -16,6 +16,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.FILE;
+
 @Entity
 @Table(name = "file")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -286,6 +288,11 @@ public class File implements INoarkGeneralEntity, IDocumentMedium, IStorageLocat
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return FILE;
     }
 
     @Override

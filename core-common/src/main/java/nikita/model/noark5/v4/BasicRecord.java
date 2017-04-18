@@ -14,6 +14,8 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.BASIC_RECORD;
+
 @Entity
 @Table(name = "basic_record")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -65,49 +67,42 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
     @Audited
     @Field
     protected String documentMedium;
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    @Field
-    private Boolean deleted;
-
     @Column(name = "owned_by")
     @Audited
     @Field
     protected String ownedBy;
-
     // Link to StorageLocation
     @ManyToMany (cascade=CascadeType.ALL)
     @JoinTable(name = "basic_record_storage_location", joinColumns = @JoinColumn(name = "f_pk_basic_record_id",
             referencedColumnName = "pk_record_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
             referencedColumnName = "pk_storage_location_id"))
     protected Set<StorageLocation> referenceStorageLocation = new HashSet<StorageLocation>();
-
     // Links to Keywords
     @ManyToMany
     @JoinTable(name = "basic_record_keyword", joinColumns = @JoinColumn(name = "f_pk_record_id",
             referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_keyword_id", referencedColumnName = "pk_keyword_id"))
     protected Set<Keyword> referenceKeyword = new HashSet<Keyword>();
-
     // Links to Authors
     @ManyToMany
     @JoinTable(name = "basic_record_author", joinColumns = @JoinColumn(name = "f_pk_record_id",
             referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_author_id", referencedColumnName = "pk_author_id"))
     protected Set<Author> referenceAuthor = new HashSet<Author>();
-
     // Links to Comments
     @ManyToMany
     @JoinTable(name = "basic_record_comment", joinColumns = @JoinColumn(name = "f_pk_record_id",
             referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_comment_id", referencedColumnName = "pk_comment_id"))
     protected Set<Comment> referenceComment = new HashSet<Comment>();
-
     // Links to CrossReference
     @OneToMany(mappedBy = "referenceBasicRecord")
     protected Set<CrossReference> referenceCrossReference;
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    @Field
+    private Boolean deleted;
 
     public String getRecordId() {
         return recordId;
@@ -163,6 +158,11 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
 
     public void setOwnedBy(String ownedBy) {
         this.ownedBy = ownedBy;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return BASIC_RECORD;
     }
 
     @Override

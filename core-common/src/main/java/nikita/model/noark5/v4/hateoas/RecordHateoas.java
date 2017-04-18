@@ -6,6 +6,8 @@ import nikita.util.serializers.noark5v4.hateoas.RecordHateoasSerializer;
 
 import java.util.List;
 
+import static nikita.config.N5ResourceMappings.REGISTRATION;
+
 /**
  * Created by tsodring on 12/9/16.
  *
@@ -21,7 +23,7 @@ public class RecordHateoas extends HateoasNoarkObject implements IHateoasNoarkOb
     }
 
     public RecordHateoas(List<INoarkSystemIdEntity> entityList) {
-        super(entityList);
+        super(entityList, REGISTRATION);
     }
 
 }

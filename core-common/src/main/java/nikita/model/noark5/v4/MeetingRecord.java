@@ -7,6 +7,8 @@ import org.hibernate.envers.Audited;
 import javax.persistence.*;
 import java.io.Serializable;
 
+import static nikita.config.N5ResourceMappings.MEETING_RECORD;
+
 @Entity
 @Table(name = "meeting_record")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -51,16 +53,9 @@ public class MeetingRecord extends BasicRecord implements Serializable {
     @Column(name = "case_handler")
     @Audited
     protected String caseHandler;
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
-
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
-
     /**
      * M223 - referanseTilMoeteregistrering (xs:string)
      **/
@@ -68,13 +63,16 @@ public class MeetingRecord extends BasicRecord implements Serializable {
     // TODO: This should link to sysemId, not id!
     @OneToOne(fetch = FetchType.LAZY)
     protected MeetingRecord referenceToMeetingRegistration;
-
     /**
      * M224 - referanseFraMoeteregistrering (xs:string)
      **/
     // Link to "from" MeetingRegistration
     @OneToOne(fetch = FetchType.LAZY)
     protected MeetingRecord referenceFromMeetingRegistration;
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    private Boolean deleted;
 
     public String getMeetingRecordType() {
         return meetingRecordType;
@@ -130,6 +128,11 @@ public class MeetingRecord extends BasicRecord implements Serializable {
 
     public void setOwnedBy(String ownedBy) {
         this.ownedBy = ownedBy;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return MEETING_RECORD;
     }
 
     public MeetingRecord getReferenceToMeetingRegistration() {

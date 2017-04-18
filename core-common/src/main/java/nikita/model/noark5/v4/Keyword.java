@@ -1,5 +1,6 @@
 package nikita.model.noark5.v4;
 
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -9,12 +10,14 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.KEYWORD;
+
 @Entity
 @Table(name = "keyword")
 // Enable soft delete of Keyword
 @SQLDelete(sql="UPDATE keyword SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Keyword implements Serializable {
+public class Keyword implements Serializable, INoarkSystemIdEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -94,6 +97,11 @@ public class Keyword implements Serializable {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return KEYWORD;
     }
 
     public Set<Class> getReferenceClass() {

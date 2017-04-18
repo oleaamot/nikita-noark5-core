@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import static nikita.config.N5ResourceMappings.EVENT_TYPE;
+
 // Noark 5v4
 @Entity
 @Table(name = "event_type")
@@ -18,4 +20,9 @@ import javax.persistence.Table;
 @AttributeOverride(name = "id", column = @Column(name = "pk_event_type_id"))
 public class EventType extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public String getBaseTypeName() {
+        return EVENT_TYPE;
+    }
 }

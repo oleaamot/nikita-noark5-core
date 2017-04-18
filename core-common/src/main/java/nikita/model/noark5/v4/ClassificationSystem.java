@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.CLASSIFICATION_SYSTEM;
+
 @Entity
 @Table(name = "classification_system")
 // Enable soft delete of ClassificationSystem
@@ -205,6 +207,11 @@ public class ClassificationSystem implements INoarkGeneralEntity {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return CLASSIFICATION_SYSTEM;
     }
 
     public Set<Series> getReferenceSeries() {

@@ -1,6 +1,7 @@
 package nikita.model.noark5.v4;
 
 import nikita.model.noark5.v4.interfaces.entities.IDisposalUndertakenEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -10,12 +11,14 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.DISPOSAL_UNDERTAKEN;
+
 @Entity
 @Table(name = "disposal_undertaken")
 // Enable soft delete of DisposalUndertaken
 @SQLDelete(sql="UPDATE disposal_undertaken SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class DisposalUndertaken implements IDisposalUndertakenEntity {
+public class DisposalUndertaken implements IDisposalUndertakenEntity, INoarkSystemIdEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,6 +26,13 @@ public class DisposalUndertaken implements IDisposalUndertakenEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_disposal_undertaken_id", nullable = false, insertable = true, updatable = false)
     protected Long id;
+
+    /**
+     * M001 - systemID (xs:string)
+     */
+    @Column(name = "system_id", unique = true)
+    @Audited
+    protected String systemId;
 
     /** M631 - kassertAv (xs:string) */
     @Column(name = "disposal_by")
@@ -56,6 +66,14 @@ public class DisposalUndertaken implements IDisposalUndertakenEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
     }
 
     public String getDisposalBy() {
@@ -95,6 +113,11 @@ public class DisposalUndertaken implements IDisposalUndertakenEntity {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return DISPOSAL_UNDERTAKEN;
     }
 
     public Set<Series> getReferenceSeries() {

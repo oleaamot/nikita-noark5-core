@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART_TYPE;
+
 // Noark 5v4 SeriesStatus
 @Entity
 @Table(name = "correspondence_part_type")
@@ -18,4 +20,9 @@ import javax.persistence.Table;
 @AttributeOverride(name = "id", column = @Column(name = "pk_correspondence_part_type_id"))
 public class CorrespondencePartType extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public String getBaseTypeName() {
+        return CORRESPONDENCE_PART_TYPE;
+    }
 }

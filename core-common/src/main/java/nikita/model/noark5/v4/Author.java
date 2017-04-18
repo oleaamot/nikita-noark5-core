@@ -1,6 +1,7 @@
 package nikita.model.noark5.v4;
 
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -9,12 +10,14 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.AUTHOR;
+
 @Entity
 @Table(name = "author")
 // Enable soft delete of Author
 @SQLDelete(sql="UPDATE author SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Author implements INikitaEntity {
+public class Author implements INikitaEntity, INoarkSystemIdEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -102,6 +105,10 @@ public class Author implements INikitaEntity {
         this.id = id;
     }
 
+    @Override
+    public String getBaseTypeName() {
+        return AUTHOR;
+    }
     public Set<BasicRecord> getReferenceBasicRecord() {
         return referenceBasicRecord;
     }

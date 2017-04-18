@@ -17,6 +17,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.CASE_FILE;
+
 
 // TODO: You are missing M209 referanseSekundaerKlassifikasjon
 
@@ -103,18 +105,10 @@ public class CaseFile extends File implements Serializable, INikitaEntity, IPrec
     @Column(name = "loaned_to")
     @Audited
     protected String loanedTo;
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    @Field
-    private Boolean deleted;
-
     @Column(name = "owned_by")
     @Audited
     @Field
     protected String ownedBy;
-
     // Links to CaseParty
     @ManyToMany
     @JoinTable(name = "case_file_case_file_party",
@@ -124,7 +118,6 @@ public class CaseFile extends File implements Serializable, INikitaEntity, IPrec
                     referencedColumnName = "pk_case_party_id"))
 
     protected Set<CaseParty> referenceCaseParty = new HashSet<CaseParty>();
-
     // Links to Precedence
     @ManyToMany
     @JoinTable(name = "case_file_precedence",
@@ -134,6 +127,11 @@ public class CaseFile extends File implements Serializable, INikitaEntity, IPrec
                     referencedColumnName = "pk_precedence_id"))
 
     protected Set<Precedence> referencePrecedence = new HashSet<Precedence>();
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    @Field
+    private Boolean deleted;
 
     public Integer getCaseYear() {
         return caseYear;
@@ -221,6 +219,11 @@ public class CaseFile extends File implements Serializable, INikitaEntity, IPrec
 
     public void setOwnedBy(String ownedBy) {
         this.ownedBy = ownedBy;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return CASE_FILE;
     }
 
     public Set<CaseParty> getReferenceCaseParty() {

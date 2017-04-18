@@ -1,5 +1,6 @@
 package nikita.model.noark5.v4;
 
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.model.noark5.v4.interfaces.entities.IScreeningEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -10,12 +11,14 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.SCREENING;
+
 @Entity
 @Table(name = "screening")
 // Enable soft delete of Screening
 @SQLDelete(sql="UPDATE screening SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Screening implements IScreeningEntity {
+public class Screening implements IScreeningEntity, INoarkSystemIdEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,6 +26,13 @@ public class Screening implements IScreeningEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_screening_id", nullable = false, insertable = true, updatable = false)
     protected Long id;
+
+    /**
+     * M001 - systemID (xs:string)
+     */
+    @Column(name = "system_id", unique = true)
+    @Audited
+    protected String systemId;
 
     /**
      * M500 - tilgangsrestriksjon n4 (JP.TGKODE)
@@ -100,6 +110,14 @@ public class Screening implements IScreeningEntity {
         this.id = id;
     }
 
+    public String getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
+    }
+
     public String getAccessRestriction() {
         return accessRestriction;
     }
@@ -170,6 +188,11 @@ public class Screening implements IScreeningEntity {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return SCREENING;
     }
 
     public Set<Series> getReferenceSeries() {

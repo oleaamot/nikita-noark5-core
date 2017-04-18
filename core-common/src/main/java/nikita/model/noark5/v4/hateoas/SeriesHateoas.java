@@ -6,6 +6,8 @@ import nikita.util.serializers.noark5v4.hateoas.SeriesHateoasSerializer;
 
 import java.util.List;
 
+import static nikita.config.N5ResourceMappings.SERIES;
+
 @JsonSerialize(using = SeriesHateoasSerializer.class)
 public class SeriesHateoas extends HateoasNoarkObject implements IHateoasNoarkObject {
 
@@ -14,7 +16,6 @@ public class SeriesHateoas extends HateoasNoarkObject implements IHateoasNoarkOb
     }
 
     public SeriesHateoas(List<INoarkSystemIdEntity> entityList) {
-        super(entityList);
+        super(entityList, SERIES);
     }
-
 }

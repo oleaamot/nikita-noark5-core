@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.CLASS;
+
 @Entity
 @Table(name = "class")
 // Enable soft delete of Class
@@ -28,10 +30,12 @@ import java.util.Set;
 public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClassified, ICrossReference {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_class_id", nullable = false, insertable = true, updatable = false)
     protected Long id;
+
     /**
      * M001 - systemID (xs:string)
      */
@@ -39,6 +43,7 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Audited
     @Field
     protected String systemId;
+
     /**
      * M002 - klasseID (xs:string)
      */
@@ -46,6 +51,7 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Audited
     @Field
     protected String classId;
+
     /**
      * M020 - tittel (xs:string)
      */
@@ -53,6 +59,7 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Audited
     @Field
     protected String title;
+
     /**
      * M021 - beskrivelse (xs:string)
      */
@@ -60,6 +67,7 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Audited
     @Field
     protected String description;
+
     /**
      * M600 - opprettetDato (xs:dateTime)
      */
@@ -68,6 +76,7 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Audited
     @Field
     protected Date createdDate;
+
     /**
      * M601 - opprettetAv (xs:string)
      */
@@ -75,6 +84,7 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Audited
     @Field
     protected String createdBy;
+
     /**
      * M602 - avsluttetDato (xs:dateTime)
      */
@@ -83,6 +93,7 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Audited
     @Field
     protected Date finalisedDate;
+
     /**
      * M603 - avsluttetAv (xs:string)
      */
@@ -90,39 +101,49 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Audited
     @Field
     protected String finalisedBy;
+
     @Column(name = "owned_by")
     @Audited
     @Field
     protected String ownedBy;
+
     @Version
     @Column(name = "version")
     protected Long version;
+
     // Links to Keywords
     @ManyToMany
     @JoinTable(name = "class_keyword", joinColumns = @JoinColumn(name = "f_pk_class_id",
             referencedColumnName = "pk_class_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_keyword_id",
             referencedColumnName = "pk_keyword_id"))
     protected Set<Keyword> referenceKeyword = new HashSet<Keyword>();
+
     // Link to ClassificationSystem
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_classification_system_id", referencedColumnName = "pk_classification_system_id")
     protected ClassificationSystem referenceClassificationSystem;
+
     // Link to parent Class
     @ManyToOne(fetch = FetchType.LAZY)
     protected Class referenceParentClass;
+
     // Links to child Classes
     @OneToMany(mappedBy = "referenceParentClass")
     protected Set<Class> referenceChildClass = new HashSet<Class>();
+
     // Links to Files
     @OneToMany(mappedBy = "referenceClass")
     protected Set<File> referenceFile = new HashSet<File>();
+
     // Links to Records
     @OneToMany(mappedBy = "referenceClass")
     protected Set<Record> referenceRecord = new HashSet<Record>();
+
     // Links to Classified
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "class_classified_id", referencedColumnName = "pk_classified_id")
     protected Classified referenceClassified;
+
     // Link to Disposal
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "class_disposal_id", referencedColumnName = "pk_disposal_id")
@@ -237,6 +258,11 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return CLASS;
     }
 
     public Set<Keyword> getReferenceKeyword() {

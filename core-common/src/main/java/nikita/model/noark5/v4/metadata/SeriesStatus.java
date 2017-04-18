@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import static nikita.config.N5ResourceMappings.SERIES_STATUS;
+
 // Noark 5v4
 @Entity
 @Table(name = "series_status")
@@ -18,4 +20,9 @@ import javax.persistence.Table;
 @AttributeOverride(name = "id", column = @Column(name = "pk_series_status_id"))
 public class SeriesStatus extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public String getBaseTypeName() {
+        return SERIES_STATUS;
+    }
 }

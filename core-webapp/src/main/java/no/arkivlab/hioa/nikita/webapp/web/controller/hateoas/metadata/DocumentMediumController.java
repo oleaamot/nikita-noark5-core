@@ -83,7 +83,7 @@ public class DocumentMediumController {
     @RequestMapping(method = RequestMethod.GET, value = DOCUMENT_MEDIUM)
     public ResponseEntity<MetadataHateoas> findAll(HttpServletRequest request) {
         //ArrayList <DocumentMedium> documentMediumList = (ArrayList<DocumentMedium>) documentMediumService.findAll2();
-        MetadataHateoas metadataHateoas = new MetadataHateoas(new ArrayList<>(documentMediumService.findAll2()));
+        MetadataHateoas metadataHateoas = new MetadataHateoas(new ArrayList<>(documentMediumService.findAll2()), DOCUMENT_MEDIUM);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(metadataHateoas);

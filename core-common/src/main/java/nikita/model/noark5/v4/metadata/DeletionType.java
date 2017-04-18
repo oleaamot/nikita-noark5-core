@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import static nikita.config.N5ResourceMappings.DELETION_TYPE;
+
 // Noark 5v4 Slettingstype
 @Entity
 @Table(name = "deletion_type")
@@ -18,4 +20,9 @@ import javax.persistence.Table;
 @AttributeOverride(name = "id", column = @Column(name = "pk_deletion_type_id"))
 public class DeletionType extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public String getBaseTypeName() {
+        return DELETION_TYPE;
+    }
 }

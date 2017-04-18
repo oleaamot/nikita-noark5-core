@@ -11,6 +11,8 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.FONDS_CREATOR;
+
 @Entity
 @Table(name = "fonds_creator")
 // Enable soft delete of Fonds
@@ -133,6 +135,11 @@ public class FondsCreator implements IFondsCreatorEntity {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return FONDS_CREATOR;
     }
 
     public Set<Fonds> getReferenceFonds() {

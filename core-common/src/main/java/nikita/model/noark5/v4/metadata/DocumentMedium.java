@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import static nikita.config.N5ResourceMappings.DOCUMENT_MEDIUM;
+
 // Noark 5v4 dokumentmedium
 @Entity
 @Table(name = "document_medium")
@@ -18,4 +20,9 @@ import javax.persistence.Table;
 @AttributeOverride(name = "id", column = @Column(name = "pk_document_medium_id"))
 public class DocumentMedium extends MetadataSuperClass implements INoarkSystemIdEntity {
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public String getBaseTypeName() {
+        return DOCUMENT_MEDIUM;
+    }
 }

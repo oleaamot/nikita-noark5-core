@@ -3,7 +3,6 @@ package no.arkivlab.hioa.nikita.webapp.handlers.hateoas.metadata;
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
 import nikita.model.noark5.v4.hateoas.Link;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
-import nikita.util.CommonUtils;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.HateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.metadata.IMetadataHateoasHandler;
 import org.springframework.stereotype.Component;
@@ -22,7 +21,7 @@ public class MetadataHateoasHandler extends HateoasHandler implements IMetadataH
     public void addSelfLink(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         String systemId = entity.getSystemId();
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_METADATA_PATH + SLASH + detectType(entity) + SLASH + systemId + SLASH,
+                NOARK_METADATA_PATH + SLASH + entity.getBaseTypeName() + SLASH + systemId + SLASH,
                 getRelSelfLink(), false));
     }
 
@@ -34,18 +33,14 @@ public class MetadataHateoasHandler extends HateoasHandler implements IMetadataH
     @Override
     public void addCode(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_METADATA_PATH + SLASH + detectType(entity) + SLASH + entity.getSystemId() + SLASH,
-                REL_METADATA + detectType(entity) + SLASH, false));
+                NOARK_METADATA_PATH + SLASH + entity.getBaseTypeName() + SLASH + entity.getSystemId() + SLASH,
+                REL_METADATA + entity.getBaseTypeName() + SLASH, false));
     }
 
     @Override
     public void addNewCode(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_METADATA_PATH + SLASH + NEW + DASH + detectType(entity),
-                REL_METADATA + NEW + DASH + detectType(entity) + SLASH, false));
-    }
-
-    private String detectType(INoarkSystemIdEntity entity) {
-        return CommonUtils.Hateoas.getMetatdatEntityType(entity.getClass().getSimpleName());
+                NOARK_METADATA_PATH + SLASH + NEW + DASH + entity.getBaseTypeName(),
+                REL_METADATA + NEW + DASH + entity.getBaseTypeName() + SLASH, false));
     }
 }

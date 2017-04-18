@@ -6,6 +6,8 @@ import nikita.util.serializers.noark5v4.hateoas.DocumentObjectHateoasSerializer;
 
 import java.util.List;
 
+import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT;
+
 /**
  * Created by tsodring on 12/9/16.
  *
@@ -21,7 +23,6 @@ public class DocumentObjectHateoas extends HateoasNoarkObject implements IHateoa
     }
 
     public DocumentObjectHateoas(List<INoarkSystemIdEntity> entityList) {
-        super(entityList);
+        super(entityList, DOCUMENT_OBJECT);
     }
-
 }

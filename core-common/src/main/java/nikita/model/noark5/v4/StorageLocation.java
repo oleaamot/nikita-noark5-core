@@ -2,6 +2,7 @@ package nikita.model.noark5.v4;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.serializers.noark5v4.StorageLocationSerializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -12,13 +13,15 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.STORAGE_LOCATION;
+
 @Entity
 @Table(name = "storage_location")
 // Enable soft delete of IStorageLocation
 @SQLDelete(sql="UPDATE storage_location SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
 @JsonSerialize(using = StorageLocationSerializer.class)
-public class StorageLocation implements Serializable {
+public class StorageLocation implements Serializable, INoarkSystemIdEntity {
 
     private static final long serialVersionUID = 1L;
     /**
@@ -111,6 +114,11 @@ public class StorageLocation implements Serializable {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return STORAGE_LOCATION;
     }
 
     public Set<Series> getReferenceSeries() {

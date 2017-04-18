@@ -3,7 +3,6 @@ package no.arkivlab.hioa.nikita.webapp.handlers.hateoas;
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
 import nikita.model.noark5.v4.hateoas.Link;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
-import nikita.util.CommonUtils;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.IAuthorisation;
 import org.springframework.stereotype.Component;
@@ -90,8 +89,7 @@ public class HateoasHandler implements IHateoasHandler {
     public void addSelfLink(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         String systemId = entity.getSystemId();
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + getEntityType(hateoasNoarkObject.getClass().getName())
-                + SLASH + systemId + SLASH,
+                NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + systemId + SLASH,
                     getRelSelfLink(), false));
     }
 
@@ -133,10 +131,6 @@ public class HateoasHandler implements IHateoasHandler {
         this.contextServletPath = contextPath + servletPath + SLASH;
         this.servletPath += SLASH;
         this.contextPath += SLASH;
-    }
-
-    protected String getEntityType(String className) {
-        return CommonUtils.Hateoas.getEntityType(className);
     }
 }
 

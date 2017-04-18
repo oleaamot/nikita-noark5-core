@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import static nikita.config.N5ResourceMappings.CLASSIFIED_CODE;
+
 // Noark 5v4 graderingskode
 @Entity
 @Table(name = "classified_code")
@@ -18,4 +20,9 @@ import javax.persistence.Table;
 @AttributeOverride(name = "id", column = @Column(name = "pk_classified_code_id"))
 public class ClassifiedCode extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public String getBaseTypeName() {
+        return CLASSIFIED_CODE;
+    }
 }

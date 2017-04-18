@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import static nikita.config.N5ResourceMappings.MEETING_PARTICIPANT_FUNCTION;
+
 // Noark 5v4 Møtedeltakerfunksjon
 @Entity
 @Table(name = "meeting_participant_function")
@@ -18,4 +20,9 @@ import javax.persistence.Table;
 @AttributeOverride(name = "id", column = @Column(name = "pk_meeting_participant_function_id"))
 public class MeetingParticipantFunction extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public String getBaseTypeName() {
+        return MEETING_PARTICIPANT_FUNCTION;
+    }
 }

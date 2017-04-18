@@ -6,6 +6,8 @@ import nikita.util.serializers.noark5v4.hateoas.CaseFileHateoasSerializer;
 
 import java.util.List;
 
+import static nikita.config.N5ResourceMappings.CASE_FILE;
+
 /**
  * Created by tsodring on 12/9/16.
  *
@@ -21,7 +23,6 @@ public class CaseFileHateoas extends HateoasNoarkObject implements IHateoasNoark
     }
 
     public CaseFileHateoas(List<INoarkSystemIdEntity> entityList) {
-        super(entityList);
+        super(entityList, CASE_FILE);
     }
-
 }

@@ -6,6 +6,8 @@ import nikita.util.serializers.noark5v4.hateoas.BasicRecordHateoasSerializer;
 
 import java.util.List;
 
+import static nikita.config.N5ResourceMappings.BASIC_RECORD;
+
 /**
  * Created by tsodring on 12/9/16.
  *
@@ -18,7 +20,6 @@ public class BasicRecordHateoas extends HateoasNoarkObject implements IHateoasNo
     }
 
     public BasicRecordHateoas(List<INoarkSystemIdEntity> entityList) {
-        super(entityList);
+        super(entityList, BASIC_RECORD);
     }
-
 }

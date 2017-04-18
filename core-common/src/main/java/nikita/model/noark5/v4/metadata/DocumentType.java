@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import static nikita.config.N5ResourceMappings.DOCUMENT_TYPE;
+
 // Noark 5v4 dokumenttype
 @Entity
 @Table(name = "document_type")
@@ -18,4 +20,9 @@ import javax.persistence.Table;
 @AttributeOverride(name = "id", column = @Column(name = "pk_document_type_id"))
 public class DocumentType extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public String getBaseTypeName() {
+        return DOCUMENT_TYPE;
+    }
 }

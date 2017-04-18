@@ -6,6 +6,8 @@ import nikita.util.serializers.noark5v4.hateoas.FileHateoasSerializer;
 
 import java.util.List;
 
+import static nikita.config.N5ResourceMappings.FILE;
+
 /**
  * Created by tsodring on 12/9/16.
  *
@@ -21,7 +23,7 @@ public class FileHateoas extends HateoasNoarkObject implements IHateoasNoarkObje
     }
 
     public FileHateoas(List<INoarkSystemIdEntity> entityList) {
-        super(entityList);
+        super(entityList, FILE);
     }
 
 }

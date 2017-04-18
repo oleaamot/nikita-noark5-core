@@ -18,9 +18,8 @@ public class MetadataHateoas extends HateoasNoarkObject implements IHateoasNoark
         super(entity);
     }
 
-    public MetadataHateoas(List<INoarkSystemIdEntity> entityList) {
-        super(entityList);
+    public MetadataHateoas(List<INoarkSystemIdEntity> entityList, String entityType) {
+        super(entityList, entityType);
     }
-
 }
 

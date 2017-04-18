@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import static nikita.config.N5ResourceMappings.FONDS_STATUS;
+
 // Noark 5v4 arkivstatus
 @Entity
 @Table(name = "fonds_status")
@@ -19,4 +21,8 @@ import javax.persistence.Table;
 public class FondsStatus extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;
 
+    @Override
+    public String getBaseTypeName() {
+        return FONDS_STATUS;
+    }
 }

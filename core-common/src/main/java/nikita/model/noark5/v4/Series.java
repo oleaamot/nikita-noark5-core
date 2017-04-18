@@ -16,6 +16,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.SERIES;
+
 @Entity
 @Table(name = "series")
 // Enable soft delete of Series
@@ -300,6 +302,11 @@ public class Series implements INoarkGeneralEntity, IStorageLocation, IDocumentM
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return SERIES;
     }
 
     public Set<StorageLocation> getReferenceStorageLocation() {

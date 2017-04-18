@@ -1,6 +1,7 @@
 package nikita.model.noark5.v4;
 
 import nikita.model.noark5.v4.interfaces.entities.ICasePartyEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -8,6 +9,8 @@ import org.hibernate.envers.Audited;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+
+import static nikita.config.N5ResourceMappings.CASE_PARTY;
 
 /**
  * Created by tsodring on 4/10/16.
@@ -18,12 +21,19 @@ import java.util.Set;
 // Enable soft delete of CaseParty
 @SQLDelete(sql="UPDATE case_party SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class CaseParty implements ICasePartyEntity {
+public class CaseParty implements ICasePartyEntity, INoarkSystemIdEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_case_party_id", nullable = false, insertable = true, updatable = false)
     protected long id;
+
+    /**
+     * M001 - systemID (xs:string)
+     */
+    @Column(name = "system_id", unique = true)
+    @Audited
+    protected String systemId;
 
     /**
      * M010 - sakspartID (xs:string)
@@ -116,6 +126,14 @@ public class CaseParty implements ICasePartyEntity {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
     }
 
     public String getCasePartyId() {
@@ -220,6 +238,11 @@ public class CaseParty implements ICasePartyEntity {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return CASE_PARTY;
     }
 
     public Set<CaseFile> getReferenceCaseFile() {

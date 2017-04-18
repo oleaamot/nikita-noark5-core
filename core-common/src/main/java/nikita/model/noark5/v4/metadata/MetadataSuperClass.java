@@ -2,6 +2,7 @@ package nikita.model.noark5.v4.metadata;
 
 import nikita.model.noark5.v4.interfaces.entities.IMetadataEntity;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
+import nikita.util.exceptions.NikitaException;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -121,6 +122,15 @@ public class MetadataSuperClass implements INikitaEntity, IMetadataEntity {
     @Override
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    // This method should never be called. This exception can only occur if you add a new
+    // metadata entity and forget to override this method
+    public String getBaseTypeName() {
+        throw new NikitaException("MetadataSuperClass exception. Internal exception. " +
+                "This exception can only occur if a new metadata entity is introduced and you forgot to override " +
+                "getBaseTypeName. Check logfile to see what caused this");
     }
 
     @Override

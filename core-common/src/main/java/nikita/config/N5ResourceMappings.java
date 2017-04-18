@@ -11,6 +11,8 @@ public final class N5ResourceMappings {
     public static final String FILE = "mappe";
     public static final String CASE_FILE = "saksmappe";
     public static final String MEETING_FILE = "moetemappe";
+    public static final String MEETING_PARTICIPANT = "moetedeltager";
+    public static final String MEETING_RECORD = "moeteregistrering";
     public static final String REGISTRATION = "registrering";
     public static final String BASIC_RECORD = "basisregistrering";
     public static final String REGISTRY_ENTRY = "journalpost";
@@ -24,9 +26,19 @@ public final class N5ResourceMappings {
 
     public static final String CODE = "kode";
 
+    public static final String FILE_TYPE = "mappetype";
+    public static final String FLOW_STATUS = "flytstatus";
+    public static final String EVENT_TYPE = "hendelsetype";
+    public static final String COUNTRY = "land";
+    public static final String CLASSIFIED_CODE = "graderingskode";
+    public static final String CLASSIFICATION_TYPE = "klassifikasjonstype";
+    public static final String ASSOCIATED_WITH_RECORD_AS = "tilknyttetregistreringsom";
+    public static final String ACCESS_RESTRICTION = "tilgangsrestriksjon";
+    public static final String ACCESS_CATEGORY = "tilgangskategori";
+    public static final String ZIP = "postnummer";
+
     // For the sessions endpoint
     public static final String SESSIONS = "sessions";
-
 
     //Common to many entities column/attribute names
     public static final String TITLE = "tittel";
@@ -212,6 +224,12 @@ public final class N5ResourceMappings {
     public static final String ELECTRONIC_SIGNATURE_VERIFIED = "elektroniskSignaturVerifisert";
     public static final String ELECTRONIC_SIGNATURE_VERIFIED_DATE = "verifisertDato";
     public static final String ELECTRONIC_SIGNATURE_VERIFIED_BY = "verifisertAv";
+
+    // Meeting
+    public static final String MEETING_FILE_TYPE = "moetesakstype";
+    public static final String MEETING_PARTICIPANT_FUNCTION = "moetedeltakerfunksjon";
+    public static final String MEETING_REGISTRATION_STATUS = "moteregistreringsstatus";
+    public static final String MEETING_REGISTRATION_TYPE = "moeteregistreringstype";
 
     // FondsCreator
     public static final String FONDS_CREATOR = "arkivskaper";

@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import static nikita.config.N5ResourceMappings.CASE_PARTY_ROLE;
+
 // Noark 5v4 Sakspartrolle
 @Entity
 @Table(name = "case_party_role")
@@ -18,4 +20,9 @@ import javax.persistence.Table;
 @AttributeOverride(name = "id", column = @Column(name = "pk_case_party_role_id"))
 public class CasePartyRole extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public String getBaseTypeName() {
+        return CASE_PARTY_ROLE;
+    }
 }

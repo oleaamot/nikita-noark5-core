@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.MEETING_FILE;
+
 @Entity
 @Table(name = "meeting_file")
 // Enable soft delete of MeetingFile
@@ -46,23 +48,15 @@ public class MeetingFile extends File implements Serializable {
     @Column(name = "meeting_place")
     @Audited
     protected String meetingPlace;
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
-
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
-
     /**
      * M221 - referanseForrigeMoete (xs:string)
      **/
     // Link to next Meeting
     @OneToOne(fetch = FetchType.LAZY)
     protected MeetingFile referenceNextMeeting;
-
     /**
      * M222 - referanseNesteMoete (xs:string)
      **/
@@ -70,10 +64,13 @@ public class MeetingFile extends File implements Serializable {
     // TODO: This links to id, not systemId. Fix!
     @OneToOne(fetch = FetchType.LAZY)
     protected MeetingFile referencePreviousMeeting;
-
     // Links to MeetingParticipant
     @OneToMany(mappedBy = "referenceMeetingFile")
     protected Set<MeetingParticipant> referenceMeetingParticipant = new HashSet<MeetingParticipant>();
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    private Boolean deleted;
 
     public String getMeetingNumber() {
         return meetingNumber;
@@ -121,6 +118,11 @@ public class MeetingFile extends File implements Serializable {
 
     public void setOwnedBy(String ownedBy) {
         this.ownedBy = ownedBy;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return MEETING_FILE;
     }
 
     public MeetingFile getReferenceNextMeeting() {

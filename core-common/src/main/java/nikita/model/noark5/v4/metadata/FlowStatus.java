@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import static nikita.config.N5ResourceMappings.FLOW_STATUS;
+
 // Noark 5v4 Flytstatus
 @Entity
 @Table(name = "flow_status")
@@ -18,4 +20,9 @@ import javax.persistence.Table;
 @AttributeOverride(name = "id", column = @Column(name = "pk_flow_status_id"))
 public class FlowStatus extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public String getBaseTypeName() {
+        return FLOW_STATUS;
+    }
 }

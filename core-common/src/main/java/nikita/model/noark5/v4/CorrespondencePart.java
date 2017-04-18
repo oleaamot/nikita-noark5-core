@@ -1,6 +1,7 @@
 package nikita.model.noark5.v4;
 
 import nikita.model.noark5.v4.interfaces.entities.ICorrespondencePartEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -9,12 +10,14 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART;
+
 @Entity
 @Table(name = "correspondence_part")
 // Enable soft delete of CorrespondencePart
 @SQLDelete(sql="UPDATE correspondence_part SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class CorrespondencePart implements ICorrespondencePartEntity {
+public class CorrespondencePart implements ICorrespondencePartEntity, INoarkSystemIdEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,6 +25,14 @@ public class CorrespondencePart implements ICorrespondencePartEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_correspondence_part_id", nullable = false, insertable = true, updatable = false)
     protected Long id;
+
+    /**
+     * M001 - systemID (xs:string)
+     */
+    @Column(name = "system_id", unique = true)
+    @Audited
+    protected String systemId;
+
 
     /** M087 - korrespondanseparttype (xs:string) */
     @Column(name = "correspondence_part_type")
@@ -97,6 +108,14 @@ public class CorrespondencePart implements ICorrespondencePartEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
     }
 
     public String getCorrespondencePartType() {
@@ -209,6 +228,11 @@ public class CorrespondencePart implements ICorrespondencePartEntity {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return CORRESPONDENCE_PART;
     }
 
     public Set<RegistryEntry> getReferenceRegistryEntry() {

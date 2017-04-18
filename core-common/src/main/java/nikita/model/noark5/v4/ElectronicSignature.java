@@ -1,5 +1,6 @@
 package nikita.model.noark5.v4;
 
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -8,12 +9,14 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+import static nikita.config.N5ResourceMappings.ELECTRONIC_SIGNATURE;
+
 @Entity
 @Table(name = "electronic_signature")
 // Enable soft delete of ElectronicSignature
 @SQLDelete(sql="UPDATE electronic_signature SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class ElectronicSignature implements Serializable {
+public class ElectronicSignature implements Serializable, INoarkSystemIdEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,6 +24,13 @@ public class ElectronicSignature implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_electronic_signature_id", nullable = false, insertable = true, updatable = false)
     protected Long id;
+
+    /**
+     * M001 - systemID (xs:string)
+     */
+    @Column(name = "system_id", unique = true)
+    @Audited
+    protected String systemId;
 
     /**
      * M507 - elektroniskSignaturSikkerhetsnivaa (xs:string)
@@ -77,6 +87,14 @@ public class ElectronicSignature implements Serializable {
         this.id = id;
     }
 
+    public String getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
+    }
+
     public String getElectronicSignatureSecurityLevel() {
         return electronicSignatureSecurityLevel;
     }
@@ -131,6 +149,11 @@ public class ElectronicSignature implements Serializable {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return ELECTRONIC_SIGNATURE;
     }
 
     public RegistryEntry getReferenceRegistryEntry() {

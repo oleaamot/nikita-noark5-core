@@ -6,6 +6,8 @@ import nikita.util.serializers.noark5v4.hateoas.FondsCreatorHateoasSerializer;
 
 import java.util.List;
 
+import static nikita.config.N5ResourceMappings.FONDS_CREATOR;
+
 @JsonSerialize(using = FondsCreatorHateoasSerializer.class)
 public class FondsCreatorHateoas extends HateoasNoarkObject implements IHateoasNoarkObject {
 
@@ -14,7 +16,6 @@ public class FondsCreatorHateoas extends HateoasNoarkObject implements IHateoasN
     }
 
     public FondsCreatorHateoas(List<INoarkSystemIdEntity> entityList) {
-        super(entityList);
+        super(entityList, FONDS_CREATOR);
     }
-
 }

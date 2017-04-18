@@ -6,6 +6,8 @@ import nikita.util.serializers.noark5v4.hateoas.DocumentDescriptionHateoasSerial
 
 import java.util.List;
 
+import static nikita.config.N5ResourceMappings.DOCUMENT_DESCRIPTION;
+
 /**
  * Created by tsodring on 12/9/16.
  *
@@ -21,7 +23,6 @@ public class DocumentDescriptionHateoas extends HateoasNoarkObject implements IH
     }
 
     public DocumentDescriptionHateoas(List<INoarkSystemIdEntity> entityList) {
-        super(entityList);
+        super(entityList, DOCUMENT_DESCRIPTION);
     }
-
 }

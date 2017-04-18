@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import static nikita.config.N5ResourceMappings.SCREENING_DOCUMENT;
+
 // Noark 5v4 Skjermingdokument
 @Entity
 @Table(name = "screening_document")
@@ -18,4 +20,9 @@ import javax.persistence.Table;
 @AttributeOverride(name = "id", column = @Column(name = "pk_screening_document_id"))
 public class ScreeningDocument extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public String getBaseTypeName() {
+        return SCREENING_DOCUMENT;
+    }
 }

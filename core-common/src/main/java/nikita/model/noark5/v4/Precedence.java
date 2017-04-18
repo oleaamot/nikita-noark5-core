@@ -1,5 +1,6 @@
 package nikita.model.noark5.v4;
 
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.model.noark5.v4.interfaces.entities.IPrecedenceEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -10,12 +11,14 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.PRECEDENCE;
+
 @Entity
 @Table(name = "precedence")
 // Enable soft delete of Precedence
 @SQLDelete(sql="UPDATE precedence SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Precedence implements IPrecedenceEntity {
+public class Precedence implements IPrecedenceEntity, INoarkSystemIdEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,6 +26,13 @@ public class Precedence implements IPrecedenceEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_precedence_id", nullable = false, insertable = true, updatable = false)
     protected Long id;
+
+    /**
+     * M001 - systemID (xs:string)
+     */
+    @Column(name = "system_id", unique = true)
+    @Audited
+    protected String systemId;
 
     /**
      * M111 - presedensDato (xs:date)
@@ -130,6 +140,14 @@ public class Precedence implements IPrecedenceEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
     }
 
     public Date getPrecedenceDate() {
@@ -250,6 +268,11 @@ public class Precedence implements IPrecedenceEntity {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return PRECEDENCE;
     }
 
     public Set<RegistryEntry> getReferenceRegistryEntry() {

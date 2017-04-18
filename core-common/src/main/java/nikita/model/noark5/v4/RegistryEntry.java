@@ -14,6 +14,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
+
 @Entity
 @Table(name = "registry_entry")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -151,18 +153,10 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Audited
     @Field
     protected String recordsManagementUnit;
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    @Field
-    private Boolean deleted;
-
     @Column(name = "owned_by")
     @Audited
     @Field
     protected String ownedBy;
-
     // Links to CorrespondencePart
     @ManyToMany
     @JoinTable(name = "registry_entry_correspondence_part",
@@ -171,11 +165,9 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
             inverseJoinColumns = @JoinColumn(name = "f_pk_correspondence_part_id",
                     referencedColumnName = "pk_correspondence_part_id"))
     protected Set<CorrespondencePart> referenceCorrespondencePart = new HashSet<CorrespondencePart>();
-
     // Links to DocumentFlow
     @OneToMany(mappedBy = "referenceRegistryEntry")
     protected Set<DocumentFlow> referenceDocumentFlow = new HashSet<DocumentFlow>();
-
     // Links to SignOff
     @ManyToMany
     @JoinTable(name = "registry_entry_sign_off",
@@ -185,7 +177,6 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
                     referencedColumnName = "pk_sign_off_id"))
 
     protected Set<SignOff> referenceSignOff = new HashSet<SignOff>();
-
     // Links to Precedence
     @ManyToMany
     @JoinTable(name = "registry_entry_precedence",
@@ -194,10 +185,14 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
             inverseJoinColumns = @JoinColumn(name = "f_pk_precedence_id",
                     referencedColumnName = "pk_precedence_id"))
     protected Set<Precedence> referencePrecedence = new HashSet<Precedence>();
-
     @OneToOne
     @JoinColumn(name="pk_electronic_signature_id")
     protected ElectronicSignature referenceElectronicSignature;
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    @Field
+    private Boolean deleted;
 
     public Integer getRecordYear() {
         return recordYear;
@@ -333,6 +328,11 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
 
     public void setOwnedBy(String ownedBy) {
         this.ownedBy = ownedBy;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return REGISTRY_ENTRY;
     }
 
     @Override

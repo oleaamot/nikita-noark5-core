@@ -37,7 +37,7 @@ public class HateoasSerializer extends StdSerializer<HateoasNoarkObject> {
         if (list.size() > 0) {
             if (!hateoasObject.isSingleEntity()) {
                 jgen.writeStartObject();
-                jgen.writeFieldName(CommonUtils.Hateoas.getEntityType(hateoasObject));
+                jgen.writeFieldName(hateoasObject.getEntityType());
                 jgen.writeStartArray();
             }
             for (INoarkSystemIdEntity entity : list) {
@@ -52,13 +52,12 @@ public class HateoasSerializer extends StdSerializer<HateoasNoarkObject> {
         // It's an empty object, so just returning Hateoas self links
         else {
             jgen.writeStartObject();
-            jgen.writeFieldName(CommonUtils.Hateoas.getEntityType(hateoasObject));
+            jgen.writeFieldName(hateoasObject.getEntityType());
             jgen.writeStartArray();
             jgen.writeEndArray();
             CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, hateoasObject.getSelfLinks());
             jgen.writeEndObject();
         }
-
     }
 
     protected void serializeNoarkEntity(INoarkSystemIdEntity entity, HateoasNoarkObject hateoasObject,

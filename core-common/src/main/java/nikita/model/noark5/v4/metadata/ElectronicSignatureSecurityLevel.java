@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import static nikita.config.N5ResourceMappings.ELECTRONIC_SIGNATURE_SECURITY_LEVEL;
+
 // Noark 5v4
 @Entity
 @Table(name = "electronic_signature_security_level")
@@ -18,4 +20,9 @@ import javax.persistence.Table;
 @AttributeOverride(name = "id", column = @Column(name = "pk_electronic_signature_security_level_id"))
 public class ElectronicSignatureSecurityLevel extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public String getBaseTypeName() {
+        return ELECTRONIC_SIGNATURE_SECURITY_LEVEL;
+    }
 }

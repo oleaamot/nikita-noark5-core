@@ -6,6 +6,8 @@ import nikita.util.serializers.noark5v4.hateoas.FondsHateoasSerializer;
 
 import java.util.List;
 
+import static nikita.config.N5ResourceMappings.FONDS;
+
 /**
  * Calls super to handle the links etc., provides a way to automatically deserialiase a FondsHateoas object
  */
@@ -17,7 +19,6 @@ public class FondsHateoas extends HateoasNoarkObject implements IHateoasNoarkObj
     }
 
     public FondsHateoas(List<INoarkSystemIdEntity> entityList) {
-        super(entityList);
+        super(entityList, FONDS);
     }
-
 }

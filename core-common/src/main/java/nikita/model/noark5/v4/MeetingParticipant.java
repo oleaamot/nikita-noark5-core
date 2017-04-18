@@ -1,5 +1,6 @@
 package nikita.model.noark5.v4;
 
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -7,12 +8,14 @@ import org.hibernate.envers.Audited;
 import javax.persistence.*;
 import java.io.Serializable;
 
+import static nikita.config.N5ResourceMappings.MEETING_PARTICIPANT;
+
 @Entity
 @Table(name = "meeting_participant")
 // Enable soft delete of MeetingParticipant
 @SQLDelete(sql="UPDATE meeting_participant SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class MeetingParticipant implements Serializable {
+public class MeetingParticipant implements Serializable, INoarkSystemIdEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,6 +23,13 @@ public class MeetingParticipant implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_meeting_participant_id", nullable = false, insertable = true, updatable = false)
     protected Long id;
+
+    /**
+     * M001 - systemID (xs:string)
+     */
+    @Column(name = "system_id", unique = true)
+    @Audited
+    protected String systemId;
 
     /**
      * M372 - moetedeltakerNavn (xs:string)
@@ -55,6 +65,14 @@ public class MeetingParticipant implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
     }
 
     public String getMeetingParticipantName() {
@@ -95,6 +113,11 @@ public class MeetingParticipant implements Serializable {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return MEETING_PARTICIPANT;
     }
 
     public MeetingFile getReferenceMeetingFile() {

@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT;
+
 @Entity
 @Table(name = "document_object")
 // Enable soft delete of DocumentObject
@@ -169,12 +171,12 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
         return id;
     }
 
-    @Override
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public void setId(long id) {
+    @Override
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -304,6 +306,11 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return DOCUMENT_OBJECT;
     }
 
     public DocumentDescription getReferenceDocumentDescription() {

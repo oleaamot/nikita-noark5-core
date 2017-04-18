@@ -18,6 +18,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.List;
 
@@ -42,11 +43,8 @@ public class RegistryEntryService implements IRegistryEntryService {
         this.entityManager = entityManager;
     }
 
-    public RegistryEntryService() {
-    }
-
     @Override
-    public RegistryEntry save(RegistryEntry registryEntry) {
+    public RegistryEntry save(@NotNull RegistryEntry registryEntry) {
         NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(registryEntry);
         NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(registryEntry);
         NoarkUtils.NoarkEntity.Create.setCreateEntityValues(registryEntry);

@@ -1,6 +1,7 @@
 package nikita.model.noark5.v4;
 
 import nikita.model.noark5.v4.interfaces.entities.IDisposalEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -10,6 +11,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static nikita.config.N5ResourceMappings.DISPOSAL;
+
 /**
  * Created by tsodring on 4/10/16.
  */
@@ -18,7 +21,7 @@ import java.util.Set;
 // Enable soft delete of Disposal
 @SQLDelete(sql="UPDATE disposal SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Disposal implements IDisposalEntity {
+public class Disposal implements IDisposalEntity, INoarkSystemIdEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,6 +29,13 @@ public class Disposal implements IDisposalEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_disposal_id", nullable = false, insertable = true, updatable = false)
     protected Long id;
+
+    /**
+     * M001 - systemID (xs:string)
+     */
+    @Column(name = "system_id", unique = true)
+    @Audited
+    protected String systemId;
 
     /** M450 - kassasjonsvedtak (xs:string) */
     @Column(name = "disposal_decision")
@@ -78,6 +88,14 @@ public class Disposal implements IDisposalEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
     }
 
     public String getDisposalDecision() {
@@ -134,6 +152,11 @@ public class Disposal implements IDisposalEntity {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return DISPOSAL;
     }
 
     public Set<Series> getReferenceSeries() {

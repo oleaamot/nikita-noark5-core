@@ -1,18 +1,21 @@
 package nikita.model.noark5.v4;
 
 import nikita.model.noark5.v4.interfaces.entities.ICrossReferenceEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 
+import static nikita.config.N5ResourceMappings.CROSS_REFERENCE;
+
 @Entity
 @Table(name = "cross_reference")
 // Enable soft delete of CrossReference
 @SQLDelete(sql="UPDATE cross_reference SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class CrossReference implements ICrossReferenceEntity {
+public class CrossReference implements ICrossReferenceEntity, INoarkSystemIdEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,6 +23,14 @@ public class CrossReference implements ICrossReferenceEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_cross_reference_id", nullable = false, insertable = true, updatable = false)
     protected Long id;
+
+    /**
+     * M001 - systemID (xs:string)
+     */
+    @Column(name = "system_id", unique = true)
+    @Audited
+    protected String systemId;
+
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
@@ -66,6 +77,14 @@ public class CrossReference implements ICrossReferenceEntity {
         this.id = id;
     }
 
+    public String getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
+    }
+
     public Boolean getDeleted() {
         return deleted;
     }
@@ -88,6 +107,11 @@ public class CrossReference implements ICrossReferenceEntity {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return CROSS_REFERENCE;
     }
 
     @Override

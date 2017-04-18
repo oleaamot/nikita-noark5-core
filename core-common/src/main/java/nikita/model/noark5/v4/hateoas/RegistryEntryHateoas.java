@@ -6,6 +6,8 @@ import nikita.util.serializers.noark5v4.hateoas.RegistryEntryHateoasSerializer;
 
 import java.util.List;
 
+import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
+
 /**
  * Created by tsodring on 11/1/17.
  *
@@ -21,7 +23,7 @@ public class RegistryEntryHateoas extends HateoasNoarkObject implements IHateoas
     }
 
     public RegistryEntryHateoas(List<INoarkSystemIdEntity> entityList) {
-        super(entityList);
+        super(entityList, REGISTRY_ENTRY);
     }
 
 }

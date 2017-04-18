@@ -1,5 +1,6 @@
 package nikita.model.noark5.v4;
 
+import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -8,12 +9,14 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+import static nikita.config.N5ResourceMappings.DOCUMENT_FLOW;
+
 @Entity
 @Table(name = "documentflow")
 // Enable soft delete of DocumentFlow
 @SQLDelete(sql="UPDATE documentflow SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class DocumentFlow implements Serializable {
+public class DocumentFlow implements Serializable, INoarkSystemIdEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,6 +24,13 @@ public class DocumentFlow implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_flow_id", nullable = false, insertable = true, updatable = false)
     protected Long id;
+
+    /**
+     * M001 - systemID (xs:string)
+     */
+    @Column(name = "system_id", unique = true)
+    @Audited
+    protected String systemId;
 
     /**
      * M660 flytTil (xs:string)
@@ -84,6 +94,14 @@ public class DocumentFlow implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
     }
 
     public String getFlowTo() {
@@ -156,6 +174,11 @@ public class DocumentFlow implements Serializable {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String getBaseTypeName() {
+        return DOCUMENT_FLOW;
     }
 
     public RegistryEntry getReferenceRegistryEntry() {

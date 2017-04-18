@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import nikita.model.noark5.v4.*;
-import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
 import nikita.model.noark5.v4.hateoas.Link;
 import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.interfaces.entities.*;
@@ -24,141 +23,11 @@ public final class CommonUtils {
     private final static String[] documentMedium = {DOCUMENT_MEDIUM_ELECTRONIC, DOCUMENT_MEDIUM_PHYSICAL,
             DOCUMENT_MEDIUM_MIXED};
 
-    /*
-     Using a HashMap for metadataEntityType rather than a if-else block or switch. This is because  there
-     are 36 entries to look-up
-     */
-    private static final Map<String, String> metadataEntityType;
-
-    static {
-
-        // map metadata entity types to interface name
-        HashMap<String, String> metMap = new HashMap<>();
-        metMap.put("AccessCategory", "tilgangskategori");
-        metMap.put("AccessRestriction", "tilgangsrestriksjon");
-        metMap.put("AssociatedWithRecordAs", "tilknyttetregistreringsom");
-        metMap.put("CasePartyRole", "sakspartrolle");
-        metMap.put("CaseStatus", "saksstatus");
-        metMap.put("ClassificationType", "klassifikasjonstype");
-        metMap.put("ClassifiedCode", "graderingskode");
-        metMap.put("CommentType", "merknadstype");
-        metMap.put("CorrespondencePartType", "korrespondanseparttype");
-        metMap.put("Country", "land");
-        metMap.put("DeletionType", "slettingstype");
-        metMap.put("DisposalDecision", "kassasjonsvedtak");
-        metMap.put("DocumentMedium", "dokumentmedium");
-        metMap.put("DocumentStatus", "dokumentstatus");
-        metMap.put("DocumentType", "dokumenttype");
-        metMap.put("ElectronicSignatureSecurityLevel", "elektronisksignatursikkerhetsnivaa");
-        metMap.put("ElectronicSignatureVerified)", "elektronisksignaturverifisert");
-        metMap.put("EventType", "hendelsetype");
-        metMap.put("FileType", "mappetype");
-        metMap.put("FlowStatus", "flytstatus");
-        metMap.put("FondsStatus", "arkivstatus");
-        metMap.put("Format", "format");
-        metMap.put("MeetingFileType", "moetesakstype");
-        metMap.put("MeetingParticipantFunction", "moetedeltakerfunksjon");
-        metMap.put("MeetingRegistrationStatus", "moeteregistreringsstatus");
-        metMap.put("MeetingRegistrationType", "moeteregistreringstype");
-        metMap.put("PrecedenceStatus", "presedensstatus");
-        metMap.put("RegistryEntryStatus", "journalstatus");
-        metMap.put("RegistryEntryType", "journalposttype");
-        metMap.put("ScreeningDocument", "skjermingdokument");
-        metMap.put("ScreeningMetadata", "skjermingmetadata");
-        metMap.put("SeriesStatus", "arkivdelstatus");
-        metMap.put("SignOffMethod", "avskrivningsmaate");
-        metMap.put("VariantFormat", "variantformat");
-        metMap.put("Zip", "postnummer");
-
-        metadataEntityType = Collections.unmodifiableMap(metMap);
-    }
-
     // You shall not instantiate me!
     private CommonUtils() {
     }
 
-
-
-
     public static final class Hateoas {
-
-        //TODO: Need to look at handling exceptions here. Thry aer not caught and converted to a suitable message
-        // back to the caller
-
-        public static String getEntityType(HateoasNoarkObject hateoasObject) {
-            if (hateoasObject != null) {
-                return getEntityType(hateoasObject.getClass().getName());
-            }
-            else return "unknown_entity";
-        }
-
-
-        public static String getMetatdatEntityType(String className) {
-            return metadataEntityType.get(className);
-        }
-
-        public static String getEntityType(String className) {
-
-            /*
-            Using if-else rather than switch because size of the block and the
-            ordering of entries are based on a guess of which entries will be
-            looked up most commonly. Fonds will not be looked up often, while
-             registryEntry and the entities below will often be lookedup
-             */
-            if (className.endsWith("RegistryEntry")) {
-                return REGISTRY_ENTRY;
-            } else if (className.endsWith("RegistryEntryHateoas")) {
-                return REGISTRY_ENTRY;
-            } else if (className.endsWith("DocumentDescription")) {
-                return DOCUMENT_DESCRIPTION;
-            } else if (className.endsWith("DocumentDescriptionHateoas")) {
-                return DOCUMENT_DESCRIPTION;
-            } else if (className.endsWith("DocumentObject")) {
-                return DOCUMENT_OBJECT;
-            } else if (className.endsWith("DocumentObjectHateoas")) {
-                return DOCUMENT_OBJECT;
-            } else if (className.endsWith("CaseFile")) {
-                return CASE_FILE;
-            } else if (className.endsWith("CaseFileHateoas")) {
-                return CASE_FILE;
-            } else if (className.endsWith("Class")) {
-                return CLASS;
-            } else if (className.endsWith("ClassHateoas")) {
-                return CLASS;
-            } else if (className.endsWith("Fonds")) {
-                return FONDS;
-            } else if (className.endsWith("FondsCreator")) {
-                return FONDS_CREATOR;
-            } else if (className.endsWith("FondsHateoas")) {
-                return FONDS;
-            } else if (className.endsWith("FondsCreatorHateoas")) {
-                return FONDS_CREATOR;
-            } else if (className.endsWith("Series")) {
-                return SERIES;
-            } else if (className.endsWith("SeriesHateoas")) {
-                return SERIES;
-            } else if (className.endsWith("ClassificationSystem")) {
-                return CLASSIFICATION_SYSTEM;
-            } else if (className.endsWith("ClassificationSystemHateoas")) {
-                return CLASSIFICATION_SYSTEM;
-            } else if (className.endsWith("File")) {
-                return FILE;
-            } else if (className.endsWith("FileHateoas")) {
-                return FILE;
-            } else if (className.endsWith("Record")) {
-                return REGISTRATION;
-            } else if (className.endsWith("RecordHateoas")) {
-                return REGISTRATION;
-            } else if (className.endsWith("BasicRecord")) {
-                return BASIC_RECORD;
-            } else if (className.endsWith("BasicRecordHateoas")) {
-                return BASIC_RECORD;
-            }
-
-            // consider this throwing an excpetion
-            return "unknown_entity";
-        }
-
 
         public static final class Deserialize {
 

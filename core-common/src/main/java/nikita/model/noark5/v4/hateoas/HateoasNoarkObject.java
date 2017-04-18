@@ -28,7 +28,10 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
     // Just testing this out
     private Iterable<INoarkSystemIdEntity> selfLinksItr;
 
-
+    /**
+     * When a List<INoarkSystemIdEntity> is in use, we make a note of the entityType
+     */
+    private String entityType;
     /**
      * A Map of noark entities -> Hateoas links e.g fonds with links
      */
@@ -49,16 +52,17 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
         entityList.add(entity);
     }
 
-    public HateoasNoarkObject(List<INoarkSystemIdEntity> entityList) {
+    public HateoasNoarkObject(List<INoarkSystemIdEntity> entityList, String entityType) {
         this.entityList.addAll(entityList);
+        this.entityType = entityType;
         singleEntity = false;
     }
-
+/*
     public HateoasNoarkObject(Iterable<INoarkSystemIdEntity> selfLinksItr) {
         this.selfLinksItr = selfLinksItr;
         singleEntity = false;
     }
-
+*/
 
     @Override
     public List<Link> getLinks(INoarkSystemIdEntity entity) {
@@ -90,4 +94,7 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
         return singleEntity;
     }
 
+    public String getEntityType() {
+        return entityType;
+    }
 }
