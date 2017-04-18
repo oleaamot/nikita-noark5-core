@@ -20,7 +20,8 @@ let controller = app.controller('MainController', ['$scope', '$http', function (
   $scope.app_version = "xyz";
   $http({
     method: 'GET',
-    url: '/version'
+    url: '/version',
+    headers: {'Authorization': $scope.token },
   }).then(function successCallback(response) {
     $scope.app_version = response.data;
   }, function errorCallback(response) {
@@ -29,7 +30,8 @@ let controller = app.controller('MainController', ['$scope', '$http', function (
 
   $http({
     method: 'GET',
-    url: base_url
+    url: base_url,
+    headers: {'Authorization': $scope.token },
   }).then(function successCallback(response) {
     $scope.links = response.data._links;
   }, function errorCallback(response) {
