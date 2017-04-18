@@ -33,16 +33,16 @@ public class ElectronicSignature implements Serializable, INoarkSystemIdEntity {
     protected String systemId;
 
     /**
-     * M507 - elektroniskSignaturSikkerhetsnivaa (xs:string)
+     * M507 - elektronisksignatursikkerhetsnivaa (xs:string)
      */
     @Column(name = "electronic_signature_security_level")
     @Audited
     protected String electronicSignatureSecurityLevel;
 
     /**
-     * M508 - elektroniskSignaturVerifisert (xs:string)
+     * M508 - elektronisksignaturverifisert (xs:string)
      */
-    @Column(name = "electronic_sSignature_verified")
+    @Column(name = "electronic_signature_verified")
     @Audited
     protected String electronicSignatureVerified;
 
