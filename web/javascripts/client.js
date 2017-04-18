@@ -37,6 +37,22 @@ let controller = app.controller('MainController', ['$scope', '$http', function (
   }, function errorCallback(response) {
     // TODO: what should we do when it fails?
   });
+
+  $scope.hrefSelected = function(href){
+      console.log('href link clicked ' + href);
+      token = GetUserToken();
+      // FIXME figure out why this call uses unimplemented OPTIONS
+      // instead of GET.
+      $http({
+	  method: 'GET',
+	  url: href,
+	  headers: {'Authorization': token },
+      }).then(function successCallback(response) {
+	  $scope.links = response.data._links;
+      }, function errorCallback(response) {
+	  // TODO: what should we do when it fails?
+      });
+  }
 }]);
 
 let login = app.controller('LoginController', ['$scope', '$http', function($scope, $http) {

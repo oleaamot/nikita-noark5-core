@@ -29,7 +29,7 @@
 	  </thead>
 	  <tbody>
 	    <tr ng-repeat="l in links"class="mdl-data-table__cell--non-numeric">
-	      <td class="mdl-data-table__cell--non-numeric"><a href="{{ l.href }}">{{ l.href }}</a></td>
+	      <td class="mdl-data-table__cell--non-numeric" ng-click="hrefSelected(l.href)">{{ l.href }}</td>
 	      <td class="mdl-data-table__cell--non-numeric"><a href="{{ l.rel }}">{{ l.rel }}</a></td>
 	    </tr>
 	  </tbody>
