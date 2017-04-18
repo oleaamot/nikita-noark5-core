@@ -87,7 +87,7 @@ let login = app.controller('LoginController', ['$scope', '$http', function($scop
     }).then(function(data, status, headers, config) {
 	SetUserToken(data.data.token);
         console.log("hello" + status);
-        changeLocation($scope, base_url, true);
+        changeLocation($scope, "./", true);
     }, function(data, status, headers, config) {
 
         console.log("hello" + status);
