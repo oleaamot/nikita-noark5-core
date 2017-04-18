@@ -84,6 +84,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, PATTERN_NEW_FONDS_STRUCTURE_ALL).hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.GET, PATTERN_NEW_FONDS_STRUCTURE_ALL).hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.OPTIONS, PATTERN_NEW_FONDS_STRUCTURE_ALL).hasAuthority(ROLE_RECORDS_MANAGER)
+                // FIXME TEMP ADDED to test something
+                .antMatchers(HttpMethod.OPTIONS, "/hateoas-api/arkivstruktur/**").hasAuthority(ROLE_RECORDS_MANAGER)
                 // POST PUT PATCH [api]/arkivstruktur/**, need admin
                 .antMatchers(HttpMethod.PUT, FONDS + SLASH + "**").hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.PATCH, FONDS + SLASH + "**").hasAuthority(ROLE_RECORDS_MANAGER)
