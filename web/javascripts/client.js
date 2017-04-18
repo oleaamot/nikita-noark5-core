@@ -8,11 +8,28 @@ let sign_up_url = base_url + "signup";
 // TODO: use class for token
 var SetUserToken = function(t) {
   localStorage.setItem("token", t);
-}
+};
+
+
+var changeLocation = function ($scope, url, forceReload) {
+    $scope = $scope || angular.element(document).scope();
+    console.log("URL" + url);
+    if (forceReload || $scope.$$phase) {
+        window.location = url;
+    }
+    else {
+        //only use this if you want to replace the history stack
+        //$location.path(url).replace();
+
+        //this this if you want to change the URL and add it to the history stack
+        $location.path(url);
+        $scope.$apply();
+    }
+};
 
 var GetUserToken = function(t) {
   return localStorage.getItem("token");
-}
+};
 
 let controller = app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
   $scope.token = GetUserToken();
@@ -69,8 +86,12 @@ let login = app.controller('LoginController', ['$scope', '$http', function($scop
       data: { username: $scope.username, password: $scope.password },
     }).then(function(data, status, headers, config) {
 	SetUserToken(data.data.token);
+        console.log("hello" + status);
+        changeLocation($scope, base_url, true);
     }, function(data, status, headers, config) {
-      alert(data);
+
+        console.log("hello" + status);
+        alert(data.data);
     });
   };
 }]);
