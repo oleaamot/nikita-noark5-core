@@ -219,9 +219,9 @@ public final class N5ResourceMappings {
     public static final String CROSS_REFERENCE_CLASS = "referanseTilKlasse";
 
     // ElectronicSignature
-    public static final String ELECTRONIC_SIGNATURE = "elektroniskSignatur";
-    public static final String ELECTRONIC_SIGNATURE_SECURITY_LEVEL = "elektroniskSignaturSikkerhetsnivaa";
-    public static final String ELECTRONIC_SIGNATURE_VERIFIED = "elektroniskSignaturVerifisert";
+    public static final String ELECTRONIC_SIGNATURE = "elektronisksignatur";
+    public static final String ELECTRONIC_SIGNATURE_SECURITY_LEVEL = "elektronisksignatursikkerhetsnivaa";
+    public static final String ELECTRONIC_SIGNATURE_VERIFIED = "elektronisksignaturverifisert";
     public static final String ELECTRONIC_SIGNATURE_VERIFIED_DATE = "verifisertDato";
     public static final String ELECTRONIC_SIGNATURE_VERIFIED_BY = "verifisertAv";
 
