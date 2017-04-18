@@ -83,14 +83,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // POST GET [api]/arkivstruktur/ny-*, need admin
                 .antMatchers(HttpMethod.POST, PATTERN_NEW_FONDS_STRUCTURE_ALL).hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.GET, PATTERN_NEW_FONDS_STRUCTURE_ALL).hasAuthority(ROLE_RECORDS_MANAGER)
+                .antMatchers(HttpMethod.OPTIONS, PATTERN_NEW_FONDS_STRUCTURE_ALL).hasAuthority(ROLE_RECORDS_MANAGER)
                 // POST PUT PATCH [api]/arkivstruktur/**, need admin
                 .antMatchers(HttpMethod.PUT, FONDS + SLASH + "**").hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.PATCH, FONDS + SLASH + "**").hasAuthority(ROLE_RECORDS_MANAGER)
+                .antMatchers(HttpMethod.OPTIONS, FONDS + SLASH + "**").hasAuthority(ROLE_RECORDS_MANAGER)
                 // POST PUT PATCH DELETE [api]/metadata/**, need admin
                 .antMatchers(HttpMethod.PATCH, PATTERN_METADATA_PATH).hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.PUT, PATTERN_METADATA_PATH).hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.POST, PATTERN_METADATA_PATH).hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.DELETE, PATTERN_METADATA_PATH).hasAuthority(ROLE_RECORDS_MANAGER)
+                .antMatchers(HttpMethod.OPTIONS, PATTERN_METADATA_PATH).hasAuthority(ROLE_RECORDS_MANAGER)
 
                 // allow anonymous resource requests
                 .antMatchers(
