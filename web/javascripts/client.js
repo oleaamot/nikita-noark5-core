@@ -50,6 +50,8 @@ let controller = app.controller('MainController', ['$scope', '$http', function (
     url: base_url,
     headers: {'Authorization': $scope.token },
   }).then(function successCallback(response) {
+    $scope.current = base_url;
+    $scope.parent =  base_url + "/..";
     $scope.links = response.data._links;
   }, function errorCallback(response) {
     // TODO: what should we do when it fails?
@@ -57,6 +59,9 @@ let controller = app.controller('MainController', ['$scope', '$http', function (
 
   $scope.hrefSelected = function(href){
       console.log('href link clicked ' + href);
+      href = href.split("{")[0];
+      $scope.current = href;
+      $scope.parent =  href + "/..";
       token = GetUserToken();
       // FIXME figure out why this call uses unimplemented OPTIONS
       // instead of GET.

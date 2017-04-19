@@ -19,6 +19,7 @@
       </header>
       <main class="mdl-layout__content">
       <div class="page-content">
+	<p ng-click="hrefSelected(current)">Current link: {{ current }}</p>
 	<div id="links_table_group">
 	<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
 	  <thead>
@@ -36,6 +37,7 @@
 	</table>
 	</div>
 	<p><a href="login.html">logg inn</a><p>
+	<p ng-click="hrefSelected(parent)">Parent link: {{ parent }}</p>
 	<hr>
 	<p>Denne webklient er del av
 	  <a href="https://github.com/HiOA-ABI/nikita-noark5-core/">Nikita Noark 5 kjerne</a>, en fri programvareimplementasjon av Noark 5 tjenestegrensesnitt.</p>
