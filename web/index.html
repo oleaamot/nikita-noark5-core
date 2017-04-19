@@ -35,9 +35,23 @@
 	    </tr>
 	  </tbody>
 	</table>
+	<p ng-click="hrefSelected(parent)">Parent link: {{ parent }}</p>
+	<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+	  <thead>
+	    <tr>
+	      <th>attribute</th>
+	      <th>value</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr ng-repeat="(key, value) in data"class="mdl-data-table__cell--non-numeric">
+	      <td class="mdl-data-table__cell--non-numeric">{{ key }}</td>
+	      <td class="mdl-data-table__cell--non-numeric">{{ value }}</td>
+	    </tr>
+	  </tbody>
+	</table>
 	</div>
 	<p><a href="login.html">logg inn</a><p>
-	<p ng-click="hrefSelected(parent)">Parent link: {{ parent }}</p>
 	<hr>
 	<p>Denne webklient er del av
 	  <a href="https://github.com/HiOA-ABI/nikita-noark5-core/">Nikita Noark 5 kjerne</a>, en fri programvareimplementasjon av Noark 5 tjenestegrensesnitt.</p>

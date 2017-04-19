@@ -71,6 +71,8 @@ let controller = app.controller('MainController', ['$scope', '$http', function (
 	  headers: {'Authorization': token },
       }).then(function successCallback(response) {
 	  $scope.links = response.data._links;
+	  $scope.data = response.data
+	  delete $scope.data._links;
       }, function errorCallback(response) {
 	  // TODO: what should we do when it fails?
       });
