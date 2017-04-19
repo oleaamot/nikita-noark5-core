@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="nikita-fonds">
+<head>
+    <script src="/node_modules/angular/angular.min.js"></script>
+    <script src="javascripts/fonds.js"></script>
+    <link rel="stylesheet" href="/node_modules/material-design-lite/material.min.css">
+    <script src="/node_modules/material-design-lite/material.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body ng-controller="FondsController">
+    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+        <thead>
+        <tr>
+            <th>systemID</th>
+            <th>tittel</th>
+            <th>arkivdel</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="fond in fonds" class="mdl-data-table__cell--non-numeric">
+            <td class="mdl-data-table__cell--non-numeric" ng-click="hrefSelected(l.href)">
+                {{ fond.systemID }}</td>
+            <td class="mdl-data-table__cell--non-numeric">
+                <a href="{{ l.rel }}">{{ fond.tittel }}</a>
+            </td>
+            <td class="mdl-data-table__cell--non-numeric">
+                <div ng-repeat = "l in fond._links">
+                    <div ng-if="l.rel == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivdel/' ">
+                    <a href="{{ l.href }}">{{ l.rel  }}</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>
+        <a href='{{fond.systemID}}'>{{fond.tittel}}</a>
+    </h2>
+</body>
+</html>
