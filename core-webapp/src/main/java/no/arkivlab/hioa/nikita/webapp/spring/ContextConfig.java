@@ -11,17 +11,13 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class ContextConfig {
 
+    public ContextConfig() {
+        super();
+    }
 
-	public ContextConfig() {
-		super();
-	}
-
-	    // beans
-
-	    @Bean
-	    public static PropertySourcesPlaceholderConfigurer properties() {
-	        final PropertySourcesPlaceholderConfigurer pspc = new PropertySourcesPlaceholderConfigurer();
-	        return pspc;
-	    }
-
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer properties() {
+        final PropertySourcesPlaceholderConfigurer pspc = new PropertySourcesPlaceholderConfigurer();
+        return pspc;
+    }
 }
