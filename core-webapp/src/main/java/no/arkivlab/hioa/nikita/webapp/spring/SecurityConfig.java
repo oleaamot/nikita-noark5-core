@@ -69,8 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/**").permitAll()
                 // GET [api]/metadata/**, public to read basic structure
                 .antMatchers(HttpMethod.GET, PATTERN_METADATA_PATH).permitAll()
-                // Allow OPTIONS command on root
-                .antMatchers(HttpMethod.OPTIONS, "/").permitAll()
+                // Allow OPTIONS command on everything root
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // Allow GET on root of application
                 .antMatchers(HttpMethod.GET, "/").permitAll()
                 // The following will like be removed soon ...
@@ -83,20 +83,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // POST GET [api]/arkivstruktur/ny-*, need admin
                 .antMatchers(HttpMethod.POST, PATTERN_NEW_FONDS_STRUCTURE_ALL).hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.GET, PATTERN_NEW_FONDS_STRUCTURE_ALL).hasAuthority(ROLE_RECORDS_MANAGER)
-                .antMatchers(HttpMethod.OPTIONS, PATTERN_NEW_FONDS_STRUCTURE_ALL).hasAuthority(ROLE_RECORDS_MANAGER)
                 // FIXME TEMP ADDED to test something
-                .antMatchers(HttpMethod.OPTIONS, "/hateoas-api/arkivstruktur/**").hasAuthority(ROLE_RECORDS_MANAGER)
                 // POST PUT PATCH [api]/arkivstruktur/**, need admin
                 .antMatchers(HttpMethod.PUT, FONDS + SLASH + "**").hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.PATCH, FONDS + SLASH + "**").hasAuthority(ROLE_RECORDS_MANAGER)
-                .antMatchers(HttpMethod.OPTIONS, FONDS + SLASH + "**").hasAuthority(ROLE_RECORDS_MANAGER)
                 // POST PUT PATCH DELETE [api]/metadata/**, need admin
                 .antMatchers(HttpMethod.PATCH, PATTERN_METADATA_PATH).hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.PUT, PATTERN_METADATA_PATH).hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.POST, PATTERN_METADATA_PATH).hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.DELETE, PATTERN_METADATA_PATH).hasAuthority(ROLE_RECORDS_MANAGER)
-                .antMatchers(HttpMethod.OPTIONS, PATTERN_METADATA_PATH).hasAuthority(ROLE_RECORDS_MANAGER)
-
                 // allow anonymous resource requests
                 .antMatchers(
                         HttpMethod.GET,
