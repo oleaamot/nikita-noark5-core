@@ -1,5 +1,11 @@
 
 let app = angular.module('nikita-fonds', []);
+
+var SetLinkToChosenSeries = function(t) {
+    localStorage.setItem("linkToChosenSeries", t);
+    console.log("Setting linkToChosenSeries="+t);
+};
+
 let fondsController = app.controller('FondsController', ['$scope', '$http', function ($scope, $http) {
     $scope.token = GetUserToken();
     console.log("token="+$scope.token);
@@ -14,6 +20,15 @@ let fondsController = app.controller('FondsController', ['$scope', '$http', func
     }, function errorCallback(response) {
         // TODO: what should we do when it fails?
     });
+
+    // TODO : Add the href to local storage indicating what was clicked
+    //
+    $scope.seriesSelected = function(href){
+        console.log('series selected link clicked ' + href);
+        token = GetUserToken();
+        SetLinkToChosenSeries(href);
+        window.location = "http://localhost:3000/series.html";
+    }
 }]);
 
 var GetUserToken = function(t) {

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="nikita-fonds">
+<html lang="en" ng-app="nikita-series">
 <head>
     <script src="/node_modules/angular/angular.min.js"></script>
-    <script src="javascripts/fonds.js"></script>
+    <script src="javascripts/series.js"></script>
     <link rel="stylesheet" href="/node_modules/material-design-lite/material.min.css">
     <script src="/node_modules/material-design-lite/material.min.js"></script>
     <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
     <meta charset="UTF-8">
-    <title>Liste av alle arkiv in Nikita</title>
+    <title>Liste av alle arkivdel tilkoblet en bestemt arkiv i Nikita</title>
 </head>
-<body ng-controller="FondsController">
+<body ng-controller="SeriesController">
 <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
     <thead>
     <tr>
@@ -19,15 +19,15 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="fond in fonds" class="mdl-data-table__cell--non-numeric">
+    <tr ng-repeat="series in seriess" class="mdl-data-table__cell--non-numeric">
         <td class="mdl-data-table__cell--non-numeric" ng-click="hrefSelected(l.href)">
-            {{ fond.systemID }}
+            {{ series.systemID }}
         </td>
         <td class="mdl-data-table__cell--non-numeric">
-            {{ fond.tittel }}
+            {{ series.tittel }}
         </td>
         <td class="mdl-data-table__cell--non-numeric">
-            <div ng-repeat="l in fond._links">
+            <div ng-repeat="l in series._links">
                 <div  ng-if="l.rel == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivdel/' ">
                     <div ng-click="seriesSelected(l.href)">
                         hello <a  href="{{ l.href }}">{{ l.rel }}</a>
