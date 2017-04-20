@@ -10,6 +10,9 @@ var SetUserToken = function(t) {
   localStorage.setItem("token", t);
 };
 
+var GetUserToken = function(t) {
+  return localStorage.getItem("token");
+};
 
 var changeLocation = function ($scope, url, forceReload) {
     $scope = $scope || angular.element(document).scope();
@@ -27,61 +30,47 @@ var changeLocation = function ($scope, url, forceReload) {
     }
 };
 
-var GetUserToken = function(t) {
-  return localStorage.getItem("token");
+let updateIndexView = function(url, $scope, $http) {
+    $scope.current = url;
+    $scope.parent =  url + "/..";
+    token = GetUserToken();
+    $http({
+	method: 'GET',
+	url: url,
+	headers: {'Authorization': token },
+    }).then(function successCallback(response) {
+	$scope.links = response.data._links;
+	$scope.data = response.data
+	delete $scope.data._links;
+    }, function errorCallback(response) {
+	// TODO: what should we do when it fails?
+    });
 };
 
 let controller = app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
-  $scope.token = GetUserToken();
+  token = GetUserToken();
   console.log("token="+$scope.token);
   $scope.app_version = "xyz";
   $http({
     method: 'GET',
     url: '/version',
-    headers: {'Authorization': $scope.token },
+    headers: {'Authorization': token },
   }).then(function successCallback(response) {
     $scope.app_version = response.data;
   }, function errorCallback(response) {
     // TODO: what should we do when it fails?
   });
 
-  $http({
-    method: 'GET',
-    url: base_url,
-    headers: {'Authorization': $scope.token },
-  }).then(function successCallback(response) {
-    $scope.current = base_url;
-    $scope.parent =  base_url + "/..";
-    $scope.links = response.data._links;
-  }, function errorCallback(response) {
-    // TODO: what should we do when it fails?
-  });
+  updateIndexView(base_url, $scope, $http);
 
   $scope.hrefSelected = function(href){
       console.log('href link clicked ' + href);
       href = href.split("{")[0];
-      $scope.current = href;
-      $scope.parent =  href + "/..";
-      token = GetUserToken();
-      // FIXME figure out why this call uses unimplemented OPTIONS
-      // instead of GET.
-      $http({
-	  method: 'GET',
-	  url: href,
-	  headers: {'Authorization': token },
-      }).then(function successCallback(response) {
-	  $scope.links = response.data._links;
-	  $scope.data = response.data
-	  delete $scope.data._links;
-      }, function errorCallback(response) {
-	  // TODO: what should we do when it fails?
-      });
+      updateIndexView(href, $scope, $http);
   }
 }]);
 
 let login = app.controller('LoginController', ['$scope', '$http', function($scope, $http) {
-  $scope.token = GetUserToken();
-  console.log("token="+$scope.token);
   console.log("LoginController");
   $scope.send_form = function() {
     console.log($scope.password);
