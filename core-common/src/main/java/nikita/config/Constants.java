@@ -46,6 +46,8 @@ public final class Constants {
     public static final String RIGHT_PARENTHESIS = "}";
     public static final String REF_ID = "$ref?$id=";
 
+    public static final String ENTITY_ROOT_NAME_LIST = "results";
+
     // Create for new arkivstruktur objects
     public static final String NEW_FONDS = NEW + DASH + FONDS;
     public static final String NEW_FONDS_CREATOR = NEW + DASH + FONDS_CREATOR;

@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import static nikita.config.Constants.ENTITY_ROOT_NAME_LIST;
+
 
 /**
  * Created by tsodring on 2/9/17.
@@ -37,7 +39,7 @@ public class HateoasSerializer extends StdSerializer<HateoasNoarkObject> {
         if (list.size() > 0) {
             if (!hateoasObject.isSingleEntity()) {
                 jgen.writeStartObject();
-                jgen.writeFieldName(hateoasObject.getEntityType());
+                jgen.writeFieldName(ENTITY_ROOT_NAME_LIST);
                 jgen.writeStartArray();
             }
             for (INoarkSystemIdEntity entity : list) {
