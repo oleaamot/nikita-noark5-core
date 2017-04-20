@@ -1,22 +1,24 @@
 package nikita.model.noark5.v4.hateoas;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by tsodring on 12/22/16.
  */
-public class Link {
+public class Link implements Comparable<Link> {
 
-    protected String linkName;
-    protected String href;
-    protected String rel;
-    protected Boolean templated;
+    private String linkName;
+    private String href;
+    private String rel;
+    private Boolean templated;
 
-    public Link(String href, String rel, Boolean templated) {
+    public Link(@NotNull String href, @NotNull String rel, @NotNull Boolean templated) {
         this.href = href;
         this.rel = rel;
         this.templated = templated;
     }
 
-    public Link(String linkName, String href, String rel, Boolean templated) {
+    public Link(String linkName, @NotNull String href, @NotNull String rel, @NotNull Boolean templated) {
         this.linkName = linkName;
         this.href = href;
         this.rel = rel;
@@ -35,7 +37,7 @@ public class Link {
         return href;
     }
 
-    public void setHref(String href) {
+    public void setHref(@NotNull String href) {
         this.href = href;
     }
 
@@ -43,7 +45,7 @@ public class Link {
         return rel;
     }
 
-    public void setRel(String rel) {
+    public void setRel(@NotNull String rel) {
         this.rel = rel;
     }
 
@@ -51,8 +53,16 @@ public class Link {
         return templated;
     }
 
-    public void setTemplated(Boolean templated) {
+    public void setTemplated(@NotNull Boolean templated) {
         this.templated = templated;
+    }
+
+    @Override
+    public int compareTo(Link otherLink) {
+        if (otherLink != null) {
+            return rel.compareTo(otherLink.getRel());
+        }
+        return -1;
     }
 
     @Override

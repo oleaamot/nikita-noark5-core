@@ -2,9 +2,7 @@ package nikita.model.noark5.v4.hateoas;
 
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -35,13 +33,13 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
     /**
      * A Map of noark entities -> Hateoas links e.g fonds with links
      */
-    private HashMap<INoarkSystemIdEntity, List<Link>> hateoasMap = new HashMap<>();
+    private Map<INoarkSystemIdEntity, TreeSet<Link>> hateoasMap = new HashMap<>();
 
     /**
      * If the Hateaos object is a list of results, then the list needs its own Hateoas Link to self
      * 1 because currently we're only adding self link, a List because this might change
      */
-    private List<Link> selfLinks = new ArrayList<>(1);
+    private Set <Link> selfLinks = new TreeSet<>();
     /**
      * Whether or not the Hateaos object contains a single entity or a list of entities. For simplicity a list is
      * used even if the query generated a single result. Makes coding other places easier
@@ -65,7 +63,7 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
 */
 
     @Override
-    public List<Link> getLinks(INoarkSystemIdEntity entity) {
+    public Set<Link> getLinks(INoarkSystemIdEntity entity) {
         return hateoasMap.get(entity);
     }
 
@@ -76,7 +74,7 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
 
     @Override
     public void addLink(INoarkSystemIdEntity entity, Link link) {
-        hateoasMap.computeIfAbsent(entity, k -> new ArrayList<>()).add(link);
+        hateoasMap.computeIfAbsent(entity, k -> new TreeSet<Link>()).add(link);
     }
 
     @Override
@@ -85,7 +83,7 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
     }
 
     @Override
-    public List<Link> getSelfLinks() {
+    public Set <Link> getSelfLinks() {
         return selfLinks;
     }
 
