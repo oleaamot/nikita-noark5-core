@@ -15,7 +15,7 @@ let fondsController = app.controller('FondsController', ['$scope', '$http', func
         url: 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkiv',
         headers: {'Authorization': $scope.token },
     }).then(function successCallback(response) {
-        $scope.fonds = response.data.arkiv;
+        $scope.fonds = response.data.results;
         console.log("data is : " + JSON.stringify(response.data));
     }, function errorCallback(response) {
         // TODO: what should we do when it fails?

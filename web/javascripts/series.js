@@ -25,7 +25,7 @@ let seriesController = app.controller('SeriesController', ['$scope', '$http', fu
         url: urlVal,
         headers: {'Authorization': $scope.token },
     }).then(function successCallback(response) {
-        $scope.seriess = response.data.arkivdel;
+        $scope.seriess = response.data.results;
         console.log("series data is : " + JSON.stringify(response.data));
     }, function errorCallback(response) {
         // TODO: what should we do when it fails?
