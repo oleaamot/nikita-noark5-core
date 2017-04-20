@@ -27,3 +27,38 @@ insert into series_status(pk_series_status_id, system_id, code, description, del
 insert into series_status(pk_series_status_id, system_id, code, description, deleted, version) values (1, '24ee7d87-4e5e-46d8-ba9a-d236609fdeeb', 'O', 'Overlappingsperiode', false, 0);
 insert into series_status(pk_series_status_id, system_id, code, description, deleted, version) values (2, 'a67ae905-a556-4cf6-bfa9-43ad15836f61', 'P', 'Avsluttet periode', false, 0);
 insert into series_status(pk_series_status_id, system_id, code, description, deleted, version) values (3, '30bec9da-7299-4f50-9233-8a556cc5708c', 'U', 'Uaktuelle mapper', false, 0);
+
+insert into sign_off_method(pk_sign_off_method_id, system_id, code, description, deleted, version) values (0, '5ccea231-c2cc-4507-8a72-709c9c54bcd5', 'BU', 'Besvart med brev', false, 0);
+insert into sign_off_method(pk_sign_off_method_id, system_id, code, description, deleted, version) values (1, '3ea3d7c2-2479-46a4-b56d-8cc0c31208a7', 'BE', 'Besvart med e-post', false, 0);
+insert into sign_off_method(pk_sign_off_method_id, system_id, code, description, deleted, version) values (2, 'e549d858-f6d6-4d86-b811-014ade0ca6c6', 'TLF', 'Besvart på telefon', false, 0);
+insert into sign_off_method(pk_sign_off_method_id, system_id, code, description, deleted, version) values (3, 'ec14aac1-df6d-495a-bcf5-caa9a0c18bb8', 'TE', 'Tatt til etterretning', false, 0);
+insert into sign_off_method(pk_sign_off_method_id, system_id, code, description, deleted, version) values (4, 'c62c80d9-7700-4243-b2e1-fd14af9a9559', 'TO', 'Tatt til orientering', false, 0);
+
+insert into document_status(pk_document_status_id, system_id, code, description, deleted, version) values (0, '553287bc-4592-4107-8567-0402458fdc4e', 'B', 'Dokumentet er under redigering', false, 0);
+insert into document_status(pk_document_status_id, system_id, code, description, deleted, version) values (1, '29ad0b9a-fe52-4e4b-af9a-1a4841f6ad43', 'F', 'Dokumentet er ferdigstilt', false, 0);
+
+insert into document_type(pk_document_type_id, system_id, code, description, deleted, version) values (0, '26ef04f8-5efb-4f19-9cde-d99a40d8cb1b', 'B', 'Brev', false, 0);
+insert into document_type(pk_document_type_id, system_id, code, description, deleted, version) values (1, 'e12f0bf6-aac4-4bb0-8f23-9847f0b67453', 'R', 'Rundskriv', false, 0);
+insert into document_type(pk_document_type_id, system_id, code, description, deleted, version) values (2, '1f4ec7b5-a717-433d-a3dc-d357e6579de0', 'F', 'Faktura', false, 0);
+insert into document_type(pk_document_type_id, system_id, code, description, deleted, version) values (3, '99281649-0d0c-402f-9494-7df99b7d73f1', 'O', 'Ordrebekreftelse', false, 0);
+
+insert into electronic_signature_security_level(pk_electronic_signature_security_level_id, system_id, code, description, deleted, version) values (0, 'dc55f30f-a549-40ed-86e3-b3104cb1f7f5', 'SK', 'Symmetrisk kryptert', false, 0);
+insert into electronic_signature_security_level(pk_electronic_signature_security_level_id, system_id, code, description, deleted, version) values (1, 'e1872a1e-4233-4a6e-884d-d8bdb3c48754', 'V', 'Sendt med PKI/virksomhetssertifikat', false, 0);
+insert into electronic_signature_security_level(pk_electronic_signature_security_level_id, system_id, code, description, deleted, version) values (2, '2aa9657b-8498-4d33-8e41-0acf649a8d6d', 'PS', 'Sendt med PKI/"personstandard"-sertifikat', false, 0);
+insert into electronic_signature_security_level(pk_electronic_signature_security_level_id, system_id, code, description, deleted, version) values (3, '558401c6-b99e-4adf-9576-811da4c7e461', 'PH', 'Sendt med PKI/"person høy"-sertifikat', false, 0);
+
+insert into electronic_signature_verified(pk_electronic_signature_verified_id, system_id, code, description, deleted, version) values (0, '7440acce-3918-4d0e-92cc-88fe8f1e3168', 'I', 'Signatur påført, ikke verifisert', false, 0);
+insert into electronic_signature_verified(pk_electronic_signature_verified_id, system_id, code, description, deleted, version) values (1, '45d2bff7-d2fc-4d22-8b37-74b6d2dd437e', 'V', 'Signatur påført og verifisert', false, 0);
+
+insert into flow_status(pk_flow_status_id, system_id, code, description, deleted, version) values (0, 'd854743a-8c5a-4791-b56c-a10fd240e768', 'G', 'Godkjent', false, 0);
+insert into flow_status(pk_flow_status_id, system_id, code, description, deleted, version) values (1, '949ad9cf-59ff-492e-9ce5-8a3bdced9cc9', 'I', 'Ikke godkjent', false, 0);
+insert into flow_status(pk_flow_status_id, system_id, code, description, deleted, version) values (2, '8a802fc2-7d9c-43ae-babd-72cc19d47a46', 'S', 'Sendt tilbake til saksbehandler med kommentarer', false, 0);
+
+insert into format (pk_format_id, system_id, code, description, deleted, version) values (0, '93ac2b0f-1729-4c78-a917-a0f494a035ca', 'RA-TEKST', 'Ren tekst', false, 0);
+insert into format (pk_format_id, system_id, code, description, deleted, version) values (1, 'ba4c8c2c-4072-4fa7-b194-8812ea38697f', 'RA-TIFF6', 'TIFF versjon 6', false, 0);
+insert into format (pk_format_id, system_id, code, description, deleted, version) values (2, 'eb53170a-14b1-48e2-a5c4-965fef380ca6', 'RA-PDF', 'PDF/A - ISO 19005-1:2005', false, 0);
+insert into format (pk_format_id, system_id, code, description, deleted, version) values (3, '3d2c0bad-c8e3-4f03-b52e-d99867d53230', 'RA-XML', 'XML', false, 0);
+insert into format (pk_format_id, system_id, code, description, deleted, version) values (4, '18468b06-b491-4029-9e6f-395ad1d27b03', 'RA-JPEG', 'JPEG', false, 0);
+insert into format (pk_format_id, system_id, code, description, deleted, version) values (5, 'd5063523-83a2-4e51-b8aa-925385849e33', 'RA-SOSI', 'SOSI', false, 0);
+insert into format (pk_format_id, system_id, code, description, deleted, version) values (6, '9ae48e86-3c9e-47fd-bbf2-4d9f67b7de85', 'RA-MPEG-2', 'MPEG-2', false, 0);
+insert into format (pk_format_id, system_id, code, description, deleted, version) values (7, '7412833e-ceaf-40fd-95b5-e634f4640f99', 'RA-MP3', 'MP3', false, 0);
