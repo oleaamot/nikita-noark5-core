@@ -46,7 +46,7 @@ public class FondsStructureDetails extends APIDetails {
 
         // Add Series
         aPIDetails.add(new APIDetail(
-                uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH,
+                uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES,
                 NOARK_CONFORMANCE_REL + NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH,
                 true
         ));
