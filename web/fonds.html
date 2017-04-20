@@ -16,6 +16,7 @@
     <tr>
         <th>systemID</th>
         <th>tittel</th>
+        <th>beskrivelse</th>
         <th>arkivdel</th>
     </tr>
     </thead>
@@ -26,6 +27,9 @@
         </td>
         <td class="mdl-data-table__cell--non-numeric">
             {{ fond.tittel }}
+        </td>
+        <td class="mdl-data-table__cell--non-numeric">
+            {{ fond.beskrivelse }}
         </td>
         <td class="mdl-data-table__cell--non-numeric">
             <div ng-repeat="l in fond._links">
@@ -39,5 +43,19 @@
     </tr>
     </tbody>
 </table>
+<h2>Nytt arkiv</h2>
+<form ng-submit="send_form()" ng-controller="FondsController" method="post">
+  <div class="mdl-grid-center">
+    <div class="mdl-textfield mdl-js-textfield">
+      <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text" name="tittel" />
+    </div>
+    <div class="mdl-textfield mdl-js-textfield">
+      <input class="mdl-textfield__input" placeholder="beskrivelse" ng-model="beskrivelse" type="text" name="beskrivelse" />
+    </div>
+  </div>
+  <div class="form-actions col-xs-offset-2 col-xs-10">
+    <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" value="Opprett arkiv" />
+  </div>
+</form>
 </body>
 </html>

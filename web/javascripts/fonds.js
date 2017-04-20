@@ -6,6 +6,22 @@ var SetLinkToChosenSeries = function(t) {
     console.log("Setting linkToChosenSeries="+t);
 };
 
+var changeLocation = function ($scope, url, forceReload) {
+    $scope = $scope || angular.element(document).scope();
+    console.log("URL" + url);
+    if (forceReload || $scope.$$phase) {
+        window.location = url;
+    }
+    else {
+        //only use this if you want to replace the history stack
+        //$location.path(url).replace();
+
+        //this this if you want to change the URL and add it to the history stack
+        $location.path(url);
+        $scope.$apply();
+    }
+};
+
 let fondsController = app.controller('FondsController', ['$scope', '$http', function ($scope, $http) {
     $scope.token = GetUserToken();
     console.log("token="+$scope.token);
@@ -29,6 +45,24 @@ let fondsController = app.controller('FondsController', ['$scope', '$http', func
         SetLinkToChosenSeries(href);
         window.location = "http://localhost:3000/series.html";
     }
+
+    $scope.send_form = function() {
+	token = GetUserToken();
+	url = 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/ny-arkiv';
+	$http({
+	    url: url,
+	    method: "POST",
+	    headers: {
+		'Content-Type': 'application/vnd.noark5-v4+json',
+		'Authorization': token,
+	    },
+	    data: { tittel: $scope.tittel, beskrivelse: $scope.beskrivelse },
+	}).then(function(data, status, headers, config) {
+            changeLocation($scope, "./fonds.html", true);
+	}, function(data, status, headers, config) {
+            alert(data.data);
+	});
+    };
 }]);
 
 var GetUserToken = function(t) {
