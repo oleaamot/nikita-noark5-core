@@ -52,15 +52,14 @@ curloptsCreateFondsCreatorFromRoot+=("${curlPostOpts[@]}");
 curloptsCreateFondsCreatorFromRoot+=( --data @"$curl_files_dir"fonds-creator-data.json  'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/ny-arkivskaper' );
 systemIDCreatedFondsCreator=$(curl "${curloptsCreateFondsCreatorFromRoot[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created FondsCreator 1(root)($systemIDCreatedFondsCreator) \n";
-echo "${curloptsCreateFondsCreatorFromRoot[@]}" ;
-exit;
+#echo "${curloptsCreateFondsCreatorFromRoot[@]}" ;
 
 curloptsCreateFondsCreatorUpdate+=("${curlPutOpts[@]}");
 curloptsCreateFondsCreatorUpdate+=( --data '{"systemID" : "'$systemIDCreatedFondsCreator'", "arkivskaperID": "123456789U", "arkivskaperNavn": "Eksempel kommune UPDATED",  "beskrivelse": "Eksempel kommune ligger i eksempel fylke nord for nord UPDATED" } ' 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkivskaper/' );
 systemIDCreatedFondsCreator=$(curl "${curloptsCreateFondsCreatorUpdate[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "updated FondsCreator 1      ($systemIDCreatedFondsCreator) \n";
-echo "${curloptsCreateFondsCreatorUpdate[@]}";
-exit;
+#echo "${curloptsCreateFondsCreatorUpdate[@]}";
+#exit;
 
 # Setup curl options for fondsCreator from existing fonds
 curloptsCreateFondsCreator+=("${curlPostOpts[@]}");
