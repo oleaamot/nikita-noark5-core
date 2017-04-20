@@ -42,7 +42,7 @@ public class HateoasHandler implements IHateoasHandler {
         }
         // If hateoasNoarkObject is a list add a self link.
         // { "entity": [], "_links": [] }
-        if (!hateoasNoarkObject.isSingleEntity() && hateoasNoarkObject.getList().size() > 0) {
+        if (!hateoasNoarkObject.isSingleEntity()) {
             StringBuffer url = request.getRequestURL();
             Link selfLink = new Link(url.toString(), getRelSelfLink(), false);
             hateoasNoarkObject.addSelfLink(selfLink);
