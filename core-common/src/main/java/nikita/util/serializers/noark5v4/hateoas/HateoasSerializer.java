@@ -54,7 +54,7 @@ public class HateoasSerializer extends StdSerializer<HateoasNoarkObject> {
         // It's an empty object, so just returning Hateoas self links
         else {
             jgen.writeStartObject();
-            jgen.writeFieldName(hateoasObject.getEntityType());
+            jgen.writeFieldName(ENTITY_ROOT_NAME_LIST);
             jgen.writeStartArray();
             jgen.writeEndArray();
             CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, hateoasObject.getSelfLinks());
