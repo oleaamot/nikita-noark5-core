@@ -2,7 +2,7 @@ package no.arkivlab.hioa.nikita.webapp.model.application;
 
 import javax.validation.constraints.NotNull;
 
-public class APIDetail {
+public class APIDetail implements Comparable <APIDetail>{
 
     private String href;
     private String rel;
@@ -19,7 +19,7 @@ public class APIDetail {
         return href;
     }
 
-    public void setHref(String href) {
+    public void setHref(@NotNull String href) {
         this.href = href;
     }
 
@@ -27,7 +27,7 @@ public class APIDetail {
         return rel;
     }
 
-    public void setRel(String rel) {
+    public void setRel(@NotNull String rel) {
         this.rel = rel;
     }
 
@@ -37,6 +37,13 @@ public class APIDetail {
 
     public void setTemplated(Boolean templated) {
         this.templated = templated;
+    }
+
+    public int compareTo(APIDetail otherDetail) {
+        if (otherDetail != null) {
+            return rel.compareTo(otherDetail.getRel());
+        }
+        return -1;
     }
 
     @Override
