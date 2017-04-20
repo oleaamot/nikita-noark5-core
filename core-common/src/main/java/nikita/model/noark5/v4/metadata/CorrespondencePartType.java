@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART_TYPE;
 
-// Noark 5v4 SeriesStatus
+// Noark 5v4 korrespondanseparttype
 @Entity
 @Table(name = "correspondence_part_type")
 // Enable soft delete

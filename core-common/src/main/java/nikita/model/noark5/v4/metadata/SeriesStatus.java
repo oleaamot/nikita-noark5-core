@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 import static nikita.config.N5ResourceMappings.SERIES_STATUS;
 
-// Noark 5v4
+// Noark 5v4 arkvdelstatus
 @Entity
 @Table(name = "series_status")
 // Enable soft delete

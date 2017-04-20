@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 import static nikita.config.N5ResourceMappings.ELECTRONIC_SIGNATURE_VERIFIED;
 
-// Noark 5v4
+// Noark 5v4 elektroniskSignaturVerifisert
 @Entity
 @Table(name = "electronic_signature_verified")
 // Enable soft delete

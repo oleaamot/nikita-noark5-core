@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 import static nikita.config.N5ResourceMappings.EVENT_TYPE;
 
-// Noark 5v4
+// Noark 5v4 hendelsetype
 @Entity
 @Table(name = "event_type")
 // Enable soft delete

@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 import static nikita.config.N5ResourceMappings.SCREENING_METADATA;
 
-// Noark 5v4 Skjermingmetadata
+// Noark 5v4 skjermingmetadata
 @Entity
 @Table(name = "screening_metadata")
 // Enable soft delete

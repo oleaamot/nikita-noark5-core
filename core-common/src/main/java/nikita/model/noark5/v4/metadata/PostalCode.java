@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 import static nikita.config.N5ResourceMappings.ZIP;
 
-// Noark 5v4
+// Noark 5v4 postnummer
 @Entity
 @Table(name = "zip")
 // Enable soft delete
@@ -18,7 +18,7 @@ import static nikita.config.N5ResourceMappings.ZIP;
         "d = true WHERE id = ?")
 @Where(clause = "deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_zip_id"))
-public class Zip extends MetadataSuperClass {
+public class PostalCode extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;
 
     @Override

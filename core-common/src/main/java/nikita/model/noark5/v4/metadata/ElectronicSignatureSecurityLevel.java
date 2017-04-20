@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 import static nikita.config.N5ResourceMappings.ELECTRONIC_SIGNATURE_SECURITY_LEVEL;
 
-// Noark 5v4
+// Noark 5v4 elektroniskSignaturSikkerhetsnivå
 @Entity
 @Table(name = "electronic_signature_security_level")
 // Enable soft delete

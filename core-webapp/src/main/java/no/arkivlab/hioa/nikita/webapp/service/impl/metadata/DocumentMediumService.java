@@ -92,11 +92,10 @@ public class DocumentMediumService implements IDocumentMediumService {
     }
 
     /**
-     * retrieve all documentMedium that have a particular code. <br>
-     * This will be replaced by OData search.
+     * update a given documentMedium. <br>
      *
-     * @param code
-     * @return
+     * @param documentMedium
+     * @return the updated documentMedium
      */
     @Override
     public DocumentMedium update(DocumentMedium documentMedium) {

@@ -88,11 +88,10 @@ public class FondsStatusService implements IFondsStatusService {
     }
 
     /**
-     * retrieve all fondsStatus that have a particular code. <br>
-     * This will be replaced by OData search.
+     * update a particular fondsStatus. <br>
      *
      * @param fondsStatus
-     * @return
+     * @return the updated fondsStatus
      */
     @Override
     public FondsStatus update(FondsStatus fondsStatus) {

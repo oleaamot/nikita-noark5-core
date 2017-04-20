@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 import static nikita.config.N5ResourceMappings.FORMAT;
 
-// Noark 5v4
+// Noark 5v4 format
 @Entity
 @Table(name = "format")
 // Enable soft delete
