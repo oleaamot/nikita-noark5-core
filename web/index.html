@@ -50,6 +50,22 @@
 	    </tr>
 	  </tbody>
 	</table>
+	<h2>Results</h2>
+	<div ng-repeat="entry in results">
+          <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+	    <thead>
+	      <tr>
+	        <th>attribute</th>
+	        <th>value</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="(key, value) in entry" class="mdl-data-table__cell--non-numeric">
+	        <td class="mdl-data-table__cell--non-numeric">{{ key }}</td>
+	        <td class="mdl-data-table__cell--non-numeric">{{ value }}</td>
+	      </tr>
+	    </tbody>
+          </table>
 	</div>
 	<p><a href="login.html">logg inn</a><p>
 	<hr>

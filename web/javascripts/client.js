@@ -41,7 +41,9 @@ let updateIndexView = function(url, $scope, $http) {
     }).then(function successCallback(response) {
 	$scope.links = response.data._links;
 	$scope.data = response.data
+	$scope.results = response.data.results
 	delete $scope.data._links;
+	delete $scope.data.results;
     }, function errorCallback(response) {
 	// TODO: what should we do when it fails?
     });
