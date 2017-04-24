@@ -32,7 +32,7 @@ var changeLocation = function ($scope, url, forceReload) {
 
 let updateIndexView = function(url, $scope, $http) {
     $scope.current = url;
-    $scope.parent =  url + "/..";
+    $scope.parent =  resolveUrl(url,"..");
     token = GetUserToken();
     $http({
 	method: 'GET',
