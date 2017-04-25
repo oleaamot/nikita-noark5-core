@@ -9,7 +9,6 @@ import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +18,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
@@ -28,21 +28,18 @@ import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 public class CaseFileService implements ICaseFileService {
 
     private static final Logger logger = LoggerFactory.getLogger(CaseFileService.class);
+    private IRegistryEntryService registryEntryService;
+    private ICaseFileRepository caseFileRepository;
+    private EntityManager entityManager;
 
-    @Autowired
-    IRegistryEntryService registryEntryService;
-
-    @Autowired
-    ICaseFileRepository caseFileRepository;
-
-    @Autowired
-    EntityManager entityManager;
+    public CaseFileService(IRegistryEntryService registryEntryService, ICaseFileRepository caseFileRepository, EntityManager entityManager) {
+        this.registryEntryService = registryEntryService;
+        this.caseFileRepository = caseFileRepository;
+        this.entityManager = entityManager;
+    }
 
     //@Value("${nikita-noark5-core.pagination.maxPageSize}")
     Integer maxPageSize = new Integer(10);
-
-    public CaseFileService() {
-    }
 
     @Override
     public CaseFile save(CaseFile caseFile) {
@@ -57,19 +54,12 @@ public class CaseFileService implements ICaseFileService {
     }
 
     @Override
-    public RegistryEntry createRegistryEntryAssociatedWithCaseFile(String fileSystemId, RegistryEntry registryEntry) {
-        RegistryEntry persistedRecord = null;
-        CaseFile file = caseFileRepository.findBySystemId(fileSystemId);
-        if (file == null) {
-            String info = INFO_CANNOT_FIND_OBJECT + " CaseFile, using fileSystemId " + fileSystemId;
-            logger.info(info) ;
-            throw new NoarkEntityNotFoundException(info);
-        }
-        else {
-            registryEntry.setReferenceFile(file);
-            persistedRecord = registryEntryService.save(registryEntry);
-        }
-        return persistedRecord;        
+    public RegistryEntry createRegistryEntryAssociatedWithCaseFile(@NotNull String fileSystemId, @NotNull RegistryEntry registryEntry) {
+        CaseFile caseFile = getCaseFileOrThrow(fileSystemId);
+        // bidirectional relationship @OneToMany and @ManyToOne, set both sides of relationship
+        registryEntry.setReferenceFile(caseFile);
+        caseFile.getReferenceRecord().add(registryEntry);
+        return registryEntryService.save(registryEntry);
     }
 
     // All READ operations
@@ -93,5 +83,22 @@ public class CaseFileService implements ICaseFileService {
         typedQuery.setFirstResult(skip);
         typedQuery.setMaxResults(maxPageSize);
         return typedQuery.getResultList();
+    }
+    /**
+     * Internal helper method. Rather than having a find and try catch in multiple methods, we have it here once.
+     * If you call this, be aware that you will only ever get a valid CaseFile back. If there is no valid
+     * CaseFile, an exception is thrown
+     *
+     * @param caseFileSystemId
+     * @return
+     */
+    protected CaseFile getCaseFileOrThrow(@NotNull String caseFileSystemId) {
+        CaseFile caseFile = caseFileRepository.findBySystemId(caseFileSystemId);
+        if (caseFile == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " CaseFile, using systemId " + caseFileSystemId;
+            logger.info(info);
+            throw new NoarkEntityNotFoundException(info);
+        }
+        return caseFile;
     }
 }

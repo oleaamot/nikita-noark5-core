@@ -7,7 +7,7 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
  * Common description of how most Noark services will be implemented
  */
 public interface INoarkService {
-    INoarkSystemIdEntity updateNoarkEntity(String systemId, INoarkSystemIdEntity updatedEntity);
+    INoarkSystemIdEntity updateNoarkEntity(String systemId, Long version, INoarkSystemIdEntity updatedEntity);
 
     INoarkSystemIdEntity createNewNoarkEntity(INoarkSystemIdEntity entity);
 }

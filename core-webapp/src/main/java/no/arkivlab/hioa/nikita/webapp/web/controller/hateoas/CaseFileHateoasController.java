@@ -55,7 +55,7 @@ public class CaseFileHateoasController {
     }
 
     // API - All POST Requests (CRUD - CREATE)
-
+    //GET [contextPath][api]/sakarkiv/{systemId}/ny-journalpost
     @ApiOperation(value = "Persists a RegistryEntry object associated with the given Series systemId",
             notes = "Returns the newly created record object after it was associated with a File object and " +
                     "persisted to the database", response = RegistryEntryHateoas.class)

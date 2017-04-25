@@ -351,6 +351,7 @@ public final class Constants {
 
     // Metadata RELS
     public static final String REL_METADATA_DOCUMENT_MEDIUM = REL_METADATA + DOCUMENT_MEDIUM + SLASH;
+    public static final String REL_METADATA_CORRESPONDENCE_PART = REL_METADATA + CORRESPONDENCE_PART + SLASH;
     public static final String REL_METADATA_VARIANT_FORMAT = REL_METADATA + VARIANT_FORMAT + SLASH;
     public static final String REL_METADATA_FORMAT = REL_METADATA + FORMAT + SLASH;
     public static final String REL_METADATA_DOCUMENT_STATUS = REL_METADATA + DOCUMENT_STATUS + SLASH;

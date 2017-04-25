@@ -1,6 +1,7 @@
 package nikita.model.noark5.v4;
 
 import nikita.model.noark5.v4.interfaces.entities.ICorrespondencePartEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -17,7 +18,7 @@ import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART;
 // Enable soft delete of CorrespondencePart
 @SQLDelete(sql="UPDATE correspondence_part SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class CorrespondencePart implements ICorrespondencePartEntity, INoarkSystemIdEntity {
+public class CorrespondencePart implements ICorrespondencePartEntity, INoarkSystemIdEntity, INikitaEntity {
 
     private static final long serialVersionUID = 1L;
 

@@ -1,10 +1,12 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
+import nikita.model.noark5.v4.CorrespondencePart;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.Record;
 import nikita.model.noark5.v4.RegistryEntry;
 import nikita.repository.n5v4.IRegistryEntryRepository;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRegistryEntryService;
+import no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary.ICorrespondencePartService;
 import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.slf4j.Logger;
@@ -32,13 +34,16 @@ public class RegistryEntryService implements IRegistryEntryService {
     //@Value("${nikita-noark5-core.pagination.maxPageSize}")
     Integer maxPageSize = new Integer(10);
     private DocumentDescriptionService documentDescriptionService;
+    private ICorrespondencePartService correspondencePartService;
     private IRegistryEntryRepository registryEntryRepository;
     private EntityManager entityManager;
 
     public RegistryEntryService(DocumentDescriptionService documentDescriptionService,
+                                ICorrespondencePartService correspondencePartService,
                                 IRegistryEntryRepository registryEntryRepository,
                                 EntityManager entityManager) {
         this.documentDescriptionService = documentDescriptionService;
+        this.correspondencePartService = correspondencePartService;
         this.registryEntryRepository = registryEntryRepository;
         this.entityManager = entityManager;
     }
@@ -53,28 +58,30 @@ public class RegistryEntryService implements IRegistryEntryService {
         return registryEntry;
     }
 
+
+    @Override
+    public CorrespondencePart createCorrespondencePartAssociatedWithRegistryEntry(
+            String recordSystemId, CorrespondencePart correspondencePart) {
+        RegistryEntry registryEntry = getRegistryEntryOrThrow(recordSystemId);
+        // bidirectional relationship @ManyToMany, set both sides of relationship
+        registryEntry.getReferenceCorrespondencePart().add(correspondencePart);
+        correspondencePart.getReferenceRegistryEntry().add(registryEntry);
+        return (CorrespondencePart) correspondencePartService.createNewNoarkEntity(correspondencePart);
+    }
+
     @Override
     public DocumentDescription createDocumentDescriptionAssociatedWithRegistryEntry(
             String recordSystemId, DocumentDescription documentDescription){
+        RegistryEntry registryEntry = getRegistryEntryOrThrow(recordSystemId);
+        HashSet <Record> records = (HashSet <Record>) documentDescription.getReferenceRecord();
 
-        DocumentDescription persistedDocumentDescription = null;
-        RegistryEntry registryEntry = registryEntryRepository.findBySystemId(recordSystemId);
-        if (registryEntry == null) {
-            String info = INFO_CANNOT_FIND_OBJECT + " RegistryEntry, using registryEntrySystemId " + recordSystemId;
-            logger.info(info) ;
-            throw new NoarkEntityNotFoundException(info);
+        // It should always be instaniated ... check this ...
+        if (records == null) {
+            records = new HashSet<>();
+            documentDescription.setReferenceRecord(records);
         }
-        else {
-            HashSet <Record> records = (HashSet <Record>) documentDescription.getReferenceRecord();
-
-            if (records == null) {
-                records = new HashSet<>();
-                documentDescription.setReferenceRecord(records);
-            }
-            records.add(registryEntry);
-            persistedDocumentDescription = documentDescriptionService.save(documentDescription);
-        }
-        return persistedDocumentDescription;
+        records.add(registryEntry);
+        return documentDescriptionService.save(documentDescription);
     }
 
     // All READ operations
@@ -104,4 +111,23 @@ public class RegistryEntryService implements IRegistryEntryService {
     public RegistryEntry findBySystemId(String systemId) {
         return registryEntryRepository.findBySystemId(systemId);
     }
+
+    /**
+     * Internal helper method. Rather than having a find and try catch in multiple methods, we have it here once.
+     * If you call this, be aware that you will only ever get a valid RegistryEntry back. If there is no valid
+     * RegistryEntry, an exception is thrown
+     *
+     * @param registryEntrySystemId
+     * @return
+     */
+    protected RegistryEntry getRegistryEntryOrThrow(@NotNull String registryEntrySystemId) {
+        RegistryEntry registryEntry = registryEntryRepository.findBySystemId(registryEntrySystemId);
+        if (registryEntry == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " RegistryEntry, using systemId " + registryEntrySystemId;
+            logger.info(info);
+            throw new NoarkEntityNotFoundException(info);
+        }
+        return registryEntry;
+    }
+
 }

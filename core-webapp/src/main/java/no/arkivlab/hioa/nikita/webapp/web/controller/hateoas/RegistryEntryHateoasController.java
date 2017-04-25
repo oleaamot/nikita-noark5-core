@@ -7,14 +7,17 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
+import nikita.model.noark5.v4.CorrespondencePart;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
+import nikita.model.noark5.v4.hateoas.secondary.CorrespondencePartHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentDescriptionHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRegistryEntryHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.secondary.ICorrespondencePartHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRegistryEntryService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
@@ -39,18 +42,20 @@ public class RegistryEntryHateoasController {
     private IRegistryEntryService registryEntryService;
     private IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
     private IDocumentObjectHateoasHandler documentObjectHateoasHandler;
+    private ICorrespondencePartHateoasHandler correspondencePartHateoasHandler;
     private IRegistryEntryHateoasHandler registryEntryHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
-
 
     public RegistryEntryHateoasController(IRegistryEntryService registryEntryService,
                                           IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler,
                                           IDocumentObjectHateoasHandler documentObjectHateoasHandler,
+                                          ICorrespondencePartHateoasHandler correspondencePartHateoasHandler,
                                           IRegistryEntryHateoasHandler registryEntryHateoasHandler,
                                           ApplicationEventPublisher applicationEventPublisher) {
         this.registryEntryService = registryEntryService;
         this.documentDescriptionHateoasHandler = documentDescriptionHateoasHandler;
         this.documentObjectHateoasHandler = documentObjectHateoasHandler;
+        this.correspondencePartHateoasHandler = correspondencePartHateoasHandler;
         this.registryEntryHateoasHandler = registryEntryHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
     }
@@ -95,6 +100,47 @@ public class RegistryEntryHateoasController {
                 .eTag(createdDocumentDescription.getVersion().toString())
                 .body(documentDescriptionHateoas);
     }
+
+    // POST [contextPath][api]/arkivstruktur/journalpost/{systemId}/ny-dokumentbeskrivelse/
+    @ApiOperation(value = "Persists a DocumentDescription object associated with the given RegistryEntry systemId",
+            notes = "Returns the newly created documentDescription object after it was associated with a " +
+                    "RegistryEntry object and persisted to the database", response = DocumentDescriptionHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "DocumentDescription " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = DocumentDescriptionHateoas.class),
+            @ApiResponse(code = 201, message = "DocumentDescription " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = DocumentDescriptionHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type RegistryEntry"),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
+            SLASH + NEW_CORRESPONDENCE_PART, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    public ResponseEntity<CorrespondencePartHateoas> createCorrespondencePartAssociatedWithRegistryEntry(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "recordSystemId",
+                    value = "systemId of record/registryEntry to associate the correspondencePart with.",
+                    required = true)
+            @PathVariable String recordSystemId,
+            @ApiParam(name = "correspondencePart",
+                    value = "Incoming correspondencePart object",
+                    required = true)
+            @RequestBody CorrespondencePart correspondencePart)
+            throws NikitaException {
+        CorrespondencePart createdCorrespondencePart = registryEntryService.createCorrespondencePartAssociatedWithRegistryEntry(recordSystemId,
+                correspondencePart);
+        CorrespondencePartHateoas correspondencePartHateoas =
+                new CorrespondencePartHateoas(correspondencePart);
+        correspondencePartHateoasHandler.addLinks(correspondencePartHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdCorrespondencePart));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .eTag(createdCorrespondencePart.getVersion().toString())
+                .body(correspondencePartHateoas);
+    }
+
 
     // API - All GET Requests (CRUD - READ)
     // GET [contextPath][api]/arkivstruktur/journalpost/
