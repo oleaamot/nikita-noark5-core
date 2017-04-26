@@ -7,6 +7,8 @@ import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.hateoas.Link;
 import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.interfaces.entities.*;
+import nikita.model.noark5.v4.secondary.CorrespondencePart;
+import nikita.model.noark5.v4.secondary.PostalAddress;
 import nikita.util.exceptions.NikitaMalformedInputDataException;
 
 import java.io.IOException;
@@ -602,11 +604,18 @@ public final class CommonUtils {
                     objectNode.remove(CORRESPONDENCE_PART_NAME);
                 }
                 // Deserialize postalAddress
+                // postalAddress
                 currentNode = objectNode.get(CORRESPONDENCE_PART_POSTAL_ADDRESS);
                 if (null != currentNode) {
-                    correspondencePartEntity.setPostalAddress(currentNode.textValue());
+                    if (currentNode.isArray()) {
+                        currentNode.iterator();
+                        for (JsonNode node : currentNode) {
+                            correspondencePartEntity.addPostalAddress(node.textValue());
+                        }
+                    }
                     objectNode.remove(CORRESPONDENCE_PART_POSTAL_ADDRESS);
                 }
+
                 // Deserialize postCode
                 currentNode = objectNode.get(CORRESPONDENCE_PART_POST_CODE);
                 if (null != currentNode) {
@@ -934,60 +943,75 @@ public final class CommonUtils {
                 }
             }
 
-            public static void printCorrespondencePart(JsonGenerator jgen, ICorrespondencePart correspondencePartObject)
+            public static void printCorrespondencePart(JsonGenerator jgen, ICorrespondencePartEntity correspondencePart)
+                    throws IOException {
+                if (correspondencePart != null) {
+                    jgen.writeObjectFieldStart(CORRESPONDENCE_PART);
+
+                    if (correspondencePart.getSystemId() != null) {
+                        jgen.writeStringField(SYSTEM_ID,
+                                correspondencePart.getSystemId());
+                    }
+
+                    if (correspondencePart.getCorrespondencePartType() != null) {
+                        jgen.writeStringField(CORRESPONDENCE_PART_TYPE,
+                                correspondencePart.getCorrespondencePartType());
+                    }
+                    if (correspondencePart.getCorrespondencePartName() != null) {
+                        jgen.writeStringField(CORRESPONDENCE_PART_NAME,
+                                correspondencePart.getCorrespondencePartName());
+                    }
+                    if (correspondencePart.getPostalAddress() != null) {
+                        Set <PostalAddress> postalAddresses = correspondencePart.getPostalAddress();
+                        jgen.writeArrayFieldStart(CORRESPONDENCE_PART_POSTAL_ADDRESS);
+                        for (PostalAddress postalAddress : postalAddresses) {
+                            jgen.writeString(postalAddress.getPostalAddress());
+                        }
+                        jgen.writeEndArray();
+                    }
+                    if (correspondencePart.getPostCode() != null) {
+                        jgen.writeStringField(CORRESPONDENCE_PART_POST_CODE,
+                                correspondencePart.getPostCode());
+                    }
+                    if (correspondencePart.getPostalTown() != null) {
+                        jgen.writeStringField(CORRESPONDENCE_PART_POSTAL_TOWN,
+                                correspondencePart.getPostalTown());
+                    }
+                    if (correspondencePart.getCountry() != null) {
+                        jgen.writeStringField(CORRESPONDENCE_PART_COUNTRY,
+                                correspondencePart.getCountry());
+                    }
+                    if (correspondencePart.getEmailAddress() != null) {
+                        jgen.writeStringField(CORRESPONDENCE_PART_EMAIL_ADDRESS,
+                                correspondencePart.getEmailAddress());
+                    }
+                    if (correspondencePart.getTelephoneNumber() != null) {
+                        jgen.writeStringField(CORRESPONDENCE_PART_TELEPHONE_NUMBER,
+                                correspondencePart.getTelephoneNumber());
+                    }
+                    if (correspondencePart.getContactPerson() != null) {
+                        jgen.writeStringField(CORRESPONDENCE_PART_CONTACT_PERSON,
+                                correspondencePart.getContactPerson());
+                    }
+                    if (correspondencePart.getAdministrativeUnit() != null) {
+                        jgen.writeStringField(CORRESPONDENCE_PART_ADMINISTRATIVE_UNIT,
+                                correspondencePart.getAdministrativeUnit());
+                    }
+                    if (correspondencePart.getCaseHandler() != null) {
+                        jgen.writeStringField(CORRESPONDENCE_PART_CASE_HANDLER,
+                                correspondencePart.getCaseHandler());
+                    }
+                    jgen.writeEndObject();
+                }
+            }
+
+            public static void printCorrespondenceParts(JsonGenerator jgen, ICorrespondencePart correspondencePartObject)
                     throws IOException {
                 Set<CorrespondencePart> correspondenceParts = correspondencePartObject.getReferenceCorrespondencePart();
                 if (correspondenceParts != null && correspondenceParts.size() > 0) {
                     jgen.writeArrayFieldStart(CORRESPONDENCE_PART);
                     for (CorrespondencePart correspondencePart : correspondenceParts) {
-                        if (correspondencePart != null) {
-                            jgen.writeObjectFieldStart(CORRESPONDENCE_PART);
-                            if (correspondencePart.getCorrespondencePartType() != null) {
-                                jgen.writeStringField(CORRESPONDENCE_PART_TYPE,
-                                        correspondencePart.getCorrespondencePartType());
-                            }
-                            if (correspondencePart.getCorrespondencePartName() != null) {
-                                jgen.writeStringField(CORRESPONDENCE_PART_NAME,
-                                        correspondencePart.getCorrespondencePartName());
-                            }
-                            if (correspondencePart.getPostalAddress() != null) {
-                                jgen.writeStringField(CORRESPONDENCE_PART_POSTAL_ADDRESS,
-                                        correspondencePart.getPostalAddress());
-                            }
-                            if (correspondencePart.getPostCode() != null) {
-                                jgen.writeStringField(CORRESPONDENCE_PART_POST_CODE,
-                                        correspondencePart.getPostCode());
-                            }
-                            if (correspondencePart.getPostalTown() != null) {
-                                jgen.writeStringField(CORRESPONDENCE_PART_POSTAL_TOWN,
-                                        correspondencePart.getPostalTown());
-                            }
-                            if (correspondencePart.getCountry() != null) {
-                                jgen.writeStringField(CORRESPONDENCE_PART_COUNTRY,
-                                        correspondencePart.getCountry());
-                            }
-                            if (correspondencePart.getEmailAddress() != null) {
-                                jgen.writeStringField(CORRESPONDENCE_PART_EMAIL_ADDRESS,
-                                        correspondencePart.getEmailAddress());
-                            }
-                            if (correspondencePart.getTelephoneNumber() != null) {
-                                jgen.writeStringField(CORRESPONDENCE_PART_TELEPHONE_NUMBER,
-                                        correspondencePart.getTelephoneNumber());
-                            }
-                            if (correspondencePart.getContactPerson() != null) {
-                                jgen.writeStringField(CORRESPONDENCE_PART_CONTACT_PERSON,
-                                        correspondencePart.getContactPerson());
-                            }
-                            if (correspondencePart.getAdministrativeUnit() != null) {
-                                jgen.writeStringField(CORRESPONDENCE_PART_ADMINISTRATIVE_UNIT,
-                                        correspondencePart.getAdministrativeUnit());
-                            }
-                            if (correspondencePart.getCaseHandler() != null) {
-                                jgen.writeStringField(CORRESPONDENCE_PART_CASE_HANDLER,
-                                        correspondencePart.getCaseHandler());
-                            }
-                            jgen.writeEndObject();
-                        }
+                        printCorrespondencePart(jgen, correspondencePart);
                     }
                     jgen.writeEndArray();
                 }
@@ -1114,12 +1138,12 @@ public final class CommonUtils {
                 }
             }
 
-            public static void printAuthor(JsonGenerator jgen, IAuthor storageLocationEntity)
+            public static void printAuthor(JsonGenerator jgen, IAuthor authorEntity)
                     throws IOException {
-                Set<Author> storageLocation = storageLocationEntity.getReferenceAuthor();
-                if (storageLocation != null && storageLocation.size() > 0) {
+                Set<Author> author = authorEntity.getReferenceAuthor();
+                if (author != null && author.size() > 0) {
                     jgen.writeArrayFieldStart(AUTHOR);
-                    for (Author location : storageLocation) {
+                    for (Author location : author) {
                         if (location.getAuthor() != null) {
                             jgen.writeString(location.getAuthor());
                         }

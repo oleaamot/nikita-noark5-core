@@ -124,6 +124,7 @@ public class DocumentObjectHateoasController {
         if (documentObject == null) {
             throw new NikitaEntityNotFoundException(documentObjectSystemId);
         }
+        // if Accept is not equal to actual mimeType, 406 not acceptable.
         Resource fileResource = documentObjectService.loadAsResource(documentObject);
         response.setContentType(documentObject.getMimeType());
         response.setContentLength(documentObject.getFileSize().intValue());

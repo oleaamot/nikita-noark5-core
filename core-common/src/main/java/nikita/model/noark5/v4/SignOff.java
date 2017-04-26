@@ -1,6 +1,7 @@
 package nikita.model.noark5.v4;
 
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;

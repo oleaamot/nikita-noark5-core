@@ -137,6 +137,10 @@ public final class N5ResourceMappings {
     public static final String CORRESPONDENCE_PART_CONTACT_PERSON = "kontaktperson";
     public static final String CORRESPONDENCE_PART_ADMINISTRATIVE_UNIT = "administrativEnhet";
 
+
+    public static final String POSTAL_ADDRESS = "postadresse";
+    public static final String TELEPHONE_NUMBER = "telefonnummer";
+
     // DocumentDescription
     public static final String DOCUMENT_DESCRIPTION_ASSOCIATION_DATE = "tilknyttetDato";
     public static final String DOCUMENT_DESCRIPTION_DOCUMENT_TYPE = "dokumenttype";

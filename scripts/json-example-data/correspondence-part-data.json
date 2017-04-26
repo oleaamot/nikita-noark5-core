@@ -1,0 +1,11 @@
+{
+"korrespondanseparttype" : "Avsender",
+"korrespondansepartNavn" : "Frank Grimes",
+"postadresse" : ["Administrasjonsbygget", "Eksempelveien 1"],
+"postnummer" : "0000",
+"poststed" : "Eksempelby",
+"land" : "Norge",
+"epostadresse" : "nikita@example.com",
+"telefonnummer": ["0123456789", "9876543210"],
+"kontaktperson": ""
+}

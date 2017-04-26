@@ -3,6 +3,7 @@ package no.arkivlab.hioa.nikita.webapp.util;
 
 import nikita.model.noark5.v4.interfaces.IDocumentMedium;
 import nikita.model.noark5.v4.interfaces.entities.*;
+import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.util.exceptions.NikitaException;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -66,7 +67,6 @@ public final class NoarkUtils {
                 finaliseEntity.setFinalisedDate(null);
                 finaliseEntity.setFinalisedBy(null);
             }
-
 
             public static boolean checkDocumentMediumValid(IDocumentMedium documentMediumEntity) {
                 // Assume there will not be a valid value

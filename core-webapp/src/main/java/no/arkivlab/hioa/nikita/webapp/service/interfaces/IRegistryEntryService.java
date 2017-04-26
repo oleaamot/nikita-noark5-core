@@ -1,6 +1,6 @@
 package no.arkivlab.hioa.nikita.webapp.service.interfaces;
 
-import nikita.model.noark5.v4.CorrespondencePart;
+import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.RegistryEntry;
 

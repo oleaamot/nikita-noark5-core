@@ -1,8 +1,11 @@
-package nikita.model.noark5.v4;
+package nikita.model.noark5.v4.secondary;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.interfaces.entities.ICorrespondencePartEntity;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.deserialisers.CorrespondencePartDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -18,6 +21,7 @@ import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART;
 // Enable soft delete of CorrespondencePart
 @SQLDelete(sql="UPDATE correspondence_part SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
+@JsonDeserialize(using = CorrespondencePartDeserializer.class)
 public class CorrespondencePart implements ICorrespondencePartEntity, INoarkSystemIdEntity, INikitaEntity {
 
     private static final long serialVersionUID = 1L;
@@ -44,11 +48,6 @@ public class CorrespondencePart implements ICorrespondencePartEntity, INoarkSyst
     @Audited
     @Column(name = "correspondence_part_name")
     protected String correspondencePartName;
-
-    /** M406 - postadresse (xs:string) */
-    @Audited
-    @Column(name = "postal_address")
-    protected String postalAddress;
 
     /** M407 - postnummer (xs:string) */
     @Audited
@@ -89,15 +88,27 @@ public class CorrespondencePart implements ICorrespondencePartEntity, INoarkSyst
     @Column(name = "case_handler")
     @Audited
     protected String caseHandler;
+
     @Column(name = "owned_by")
     @Audited
     protected String ownedBy;
+
     @Version
     @Column(name = "version")
     protected Long version;
+
+    /** M406 - postadresse (xs:string), multivalued attribute */
+    @Audited
+    @Column(name = "postal_address")
+
+    // Links to PostalAddress
+    @ManyToMany(cascade=CascadeType.ALL)
+    protected Set<PostalAddress> postalAddress = new HashSet<PostalAddress>();
+
     // Links to Record
     @ManyToMany(mappedBy = "referenceCorrespondencePart")
     protected Set<RegistryEntry> referenceRegistryEntry = new HashSet<RegistryEntry>();
+
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
@@ -133,14 +144,6 @@ public class CorrespondencePart implements ICorrespondencePartEntity, INoarkSyst
 
     public void setCorrespondencePartName(String correspondencePartName) {
         this.correspondencePartName = correspondencePartName;
-    }
-
-    public String getPostalAddress() {
-        return postalAddress;
-    }
-
-    public void setPostalAddress(String postalAddress) {
-        this.postalAddress = postalAddress;
     }
 
     public String getPostCode() {
@@ -232,6 +235,23 @@ public class CorrespondencePart implements ICorrespondencePartEntity, INoarkSyst
     }
 
     @Override
+    public Set<PostalAddress> getPostalAddress() {
+        return postalAddress;
+    }
+
+    @Override
+    public void setPostalAddress(Set<PostalAddress> postalAddress) {
+        this.postalAddress = postalAddress;
+    }
+
+    @Override
+    public void addPostalAddress(String singlePostalAddress) {
+        PostalAddress postalAddress = new PostalAddress();
+        postalAddress.setPostalAddress(singlePostalAddress);
+        this.postalAddress.add(postalAddress);
+    }
+
+    @Override
     public String getBaseTypeName() {
         return CORRESPONDENCE_PART;
     }
@@ -255,7 +275,7 @@ public class CorrespondencePart implements ICorrespondencePartEntity, INoarkSyst
                 ", country='" + country + '\'' +
                 ", postalTown='" + postalTown + '\'' +
                 ", postCode='" + postCode + '\'' +
-                ", postalAddress='" + postalAddress + '\'' +
+                //", postalAddress='" + postalAddress + '\'' +
                 ", correspondencePartName='" + correspondencePartName + '\'' +
                 ", correspondencePartType='" + correspondencePartType + '\'' +
                 ", id=" + id +

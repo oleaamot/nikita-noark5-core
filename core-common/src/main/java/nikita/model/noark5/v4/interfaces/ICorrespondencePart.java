@@ -1,6 +1,6 @@
 package nikita.model.noark5.v4.interfaces;
 
-import nikita.model.noark5.v4.CorrespondencePart;
+import nikita.model.noark5.v4.secondary.CorrespondencePart;
 
 import java.util.Set;
 

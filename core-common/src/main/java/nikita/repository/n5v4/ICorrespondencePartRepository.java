@@ -1,13 +1,12 @@
 package nikita.repository.n5v4;
 
-import nikita.model.noark5.v4.CorrespondencePart;
+import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 @Repository

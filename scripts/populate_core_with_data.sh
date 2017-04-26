@@ -164,6 +164,15 @@ systemIDCreatedRegistryEntry=$(curl "${curloptsCreateRegistryEntry[@]}" | jq '.s
 #echo "${curloptsCreateRegistryEntry[@]}";
 printf "created    RegistryEntry 1     ($systemIDCreatedRegistryEntry) associated with ($systemIDCreatedCaseFile)\n";
 
+# Setup curl options for correspondencePart
+curloptsCorrespondencePart+=("${curlPostOpts[@]}");
+curloptsCorrespondencePart+=( --data @"$curl_files_dir"correspondence-part-data.json 'http://localhost:8092/noark5v4/hateoas-api/sakarkiv/journalpost/'$systemIDCreatedRegistryEntry'/ny-korrespondansepart' )
+echo "${curloptsCorrespondencePart[@]}";
+
+systemIDCreatedCorrespondencePart=$(curl "${curloptsCorrespondencePart[@]}" | jq '.systemID' | sed 's/\"//g');
+printf "created   CorrespondencePart ($systemIDCreatedCorrespondencePart) \n";
+
+
 # Create documentDescription 1 associated with a caseFile 1 / registryEntry 1 and capture systemId
 systemIDCreatedDocumentDescription=$(curl "${curloptsCreateDocumentDescription[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created     DocumentDescription ($systemIDCreatedDocumentDescription) associated with ($systemIDCreatedRegistryEntry) \n";

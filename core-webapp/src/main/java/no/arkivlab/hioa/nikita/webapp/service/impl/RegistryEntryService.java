@@ -1,9 +1,10 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
-import nikita.model.noark5.v4.CorrespondencePart;
+import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.Record;
 import nikita.model.noark5.v4.RegistryEntry;
+import nikita.model.noark5.v4.secondary.PostalAddress;
 import nikita.repository.n5v4.IRegistryEntryRepository;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRegistryEntryService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary.ICorrespondencePartService;
@@ -23,6 +24,7 @@ import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 
@@ -63,6 +65,15 @@ public class RegistryEntryService implements IRegistryEntryService {
     public CorrespondencePart createCorrespondencePartAssociatedWithRegistryEntry(
             String recordSystemId, CorrespondencePart correspondencePart) {
         RegistryEntry registryEntry = getRegistryEntryOrThrow(recordSystemId);
+        Set <PostalAddress> postalAddresss = correspondencePart.getPostalAddress();
+
+        for (PostalAddress postalAddress : postalAddresss) {
+            NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(postalAddress);
+            NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(postalAddress);
+        }
+
+        NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(correspondencePart);
+        NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(correspondencePart);
         // bidirectional relationship @ManyToMany, set both sides of relationship
         registryEntry.getReferenceCorrespondencePart().add(correspondencePart);
         correspondencePart.getReferenceRegistryEntry().add(registryEntry);

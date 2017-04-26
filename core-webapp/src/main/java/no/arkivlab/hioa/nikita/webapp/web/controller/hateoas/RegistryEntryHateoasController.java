@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
-import nikita.model.noark5.v4.CorrespondencePart;
+import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;

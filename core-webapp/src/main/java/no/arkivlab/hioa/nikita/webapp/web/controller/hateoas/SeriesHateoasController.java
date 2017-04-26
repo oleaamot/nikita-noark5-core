@@ -96,7 +96,7 @@ public class SeriesHateoasController extends NikitaController {
     }
 
     // Create a new casefile
-    // POST [contextPath][api]/arkivstruktur/arkivdel/ny-saksmappe/
+    // POST [contextPath][api]/arkivstruktur/arkivdel/{systemId}/ny-saksmappe/
     // This currently is supported in the standard, but probably will be later
     @ApiOperation(value = "Persists a CaseFile object associated with the given Series systemId", notes = "Returns " +
             "the newly created caseFile object after it was associated with a Series object and persisted to " +

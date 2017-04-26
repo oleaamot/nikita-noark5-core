@@ -1,35 +1,18 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
-import nikita.model.noark5.v4.CorrespondencePart;
-import nikita.model.noark5.v4.Series;
+import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.repository.n5v4.ICorrespondencePartRepository;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary.ICorrespondencePartService;
-import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityEditWhenClosedException;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkInvalidStructureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.List;
 
 import static nikita.config.Constants.*;
-import static nikita.config.N5ResourceMappings.STATUS_CLOSED;
-import static nikita.config.N5ResourceMappings.STATUS_OPEN;
 
 @Service
 @Transactional
@@ -55,7 +38,10 @@ public class CorrespondencePartService implements ICorrespondencePartService {
         existingCorrespondencePart.setContactPerson(incomingCorrespondencePart.getContactPerson());
         existingCorrespondencePart.setCorrespondencePartName(incomingCorrespondencePart.getCorrespondencePartName());
         existingCorrespondencePart.setCountry(incomingCorrespondencePart.getCountry());
-        existingCorrespondencePart.setPostalTown(incomingCorrespondencePart.getPostalTown());existingCorrespondencePart.setCorrespondencePartType(incomingCorrespondencePart.getCorrespondencePartType());existingCorrespondencePart.setEmailAddress(incomingCorrespondencePart.getEmailAddress());
+        existingCorrespondencePart.setPostalTown(incomingCorrespondencePart.getPostalTown());
+        existingCorrespondencePart.setTelephoneNumber(incomingCorrespondencePart.getTelephoneNumber());
+        existingCorrespondencePart.setCorrespondencePartType(incomingCorrespondencePart.getCorrespondencePartType());
+        existingCorrespondencePart.setEmailAddress(incomingCorrespondencePart.getEmailAddress());
         existingCorrespondencePart.setPostalAddress(incomingCorrespondencePart.getPostalAddress());
         existingCorrespondencePart.setPostCode(incomingCorrespondencePart.getPostCode());
         existingCorrespondencePart.setVersion(version);

@@ -2,6 +2,7 @@ package nikita.model.noark5.v4;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.*;
+import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.util.deserialisers.RegistryEntryDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -157,6 +158,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Audited
     @Field
     protected String ownedBy;
+
     // Links to CorrespondencePart
     @ManyToMany
     @JoinTable(name = "registry_entry_correspondence_part",
@@ -166,6 +168,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
                     referencedColumnName = "pk_correspondence_part_id"))
     protected Set<CorrespondencePart> referenceCorrespondencePart = new HashSet<CorrespondencePart>();
     // Links to DocumentFlow
+
     @OneToMany(mappedBy = "referenceRegistryEntry")
     protected Set<DocumentFlow> referenceDocumentFlow = new HashSet<DocumentFlow>();
     // Links to SignOff

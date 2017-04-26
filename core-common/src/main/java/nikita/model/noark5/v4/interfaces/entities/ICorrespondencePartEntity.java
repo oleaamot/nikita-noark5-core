@@ -1,11 +1,14 @@
 package nikita.model.noark5.v4.interfaces.entities;
 
+import nikita.model.noark5.v4.secondary.PostalAddress;
+
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * Created by tsodring on 1/16/17.
  */
-public interface ICorrespondencePartEntity extends Serializable {
+public interface ICorrespondencePartEntity extends INoarkSystemIdEntity, Serializable {
 
 
     String getCorrespondencePartType();
@@ -16,9 +19,11 @@ public interface ICorrespondencePartEntity extends Serializable {
 
     void setCorrespondencePartName(String correspondencePartName);
 
-    String getPostalAddress();
+    Set<PostalAddress> getPostalAddress();
 
-    void setPostalAddress(String postalAddress);
+    void setPostalAddress(Set<PostalAddress> postalAddress);
+
+    void addPostalAddress(String postalAddress);
 
     String getPostCode();
 
