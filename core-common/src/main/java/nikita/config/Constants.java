@@ -102,10 +102,10 @@ public final class Constants {
     public static final String NEW_CASE_STATUS = NEW + DASH + CASE_STATUS;
     public static final String NEW_SECONDARY_CLASSIFICATION = NEW + DASH + "sekundaerklassifikasjon";
 
-    // Create for new administrasjon objects
+    // Create for new metadata objects
     public static final String NEW_DOCUMENT_MEDIUM = NEW + DASH + DOCUMENT_MEDIUM;
     public static final String NEW_FONDS_STATUS = NEW + DASH + FONDS_STATUS;
-
+    public static final String NEW_CORRESPONDENCE_PART_TYPE = NEW + DASH + NEW_CORRESPONDENCE_PART;
 
     public static final String SERIES_ASSOCIATE_AS_SUCCESSOR = "referanseArvtager";
     public static final String SERIES_ASSOCIATE_AS_PRECURSOR = "referanseForloeper";

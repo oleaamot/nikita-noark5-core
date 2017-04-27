@@ -946,7 +946,6 @@ public final class CommonUtils {
             public static void printCorrespondencePart(JsonGenerator jgen, ICorrespondencePartEntity correspondencePart)
                     throws IOException {
                 if (correspondencePart != null) {
-                    jgen.writeObjectFieldStart(CORRESPONDENCE_PART);
 
                     if (correspondencePart.getSystemId() != null) {
                         jgen.writeStringField(SYSTEM_ID,
@@ -1001,7 +1000,6 @@ public final class CommonUtils {
                         jgen.writeStringField(CORRESPONDENCE_PART_CASE_HANDLER,
                                 correspondencePart.getCaseHandler());
                     }
-                    jgen.writeEndObject();
                 }
             }
 
@@ -1011,7 +1009,9 @@ public final class CommonUtils {
                 if (correspondenceParts != null && correspondenceParts.size() > 0) {
                     jgen.writeArrayFieldStart(CORRESPONDENCE_PART);
                     for (CorrespondencePart correspondencePart : correspondenceParts) {
+                        jgen.writeStartObject();
                         printCorrespondencePart(jgen, correspondencePart);
+                        jgen.writeEndObject();
                     }
                     jgen.writeEndArray();
                 }

@@ -10,8 +10,6 @@ import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 
 import java.io.IOException;
 
-import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART;
-
 /**
  *
  * Serialise an outgoing CorrespondencePart object as JSON.
@@ -36,6 +34,7 @@ public class CorrespondencePartHateoasSerializer extends HateoasSerializer imple
 
         jgen.writeStartObject();
         CommonUtils.Hateoas.Serialize.printCorrespondencePart(jgen, correspondencePart);
+        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, correspondencePartHateoas.getLinks(correspondencePart));
         jgen.writeEndObject();
     }
 }

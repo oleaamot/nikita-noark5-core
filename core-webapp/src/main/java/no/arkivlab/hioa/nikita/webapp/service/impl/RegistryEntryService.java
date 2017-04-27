@@ -77,7 +77,7 @@ public class RegistryEntryService implements IRegistryEntryService {
         // bidirectional relationship @ManyToMany, set both sides of relationship
         registryEntry.getReferenceCorrespondencePart().add(correspondencePart);
         correspondencePart.getReferenceRegistryEntry().add(registryEntry);
-        return (CorrespondencePart) correspondencePartService.createNewNoarkEntity(correspondencePart);
+        return (CorrespondencePart) correspondencePartService.createNewCorrespondencePart(correspondencePart);
     }
 
     @Override

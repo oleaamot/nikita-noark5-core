@@ -1,4 +1,4 @@
-package no.arkivlab.hioa.nikita.webapp.web.controller.hateoas;
+package no.arkivlab.hioa.nikita.webapp.web.controller.hateoas.sakarkiv;
 
 import com.codahale.metrics.annotation.Counted;
 import com.codahale.metrics.annotation.Timed;

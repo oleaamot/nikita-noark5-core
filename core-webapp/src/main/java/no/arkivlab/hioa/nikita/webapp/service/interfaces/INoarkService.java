@@ -8,6 +8,6 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
  */
 public interface INoarkService {
     INoarkSystemIdEntity updateNoarkEntity(String systemId, Long version, INoarkSystemIdEntity updatedEntity);
-
     INoarkSystemIdEntity createNewNoarkEntity(INoarkSystemIdEntity entity);
+    INoarkSystemIdEntity findBySystemId(String systemId);
 }

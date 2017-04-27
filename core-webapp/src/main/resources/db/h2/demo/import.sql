@@ -62,3 +62,11 @@ insert into format (pk_format_id, system_id, code, description, deleted, version
 insert into format (pk_format_id, system_id, code, description, deleted, version) values (5, 'd5063523-83a2-4e51-b8aa-925385849e33', 'RA-SOSI', 'SOSI', false, 0);
 insert into format (pk_format_id, system_id, code, description, deleted, version) values (6, '9ae48e86-3c9e-47fd-bbf2-4d9f67b7de85', 'RA-MPEG-2', 'MPEG-2', false, 0);
 insert into format (pk_format_id, system_id, code, description, deleted, version) values (7, '7412833e-ceaf-40fd-95b5-e634f4640f99', 'RA-MP3', 'MP3', false, 0);
+
+insert into correspondence_part_type (pk_correspondence_part_type_id, system_id, code, description, deleted, version) values (0, '5b4588a3-7e4d-43ae-a3a8-4033e52944c0', 'EA', 'Avsender', false, 0)
+insert into correspondence_part_type (pk_correspondence_part_type_id, system_id, code, description, deleted, version) values (1, 'c4a2097c-8cd1-496f-9cf5-bd16de1d85fe', 'EM', 'Mottaker', false, 0)
+insert into correspondence_part_type (pk_correspondence_part_type_id, system_id, code, description, deleted, version) values (2, '6c2ace2f-05b5-45c0-96da-cff41cc5b2e7', 'EK', 'Kopimottaker', false, 0)
+insert into correspondence_part_type (pk_correspondence_part_type_id, system_id, code, description, deleted, version) values (3, 'dcb06157-c8d3-4b43-a065-5cc21e80fbf6', 'GM', 'Gruppemottaker', false, 0)
+insert into correspondence_part_type (pk_correspondence_part_type_id, system_id, code, description, deleted, version) values (4, '896d5f6c-2093-492d-a531-7dd845d45808', 'IA', 'Intern avsender', false, 0)
+insert into correspondence_part_type (pk_correspondence_part_type_id, system_id, code, description, deleted, version) values (5, '77e1fbc4-e480-4e41-a97e-f429b816629e', 'IM', 'Intern mottaker', false, 0)
+insert into correspondence_part_type (pk_correspondence_part_type_id, system_id, code, description, deleted, version) values (6, '78e59b26-819c-4cf7-abe1-69fb6e457bcb', 'IK', 'Intern kopimottaker', false, 0)

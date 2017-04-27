@@ -1,4 +1,4 @@
-package no.arkivlab.hioa.nikita.webapp.web.controller.hateoas;
+package no.arkivlab.hioa.nikita.webapp.web.controller.hateoas.sakarkiv;
 
 import com.codahale.metrics.annotation.Counted;
 import com.codahale.metrics.annotation.Timed;
@@ -7,12 +7,14 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
+import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
 import nikita.model.noark5.v4.hateoas.secondary.CorrespondencePartHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentDescriptionHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
@@ -33,6 +35,7 @@ import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
+import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH + SLASH + REGISTRY_ENTRY,
@@ -168,5 +171,32 @@ public class RegistryEntryHateoasController {
                         registryEntryService.findRegistryEntryByOwnerPaginated(top, skip));
         registryEntryHateoasHandler.addLinks(registryEntryHateoas, request, new Authorisation());
         return new ResponseEntity<>(registryEntryHateoas, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Retrieves a single RegistryEntry entity given a systemId", response = RegistryEntry.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "RegistryEntry returned", response = RegistryEntry.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
+    public ResponseEntity<RegistryEntryHateoas> findOneRegistryEntryBySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the registryEntry to retrieve",
+                    required = true)
+            @PathVariable("systemID") final String registryEntrySystemId) {
+        RegistryEntry registryEntry = registryEntryService.findBySystemId(registryEntrySystemId);
+        if (registryEntry == null) {
+            throw new NikitaEntityNotFoundException(registryEntrySystemId);
+        }
+        RegistryEntryHateoas registryEntryHateoas = new
+                RegistryEntryHateoas(registryEntry);
+        registryEntryHateoasHandler.addLinks(registryEntryHateoas, request, new Authorisation());
+        return ResponseEntity.status(HttpStatus.OK)
+                .eTag(registryEntry.getVersion().toString())
+                .body(registryEntryHateoas);
     }
 }

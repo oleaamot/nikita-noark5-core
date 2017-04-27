@@ -1,8 +1,8 @@
-package no.arkivlab.hioa.nikita.webapp.service.impl;
+package no.arkivlab.hioa.nikita.webapp.service.impl.secondary;
 
 import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
-import nikita.repository.n5v4.ICorrespondencePartRepository;
+import nikita.repository.n5v4.secondary.ICorrespondencePartRepository;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary.ICorrespondencePartService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.slf4j.Logger;
@@ -19,9 +19,11 @@ import static nikita.config.Constants.*;
 public class CorrespondencePartService implements ICorrespondencePartService {
 
     private static final Logger logger = LoggerFactory.getLogger(CorrespondencePartService.class);
+
     // TODO: Trying to pick up property from yaml file, but not working ...
     //@Value("${nikita-noark5-core.pagination.maxPageSize}")
     Integer maxPageSize = new Integer(10);
+
     private ICorrespondencePartRepository correspondencePartRepository;
 
     public CorrespondencePartService(ICorrespondencePartRepository correspondencePartRepository) {
@@ -29,10 +31,9 @@ public class CorrespondencePartService implements ICorrespondencePartService {
     }
 
     @Override
-    public INoarkSystemIdEntity updateNoarkEntity(String systemId, Long version, INoarkSystemIdEntity noarkSystemIdEntity) {
+    public CorrespondencePart updateCorrespondencePart(String systemId, Long version, CorrespondencePart incomingCorrespondencePart) {
         CorrespondencePart existingCorrespondencePart = getCorrespondencePartOrThrow(systemId);
         // Copy all the values you are allowed to copy ....
-        CorrespondencePart incomingCorrespondencePart = (CorrespondencePart) noarkSystemIdEntity;
         existingCorrespondencePart.setAdministrativeUnit(incomingCorrespondencePart.getAdministrativeUnit());
         existingCorrespondencePart.setCaseHandler(incomingCorrespondencePart.getCaseHandler());
         existingCorrespondencePart.setContactPerson(incomingCorrespondencePart.getContactPerson());
@@ -50,9 +51,15 @@ public class CorrespondencePartService implements ICorrespondencePartService {
     }
 
     @Override
-    public INoarkSystemIdEntity createNewNoarkEntity(INoarkSystemIdEntity entity) {
-        return correspondencePartRepository.save((CorrespondencePart)entity);
+    public CorrespondencePart createNewCorrespondencePart(CorrespondencePart entity) {
+        return correspondencePartRepository.save(entity);
     }
+
+    @Override
+    public CorrespondencePart findBySystemId(String correspondencePartSystemId) {
+        return correspondencePartRepository.findBySystemId(correspondencePartSystemId);
+    }
+
 
     /**
      * Internal helper method. Rather than having a find and try catch in multiple methods, we have it here once.
