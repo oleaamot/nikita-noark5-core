@@ -12,6 +12,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
@@ -32,7 +33,10 @@ public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000");
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods(RequestMethod.POST.toString(), RequestMethod.GET.toString(),
+                                RequestMethod.PUT.toString(), RequestMethod.DELETE.toString(),
+                                RequestMethod.OPTIONS.toString(), RequestMethod.HEAD.toString());
     }
 
     /**
