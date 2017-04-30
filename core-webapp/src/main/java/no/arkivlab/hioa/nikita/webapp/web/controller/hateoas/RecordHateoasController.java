@@ -13,6 +13,7 @@ import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
 import nikita.model.noark5.v4.hateoas.RecordHateoas;
 import nikita.model.noark5.v4.hateoas.SeriesHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentDescriptionHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
@@ -404,10 +405,13 @@ public class RecordHateoasController {
                     value = "systemID of the record to retrieve",
                     required = true)
             @PathVariable("systemID") final String recordSystemId) {
-        RecordHateoas recordHateoas = new
-                RecordHateoas(recordService.findBySystemId(recordSystemId));
+        Record record = recordService.findBySystemId(recordSystemId);
+        RecordHateoas recordHateoas = new RecordHateoas(record);
         recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
-        return new ResponseEntity<>(recordHateoas, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .eTag(record.getVersion().toString())
+                .body(recordHateoas);
     }
 
     // Retrieve all Records
@@ -435,7 +439,9 @@ public class RecordHateoasController {
         RecordHateoas recordHateoas = new RecordHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
                 recordService.findRecordByOwnerPaginated(top, skip));
         recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
-        return new ResponseEntity<>(recordHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(recordHateoas);
     }
 
     // Retrieve all secondary Series associated with a Record
@@ -487,7 +493,9 @@ public class RecordHateoasController {
         DocumentDescriptionHateoas documentDescriptionHateoas = new
                 DocumentDescriptionHateoas(defaultDocumentDescription);
         documentDescriptionHateoasHandler.addLinksOnNew(documentDescriptionHateoas, request, new Authorisation());
-        return new ResponseEntity<>(documentDescriptionHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(documentDescriptionHateoas);
     }
 
     // Create a DocumentObject with default values
@@ -514,7 +522,9 @@ public class RecordHateoasController {
         DocumentObjectHateoas documentObjectHateoas = new
                 DocumentObjectHateoas(defaultDocumentObject);
         documentObjectHateoasHandler.addLinksOnNew(documentObjectHateoas, request, new Authorisation());
-        return new ResponseEntity<>(documentObjectHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(documentObjectHateoas);
     }
 
     // Retrieve all DocumentDescriptions associated with a Record identified by systemId
@@ -543,6 +553,8 @@ public class RecordHateoasController {
         DocumentDescriptionHateoas documentDescriptionHateoas = new
                 DocumentDescriptionHateoas(new ArrayList<>(record.getReferenceDocumentDescription()));
         documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
-        return new ResponseEntity<>(documentDescriptionHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(documentDescriptionHateoas);
     }
 }

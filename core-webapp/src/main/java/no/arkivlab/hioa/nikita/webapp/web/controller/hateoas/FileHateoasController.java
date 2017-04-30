@@ -12,6 +12,7 @@ import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.hateoas.*;
 import nikita.model.noark5.v4.interfaces.entities.ICrossReferenceEntity;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IBasicRecordHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFileHateoasHandler;
@@ -94,6 +95,7 @@ public class FileHateoasController {
         recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdRecord));
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdRecord.getVersion().toString())
                 .body(recordHateoas);
     }
@@ -133,6 +135,7 @@ public class FileHateoasController {
         basicRecordHateoasHandler.addLinks(basicRecordHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdBasicRecord));
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdBasicRecord.getVersion().toString())
                 .body(basicRecordHateoas);
     }
@@ -392,7 +395,9 @@ public class FileHateoasController {
         RecordHateoas recordHateoas = new
                 RecordHateoas(new ArrayList<> (file.getReferenceRecord()));
         recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
-        return new ResponseEntity<>(recordHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(recordHateoas);
     }
 
     // Retrieve all BasicRecords associated with File identified by systemId
@@ -462,7 +467,9 @@ public class FileHateoasController {
         RecordHateoas recordHateoas = new
                 RecordHateoas(defaultRecord);
         recordHateoasHandler.addLinksOnNew(recordHateoas, request, new Authorisation());
-        return new ResponseEntity<>(recordHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(recordHateoas);
     }
 
     // Create a BasicRecord with default values
@@ -486,7 +493,9 @@ public class FileHateoasController {
         BasicRecordHateoas basicRecordHateoas = new
                 BasicRecordHateoas(defaultBasicRecord);
         basicRecordHateoasHandler.addLinksOnNew(basicRecordHateoas, request, new Authorisation());
-        return new ResponseEntity<>(basicRecordHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(basicRecordHateoas);
     }
 
     // Retrieve a file identified by a systemId
@@ -511,6 +520,7 @@ public class FileHateoasController {
         FileHateoas fileHateoas = new FileHateoas(file);
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(file.getVersion().toString())
                 .body(fileHateoas);
     }
@@ -540,7 +550,9 @@ public class FileHateoasController {
                 FileHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
                 fileService.findFileByOwnerPaginated(top, skip));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
-        return new ResponseEntity<>(fileHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(fileHateoas);
     }
 
     // Retrieve all Comments associated with a File

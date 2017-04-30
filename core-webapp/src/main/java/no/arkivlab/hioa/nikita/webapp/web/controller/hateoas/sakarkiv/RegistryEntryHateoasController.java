@@ -14,6 +14,7 @@ import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
 import nikita.model.noark5.v4.hateoas.secondary.CorrespondencePartHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentDescriptionHateoasHandler;
@@ -100,6 +101,7 @@ public class RegistryEntryHateoasController {
         documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdDocumentDescription));
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdDocumentDescription.getVersion().toString())
                 .body(documentDescriptionHateoas);
     }
@@ -140,6 +142,7 @@ public class RegistryEntryHateoasController {
         correspondencePartHateoasHandler.addLinks(correspondencePartHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdCorrespondencePart));
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdCorrespondencePart.getVersion().toString())
                 .body(correspondencePartHateoas);
     }
@@ -170,7 +173,9 @@ public class RegistryEntryHateoasController {
                 (ArrayList<INoarkSystemIdEntity>) (ArrayList)
                         registryEntryService.findRegistryEntryByOwnerPaginated(top, skip));
         registryEntryHateoasHandler.addLinks(registryEntryHateoas, request, new Authorisation());
-        return new ResponseEntity<>(registryEntryHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(registryEntryHateoas);
     }
 
     @ApiOperation(value = "Retrieves a single RegistryEntry entity given a systemId", response = RegistryEntry.class)
@@ -196,7 +201,9 @@ public class RegistryEntryHateoasController {
                 RegistryEntryHateoas(registryEntry);
         registryEntryHateoasHandler.addLinks(registryEntryHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(registryEntry.getVersion().toString())
                 .body(registryEntryHateoas);
+
     }
 }

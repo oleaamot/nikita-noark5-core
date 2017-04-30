@@ -1,12 +1,29 @@
 package no.arkivlab.hioa.nikita.webapp.run;
 
+import nikita.util.CommonUtils;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import static java.lang.System.out;
+import static nikita.config.Constants.SLASH;
 
 /**
  * Create som basic data if application is in demo mode
@@ -14,33 +31,69 @@ import java.util.Arrays;
 @Component
 public class AfterApplicationStartup {
 
-    @Autowired
-    private Environment environment;
+    private static final Logger logger = LoggerFactory.getLogger(AfterApplicationStartup.class);
+    private final RequestMappingHandlerMapping handlerMapping;
 
-    @Autowired
-    IFondsService fondsService;
+    public AfterApplicationStartup(@Qualifier("requestMappingHandlerMapping") RequestMappingHandlerMapping handlerMapping) {
+        this.handlerMapping = handlerMapping;
+    }
 
-    @Autowired
-    ISeriesService seriesService;
-
+    /**
+     * afterApplicationStarts, go through list of endpoints and make a list of endpoints and
+     * the HTTP methods they support.
+     *
+     */
     public void afterApplicationStarts() {
 
-        String [] activeProfiles = environment.getActiveProfiles();
+        for(Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMapping.getHandlerMethods().entrySet()) {
 
-        if (Arrays.asList(activeProfiles).contains("demo") == true){
-            // Create a fonds object to be persisted to the database via fondsService
-/*            Fonds fonds = new Fonds();
-            fonds.setTitle(Constants.TEST_TITLE);
-            fonds.setDocumentMedium(N5ResourceMappings.DOCUMENT_MEDIUM_ELECTRONIC);
-            Fonds persistedFonds = fondsService.saveWithOwner(fonds, "admin");
+            RequestMappingInfo requestMappingInfo = entry.getKey();
+            String servletPath = requestMappingInfo.getPatternsCondition().toString();
 
-            // Create a series object to be persisted to the database via seriesService
-            Series series = new Series();
-            series.setTitle(Constants.TEST_TITLE);
-            series.setDocumentMedium(N5ResourceMappings.DOCUMENT_MEDIUM_ELECTRONIC);
-            series.setReferenceFonds(persistedFonds);
-            seriesService.saveWithOwner(series, "admin");
-            */
+            // servletPath starts with "[" and ends with "]". Removing them if they are there
+            if (true == servletPath.startsWith("[")) {
+                servletPath = servletPath.substring(1);
+            }
+            if (true == servletPath.endsWith("]")) {
+                servletPath = servletPath.substring(0, servletPath.length()-1);
+            }
+
+            // Adding a trailing slash as the incoming request may or may not have it
+            // This is done to be consist on a lookup
+            if (false == servletPath.endsWith("/")) {
+                servletPath += SLASH;
+            }
+
+            Set<RequestMethod> httpMethodRequests = requestMappingInfo.getMethodsCondition().getMethods();
+            if (null != httpMethodRequests && null != servletPath) {
+                // RequestMethod and HTTPMethod are different types, have to convert them here
+                Set <HttpMethod> httpMethods = new HashSet<>();
+                for (RequestMethod requestMethod: httpMethodRequests) {
+                    if (requestMethod.equals(requestMethod.GET)) {
+                        httpMethods.add(HttpMethod.GET);
+                    } else if (requestMethod.equals(requestMethod.DELETE)) {
+                        httpMethods.add(HttpMethod.DELETE);
+                    } else if (requestMethod.equals(requestMethod.OPTIONS)) {
+                        httpMethods.add(HttpMethod.OPTIONS);
+                    } else if (requestMethod.equals(requestMethod.HEAD)) {
+                        httpMethods.add(HttpMethod.HEAD);
+                    } else if (requestMethod.equals(requestMethod.PATCH)) {
+                        httpMethods.add(HttpMethod.PATCH);
+                    }else if (requestMethod.equals(requestMethod.POST)) {
+                        httpMethods.add(HttpMethod.POST);
+                    } else if (requestMethod.equals(requestMethod.PUT)) {
+                        httpMethods.add(HttpMethod.PUT);
+                    }else if (requestMethod.equals(requestMethod.TRACE)) {
+                        httpMethods.add(HttpMethod.TRACE);
+                    }
+                }
+                out.println("Adding " + servletPath + " methods " + httpMethods );
+                CommonUtils.WebUtils.addRequestToMethodMap(servletPath, httpMethods);
+            } else {
+                logger.warn("Missing HTTP Methods for the following servletPath [" + servletPath + "]");
+            }
         }
+
     }
+
 }

@@ -108,7 +108,7 @@ public class RegistryEntryHateoasSerializer extends HateoasSerializer implements
         CommonUtils.Hateoas.Serialize.printCorrespondenceParts(jgen, registryEntry);
         CommonUtils.Hateoas.Serialize.printSignOff(jgen, registryEntry);
         CommonUtils.Hateoas.Serialize.printDocumentFlow(jgen, registryEntry);
-        CommonUtils.Hateoas.Serialize.printPrecedence(jgen, registryEntry);
+        //CommonUtils.Hateoas.Serialize.printPrecedence(jgen, registryEntry);
         CommonUtils.Hateoas.Serialize.printElectronicSignature(jgen, registryEntry);
         CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, registryEntryHateoas.getLinks(registryEntry));
         jgen.writeEndObject();

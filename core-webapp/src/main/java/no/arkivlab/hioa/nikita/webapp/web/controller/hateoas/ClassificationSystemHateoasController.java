@@ -11,6 +11,7 @@ import nikita.model.noark5.v4.ClassificationSystem;
 import nikita.model.noark5.v4.hateoas.ClassHateoas;
 import nikita.model.noark5.v4.hateoas.ClassificationSystemHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassHateoasHandler;
@@ -84,6 +85,7 @@ public class ClassificationSystemHateoasController {
         classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdClassificationSystem));
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdClassificationSystem.getVersion().toString())
                 .body(classificationSystemHateoas);
     }
@@ -123,6 +125,7 @@ public class ClassificationSystemHateoasController {
         classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdClass));
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdClass.getVersion().toString())
                 .body(classHateoas);
     }
@@ -143,6 +146,7 @@ public class ClassificationSystemHateoasController {
         ClassificationSystemHateoas classificationSystemHateoas = new ClassificationSystemHateoas(classificationSystem);
         classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(classificationSystem.getVersion().toString())
                 .body(classificationSystemHateoas);
     }
@@ -170,6 +174,8 @@ public class ClassificationSystemHateoasController {
                 ClassificationSystemHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
                 classificationSystemService.findClassificationSystemByOwnerPaginated(top, skip));
         classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, request, new Authorisation());
-        return new ResponseEntity<>(classificationSystemHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(classificationSystemHateoas);
     }
 }

@@ -19,6 +19,8 @@ spring:
         name: HiOA Noark 5 Core (Demo mode)
     profiles:
         active: demo
+    mvc:
+      dispatch-options-request: true
     devtools:
         restart:
             enabled: true

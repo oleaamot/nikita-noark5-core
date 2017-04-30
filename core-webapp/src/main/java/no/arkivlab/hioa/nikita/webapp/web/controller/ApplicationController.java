@@ -1,22 +1,35 @@
 package no.arkivlab.hioa.nikita.webapp.web.controller;
 
 import com.codahale.metrics.annotation.Counted;
+import groovy.util.MapEntry;
 import io.swagger.annotations.Api;
+import nikita.util.CommonUtils;
 import no.arkivlab.hioa.nikita.webapp.model.application.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.actuate.endpoint.Endpoint;
+import org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
+import org.springframework.web.servlet.mvc.condition.RequestMethodsRequestCondition;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.security.PermitAll;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
+import java.util.*;
 
+import static java.lang.System.out;
 import static nikita.config.Constants.*;
 
 /**
@@ -36,9 +49,10 @@ public class ApplicationController {
      */
     // API - All GET Requests (CRUD - READ)
     @Counted
-    @RequestMapping(method = RequestMethod.GET)
+    @CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET, RequestMethod.OPTIONS})
+    @RequestMapping(method = {RequestMethod.GET})
     @ResponseBody
-    public ResponseEntity <ApplicationDetails> identify() {
+    public ResponseEntity <ApplicationDetails> identify(HttpServletRequest request) {
         ApplicationDetails applicationDetails;
         ArrayList<ConformityLevel> conformityLevels = new ArrayList(10);
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -53,28 +67,36 @@ public class ApplicationController {
         addLoginInformation(conformityLevels);
 
         applicationDetails = new ApplicationDetails(conformityLevels);
-        return new ResponseEntity <> (applicationDetails, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(applicationDetails);
     }
 
     @Counted
     @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH, method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<FondsStructureDetails> fondsStructure() {
-        return new ResponseEntity<>(new FondsStructureDetails(), HttpStatus.OK);
+    public ResponseEntity<FondsStructureDetails> fondsStructure(HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(new FondsStructureDetails());
     }
 
     @Counted
     @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH, method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<MetadataDetails> metadataPath() {
-        return new ResponseEntity<>(new MetadataDetails(), HttpStatus.OK);
+    public ResponseEntity<MetadataDetails> metadataPath(HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(new MetadataDetails());
     }
 
     @Counted
     @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH, method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<CaseHandlingDetails> caseHandling() {
-        return new ResponseEntity<>(new CaseHandlingDetails(), HttpStatus.OK);
+    public ResponseEntity<CaseHandlingDetails> caseHandling(HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(new CaseHandlingDetails());
     }
 
     /**

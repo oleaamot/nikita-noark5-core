@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiResponses;
 import nikita.model.noark5.v4.DocumentObject;
 import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
@@ -73,6 +74,7 @@ public class DocumentObjectHateoasController {
                 DocumentObjectHateoas(createdDocumentObject);
         documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdDocumentObject.getVersion().toString())
                 .body(documentObjectHateoas);
     }
@@ -100,7 +102,9 @@ public class DocumentObjectHateoasController {
                 DocumentObjectHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
                 documentObjectService.findDocumentObjectByOwnerPaginated(top, skip));
         documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
-        return new ResponseEntity<>(documentObjectHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(documentObjectHateoas);
     }
 
     @ApiOperation(value = "Downloads a file associated with the documentObject identified by a systemId",

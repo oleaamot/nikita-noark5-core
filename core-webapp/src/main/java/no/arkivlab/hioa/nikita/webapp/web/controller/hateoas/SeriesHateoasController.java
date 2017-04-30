@@ -6,6 +6,7 @@ import io.swagger.annotations.*;
 import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.hateoas.*;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ICaseFileHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFileHateoasHandler;
@@ -91,6 +92,7 @@ public class SeriesHateoasController extends NikitaController {
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdFile));
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdFile.getVersion().toString())
                 .body(fileHateoas);
     }
@@ -130,6 +132,7 @@ public class SeriesHateoasController extends NikitaController {
         caseFileHateoasHandler.addLinks(caseFileHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdCaseFile));
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdCaseFile.getVersion().toString())
                 .body(caseFileHateoas);
     }
@@ -325,6 +328,7 @@ public class SeriesHateoasController extends NikitaController {
                 SeriesHateoas(series);
         seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(series.getVersion().toString())
                 .body(seriesHateoas);
     }
@@ -353,7 +357,9 @@ public class SeriesHateoasController extends NikitaController {
         FileHateoas fileHateoas = new
                 FileHateoas(defaultFile);
         fileHateoasHandler.addLinksOnNew(fileHateoas, request, new Authorisation());
-        return new ResponseEntity<>(fileHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(fileHateoas);
     }
 
     // Create a CaseFile object with default values
@@ -387,7 +393,9 @@ public class SeriesHateoasController extends NikitaController {
         CaseFileHateoas caseFileHateoas = new
                 CaseFileHateoas(defaultCaseFile);
         caseFileHateoasHandler.addLinksOnNew(caseFileHateoas, request, new Authorisation());
-        return new ResponseEntity<>(caseFileHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(caseFileHateoas);
     }
 
     // Retrieve the precursor to a Series given a systemId
@@ -547,7 +555,9 @@ public class SeriesHateoasController extends NikitaController {
                 SeriesHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
                 seriesService.findSeriesByOwnerPaginated(top, skip));
         seriesHateoasHandler.addLinksOnRead(seriesHateoas, request, new Authorisation());
-        return new ResponseEntity<>(seriesHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(seriesHateoas);
     }
 
     // Retrieve all Records associated with a Series (paginated)
@@ -614,7 +624,9 @@ public class SeriesHateoasController extends NikitaController {
         }
         FileHateoas fileHateoas = new FileHateoas(new ArrayList<> (series.getReferenceFile()));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
-        return new ResponseEntity<>(fileHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(fileHateoas);
     }
 
     // Retrieve all CaseFiles associated with a Series (paginated)

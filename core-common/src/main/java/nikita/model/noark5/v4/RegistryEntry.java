@@ -3,6 +3,7 @@ package nikita.model.noark5.v4;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.secondary.CorrespondencePart;
+import nikita.model.noark5.v4.secondary.Precedence;
 import nikita.util.deserialisers.RegistryEntryDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;

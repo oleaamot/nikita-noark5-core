@@ -10,6 +10,7 @@ import nikita.config.Constants;
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.hateoas.ClassHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassHateoasHandler;
@@ -81,6 +82,7 @@ public class ClassHateoasController {
         classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdClass));
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdClass.getVersion().toString())
                 .body(classHateoas);
     }
@@ -102,6 +104,7 @@ public class ClassHateoasController {
         classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .eTag(klass.getVersion().toString())
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(classHateoas);
     }
 
@@ -128,6 +131,8 @@ public class ClassHateoasController {
                 ClassHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
                 classService.findClassByOwnerPaginated(top, skip));
         classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
-        return new ResponseEntity<>(classHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(classHateoas);
     }
 }

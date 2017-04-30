@@ -1,5 +1,7 @@
-package nikita.model.noark5.v4;
+package nikita.model.noark5.v4.secondary;
 
+import nikita.model.noark5.v4.CaseFile;
+import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.model.noark5.v4.interfaces.entities.IPrecedenceEntity;
 import org.hibernate.annotations.SQLDelete;

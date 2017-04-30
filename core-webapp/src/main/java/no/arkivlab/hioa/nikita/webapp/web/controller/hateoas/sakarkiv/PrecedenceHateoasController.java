@@ -7,12 +7,11 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
-import nikita.model.noark5.v4.hateoas.secondary.CorrespondencePartHateoas;
-import nikita.model.noark5.v4.secondary.CorrespondencePart;
-import nikita.util.CommonUtils;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.secondary.ICorrespondencePartHateoasHandler;
+import nikita.model.noark5.v4.hateoas.secondary.PrecedenceHateoas;
+import nikita.model.noark5.v4.secondary.Precedence;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.secondary.IPrecedenceHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
-import no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary.ICorrespondencePartService;
+//import no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary.IPrecedenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,21 +34,21 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH + SLASH + CORRESPONDENCE_PART,
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
-public class CorrespondencePartHateoasController {
+public class PrecedenceHateoasController {
+/*
+    IPrecedenceHateoasHandler precedenceHateoasHandler;
+    IPrecedenceService precedenceService;
 
-    ICorrespondencePartHateoasHandler correspondencePartHateoasHandler;
-    ICorrespondencePartService correspondencePartService;
-
-    public CorrespondencePartHateoasController(ICorrespondencePartHateoasHandler correspondencePartHateoasHandler,
-                                               ICorrespondencePartService correspondencePartService) {
-        this.correspondencePartHateoasHandler = correspondencePartHateoasHandler;
-        this.correspondencePartService = correspondencePartService;
+    public PrecedenceHateoasController(IPrecedenceHateoasHandler precedenceHateoasHandler,
+                                       IPrecedenceService precedenceService) {
+        this.precedenceHateoasHandler = precedenceHateoasHandler;
+        this.precedenceService = precedenceService;
     }
 
     // API - All GET Requests (CRUD - READ)
-    @ApiOperation(value = "Retrieves a single CorrespondencePart entity given a systemId", response = CorrespondencePart.class)
+    @ApiOperation(value = "Retrieves a single Precedence entity given a systemId", response = Precedence.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "CorrespondencePart returned", response = CorrespondencePart.class),
+            @ApiResponse(code = 200, message = "Precedence returned", response = Precedence.class),
             @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
@@ -57,19 +56,18 @@ public class CorrespondencePartHateoasController {
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.GET)
-    public ResponseEntity<CorrespondencePartHateoas> findOneCorrespondencePartBySystemId(
+    public ResponseEntity<PrecedenceHateoas> findOnePrecedenceBySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
-                    value = "systemID of the correspondencePart to retrieve",
+                    value = "systemID of the precedence to retrieve",
                     required = true)
-            @PathVariable("systemID") final String correspondencePartSystemId) {
-        CorrespondencePart correspondencePart = correspondencePartService.findBySystemId(correspondencePartSystemId);
-        CorrespondencePartHateoas correspondencePartHateoas = new CorrespondencePartHateoas(correspondencePart);
-        correspondencePartHateoasHandler.addLinks(correspondencePartHateoas, request, new Authorisation());
+            @PathVariable("systemID") final String precedenceSystemId) {
+        Precedence precedence = precedenceService.findBySystemId(precedenceSystemId);
+        PrecedenceHateoas precedenceHateoas = new PrecedenceHateoas(precedence);
+        precedenceHateoasHandler.addLinks(precedenceHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
-                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
-                .eTag(correspondencePart.getVersion().toString())
-                .body(correspondencePartHateoas);
+                .eTag(precedence.getVersion().toString())
+                .body(precedenceHateoas);
     }
-
+*/
 }

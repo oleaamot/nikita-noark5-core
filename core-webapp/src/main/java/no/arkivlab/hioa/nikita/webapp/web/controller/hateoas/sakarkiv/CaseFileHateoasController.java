@@ -12,6 +12,7 @@ import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.hateoas.CaseFileHateoas;
 import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ICaseFileHateoasHandler;
@@ -74,6 +75,7 @@ public class CaseFileHateoasController {
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS
             + SLASH + NEW_REGISTRY_ENTRY, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<RegistryEntryHateoas> createRegistryEntryAssociatedWithFile(
+            HttpServletRequest request,
             @ApiParam(name = "fileSystemId",
                     value = "systemId of file to associate the record with",
                     required = true)
@@ -87,6 +89,7 @@ public class CaseFileHateoasController {
         RegistryEntryHateoas registryEntryHateoas = new RegistryEntryHateoas(createdRegistryEntry);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdRegistryEntry));
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdRegistryEntry.getVersion().toString())
                 .body(registryEntryHateoas);
     }
@@ -115,7 +118,9 @@ public class CaseFileHateoasController {
         RegistryEntryHateoas registryEntryHateoas = new
                 RegistryEntryHateoas(defaultRegistryEntry);
         registryEntryHateoasHandler.addLinksOnNew(registryEntryHateoas, request, new Authorisation());
-        return new ResponseEntity<>(registryEntryHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(registryEntryHateoas);
     }
 
     @ApiOperation(value = "Retrieves a single CaseFile entity given a systemId", response = CaseFile.class)
@@ -141,6 +146,7 @@ public class CaseFileHateoasController {
                 CaseFileHateoas(caseFile);
         caseFileHateoasHandler.addLinks(caseFileHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(caseFile.getVersion().toString())
                 .body(caseFileHateoas);
     }
@@ -169,6 +175,8 @@ public class CaseFileHateoasController {
                 caseFileService.findCaseFileByOwnerPaginated(top, skip));
 
         caseFileHateoasHandler.addLinks(caseFileHateoas, request, new Authorisation());
-        return new ResponseEntity<>(caseFileHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(caseFileHateoas);
     }
 }

@@ -1,6 +1,6 @@
 package nikita.model.noark5.v4.interfaces;
 
-import nikita.model.noark5.v4.Precedence;
+import nikita.model.noark5.v4.secondary.Precedence;
 
 import java.util.Set;
 

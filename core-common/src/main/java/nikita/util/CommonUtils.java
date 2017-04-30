@@ -9,24 +9,105 @@ import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.interfaces.entities.*;
 import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.model.noark5.v4.secondary.PostalAddress;
+import nikita.model.noark5.v4.secondary.Precedence;
+import nikita.util.exceptions.NikitaException;
 import nikita.util.exceptions.NikitaMalformedInputDataException;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.http.HttpMethod.*;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static nikita.config.Constants.*;
 import static nikita.config.HATEOASConstants.*;
 import static nikita.config.N5ResourceMappings.*;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.HEAD;
 
 public final class CommonUtils {
+
+    /**
+     * Holds a list of serlvetPaths and their HTTP methods
+     */
+    private static Map<String, Set<HttpMethod>> requestMethodMap = new HashMap<>();
 
     private final static String[] documentMedium = {DOCUMENT_MEDIUM_ELECTRONIC, DOCUMENT_MEDIUM_PHYSICAL,
             DOCUMENT_MEDIUM_MIXED};
 
     // You shall not instantiate me!
     private CommonUtils() {
+    }
+
+
+    public static final class WebUtils {
+
+        /**
+         * requestMethodMap maps servletPaths to HTTP methods. If a particular
+         * servletPath supports
+         * <p>
+         * As servletPaths and corresponding methods are added they are formatted into a proper
+         * Allows description. An example /hateaoas-api/arkivstruktur/ny-arkivskaper supports both
+         * GET and POST. Therefore the mapping of /hateaoas-api/arkivstruktur/ny-arkivskaper to its
+         * methods should be GET, HEAD, POST
+         * <p>
+         * Note GET automatically implies support for HEAD. Added.
+         * <p>
+         * Consider adding a list of allowed HTTP methods, but assuming spring will return allowed methods
+         *
+         * @param servletPath The incoming servletPath e.g. /hateoas-api/arkivstruktur/
+         * @param method      An instance of a single HTTP method
+         */
+        public static void addRequestToMethodMap(@NotNull String servletPath, @NotNull Set<HttpMethod> method) {
+
+            Set <HttpMethod> methods = requestMethodMap.get(servletPath);
+            if (null == methods) {
+                methods = new HashSet<>();
+            }
+
+            // GET automatically implies HEAD
+            if (method.contains(GET)) {
+                methods.add(GET);
+                methods.add(HEAD);
+            }
+            methods.addAll(method);
+            requestMethodMap.put(servletPath, methods);
+        }
+
+        /**
+         * Provides the ability to throw an Exception if this call fails.
+         * This is just a helper to make the code more readable in other places.
+         * @param servletPath
+         */
+        public static HttpMethod[]  getMethodsForRequestOrThrow(@NotNull String servletPath) {
+            // Adding a trailing slash as the map is setup with a trailing slash
+            if (false == servletPath.endsWith("/")) {
+                servletPath += SLASH;
+            }
+            //Next, we have to replace any occurences of an actual UUID with the word systemID
+
+            // The following pattern is taken from
+            // https://stackoverflow.com/questions/136505/searching-for-uuids-in-text-with-regex#6640851
+            Pattern pattern = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
+            Matcher matcher = pattern.matcher(servletPath.toLowerCase());
+            String updatedServletPath = matcher.replaceFirst(LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS);
+
+            Set <HttpMethod> methods = requestMethodMap.get(updatedServletPath);
+            if (null == methods) {
+                throw new NikitaException("Error servletPath [" + servletPath + "] has no known HTTP methods");
+            }
+            return methods.toArray(new HttpMethod[methods.size()]);
+        }
+
+        public static Set <HttpMethod> getMethodsForRequest(@NotNull String servletPath) {
+            return requestMethodMap.get(servletPath);
+        }
+
     }
 
     public static final class Hateoas {
@@ -961,7 +1042,7 @@ public final class CommonUtils {
                                 correspondencePart.getCorrespondencePartName());
                     }
                     if (correspondencePart.getPostalAddress() != null) {
-                        Set <PostalAddress> postalAddresses = correspondencePart.getPostalAddress();
+                        Set<PostalAddress> postalAddresses = correspondencePart.getPostalAddress();
                         jgen.writeArrayFieldStart(CORRESPONDENCE_PART_POSTAL_ADDRESS);
                         for (PostalAddress postalAddress : postalAddresses) {
                             jgen.writeString(postalAddress.getPostalAddress());
@@ -1081,58 +1162,58 @@ public final class CommonUtils {
                 }
             }
 
-            public static void printPrecedence(JsonGenerator jgen, IPrecedence precedenceObject)
+            public static void printPrecedence(JsonGenerator jgen, IPrecedenceEntity precedence) throws IOException {
+                if (precedence != null) {
+                    if (null != precedence.getPrecedenceDate()) {
+                        jgen.writeStringField(PRECEDENCE_DATE, DATE_FORMAT.format(precedence.getPrecedenceDate()));
+                    }
+                    if (null != precedence.getCreatedDate()) {
+                        jgen.writeStringField(CREATED_DATE, DATE_TIME_FORMAT.format(precedence.getCreatedDate()));
+                    }
+                    if (null != precedence.getCreatedBy()) {
+                        jgen.writeStringField(CREATED_BY, precedence.getCreatedBy());
+                    }
+                    if (null != precedence.getTitle()) {
+                        jgen.writeStringField(TITLE, precedence.getTitle());
+                    }
+                    if (null != precedence.getDescription()) {
+                        jgen.writeStringField(DESCRIPTION, precedence.getDescription());
+                    }
+                    if (null != precedence.getPrecedenceAuthority()) {
+                        jgen.writeStringField(PRECEDENCE_AUTHORITY, precedence.getPrecedenceAuthority());
+                    }
+                    if (null != precedence.getSourceOfLaw()) {
+                        jgen.writeStringField(PRECEDENCE_SOURCE_OF_LAW, precedence.getSourceOfLaw());
+                    }
+                    if (null != precedence.getPrecedenceApprovedDate()) {
+                        jgen.writeStringField(PRECEDENCE_APPROVED_DATE, DATE_FORMAT.format(
+                                precedence.getPrecedenceApprovedDate()));
+                    }
+                    if (null != precedence.getPrecedenceApprovedBy()) {
+                        jgen.writeStringField(PRECEDENCE_APPROVED_BY, precedence.getPrecedenceApprovedBy());
+                    }
+                    if (null != precedence.getFinalisedDate()) {
+                        jgen.writeStringField(FINALISED_DATE, DATE_TIME_FORMAT.format(
+                                precedence.getFinalisedDate()));
+                    }
+                    if (null != precedence.getFinalisedBy()) {
+                        jgen.writeStringField(FINALISED_BY, precedence.getFinalisedBy());
+                    }
+                    if (null != precedence.getPrecedenceStatus()) {
+                        jgen.writeStringField(PRECEDENCE_STATUS, precedence.getPrecedenceStatus());
+                    }
+                }
+            }
+
+            public static void printPrecedences(JsonGenerator jgen, IPrecedence precedenceObject)
                     throws IOException {
                 Set<Precedence> precedences = precedenceObject.getReferencePrecedence();
                 if (precedences != null && precedences.size() > 0) {
                     jgen.writeArrayFieldStart(PRECEDENCE);
                     for (Precedence precedence : precedences) {
-                        if (precedence != null) {
-
-                            jgen.writeObjectFieldStart(PRECEDENCE);
-
-                            if (precedence.getPrecedenceDate() != null) {
-                                jgen.writeStringField(PRECEDENCE_DATE, DATE_FORMAT.format(
-                                        precedence.getPrecedenceDate()));
-                            }
-                            if (precedence.getCreatedDate() != null) {
-                                jgen.writeStringField(CREATED_DATE, DATE_TIME_FORMAT.format(
-                                        precedence.getCreatedDate()));
-                            }
-                            if (precedence.getCreatedBy() != null) {
-                                jgen.writeStringField(CREATED_BY, precedence.getCreatedBy());
-                            }
-                            if (precedence.getTitle() != null) {
-                                jgen.writeStringField(TITLE, precedence.getTitle());
-                            }
-                            if (precedence.getDescription() != null) {
-                                jgen.writeStringField(DESCRIPTION, precedence.getDescription());
-                            }
-                            if (precedence.getPrecedenceAuthority() != null) {
-                                jgen.writeStringField(PRECEDENCE_AUTHORITY, precedence.getPrecedenceAuthority());
-                            }
-                            if (precedence.getSourceOfLaw() != null) {
-                                jgen.writeStringField(PRECEDENCE_SOURCE_OF_LAW, precedence.getSourceOfLaw());
-                            }
-                            if (precedence.getPrecedenceApprovedDate() != null) {
-                                jgen.writeStringField(PRECEDENCE_APPROVED_DATE, DATE_FORMAT.format(
-                                        precedence.getPrecedenceApprovedDate()));
-                            }
-                            if (precedence.getPrecedenceApprovedBy() != null) {
-                                jgen.writeStringField(PRECEDENCE_APPROVED_BY, precedence.getPrecedenceApprovedBy());
-                            }
-                            if (precedence.getFinalisedDate() != null) {
-                                jgen.writeStringField(FINALISED_DATE, DATE_TIME_FORMAT.format(
-                                        precedence.getFinalisedDate()));
-                            }
-                            if (precedence.getFinalisedBy() != null) {
-                                jgen.writeStringField(FINALISED_BY, precedence.getFinalisedBy());
-                            }
-                            if (precedence.getPrecedenceStatus() != null) {
-                                jgen.writeStringField(PRECEDENCE_STATUS, precedence.getPrecedenceStatus());
-                            }
-                            jgen.writeEndObject();
-                        }
+                        jgen.writeStartObject();
+                        printPrecedence(jgen, precedence);
+                        jgen.writeEndObject();
                     }
                     jgen.writeEndArray();
                 }
@@ -1150,8 +1231,8 @@ public final class CommonUtils {
                     }
                     jgen.writeEndArray();
                 }
-            }   
-            
+            }
+
             public static void printStorageLocation(JsonGenerator jgen, IStorageLocation storageLocationEntity)
                     throws IOException {
                 Set<StorageLocation> storageLocation = storageLocationEntity.getReferenceStorageLocation();

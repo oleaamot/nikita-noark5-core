@@ -12,6 +12,7 @@ import nikita.model.noark5.v4.DocumentObject;
 import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentDescriptionHateoasHandler;
@@ -91,6 +92,7 @@ public class DocumentDescriptionHateoasController {
         documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdDocumentObject));
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdDocumentObject.getVersion().toString())
                 .body(documentObjectHateoas);
     }
@@ -121,6 +123,7 @@ public class DocumentDescriptionHateoasController {
                 DocumentDescriptionHateoas(documentDescription);
         documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(documentDescription.getVersion().toString())
                 .body(documentDescriptionHateoas);
     }
@@ -148,7 +151,9 @@ public class DocumentDescriptionHateoasController {
                 DocumentDescriptionHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
                 documentDescriptionService.findDocumentDescriptionByOwnerPaginated(top, skip));
         documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
-        return new ResponseEntity<>(documentDescriptionHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(documentDescriptionHateoas);
     }
 
     // Create a DocumentObject with default values
@@ -176,7 +181,9 @@ public class DocumentDescriptionHateoasController {
         DocumentObjectHateoas documentObjectHateoas = new
                 DocumentObjectHateoas(defaultDocumentObject);
         documentObjectHateoasHandler.addLinksOnNew(documentObjectHateoas, request, new Authorisation());
-        return new ResponseEntity<>(documentObjectHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(documentObjectHateoas);
     }
 
     // Retrieve all DocumentObjects associated with a DocumentDescription identified by systemId
@@ -207,6 +214,8 @@ public class DocumentDescriptionHateoasController {
         DocumentObjectHateoas documentObjectHateoas = new
                 DocumentObjectHateoas(new ArrayList<>(documentDescription.getReferenceDocumentObject()));
         documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
-        return new ResponseEntity<>(documentObjectHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(documentObjectHateoas);
     }
 }

@@ -37,6 +37,8 @@ public class CaseFileHateoasHandler extends HateoasHandler implements ICaseFileH
         addNewCaseStatus(entity, hateoasNoarkObject);
         //addCaseStatus(entity, hateoasNoarkObject);
         addNewSecondaryClassification(entity, hateoasNoarkObject);
+        addNewRegistryEntry(entity, hateoasNoarkObject);
+        addRegistryEntry(entity, hateoasNoarkObject);
         //addSecondaryClassification(entity, hateoasNoarkObject);
     }
 
@@ -106,6 +108,21 @@ public class CaseFileHateoasHandler extends HateoasHandler implements ICaseFileH
 
     @Override
     public void addNewSecondaryClassification(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
+                NOARK_CASE_HANDLING_PATH + SLASH + CASE_FILE + SLASH + entity.getSystemId() + SLASH +
+                NEW_SECONDARY_CLASSIFICATION + SLASH, REL_CASE_HANDLING_NEW_SECONDARY_CLASSIFICATION, false));
+    }
+
+    @Override
+    public void addRegistryEntry(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
+                NOARK_CASE_HANDLING_PATH + SLASH + CASE_FILE + SLASH + entity.getSystemId() + SLASH +
+                REGISTRY_ENTRY + SLASH, REL_CASE_HANDLING_NEW_SECONDARY_CLASSIFICATION, false));
+                //REGISTRY_ENTRY + SLASH, REL_CASE_HANDLING_REGISTRY_ENTRY, false));
+    }
+
+    @Override
+    public void addNewRegistryEntry(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_CASE_HANDLING_PATH + SLASH + CASE_FILE + SLASH + entity.getSystemId() + SLASH +
                 NEW_SECONDARY_CLASSIFICATION + SLASH, REL_CASE_HANDLING_NEW_SECONDARY_CLASSIFICATION, false));

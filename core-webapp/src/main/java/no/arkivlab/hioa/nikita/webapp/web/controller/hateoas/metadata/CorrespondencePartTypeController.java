@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
 import nikita.model.noark5.v4.hateoas.metadata.MetadataHateoas;
 import nikita.model.noark5.v4.metadata.CorrespondencePartType;
+import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.metadata.IMetadataHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
@@ -66,10 +67,10 @@ public class CorrespondencePartTypeController {
         MetadataHateoas metadataHateoas = new MetadataHateoas(correspondencePartType);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(correspondencePartType.getVersion().toString())
                 .body(metadataHateoas);
     }
-
     // API - All GET Requests (CRUD - READ)
     // Retrieves all correspondencePartType
     // GET [contextPath][api]/metadata/korrespondanseparttype/
@@ -88,7 +89,8 @@ public class CorrespondencePartTypeController {
         MetadataHateoas metadataHateoas = new MetadataHateoas(new ArrayList<>(correspondencePartTypeService.findAllAsList()),
                 CORRESPONDENCE_PART_TYPE);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(metadataHateoas);
     }
 
@@ -116,6 +118,7 @@ public class CorrespondencePartTypeController {
         MetadataHateoas metadataHateoas = new MetadataHateoas(correspondencePartType);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(correspondencePartType.getVersion().toString())
                 .body(metadataHateoas);
     }
@@ -133,12 +136,15 @@ public class CorrespondencePartTypeController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.GET, value = NEW_CORRESPONDENCE_PART_TYPE)
-    public ResponseEntity<MetadataHateoas> getCorrespondencePartTypeTemplate() {
+    public ResponseEntity<MetadataHateoas> getCorrespondencePartTypeTemplate(HttpServletRequest request) {
         CorrespondencePartType correspondencePartType = new CorrespondencePartType();
         correspondencePartType.setCode(TEMPLATE_FONDS_STATUS_CODE);
         correspondencePartType.setDescription(TEMPLATE_FONDS_STATUS_DESCRIPTION);
         MetadataHateoas metadataHateoas = new MetadataHateoas(correspondencePartType);
-        return new ResponseEntity<>(metadataHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .eTag(correspondencePartType.getVersion().toString())
+                .body(metadataHateoas);
     }
 
     // API - All PUT Requests (CRUD - UPDATE)
@@ -163,6 +169,9 @@ public class CorrespondencePartTypeController {
         CorrespondencePartType newCorrespondencePartType = correspondencePartTypeService.update(correspondencePartType);
         MetadataHateoas metadataHateoas = new MetadataHateoas(correspondencePartType);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
-        return new ResponseEntity<>(metadataHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .eTag(correspondencePartType.getVersion().toString())
+                .body(metadataHateoas);
     }
 }

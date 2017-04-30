@@ -10,7 +10,6 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
  */
 public interface ICaseFileHateoasHandler extends IHateoasHandler {
 
-
     void addNewClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
@@ -30,5 +29,9 @@ public interface ICaseFileHateoasHandler extends IHateoasHandler {
     void addSecondaryClassification(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addNewSecondaryClassification(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addNewRegistryEntry(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addRegistryEntry(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
 }

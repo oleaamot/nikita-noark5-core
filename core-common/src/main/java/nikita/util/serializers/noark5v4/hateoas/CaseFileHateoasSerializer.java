@@ -108,7 +108,7 @@ public class CaseFileHateoasSerializer extends HateoasSerializer implements IHat
         // TODO: Implement M209 referanseSekundaerKlassifikasjon
         //CommonCommonUtils.Hateoas.Serialize.printSecondaryClassification(jgen, caseFile);
         CommonUtils.Hateoas.Serialize.printCaseParty(jgen, caseFile);
-        CommonUtils.Hateoas.Serialize.printPrecedence(jgen, caseFile);
+        //CommonUtils.Hateoas.Serialize.printPrecedence(jgen, caseFile);
         CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, caseFileHateoas.getLinks(caseFile));
         jgen.writeEndObject();
     }

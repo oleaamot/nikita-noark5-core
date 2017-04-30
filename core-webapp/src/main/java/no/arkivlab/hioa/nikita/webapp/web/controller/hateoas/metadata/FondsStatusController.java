@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
 import nikita.model.noark5.v4.hateoas.metadata.MetadataHateoas;
 import nikita.model.noark5.v4.metadata.FondsStatus;
+import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.metadata.IMetadataHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
@@ -62,6 +63,7 @@ public class FondsStatusController {
         MetadataHateoas metadataHateoas = new MetadataHateoas(fondsStatus);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(fondsStatus.getVersion().toString())
                 .body(metadataHateoas);
     }
@@ -84,7 +86,8 @@ public class FondsStatusController {
         //ArrayList <FondsStatus> fondsStatusList = (ArrayList<FondsStatus>) fondsStatusService.findAll2();
         MetadataHateoas metadataHateoas = null; //new MetadataHateoas(new ArrayList<FondsStatus>(fondsStatusService.findAll()));
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(metadataHateoas);
     }
 
@@ -112,6 +115,7 @@ public class FondsStatusController {
         MetadataHateoas metadataHateoas = new MetadataHateoas(fondsStatus);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(fondsStatus.getVersion().toString())
                 .body(metadataHateoas);
     }
@@ -129,12 +133,14 @@ public class FondsStatusController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.GET, value = NEW_FONDS_STATUS)
-    public ResponseEntity<MetadataHateoas> getFondsStatusTemplate() {
+    public ResponseEntity<MetadataHateoas> getFondsStatusTemplate(HttpServletRequest request) {
         FondsStatus fondsStatus = new FondsStatus();
         fondsStatus.setCode(TEMPLATE_FONDS_STATUS_CODE);
         fondsStatus.setDescription(TEMPLATE_FONDS_STATUS_DESCRIPTION);
         MetadataHateoas metadataHateoas = new MetadataHateoas(fondsStatus);
-        return new ResponseEntity<>(metadataHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(metadataHateoas);
     }
 
     // API - All PUT Requests (CRUD - UPDATE)
@@ -159,6 +165,8 @@ public class FondsStatusController {
         FondsStatus newFondsStatus = fondsStatusService.update(fondsStatus);
         MetadataHateoas metadataHateoas = new MetadataHateoas(fondsStatus);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
-        return new ResponseEntity<>(metadataHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(metadataHateoas);
     }
 }

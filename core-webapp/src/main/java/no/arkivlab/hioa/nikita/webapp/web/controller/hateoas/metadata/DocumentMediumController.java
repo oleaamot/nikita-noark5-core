@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
 import nikita.model.noark5.v4.hateoas.metadata.MetadataHateoas;
 import nikita.model.noark5.v4.metadata.DocumentMedium;
+import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.metadata.IMetadataHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
@@ -63,6 +64,7 @@ public class DocumentMediumController {
         MetadataHateoas metadataHateoas = new MetadataHateoas(newDocumentMedium);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(newDocumentMedium.getVersion().toString())
                 .body(metadataHateoas);
     }
@@ -85,7 +87,8 @@ public class DocumentMediumController {
         //ArrayList <DocumentMedium> documentMediumList = (ArrayList<DocumentMedium>) documentMediumService.findAll2();
         MetadataHateoas metadataHateoas = new MetadataHateoas(new ArrayList<>(documentMediumService.findAll2()), DOCUMENT_MEDIUM);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(metadataHateoas);
     }
 
@@ -113,6 +116,7 @@ public class DocumentMediumController {
         MetadataHateoas metadataHateoas = new MetadataHateoas(documentMedium);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(documentMedium.getVersion().toString())
                 .body(metadataHateoas);
     }
@@ -130,12 +134,14 @@ public class DocumentMediumController {
     @Counted
     @Timed
     @RequestMapping(method = RequestMethod.GET, value = NEW_DOCUMENT_MEDIUM)
-    public ResponseEntity<MetadataHateoas> getDocumentMediumTemplate() {
+    public ResponseEntity<MetadataHateoas> getDocumentMediumTemplate(HttpServletRequest request) {
         DocumentMedium documentMedium = new DocumentMedium();
         documentMedium.setCode(TEMPLATE_DOCUMENT_MEDIUM_CODE);
         documentMedium.setDescription(TEMPLATE_DOCUMENT_MEDIUM_DESCRIPTION);
         MetadataHateoas metadataHateoas = new MetadataHateoas(documentMedium);
-        return new ResponseEntity<>(metadataHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(metadataHateoas);
     }
 
     // API - All PUT Requests (CRUD - UPDATE)
@@ -160,6 +166,8 @@ public class DocumentMediumController {
         DocumentMedium newDocumentMedium = documentMediumService.update(documentMedium);
         MetadataHateoas metadataHateoas = new MetadataHateoas(documentMedium);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
-        return new ResponseEntity<>(metadataHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(metadataHateoas);
     }
 }

@@ -10,6 +10,7 @@ import nikita.config.Constants;
 import nikita.model.noark5.v4.BasicRecord;
 import nikita.model.noark5.v4.hateoas.BasicRecordHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.util.CommonUtils;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IBasicRecordHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IBasicRecordService;
@@ -64,6 +65,7 @@ public class BasicRecordHateoasController {
         BasicRecordHateoas basicRecordHateoas = new BasicRecordHateoas(createdBasicRecord);
         basicRecordHateoasHandler.addLinks(basicRecordHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdBasicRecord.getVersion().toString())
                 .body(basicRecordHateoas);
     }
@@ -91,6 +93,8 @@ public class BasicRecordHateoasController {
                 BasicRecordHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
                 basicRecordService.findBasicRecordByOwnerPaginated(top, skip));
         basicRecordHateoasHandler.addLinks(basicRecordHateoas, request, new Authorisation());
-        return new ResponseEntity<>(basicRecordHateoas, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(basicRecordHateoas);
     }
 }
