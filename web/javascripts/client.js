@@ -1,9 +1,15 @@
 let app = angular.module('nikita', []);
 
 // TODO: use endpoint class
-let base_url = "http://localhost:8092/noark5v4/";
+//let base_url = "http://n5test.kxml.no/api";
+let base_url = "http://localhost:8092/noark5v4";
+
+if (nikitaOptions.enabled) {
+    console.log("nikita baseURL" + nikitaOptions.baseUrl);
+    base_url = nikitaOptions.protocol + "://" + nikitaOptions.baseUrl  + "/" + nikitaOptions.appName;
+}
+
 let login_url = base_url + "/auth";
-let sign_up_url = base_url + "signup";
 
 // TODO: use class for token
 var SetUserToken = function(t) {
