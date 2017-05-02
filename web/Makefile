@@ -2,7 +2,7 @@ project ?=nikita5/web
 port ?=3000
 instance_name=nikita_web
 
-setup:
+setup: favicon.ico
 	npm install
 	npm install nodemon
 
@@ -39,3 +39,12 @@ docker_push:
 	docker push ${project}
 docker_tail:
 	docker logs `docker ps | grep ${project} | awk ' { print $$1 } '`
+
+favicon.ico: favicon.svg
+	convert favicon.svg -bordercolor white -border 0 \
+  \( -clone 0 -resize 16x16 \) \
+  \( -clone 0 -resize 32x32 \)  \
+  \( -clone 0 -resize 48x48 \) \
+  \( -clone 0 -resize 64x64 \) \
+  -alpha off -colors 256 favicon.ico
+
