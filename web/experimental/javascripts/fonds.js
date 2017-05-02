@@ -64,7 +64,7 @@ let fondsController = app.controller('FondsController', ['$scope', '$http', func
 	    },
 	    data: { tittel: $scope.tittel, beskrivelse: $scope.beskrivelse },
 	}).then(function(data, status, headers, config) {
-            changeLocation($scope, "./fonds.html", true);
+            changeLocation($scope, "./arkiv.html", true);
 	}, function(data, status, headers, config) {
             alert(data.data);
 	});
