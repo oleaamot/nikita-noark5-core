@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="nikita-series">
+<html lang="en" ng-app="nikita-file">
 <head>
     <script src="/node_modules/angular/angular.min.js"></script>
-    <script src="/experimental/javascripts/series.js"></script>
+    <script src="/experimental/javascripts/file.js"></script>
     <link rel="stylesheet" href="/node_modules/material-design-lite/material.min.css">
     <script src="/node_modules/material-design-lite/material.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
     <meta charset="UTF-8">
-    <title>Liste av alle arkivdel tilkoblet et bestemt arkiv i Nikita</title>
+    <title>Liste av alle mapper tilkoblet en bestemt arkivdel i Nikita</title>
 </head>
-<body ng-controller="SeriesController">
-<h2>Opprett ny arkivdel</h2>
-<form ng-submit="send_form()" ng-controller="SeriesController" method="post">
+<body ng-controller="FileController">
+<h2>Opprett ny mappe</h2>
+<form ng-submit="send_form()" ng-controller="FileController" method="post">
     <div class="mdl-grid-center">
         <div class="mdl-textfield mdl-js-textfield">
             <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text" name="tittel" />
@@ -19,34 +19,37 @@
         <div class="mdl-textfield mdl-js-textfield">
             <input class="mdl-textfield__input" placeholder="beskrivelse" ng-model="beskrivelse" type="text" name="beskrivelse" />
         </div>
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="mappeID" ng-model="mappeID" type="text" name="mappeID" />
+        </div>
     </div>
     <div class="form-actions col-xs-offset-2 col-xs-10">
         <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" value="Opprett arkivdel" />
     </div>
 </form>
 
-<h4>Liste av alle arkivdel tilkoblet arkiv {{ fonds }} </h4>
+<h4>Liste av alle mapper tilkoblet arkivdel {{ series }} </h4>
 <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
     <thead>
     <tr>
         <th>systemID</th>
         <th>tittel</th>
-        <th>arkivdel</th>
+        <th>registrering</th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="series in seriess" class="mdl-data-table__cell--non-numeric">
+    <tr ng-repeat="file in files" class="mdl-data-table__cell--non-numeric">
         <td class="mdl-data-table__cell--non-numeric" ng-click="hrefSelected(l.href)">
-            {{ series.systemID }}
+            {{ files.systemID }}
         </td>
         <td class="mdl-data-table__cell--non-numeric">
-            {{ series.tittel }}
+            {{ file.tittel }}
         </td>
         <td class="mdl-data-table__cell--non-numeric">
-            <div ng-repeat="l in series._links">
-                <div  ng-if="l.rel == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/mappe/' ">
-                    <div ng-click="fileSelected(l.href, series.systemID)">
-                        mapper</a>
+            <div ng-repeat="l in file._links">
+                <div  ng-if="l.rel == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivdel/' ">
+                    <div ng-click="fileSelected(l.href)">
+                        hello <a  href="{{ l.href }}">{{ l.rel }}</a>
                     </div>
                 </div>
             </div>

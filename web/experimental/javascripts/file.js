@@ -1,14 +1,14 @@
 
-let app = angular.module('nikita-series', []);
+let app = angular.module('nikita-file', []);
 
 var SetLinkToChosenFile = function(t) {
     localStorage.setItem("linkToChosenFile", t);
     console.log("Setting linkToChosenFile="+t);
 };
 
-var GetFondsSystemID = function(t) {
-    console.log("Getting chosen fondsSystemId="+localStorage.getItem("chosenfonds"));
-    return localStorage.getItem("chosenfonds");
+var GetSeriesSystemID = function(t) {
+    console.log("Getting chosen seriesSystemId="+localStorage.getItem("chosenseries"));
+    return localStorage.getItem("chosenseries");
 };
 
 
@@ -16,46 +16,31 @@ var GetUserToken = function(t) {
     return localStorage.getItem("token");
 };
 
-var GetLinkToChosenSeries = function(t) {
-    return localStorage.getItem("linkToChosenSeries");
+var GetLinkToChosenFile = function(t) {
+    return localStorage.getItem("linkToChosenFile");
 };
 
-var SetChosenSeries = function(seriesSystemId) {
-    localStorage.setItem("chosenseries", seriesSystemId);
-    console.log("Setting seriesSystemId="+seriesSystemId);
-};
-
-let seriesController = app.controller('SeriesController', ['$scope', '$http', function ($scope, $http) {
+let fileController = app.controller('FileController', ['$scope', '$http', function ($scope, $http) {
     $scope.token = GetUserToken();
     console.log("token="+$scope.token);
-    $scope.fonds = GetFondsSystemID();
+    $scope.series = GetSeriesSystemID();
 
-    var urlVal = GetLinkToChosenSeries();
+    var urlVal = GetLinkToChosenFile();
     $http({
         method: 'GET',
         url: urlVal,
         headers: {'Authorization': $scope.token },
     }).then(function successCallback(response) {
-        $scope.seriess = response.data.results;
-        console.log("series data is : " + JSON.stringify(response.data));
+        $scope.files = response.data.results;
+        console.log("file data is : " + JSON.stringify(response.data));
     }, function errorCallback(response) {
         // TODO: what should we do when it fails?
     });
 
-    // TODO : Add the href to local storage indicating what was clicked
-    //
-    $scope.fileSelected = function(href, seriesSystemId){
-        console.log('series selected link clicked ' + href);
-        token = GetUserToken();
-        SetLinkToChosenFile(href);
-        SetChosenSeries(seriesSystemId);
-        window.location = "http://localhost:3000/experimental/mappe.html";
-    }
-
     $scope.send_form = function() {
         token = GetUserToken();
-        systemID = GetFondsSystemID();
-        url = 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkiv/' + systemID + '/ny-arkivdel';
+        systemID = GetSeriesSystemID();
+        url = 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkivdel/' + systemID + '/ny-mappe';
         $http({
             url: url,
             method: "POST",
@@ -63,9 +48,13 @@ let seriesController = app.controller('SeriesController', ['$scope', '$http', fu
                 'Content-Type': 'application/vnd.noark5-v4+json',
                 'Authorization': token,
             },
-            data: { tittel: $scope.tittel, beskrivelse: $scope.beskrivelse },
+            data: {
+		tittel: $scope.tittel,
+		beskrivelse: $scope.beskrivelse,
+		mappeID: $scope.mappeID,
+	    },
         }).then(function(data, status, headers, config) {
-            changeLocation($scope, "./arkivdel.html", true);
+            changeLocation($scope, "./mappe.html", true);
         }, function(data, status, headers, config) {
             alert(data.data);
         });
