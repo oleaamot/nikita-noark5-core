@@ -32,20 +32,28 @@ var changeLocation = function ($scope, url, forceReload) {
     }
 };
 
-
 let updateIndexView = function(url, $scope, $http) {
-
-    // Figure out allowed operations
-        $http({
-        	method: 'OPTIONS',
-    	url: url,
-        }).then(function successCallback(response) {
-    	$scope.allow = response.headers['Allow'];
-            console.log("Allowable methods "+ response.headers['Allow']);
-            console.log("Allowable methods "+ response);
-        }, function errorCallback(response) {
-    	$scope.allow = 'UNKNOWN';
-        });
+    $scope.current = url;
+    if (url.lastIndexOf("/") == (url.length - 1)) {
+	parent =  "..";
+    } else {
+	parent =  ".";
+    }
+    $scope.parent =  resolveUrl(url, parent);
+    token = GetUserToken();
+    $http({
+	method: 'GET',
+	url: url,
+	headers: {'Authorization': token },
+    }).then(function successCallback(response) {
+	$scope.links = response.data._links;
+	$scope.data = response.data
+	$scope.results = response.data.results
+	delete $scope.data._links;
+	delete $scope.data.results;
+    }, function errorCallback(response) {
+	// TODO: what should we do when it fails?
+    });
 };
 
 let controller = app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
@@ -61,7 +69,7 @@ let controller = app.controller('MainController', ['$scope', '$http', function (
   }, function errorCallback(response) {
     // TODO: what should we do when it fails?
   });
-    $scope = $scope || angular.element(document).scope();
+
   updateIndexView(base_url, $scope, $http);
 
   $scope.hrefSelected = function(href){
