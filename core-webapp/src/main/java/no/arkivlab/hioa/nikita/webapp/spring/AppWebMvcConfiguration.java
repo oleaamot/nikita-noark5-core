@@ -30,15 +30,6 @@ import java.util.concurrent.TimeUnit;
 @EnableSpringDataWebSupport
 public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
-                .allowedMethods(RequestMethod.POST.toString(), RequestMethod.GET.toString(),
-                                RequestMethod.PUT.toString(), RequestMethod.DELETE.toString(),
-                                RequestMethod.OPTIONS.toString(), RequestMethod.HEAD.toString());
-    }
-
     /**
       * Used to set a suffix for the thymelaf templates under resources. All content will be under webapp
       * so we can use webapp as a suffix (even though I don't use it right now.)

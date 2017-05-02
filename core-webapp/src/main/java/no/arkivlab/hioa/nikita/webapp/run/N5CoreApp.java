@@ -47,6 +47,7 @@ public class N5CoreApp extends SpringBootServletInitializer {
             ContextConfig.class,
             DataSourceConfig.class,
             DemoDataSource.class,
+            SimpleCORSFilter.class,
             DevDataSource.class,
             TestDataSource.class,
             ProdDataSource.class,

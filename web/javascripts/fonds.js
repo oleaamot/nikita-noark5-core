@@ -43,7 +43,7 @@ let fondsController = app.controller('FondsController', ['$scope', '$http', func
         console.log('series selected link clicked ' + href);
         token = GetUserToken();
         SetLinkToChosenSeries(href);
-        window.location = "http://localhost:3000/series.html";
+        window.location = "http://localhost:3000/arkivdel.html";
     }
 
     $scope.send_form = function() {

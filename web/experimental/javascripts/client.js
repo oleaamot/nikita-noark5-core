@@ -1,9 +1,17 @@
 let app = angular.module('nikita', []);
 
-// TODO: use endpoint class
 let base_url = "http://localhost:8092/noark5v4/";
+let app_url = "http://localhost:8092/noark5v4/hateoas-api/";
 let login_url = base_url + "/auth";
 let sign_up_url = base_url + "signup";
+let gui_base_url = "http://localhost:3000/experimental";
+
+if (nikitaOptions.enabled) {
+    base_url = nikitaOptions.protocol + "://" + nikitaOptions.baseUrl  + "/" + nikitaOptions.appName + "/";
+    login_url = base_url + "/" + nikitaOptions.authPoint;
+    app_url = base_url + "/" + nikitaOptions.apiName;
+}
+
 
 // TODO: use class for token
 var SetUserToken = function(t) {
@@ -18,7 +26,7 @@ var GetUserToken = function(t) {
 
 var changeLocation = function ($scope, url, forceReload) {
     $scope = $scope || angular.element(document).scope();
-    console.log("Chaning location to URL" + url);
+    console.log("Changing location to URL" + url);
     if (forceReload || $scope.$$phase) {
         window.location = url;
     }

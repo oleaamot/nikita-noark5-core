@@ -8,6 +8,8 @@ let sign_up_url = base_url + "signup";
 // TODO: use class for token
 var SetUserToken = function(t) {
   localStorage.setItem("token", t);
+  console.log("Adding token " + t + " to local storage");
+
 };
 
 var GetUserToken = function(t) {
@@ -30,28 +32,20 @@ var changeLocation = function ($scope, url, forceReload) {
     }
 };
 
+
 let updateIndexView = function(url, $scope, $http) {
-    $scope.current = url;
-    if (url.lastIndexOf("/") == (url.length - 1)) {
-	parent =  "..";
-    } else {
-	parent =  ".";
-    }
-    $scope.parent =  resolveUrl(url, parent);
-    token = GetUserToken();
-    $http({
-	method: 'GET',
-	url: url,
-	headers: {'Authorization': token },
-    }).then(function successCallback(response) {
-	$scope.links = response.data._links;
-	$scope.data = response.data
-	$scope.results = response.data.results
-	delete $scope.data._links;
-	delete $scope.data.results;
-    }, function errorCallback(response) {
-	// TODO: what should we do when it fails?
-    });
+
+    // Figure out allowed operations
+        $http({
+        	method: 'OPTIONS',
+    	url: url,
+        }).then(function successCallback(response) {
+    	$scope.allow = response.headers['Allow'];
+            console.log("Allowable methods "+ response.headers['Allow']);
+            console.log("Allowable methods "+ response);
+        }, function errorCallback(response) {
+    	$scope.allow = 'UNKNOWN';
+        });
 };
 
 let controller = app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
@@ -67,7 +61,7 @@ let controller = app.controller('MainController', ['$scope', '$http', function (
   }, function errorCallback(response) {
     // TODO: what should we do when it fails?
   });
-
+    $scope = $scope || angular.element(document).scope();
   updateIndexView(base_url, $scope, $http);
 
   $scope.hrefSelected = function(href){
@@ -90,6 +84,7 @@ let login = app.controller('LoginController', ['$scope', '$http', function($scop
     }).then(function(data, status, headers, config) {
 	SetUserToken(data.data.token);
         console.log("hello" + status);
+        console.log("Loggin in. Setting token to " + data.data.token);
         changeLocation($scope, "./", true);
     }, function(data, status, headers, config) {
 

@@ -1,8 +1,8 @@
 <!doctype html>
 <html ng-app="nikita">
-  <head>
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <title>nikita web</title>
     <script src="node_modules/angular/angular.min.js"></script>
     <script src="javascripts/client.js"></script>
@@ -10,71 +10,74 @@
     <script src="/node_modules/material-design-lite/material.min.js"></script>
     <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
     <script src="/node_modules/resolve-url/resolve-url.js"></script>
-  </head>
-  <body ng-controller="MainController">
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-      <header class="mdl-layout__header">
-	<div class="mdl-layout__header-row">
-	  <span class="mdl-layout-title">nikita web - v{{ app_version }}</span>
-	</div>
-      </header>
-      <main class="mdl-layout__content">
-      <div class="page-content">
-	<p ng-click="hrefSelected(current)">Current link: {{ current }}</p>
-	<div id="links_table_group">
-	<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-	  <thead>
-	    <tr>
-	      <th>href</th>
-	      <th>rel</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <tr ng-repeat="l in links"class="mdl-data-table__cell--non-numeric">
-	      <td class="mdl-data-table__cell--non-numeric" ng-click="hrefSelected(l.href)">{{ l.href }}</td>
-	      <td class="mdl-data-table__cell--non-numeric"><a href="{{ l.rel }}">{{ l.rel }}</a></td>
-	    </tr>
-	  </tbody>
-	</table>
-	<p ng-click="hrefSelected(parent)">Parent link: {{ parent }}</p>
-	<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-	  <thead>
-	    <tr>
-	      <th>attribute</th>
-	      <th>value</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <tr ng-repeat="(key, value) in data"class="mdl-data-table__cell--non-numeric">
-	      <td class="mdl-data-table__cell--non-numeric">{{ key }}</td>
-	      <td class="mdl-data-table__cell--non-numeric">{{ value }}</td>
-	    </tr>
-	  </tbody>
-	</table>
-	<h2>Results</h2>
-	<div ng-repeat="entry in results">
-          <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-	    <thead>
-	      <tr>
-	        <th>attribute</th>
-	        <th>value</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-	      <tr ng-repeat="(key, value) in entry" class="mdl-data-table__cell--non-numeric">
-	        <td class="mdl-data-table__cell--non-numeric">{{ key }}</td>
-	        <td class="mdl-data-table__cell--non-numeric">{{ value }}</td>
-	      </tr>
-	    </tbody>
-          </table>
-	</div>
-	<p><a href="login.html">logg inn</a><p>
-	<hr>
-	<p>Denne webklient er del av
-	  <a href="https://github.com/HiOA-ABI/nikita-noark5-core/">Nikita Noark 5 kjerne</a>, en fri programvareimplementasjon av Noark 5 tjenestegrensesnitt.</p>
-      </div>
-      </main>
-    </div>
-    </div>
-  </body>
+</head>
+<body ng-controller="MainController">
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <span class="mdl-layout-title">nikita web - v{{ app_version }}</span>
+        </div>
+    </header>
+    <main class="mdl-layout__content">
+        <div class="page-content">
+            <p ng-click="hrefSelected(current)">Current link: {{ current }}</p>
+            <div id="links_table_group">
+                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                    <thead>
+                    <tr>
+                        <th>href</th>
+                        <th>rel</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="l in links" class="mdl-data-table__cell--non-numeric">
+                        <td class="mdl-data-table__cell--non-numeric" ng-click="hrefSelected(l.href)">{{ l.href }}</td>
+                        <td class="mdl-data-table__cell--non-numeric"><a href="{{ l.rel }}">{{ l.rel }}</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p ng-click="hrefSelected(parent)">Parent link: {{ parent }}</p>
+                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                    <thead>
+                    <tr>
+                        <th>attribute</th>
+                        <th>value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="(key, value) in data" class="mdl-data-table__cell--non-numeric">
+                        <td class="mdl-data-table__cell--non-numeric">{{ key }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ value }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h2>Results</h2>
+                <div ng-repeat="entry in results">
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                        <thead>
+                        <tr>
+                            <th>attribute</th>
+                            <th>value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="(key, value) in entry" class="mdl-data-table__cell--non-numeric">
+                            <td class="mdl-data-table__cell--non-numeric">{{ key }}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{ value }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p><a href="login.html">logg inn</a>
+                <p>
+                <hr>
+                <p>Denne webklient er del av
+                    <a href="https://github.com/HiOA-ABI/nikita-noark5-core/">Nikita Noark 5 kjerne</a>, en fri
+                    programvareimplementasjon av Noark 5 tjenestegrensesnitt.</p>
+            </div>
+        </div>
+    </main>
+</div>
+</div>
+</body>
 </html>

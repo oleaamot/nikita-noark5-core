@@ -1,5 +1,15 @@
-
 let app = angular.module('nikita-file', []);
+
+let base_url = "http://localhost:8092/noark5v4";
+let app_url = "http://localhost:8092/noark5v4/hateoas-api";
+let gui_base_url = "http://localhost:3000/experimental";
+
+if (nikitaOptions.enabled) {
+    console.log("nikita baseURL" + nikitaOptions.baseUrl);
+    base_url = nikitaOptions.protocol + "://" + nikitaOptions.baseUrl  + "/" + nikitaOptions.appName;
+    app_url = base_url + "/" + nikitaOptions.apiName;
+    gui_base_url = nikitaOptions.guiBaseUrl;
+}
 
 var SetLinkToChosenFile = function(t) {
     localStorage.setItem("linkToChosenFile", t);
@@ -40,7 +50,7 @@ let fileController = app.controller('FileController', ['$scope', '$http', functi
     $scope.send_form = function() {
         token = GetUserToken();
         systemID = GetSeriesSystemID();
-        url = 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkivdel/' + systemID + '/ny-mappe';
+        url = app_url + '/arkivstruktur/arkivdel/' + systemID + '/ny-mappe';
         $http({
             url: url,
             method: "POST",
