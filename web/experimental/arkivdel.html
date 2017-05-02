@@ -7,10 +7,10 @@
     <script src="/node_modules/material-design-lite/material.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
     <meta charset="UTF-8">
-    <title>Liste av alle arkivdel tilkoblet en bestemt arkiv i Nikita</title>
+    <title>Liste av alle arkivdel tilkoblet et bestemt arkiv i Nikita</title>
 </head>
 <body ng-controller="SeriesController">
-<h4>Liste av alle arkivdel tilkoblet {{ fonds }} </h4>
+<h4>Liste av alle arkivdel tilkoblet arkiv {{ fonds }} </h4>
 <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
     <thead>
     <tr>
@@ -39,7 +39,7 @@
     </tr>
     </tbody>
 </table>
-<h2>Nytt arkivdel</h2>
+<h2>Opprett ny arkivdel</h2>
 <form ng-submit="send_form()" ng-controller="SeriesController" method="post">
     <div class="mdl-grid-center">
         <div class="mdl-textfield mdl-js-textfield">
