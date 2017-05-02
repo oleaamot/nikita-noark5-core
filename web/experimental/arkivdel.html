@@ -10,6 +10,21 @@
     <title>Liste av alle arkivdel tilkoblet et bestemt arkiv i Nikita</title>
 </head>
 <body ng-controller="SeriesController">
+<h2>Opprett ny arkivdel</h2>
+<form ng-submit="send_form()" ng-controller="SeriesController" method="post">
+    <div class="mdl-grid-center">
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text" name="tittel" />
+        </div>
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="beskrivelse" ng-model="beskrivelse" type="text" name="beskrivelse" />
+        </div>
+    </div>
+    <div class="form-actions col-xs-offset-2 col-xs-10">
+        <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" value="Opprett arkivdel" />
+    </div>
+</form>
+
 <h4>Liste av alle arkivdel tilkoblet arkiv {{ fonds }} </h4>
 <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
     <thead>
@@ -39,20 +54,5 @@
     </tr>
     </tbody>
 </table>
-<h2>Opprett ny arkivdel</h2>
-<form ng-submit="send_form()" ng-controller="SeriesController" method="post">
-    <div class="mdl-grid-center">
-        <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text" name="tittel" />
-        </div>
-        <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" placeholder="beskrivelse" ng-model="beskrivelse" type="text" name="beskrivelse" />
-        </div>
-    </div>
-    <div class="form-actions col-xs-offset-2 col-xs-10">
-        <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" value="Opprett arkivdel" />
-    </div>
-</form>
-
 </body>
 </html>
