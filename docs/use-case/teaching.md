@@ -20,28 +20,50 @@ extractions and be able to apply them.
 
 There are four particular areas that the GUI must support as well as a description of basic requirements.
  
- 1. Organisational structure
- 2. Classificationsystem development 
- 3. Case-handling
- 4. Retention and deletion schedules and implementation
- 5. Basic requirements and setup
-
-## Organisational structure 
+ 1. Basic requirements and setup
+ 2. Organisational structure
+ 3. Classificationsystem development 
+ 4. Case-handling
+ 5. Retention and deletion schedules and implementation
+ 
+## Basic requirements and setup
 ### Background
 A Noark system contains a subset of an organisations records. In record keeping theory we call all records belonging
-to an organisation a fonds. The goal of record keeping as such is then capture all records and organise them. This 
-situation is not obtainable today due to the distributed nature of where records manifest themselves, in email servers,
-SMS message, Facebook posts etc.
+to an organisation a fonds (arkiv). The goal of record keeping as such is then capture all records and organise them. 
+This situation is not obtainable today due to the distributed nature of where records manifest themselves, in email 
+servers, SMS message, Facebook posts, Excel spreadsheets etc. As such the goal of a Noark record keeping system is to 
+reach out and capture as many of the records belonging to the organisations fonds as possible.
 
+### Description
+When a user logs on to nikita for the first time, they are assigned an organisation in nikita that they control
+
+#### Feide integration
+It should be possible to integrate Feide as the authentication mechanism. When visting nikita.hioa.no, if a student 
+isn't logged, they are brought to the feide login page where they authenticate themselves
+
+#### Feide integration
+
+## Organisational structure 
+
+In order to 
+### Description
+Students
+
+It should be possible to 
+ * create a new fonds
+ * create a new subfonds associated with a fonds
+
+####Metadata
+The following metadata fields are controlled by a user during the creation of fonds
+
+The following metadata fields are controlled by a user during the creation of fonds
+
+The following status that can be changed by a user are
+
+A user cannot update any fields if the fonds status is set to "Avsluttet"
 ## Classificationsystem development
  
 ## Case-handling
 
 ## Retention and deletion schedules and implementation
 
-## Basic requirements and setup
-
-  
-
- 
- 
