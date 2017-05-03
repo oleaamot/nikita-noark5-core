@@ -45,6 +45,12 @@
             <url>https://github.com/tsodring</url>
             <id>tsodring</id>
         </developer>
+        <developer>
+            <email>pere@hungry.com</email>
+            <name>Petter Reinholdsten</name>
+            <url>https://github.com/petterreinholdtsen</url>
+            <id>petterreinholdtsen</id>
+        </developer>
     </developers>
 
     <build>
