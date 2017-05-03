@@ -13,6 +13,7 @@
         <module>core-common</module>
         <module>core-webapp</module>
         <module>core-extraction</module>
+        <module>core-integration</module>
     </modules>
 
     <parent>
