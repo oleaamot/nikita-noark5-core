@@ -93,11 +93,11 @@ functional context over records where e.g all records related to chimney sweepin
 
 ### Description
 Users should be able to manipulate the fonds structure and undertake the following:
+
  * create a new fonds
  * create a new subfonds associated with a fonds
- * create a series associated with a fonds
- * create a classification system / classes
- * Set status values (ended) for fonds, series, classifciation system and class
+ * create a series associated with a fonds 
+ * Set status values (ended) for fonds, series
 
 These are all tasks related to administrative context, and the interface standard hints at some of these being defined
 under the group of administrative RELs.
@@ -109,8 +109,28 @@ set of records for the organisation, i.e the fonds is only a subset of what it s
 case study / discussion on fonds and why we are missing formal and clear definitions of records. This would include 
 records being stored in email systems, Excel documents etc.
 
-## Classificationsystem development
- 
+## Classification system development
+Classification is an important area of knowledge that the students need to understand. The goal with lessons here is to 
+take classification from being an abstract concept to being something more concrete where they are actually understand
+the implication of their decisions through implementing a classification system and classes as a use case.
+
+### Description
+First students will develop a classification system (on paper) for a well defined functional area, e.g kinder garden 
+applications where they perhaps take in the understanding of the processes defined in ISO-15489. Then they come to
+nikita and log on as records manager and create the classification system as well as all the classes. This is followed
+by a quick case-handling session where they have to undertake a case-handling process where they use the classes that
+they created. This is functional classification. The students should also know what object classification is and when 
+and how to use it. Students will create an object based classification system to be used with e.g. buildings and 
+create files and records associated with buildings. We could follow up with objects being people and either create
+objects for a school fonds or a personnel fonds. A course work here could be a reflection note on the entire process.
+This should lead to discussions on various types of classification, lifetime expectancy of classes (buildings versus 
+people), creating cross-references between files in series using different classification system. 
+
+Users should be able to manipulate classification systems and undertake the following:
+
+ * create a classification system / classes
+ * Set status values (ended) for fonds, series, classification system and class
+
 ## Case-handling
 
 ## Retention and deletion schedules and implementation
