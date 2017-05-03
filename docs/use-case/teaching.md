@@ -35,13 +35,54 @@ servers, SMS message, Facebook posts, Excel spreadsheets etc. As such the goal o
 reach out and capture as many of the records belonging to the organisations fonds as possible.
 
 ### Description
-When a user logs on to nikita for the first time, they are assigned an organisation in nikita that they control
+When a user logs on to nikita for the first time, they are assigned their own organisation in nikita that they control. 
+This organisation gets a UUID as an identifier and the user can assign whatever name they want to the organisation. 
 
-#### Feide integration
-It should be possible to integrate Feide as the authentication mechanism. When visting nikita.hioa.no, if a student 
-isn't logged, they are brought to the feide login page where they authenticate themselves
+Can they assign others users so they can interact with their organisation?
 
-#### Feide integration
+### Feide integration
+It should be possible to integrate Feide as the authentication mechanism. When visiting nikita.hioa.no, if a user 
+isn't logged, they are brought to the feide login page where they authenticate themselves. They are then brought back to 
+the applicable dashboard for the role they have logged in.
+
+### Dashboard
+
+Each role (arkivansvarlig, arkivar, leder, saksbehandler) has their own dashboard that shows functionality relevant for 
+their role.
+  
+#### Case handler   
+
+This dashboard makes use of information related to statistics defined in the Noark 5 standard [1]. Here they can see 
+things like due-list (restanseliste), case-handling times etc. This is information that has not been specified in the
+interface standard, but likely will come later. Other elements here is to show information related to workflow e.g. 
+messages informing the case-handler that have been assigned new cases to handle or that leader has approved an outgoing
+letter. the third group of functionality is to be able to quickly create new case files and associate them with a 
+particular class or series.
+
+#### Leader
+The leader will typically have a functional role related to e.g a particular department and have to approve outgoing 
+communications before they are dispatched.
+
+This dashboard should allow a leader to come into sub functions
+  1. Create a case-file and assign it to a case-handler
+  2. See from a list of case-files, which cases are unassigned and assign a case-handler
+  3. Look at a case-file after a case-handler has marked it waiting for approval 
+
+The leader should also have a statistics overview showing relevant statistics for various users under their authority.
+There should be an information box showing ongoing workflow items that the leader must handle. This might have to show 
+fairly large amounts of information.
+  
+#### records keeper
+The records keeper will formally end a case-file and set its status to closed. They have a quality control function for
+the case-handling. This dashboard should show statistics for the entire organisation. The dashboard will have a work-flow
+box that sees the end of case-handling and the records keeper can go in and update case and formally end them.  Note 
+some time case-handlers have the authority to end cases themselves, so they do not need to go via the records keeper
+
+#### records manager   
+The records manager can manipulate the archive structure, creating fonds, series, classification systems, classes etc. 
+Only the records manager can create extractions, set fonds and series status values. The role includes the classic 
+administrator functions related to users adding/removing them.
+
 
 ## Organisational structure 
 
@@ -68,3 +109,4 @@ A user cannot update any fields if the fonds status is set to "Avsluttet"
 
 ## Retention and deletion schedules and implementation
 
+[1] Noark 5 side 
