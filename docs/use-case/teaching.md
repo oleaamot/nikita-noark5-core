@@ -53,7 +53,8 @@ It should be possible to
  * create a new fonds
  * create a new subfonds associated with a fonds
 
-####Metadata
+#### Metadata
+
 The following metadata fields are controlled by a user during the creation of fonds
 
 The following metadata fields are controlled by a user during the creation of fonds
