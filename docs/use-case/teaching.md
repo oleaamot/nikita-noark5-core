@@ -83,26 +83,32 @@ The records manager can manipulate the archive structure, creating fonds, series
 Only the records manager can create extractions, set fonds and series status values. The role includes the classic 
 administrator functions related to users adding/removing them.
 
-
 ## Organisational structure 
+The organisational structure is defined in fonds and series. There is no clear rules on how this should be set up, but
+we will get information from various IKA in Norway describing the fonds/series structure of various municipalities in 
+Norway. An example is where a municipality has the following fonds (saksbehandling, byggesaksbehandling, skole, 
+barnehage) and a series covers records for given time periods. It's recommended that series follow the municipal 
+election cycle, but it is unclear how many municipalities follow this. A series could also be used to cover a 
+functional context over records where e.g all records related to chimney sweeping are organised together. 
 
-In order to 
 ### Description
-Students
-
-It should be possible to 
+Users should be able to manipulate the fonds structure and undertake the following:
  * create a new fonds
  * create a new subfonds associated with a fonds
+ * create a series associated with a fonds
+ * create a classification system / classes
+ * Set status values (ended) for fonds, series, classifciation system and class
 
-#### Metadata
+These are all tasks related to administrative context, and the interface standard hints at some of these being defined
+under the group of administrative RELs.
 
-The following metadata fields are controlled by a user during the creation of fonds
+After completing a lesson on this students should be able to understand how to create an archive structure and can 
+reason about various ways an archive can be structured (arkivoppbygging). Students should see that if there is no place
+for various record keeping functions in the fond structure, then they are missing on a formal definition of the entire
+set of records for the organisation, i.e the fonds is only a subset of what it should be. This can also lead to a class 
+case study / discussion on fonds and why we are missing formal and clear definitions of records. This would include 
+records being stored in email systems, Excel documents etc.
 
-The following metadata fields are controlled by a user during the creation of fonds
-
-The following status that can be changed by a user are
-
-A user cannot update any fields if the fonds status is set to "Avsluttet"
 ## Classificationsystem development
  
 ## Case-handling
