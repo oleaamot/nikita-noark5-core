@@ -161,7 +161,7 @@ public class FileHateoasHandler extends HateoasHandler implements IFileHateoasHa
     public void addNewReferenceSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + FILE + SLASH + entity.getSystemId() + SLASH +
-                NEW_SERIES + SLASH, REL_FONDS_STRUCTURE_NEW_REFERENCE_SERIES, false));
+                SERIES + SLASH, REL_FONDS_STRUCTURE_REFERENCE_SERIES, false));
     }
 
     @Override
@@ -175,6 +175,6 @@ public class FileHateoasHandler extends HateoasHandler implements IFileHateoasHa
     public void addNewReferenceSecondaryClassification(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + FILE + SLASH + entity.getSystemId() + SLASH +
-                NEW_SERIES + SLASH, REL_FONDS_STRUCTURE_NEW_SECONDARY_CLASSIFICATION, false));
+                NEW_SECONDARY_CLASSIFICATION_SYSTEM + SLASH, REL_FONDS_STRUCTURE_NEW_SECONDARY_CLASSIFICATION, false));
     }
 }
