@@ -63,7 +63,7 @@ public class RecordHateoasController {
     // API - All POST Requests (CRUD - CREATE)
 
     // Create a new DocumentDescription and associate it with the given Record
-    // POST [contextPath][api]/arkivstruktur/registregin/{systemId}/ny-dokumentobjekt
+    // POST [contextPath][api]/arkivstruktur/registrering/{systemId}/ny-dokumentobjekt
     // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-dokumentobjekt/
     @ApiOperation(value = "Persists a DocumentDescription object associated with the given Record systemId",
             notes = "Returns the newly created DocumentDescription object after it was associated with a " +
@@ -107,7 +107,7 @@ public class RecordHateoasController {
     }
 
     // Create a new DocumentObject and associate it with the given Record
-    // POST [contextPath][api]/arkivstruktur/registregin/{systemId}/ny-dokumentobjekt
+    // POST [contextPath][api]/arkivstruktur/registrering/{systemId}/ny-dokumentobjekt
     // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-dokumentobjekt/
     @ApiOperation(value = "Persists a DocumentObject associated with the given Record systemId",
             notes = "Returns the newly created DocumentObject after it was associated with a " +
