@@ -35,8 +35,8 @@ servers, SMS message, Facebook posts, Excel spreadsheets etc. As such the goal o
 reach out and capture as many of the records belonging to the organisations fonds as possible.
 
 ### Description
-When a user logs on to nikita for the first time, they are assigned their own organisation in nikita that they control. 
-This organisation gets a UUID as an identifier and the user can assign whatever name they want to the organisation. 
+When a user logs on to nikita for the first time, they are assigned their own organisation (arkivskaper) in nikita that they control. 
+This organisation gets a UUID (SystemID) as an identifier and the user can assign whatever name they want to the organisation. 
 
 Can they assign others users so they can interact with their organisation?
 
