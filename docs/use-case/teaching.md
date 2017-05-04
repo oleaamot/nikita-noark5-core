@@ -52,7 +52,7 @@ their role.
   
 #### Case handler   
 
-This dashboard makes use of information related to statistics defined in the Noark 5 standard [1]. Here they can see 
+This dashboard makes use of information related to statistics defined in the Noark 5 standard. Here they can see 
 things like due-list (restanseliste), case-handling times etc. This is information that has not been specified in the
 interface standard, but likely will come later. Other elements here is to show information related to workflow e.g. 
 messages informing the case-handler that have been assigned new cases to handle or that leader has approved an outgoing
@@ -212,5 +212,3 @@ will be used to help them understand XML and relationship between databases an X
 We also think we will use nikita as a innsynsløsning and import the extractions students previously had created. Finally 
 we may use this as an aid in MBIB4140 Metadata and interoperability when we teach students REST, JSON etc. This document only
 covers the GUI part of using nikita as a teaching tool.
-
-[1] Noark 5 side 
