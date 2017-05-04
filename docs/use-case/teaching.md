@@ -192,7 +192,7 @@ requires more understanding and development before we can undertake teaching in 
 Users should be able to assign retention and deletions schedules on records in the core. We need to create a use-case
 where we apply both retention and deletion metadata to a class. The students can then wait e.g a week and see the list
 of records to be deleted and see which metadata is created when such function is undertaken. They should also see that
-only the documents are deleted, not metadata. It also raises questions of who is in charge or deletion, when records
+only the documents are deleted, not metadata. It also raises questions of who is in charge of deletion, when records
 have been transferred to the archive. How will records that you are legally required to delete, be deleted from an
 OAIS SIP/AIP, when these are typically read only objects. 
 
