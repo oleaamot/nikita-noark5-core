@@ -9,6 +9,7 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
@@ -26,7 +27,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-@EnableWebMvc
+
 @EnableSpringDataWebSupport
 public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
 
@@ -46,15 +47,6 @@ public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-/*    //end Thymeleaf specific configuration
-
-    public MessageSource getMessageSource() {
-        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("./");
-        messageSource.setDefaultEncoding("UTF-8");
-        return messageSource;
-    }
-*/
     /**
       *  Used to create automatic redirects. So anyone visiting / will automatically
       *  be sent to the loginPage.html
@@ -65,6 +57,19 @@ public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
         registry.addViewController("/gui").setViewName("webapp/login/loginPage");
 
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+    }
+
+    /**
+     * The MappingJackson2HttpMessageConverter is converting string literals to JSON and
+     * adding double quotes around the content. This as visible when adding an ETAG header
+     * to responses.
+     *
+     * https://stackoverflow.com/questions/14293469/spring-mvc-handler-returns-string-with-extra-quotes
+     * explains this an recommends instantiating a StringHttpMessageConverter.
+     */
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new StringHttpMessageConverter());
     }
 
     /**
@@ -91,6 +96,8 @@ public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
             converter.getObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
             converter.getObjectMapper().enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         }
+
+
     }
 
     /**
@@ -102,6 +109,7 @@ public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
      * For some reason the application is setting the default return type to XML, not JSON
      * so this method forces the default to be JSON.
      */
+    /*
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer.defaultContentType(MediaType.APPLICATION_JSON_UTF8);
@@ -109,7 +117,7 @@ public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
         //configurer.mediaType("application/vnd.noark5-v4+json;charset=UTF-8", MediaType.APPLICATION_JSON_UTF8);
         //configurer.mediaType("application/vnd.noark5-v4+json", MediaType.APPLICATION_JSON);
     }
-
+*/
     /**
       *  Needed to serve the UI-part of swagger
       */
