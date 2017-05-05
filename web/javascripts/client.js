@@ -52,6 +52,7 @@ let updateIndexView = function(url, $scope, $http) {
 	url: url,
 	headers: {'Authorization': token },
     }).then(function successCallback(response) {
+	$scope.allow = response.headers('Allow');
 	$scope.links = response.data._links;
 	$scope.data = response.data
 	$scope.results = response.data.results
@@ -59,6 +60,7 @@ let updateIndexView = function(url, $scope, $http) {
 	delete $scope.data.results;
     }, function errorCallback(response) {
 	// TODO: what should we do when it fails?
+	$scope.allow = 'UNKNOWN';
     });
 };
 
