@@ -133,13 +133,14 @@ curloptsUploadFile+=( -w "%{http_code}" 'http://localhost:8092/noark5v4/hateoas-
 resultFileUpload=$(curl "${curloptsUploadFile[@]}");
 printf "uploaded file to DocumentObject  ($systemIDCreatedDocumentObject) Result $resultFileUpload\n";
 
-curlGetFileOpts+=( -s -S -X GET -b /tmp/cookie.txt  -o downloaded.pdf -w "%{http_code}");
+curlGetFileOpts+=( -s --header Authorization:$authToken -X GET -o downloaded.pdf -w "%{http_code}");
 curloptsDownloadFile+=("${curlGetFileOpts[@]}");
 curloptsDownloadFile+=( 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/dokumentobjekt/'$systemIDCreatedDocumentObject'/referanseFil' )
 
-resultFileDownload=$(curl "${curloptsUploadFile[@]}");
-#echo "${curloptsDownloadFile[@]}";
+resultFileDownload=$(curl "${curloptsDownloadFile[@]}");
+echo "${curloptsDownloadFile[@]}";
 printf "downloaded file from DocumentObject  ($systemIDCreatedDocumentObject) Result $resultFileDownload\n";
+
 
 curloptsCreateBasicRecord+=("${curlPostOpts[@]}");
 curloptsCreateBasicRecord+=( --data @"$curl_files_dir"basic-record-data.json 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/mappe/'$systemIDCreatedFile'/ny-basisregistrering' )
