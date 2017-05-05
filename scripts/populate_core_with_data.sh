@@ -24,7 +24,7 @@ else
 fi
 
 # login to the core using the JWT method
-authToken=$(curl -s --header Content-Type:application/json -X POST  --data '{"username" : "admin", "password" : "password"}' http://localhost:8092/noark5v4/auth | jq '.token' | sed 's/\"//g');
+authToken=$(curl -s  --header Accept:application/json --header Content-Type:application/json -X POST  --data '{"username" : "admin", "password" : "password"}' http://localhost:8092/noark5v4/auth | jq '.token' | sed 's/\"//g');
 
 # Note It seems to returning the word "null" if empty
 if [ $authToken = "null" ]; then
@@ -45,7 +45,7 @@ curloptsCreateFonds+=( --data @"$curl_files_dir"fonds-data.json  'http://localho
 # Create a fonds object and capture the systemId
 systemIDCreatedFonds=$(curl "${curloptsCreateFonds[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created Fonds 1             ($systemIDCreatedFonds) \n";
-#echo  "${curloptsCreateFonds[@]}";
+echo  "${curloptsCreateFonds[@]}";
 
 # Setup curl options for fondsCreator from root
 curloptsCreateFondsCreatorFromRoot+=("${curlPostOpts[@]}");
@@ -54,12 +54,14 @@ systemIDCreatedFondsCreator=$(curl "${curloptsCreateFondsCreatorFromRoot[@]}" | 
 printf "created FondsCreator 1(root)($systemIDCreatedFondsCreator) \n";
 #echo "${curloptsCreateFondsCreatorFromRoot[@]}" ;
 
+
+
 curloptsCreateFondsCreatorUpdate+=("${curlPutOpts[@]}");
-curloptsCreateFondsCreatorUpdate+=( --data '{"systemID" : "'$systemIDCreatedFondsCreator'", "arkivskaperID": "123456789U", "arkivskaperNavn": "Eksempel kommune UPDATED",  "beskrivelse": "Eksempel kommune ligger i eksempel fylke nord for nord UPDATED" } ' 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkivskaper/' );
+curloptsCreateFondsCreatorUpdate+=(  --header Etag:\"0\" --data '{"arkivskaperID": "123456789U", "arkivskaperNavn": "Eksempel kommune UPDATED",  "beskrivelse": "Eksempel kommune ligger i eksempel fylke nord for nord UPDATED" } ' 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkivskaper/'$systemIDCreatedFondsCreator );
 systemIDCreatedFondsCreator=$(curl "${curloptsCreateFondsCreatorUpdate[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "updated FondsCreator 1      ($systemIDCreatedFondsCreator) \n";
-#echo "${curloptsCreateFondsCreatorUpdate[@]}";
-#exit;
+echo "${curloptsCreateFondsCreatorUpdate[@]}";
+
 
 # Setup curl options for fondsCreator from existing fonds
 curloptsCreateFondsCreator+=("${curlPostOpts[@]}");
