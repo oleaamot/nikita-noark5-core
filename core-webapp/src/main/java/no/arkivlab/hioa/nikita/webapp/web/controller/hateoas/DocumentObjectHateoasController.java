@@ -14,9 +14,12 @@ import nikita.util.exceptions.NikitaEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentObjectService;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkNotAcceptableException;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.StorageException;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -118,23 +121,32 @@ public class DocumentObjectHateoasController {
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + REFERENCE_FILE,
             method = RequestMethod.GET)
-    public ResponseEntity<Resource> handleFileDownload(
+    public void handleFileDownload(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemID of the documentObject that has a file associated with it",
                     required = true)
-            @PathVariable("systemID") final String documentObjectSystemId) {
+            @PathVariable("systemID") final String documentObjectSystemId) throws IOException {
         DocumentObject documentObject = documentObjectService.findBySystemId(documentObjectSystemId);
         if (documentObject == null) {
             throw new NikitaEntityNotFoundException(documentObjectSystemId);
         }
-        // if Accept is not equal to actual mimeType, 406 not acceptable.
         Resource fileResource = documentObjectService.loadAsResource(documentObject);
+        String acceptType = request.getHeader(HttpHeaders.ACCEPT);
+        if (!acceptType.equalsIgnoreCase(documentObject.getMimeType())) {
+            if (!acceptType.equals("*/*")) {
+                throw new NoarkNotAcceptableException("The request [" + request.getRequestURI() + "] is not acceptable"
+                        + "You have issued an Accept: " + acceptType + ", while the mimeType you are trying to retrieve"
+                        + "is [" + documentObject.getMimeType() + "]");
+            }
+        }
         response.setContentType(documentObject.getMimeType());
         response.setContentLength(documentObject.getFileSize().intValue());
-        response.addHeader("content-disposition", "inline; filename=" + documentObject.getOriginalFilename());
+        response.addHeader("Content-disposition", "inline; filename=" + documentObject.getOriginalFilename());
+        response.addHeader("Content-Type", documentObject.getMimeType());
 
-        return new ResponseEntity<>(fileResource, HttpStatus.OK);
+        IOUtils.copy(fileResource.getInputStream(), response.getOutputStream());
+        response.flushBuffer();
     }
 
     // API - All POST Requests (CRUD - CREATE)

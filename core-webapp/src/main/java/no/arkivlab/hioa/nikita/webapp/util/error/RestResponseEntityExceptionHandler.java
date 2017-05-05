@@ -4,6 +4,7 @@ package no.arkivlab.hioa.nikita.webapp.util.error;
 import nikita.util.exceptions.NikitaMalformedHeaderException;
 import nikita.util.exceptions.NikitaMalformedInputDataException;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkNotAcceptableException;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.StorageException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -58,7 +59,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return handleExceptionInternal(ex, message(HttpStatus.BAD_REQUEST, ex), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
-
     // 403
     @ExceptionHandler({ AccessDeniedException.class })
     public ResponseEntity<Object> handleAccessDeniedException(final Exception ex, final WebRequest request) {
@@ -67,13 +67,18 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     // 404
-
     @ExceptionHandler(value = { /*EntityNotFoundException.class,*/ NoarkEntityNotFoundException.class })
     protected ResponseEntity<Object> handleNotFound(final RuntimeException ex, final WebRequest request) {
 
         return handleExceptionInternal(ex, message(HttpStatus.NOT_FOUND, ex), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
+    // 406
+    @ExceptionHandler(value = { NoarkNotAcceptableException.class })
+    protected ResponseEntity<Object> handleNotAcceptable(final RuntimeException ex, final WebRequest request) {
+
+        return handleExceptionInternal(ex, message(HttpStatus.NOT_ACCEPTABLE, ex), new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE, request);
+    }
 
     @ExceptionHandler(value = {NikitaMalformedInputDataException.class})
     protected ResponseEntity<Object> handleMalformedDataInput(final RuntimeException ex, final WebRequest request) {
