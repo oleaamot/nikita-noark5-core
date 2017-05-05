@@ -39,6 +39,22 @@ public class NikitaETAGInterceptor extends HandlerInterceptorAdapter {
                         "[" + request.getRequestURI() + "], Request method [" + request.getMethod() + "]" +
                         ". You cannot update an entity in the core unless you first ensure you have retrieved an" +
                         " entity with an eTag set. Using an entity from a list does not provide an eTag.");
+            } else { // Make sure the ETAG is numeric and greater than or equal to 0
+                try
+                {
+                    long etagVal =Long.parseLong(request.getHeader(ETAG));
+                    if (etagVal < 0) {
+                        throw new NikitaMalformedHeaderException("eTag value is less than 0 for request: " +
+                                "[" + request.getRequestURI() + "]. Value is [" + etagVal + "]. This is illegal" +
+                                "as ETAG values show version of an entity in the database and start at 0");
+                    }
+                }
+                catch(NumberFormatException nfe)
+                {
+                    throw new NikitaMalformedHeaderException("eTag value is not numeric. Nikita  uses numeric ETAG " +
+                            "values >= 0. The value in the request [" + request.getRequestURI() + "] is [" +
+                            request.getHeader(ETAG) + "]");
+                }
             }
         }
         // Important! You must return true if all is OK or further filer processing stops
