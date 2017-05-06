@@ -213,7 +213,7 @@ public class FondsHateoasController {
             @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
     @Timed
-    @RequestMapping(method = {RequestMethod.POST, RequestMethod.OPTIONS}, value = FONDS + SLASH + LEFT_PARENTHESIS +
+    @RequestMapping(method = {RequestMethod.POST}, value = FONDS + SLASH + LEFT_PARENTHESIS +
             SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_FONDS_CREATOR, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<FondsCreatorHateoas> createFondsCreatorAssociatedWithFonds(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
