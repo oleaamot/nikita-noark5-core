@@ -145,12 +145,12 @@ public class FondsCreatorHateoasController {
     @Counted
     @Timed
     @RequestMapping(value = FONDS_CREATOR + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
-            method = RequestMethod.GET, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+            method = RequestMethod.GET)
     public ResponseEntity<FondsCreatorHateoas> findOne(HttpServletRequest request,
                                                        @ApiParam(name = "systemId",
-                    value = "systemId of FondsCreator to retrieve.",
-                    required = true)
-            @PathVariable("systemID") final String fondsCreatorSystemId) {
+                                                               value = "systemId of FondsCreator to retrieve.",
+                                                               required = true)
+                                                       @PathVariable("systemID") final String fondsCreatorSystemId) {
         FondsCreator fondsCreator = fondsCreatorService.findBySystemId(fondsCreatorSystemId);
         if (fondsCreator == null) {
             throw new NoarkEntityNotFoundException("Could not find FondsCreator object with systemID " +
@@ -211,9 +211,12 @@ public class FondsCreatorHateoasController {
     public ResponseEntity<FondsCreatorHateoas> updateFondsCreator(HttpServletRequest request,
                                                                   @ApiParam(name = "fondsCreator",
                                                                           value = "Incoming fondsCreator object",
-                    required = true)
-                                                                  @RequestBody FondsCreator fondsCreator) {
-        FondsCreator createdFonds = fondsCreatorService.updateFondsCreator(fondsCreator);
+                                                                          required = true)
+                                                                  @RequestBody FondsCreator fondsCreator,
+                                                                  @ApiParam(name = "systemId",
+                                                                  value = "systemId of FondsCreator to retrieve.",
+                                                                  required = true) String systemID) {
+        FondsCreator createdFonds = fondsCreatorService.updateFondsCreator(systemID, fondsCreator);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, createdFonds));
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(createdFonds);
         fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
@@ -254,5 +257,4 @@ public class FondsCreatorHateoasController {
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(fondsCreatorHateoas);
     }
-
 }
