@@ -1,7 +1,8 @@
 package no.arkivlab.hioa.nikita.webapp.spring;
 
 import java.io.IOException;
-        import javax.servlet.Filter;
+import java.util.Arrays;
+import javax.servlet.Filter;
         import javax.servlet.FilterChain;
         import javax.servlet.FilterConfig;
         import javax.servlet.ServletException;
@@ -9,7 +10,10 @@ import java.io.IOException;
         import javax.servlet.ServletResponse;
         import javax.servlet.http.HttpServletRequest;
         import javax.servlet.http.HttpServletResponse;
-        import org.slf4j.Logger;
+
+import nikita.util.CommonUtils;
+
+import org.slf4j.Logger;
         import org.slf4j.LoggerFactory;
         import org.springframework.stereotype.Component;
 
@@ -28,9 +32,11 @@ public class SimpleCORSFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
+        String allowMethods = Arrays.toString(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()));
+
         response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Allow-Methods", allowMethods);
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me, Authorization, Origin");
         response.setHeader("Access-Control-Expose-Headers", "Allow, ETAG");
