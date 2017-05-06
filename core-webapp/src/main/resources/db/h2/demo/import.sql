@@ -70,3 +70,18 @@ insert into correspondence_part_type (pk_correspondence_part_type_id, system_id,
 insert into correspondence_part_type (pk_correspondence_part_type_id, system_id, code, description, deleted, version) values (4, '896d5f6c-2093-492d-a531-7dd845d45808', 'IA', 'Intern avsender', false, 0)
 insert into correspondence_part_type (pk_correspondence_part_type_id, system_id, code, description, deleted, version) values (5, '77e1fbc4-e480-4e41-a97e-f429b816629e', 'IM', 'Intern mottaker', false, 0)
 insert into correspondence_part_type (pk_correspondence_part_type_id, system_id, code, description, deleted, version) values (6, '78e59b26-819c-4cf7-abe1-69fb6e457bcb', 'IK', 'Intern kopimottaker', false, 0)
+
+insert into registry_entry_status (pk_registry_entry_status_id, system_id, code, description, deleted, version) values (0, '0b4cfcb9-e979-4cdd-94d3-1660172976a4', 'J', 'Journalført', false, 0);
+insert into registry_entry_status (pk_registry_entry_status_id, system_id, code, description, deleted, version) values (1, '2f140067-8239-4ea3-88a3-c42380ec3885', 'F', 'Ferdigstilt fra saksbehandler', false, 0);
+insert into registry_entry_status (pk_registry_entry_status_id, system_id, code, description, deleted, version) values (2, '218deb74-f9e0-48e2-a523-3f47a6a44aba', 'G', 'Godkjent av leder', false, 0);
+insert into registry_entry_status (pk_registry_entry_status_id, system_id, code, description, deleted, version) values (3, '35940d96-e531-4e5b-8f0a-63f8c7d08cb0', 'E', 'Ekspedert', false, 0);
+insert into registry_entry_status (pk_registry_entry_status_id, system_id, code, description, deleted, version) values (4, '74aef294-f3d1-4e77-a3c1-abcb45a7eeea', 'A', 'Arkivert', false, 0);
+insert into registry_entry_status (pk_registry_entry_status_id, system_id, code, description, deleted, version) values (5, '8bc27628-f722-41c5-9ce9-4f46fc54bf34', 'U', 'Utgår', false, 0);
+insert into registry_entry_status (pk_registry_entry_status_id, system_id, code, description, deleted, version) values (6, '395ff299-e60d-4550-979e-5b682d8e4f61', 'M', 'Midlertidig registrering av', false, 0);
+
+
+insert into registry_entry_type (pk_registry_entry_type_id, system_id, code, description, deleted, version) values (0, '4827e5e0-0fae-4b9e-a01d-88ce00e8c62e', 'I', 'Inngående dokument', false, 0);
+insert into registry_entry_type (pk_registry_entry_type_id, system_id, code, description, deleted, version) values (1, 'f87a8b7f-bb31-4dea-98c6-13e1ac17e24f', 'U', 'Utgående dokument', false, 0);
+insert into registry_entry_type (pk_registry_entry_type_id, system_id, code, description, deleted, version) values (2, '001f176e-d68a-42f4-95f8-555a72c1a748', 'N', 'Organinternt dokument for oppfølging', false, 0);
+insert into registry_entry_type (pk_registry_entry_type_id, system_id, code, description, deleted, version) values (3, '2014243a-5d33-4fd3-98af-eda7ddd4cdc8', 'X', 'Organinternt dokument uten oppfølging', false, 0);
+insert into registry_entry_type (pk_registry_entry_type_id, system_id, code, description, deleted, version) values (4, '07c06822-50e8-47fb-a760-eaff70eaa64e', 'S', 'Saksframlegg', false, 0);

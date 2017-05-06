@@ -78,7 +78,7 @@ public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
      *  formatted output.
      *  However the client should be using Accept: application/json or application/xml when connecting
      */
-
+/*
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters){
 
@@ -99,7 +99,7 @@ public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
 
 
     }
-
+*/
     /**
      *
      * @param configurer

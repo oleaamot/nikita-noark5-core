@@ -21,6 +21,9 @@ public final class Constants {
     public static final String SPRING_PROFILE_NO_SWAGGER = "no-swagger";
     public static final String SYSTEM_ACCOUNT = "system";
 
+    public static final String SPRING_ENDPOINT_DELIMITER  = "||";
+
+
     public static final String USERNAME_ADMIN = "admin";
     public static final String PASSWORD_ADMIN = "password";
 
@@ -170,6 +173,10 @@ public final class Constants {
     public static final String TEMPLATE_FONDS_STATUS_DESCRIPTION = "Arkivet er opprettet og i aktiv bruk";
     public static final String TEMPLATE_DOCUMENT_MEDIUM_CODE = "Elektronisk arkiv";
     public static final String TEMPLATE_DOCUMENT_MEDIUM_DESCRIPTION = "Bare elektroniske dokumenter";
+
+    public static final String TEMPLATE_REGISTRY_ENTRY_STATUS = "Journalført";
+    public static final String TEMPLATE_REGISTRY_ENTRY_TYPE = "Journalført";
+
 
 
     public static final int UUIDLength = 32;
