@@ -90,7 +90,7 @@ public final class N5ResourceMappings {
     public static final String CASE_LOANED_TO = "utlaantTil";
 
     // CaseParty
-    public static final String CASE_PARTY = "saksPart";
+    public static final String CASE_PARTY = "sakspart";
     public static final String CASE_PARTY_ID = "saksPartID";
     public static final String CASE_PARTY_NAME = "sakspartNavn";
     public static final String CASE_PARTY_ROLE = "sakspartRolle";
