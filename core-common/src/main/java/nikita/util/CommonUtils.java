@@ -79,17 +79,32 @@ public final class CommonUtils {
             requestMethodMap.put(servletPath, methods);
         }
 
+
+
         /**
          * Provides the ability to throw an Exception if this call fails.
          * This is just a helper to make the code more readable in other places.
          * @param servletPath
          */
         public static HttpMethod[]  getMethodsForRequestOrThrow(@NotNull String servletPath) {
+            HttpMethod[] methods = getMethodsForRequest(servletPath);
+            if (null == methods) {
+                throw new NikitaException("Error servletPath [" + servletPath + "] has no known HTTP methods");
+            }
+            return methods;
+        }
+
+        /**
+         * Provides the ability to throw an Exception if this call fails.
+         * This is just a helper to make the code more readable in other places.
+         * @param servletPath
+         */
+        public static HttpMethod[]  getMethodsForRequest(@NotNull String servletPath) {
             // Adding a trailing slash as the map is setup with a trailing slash
             if (false == servletPath.endsWith("/")) {
                 servletPath += SLASH;
             }
-            //Next, we have to replace any occurences of an actual UUID with the word systemID
+            //Next, we have to replace any occurrences of an actual UUID with the word systemID
 
             // The following pattern is taken from
             // https://stackoverflow.com/questions/136505/searching-for-uuids-in-text-with-regex#6640851
@@ -98,16 +113,11 @@ public final class CommonUtils {
             String updatedServletPath = matcher.replaceFirst(LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS);
 
             Set <HttpMethod> methods = requestMethodMap.get(updatedServletPath);
-            if (null == methods) {
-                throw new NikitaException("Error servletPath [" + servletPath + "] has no known HTTP methods");
+            if (methods == null) {
+                return null;
             }
             return methods.toArray(new HttpMethod[methods.size()]);
         }
-
-        public static Set <HttpMethod> getMethodsForRequest(@NotNull String servletPath) {
-            return requestMethodMap.get(servletPath);
-        }
-
     }
 
     public static final class Hateoas {

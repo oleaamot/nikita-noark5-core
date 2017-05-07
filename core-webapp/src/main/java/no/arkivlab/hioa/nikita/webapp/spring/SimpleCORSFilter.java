@@ -15,7 +15,8 @@ import nikita.util.CommonUtils;
 
 import org.slf4j.Logger;
         import org.slf4j.LoggerFactory;
-        import org.springframework.stereotype.Component;
+import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
 
 @Component
 public class SimpleCORSFilter implements Filter {
@@ -32,14 +33,16 @@ public class SimpleCORSFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        String allowMethods = Arrays.toString(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()));
-
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
-        response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Allow-Methods", allowMethods);
-        response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me, Authorization, Origin");
-        response.setHeader("Access-Control-Expose-Headers", "Allow, ETAG");
+        // Make sure this is a request for something that exisits. If it's not just pass it on in the filter
+        HttpMethod[] allowMethods = CommonUtils.WebUtils.getMethodsForRequest(request.getServletPath());
+        if (allowMethods != null) {
+            response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+            response.setHeader("Access-Control-Allow-Credentials", "true");
+            response.setHeader("Access-Control-Allow-Methods", Arrays.toString(allowMethods));
+            response.setHeader("Access-Control-Max-Age", "3600");
+            response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me, Authorization, Origin");
+            response.setHeader("Access-Control-Expose-Headers", "Allow, ETAG");
+        }
         chain.doFilter(req, res);
     }
 
