@@ -2,6 +2,7 @@ package no.arkivlab.hioa.nikita.webapp.service.impl;
 
 import nikita.model.noark5.v4.Fonds;
 import nikita.model.noark5.v4.FondsCreator;
+import nikita.model.noark5.v4.secondary.Precedence;
 import nikita.repository.n5v4.IFondsCreatorRepository;
 import nikita.repository.n5v4.IFondsRepository;
 import nikita.util.exceptions.NikitaMalformedInputDataException;

@@ -4,6 +4,7 @@ import nikita.model.noark5.v4.Fonds;
 import nikita.model.noark5.v4.FondsCreator;
 import nikita.model.noark5.v4.Series;
 import nikita.repository.n5v4.IFondsRepository;
+import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsCreatorService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
 import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityEditWhenClosedException;
@@ -23,8 +24,10 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.STATUS_CLOSED;
@@ -40,12 +43,12 @@ public class FondsService implements IFondsService {
     Integer maxPageSize = new Integer(10);
     private IFondsRepository fondsRepository;
     private SeriesService seriesService;
-    private FondsCreatorService fondsCreatorService;
+    private IFondsCreatorService fondsCreatorService;
     private EntityManager entityManager;
 
     public FondsService(IFondsRepository fondsRepository,
                         SeriesService seriesService,
-                        FondsCreatorService fondsCreatorService,
+                        IFondsCreatorService fondsCreatorService,
                         EntityManager entityManager) {
         this.fondsRepository = fondsRepository;
         this.seriesService = seriesService;
@@ -178,6 +181,12 @@ public class FondsService implements IFondsService {
     }
 
     // All READ operations
+    @Override
+    public Set<FondsCreator> findFondsCreatorAssociatedWithFonds(String systemId) {
+        Fonds fonds = getFondsOrThrow(systemId);
+        return fonds.getReferenceFondsCreator();
+    }
+
     public List<Fonds> findAll() {
         return fondsRepository.findAll();
     }
@@ -566,5 +575,24 @@ public class FondsService implements IFondsService {
     @Override
     public Fonds updateFonds(Fonds fonds) {
         return fondsRepository.save(fonds);
+    }
+
+
+    /**
+     * Internal helper method. Rather than having a find and try catch in multiple methods, we have it here once.
+     * If you call this, be aware that you will only ever get a valid Fonds back. If there is no valid
+     * Fonds, an exception is thrown
+     *
+     * @param fondsSystemId
+     * @return
+     */
+    protected Fonds getFondsOrThrow(@NotNull String fondsSystemId) {
+        Fonds fonds = fondsRepository.findBySystemId(fondsSystemId);
+        if (fonds == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " Fonds, using systemId " + fondsSystemId;
+            logger.info(info);
+            throw new NoarkEntityNotFoundException(info);
+        }
+        return fonds;
     }
 }

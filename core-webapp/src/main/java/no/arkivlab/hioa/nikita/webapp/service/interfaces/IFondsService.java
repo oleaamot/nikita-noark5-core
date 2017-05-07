@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public interface IFondsService  {
 
@@ -22,9 +23,10 @@ public interface IFondsService  {
 
     FondsCreator createFondsCreatorAssociatedWithFonds(String fondsSystemId, FondsCreator fondsCreator);
 
+    // -- All READ operations
+    Set<FondsCreator> findFondsCreatorAssociatedWithFonds(String systemId);
     List<Fonds> findFondsByOwnerPaginated(Integer top, Integer skip);
 
-    // -- All READ operations
 
     List<Fonds> findAll();
     List<Fonds> findAll(Sort sort);
