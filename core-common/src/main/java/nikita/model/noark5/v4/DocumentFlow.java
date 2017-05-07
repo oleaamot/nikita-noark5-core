@@ -12,9 +12,9 @@ import java.util.Date;
 import static nikita.config.N5ResourceMappings.DOCUMENT_FLOW;
 
 @Entity
-@Table(name = "documentflow")
+@Table(name = "document_flow")
 // Enable soft delete of DocumentFlow
-@SQLDelete(sql="UPDATE documentflow SET deleted = true WHERE id = ?")
+@SQLDelete(sql="UPDATE document_flow SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
 public class DocumentFlow implements Serializable, INoarkSystemIdEntity {
 
