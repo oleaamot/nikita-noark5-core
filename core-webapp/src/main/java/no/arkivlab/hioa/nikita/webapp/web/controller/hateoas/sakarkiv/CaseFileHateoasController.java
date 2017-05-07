@@ -87,6 +87,7 @@ public class CaseFileHateoasController {
         RegistryEntry createdRegistryEntry = caseFileService.createRegistryEntryAssociatedWithCaseFile(fileSystemId,
                 registryEntry);
         RegistryEntryHateoas registryEntryHateoas = new RegistryEntryHateoas(createdRegistryEntry);
+        registryEntryHateoasHandler.addLinks(registryEntryHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdRegistryEntry));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
