@@ -7,13 +7,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.CacheControl;
-import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
@@ -78,7 +76,7 @@ public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
      *  formatted output.
      *  However the client should be using Accept: application/json or application/xml when connecting
      */
-/*
+
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters){
 
@@ -96,10 +94,8 @@ public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
             converter.getObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
             converter.getObjectMapper().enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         }
-
-
     }
-*/
+
     /**
      *
      * @param configurer
