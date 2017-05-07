@@ -5,9 +5,11 @@ import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.Record;
 import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.secondary.PostalAddress;
+import nikita.model.noark5.v4.secondary.Precedence;
 import nikita.repository.n5v4.IRegistryEntryRepository;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRegistryEntryService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary.ICorrespondencePartService;
+import no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary.IPrecedenceService;
 import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.slf4j.Logger;
@@ -37,6 +39,7 @@ public class RegistryEntryService implements IRegistryEntryService {
     Integer maxPageSize = new Integer(10);
     private DocumentDescriptionService documentDescriptionService;
     private ICorrespondencePartService correspondencePartService;
+    private IPrecedenceService precedenceService;
     private IRegistryEntryRepository registryEntryRepository;
     private EntityManager entityManager;
 
@@ -141,4 +144,16 @@ public class RegistryEntryService implements IRegistryEntryService {
         return registryEntry;
     }
 
+    @Override
+    public Precedence createPrecedenceAssociatedWithRecord(String registryEntrySystemID, Precedence precedence) {
+
+        RegistryEntry registryEntry = getRegistryEntryOrThrow(registryEntrySystemID);
+        NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(precedence);
+        NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(precedence);
+        // bidirectional relationship @ManyToMany, set both sides of relationship
+        registryEntry.getReferencePrecedence().add(precedence);
+        precedence.getReferenceRegistryEntry().add(registryEntry);
+        return (Precedence) precedenceService.createNewPrecedence(precedence);
+
+    }
 }

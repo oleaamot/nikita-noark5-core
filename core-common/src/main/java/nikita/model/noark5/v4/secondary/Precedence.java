@@ -2,6 +2,7 @@ package nikita.model.noark5.v4.secondary;
 
 import nikita.model.noark5.v4.CaseFile;
 import nikita.model.noark5.v4.RegistryEntry;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.model.noark5.v4.interfaces.entities.IPrecedenceEntity;
 import org.hibernate.annotations.SQLDelete;
@@ -20,7 +21,7 @@ import static nikita.config.N5ResourceMappings.PRECEDENCE;
 // Enable soft delete of Precedence
 @SQLDelete(sql="UPDATE precedence SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Precedence implements IPrecedenceEntity, INoarkSystemIdEntity {
+public class Precedence implements IPrecedenceEntity, INikitaEntity, INoarkSystemIdEntity {
 
     private static final long serialVersionUID = 1L;
 
