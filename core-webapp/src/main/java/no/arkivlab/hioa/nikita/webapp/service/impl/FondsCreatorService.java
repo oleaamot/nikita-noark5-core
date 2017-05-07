@@ -120,15 +120,14 @@ public class FondsCreatorService implements IFondsCreatorService {
     }
 
     @Override
-    public FondsCreator updateFondsCreator(@NotNull FondsCreator fondsCreatorUpdate) {
-        if (fondsCreatorUpdate.getSystemId() != null) {
-            FondsCreator existingFondsCreator = getFondsCreatorOrThrow(fondsCreatorUpdate.getSystemId());
-            existingFondsCreator.setDescription(fondsCreatorUpdate.getDescription());
-            existingFondsCreator.setFondsCreatorId(fondsCreatorUpdate.getFondsCreatorId());
-            existingFondsCreator.setFondsCreatorName(fondsCreatorUpdate.getFondsCreatorName());
-            return existingFondsCreator;
-        }
-        throw new NikitaMalformedInputDataException("Attempt to update arkivskaper, but systemID is missing");
+    public FondsCreator updateFondsCreator(@NotNull String systemId, @NotNull FondsCreator fondsCreatorUpdate) {
+
+        FondsCreator existingFondsCreator = getFondsCreatorOrThrow(systemId);
+        existingFondsCreator.setDescription(fondsCreatorUpdate.getDescription());
+        existingFondsCreator.setFondsCreatorId(fondsCreatorUpdate.getFondsCreatorId());
+        existingFondsCreator.setFondsCreatorName(fondsCreatorUpdate.getFondsCreatorName());
+        return existingFondsCreator;
+
     }
 
     @Override

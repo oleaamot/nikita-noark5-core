@@ -25,5 +25,5 @@ public interface IFondsCreatorService {
     FondsCreator findBySystemId(String systemId);
 
     // -- All UPDATE  operations
-    FondsCreator updateFondsCreator(FondsCreator fondsCreator);
+    FondsCreator updateFondsCreator(String systemID, FondsCreator fondsCreator);
 }
