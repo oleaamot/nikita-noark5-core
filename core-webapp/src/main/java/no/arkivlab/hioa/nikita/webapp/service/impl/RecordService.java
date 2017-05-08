@@ -69,10 +69,10 @@ public class RecordService implements IRecordService {
             throw new NoarkEntityNotFoundException(info);
         }
         else {
-            HashSet <Record> records = (HashSet <Record>) documentDescription.getReferenceRecord();
+            TreeSet <Record> records = (TreeSet <Record>) documentDescription.getReferenceRecord();
 
             if (records == null) {
-                records = new HashSet<>();
+                records = new TreeSet<>();
                 documentDescription.setReferenceRecord(records);
             }
             records.add(record);

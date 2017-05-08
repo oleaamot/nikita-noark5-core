@@ -39,6 +39,7 @@ public class APIDetail implements Comparable <APIDetail>{
         this.templated = templated;
     }
 
+    @Override
     public int compareTo(APIDetail otherDetail) {
         if (otherDetail != null) {
             return rel.compareTo(otherDetail.getRel());

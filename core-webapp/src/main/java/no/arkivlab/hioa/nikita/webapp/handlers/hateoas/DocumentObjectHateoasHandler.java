@@ -2,7 +2,7 @@ package no.arkivlab.hioa.nikita.webapp.handlers.hateoas;
 
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
 import nikita.model.noark5.v4.hateoas.Link;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ import static nikita.config.N5ResourceMappings.*;
 public class DocumentObjectHateoasHandler extends HateoasHandler implements IDocumentObjectHateoasHandler {
 
     @Override
-    public void addEntityLinks(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addEntityLinks(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
 
         // links for primary entities
         // link to record/documentdescription is one or the other
@@ -39,62 +39,62 @@ public class DocumentObjectHateoasHandler extends HateoasHandler implements IDoc
     }
 
     @Override
-    public void addRecord(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addRecord(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT + SLASH + entity.getSystemId() + SLASH +
                 REGISTRATION + SLASH, REL_FONDS_STRUCTURE_RECORD, false));
     }
 
     @Override
-    public void addConversion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addConversion(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT + SLASH + entity.getSystemId() + SLASH +
                 CONVERSION + SLASH, REL_FONDS_STRUCTURE_CONVERSION, false));
     }
 
     @Override
-    public void addNewConversion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewConversion(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT + SLASH + entity.getSystemId() + SLASH +
                 NEW_CONVERSION + SLASH, REL_FONDS_STRUCTURE_NEW_CONVERSION, false));
     }
 
     @Override
-    public void addElectronicSignature(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addElectronicSignature(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT + SLASH + entity.getSystemId() + SLASH +
                 ELECTRONIC_SIGNATURE + SLASH, REL_FONDS_STRUCTURE_ELECTRONIC_SIGNATURE, false));
     }
 
     @Override
-    public void addNewElectronicSignature(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewElectronicSignature(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT + SLASH + entity.getSystemId() + SLASH +
                 NEW_ELECTRONIC_SIGNATURE + SLASH, REL_FONDS_STRUCTURE_NEW_ELECTRONIC_SIGNATURE, false));
     }
 
     @Override
-    public void addDocumentDescription(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addDocumentDescription(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT + SLASH + entity.getSystemId() + SLASH +
                 DOCUMENT_DESCRIPTION + SLASH, REL_FONDS_STRUCTURE_DOCUMENT_DESCRIPTION, false));
     }
 
     @Override
-    public void addReferenceDocumentFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addReferenceDocumentFile(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT + SLASH + entity.getSystemId() + SLASH +
                 REFERENCE_FILE + SLASH, REL_FONDS_STRUCTURE_DOCUMENT_FILE, false));
     }
 
     @Override
-    public void addVariantFormat(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addVariantFormat(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_METADATA_PATH + SLASH + VARIANT_FORMAT, REL_METADATA_VARIANT_FORMAT, false));
     }
 
     @Override
-    public void addFormat(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addFormat(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_METADATA_PATH + SLASH + FORMAT, REL_METADATA_FORMAT, false));
     }

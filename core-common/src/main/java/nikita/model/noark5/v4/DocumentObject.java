@@ -3,9 +3,7 @@ package nikita.model.noark5.v4;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.IConversion;
 import nikita.model.noark5.v4.interfaces.IElectronicSignature;
-import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.model.noark5.v4.interfaces.entities.INoarkCreateEntity;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.deserialisers.DocumentObjectDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -15,7 +13,7 @@ import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.Set;
 
 import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT;
@@ -27,24 +25,10 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT;
 @Where(clause="deleted <> true")
 @Indexed(index = "document_object")
 @JsonDeserialize(using = DocumentObjectDeserializer.class)
-public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoarkCreateEntity,
+@AttributeOverride(name = "id", column = @Column(name = "pk_document_object_id"))
+public class DocumentObject  extends NoarkEntity implements INoarkCreateEntity,
         IElectronicSignature, IConversion
 {
-
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "pk_document_object_id", nullable = false, insertable = true, updatable = false)
-    protected Long id;
-
-    /**
-     * M001 - systemID (xs:string)
-     */
-    @Column(name = "system_id", unique=true)
-    @Audited
-    @Field
-    protected String systemId;
 
     /**
      * M005 - versjonsnummer (xs:integer)
@@ -52,7 +36,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
     @Column(name = "version_number")
     @Audited
     @Field
-    protected Integer versionNumber;
+    private Integer versionNumber;
 
     /**
      * M700 - variantformat (xs:string)
@@ -60,7 +44,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
     @Column(name = "variant_format")
     @Audited
     @Field
-    protected String variantFormat;
+    private String variantFormat;
 
     /**
      * M701 - format (xs:string)
@@ -68,7 +52,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
     @Column(name = "format")
     @Audited
     @Field
-    protected String format;
+    private String format;
 
     /**
      * M702 - formatDetaljer (xs:string)
@@ -76,7 +60,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
     @Column(name = "format_details")
     @Audited
     @Field
-    protected String formatDetails;
+    private String formatDetails;
 
     /**
      * M600 - opprettetDato (xs:dateTime)
@@ -85,7 +69,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
     @Field
-    protected Date createdDate;
+    private Date createdDate;
 
     /**
      * M601 - opprettetAv (xs:string)
@@ -93,7 +77,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
     @Column(name = "created_by")
     @Audited
     @Field
-    protected String createdBy;
+    private String createdBy;
 
     /**
      * M218 - referanseDokumentfil (xs:string)
@@ -101,7 +85,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
     @Column(name = "reference_document_file")
     @Audited
     @Field
-    protected String referenceDocumentFile;
+    private String referenceDocumentFile;
 
     /**
      * M705 - sjekksum (xs:string)
@@ -109,7 +93,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
     @Column(name = "checksum")
     @Audited
     @Field
-    protected String checksum;
+    private String checksum;
 
     /**
      * M706 - sjekksumAlgoritme (xs:string)
@@ -117,7 +101,7 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
     @Column(name = "checksum_algorithm")
     @Audited
     @Field
-    protected String checksumAlgorithm;
+    private String checksumAlgorithm;
 
     /**
      * M707 - filstoerrelse (xs:string)
@@ -125,68 +109,35 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
     @Column(name = "file_size")
     @Audited
     @Field
-    protected Long fileSize;
+    private Long fileSize;
 
     @Column(name = "original_filename")
     @Audited
     @Field
-    protected String originalFilename;
+    private String originalFilename;
 
     @Column(name = "mime_type")
     @Audited
     @Field
-    protected String mimeType;
-
-    @Column(name = "owned_by")
-    @Audited
-    @Field
-    protected String ownedBy;
-
-    @Version
-    @Column(name = "version")
-    protected Long version;
+    private String mimeType;
 
     // Link to DocumentDescription
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_object_document_description_id", referencedColumnName = "pk_document_description_id")
-    protected DocumentDescription referenceDocumentDescription;
+    private DocumentDescription referenceDocumentDescription;
+
     // Link to Record
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_object_record_id", referencedColumnName = "pk_record_id")
-    protected Record referenceRecord;
+    private Record referenceRecord;
+
     // Links to Conversion
     @OneToMany(mappedBy = "referenceDocumentObject")
-    protected Set<Conversion> referenceConversion = new HashSet<Conversion>();
+    private Set<Conversion> referenceConversion = new TreeSet<>();
     // Link to ElectronicSignature
     @OneToOne
     @JoinColumn(name="pk_electronic_signature_id")
-    protected ElectronicSignature referenceElectronicSignature;
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    @Field
-    private Boolean deleted;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getSystemId() {
-        return systemId;
-    }
-
-    public void setSystemId(String systemId) {
-        this.systemId = systemId;
-    }
+    private ElectronicSignature referenceElectronicSignature;
 
     public Integer getVersionNumber() {
         return versionNumber;
@@ -284,30 +235,6 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
         this.mimeType = mimeType;
     }
 
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(String ownedBy) {
-        this.ownedBy = ownedBy;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
     @Override
     public String getBaseTypeName() {
         return DOCUMENT_OBJECT;
@@ -348,8 +275,8 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
 
     @Override
     public String toString() {
-        return "DocumentObject{" +
-                "fileSize=" + fileSize +
+        return "DocumentObject{" + super.toString() + 
+                ", fileSize=" + fileSize +
                 ", checksumAlgorithm='" + checksumAlgorithm + '\'' +
                 ", checksum='" + checksum + '\'' +
                 ", referenceDocumentFile='" + referenceDocumentFile + '\'' +
@@ -361,9 +288,6 @@ public class DocumentObject implements INikitaEntity, INoarkSystemIdEntity, INoa
                 ", versionNumber=" + versionNumber +
                 ", mimeType=" + mimeType +
                 ", originalFilename=" + originalFilename +
-                ", systemId='" + systemId + '\'' +
-                ", version='" + version + '\'' +
-                ", id=" + id +
                 '}';
     }
 }

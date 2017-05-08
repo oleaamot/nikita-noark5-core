@@ -1,16 +1,14 @@
 package nikita.model.noark5.v4;
 
 import nikita.model.noark5.v4.interfaces.entities.IClassifiedEntity;
-import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static nikita.config.N5ResourceMappings.CLASSIFIED;
 
@@ -23,97 +21,54 @@ import static nikita.config.N5ResourceMappings.CLASSIFIED;
 // Enable soft delete of Classified
 @SQLDelete(sql="UPDATE classified SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Classified implements INikitaEntity, INoarkSystemIdEntity, IClassifiedEntity {
+@AttributeOverride(name = "id", column = @Column(name = "pk_classified_id"))
+public class Classified extends NoarkEntity implements IClassifiedEntity {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "pk_classified_id", nullable = false, insertable = true, updatable = false)
-    protected Long id;
-
-    /**
-     * systemID (xs:string). Not part of Noark standard. Added so access via systemId is consistent
-     */
-    @Column(name = "system_id", unique=true)
-    @Audited
-    protected String systemId;
-
+  
     /** M506 - gradering (xs:string) **/
     @Column(name="classification")
     @Audited
-    protected String classification;
+    private String classification;
 
     /** M624 - graderingsdato (xs:dateTime) **/
     @Column(name="classification_date")
     @Audited
-    protected Date classificationDate;
+    private Date classificationDate;
 
     /** M629 - gradertAv (xs:string) */
     @Column(name = "classification_by")
     @Audited
-    protected String classificationBy;
+    private String classificationBy;
 
     /** M626 - nedgraderingsdato (xs:dateTime) **/
     @Column(name="classification_downgraded_date")
     @Audited
-    protected Date classificationDowngradedDate;
+    private Date classificationDowngradedDate;
 
     /** M627 - nedgradertAv (xs:string) **/
     @Column(name = "classification_downgraded_by")
     @Audited
-    protected String classificationDowngradedBy;
-
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
-
-    @Version
-    @Column(name = "version")
-    protected Long version;
-
+    private String classificationDowngradedBy;
     // Links to Series
     @OneToMany(mappedBy = "referenceClassified")
-    protected Set<Series> referenceSeries = new HashSet<Series>();
+    private Set<Series> referenceSeries = new TreeSet<>();
 
     // Links to Klass
     @OneToMany(mappedBy = "referenceClassified")
-    protected Set<Class> referenceClass = new HashSet<Class>();
+    private Set<Class> referenceClass = new TreeSet<>();
 
     // Links to File
     @OneToMany(mappedBy = "referenceClassified")
-    protected Set<File> referenceFile = new HashSet<File>();
+    private Set<File> referenceFile = new TreeSet<>();
 
     // Links to Record
     @OneToMany(mappedBy = "referenceClassified")
-    protected Set<Record> referenceRecord = new HashSet<Record>();
+    private Set<Record> referenceRecord = new TreeSet<>();
 
     // Links to DocumentDescription
     @OneToMany(mappedBy = "referenceClassified")
-    protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getSystemId() {
-        return systemId;
-    }
-
-    @Override
-    public void setSystemId(String systemId) {
-        this.systemId = systemId;
-    }
+    private Set<DocumentDescription> referenceDocumentDescription = new TreeSet<>();
 
     public String getClassification() {
         return classification;
@@ -153,30 +108,6 @@ public class Classified implements INikitaEntity, INoarkSystemIdEntity, IClassif
 
     public void setClassificationDowngradedBy(String classificationDowngradedBy) {
         this.classificationDowngradedBy = classificationDowngradedBy;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(String ownedBy) {
-        this.ownedBy = ownedBy;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
     }
 
     @Override
@@ -226,14 +157,12 @@ public class Classified implements INikitaEntity, INoarkSystemIdEntity, IClassif
 
     @Override
     public String toString() {
-        return "Classified{" +
-                "id=" + id +
+        return "Classified{"  + super.toString() +
                 ", classification='" + classification + '\'' +
                 ", classificationDate=" + classificationDate +
                 ", classificationBy='" + classificationBy + '\'' +
                 ", classificationDowngradedDate=" + classificationDowngradedDate +
                 ", classificationDowngradedBy='" + classificationDowngradedBy + '\'' +
-                ", version='" + version + '\'' +
                 '}';
     }
 }

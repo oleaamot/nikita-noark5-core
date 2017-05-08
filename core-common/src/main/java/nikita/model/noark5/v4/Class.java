@@ -5,7 +5,6 @@ import nikita.model.noark5.v4.interfaces.IClassified;
 import nikita.model.noark5.v4.interfaces.ICrossReference;
 import nikita.model.noark5.v4.interfaces.IDisposal;
 import nikita.model.noark5.v4.interfaces.IScreening;
-import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
 import nikita.util.deserialisers.ClassDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -14,9 +13,8 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static nikita.config.N5ResourceMappings.CLASS;
 
@@ -27,22 +25,8 @@ import static nikita.config.N5ResourceMappings.CLASS;
 @Where(clause="deleted <> true")
 @Indexed(index = "class")
 @JsonDeserialize(using = ClassDeserializer.class)
-public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClassified, ICrossReference {
-
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "pk_class_id", nullable = false, insertable = true, updatable = false)
-    protected Long id;
-
-    /**
-     * M001 - systemID (xs:string)
-     */
-    @Column(name = "system_id", unique=true)
-    @Audited
-    @Field
-    protected String systemId;
+@AttributeOverride(name = "id", column = @Column(name = "pk_class_id"))
+public class Class extends NoarkGeneralEntity implements IDisposal, IScreening, IClassified, ICrossReference {
 
     /**
      * M002 - klasseID (xs:string)
@@ -50,135 +34,53 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
     @Column(name = "class_id")
     @Audited
     @Field
-    protected String classId;
-
-    /**
-     * M020 - tittel (xs:string)
-     */
-    @Column(name = "title")
-    @Audited
-    @Field
-    protected String title;
-
-    /**
-     * M021 - beskrivelse (xs:string)
-     */
-    @Column(name = "description")
-    @Audited
-    @Field
-    protected String description;
-
-    /**
-     * M600 - opprettetDato (xs:dateTime)
-     */
-    @Column(name = "created_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    @Audited
-    @Field
-    protected Date createdDate;
-
-    /**
-     * M601 - opprettetAv (xs:string)
-     */
-    @Column(name = "created_by")
-    @Audited
-    @Field
-    protected String createdBy;
-
-    /**
-     * M602 - avsluttetDato (xs:dateTime)
-     */
-    @Column(name = "finalised_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    @Audited
-    @Field
-    protected Date finalisedDate;
-
-    /**
-     * M603 - avsluttetAv (xs:string)
-     */
-    @Column(name = "finalised_by")
-    @Audited
-    @Field
-    protected String finalisedBy;
-
-    @Column(name = "owned_by")
-    @Audited
-    @Field
-    protected String ownedBy;
-
-    @Version
-    @Column(name = "version")
-    protected Long version;
+    private String classId;
 
     // Links to Keywords
     @ManyToMany
     @JoinTable(name = "class_keyword", joinColumns = @JoinColumn(name = "f_pk_class_id",
             referencedColumnName = "pk_class_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_keyword_id",
             referencedColumnName = "pk_keyword_id"))
-    protected Set<Keyword> referenceKeyword = new HashSet<Keyword>();
+    private Set<Keyword> referenceKeyword = new TreeSet<>();
 
     // Link to ClassificationSystem
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_classification_system_id", referencedColumnName = "pk_classification_system_id")
-    protected ClassificationSystem referenceClassificationSystem;
+    private ClassificationSystem referenceClassificationSystem;
 
     // Link to parent Class
     @ManyToOne(fetch = FetchType.LAZY)
-    protected Class referenceParentClass;
+    private Class referenceParentClass;
 
     // Links to child Classes
     @OneToMany(mappedBy = "referenceParentClass")
-    protected Set<Class> referenceChildClass = new HashSet<Class>();
+    private Set<Class> referenceChildClass = new TreeSet<>();
 
     // Links to Files
     @OneToMany(mappedBy = "referenceClass")
-    protected Set<File> referenceFile = new HashSet<File>();
+    private Set<File> referenceFile = new TreeSet<>();
 
     // Links to Records
     @OneToMany(mappedBy = "referenceClass")
-    protected Set<Record> referenceRecord = new HashSet<Record>();
+    private Set<Record> referenceRecord = new TreeSet<>();
 
     // Links to Classified
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "class_classified_id", referencedColumnName = "pk_classified_id")
-    protected Classified referenceClassified;
+    private Classified referenceClassified;
 
     // Link to Disposal
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "class_disposal_id", referencedColumnName = "pk_disposal_id")
-    protected Disposal referenceDisposal;
+    private Disposal referenceDisposal;
+
     // Link to Screening
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "class_screening_id", referencedColumnName = "pk_screening_id")
-    protected Screening referenceScreening;
+    private Screening referenceScreening;
+
     @OneToMany(mappedBy = "referenceClass")
-    protected Set<CrossReference> referenceCrossReference;
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    @Field
-    private Boolean deleted;
-
-    public Class() {
-        super();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getSystemId() {
-        return systemId;
-    }
-
-    public void setSystemId(String systemId) {
-        this.systemId = systemId;
-    }
+    private Set<CrossReference> referenceCrossReference;
 
     public String getClassId() {
         return classId;
@@ -186,78 +88,6 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
 
     public void setClassId(String classId) {
         this.classId = classId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Date getFinalisedDate() {
-        return finalisedDate;
-    }
-
-    public void setFinalisedDate(Date finalisedDate) {
-        this.finalisedDate = finalisedDate;
-    }
-
-    public String getFinalisedBy() {
-        return finalisedBy;
-    }
-
-    public void setFinalisedBy(String finalisedBy) {
-        this.finalisedBy = finalisedBy;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(String ownedBy) {
-        this.ownedBy = ownedBy;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
     }
 
     @Override
@@ -316,32 +146,32 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
 
     @Override
     public Classified getReferenceClassified() {
-        return null;
+        return referenceClassified;
     }
 
     @Override
-    public void setReferenceClassified(Classified classified) {
-
+    public void setReferenceClassified(Classified referenceClassified) {
+        this.referenceClassified = referenceClassified;
     }
 
     @Override
     public Disposal getReferenceDisposal() {
-        return null;
+        return referenceDisposal;
     }
 
     @Override
     public void setReferenceDisposal(Disposal disposal) {
-
+        this.referenceDisposal = disposal;
     }
 
     @Override
     public Screening getReferenceScreening() {
-        return null;
+        return referenceScreening;
     }
 
     @Override
     public void setReferenceScreening(Screening screening) {
-
+        this.referenceScreening = screening;
     }
 
     @Override
@@ -356,17 +186,8 @@ public class Class implements INoarkGeneralEntity, IDisposal, IScreening, IClass
 
     @Override
     public String toString() {
-        return "Class{" +
-                "finalisedBy='" + finalisedBy + '\'' +
-                ", finalisedDate=" + finalisedDate +
-                ", createdBy='" + createdBy + '\'' +
-                ", createdDate=" + createdDate +
-                ", description='" + description + '\'' +
-                ", title='" + title + '\'' +
+        return "Class{" + super.toString() +
                 ", classId='" + classId + '\'' +
-                ", systemId='" + systemId + '\'' +
-                ", id=" + id +
-                ", version='" + version + '\'' +
                 '}';
     }
 }

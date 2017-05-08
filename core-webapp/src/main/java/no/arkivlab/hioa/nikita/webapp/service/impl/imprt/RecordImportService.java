@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -70,10 +70,10 @@ public class RecordImportService implements IRecordImportService {
             throw new NoarkEntityNotFoundException(info);
         }
         else {
-            HashSet <Record> records = (HashSet <Record>) documentDescription.getReferenceRecord();
+            TreeSet <Record> records = (TreeSet <Record>) documentDescription.getReferenceRecord();
 
             if (records == null) {
-                records = new HashSet<>();
+                records = new TreeSet<>();
                 documentDescription.setReferenceRecord(records);
             }
             records.add(record);

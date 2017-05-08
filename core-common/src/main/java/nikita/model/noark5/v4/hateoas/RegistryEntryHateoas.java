@@ -1,7 +1,7 @@
 package nikita.model.noark5.v4.hateoas;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.serializers.noark5v4.hateoas.RegistryEntryHateoasSerializer;
 
 import java.util.List;
@@ -18,11 +18,11 @@ import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
 @JsonSerialize(using = RegistryEntryHateoasSerializer.class)
 public class RegistryEntryHateoas extends HateoasNoarkObject implements IHateoasNoarkObject {
 
-    public RegistryEntryHateoas(INoarkSystemIdEntity entity) {
+    public RegistryEntryHateoas(INikitaEntity entity) {
         super(entity);
     }
 
-    public RegistryEntryHateoas(List<INoarkSystemIdEntity> entityList) {
+    public RegistryEntryHateoas(List<INikitaEntity> entityList) {
         super(entityList, REGISTRY_ENTRY);
     }
 

@@ -14,11 +14,11 @@ import java.util.List;
 
 @Repository
 @NoRepositoryBean
-public interface NoarkEntityRepository<INoarkSystemIdEntity, ID extends Serializable> extends
-        PagingAndSortingRepository<INoarkSystemIdEntity, Long> {
+public interface NoarkEntityRepository<INikitaEntity, ID extends Serializable> extends
+        PagingAndSortingRepository<INikitaEntity, Long> {
 
-    List<INoarkSystemIdEntity> findAll();
+    List<INikitaEntity> findAll();
 
-    INoarkSystemIdEntity findBySystemId(String systemId);
+    INikitaEntity findBySystemId(String systemId);
 
 }

@@ -1,7 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces;
 
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 
 /**
  * Created by tsodring on 2/6/17.
@@ -10,28 +10,28 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
  */
 public interface ICaseFileHateoasHandler extends IHateoasHandler {
 
-    void addNewClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewClass(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addClass(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewPrecedence(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewPrecedence(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addPrecedence(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addPrecedence(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewCaseParty(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewCaseParty(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addCaseParty(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addCaseParty(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addCaseStatus(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addCaseStatus(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewCaseStatus(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewCaseStatus(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addSecondaryClassification(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addSecondaryClassification(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewSecondaryClassification(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewSecondaryClassification(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewRegistryEntry(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewRegistryEntry(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addRegistryEntry(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addRegistryEntry(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
 }

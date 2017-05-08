@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.HashSet;
+import java.util.TreeSet;
 
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 
@@ -72,10 +72,10 @@ public class RegistryEntryImportService implements IRegistryEntryImportService {
             throw new NoarkEntityNotFoundException(info);
         }
         else {
-            HashSet <Record> records = (HashSet <Record>) documentDescription.getReferenceRecord();
+            TreeSet <Record> records = (TreeSet <Record>) documentDescription.getReferenceRecord();
 
             if (records == null) {
-                records = new HashSet<>();
+                records = new TreeSet<>();
                 documentDescription.setReferenceRecord(records);
             }
             records.add(registryEntry);

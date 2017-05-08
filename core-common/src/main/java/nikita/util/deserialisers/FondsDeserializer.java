@@ -167,7 +167,7 @@ public class FondsDeserializer extends JsonDeserializer implements ObligatoryPro
             key = STORAGE_LOCATION_EN;
         }
         if (currentNode != null) {
-            HashSet <Fonds> referenceFonds = new HashSet<Fonds>();
+            TreeSet <Fonds> referenceFonds = new TreeSet<Fonds>();
             referenceFonds.add(fonds);
 
             if(currentNode.isArray() == true) {
@@ -178,7 +178,7 @@ public class FondsDeserializer extends JsonDeserializer implements ObligatoryPro
                     storageLocation.setSystemId(UUID.randomUUID().toString());
                     storageLocation.setStorageLocation(location);
                     storageLocation.setReferenceFonds(referenceFonds);
-                    HashSet <StorageLocation> storageLocations = (HashSet <StorageLocation>) fonds.getReferenceStorageLocation();
+                    TreeSet <StorageLocation> storageLocations = (TreeSet <StorageLocation>) fonds.getReferenceStorageLocation();
                     storageLocations.add(storageLocation);
                 }
             }

@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.hateoas.ClassHateoas;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
@@ -128,7 +128,7 @@ public class ClassHateoasController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         ClassHateoas classHateoas = new
-                ClassHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                ClassHateoas((ArrayList<INikitaEntity>) (ArrayList)
                 classService.findClassByOwnerPaginated(top, skip));
         classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

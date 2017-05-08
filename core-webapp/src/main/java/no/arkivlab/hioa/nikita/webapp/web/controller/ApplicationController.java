@@ -35,7 +35,7 @@ import static nikita.config.Constants.*;
 /**
  * REST controller that returns information about the Noark 5 cores conformity to standards.
  */
-@RestController
+@RestController("ApplicationController")
 @RequestMapping(value = "/", produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 @Api(value = "Application", description = "Links to where the various interfaces can be accessed from")
 public class ApplicationController {
@@ -53,23 +53,10 @@ public class ApplicationController {
     @RequestMapping(method = {RequestMethod.GET})
     @ResponseBody
     public ResponseEntity <ApplicationDetails> identify(HttpServletRequest request) {
-        ApplicationDetails applicationDetails;
-        ArrayList<ConformityLevel> conformityLevels = new ArrayList(10);
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        if (!username.equals("anonymousUser")) {
-            addConformityLevels(conformityLevels);
-        }
-
-        /* Show login relation also for logged in users to allow user
-         * change also when logged in.
-         */
-        addLoginInformation(conformityLevels);
-
-        applicationDetails = new ApplicationDetails(conformityLevels);
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
-                .body(applicationDetails);
+                .body(getApplicationDetails());
     }
 
     @Counted
@@ -158,5 +145,23 @@ public class ApplicationController {
         conformityLevelLogging.setRel(NOARK_CONFORMANCE_REL + NOARK_LOGGING_PATH + SLASH);
         conformityLevels.add(conformityLevelLogging);
         */
+    }
+
+    protected ApplicationDetails getApplicationDetails() {
+        ApplicationDetails applicationDetails;
+        ArrayList<ConformityLevel> conformityLevels = new ArrayList(10);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        if (!username.equals("anonymousUser")) {
+            addConformityLevels(conformityLevels);
+        }
+
+        /* Show login relation also for logged in users to allow user
+         * change also when logged in.
+         */
+        addLoginInformation(conformityLevels);
+
+        applicationDetails = new ApplicationDetails(conformityLevels);
+        return applicationDetails;
     }
 }

@@ -1,7 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces;
 
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 
 /**
  * Created by tsodring on 2/6/17.
@@ -10,23 +10,23 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
  */
 public interface IBasicRecordHateoasHandler extends IRecordHateoasHandler {
 
-    void addStorageLocation(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addStorageLocation(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewStorageLocation(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewStorageLocation(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addComment(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addComment(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewComment(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewComment(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addAuthor(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addAuthor(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewAuthor(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewAuthor(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addCrossReference(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addCrossReference(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewCrossReference(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewCrossReference(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addKeyword(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addKeyword(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewKeyword(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewKeyword(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 }

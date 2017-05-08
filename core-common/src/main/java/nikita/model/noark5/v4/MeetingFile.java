@@ -5,9 +5,8 @@ import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.Set;
 
 import static nikita.config.N5ResourceMappings.MEETING_FILE;
@@ -17,60 +16,56 @@ import static nikita.config.N5ResourceMappings.MEETING_FILE;
 // Enable soft delete of MeetingFile
 @SQLDelete(sql="UPDATE meeting_file SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class MeetingFile extends File implements Serializable {
+public class MeetingFile extends File {
 
-    private static final long serialVersionUID = 1L;
 
     /**
      * M008 - moetenummer (xs:string)
      */
     @Column(name = "meeting_number")
     @Audited
-    protected String meetingNumber;
+    private String meetingNumber;
 
     /**
      * M370 - utvalg (xs:string)
      */
     @Column(name = "committee")
     @Audited
-    protected String committee;
+    private String committee;
 
     /**
      * M102 - moetedato (xs:date)
      */
     @Column(name = "loaned_date")
     @Audited
-    protected Date meetingDate;
+    private Date meetingDate;
 
     /**
      * M371 - moetested (xs:string)
      */
     @Column(name = "meeting_place")
     @Audited
-    protected String meetingPlace;
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
+    private String meetingPlace;
+
     /**
      * M221 - referanseForrigeMoete (xs:string)
      **/
     // Link to next Meeting
     @OneToOne(fetch = FetchType.LAZY)
-    protected MeetingFile referenceNextMeeting;
+    private MeetingFile referenceNextMeeting;
+
     /**
      * M222 - referanseNesteMoete (xs:string)
      **/
+
     // Link to previous Meeting
     // TODO: This links to id, not systemId. Fix!
     @OneToOne(fetch = FetchType.LAZY)
-    protected MeetingFile referencePreviousMeeting;
+    private MeetingFile referencePreviousMeeting;
+
     // Links to MeetingParticipant
     @OneToMany(mappedBy = "referenceMeetingFile")
-    protected Set<MeetingParticipant> referenceMeetingParticipant = new HashSet<MeetingParticipant>();
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
+    private Set<MeetingParticipant> referenceMeetingParticipant = new TreeSet<>();
 
     public String getMeetingNumber() {
         return meetingNumber;
@@ -104,22 +99,6 @@ public class MeetingFile extends File implements Serializable {
         this.meetingPlace = meetingPlace;
     }
 
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(String ownedBy) {
-        this.ownedBy = ownedBy;
-    }
-
     @Override
     public String getBaseTypeName() {
         return MEETING_FILE;
@@ -151,7 +130,7 @@ public class MeetingFile extends File implements Serializable {
 
     @Override
     public String toString() {
-        return "MeetingFile{" +
+        return "MeetingFile{" + super.toString() + 
                 "meetingNumber='" + meetingNumber + '\'' +
                 ", committee='" + committee + '\'' +
                 ", meetingDate=" + meetingDate +

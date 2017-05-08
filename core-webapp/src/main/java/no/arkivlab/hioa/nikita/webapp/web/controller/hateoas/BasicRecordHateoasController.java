@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
 import nikita.model.noark5.v4.BasicRecord;
 import nikita.model.noark5.v4.hateoas.BasicRecordHateoas;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IBasicRecordHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
@@ -90,7 +90,7 @@ public class BasicRecordHateoasController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         BasicRecordHateoas basicRecordHateoas = new
-                BasicRecordHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                BasicRecordHateoas((ArrayList<INikitaEntity>) (ArrayList)
                 basicRecordService.findBasicRecordByOwnerPaginated(top, skip));
         basicRecordHateoasHandler.addLinks(basicRecordHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

@@ -11,7 +11,7 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.Set;
 
 import static nikita.config.N5ResourceMappings.BASIC_RECORD;
@@ -76,25 +76,25 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
     @JoinTable(name = "basic_record_storage_location", joinColumns = @JoinColumn(name = "f_pk_basic_record_id",
             referencedColumnName = "pk_record_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
             referencedColumnName = "pk_storage_location_id"))
-    protected Set<StorageLocation> referenceStorageLocation = new HashSet<StorageLocation>();
+    protected Set<StorageLocation> referenceStorageLocation = new TreeSet<StorageLocation>();
     // Links to Keywords
     @ManyToMany
     @JoinTable(name = "basic_record_keyword", joinColumns = @JoinColumn(name = "f_pk_record_id",
             referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_keyword_id", referencedColumnName = "pk_keyword_id"))
-    protected Set<Keyword> referenceKeyword = new HashSet<Keyword>();
+    protected Set<Keyword> referenceKeyword = new TreeSet<Keyword>();
     // Links to Authors
     @ManyToMany
     @JoinTable(name = "basic_record_author", joinColumns = @JoinColumn(name = "f_pk_record_id",
             referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_author_id", referencedColumnName = "pk_author_id"))
-    protected Set<Author> referenceAuthor = new HashSet<Author>();
+    protected Set<Author> referenceAuthor = new TreeSet<Author>();
     // Links to Comments
     @ManyToMany
     @JoinTable(name = "basic_record_comment", joinColumns = @JoinColumn(name = "f_pk_record_id",
             referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_comment_id", referencedColumnName = "pk_comment_id"))
-    protected Set<Comment> referenceComment = new HashSet<Comment>();
+    protected Set<Comment> referenceComment = new TreeSet<Comment>();
     // Links to CrossReference
     @OneToMany(mappedBy = "referenceBasicRecord")
     protected Set<CrossReference> referenceCrossReference;

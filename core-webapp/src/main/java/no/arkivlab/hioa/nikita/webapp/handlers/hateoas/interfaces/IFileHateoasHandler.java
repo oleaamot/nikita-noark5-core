@@ -1,7 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces;
 
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 
 /**
  * Created by tsodring on 2/6/17.
@@ -11,42 +11,42 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 public interface IFileHateoasHandler extends IHateoasHandler {
 
 
-    void addEndFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addEndFile(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addExpandToCaseFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addExpandToCaseFile(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addExpandToMeetingFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addExpandToMeetingFile(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addRegistration(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addRegistration(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewRegistration(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewRegistration(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addBasicRecord(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addBasicRecord(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewBasicRecord(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewBasicRecord(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addComment(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addComment(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewComment(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewComment(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addSubFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addSubFile(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewSubFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewSubFile(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addCrossReference(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addCrossReference(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewCrossReference(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewCrossReference(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addClass(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewClass(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addReferenceSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addReferenceSeries(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewReferenceSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewReferenceSeries(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addReferenceSecondaryClassification(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addReferenceSecondaryClassification(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewReferenceSecondaryClassification(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewReferenceSecondaryClassification(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
 }

@@ -132,6 +132,8 @@ public final class Constants {
     public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat(NOARK_TIME_FORMAT_PATTERN);
     public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat(NOARK_DATE_TIME_FORMAT_PATTERN);
 
+    public static final String ONLY_WHITESPACE = "\\s*";
+
     // OData variable names
     public static final String TOP = "top";
     public static final String SKIP = "skip";

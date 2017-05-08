@@ -3,7 +3,7 @@ package nikita.util.serializers.noark5v4.hateoas;
 import com.fasterxml.jackson.core.JsonGenerator;
 import nikita.model.noark5.v4.ClassificationSystem;
 import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 
@@ -27,7 +27,7 @@ import java.io.IOException;
 public class ClassificationSystemHateoasSerializer extends HateoasSerializer implements IHateoasSerializer {
 
     @Override
-    public void serializeNoarkEntity(INoarkSystemIdEntity classificationSystem,
+    public void serializeNoarkEntity(INikitaEntity classificationSystem,
                                      HateoasNoarkObject classificationSystemHateoas, JsonGenerator jgen
     ) throws IOException {
         jgen.writeStartObject();

@@ -2,7 +2,7 @@ package no.arkivlab.hioa.nikita.webapp.handlers.hateoas;
 
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
 import nikita.model.noark5.v4.hateoas.Link;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ISeriesHateoasHandler;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +28,7 @@ import static nikita.config.N5ResourceMappings.*;
 public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateoasHandler {
 
     @Override
-    public void addEntityLinks(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addEntityLinks(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         addDocumentMedium(entity, hateoasNoarkObject);
         addNewRegistration(entity, hateoasNoarkObject);
         addNewFile(entity, hateoasNoarkObject);
@@ -63,7 +63,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Get a list of Series status values (GET)
      */
-    public void addSeriesStatus(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addSeriesStatus(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_METADATA_PATH + SLASH + FONDS_STATUS + SLASH, REL_METADATA_FONDS_STATUS, false));
     }
@@ -72,7 +72,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Get the successor Series (GET)
      */
-    public void addSeriesSuccessor(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addSeriesSuccessor(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH
                 + SERIES_ASSOCIATE_AS_SUCCESSOR + SLASH, REL_FONDS_STRUCTURE_SUCCESSOR,
@@ -84,7 +84,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
      * Associate an existing Series (A) as the successor of another existing Series (B). (A) becomes the
      * successor to (B). A is identified first, B is identified through a ref link (PUT)
      */
-    public void addNewSeriesSuccessor(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewSeriesSuccessor(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH
                 + NEW_SERIES_SUCCESSOR + SLASH, REL_FONDS_STRUCTURE_NEW_SUCCESSOR,
@@ -96,7 +96,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Get the precursor Series object (GET)
      */
-    public void addSeriesPrecursor(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addSeriesPrecursor(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH +
                 SERIES_PRECURSOR + SLASH, REL_FONDS_STRUCTURE_PRECURSOR,
@@ -108,7 +108,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
      * Associate an existing Series (A) as the precursor  of another existing Series (B). (A) becomes the
      * precursor to (B). A is identified first, B is identified through a ref link (PUT)
      */
-    public void addNewSeriesPrecursor(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewSeriesPrecursor(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH +
                 NEW_SERIES_PRECURSOR + SLASH, REL_FONDS_STRUCTURE_NEW_PRECURSOR,
@@ -119,7 +119,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Add a new registration to a Series (POST)
      */
-    public void addNewRegistration(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewRegistration(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         if (authorisation.canCreateRegistrationAttachedToSeries()) {
             hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                     NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH +
@@ -132,7 +132,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Add a new File to a Series (POST)
      */
-    public void addNewFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewFile(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         if (authorisation.canCreateFileAttachedToSeries()) {
             hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                     NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH
@@ -144,7 +144,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Add a new CaseFile to a Series (POST)
      */
-    public void addNewCaseFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewCaseFile(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         if (authorisation.canCreateFileAttachedToSeries()) {
             hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                     NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH
@@ -155,7 +155,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Associate an existing ClassificationSystem as the precursor of an existing Series (PUT)
      */
-    public void addNewClassificationSystem(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewClassificationSystem(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         if (authorisation.canCreateClassifcationSystemAttachedToSeries()) {
             hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                     NOARK_FONDS_STRUCTURE_PATH + SLASH + CLASSIFICATION_SYSTEM +
@@ -168,7 +168,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Get a list of Registration objects associated with a Series (paginated) (GET)
      */
-    public void addRegistration(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addRegistration(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + REGISTRATION +
                 SLASH + entity.getSystemId() + SLASH + REGISTRATION + SLASH, REL_FONDS_STRUCTURE_REGISTRATION,
@@ -179,7 +179,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Get a list of File objects associated with a Series (paginated) (GET)
      */
-    public void addFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addFile(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES +
                 SLASH + entity.getSystemId() + SLASH + FILE + SLASH, REL_FONDS_STRUCTURE_FILE,
@@ -190,7 +190,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Get a list of CaseFile objects associated with a Series (paginated) (GET)
      */
-    public void addCaseFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addCaseFile(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES +
                 SLASH + entity.getSystemId() + SLASH + CASE_FILE + SLASH, REL_FONDS_STRUCTURE_CASE_FILE,
@@ -201,7 +201,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Get the ClassificationSystem associated with the Series (GET)
      */
-    public void addClassificationSystem(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addClassificationSystem(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES +
                 SLASH + entity.getSystemId() + SLASH + CLASSIFICATION_SYSTEM + SLASH,
@@ -213,7 +213,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Get the Fonds associated with the Series (GET)
      */
-    public void addFonds(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addFonds(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES +
                 SLASH + entity.getSystemId() + SLASH + FONDS + SLASH,
@@ -224,7 +224,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Get the Classified associated with the Series (GET)
      */
-    public void addClassified(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addClassified(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH + CLASSIFIED
                 + SLASH, REL_FONDS_STRUCTURE_CLASSIFIED, false));
@@ -234,7 +234,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Add a new Classified to a Series (POST)
      */
-    public void addNewClassified(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewClassified(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH +
                 NEW_CLASSIFIED + SLASH, REL_FONDS_STRUCTURE_NEW_CLASSIFIED, false));
@@ -244,7 +244,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Get the Disposal associated with the Series (GET)
      */
-    public void addDisposal(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addDisposal(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH + DISPOSAL
                 + SLASH, REL_FONDS_STRUCTURE_DISPOSAL, false));
@@ -254,7 +254,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Add a new Disposal to a Series (POST)
      */
-    public void addNewDisposal(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewDisposal(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH + NEW_DISPOSAL
                 + SLASH, REL_FONDS_STRUCTURE_NEW_DISPOSAL, false));
@@ -264,7 +264,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Get the DisposalUndertaken associated with the Series (GET)
      */
-    public void addDisposalUndertaken(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addDisposalUndertaken(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH + DISPOSAL_UNDERTAKEN
                 + SLASH, REL_FONDS_STRUCTURE_DISPOSAL_UNDERTAKEN, false));
@@ -274,7 +274,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Add a new DisposalUndertaken to a Series (POST)
      */
-    public void addNewDisposalUndertaken(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewDisposalUndertaken(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH + NEW_DISPOSAL_UNDERTAKEN
                 + SLASH, REL_FONDS_STRUCTURE_NEW_DISPOSAL_UNDERTAKEN, false));
@@ -284,7 +284,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Get the Deletion associated with the Series object (GET)
      */
-    public void addDeletion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addDeletion(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH + DELETION
                 + SLASH, REL_FONDS_STRUCTURE_DELETION, false));
@@ -294,7 +294,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Add a new Deletion to a Series (POST)
      */
-    public void addNewDeletion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewDeletion(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH + NEW_DELETION
                 + SLASH, REL_FONDS_STRUCTURE_NEW_DELETION, false));
@@ -304,7 +304,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Get the Screening associated with the Series (GET)
      */
-    public void addScreening(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addScreening(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH + SCREENING
                 + SLASH, REL_FONDS_STRUCTURE_SCREENING, false));
@@ -314,7 +314,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Add a new Screening to a Series (POST)
      */
-    public void addNewScreening(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewScreening(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH + NEW_SCREENING
                 + SLASH, REL_FONDS_STRUCTURE_NEW_SCREENING, false));
@@ -324,7 +324,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Get a list of StorageLocation associated with the Series  (GET)
      */
-    public void addListStorageLocation(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addListStorageLocation(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH +
                 STORAGE_LOCATION + SLASH, REL_FONDS_STRUCTURE_STORAGE_LOCATION, false));
@@ -334,7 +334,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Add a new StorageLocation to be associated with the Series (POST)
      */
-    public void addNewStorageLocation(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewStorageLocation(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH +
                 NEW_STORAGE_LOCATION + SLASH, REL_FONDS_STRUCTURE_NEW_STORAGE_LOCATION, false));
@@ -344,7 +344,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     /**
      * Add a new list of StorageLocation to be associated with the Series (POST)
      */
-    public void addNewListStorageLocation(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewListStorageLocation(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH +
                 NEW_STORAGE_LOCATIONS + SLASH, REL_FONDS_STRUCTURE_NEW_STORAGE_LOCATION_LIST, false));

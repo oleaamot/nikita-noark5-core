@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.model.noark5.v4.DocumentObject;
 import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
@@ -102,7 +102,7 @@ public class DocumentObjectHateoasController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         DocumentObjectHateoas documentObjectHateoas = new
-                DocumentObjectHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                DocumentObjectHateoas((ArrayList<INikitaEntity>) (ArrayList)
                 documentObjectService.findDocumentObjectByOwnerPaginated(top, skip));
         documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

@@ -10,7 +10,7 @@ import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.ClassificationSystem;
 import nikita.model.noark5.v4.hateoas.ClassHateoas;
 import nikita.model.noark5.v4.hateoas.ClassificationSystemHateoas;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
@@ -171,7 +171,7 @@ public class ClassificationSystemHateoasController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         ClassificationSystemHateoas classificationSystemHateoas = new
-                ClassificationSystemHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                ClassificationSystemHateoas((ArrayList<INikitaEntity>) (ArrayList)
                 classificationSystemService.findClassificationSystemByOwnerPaginated(top, skip));
         classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

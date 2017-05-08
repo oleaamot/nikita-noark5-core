@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 
 import java.io.IOException;
@@ -35,14 +35,14 @@ public class HateoasSerializer extends StdSerializer<HateoasNoarkObject> {
         // An entity should produce
         // { "field" : "value", "_links": [] }
         // No such thing as an empty entity
-        List<INoarkSystemIdEntity> list = hateoasObject.getList();
+        List<INikitaEntity> list = hateoasObject.getList();
         if (list.size() > 0) {
             if (!hateoasObject.isSingleEntity()) {
                 jgen.writeStartObject();
                 jgen.writeFieldName(ENTITY_ROOT_NAME_LIST);
                 jgen.writeStartArray();
             }
-            for (INoarkSystemIdEntity entity : list) {
+            for (INikitaEntity entity : list) {
                 serializeNoarkEntity(entity, hateoasObject, jgen);
             }
             if (!hateoasObject.isSingleEntity()) {
@@ -62,7 +62,7 @@ public class HateoasSerializer extends StdSerializer<HateoasNoarkObject> {
         }
     }
 
-    protected void serializeNoarkEntity(INoarkSystemIdEntity entity, HateoasNoarkObject hateoasObject,
+    protected void serializeNoarkEntity(INikitaEntity entity, HateoasNoarkObject hateoasObject,
                                         JsonGenerator jgen) throws IOException {
     }
 

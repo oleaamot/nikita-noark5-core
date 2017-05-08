@@ -1,14 +1,12 @@
 package nikita.model.noark5.v4;
 
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static nikita.config.N5ResourceMappings.KEYWORD;
 
@@ -17,55 +15,27 @@ import static nikita.config.N5ResourceMappings.KEYWORD;
 // Enable soft delete of Keyword
 @SQLDelete(sql="UPDATE keyword SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Keyword implements Serializable, INoarkSystemIdEntity {
-
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "pk_keyword_id", nullable = false, insertable = true, updatable = false)
-    protected long id;
-
-    /**
-     * M001 - systemID (xs:string)
-     */
-    @Column(name = "system_id", unique=true)
-    @Audited
-    protected String systemId;
+@AttributeOverride(name = "id", column = @Column(name = "pk_keyword_id"))
+public class Keyword extends  NoarkEntity {
 
     /**
      * M022 - noekkelord (xs:string)
      */
     @Column(name = "keyword")
     @Audited
-    protected String keyword;
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
-    @Version
-    @Column(name = "version")
-    protected Long version;
+    private String keyword;
+
     // Links to Class
     @ManyToMany(mappedBy = "referenceKeyword")
-    protected Set<Class> referenceClass = new HashSet<Class>();
+    private Set<Class> referenceClass = new TreeSet<>();
+
     // Links to File
     @ManyToMany(mappedBy = "referenceKeyword")
-    protected Set<File> referenceFile = new HashSet<File>();
+    private Set<File> referenceFile = new TreeSet<>();
+
     // Links to BasicRecord
     @ManyToMany(mappedBy = "referenceKeyword")
-    protected Set<BasicRecord> referenceBasicRecord = new HashSet<BasicRecord>();
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
-
-    public String getSystemId() {
-        return systemId;
-    }
-
-    public void setSystemId(String systemId) {
-        this.systemId = systemId;
-    }
+    private Set<BasicRecord> referenceBasicRecord = new TreeSet<>();
 
     public String getKeyword() {
         return keyword;
@@ -73,30 +43,6 @@ public class Keyword implements Serializable, INoarkSystemIdEntity {
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(String ownedBy) {
-        this.ownedBy = ownedBy;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
     }
 
     @Override
@@ -130,11 +76,8 @@ public class Keyword implements Serializable, INoarkSystemIdEntity {
 
     @Override
     public String toString() {
-        return "Keyword{" +
+        return "Keyword{" + super.toString() +
                 "keyword='" + keyword + '\'' +
-                ", systemId='" + systemId + '\'' +
-                ", version='" + version + '\'' +
-                ", id=" + id +
                 '}';
     }
 }

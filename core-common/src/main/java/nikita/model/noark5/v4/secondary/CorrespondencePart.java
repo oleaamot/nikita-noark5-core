@@ -1,18 +1,17 @@
 package nikita.model.noark5.v4.secondary;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.interfaces.entities.ICorrespondencePartEntity;
-import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.deserialisers.CorrespondencePartDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART;
 
@@ -22,113 +21,66 @@ import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART;
 @SQLDelete(sql="UPDATE correspondence_part SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
 @JsonDeserialize(using = CorrespondencePartDeserializer.class)
-public class CorrespondencePart implements ICorrespondencePartEntity, INoarkSystemIdEntity, INikitaEntity {
-
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "pk_correspondence_part_id", nullable = false, insertable = true, updatable = false)
-    protected Long id;
-
-    /**
-     * M001 - systemID (xs:string)
-     */
-    @Column(name = "system_id", unique = true)
-    @Audited
-    protected String systemId;
-
+@AttributeOverride(name = "id", column = @Column(name = "pk_correspondence_part_id"))
+public class CorrespondencePart extends NoarkEntity implements ICorrespondencePartEntity {
 
     /** M087 - korrespondanseparttype (xs:string) */
     @Column(name = "correspondence_part_type")
     @Audited
-    protected String correspondencePartType;
+    private String correspondencePartType;
 
     /** M400 - korrespondansepartNavn (xs:string) */
     @Audited
     @Column(name = "correspondence_part_name")
-    protected String correspondencePartName;
+    private String correspondencePartName;
 
     /** M407 - postnummer (xs:string) */
     @Audited
     @Column(name = "post_code")
-    protected String postCode;
+    private String postCode;
 
     /** M408 - poststed (xs:string) */
     @Audited
     @Column(name = "postal_town")
-    protected String postalTown;
+    private String postalTown;
 
     /** M409 - land (xs:string) */
     @Audited
     @Column(name = "country")
-    protected String country;
+    private String country;
 
     /** M410 - epostadresse (xs:string) */
     @Audited
     @Column(name = "email_address")
-    protected String emailAddress;
+    private String emailAddress;
 
     /** M411 - telefonnummer (xs:string) */
     @Column(name = "telephone_number")
     @Audited
-    protected String telephoneNumber;
+    private String telephoneNumber;
 
     /** M412 - kontaktperson (xs:string) */
     @Column(name = "contact_person")
     @Audited
-    protected String contactPerson;
+    private String contactPerson;
 
     /** M305 - administrativEnhet (xs:string) */
     @Column(name = "administrative_unit")
     @Audited
-    protected String administrativeUnit;
+    private String administrativeUnit;
 
     /** M307 - saksbehandler (xs:string) */
     @Column(name = "case_handler")
     @Audited
-    protected String caseHandler;
-
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
-
-    @Version
-    @Column(name = "version")
-    protected Long version;
-
-    /** M406 - postadresse (xs:string), multivalued attribute */
-    @Audited
-    @Column(name = "postal_address")
+    private String caseHandler;
 
     // Links to PostalAddress
     @ManyToMany(cascade=CascadeType.ALL)
-    protected Set<PostalAddress> postalAddress = new HashSet<PostalAddress>();
+    private Set<PostalAddress> postalAddress = new TreeSet<>();
 
     // Links to Record
     @ManyToMany(mappedBy = "referenceCorrespondencePart")
-    protected Set<RegistryEntry> referenceRegistryEntry = new HashSet<RegistryEntry>();
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getSystemId() {
-        return systemId;
-    }
-
-    public void setSystemId(String systemId) {
-        this.systemId = systemId;
-    }
+    private Set<RegistryEntry> referenceRegistryEntry = new TreeSet<>();
 
     public String getCorrespondencePartType() {
         return correspondencePartType;
@@ -210,30 +162,6 @@ public class CorrespondencePart implements ICorrespondencePartEntity, INoarkSyst
         this.caseHandler = caseHandler;
     }
 
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(String ownedBy) {
-        this.ownedBy = ownedBy;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
     @Override
     public Set<PostalAddress> getPostalAddress() {
         return postalAddress;
@@ -266,7 +194,7 @@ public class CorrespondencePart implements ICorrespondencePartEntity, INoarkSyst
 
     @Override
     public String toString() {
-        return "CorrespondencePart{" +
+        return "CorrespondencePart{" + super.toString() +
                 "caseHandler='" + caseHandler + '\'' +
                 ", administrativeUnit='" + administrativeUnit + '\'' +
                 ", contactPerson='" + contactPerson + '\'' +
@@ -275,11 +203,8 @@ public class CorrespondencePart implements ICorrespondencePartEntity, INoarkSyst
                 ", country='" + country + '\'' +
                 ", postalTown='" + postalTown + '\'' +
                 ", postCode='" + postCode + '\'' +
-                //", postalAddress='" + postalAddress + '\'' +
                 ", correspondencePartName='" + correspondencePartName + '\'' +
                 ", correspondencePartType='" + correspondencePartType + '\'' +
-                ", id=" + id +
-                ", version='" + version + '\'' +
                 '}';
     }
 }

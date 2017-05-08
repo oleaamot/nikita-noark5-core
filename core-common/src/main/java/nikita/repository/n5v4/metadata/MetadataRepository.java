@@ -13,14 +13,14 @@ import java.util.List;
 
 @Repository
 @NoRepositoryBean
-public interface MetadataRepository<INoarkSystemIdEntity, ID extends Serializable> extends
-        CrudRepository<INoarkSystemIdEntity, Long> {
+public interface MetadataRepository<INikitaEntity, ID extends Serializable> extends
+        CrudRepository<INikitaEntity, Long> {
 
-    List<INoarkSystemIdEntity> findAll();
+    List<INikitaEntity> findAll();
 
-    INoarkSystemIdEntity findBySystemId(String systemId);
+    INikitaEntity findBySystemId(String systemId);
 
-    List<INoarkSystemIdEntity> findByDescription(String description);
+    List<INikitaEntity> findByDescription(String description);
 
-    List<INoarkSystemIdEntity> findByCode(String code);
+    List<INikitaEntity> findByCode(String code);
 }

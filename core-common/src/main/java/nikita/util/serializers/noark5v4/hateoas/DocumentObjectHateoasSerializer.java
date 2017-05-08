@@ -3,7 +3,7 @@ package nikita.util.serializers.noark5v4.hateoas;
 import com.fasterxml.jackson.core.JsonGenerator;
 import nikita.model.noark5.v4.DocumentObject;
 import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 
@@ -28,7 +28,7 @@ import static nikita.config.N5ResourceMappings.*;
 public class DocumentObjectHateoasSerializer extends HateoasSerializer implements IHateoasSerializer {
 
     @Override
-    public void serializeNoarkEntity(INoarkSystemIdEntity noarkSystemIdEntity,
+    public void serializeNoarkEntity(INikitaEntity noarkSystemIdEntity,
                                      HateoasNoarkObject documentObjectHateoas, JsonGenerator jgen
     ) throws IOException {
 

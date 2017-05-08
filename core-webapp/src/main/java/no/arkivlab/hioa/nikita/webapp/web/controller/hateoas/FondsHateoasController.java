@@ -13,7 +13,7 @@ import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.hateoas.FondsCreatorHateoas;
 import nikita.model.noark5.v4.hateoas.FondsHateoas;
 import nikita.model.noark5.v4.hateoas.SeriesHateoas;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsCreatorHateoasHandler;
@@ -403,7 +403,7 @@ public class FondsHateoasController {
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
         FondsHateoas fondsHateoas = new
-                FondsHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                FondsHateoas((ArrayList<INikitaEntity>) (ArrayList)
                 fondsService.findFondsByOwnerPaginated(top, skip));
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
@@ -426,7 +426,7 @@ public class FondsHateoasController {
         List<Fonds> result = fullTextSession.createFullTextQuery(query, Fonds.class).list();
 
         FondsHateoas fondsHateoas = new
-                FondsHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList) result);
+                FondsHateoas((ArrayList<INikitaEntity>) (ArrayList) result);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))

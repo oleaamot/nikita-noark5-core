@@ -2,16 +2,14 @@ package nikita.model.noark5.v4;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.serializers.noark5v4.StorageLocationSerializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static nikita.config.N5ResourceMappings.STORAGE_LOCATION;
 
@@ -21,60 +19,38 @@ import static nikita.config.N5ResourceMappings.STORAGE_LOCATION;
 @SQLDelete(sql="UPDATE storage_location SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
 @JsonSerialize(using = StorageLocationSerializer.class)
-public class StorageLocation implements Serializable, INoarkSystemIdEntity {
+@AttributeOverride(name = "id", column = @Column(name = "pk_storage_location_id"))
+public class StorageLocation extends NoarkEntity{
 
-    private static final long serialVersionUID = 1L;
-    /**
-     * M001 - systemID (xs:string)
-     */
-    @Column(name = "system_id", unique=true)
-    @Audited
-    protected String systemId;
     /**
      * M301 - oppbevaringssted (xs:string)
      */
     @Column(name = "storage_location")
     @Audited
-    protected String storageLocation;
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
-    @Version
-    @Column(name = "version")
-    protected Long version;
+    private String storageLocation;
+
     // Links to Fonds
     @ManyToMany(mappedBy = "referenceStorageLocation")
     @JsonIgnore
-    protected Set<Fonds> referenceFonds = new HashSet<Fonds>();
+    private Set<Fonds> referenceFonds = new TreeSet<>();
+
     // Links to Series
     @ManyToMany(mappedBy = "referenceStorageLocation")
-    protected Set<Series> referenceSeries = new HashSet<Series>();
+    private Set<Series> referenceSeries = new TreeSet<>();
+
     // Links to Files
     @OneToMany(mappedBy = "referenceStorageLocation")
-    protected Set<File> referenceFile = new HashSet<File>();
+    private Set<File> referenceFile = new TreeSet<>();
+
     // Links to BasicRecords
     @ManyToMany(mappedBy = "referenceStorageLocation")
     @JsonIgnore
-    protected Set<BasicRecord> referenceBasicRecord = new HashSet<>();
+    private Set<BasicRecord> referenceBasicRecord = new TreeSet<>();
+
     @ManyToMany(mappedBy = "referenceStorageLocation")
     @JsonIgnore
-    protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<>();
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "pk_storage_location_id", nullable = false, insertable = true, updatable = false)
-    private long id;
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
 
-    public String getSystemId() {
-        return systemId;
-    }
-
-    public void setSystemId(String systemId) {
-        this.systemId = systemId;
-    }
+    private Set<DocumentDescription> referenceDocumentDescription = new TreeSet<>();
 
     public String getStorageLocation() {
         return storageLocation;
@@ -90,30 +66,6 @@ public class StorageLocation implements Serializable, INoarkSystemIdEntity {
 
     public void setReferenceFonds(Set<Fonds> referenceFonds) {
         this.referenceFonds = referenceFonds;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(String ownedBy) {
-        this.ownedBy = ownedBy;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
     }
 
     @Override
@@ -155,13 +107,8 @@ public class StorageLocation implements Serializable, INoarkSystemIdEntity {
 
     @Override
     public String toString() {
-        return "StorageLocation{" +
-                "id=" + id +
-                ", systemId='" + systemId + '\'' +
+        return "StorageLocation{" + super.toString() + 
                 ", storageLocation='" + storageLocation + '\'' +
-                ", deleted=" + deleted +
-                ", ownedBy='" + ownedBy + '\'' +
-                ", version='" + version + '\'' +
                 '}';
     }
 }

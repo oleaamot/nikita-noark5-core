@@ -1,7 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.secondary;
 
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRecordHateoasHandler;
 
@@ -12,5 +12,5 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRecordHateoas
  */
 public interface ICorrespondencePartHateoasHandler extends IHateoasHandler {
 
-    void addCorrespondencePartType(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addCorrespondencePartType(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 }

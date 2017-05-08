@@ -11,7 +11,7 @@ import nikita.model.noark5.v4.CaseFile;
 import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.hateoas.CaseFileHateoas;
 import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
@@ -172,7 +172,7 @@ public class CaseFileHateoasController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         CaseFileHateoas caseFileHateoas = new
-                CaseFileHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                CaseFileHateoas((ArrayList<INikitaEntity>) (ArrayList)
                 caseFileService.findCaseFileByOwnerPaginated(top, skip));
 
         caseFileHateoasHandler.addLinks(caseFileHateoas, request, new Authorisation());

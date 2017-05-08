@@ -1,6 +1,6 @@
 package nikita.model.noark5.v4.hateoas;
 
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 
 import java.util.*;
 
@@ -21,19 +21,19 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
     /*
      * A list of noark entities comprising a result set from a query
      */
-    private List<INoarkSystemIdEntity> entityList = new ArrayList<>();
+    private List<INikitaEntity> entityList = new ArrayList<>();
 
     // Just testing this out
-    private Iterable<INoarkSystemIdEntity> selfLinksItr;
+    private Iterable<INikitaEntity> selfLinksItr;
 
     /**
-     * When a List<INoarkSystemIdEntity> is in use, we make a note of the entityType
+     * When a List<INikitaEntity> is in use, we make a note of the entityType
      */
     private String entityType;
     /**
      * A Map of noark entities -> Hateoas links e.g fonds with links
      */
-    private Map<INoarkSystemIdEntity, TreeSet<Link>> hateoasMap = new HashMap<>();
+    private Map<INikitaEntity, TreeSet<Link>> hateoasMap = new HashMap<>();
 
     /**
      * If the Hateaos object is a list of results, then the list needs its own Hateoas Link to self
@@ -46,34 +46,34 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
      */
     private boolean singleEntity = true;
 
-    public HateoasNoarkObject(INoarkSystemIdEntity entity) {
+    public HateoasNoarkObject(INikitaEntity entity) {
         entityList.add(entity);
     }
 
-    public HateoasNoarkObject(List<INoarkSystemIdEntity> entityList, String entityType) {
+    public HateoasNoarkObject(List<INikitaEntity> entityList, String entityType) {
         this.entityList.addAll(entityList);
         this.entityType = entityType;
         singleEntity = false;
     }
 /*
-    public HateoasNoarkObject(Iterable<INoarkSystemIdEntity> selfLinksItr) {
+    public HateoasNoarkObject(Iterable<INikitaEntity> selfLinksItr) {
         this.selfLinksItr = selfLinksItr;
         singleEntity = false;
     }
 */
 
     @Override
-    public Set<Link> getLinks(INoarkSystemIdEntity entity) {
+    public Set<Link> getLinks(INikitaEntity entity) {
         return hateoasMap.get(entity);
     }
 
     @Override
-    public List<INoarkSystemIdEntity> getList() {
+    public List<INikitaEntity> getList() {
         return entityList;
     }
 
     @Override
-    public void addLink(INoarkSystemIdEntity entity, Link link) {
+    public void addLink(INikitaEntity entity, Link link) {
         hateoasMap.computeIfAbsent(entity, k -> new TreeSet<Link>()).add(link);
     }
 

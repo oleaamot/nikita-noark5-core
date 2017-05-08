@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Created by tsodring on 1/16/17.
  */
-public interface ICorrespondencePartEntity extends INoarkSystemIdEntity, Serializable {
+public interface ICorrespondencePartEntity extends INikitaEntity, Serializable {
 
 
     String getCorrespondencePartType();

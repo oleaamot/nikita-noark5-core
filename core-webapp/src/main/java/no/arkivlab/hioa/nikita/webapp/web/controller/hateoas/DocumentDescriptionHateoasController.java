@@ -11,7 +11,7 @@ import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.DocumentObject;
 import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
@@ -148,7 +148,7 @@ public class DocumentDescriptionHateoasController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         DocumentDescriptionHateoas documentDescriptionHateoas = new
-                DocumentDescriptionHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                DocumentDescriptionHateoas((ArrayList<INikitaEntity>) (ArrayList)
                 documentDescriptionService.findDocumentDescriptionByOwnerPaginated(top, skip));
         documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

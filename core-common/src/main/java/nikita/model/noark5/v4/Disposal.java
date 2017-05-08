@@ -1,15 +1,14 @@
 package nikita.model.noark5.v4;
 
 import nikita.model.noark5.v4.interfaces.entities.IDisposalEntity;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static nikita.config.N5ResourceMappings.DISPOSAL;
 
@@ -21,82 +20,50 @@ import static nikita.config.N5ResourceMappings.DISPOSAL;
 // Enable soft delete of Disposal
 @SQLDelete(sql="UPDATE disposal SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Disposal implements IDisposalEntity, INoarkSystemIdEntity {
+@AttributeOverride(name = "id", column = @Column(name = "pk_disposal_id"))
+public class Disposal extends  NoarkEntity implements IDisposalEntity {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "pk_disposal_id", nullable = false, insertable = true, updatable = false)
-    protected Long id;
-
-    /**
-     * M001 - systemID (xs:string)
-     */
-    @Column(name = "system_id", unique = true)
-    @Audited
-    protected String systemId;
 
     /** M450 - kassasjonsvedtak (xs:string) */
     @Column(name = "disposal_decision")
     @Audited
-    protected String disposalDecision;
+    private String disposalDecision;
 
     /** M453 - kassasjonshjemmel (xs:string) */
     @Column(name = "disposal_authority")
     @Audited
-    protected String disposalAuthority;
+    private String disposalAuthority;
 
     /** M451 - bevaringstid (xs:integer) */
     @Column(name = "preservation_time")
     @Audited
-    protected Integer preservationTime;
+    private Integer preservationTime;
 
     /** M452 - kassasjonsdato (xs:date) */
     @Column(name = "disposal_date")
     @Audited
-    protected Date disposalDate;
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
-    @Version
-    @Column(name = "version")
-    protected Long version;
+    private Date disposalDate;
+
     // Links to Series
     @OneToMany(mappedBy = "referenceDisposal")
-    protected Set<Series> referenceSeries = new HashSet<Series>();
+    private Set<Series> referenceSeries = new TreeSet<>();
+
     // Links to Class
     @OneToMany(mappedBy = "referenceDisposal")
-    protected Set<Class> referenceClass = new HashSet<Class>();
+    private Set<Class> referenceClass = new TreeSet<>();
+
     // Links to File
     @OneToMany(mappedBy = "referenceDisposal")
-    protected Set<File> referenceFile= new HashSet<File>();
+    private Set<File> referenceFile= new TreeSet<>();
+
     // Links to Record
     @OneToMany(mappedBy = "referenceDisposal")
-    protected Set<Record> referenceRecord = new HashSet<Record>();
+    private Set<Record> referenceRecord = new TreeSet<>();
+
     // Links to DocumentDescription
     @OneToMany(mappedBy = "referenceDisposal")
-    protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getSystemId() {
-        return systemId;
-    }
-
-    public void setSystemId(String systemId) {
-        this.systemId = systemId;
-    }
+    private Set<DocumentDescription> referenceDocumentDescription = new TreeSet<>();
 
     public String getDisposalDecision() {
         return disposalDecision;
@@ -128,30 +95,6 @@ public class Disposal implements IDisposalEntity, INoarkSystemIdEntity {
 
     public void setDisposalDate(Date disposalDate) {
         this.disposalDate = disposalDate;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(String ownedBy) {
-        this.ownedBy = ownedBy;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
     }
 
     @Override
@@ -201,13 +144,11 @@ public class Disposal implements IDisposalEntity, INoarkSystemIdEntity {
 
     @Override
     public String toString() {
-        return "Disposal{" +
+        return "Disposal{" + super.toString() +
                 "disposalDate=" + disposalDate +
                 ", preservationTime=" + preservationTime +
                 ", disposalAuthority='" + disposalAuthority + '\'' +
                 ", disposalDecision='" + disposalDecision + '\'' +
-                ", version='" + version + '\'' +
-                ", id=" + id +
                 '}';
     }
 }

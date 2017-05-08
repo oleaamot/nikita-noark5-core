@@ -41,7 +41,7 @@ public class UserDetailsService {
 
 
     public Collection<? extends GrantedAuthority> getAuthorities(User user) {
-        Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
+        Set<GrantedAuthority> setAuths = new TreeSet<GrantedAuthority>();
         List<Authority> auths = user.getAuthorities();
 
         for (Authority auth : auths) {

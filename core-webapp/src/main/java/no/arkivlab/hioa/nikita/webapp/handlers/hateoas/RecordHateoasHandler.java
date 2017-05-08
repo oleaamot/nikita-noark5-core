@@ -2,7 +2,7 @@ package no.arkivlab.hioa.nikita.webapp.handlers.hateoas;
 
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
 import nikita.model.noark5.v4.hateoas.Link;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRecordHateoasHandler;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ import static nikita.config.N5ResourceMappings.*;
 public class RecordHateoasHandler extends HateoasHandler implements IRecordHateoasHandler {
 
     @Override
-    public void addEntityLinks(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addEntityLinks(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
 
         addReferenceSeries(entity, hateoasNoarkObject);
         addNewDocumentDescription(entity, hateoasNoarkObject);
@@ -42,21 +42,21 @@ public class RecordHateoasHandler extends HateoasHandler implements IRecordHateo
     }
 
     @Override
-    public void addReferenceSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addReferenceSeries(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + entity.getSystemId() + SLASH + REFERENCE_SERIES
                 + SLASH, REL_FONDS_STRUCTURE_REFERENCE_SERIES, false));
     }
 
     @Override
-    public void addNewDocumentDescription(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewDocumentDescription(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + entity.getSystemId() + SLASH + NEW_DOCUMENT_DESCRIPTION
                 + SLASH, REL_FONDS_STRUCTURE_NEW_DOCUMENT_DESCRIPTION, false));
     }
 
     @Override
-    public void addDocumentDescription(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addDocumentDescription(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH +
                 entity.getSystemId() + SLASH + DOCUMENT_DESCRIPTION
@@ -64,14 +64,14 @@ public class RecordHateoasHandler extends HateoasHandler implements IRecordHateo
     }
 
     @Override
-    public void addNewDocumentObject(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewDocumentObject(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + entity.getSystemId() + SLASH + NEW_DOCUMENT_OBJECT
                 + SLASH, REL_FONDS_STRUCTURE_NEW_DOCUMENT_OBJECT, false));
     }
 
     @Override
-    public void addDocumentObject(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addDocumentObject(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH +
                 entity.getSystemId() + SLASH + DOCUMENT_OBJECT
@@ -79,77 +79,77 @@ public class RecordHateoasHandler extends HateoasHandler implements IRecordHateo
     }
 
     @Override
-    public void addNewReferenceSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewReferenceSeries(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + entity.getSystemId() + SLASH + REFERENCE_NEW_SERIES
                 + SLASH, REL_FONDS_STRUCTURE_NEW_REFERENCE_SERIES, false));
     }
 
     @Override
-    public void addClassified(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addClassified(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + entity.getSystemId() + SLASH + CLASSIFIED
                 + SLASH, REL_FONDS_STRUCTURE_CLASSIFIED, false));
     }
 
     @Override
-    public void addNewClassified(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewClassified(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + entity.getSystemId() + SLASH +
                 NEW_CLASSIFIED + SLASH, REL_FONDS_STRUCTURE_NEW_CLASSIFIED, false));
     }
 
     @Override
-    public void addDisposal(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addDisposal(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + entity.getSystemId() + SLASH + DISPOSAL
                 + SLASH, REL_FONDS_STRUCTURE_DISPOSAL, false));
     }
 
     @Override
-    public void addNewDisposal(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewDisposal(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + entity.getSystemId() + SLASH + NEW_DISPOSAL
                 + SLASH, REL_FONDS_STRUCTURE_NEW_DISPOSAL, false));
     }
 
     @Override
-    public void addDisposalUndertaken(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addDisposalUndertaken(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + entity.getSystemId() + SLASH + DISPOSAL_UNDERTAKEN
                 + SLASH, REL_FONDS_STRUCTURE_DISPOSAL_UNDERTAKEN, false));
     }
 
     @Override
-    public void addNewDisposalUndertaken(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewDisposalUndertaken(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + entity.getSystemId() + SLASH + NEW_DISPOSAL_UNDERTAKEN
                 + SLASH, REL_FONDS_STRUCTURE_NEW_DISPOSAL_UNDERTAKEN, false));
     }
 
     @Override
-    public void addDeletion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addDeletion(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + entity.getSystemId() + SLASH + DELETION
                 + SLASH, REL_FONDS_STRUCTURE_DELETION, false));
     }
 
     @Override
-    public void addNewDeletion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewDeletion(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + entity.getSystemId() + SLASH + NEW_DELETION
                 + SLASH, REL_FONDS_STRUCTURE_NEW_DELETION, false));
     }
 
     @Override
-    public void addScreening(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addScreening(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + entity.getSystemId() + SLASH + SCREENING
                 + SLASH, REL_FONDS_STRUCTURE_SCREENING, false));
     }
 
     @Override
-    public void addNewScreening(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addNewScreening(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + entity.getSystemId() + SLASH + NEW_SCREENING
                 + SLASH, REL_FONDS_STRUCTURE_NEW_SCREENING, false));

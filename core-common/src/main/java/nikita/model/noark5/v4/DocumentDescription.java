@@ -2,9 +2,7 @@ package nikita.model.noark5.v4;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.*;
-import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.model.noark5.v4.interfaces.entities.INoarkCreateEntity;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.model.noark5.v4.interfaces.entities.INoarkTitleDescriptionEntity;
 import nikita.util.deserialisers.DocumentDescriptionDeserializer;
 import org.hibernate.annotations.SQLDelete;
@@ -15,7 +13,7 @@ import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.Set;
 
 import static nikita.config.N5ResourceMappings.DOCUMENT_DESCRIPTION;
@@ -27,25 +25,13 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_DESCRIPTION;
 @Where(clause="deleted <> true")
 @Indexed(index = "document_description")
 @JsonDeserialize(using = DocumentDescriptionDeserializer.class)
+@AttributeOverride(name = "id", column = @Column(name = "pk_document_description_id"))
 //TODO: Important! Should DocumentDescription have links to Series???
-public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity, INoarkTitleDescriptionEntity,
+public class DocumentDescription extends NoarkEntity implements  INoarkTitleDescriptionEntity,
         INoarkCreateEntity, IDocumentMedium, IStorageLocation, IDeletion, IScreening, IDisposal, IClassified,
         IDisposalUndertaken, IComment, IElectronicSignature, IAuthor {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "pk_document_description_id", nullable = false, insertable = true, updatable = false)
-    protected long id;
-
-    /**
-     * M001 - systemID (xs:string)
-     */
-    @Column(name = "system_id", unique=true)
-    @Audited
-    @Field
-    protected String systemId;
 
     /**
      * M083 - dokumenttype (xs:string)
@@ -53,7 +39,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
     @Column(name = "document_type")
     @Audited
     @Field
-    protected String documentType;
+    private String documentType;
 
     /**
      * M054 - dokumentstatus (xs:string)
@@ -61,7 +47,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
     @Column(name = "document_status")
     @Audited
     @Field
-    protected String documentStatus;
+    private String documentStatus;
 
     /**
      * M020 - tittel (xs:string)
@@ -69,7 +55,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
     @Column(name = "title")
     @Audited
     @Field
-    protected String title;
+    private String title;
 
     /**
      * M021 - beskrivelse (xs:string)
@@ -77,7 +63,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
     @Column(name = "description")
     @Audited
     @Field
-    protected String description;
+    private String description;
 
     /**
      * M600 - opprettetDato (xs:dateTime)
@@ -86,7 +72,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
     @Field
-    protected Date createdDate;
+    private Date createdDate;
 
     /**
      * M601 - opprettetAv (xs:string)
@@ -94,7 +80,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
     @Column(name = "created_by")
     @Audited
     @Field
-    protected String createdBy;
+    private String createdBy;
 
     /**
      * M300 - dokumentmedium (xs:string)
@@ -102,7 +88,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
     @Column(name = "document_medium")
     @Audited
     @Field
-    protected String documentMedium;
+    private String documentMedium;
 
     /**
      * M217 - tilknyttetRegistreringSom (xs:string)
@@ -110,7 +96,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
     @Column(name = "associated_with_record_as")
     @Audited
     @Field
-    protected String associatedWithRecordAs;
+    private String associatedWithRecordAs;
 
     /**
      * M007 - dokumentnummer (xs:integer)
@@ -118,7 +104,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
     @Column(name = "document_number")
     @Audited
     @Field
-    protected Integer documentNumber;
+    private Integer documentNumber;
 
     /**
      * M620 - tilknyttetDato (xs:date)
@@ -127,7 +113,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
     @Temporal(TemporalType.DATE)
     @Audited
     @Field
-    protected Date associationDate;
+    private Date associationDate;
 
     /**
      * M621 - tilknyttetAv (xs:string)
@@ -135,88 +121,68 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
     @Column(name = "associated_by")
     @Audited
     @Field
-    protected String associatedBy;
-    @Column(name = "owned_by")
-    @Audited
-    @Field
-    protected String ownedBy;
-    @Version
-    @Column(name = "version")
-    protected Long version;
+    private String associatedBy;
+
     // Links to Records
     @ManyToMany(mappedBy = "referenceDocumentDescription")
-    protected Set<Record> referenceRecord = new HashSet<Record>();
+    private Set<Record> referenceRecord = new TreeSet<>();
+
     // Links to DocumentObjects
     @OneToMany(mappedBy = "referenceDocumentDescription")
-    protected Set<DocumentObject> referenceDocumentObject = new HashSet<DocumentObject>();
+    private Set<DocumentObject> referenceDocumentObject = new TreeSet<>();
+
     // Links to Comments
     @ManyToMany
     @JoinTable(name = "document_description_comment", joinColumns = @JoinColumn(name = "f_pk_document_description_id",
             referencedColumnName = "pk_document_description_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_comment_id", referencedColumnName = "pk_comment_id"))
-    protected Set<Comment> referenceComment = new HashSet<Comment>();
+    private Set<Comment> referenceComment = new TreeSet<>();
+
     // Links to Authors
     @ManyToMany
     @JoinTable(name = "document_description_author", joinColumns = @JoinColumn(name = "f_pk_document_description_id",
             referencedColumnName = "pk_document_description_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_author_id", referencedColumnName = "pk_author_id"))
-    protected Set<Author> referenceAuthor = new HashSet<Author>();
+    private Set<Author> referenceAuthor = new TreeSet<>();
+
     // Link to StorageLocation
     @ManyToMany (cascade=CascadeType.ALL)
     @JoinTable(name = "document_description_storage_location", joinColumns = @JoinColumn(
             name = "f_pk_document_description_id",referencedColumnName = "pk_document_description_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
             referencedColumnName = "pk_storage_location_id"))
-    protected Set<StorageLocation> referenceStorageLocation = new HashSet<StorageLocation>();
+    private Set<StorageLocation> referenceStorageLocation = new TreeSet<>();
+
     // Link to Classified
     @ManyToOne (cascade=CascadeType.ALL)
     @JoinColumn(name = "document_description_classified_id", referencedColumnName = "pk_classified_id")
-    protected Classified referenceClassified;
+    private Classified referenceClassified;
+
     // Link to Disposal
     @ManyToOne (cascade=CascadeType.ALL)
     @JoinColumn(name = "document_description_disposal_id", referencedColumnName = "pk_disposal_id")
-    protected Disposal referenceDisposal;
+    private Disposal referenceDisposal;
+
     // Link to DisposalUndertaken
     @ManyToOne (cascade=CascadeType.ALL)
     @JoinColumn(name = "document_description_disposal_undertaken_id",
             referencedColumnName = "pk_disposal_undertaken_id")
-    protected DisposalUndertaken referenceDisposalUndertaken;
+    private DisposalUndertaken referenceDisposalUndertaken;
+
     // Link to Deletion
     @ManyToOne (cascade=CascadeType.ALL)
     @JoinColumn(name = "document_description_deletion_id", referencedColumnName = "pk_deletion_id")
-    protected Deletion referenceDeletion;
+    private Deletion referenceDeletion;
+
     // Link to Screening
     @ManyToOne (cascade=CascadeType.ALL)
     @JoinColumn(name = "document_description_screening_id", referencedColumnName = "pk_screening_id")
-    protected Screening referenceScreening;
+    private Screening referenceScreening;
+
+    // Link to ElectronicSignature
     @OneToOne
     @JoinColumn(name="pk_electronic_signature_id")
-    protected ElectronicSignature referenceElectronicSignature;
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    @Field
-    private Boolean deleted;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getSystemId() {
-        return systemId;
-    }
-
-    public void setSystemId(String systemId) {
-        this.systemId = systemId;
-    }
+    private ElectronicSignature referenceElectronicSignature;
 
     public String getDocumentType() {
         return documentType;
@@ -280,30 +246,6 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
 
     public void setAssociatedWithRecordAs(String associatedWithRecordAs) {
         this.associatedWithRecordAs = associatedWithRecordAs;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(String ownedBy) {
-        this.ownedBy = ownedBy;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
     }
 
     @Override
@@ -445,7 +387,7 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
 
     @Override
     public String toString() {
-        return "DocumentDescription{" +
+        return "DocumentDescription{" + super.toString() + 
                 "associatedBy='" + associatedBy + '\'' +
                 ", associationDate=" + associationDate +
                 ", documentNumber=" + documentNumber +
@@ -457,9 +399,6 @@ public class DocumentDescription implements INikitaEntity, INoarkSystemIdEntity,
                 ", title='" + title + '\'' +
                 ", documentStatus='" + documentStatus + '\'' +
                 ", documentType='" + documentType + '\'' +
-                ", systemId='" + systemId + '\'' +
-                ", version='" + version + '\'' +
-                ", id=" + id +
                 '}';
     }
 }

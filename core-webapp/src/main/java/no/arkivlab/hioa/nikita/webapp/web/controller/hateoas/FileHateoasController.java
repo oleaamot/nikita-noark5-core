@@ -11,7 +11,7 @@ import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.hateoas.*;
 import nikita.model.noark5.v4.interfaces.entities.ICrossReferenceEntity;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IBasicRecordHateoasHandler;
@@ -547,7 +547,7 @@ public class FileHateoasController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         FileHateoas fileHateoas = new
-                FileHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                FileHateoas((ArrayList<INikitaEntity>) (ArrayList)
                 fileService.findFileByOwnerPaginated(top, skip));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)

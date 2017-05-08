@@ -2,7 +2,7 @@ package no.arkivlab.hioa.nikita.webapp.handlers.hateoas;
 
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
 import nikita.model.noark5.v4.hateoas.Link;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.IAuthorisation;
 import org.springframework.stereotype.Component;
@@ -35,8 +35,8 @@ public class HateoasHandler implements IHateoasHandler {
         setParameters(request);
         this.authorisation = authorisation;
 
-        Iterable<INoarkSystemIdEntity> entities = hateoasNoarkObject.getList();
-        for (INoarkSystemIdEntity entity : entities) {
+        Iterable<INikitaEntity> entities = hateoasNoarkObject.getList();
+        for (INikitaEntity entity : entities) {
             addSelfLink(entity, hateoasNoarkObject);
             addEntityLinks(entity, hateoasNoarkObject);
         }
@@ -61,8 +61,8 @@ public class HateoasHandler implements IHateoasHandler {
         setParameters(request);
         this.authorisation = authorisation;
 
-        Iterable<INoarkSystemIdEntity> entities = hateoasNoarkObject.getList();
-        for (INoarkSystemIdEntity entity : entities) {
+        Iterable<INikitaEntity> entities = hateoasNoarkObject.getList();
+        for (INikitaEntity entity : entities) {
             addEntityLinksOnNew(entity, hateoasNoarkObject);
         }
     }
@@ -86,7 +86,7 @@ public class HateoasHandler implements IHateoasHandler {
     }
 
     @Override
-    public void addSelfLink(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addSelfLink(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         String systemId = entity.getSystemId();
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + systemId + SLASH,
@@ -94,30 +94,30 @@ public class HateoasHandler implements IHateoasHandler {
     }
 
     @Override
-    public void addDocumentMedium(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addDocumentMedium(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH
                 + SLASH + DOCUMENT_MEDIUM, REL_METADATA_DOCUMENT_MEDIUM, false));
     }
 
     // Sub class should handle this, empty links otherwise!
     @Override
-    public void addEntityLinks(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addEntityLinks(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
     }
 
     // Sub class should handle this, empty links otherwise!
     @Override
-    public void addEntityLinksOnCreate(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addEntityLinksOnCreate(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         addEntityLinks(entity, hateoasNoarkObject);
     }
 
     // Sub class should handle this, empty links otherwise!
     @Override
-    public void addEntityLinksOnNew(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addEntityLinksOnNew(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
     }
 
     // Sub class should handle this, empty links otherwise!
     @Override
-    public void addEntityLinksOnRead(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addEntityLinksOnRead(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         addEntityLinks(entity, hateoasNoarkObject);
     }
 

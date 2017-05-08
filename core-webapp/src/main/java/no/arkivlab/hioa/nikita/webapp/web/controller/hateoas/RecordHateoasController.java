@@ -12,7 +12,7 @@ import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
 import nikita.model.noark5.v4.hateoas.RecordHateoas;
 import nikita.model.noark5.v4.hateoas.SeriesHateoas;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentDescriptionHateoasHandler;
@@ -436,7 +436,7 @@ public class RecordHateoasController {
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
 
-        RecordHateoas recordHateoas = new RecordHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+        RecordHateoas recordHateoas = new RecordHateoas((ArrayList<INikitaEntity>) (ArrayList)
                 recordService.findRecordByOwnerPaginated(top, skip));
         recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

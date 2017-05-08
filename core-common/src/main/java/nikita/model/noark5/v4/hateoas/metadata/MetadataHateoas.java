@@ -3,7 +3,7 @@ package nikita.model.noark5.v4.hateoas.metadata;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.serializers.noark5v4.hateoas.metadata.MetadataHateoasSerializer;
 
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.List;
 @JsonSerialize(using = MetadataHateoasSerializer.class)
 public class MetadataHateoas extends HateoasNoarkObject implements IHateoasNoarkObject {
 
-    public MetadataHateoas(INoarkSystemIdEntity entity) {
+    public MetadataHateoas(INikitaEntity entity) {
         super(entity);
     }
 
-    public MetadataHateoas(List<INoarkSystemIdEntity> entityList, String entityType) {
+    public MetadataHateoas(List<INikitaEntity> entityList, String entityType) {
         super(entityList, entityType);
     }
 }

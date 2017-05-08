@@ -5,7 +5,6 @@ import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 import static nikita.config.N5ResourceMappings.MEETING_RECORD;
 
@@ -15,64 +14,57 @@ import static nikita.config.N5ResourceMappings.MEETING_RECORD;
 // Enable soft delete of MeetingRecord
 @SQLDelete(sql="UPDATE meeting_record SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class MeetingRecord extends BasicRecord implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class MeetingRecord extends BasicRecord {
 
     /**
      * M085 - moeteregistreringstype (xs:string)
      */
     @Column(name = "meeting_record_type")
     @Audited
-    protected String meetingRecordType;
+    private String meetingRecordType;
 
     /**
      * M088 - moetesakstype (xs:string)
      */
     @Column(name = "meeting_case_type")
     @Audited
-    protected String meetingCaseType;
+    private String meetingCaseType;
 
     /**
      * M305 - administrativEnhet (xs:string)
      */
     @Column(name = "meeting_record_status")
     @Audited
-    protected String meetingRecordStatus;
+    private String meetingRecordStatus;
 
     /**
      * M305 - administrativEnhet (xs:string)
      */
     @Column(name = "administrative_unit")
     @Audited
-    protected String administrativeUnit;
+    private String administrativeUnit;
 
     /**
      * M307 - saksbehandler
      */
     @Column(name = "case_handler")
     @Audited
-    protected String caseHandler;
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
+    private String caseHandler;
+
     /**
      * M223 - referanseTilMoeteregistrering (xs:string)
      **/
     // Link to "to"  MeetingRegistration
     // TODO: This should link to sysemId, not id!
     @OneToOne(fetch = FetchType.LAZY)
-    protected MeetingRecord referenceToMeetingRegistration;
+    private MeetingRecord referenceToMeetingRegistration;
+
     /**
      * M224 - referanseFraMoeteregistrering (xs:string)
      **/
     // Link to "from" MeetingRegistration
     @OneToOne(fetch = FetchType.LAZY)
-    protected MeetingRecord referenceFromMeetingRegistration;
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
+    private MeetingRecord referenceFromMeetingRegistration;
 
     public String getMeetingRecordType() {
         return meetingRecordType;
@@ -114,21 +106,6 @@ public class MeetingRecord extends BasicRecord implements Serializable {
         this.caseHandler = caseHandler;
     }
 
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(String ownedBy) {
-        this.ownedBy = ownedBy;
-    }
 
     @Override
     public String getBaseTypeName() {
@@ -153,9 +130,7 @@ public class MeetingRecord extends BasicRecord implements Serializable {
 
     @Override
     public String toString() {
-        return "MeetingRecord{" +
-                "referenceFromMeetingRegistration=" + referenceFromMeetingRegistration +
-                ", referenceToMeetingRegistration=" + referenceToMeetingRegistration +
+        return "MeetingRecord{" + super.toString() +
                 ", caseHandler='" + caseHandler + '\'' +
                 ", administrativeUnit='" + administrativeUnit + '\'' +
                 ", meetingRecordStatus='" + meetingRecordStatus + '\'' +

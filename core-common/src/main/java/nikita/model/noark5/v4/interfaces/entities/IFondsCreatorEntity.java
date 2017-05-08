@@ -7,7 +7,7 @@ import java.io.Serializable;
  *
  * Created by tsodring on 12/7/16.
  */
-public interface IFondsCreatorEntity extends INikitaEntity, INoarkSystemIdEntity, Serializable {
+public interface IFondsCreatorEntity extends INikitaEntity, Serializable {
     String getFondsCreatorId();
     void setFondsCreatorId(String fondsCreatorId);
     String getFondsCreatorName();

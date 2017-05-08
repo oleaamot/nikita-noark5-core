@@ -1,15 +1,14 @@
 package nikita.model.noark5.v4;
 
 import nikita.model.noark5.v4.interfaces.entities.ICommentEntity;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static nikita.config.N5ResourceMappings.COMMENT;
 
@@ -18,90 +17,50 @@ import static nikita.config.N5ResourceMappings.COMMENT;
 // Enable soft delete of Comment
 @SQLDelete(sql="UPDATE comment SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Comment implements ICommentEntity, INoarkSystemIdEntity {
+@AttributeOverride(name = "id", column = @Column(name = "pk_comment_id"))
+public class Comment extends NoarkEntity implements ICommentEntity {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "pk_comment_id", nullable = false, insertable = true, updatable = false)
-    protected Long id;
-
-    /**
-     * M001 - systemID (xs:string)
-     */
-    @Column(name = "system_id", unique = true)
-    @Audited
-    protected String systemId;
 
     /**
      * M310 - merknadstekst (xs:string)
      */
     @Column(name = "comment_text")
     @Audited
-    protected String commentText;
+    private String commentText;
 
     /**
      * M084 - merknadstype (xs:string)
      */
     @Column(name = "comment_type")
     @Audited
-    protected String commentType;
+    private String commentType;
 
     /**
      * M611 - merknadsdato (xs:dateTime)
      */
     @Column(name = "comment_time")
     @Audited
-    protected Date commentDate;
+    private Date commentDate;
 
     /**
      * M612 - merknadRegistrertAv (xs:string)
      */
     @Column(name = "comment_registered_by")
     @Audited
-    protected String commentRegisteredBy;
-
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
-
-    @Version
-    @Column(name = "version")
-    protected Long version;
+    private String commentRegisteredBy;
 
     // Link to File
     @ManyToMany(mappedBy = "referenceComment")
-    protected Set<File> referenceFile = new HashSet<File>();
+    private Set<File> referenceFile = new TreeSet<>();
 
     // Links to BasicRecord
     @ManyToMany(mappedBy = "referenceComment")
-    protected Set<BasicRecord> referenceRecord = new HashSet<BasicRecord>();
+    private Set<BasicRecord> referenceRecord = new TreeSet<>();
 
     // Link to DocumentDescription
     @ManyToMany(mappedBy = "referenceComment")
-    protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
-
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getSystemId() {
-        return systemId;
-    }
-
-    public void setSystemId(String systemId) {
-        this.systemId = systemId;
-    }
+    private Set<DocumentDescription> referenceDocumentDescription = new TreeSet<>();
 
     public String getCommentText() {
         return commentText;
@@ -135,30 +94,6 @@ public class Comment implements ICommentEntity, INoarkSystemIdEntity {
         this.commentRegisteredBy = commentRegisteredBy;
     }
 
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(String ownedBy) {
-        this.ownedBy = ownedBy;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
     @Override
     public String getBaseTypeName() {
         return COMMENT;
@@ -190,13 +125,11 @@ public class Comment implements ICommentEntity, INoarkSystemIdEntity {
 
     @Override
     public String toString() {
-        return "Comment{" +
-                "id=" + id +
+        return "Comment{" + super.toString() +
                 ", commentText='" + commentText + '\'' +
                 ", commentType='" + commentType + '\'' +
                 ", commentDate=" + commentDate +
                 ", commentRegisteredBy='" + commentRegisteredBy + '\'' +
-                ", version='" + version + '\'' +
                 '}';
     }
 }

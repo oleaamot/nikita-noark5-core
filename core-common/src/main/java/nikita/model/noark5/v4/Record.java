@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.IClassified;
 import nikita.model.noark5.v4.interfaces.IDisposal;
 import nikita.model.noark5.v4.interfaces.IScreening;
-import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.model.noark5.v4.interfaces.entities.INoarkCreateEntity;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.util.deserialisers.RecordDeserializer;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -16,7 +14,7 @@ import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.Set;
 
 import static nikita.config.N5ResourceMappings.REGISTRATION;
@@ -29,23 +27,8 @@ import static nikita.config.N5ResourceMappings.REGISTRATION;
 @Where(clause = "deleted <> true")
 @Indexed(index = "record")
 @JsonDeserialize(using = RecordDeserializer.class)
-public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreateEntity, IClassified, IScreening,
-        IDisposal {
-
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "pk_record_id", nullable = false, insertable = true, updatable = false)
-    protected Long id;
-
-    /**
-     * M001 - systemID (xs:string)
-     */
-    @Column(name = "system_id", unique=true)
-    @Audited
-    @Field
-    protected String systemId;
+@AttributeOverride(name = "id", column = @Column(name = "pk_record_id"))
+public class Record extends NoarkEntity implements INoarkCreateEntity, IClassified, IScreening, IDisposal {
 
     /**
      * M600 - opprettetDato (xs:dateTime)
@@ -54,7 +37,7 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
     @Field
-    protected Date createdDate;
+    private Date createdDate;
 
     /**
      * M601 - opprettetAv (xs:string)
@@ -62,7 +45,7 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
     @Column(name = "created_by")
     @Audited
     @Field
-    protected String createdBy;
+    private String createdBy;
 
     /**
      * M604 - arkivertDato (xs:dateTime)
@@ -71,7 +54,7 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
     @Field
-    protected Date archivedDate;
+    private Date archivedDate;
 
     /**
      * M605 - arkivertAv (xs:string)
@@ -79,69 +62,49 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
     @Column(name = "archived_by")
     @Audited
     @Field
-    protected String archivedBy;
-    @Column(name = "owned_by")
-    @Audited
-    @Field
-    protected String ownedBy;
-    @Version
-    @Column(name = "version")
-    protected Long version;
+    private String archivedBy;
+
     // Link to File
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "record_file_id", referencedColumnName = "pk_file_id")
-    protected File referenceFile;
+    private File referenceFile;
+
     // Link to Series
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "record_series_id", referencedColumnName = "pk_series_id")
-    protected Series referenceSeries;
+    private Series referenceSeries;
+
     // Link to Class
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "record_class_id", referencedColumnName = "pk_class_id")
-    protected Class referenceClass;
+    private Class referenceClass;
+
     // Links to DocumentDescriptions
     @ManyToMany
     @JoinTable(name = "record_document_description", joinColumns = @JoinColumn(name = "f_pk_record_id",
             referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_document_description_id",
                     referencedColumnName = "pk_document_description_id"))
-    protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
+    private Set<DocumentDescription> referenceDocumentDescription = new TreeSet<>();
+
     // Links to DocumentObjects
     @OneToMany(mappedBy = "referenceRecord", fetch = FetchType.LAZY)
-    protected Set<DocumentObject> referenceDocumentObject = new HashSet<DocumentObject>();
+    private Set<DocumentObject> referenceDocumentObject = new TreeSet<>();
+
     // Links to Classified
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "record_classified_id", referencedColumnName = "pk_classified_id")
-    protected Classified referenceClassified;
+    private Classified referenceClassified;
+
     // Link to Disposal
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "record_disposal_id", referencedColumnName = "pk_disposal_id")
-    protected Disposal referenceDisposal;
+    private Disposal referenceDisposal;
+
     // Link to Screening
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "record_screening_id", referencedColumnName = "pk_screening_id")
-    protected Screening referenceScreening;
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    @Field
-    private Boolean deleted;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getSystemId() {
-        return systemId;
-    }
-
-    public void setSystemId(String systemId) {
-        this.systemId = systemId;
-    }
+    private Screening referenceScreening;
 
     public Date getCreatedDate() {
         return createdDate;
@@ -173,30 +136,6 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
 
     public void setArchivedBy(String archivedBy) {
         this.archivedBy = archivedBy;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(String ownedBy) {
-        this.ownedBy = ownedBy;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
     }
 
     @Override
@@ -278,14 +217,11 @@ public class Record implements INikitaEntity, INoarkSystemIdEntity, INoarkCreate
 
     @Override
     public String toString() {
-        return "Record{" +
+        return "Record{" + super.toString() + 
                 "archivedBy='" + archivedBy + '\'' +
                 ", archivedDate=" + archivedDate +
                 ", createdBy='" + createdBy + '\'' +
                 ", createdDate=" + createdDate +
-                ", systemId='" + systemId + '\'' +
-                ", version='" + version + '\'' +
-                ", id=" + id +
                 '}';
     }
 }

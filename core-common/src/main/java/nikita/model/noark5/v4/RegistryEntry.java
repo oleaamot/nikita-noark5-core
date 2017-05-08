@@ -13,7 +13,7 @@ import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.Set;
 
 import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
@@ -29,15 +29,13 @@ import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
 public class RegistryEntry extends BasicRecord implements IElectronicSignature, IPrecedence, ICorrespondencePart,
         ISignOff, IDocumentFlow {
 
-    private static final long serialVersionUID = 1L;
-
     /**
      * M013 - journalaar (xs:integer)
      */
     @Column(name = "record_year")
     @Audited
     @Field
-    protected Integer recordYear;
+    private Integer recordYear;
 
     /**
      * M014 - journalsekvensnummer (xs:integer)
@@ -45,7 +43,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Column(name = "record_sequence_number")
     @Audited
     @Field
-    protected Integer recordSequenceNumber;
+    private Integer recordSequenceNumber;
 
     /**
      * M015 - journalpostnummer (xs:integer)
@@ -53,7 +51,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Column(name = "registry_entry_number")
     @Audited
     @Field
-    protected Integer registryEntryNumber;
+    private Integer registryEntryNumber;
 
     /**
      * M082 - journalposttype (xs:string)
@@ -61,7 +59,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Column(name = "registry_entry_type")
     @Audited
     @Field
-    protected String registryEntryType;
+    private String registryEntryType;
 
     /**
      * M053 - journalstatus (xs:string)
@@ -69,7 +67,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Column(name = "record_status")
     @Audited
     @Field
-    protected String recordStatus;
+    private String recordStatus;
 
     /**
      * M101 - journaldato (xs:date)
@@ -78,7 +76,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Temporal(TemporalType.DATE)
     @Audited
     @Field
-    protected Date recordDate;
+    private Date recordDate;
 
     /**
      * M103 - dokumentetsDato (xs:date)
@@ -87,7 +85,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Temporal(TemporalType.DATE)
     @Audited
     @Field
-    protected Date documentDate;
+    private Date documentDate;
 
     /**
      * M104 - mottattDato (xs:dateTime)
@@ -96,7 +94,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
     @Field
-    protected Date receivedDate;
+    private Date receivedDate;
 
     /**
      * M105 - sendtDato (xs:dateTime)
@@ -105,7 +103,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
     @Field
-    protected Date sentDate;
+    private Date sentDate;
 
     /**
      * M109 - forfallsdato (xs:date)
@@ -114,7 +112,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Temporal(TemporalType.DATE)
     @Audited
     @Field
-    protected Date dueDate;
+    private Date dueDate;
 
     /**
      * M110 - offentlighetsvurdertDato (xs:date)
@@ -123,7 +121,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Temporal(TemporalType.DATE)
     @Audited
     @Field
-    protected Date freedomAssessmentDate;
+    private Date freedomAssessmentDate;
 
     /**
      * M304 - antallVedlegg (xs:integer)
@@ -131,7 +129,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Column(name = "number_of_attachments")
     @Audited
     @Field
-    protected Integer numberOfAttachments;
+    private Integer numberOfAttachments;
 
     /**
      * M106 - utlaantDato (xs:date)
@@ -139,14 +137,14 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Column(name = "loaned_date")
     @Temporal(TemporalType.DATE)
     @Audited
-    protected Date loanedDate;
+    private Date loanedDate;
 
     /**
      * M309 - utlaantTil (xs:string)
      */
     @Column(name = "loaned_to")
     @Audited
-    protected String loanedTo;
+    private String loanedTo;
 
     /**
      * M308 - journalenhet (xs:string)
@@ -154,12 +152,8 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Column(name = "records_management_unit")
     @Audited
     @Field
-    protected String recordsManagementUnit;
-    @Column(name = "owned_by")
-    @Audited
-    @Field
-    protected String ownedBy;
-
+    private String recordsManagementUnit;
+    
     // Links to CorrespondencePart
     @ManyToMany
     @JoinTable(name = "registry_entry_correspondence_part",
@@ -167,11 +161,11 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
                     referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_correspondence_part_id",
                     referencedColumnName = "pk_correspondence_part_id"))
-    protected Set<CorrespondencePart> referenceCorrespondencePart = new HashSet<CorrespondencePart>();
-    // Links to DocumentFlow
+    private Set<CorrespondencePart> referenceCorrespondencePart = new TreeSet<>();
 
+    // Links to DocumentFlow
     @OneToMany(mappedBy = "referenceRegistryEntry")
-    protected Set<DocumentFlow> referenceDocumentFlow = new HashSet<DocumentFlow>();
+    private Set<DocumentFlow> referenceDocumentFlow = new TreeSet<>();
     // Links to SignOff
     @ManyToMany
     @JoinTable(name = "registry_entry_sign_off",
@@ -180,7 +174,8 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
             inverseJoinColumns = @JoinColumn(name = "f_pk_sign_off_id",
                     referencedColumnName = "pk_sign_off_id"))
 
-    protected Set<SignOff> referenceSignOff = new HashSet<SignOff>();
+    private Set<SignOff> referenceSignOff = new TreeSet<>();
+
     // Links to Precedence
     @ManyToMany
     @JoinTable(name = "registry_entry_precedence",
@@ -188,15 +183,12 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
                     referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_precedence_id",
                     referencedColumnName = "pk_precedence_id"))
-    protected Set<Precedence> referencePrecedence = new HashSet<Precedence>();
+    private Set<Precedence> referencePrecedence = new TreeSet<>();
+
+    // Link to ElectronicSignature
     @OneToOne
     @JoinColumn(name="pk_electronic_signature_id")
-    protected ElectronicSignature referenceElectronicSignature;
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    @Field
-    private Boolean deleted;
+    private ElectronicSignature referenceElectronicSignature;
 
     public Integer getRecordYear() {
         return recordYear;
@@ -318,22 +310,6 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
         this.recordsManagementUnit = recordsManagementUnit;
     }
 
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(String ownedBy) {
-        this.ownedBy = ownedBy;
-    }
-
     @Override
     public String getBaseTypeName() {
         return REGISTRY_ENTRY;
@@ -383,7 +359,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
 
     @Override
     public String toString() {
-        return super.toString() + " RegistryEntry{" +
+        return super.toString() + " RegistryEntry{" + super.toString() +
                 "recordsManagementUnit='" + recordsManagementUnit + '\'' +
                 ", loanedTo=" + loanedTo +
                 ", loanedDate=" + loanedDate +

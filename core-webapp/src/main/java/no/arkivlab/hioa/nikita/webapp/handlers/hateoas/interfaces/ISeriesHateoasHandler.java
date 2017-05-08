@@ -1,7 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces;
 
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 
 /**
  * Created by tsodring on 2/6/17.
@@ -10,58 +10,58 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
  */
 public interface ISeriesHateoasHandler extends IHateoasHandler {
 
-    void addNewRegistration(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewRegistration(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewFile(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewCaseFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewCaseFile(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewClassificationSystem(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewClassificationSystem(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addSeriesSuccessor(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addSeriesSuccessor(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewSeriesSuccessor(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewSeriesSuccessor(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addSeriesPrecursor(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addSeriesPrecursor(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewSeriesPrecursor(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewSeriesPrecursor(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addRegistration(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addRegistration(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addFile(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addCaseFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addCaseFile(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addClassificationSystem(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addClassificationSystem(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addFonds(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addFonds(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addSeriesStatus(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addSeriesStatus(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addClassified(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addClassified(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewClassified(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewClassified(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addDisposal(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addDisposal(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewDisposal(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewDisposal(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addDisposalUndertaken(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addDisposalUndertaken(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewDisposalUndertaken(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewDisposalUndertaken(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addDeletion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addDeletion(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewDeletion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewDeletion(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addScreening(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addScreening(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewScreening(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewScreening(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewStorageLocation(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewStorageLocation(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addListStorageLocation(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addListStorageLocation(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewListStorageLocation(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewListStorageLocation(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
 }

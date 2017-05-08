@@ -1,6 +1,5 @@
 package nikita.model.noark5.v4;
 
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
 import nikita.model.noark5.v4.interfaces.entities.IScreeningEntity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -8,8 +7,8 @@ import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static nikita.config.N5ResourceMappings.SCREENING;
 
@@ -18,56 +17,43 @@ import static nikita.config.N5ResourceMappings.SCREENING;
 // Enable soft delete of Screening
 @SQLDelete(sql="UPDATE screening SET deleted = true WHERE id = ?")
 @Where(clause="deleted <> true")
-public class Screening implements IScreeningEntity, INoarkSystemIdEntity {
-
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "pk_screening_id", nullable = false, insertable = true, updatable = false)
-    protected Long id;
-
-    /**
-     * M001 - systemID (xs:string)
-     */
-    @Column(name = "system_id", unique = true)
-    @Audited
-    protected String systemId;
+@AttributeOverride(name = "id", column = @Column(name = "pk_screening_id"))
+public class Screening extends NoarkEntity implements IScreeningEntity {
 
     /**
      * M500 - tilgangsrestriksjon n4 (JP.TGKODE)
      */
     @Column(name = "access_restriction")
     @Audited
-    protected String accessRestriction;
+    private String accessRestriction;
 
     /**
      * M501 - skjermingshjemmel n4 (JP.UOFF)
      */
     @Column(name = "screening_authority")
     @Audited
-    protected String screeningAuthority;
+    private String screeningAuthority;
 
     /**
      * M502 - skjermingMetadata should be 1-M
      */
     @Column(name = "screening_metadata")
     @Audited
-    protected String screeningMetadata;
+    private String screeningMetadata;
 
     /**
      * M503 - skjermingDokument
      */
     @Column(name = "screening_document")
     @Audited
-    protected String screeningDocument;
+    private String screeningDocument;
 
     /**
      * M505 - skjermingOpphoererDato n4(JP.AGDATO)
      */
     @Column(name = "screening_expires")
     @Audited
-    protected Date screeningExpiresDate;
+    private Date screeningExpiresDate;
 
     /**
      * M504 - skjermingsvarighet
@@ -75,48 +61,27 @@ public class Screening implements IScreeningEntity, INoarkSystemIdEntity {
      */
     @Column(name = "screening_duration")
     @Audited
-    protected String screeningDuration;
-    @Column(name = "owned_by")
-    @Audited
-    protected String ownedBy;
-    @Version
-    @Column(name = "version")
-    protected Long version;
+    private String screeningDuration;
+
     // Links to Series
     @ManyToMany(mappedBy = "referenceScreening")
-    protected Set<Series> referenceSeries = new HashSet<Series>();
+    private Set<Series> referenceSeries = new TreeSet<>();
+
     // Links to Class
     @ManyToMany(mappedBy = "referenceScreening")
-    protected Set<Class> referenceClass = new HashSet<Class>();
+    private Set<Class> referenceClass = new TreeSet<>();
+
     // Links to File
     @ManyToMany(mappedBy = "referenceScreening")
-    protected Set<File> referenceFile = new HashSet<File>();
+    private Set<File> referenceFile = new TreeSet<>();
+
     // Links to Record
     @ManyToMany(mappedBy = "referenceScreening")
-    protected Set<Record> referenceRecord = new HashSet<Record>();
+    private Set<Record> referenceRecord = new TreeSet<>();
+
     // Links to DocumentDescription
     @ManyToMany(mappedBy = "referenceScreening")
-    protected Set<DocumentDescription> referenceDocumentDescription = new HashSet<DocumentDescription>();
-    // Used for soft delete.
-    @Column(name = "deleted")
-    @Audited
-    private Boolean deleted;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getSystemId() {
-        return systemId;
-    }
-
-    public void setSystemId(String systemId) {
-        this.systemId = systemId;
-    }
+    private Set<DocumentDescription> referenceDocumentDescription = new TreeSet<>();
 
     public String getAccessRestriction() {
         return accessRestriction;
@@ -166,30 +131,6 @@ public class Screening implements IScreeningEntity, INoarkSystemIdEntity {
         this.screeningDuration = screeningDuration;
     }
 
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public String getOwnedBy() {
-        return ownedBy;
-    }
-
-    public void setOwnedBy(String ownedBy) {
-        this.ownedBy = ownedBy;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
     @Override
     public String getBaseTypeName() {
         return SCREENING;
@@ -237,15 +178,13 @@ public class Screening implements IScreeningEntity, INoarkSystemIdEntity {
 
     @Override
     public String toString() {
-        return "SignOff{" +
+        return "SignOff{" + super.toString() + 
                 "screeningDuration='" + screeningDuration + '\'' +
                 ", screeningExpiresDate=" + screeningExpiresDate +
                 ", screeningDocument='" + screeningDocument + '\'' +
                 ", screeningMetadata='" + screeningMetadata + '\'' +
                 ", screeningAuthority='" + screeningAuthority + '\'' +
                 ", accessRestriction='" + accessRestriction + '\'' +
-                ", version='" + version + '\'' +
-                ", id=" + id +
                 '}';
     }
 }

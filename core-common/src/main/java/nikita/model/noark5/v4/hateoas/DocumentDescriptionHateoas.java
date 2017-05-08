@@ -1,7 +1,7 @@
 package nikita.model.noark5.v4.hateoas;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.serializers.noark5v4.hateoas.DocumentDescriptionHateoasSerializer;
 
 import java.util.List;
@@ -18,11 +18,11 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_DESCRIPTION;
 @JsonSerialize(using = DocumentDescriptionHateoasSerializer.class)
 public class DocumentDescriptionHateoas extends HateoasNoarkObject implements IHateoasNoarkObject {
 
-    public DocumentDescriptionHateoas(INoarkSystemIdEntity entity) {
+    public DocumentDescriptionHateoas(INikitaEntity entity) {
         super(entity);
     }
 
-    public DocumentDescriptionHateoas(List<INoarkSystemIdEntity> entityList) {
+    public DocumentDescriptionHateoas(List<INikitaEntity> entityList) {
         super(entityList, DOCUMENT_DESCRIPTION);
     }
 }

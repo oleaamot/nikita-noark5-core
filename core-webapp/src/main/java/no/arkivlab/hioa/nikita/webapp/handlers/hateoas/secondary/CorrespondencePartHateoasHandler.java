@@ -2,7 +2,7 @@ package no.arkivlab.hioa.nikita.webapp.handlers.hateoas.secondary;
 
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
 import nikita.model.noark5.v4.hateoas.Link;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.HateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.RecordHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.secondary.ICorrespondencePartHateoasHandler;
@@ -23,13 +23,13 @@ import static nikita.config.N5ResourceMappings.*;
 public class CorrespondencePartHateoasHandler extends HateoasHandler implements ICorrespondencePartHateoasHandler {
 
     @Override
-    public void addEntityLinks(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addEntityLinks(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         // Metadata RELS
         addCorrespondencePartType(entity, hateoasNoarkObject);
     }
 
     @Override
-    public void addCorrespondencePartType(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addCorrespondencePartType(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_METADATA_PATH + SLASH + entity.getBaseTypeName(), REL_METADATA_CORRESPONDENCE_PART, false));
     }

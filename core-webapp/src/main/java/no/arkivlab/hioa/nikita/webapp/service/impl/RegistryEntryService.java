@@ -24,7 +24,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.List;
 import java.util.Set;
 
@@ -87,11 +87,11 @@ public class RegistryEntryService implements IRegistryEntryService {
     public DocumentDescription createDocumentDescriptionAssociatedWithRegistryEntry(
             String recordSystemId, DocumentDescription documentDescription){
         RegistryEntry registryEntry = getRegistryEntryOrThrow(recordSystemId);
-        HashSet <Record> records = (HashSet <Record>) documentDescription.getReferenceRecord();
+        TreeSet <Record> records = (TreeSet <Record>) documentDescription.getReferenceRecord();
 
         // It should always be instaniated ... check this ...
         if (records == null) {
-            records = new HashSet<>();
+            records = new TreeSet<>();
             documentDescription.setReferenceRecord(records);
         }
         records.add(registryEntry);

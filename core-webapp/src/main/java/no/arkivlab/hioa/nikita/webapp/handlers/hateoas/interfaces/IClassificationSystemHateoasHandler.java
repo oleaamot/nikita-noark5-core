@@ -1,7 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces;
 
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 
 /**
  * Created by tsodring on 2/6/17.
@@ -10,17 +10,17 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
  */
 public interface IClassificationSystemHateoasHandler extends IHateoasHandler {
 
-    void addSeries(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addSeries(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addClass(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewClass(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewClass(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewClassificationSystem(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewClassificationSystem(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewSecondaryClassificationSystem(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewSecondaryClassificationSystem(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addSecondaryClassificationSystem(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addSecondaryClassificationSystem(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addClassificationType(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addClassificationType(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 }

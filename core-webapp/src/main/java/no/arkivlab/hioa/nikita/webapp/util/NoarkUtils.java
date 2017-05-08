@@ -47,7 +47,7 @@ public final class NoarkUtils {
                 nikitaEntity.setDeleted(false);
             }
 
-            public static void setSystemIdEntityValues(INoarkSystemIdEntity systemIdEntity) {
+            public static void setSystemIdEntityValues(INikitaEntity systemIdEntity) {
                 // Required Noark values
                 systemIdEntity.setSystemId(UUID.randomUUID().toString());
             }

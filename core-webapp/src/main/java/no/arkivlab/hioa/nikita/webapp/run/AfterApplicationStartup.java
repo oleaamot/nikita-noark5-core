@@ -1,30 +1,22 @@
 package no.arkivlab.hioa.nikita.webapp.run;
 
 import nikita.util.CommonUtils;
-import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
-import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static java.lang.System.out;
 import static nikita.config.Constants.SLASH;
-import static nikita.config.Constants.SPRING_ENDPOINT_DELIMITER;
 
 /**
  * Create som basic data if application is in demo mode
@@ -79,7 +71,7 @@ public class AfterApplicationStartup {
                     Set<RequestMethod> httpMethodRequests = requestMappingInfo.getMethodsCondition().getMethods();
                     if (null != httpMethodRequests && null != servletPath) {
                         // RequestMethod and HTTPMethod are different types, have to convert them here
-                        Set<HttpMethod> httpMethods = new HashSet<>();
+                        Set<HttpMethod> httpMethods = new TreeSet<>();
                         for (RequestMethod requestMethod : httpMethodRequests) {
                             if (requestMethod.equals(requestMethod.GET)) {
                                 httpMethods.add(HttpMethod.GET);

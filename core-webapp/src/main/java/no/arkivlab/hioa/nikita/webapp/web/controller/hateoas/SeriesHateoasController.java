@@ -5,7 +5,7 @@ import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.hateoas.*;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ICaseFileHateoasHandler;
@@ -552,7 +552,7 @@ public class SeriesHateoasController extends NikitaController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         SeriesHateoas seriesHateoas = new
-                SeriesHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                SeriesHateoas((ArrayList<INikitaEntity>) (ArrayList)
                 seriesService.findSeriesByOwnerPaginated(top, skip));
         seriesHateoasHandler.addLinksOnRead(seriesHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
@@ -584,7 +584,7 @@ public class SeriesHateoasController extends NikitaController {
             @RequestParam(name = "skip", required = false) Integer skip) {
     /*
         RecordHateoas recordHateoas = new
-                RecordHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                RecordHateoas((ArrayList<INikitaEntity>) (ArrayList)
                 recordService.findRecordByOwnerPaginated(top, skip));
         recordHateoasHandler.addLinksOnRead(recordHateoas, request, new Authorisation());
       */
@@ -653,7 +653,7 @@ public class SeriesHateoasController extends NikitaController {
             @RequestParam(name = "skip", required = false) Integer skip) {
     /*
         CaseFileHateoas caseFileHateoas = new
-                CaseFileHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                CaseFileHateoas((ArrayList<INikitaEntity>) (ArrayList)
                 caseFileService.findCaseFileByOwnerPaginated(top, skip));
         caseFileHateoasHandler.addLinksOnRead(caseFileHateoas, request, new Authorisation());
       */

@@ -1,7 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces;
 
 import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 
 /**
  * Created by tsodring on 2/6/17.
@@ -10,22 +10,22 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
  */
 public interface IDocumentObjectHateoasHandler extends IHateoasHandler {
 
-    void addRecord(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addRecord(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addDocumentDescription(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addDocumentDescription(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addConversion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addConversion(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewConversion(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewConversion(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addElectronicSignature(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addElectronicSignature(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addNewElectronicSignature(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addNewElectronicSignature(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addReferenceDocumentFile(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addReferenceDocumentFile(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addVariantFormat(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addVariantFormat(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addFormat(INoarkSystemIdEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+    void addFormat(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 }
 

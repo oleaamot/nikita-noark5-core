@@ -11,7 +11,7 @@ import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.hateoas.*;
 import nikita.model.noark5.v4.hateoas.secondary.CorrespondencePartHateoas;
 import nikita.model.noark5.v4.hateoas.secondary.PrecedenceHateoas;
-import nikita.model.noark5.v4.interfaces.entities.INoarkSystemIdEntity;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.model.noark5.v4.secondary.Precedence;
 import nikita.util.CommonUtils;
@@ -105,7 +105,7 @@ public class RegistryEntryHateoasController {
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdCorrespondencePart));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
-                .header(ETAG, createdCorrespondencePart.getVersion().toString())
+                .eTag(createdCorrespondencePart.getVersion().toString())
                 .body(correspondencePartHateoas);
     }
 
@@ -406,7 +406,7 @@ public class RegistryEntryHateoasController {
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
         RegistryEntryHateoas registryEntryHateoas = new
-                RegistryEntryHateoas((ArrayList<INoarkSystemIdEntity>) (ArrayList)
+                RegistryEntryHateoas((ArrayList<INikitaEntity>) (ArrayList)
                 registryEntryService.findRegistryEntryByOwnerPaginated(top, skip));
         registryEntryHateoasHandler.addLinks(registryEntryHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

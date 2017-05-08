@@ -13,6 +13,7 @@ import nikita.model.noark5.v4.secondary.Precedence;
 import nikita.util.exceptions.NikitaException;
 import nikita.util.exceptions.NikitaMalformedInputDataException;
 import org.springframework.http.HttpMethod;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.http.HttpMethod.*;
 
@@ -44,6 +45,40 @@ public final class CommonUtils {
     private CommonUtils() {
     }
 
+    public static final class Validation {
+
+        /**
+         *  Home made validation utility. We decided not to use springs validation framework as it is done on a
+         *  per-class basis. We need to validate on a per-class, per-CRUD method basis. E.g. A incoming fonds
+         *  will be validated differently if it's a CREATE operation as opposed to a UPDATE operation.
+         *
+         * @param nikitaEntity
+         * @return true if valid. If not valid an exception is thrown
+         */
+        public static boolean validateUpdateNoarkEntity(@NotNull INikitaEntity nikitaEntity) {
+
+            if (nikitaEntity instanceof INoarkTitleDescriptionEntity) {
+                rejectIfEmptyOrWhitespace(((INoarkTitleDescriptionEntity)nikitaEntity).getDescription());
+                rejectIfEmptyOrWhitespace(((INoarkTitleDescriptionEntity)nikitaEntity).getTitle());
+            }
+            if (nikitaEntity instanceof INoarkTitleDescriptionEntity) {
+                rejectIfEmptyOrWhitespace(((INoarkTitleDescriptionEntity)nikitaEntity).getDescription());
+                rejectIfEmptyOrWhitespace(((INoarkTitleDescriptionEntity)nikitaEntity).getTitle());
+            }
+
+
+            return true;
+        }
+
+        public static void rejectIfEmptyOrWhitespace(String stringToCheck) {
+
+        }
+
+        public static boolean validateCreateNoarkEntity(@NotNull INoarkGeneralEntity noarkEntity) {
+            return true;
+        }
+
+    }
 
     public static final class WebUtils {
 
@@ -65,9 +100,9 @@ public final class CommonUtils {
          */
         public static void addRequestToMethodMap(@NotNull String servletPath, @NotNull Set<HttpMethod> method) {
 
-            Set <HttpMethod> methods = requestMethodMap.get(servletPath);
+            Set<HttpMethod> methods = requestMethodMap.get(servletPath);
             if (null == methods) {
-                methods = new HashSet<>();
+                methods = new TreeSet<>();
             }
 
             // GET automatically implies HEAD
@@ -80,13 +115,13 @@ public final class CommonUtils {
         }
 
 
-
         /**
          * Provides the ability to throw an Exception if this call fails.
          * This is just a helper to make the code more readable in other places.
+         *
          * @param servletPath
          */
-        public static HttpMethod[]  getMethodsForRequestOrThrow(@NotNull String servletPath) {
+        public static HttpMethod[] getMethodsForRequestOrThrow(@NotNull String servletPath) {
             HttpMethod[] methods = getMethodsForRequest(servletPath);
             if (null == methods) {
                 throw new NikitaException("Error servletPath [" + servletPath + "] has no known HTTP methods");
@@ -97,9 +132,10 @@ public final class CommonUtils {
         /**
          * Provides the ability to throw an Exception if this call fails.
          * This is just a helper to make the code more readable in other places.
+         *
          * @param servletPath
          */
-        public static HttpMethod[]  getMethodsForRequest(@NotNull String servletPath) {
+        public static HttpMethod[] getMethodsForRequest(@NotNull String servletPath) {
             // Adding a trailing slash as the map is setup with a trailing slash
             if (false == servletPath.endsWith("/")) {
                 servletPath += SLASH;
@@ -112,7 +148,7 @@ public final class CommonUtils {
             Matcher matcher = pattern.matcher(servletPath.toLowerCase());
             String updatedServletPath = matcher.replaceFirst(LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS);
 
-            Set <HttpMethod> methods = requestMethodMap.get(updatedServletPath);
+            Set<HttpMethod> methods = requestMethodMap.get(updatedServletPath);
             if (methods == null) {
                 return null;
             }
@@ -136,7 +172,7 @@ public final class CommonUtils {
                 }
             }
 
-            public static void deserialiseNoarkSystemIdEntity(INoarkSystemIdEntity noarkSystemIdEntity,
+            public static void deserialiseNoarkSystemIdEntity(INikitaEntity noarkSystemIdEntity,
                                                               ObjectNode objectNode) {
                 // Deserialize Deserialize systemId
                 JsonNode currentNode = objectNode.get(SYSTEM_ID);
@@ -151,7 +187,7 @@ public final class CommonUtils {
                 JsonNode currentNode = objectNode.get(KEYWORD);
 
                 if (null != currentNode) {
-                    HashSet<Keyword> keywords = new HashSet<>();
+                    TreeSet<Keyword> keywords = new TreeSet<>();
                     if (currentNode.isArray()) {
                         currentNode.iterator();
                         for (JsonNode node : currentNode) {
@@ -172,7 +208,7 @@ public final class CommonUtils {
                 // Deserialize author
                 JsonNode currentNode = objectNode.get(AUTHOR);
                 if (null != currentNode) {
-                    HashSet<Author> authors = new HashSet<>();
+                    TreeSet<Author> authors = new TreeSet<>();
                     if (currentNode.isArray()) {
                         currentNode.iterator();
                         for (JsonNode node : currentNode) {
@@ -194,7 +230,7 @@ public final class CommonUtils {
                 JsonNode currentNode = objectNode.get(STORAGE_LOCATION);
 
                 if (null != currentNode) {
-                    HashSet<StorageLocation> storageLocations = new HashSet<>();
+                    TreeSet<StorageLocation> storageLocations = new TreeSet<>();
                     if (currentNode.isArray()) {
                         currentNode.iterator();
                         for (JsonNode node : currentNode) {
@@ -301,7 +337,7 @@ public final class CommonUtils {
 
             // TODO: FIX THIS!!!!
             public static Set<CrossReference> deserialiseCrossReferences(ObjectNode objectNode) {
-                Set<CrossReference> crossReferences = new HashSet<>();
+                Set<CrossReference> crossReferences = new TreeSet<>();
 
                 //deserialiseCrossReference(crossReference, objectNode);
                 return crossReferences;
@@ -381,7 +417,7 @@ public final class CommonUtils {
                 Set<Series> referenceSeries = null;
                 JsonNode node = objectNode.get(REFERENCE_SERIES);
                 if (node != null) {
-                    referenceSeries = new HashSet<>();
+                    referenceSeries = new TreeSet<>();
                     deserialiseReferenceSeries(referenceSeries, objectNode.deepCopy());
                 }
                 objectNode.remove(REFERENCE_SERIES);
@@ -654,7 +690,7 @@ public final class CommonUtils {
             }
 
             public static Set<CaseParty> deserialiseCaseParties(ObjectNode objectNode) {
-                HashSet<CaseParty> caseParties = new HashSet<>();
+                TreeSet<CaseParty> caseParties = new TreeSet<>();
                 JsonNode jsonCorrespondenceParts = objectNode.get(CORRESPONDENCE_PART);
 
                 // TODO: I seem tobe missing my body of code ...
@@ -669,7 +705,7 @@ public final class CommonUtils {
             public static Set<CorrespondencePart> deserialiseCorrespondencePart(ObjectNode objectNode) {
                 // TODO: I seem tobe missing my body of code ...
 
-                /*HashSet<CorrespondencePart> correspondenceParts = new HashSet<> ();
+                /*TreeSet<CorrespondencePart> correspondenceParts = new TreeSet<> ();
 
                 JsonNode jsonCorrespondenceParts = objectNode.get(CORRESPONDENCE_PART);
                 for ( : jsonCorrespondenceParts) {
@@ -960,7 +996,7 @@ public final class CommonUtils {
             }
 
             public static void printSystemIdEntity(JsonGenerator jgen,
-                                                   INoarkSystemIdEntity systemIdEntity)
+                                                   INikitaEntity systemIdEntity)
                     throws IOException {
                 if (systemIdEntity != null && systemIdEntity.getSystemId() != null) {
                     jgen.writeStringField(SYSTEM_ID, systemIdEntity.getSystemId());
