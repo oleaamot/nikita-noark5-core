@@ -149,7 +149,7 @@ public class NoarkEntity implements INikitaEntity, Comparable<NoarkEntity>   {
 
     @Override
     public int compareTo(NoarkEntity otherEntity) {
-        if (otherEntity != null) {
+        if (null != otherEntity && null != otherEntity.getSystemId() && null != systemId) {
             return systemId.compareTo(otherEntity.getSystemId());
         }
         return -1;
