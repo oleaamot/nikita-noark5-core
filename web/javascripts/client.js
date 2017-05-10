@@ -54,13 +54,16 @@ let updateIndexView = function(url, $scope, $http) {
     }).then(function successCallback(response) {
 	$scope.allow = response.headers('Allow');
 	$scope.links = response.data._links;
-	$scope.data = response.data
+	$scope.data = response.data;
 	$scope.results = response.data.results
 	delete $scope.data._links;
 	delete $scope.data.results;
     }, function errorCallback(response) {
 	// TODO: what should we do when it fails?
-	$scope.allow = 'UNKNOWN';
+	$scope.allow = '[unknown - GET failed]';
+	$scope.links = '';
+	$scope.data = '';
+	$scope.results = '';
     });
 };
 
