@@ -53,14 +53,14 @@ public class File extends NoarkGeneralEntity  implements IDocumentMedium, IStora
     private String documentMedium;
 
     // Link to StorageLocation
-    @ManyToMany (cascade=CascadeType.PERSIST)
+    @ManyToMany (fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
     @JoinTable(name = "file_storage_location", joinColumns = @JoinColumn(name = "f_pk_file_id",
             referencedColumnName = "pk_file_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
             referencedColumnName = "pk_storage_location_id"))
     private Set<StorageLocation> referenceStorageLocation = new TreeSet<>();
 
     // Links to Keywords
-    @ManyToMany(cascade=CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
     @JoinTable(name = "file_keyword", joinColumns = @JoinColumn(name = "f_pk_file_id",
             referencedColumnName = "pk_file_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_keyword_id",
             referencedColumnName = "pk_keyword_id"))
