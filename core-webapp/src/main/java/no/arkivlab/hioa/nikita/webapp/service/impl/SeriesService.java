@@ -12,7 +12,6 @@ import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityEditWhenClosedE
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,6 +24,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -38,27 +38,25 @@ public class SeriesService implements ISeriesService {
 
     private static final Logger logger = LoggerFactory.getLogger(SeriesService.class);
 
-    @Autowired
-    IFileService fileService;
-
-    @Autowired
-    EntityManager entityManager;
-    
-    @Autowired
-    ICaseFileService caseFileService;
-
-    @Autowired
-    ISeriesRepository seriesRepository;
-
+    private IFileService fileService;
+    private EntityManager entityManager;
+    private ICaseFileService caseFileService;
+    private ISeriesRepository seriesRepository;
 
     //@Value("${nikita-noark5-core.pagination.maxPageSize}")
     Integer maxPageSize = new Integer(10);
 
-    public SeriesService() {
+    public SeriesService(IFileService fileService,
+                         EntityManager entityManager,
+                         ICaseFileService caseFileService,
+                         ISeriesRepository seriesRepository) {
+        this.fileService = fileService;
+        this.entityManager = entityManager;
+        this.caseFileService = caseFileService;
+        this.seriesRepository = seriesRepository;
     }
 
     // All CREATE operations
-
     @Override
     public CaseFile createCaseFileAssociatedWithSeries(String seriesSystemId, CaseFile caseFile) {
         CaseFile persistedFile = null;
@@ -153,7 +151,7 @@ public class SeriesService implements ISeriesService {
 
     // systemId
     public Series findBySystemId(String systemId) {
-        return seriesRepository.findBySystemId(systemId);
+        return getSeriesOrThrow(systemId);
     }
 
     // title
@@ -458,6 +456,24 @@ public class SeriesService implements ISeriesService {
         return seriesRepository.save(series);
     }
 
+    @Override
+    public Series handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull Series incomingSeries) {
+        Series existingSeries = getSeriesOrThrow(systemId);
+        // Here copy all the values you are allowed to copy ....
+        if (null != existingSeries.getDescription()) {
+            existingSeries.setDescription(incomingSeries.getDescription());
+        }
+        if (null != incomingSeries.getTitle()) {
+            existingSeries.setTitle(incomingSeries.getTitle());
+        }
+        if (null != incomingSeries.getDocumentMedium()) {
+            existingSeries.setDocumentMedium(existingSeries.getDocumentMedium());
+        }
+        existingSeries.setVersion(version);
+        seriesRepository.save(existingSeries);
+        return existingSeries;
+    }
+    
     public Series updateSeriesSetFinalized(Long id){
         Series series = seriesRepository.findById(id);
 
@@ -489,6 +505,28 @@ public class SeriesService implements ISeriesService {
 
 
     // All DELETE operations
+    @Override
+    public void deleteEntity(@NotNull String seriesSystemId) {
+        Series series = getSeriesOrThrow(seriesSystemId);
+        seriesRepository.delete(series);
+    }
 
-
+    // Helper methods
+    /**
+     * Internal helper method. Rather than having a find and try catch in multiple methods, we have it here once.
+     * If you call this, be aware that you will only ever get a valid Series back. If there is no valid
+     * Series, an exception is thrown
+     *
+     * @param seriesSystemId
+     * @return
+     */
+    protected Series getSeriesOrThrow(@NotNull String seriesSystemId) {
+        Series series = seriesRepository.findBySystemId(seriesSystemId);
+        if (series == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " Series, using systemId " + seriesSystemId;
+            logger.info(info);
+            throw new NoarkEntityNotFoundException(info);
+        }
+        return series;
+    }
 }

@@ -73,3 +73,13 @@ public class CorrespondencePartHateoasController {
     }
 
 }
+/*
+properties check
+    public void checkForObligatoryCorrespondencePartValues(CorrespondencePart correspondencePart) {
+
+        if (correspondencePart.getCorrespondencePartType() == null) {
+            throw new NikitaMalformedInputDataException("The korrespondansepart you tried to create is malformed. The "
+                    + "korrespondanseparttype field is mandatory, and you have submitted an empty value.");
+        }
+
+ */

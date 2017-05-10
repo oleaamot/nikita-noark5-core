@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import javax.print.Doc;
+import javax.validation.constraints.NotNull;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Date;
@@ -76,4 +78,9 @@ public interface IDocumentObjectService {
 	List<DocumentObject> findByOwnedBy(String ownedBy, Sort sort);
 	Page<DocumentObject> findByOwnedBy(String ownedBy, Pageable pageable);
 
+	// All UPDATE operations
+	DocumentObject handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull DocumentObject documentObject);
+
+	// All DELETE operations
+	void deleteEntity(@NotNull String systemId);
 }

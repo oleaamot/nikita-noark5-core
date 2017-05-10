@@ -14,9 +14,8 @@ import static nikita.config.N5ResourceMappings.DELETION_TYPE;
 @Entity
 @Table(name = "deletion_type")
 // Enable soft delete
-@SQLDelete(sql = "UPDATE deletion_type SET delete" +
-        "d = true WHERE id = ?")
-@Where(clause = "deleted <> true")
+// @SQLDelete(sql = "UPDATE deletion_type SET deleted = true WHERE pk_deletion_type_id = ? and version = ?")
+// @Where(clause = "deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_deletion_type_id"))
 public class DeletionType extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;

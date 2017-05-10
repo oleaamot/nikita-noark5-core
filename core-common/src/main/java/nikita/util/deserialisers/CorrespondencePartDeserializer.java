@@ -3,18 +3,14 @@ package nikita.util.deserialisers;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
 import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.util.CommonUtils;
-import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
 import nikita.util.exceptions.NikitaMalformedInputDataException;
 
 import java.io.IOException;
-
-import static nikita.config.N5ResourceMappings.*;
 
 /**
  * Created by tsodring on 1/6/17.
@@ -24,8 +20,6 @@ import static nikita.config.N5ResourceMappings.*;
  * Having a own deserialiser is done to have more fine grained control over the input. This allows us to be less strict
  * with property names, allowing for both English and Norwegian property names
  *
- * Both English and Norwegian property names can be used in the incoming JSON as well as there being no requirement with
- * regards to small and large letters in property names.
  *
  * Note this implementation expects that the correspondencePart object to deserialise is in compliance with the Noark standard where
  * certain properties i.e. createdBy and createdDate are set by the core, not the caller. This deserializer will not
@@ -42,7 +36,7 @@ import static nikita.config.N5ResourceMappings.*;
  *  - Unknown property values in the JSON will trigger an exception
  *  - Missing obligatory property values in the JSON will trigger an exception
  */
-public class CorrespondencePartDeserializer extends JsonDeserializer implements ObligatoryPropertiesCheck {
+public class CorrespondencePartDeserializer extends JsonDeserializer {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -55,9 +49,6 @@ public class CorrespondencePartDeserializer extends JsonDeserializer implements 
 
         CommonUtils.Hateoas.Deserialize.deserialiseCorrespondencePartEntity(correspondencePart, objectNode);
 
-        // Check that all obligatory values are present
-        checkForObligatoryCorrespondencePartValues(correspondencePart);
-
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
@@ -66,22 +57,5 @@ public class CorrespondencePartDeserializer extends JsonDeserializer implements 
                     CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
         }
         return correspondencePart;
-    }
-
-
-    @Override
-    public void checkForObligatoryNoarkValues(INoarkGeneralEntity noarkEntity) {
-
-    }
-
-    /**
-     *
-     */
-    public void checkForObligatoryCorrespondencePartValues(CorrespondencePart correspondencePart) {
-
-        if (correspondencePart.getCorrespondencePartType() == null) {
-            throw new NikitaMalformedInputDataException("The korrespondansepart you tried to create is malformed. The "
-                    + "korrespondanseparttype field is mandatory, and you have submitted an empty value.");
-        }
     }
 }

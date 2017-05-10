@@ -14,9 +14,8 @@ import static nikita.config.N5ResourceMappings.SIGN_OFF_METHOD;
 @Entity
 @Table(name = "sign_off_method")
 // Enable soft delete
-@SQLDelete(sql = "UPDATE sign_off_method SET delete" +
-        "d = true WHERE id = ?")
-@Where(clause = "deleted <> true")
+// @SQLDelete(sql = "UPDATE sign_off_method SET deleted = true WHERE pk_sign_off_method_id = ? and version = ?")
+// @Where(clause = "deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_sign_off_method_id"))
 public class SignOffMethod extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;

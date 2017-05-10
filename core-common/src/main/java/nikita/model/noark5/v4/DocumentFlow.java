@@ -12,8 +12,8 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_FLOW;
 @Entity
 @Table(name = "document_flow")
 // Enable soft delete of DocumentFlow
-@SQLDelete(sql="UPDATE document_flow SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE document_flow SET deleted = true WHERE pk_flow_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_flow_id"))
 public class DocumentFlow extends NoarkEntity {
 

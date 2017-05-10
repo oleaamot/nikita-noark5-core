@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -77,24 +78,6 @@ public class FondsCreatorService implements IFondsCreatorService {
         return fonds;
     }
 
-    /**
-     * Internal helper method. Rather than having a find and try catch in multiple methods, we have it here once.
-     * If you call this, be aware that you will only ever get a valid FondsCreator back. If there is no valid
-     * FondsCreator, an exception is thrown
-     *
-     * @param fondsCreatorSystemId
-     * @return
-     */
-    protected FondsCreator getFondsCreatorOrThrow(String fondsCreatorSystemId) {
-        FondsCreator fondsCreator = fondsCreatorRepository.findBySystemId(fondsCreatorSystemId);
-        if (fondsCreator == null) {
-            String info = INFO_CANNOT_FIND_OBJECT + " FondsCreator, using systemId " + fondsCreatorSystemId;
-            logger.info(info);
-            throw new NoarkEntityNotFoundException(info);
-        }
-        return fondsCreator;
-    }
-
     // All READ operations
     @Override
     public List<FondsCreator> findFondsCreatorByOwnerPaginated(Integer top, Integer skip) {
@@ -121,17 +104,6 @@ public class FondsCreatorService implements IFondsCreatorService {
     }
 
     @Override
-    public FondsCreator updateFondsCreator(@NotNull String systemId, @NotNull FondsCreator fondsCreatorUpdate) {
-
-        FondsCreator existingFondsCreator = getFondsCreatorOrThrow(systemId);
-        existingFondsCreator.setDescription(fondsCreatorUpdate.getDescription());
-        existingFondsCreator.setFondsCreatorId(fondsCreatorUpdate.getFondsCreatorId());
-        existingFondsCreator.setFondsCreatorName(fondsCreatorUpdate.getFondsCreatorName());
-        return existingFondsCreator;
-
-    }
-
-    @Override
     public Iterable<FondsCreator> findAll() {
         return fondsCreatorRepository.findAll();
     }
@@ -144,7 +116,59 @@ public class FondsCreatorService implements IFondsCreatorService {
 
     @Override
     public FondsCreator findBySystemId(String systemId) {
-        return fondsCreatorRepository.findBySystemId(systemId);
+        return getFondsCreatorOrThrow(systemId);
     }
 
+    // All UPDATE operations
+    @Override
+    public FondsCreator handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull FondsCreator incomingFondsCreator) {
+        FondsCreator existingFondsCreator = getFondsCreatorOrThrow(systemId);
+        // Here copy all the values you are allowed to copy ....
+        if (null != incomingFondsCreator.getDescription()) {
+            existingFondsCreator.setDescription(incomingFondsCreator.getDescription());
+        }
+        if (null != incomingFondsCreator.getFondsCreatorId()) {
+            existingFondsCreator.setFondsCreatorId(incomingFondsCreator.getFondsCreatorId());
+        }
+        if (null != incomingFondsCreator.getFondsCreatorName()) {
+            existingFondsCreator.setFondsCreatorName(incomingFondsCreator.getFondsCreatorName());
+        }
+        existingFondsCreator.setVersion(version);
+        fondsCreatorRepository.save(existingFondsCreator);
+        return existingFondsCreator;
+    }
+
+    // All DELETE operations
+    @Override
+    public void deleteEntity(@NotNull String fondsCreatorSystemId) {
+        FondsCreator fondsCreator = getFondsCreatorOrThrow(fondsCreatorSystemId);
+        // See issue for a description of why this code was written this way
+        // https://github.com/HiOA-ABI/nikita-noark5-core/issues/82
+        Query q = entityManager.createNativeQuery("DELETE FROM fonds_fonds_creator WHERE f_pk_fonds_creator_id = :id ;");
+        q.setParameter("id", fondsCreator.getId());
+        q.executeUpdate();
+
+        entityManager.remove(fondsCreator);
+        entityManager.flush();
+        entityManager.clear();
+    }
+
+    // All HELPER operations
+    /**
+     * Internal helper method. Rather than having a find and try catch in multiple methods, we have it here once.
+     * If you call this, be aware that you will only ever get a valid FondsCreator back. If there is no valid
+     * FondsCreator, an exception is thrown
+     *
+     * @param fondsCreatorSystemId
+     * @return
+     */
+    protected FondsCreator getFondsCreatorOrThrow(@NotNull String fondsCreatorSystemId) {
+        FondsCreator fondsCreator = fondsCreatorRepository.findBySystemId(fondsCreatorSystemId);
+        if (fondsCreator == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " FondsCreator, using systemId " + fondsCreatorSystemId;
+            logger.info(info);
+            throw new NoarkEntityNotFoundException(info);
+        }
+        return fondsCreator;
+    }
 }

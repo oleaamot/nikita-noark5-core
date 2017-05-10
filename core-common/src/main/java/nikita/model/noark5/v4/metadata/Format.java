@@ -14,9 +14,8 @@ import static nikita.config.N5ResourceMappings.FORMAT;
 @Entity
 @Table(name = "format")
 // Enable soft delete
-@SQLDelete(sql = "UPDATE format SET delete" +
-        "d = true WHERE id = ?")
-@Where(clause = "deleted <> true")
+// @SQLDelete(sql = "UPDATE format SET deleted = true WHERE pk_format_id = ? and version = ?")
+// @Where(clause = "deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_format_id"))
 public class Format extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;

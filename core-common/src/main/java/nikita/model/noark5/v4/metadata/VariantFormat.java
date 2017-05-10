@@ -14,9 +14,8 @@ import static nikita.config.N5ResourceMappings.VARIANT_FORMAT;
 @Entity
 @Table(name = "variant_format")
 // Enable soft delete
-@SQLDelete(sql = "UPDATE variant_format SET delete" +
-        "d = true WHERE id = ?")
-@Where(clause = "deleted <> true")
+// @SQLDelete(sql = "UPDATE variant_format SET deleted = true WHERE pk_variant_format_id = ? and version = ?")
+// @Where(clause = "deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_variant_format_id"))
 public class VariantFormat extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;

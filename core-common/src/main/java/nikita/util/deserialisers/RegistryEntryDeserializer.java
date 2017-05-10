@@ -7,9 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import nikita.model.noark5.v4.RegistryEntry;
-import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
 import nikita.util.CommonUtils;
-import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
 import nikita.util.exceptions.NikitaMalformedInputDataException;
 
 import java.io.IOException;
@@ -28,8 +26,7 @@ import static nikita.util.CommonUtils.Hateoas.Deserialize;
  * Having a own deserialiser is done to have more fine grained control over the input. This allows us to be less strict
  * with property names, allowing for both English and Norwegian property names
  * <p>
- * Both English and Norwegian property names can be used in the incoming JSON as well as there being no requirement with
- * regards to small and large letters in property names.
+
  * <p>
  * Note this implementation expects that the RegistryEntry object to deserialise is in compliance with the Noark standard where
  * certain properties i.e. createdBy and createdDate are set by the core, not the caller. This deserializer will not
@@ -47,7 +44,7 @@ import static nikita.util.CommonUtils.Hateoas.Deserialize;
  * - Missing obligatory property values in the JSON will trigger an exception
  * - RegistryEntry has no obligatory values required to be present at instantiation time
  */
-public class RegistryEntryDeserializer extends JsonDeserializer implements ObligatoryPropertiesCheck {
+public class RegistryEntryDeserializer extends JsonDeserializer {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -238,8 +235,6 @@ public class RegistryEntryDeserializer extends JsonDeserializer implements Oblig
             registryEntry.setLoanedTo(currentNode.textValue());
             objectNode.remove(CASE_LOANED_TO);
         }
-        // Check that all obligatory values are present
-        checkForObligatoryRegistryEntryValues(registryEntry);
 
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
@@ -249,16 +244,5 @@ public class RegistryEntryDeserializer extends JsonDeserializer implements Oblig
                     CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
         }
         return registryEntry;
-    }
-
-    @Override
-    /**
-     *
-     *  RegistryEntry has no obligatory Noark values
-     */
-    public void checkForObligatoryNoarkValues(INoarkGeneralEntity noarkEntity) {
-    }
-
-    public void checkForObligatoryRegistryEntryValues(RegistryEntry registryEntry) {
     }
 }

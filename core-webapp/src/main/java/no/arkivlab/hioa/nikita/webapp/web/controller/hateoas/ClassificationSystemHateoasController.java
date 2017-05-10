@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.ClassificationSystem;
+import nikita.model.noark5.v4.Fonds;
 import nikita.model.noark5.v4.hateoas.ClassHateoas;
 import nikita.model.noark5.v4.hateoas.ClassificationSystemHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
@@ -16,9 +17,12 @@ import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassificationSystemHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.model.application.FondsStructureDetails;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
+import no.arkivlab.hioa.nikita.webapp.service.application.service.ApplicationService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IClassificationSystemService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +35,7 @@ import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.CLASSIFICATION_SYSTEM;
+import static nikita.config.N5ResourceMappings.FONDS;
 import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
@@ -42,15 +47,19 @@ public class ClassificationSystemHateoasController {
     private IClassificationSystemHateoasHandler classificationSystemHateoasHandler;
     private IClassHateoasHandler classHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
+    private ApplicationService applicationService;
 
     public ClassificationSystemHateoasController(IClassificationSystemService classificationSystemService,
                                                  IClassificationSystemHateoasHandler classificationSystemHateoasHandler,
                                                  IClassHateoasHandler classHateoasHandler,
-                                                 ApplicationEventPublisher applicationEventPublisher) {
+                                                 ApplicationEventPublisher applicationEventPublisher,
+                                                 ApplicationService applicationService) {
+
         this.classificationSystemService = classificationSystemService;
         this.classificationSystemHateoasHandler = classificationSystemHateoasHandler;
         this.classHateoasHandler = classHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.applicationService = applicationService;
     }
 
     // API - All POST Requests (CRUD - CREATE)
@@ -177,5 +186,32 @@ public class ClassificationSystemHateoasController {
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(classificationSystemHateoas);
+    }
+
+    // Delete a ClassificationSystem identified by systemID
+    // DELETE [contextPath][api]/arkivstruktur/klassifikasjonsystem/{systemId}/
+    @ApiOperation(value = "Deletes a single ClassificationSystem entity identified by systemID", response = FondsStructureDetails.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Parent ApplicationDetails returned", response = FondsStructureDetails.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + CLASSIFICATION_SYSTEM + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
+            method = RequestMethod.DELETE)
+    public ResponseEntity<FondsStructureDetails> deleteClassificationSystemBySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the ClassificationSystem to delete",
+                    required = true)
+            @PathVariable("systemID") final String systemID) {
+        ClassificationSystem classificationSystem = classificationSystemService.findBySystemId(systemID);
+
+        classificationSystemService.deleteEntity(systemID);
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, classificationSystem));
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(applicationService.getFondsStructureDetails());
     }
 }

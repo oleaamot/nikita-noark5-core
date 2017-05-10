@@ -14,9 +14,8 @@ import static nikita.config.N5ResourceMappings.ASSOCIATED_WITH_RECORD_AS;
 @Entity
 @Table(name = "associated_with_record_as")
 // Enable soft delete
-@SQLDelete(sql = "UPDATE associated_with_record_as SET delete" +
-        "d = true WHERE id = ?")
-@Where(clause = "deleted <> true")
+// @SQLDelete(sql = "UPDATE associated_with_record_as SET deleted = true WHERE pk_associated_with_record_as_id = ? and version = ?")
+// @Where(clause = "deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_associated_with_record_as_id"))
 public class AssociatedWithRecordAs extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;

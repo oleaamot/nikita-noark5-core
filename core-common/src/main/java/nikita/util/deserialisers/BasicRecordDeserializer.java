@@ -7,9 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import nikita.model.noark5.v4.BasicRecord;
-import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
 import nikita.util.CommonUtils;
-import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
 import nikita.util.exceptions.NikitaMalformedInputDataException;
 
 import java.io.IOException;
@@ -28,8 +26,6 @@ import static nikita.util.CommonUtils.Hateoas.Deserialize;
  * Having a own deserialiser is done to have more fine grained control over the input. This allows us to be less strict
  * with property names, allowing for both English and Norwegian property names
  *
- * Both English and Norwegian property names can be used in the incoming JSON as well as there being no requirement with
- * regards to small and large letters in property names.
  *
  * Note this implementation expects that the BasicRecord object to deserialise is in compliance with the Noark standard where
  * certain properties i.e. createdBy and createdDate are set by the core, not the caller. This deserializer will not 
@@ -47,7 +43,7 @@ import static nikita.util.CommonUtils.Hateoas.Deserialize;
  *  - Missing obligatory property values in the JSON will trigger an exception
  *  - BasicRecord has no obligatory values required to be present at instantiation time
  */
-public class BasicRecordDeserializer extends JsonDeserializer implements ObligatoryPropertiesCheck {
+public class BasicRecordDeserializer extends JsonDeserializer {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -116,14 +112,5 @@ public class BasicRecordDeserializer extends JsonDeserializer implements Obligat
                     CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
         }
         return basicRecord;
-    }
-
-    @Override
-    /**
-     *
-     *  BasicRecord has no obligatory values required to be present at instantiation time
-     *  TODO: This is a lie, read the standard ... muppet!
-     */
-    public void checkForObligatoryNoarkValues(INoarkGeneralEntity noarkEntity) {
     }
 }

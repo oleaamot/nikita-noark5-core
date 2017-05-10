@@ -18,8 +18,8 @@ import static nikita.config.N5ResourceMappings.DISPOSAL;
 @Entity
 @Table(name = "disposal")
 // Enable soft delete of Disposal
-@SQLDelete(sql="UPDATE disposal SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE disposal SET deleted = true WHERE pk_disposal_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_disposal_id"))
 public class Disposal extends  NoarkEntity implements IDisposalEntity {
 

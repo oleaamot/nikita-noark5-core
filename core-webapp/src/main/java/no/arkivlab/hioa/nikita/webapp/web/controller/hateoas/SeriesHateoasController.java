@@ -10,11 +10,14 @@ import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ICaseFileHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFileHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ISeriesHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +31,7 @@ import java.util.Date;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
+import static org.springframework.http.HttpHeaders.ETAG;
 
 @RestController
 @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES,
@@ -36,26 +40,28 @@ import static nikita.config.N5ResourceMappings.*;
         "entities that can be associated with a series e.g. File / ClassificationSystem. Update and delete operations" +
         " are on individual series entities identified by systemId. Read operations are either on individual series" +
         "entities or pageable iterable sets of series")
-public class SeriesHateoasController extends NikitaController {
+public class SeriesHateoasController extends NoarkController {
 
     private ISeriesService seriesService;
+    private IFondsHateoasHandler fondsHateoasHandler;
     private ISeriesHateoasHandler seriesHateoasHandler;
     private ICaseFileHateoasHandler caseFileHateoasHandler;
     private IFileHateoasHandler fileHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
 
     public SeriesHateoasController(ISeriesService seriesService,
+                                   IFondsHateoasHandler fondsHateoasHandler,
                                    ISeriesHateoasHandler seriesHateoasHandler,
                                    ICaseFileHateoasHandler caseFileHateoasHandler,
                                    IFileHateoasHandler fileHateoasHandler,
                                    ApplicationEventPublisher applicationEventPublisher) {
         this.seriesService = seriesService;
+        this.fondsHateoasHandler = fondsHateoasHandler;
         this.seriesHateoasHandler = seriesHateoasHandler;
         this.caseFileHateoasHandler = caseFileHateoasHandler;
         this.fileHateoasHandler = fileHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
     }
-
     // API - All POST Requests (CRUD - CREATE)
 
     // Create a new file
@@ -87,6 +93,7 @@ public class SeriesHateoasController extends NikitaController {
                     value = "Incoming file object",
                     required = true)
             @RequestBody File file) throws NikitaException {
+        validateForCreate(file);
         File createdFile = seriesService.createFileAssociatedWithSeries(seriesSystemId, file);
         FileHateoas fileHateoas = new FileHateoas(createdFile);
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
@@ -99,7 +106,7 @@ public class SeriesHateoasController extends NikitaController {
 
     // Create a new casefile
     // POST [contextPath][api]/arkivstruktur/arkivdel/{systemId}/ny-saksmappe/
-    // This currently is supported in the standard, but probably will be later
+    // This currently is not supported in the standard, but probably will be later
     @ApiOperation(value = "Persists a CaseFile object associated with the given Series systemId", notes = "Returns " +
             "the newly created caseFile object after it was associated with a Series object and persisted to " +
             "the database", response = CaseFileHateoas.class)
@@ -127,6 +134,7 @@ public class SeriesHateoasController extends NikitaController {
                     value = "Incoming caseFile object",
                     required = true)
             @RequestBody CaseFile caseFile) throws NikitaException {
+        validateForCreate(caseFile);
         CaseFile createdCaseFile = seriesService.createCaseFileAssociatedWithSeries(seriesSystemId, caseFile);
         CaseFileHateoas caseFileHateoas = new CaseFileHateoas(createdCaseFile);
         caseFileHateoasHandler.addLinks(caseFileHateoas, request, new Authorisation());
@@ -166,6 +174,7 @@ public class SeriesHateoasController extends NikitaController {
                     value = "Incoming record object",
                     required = true)
             @RequestBody Record record) throws NikitaException {
+        //  validateForCreate(record);
         //RecordHateoas recordHateoas = new RecordHateoas(seriesService.createRecordAssociatedWithSeries(seriesSystemId, record));
         //recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
         // applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
@@ -300,6 +309,45 @@ public class SeriesHateoasController extends NikitaController {
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
+
+    // Update an identified Series
+    // PUT [contextPath][api]/arkivstruktur/arkivdel/{systemId}
+    @ApiOperation(value = "Updates a Series object", notes = "Returns the newly" +
+            " update Series object after it is persisted to the database", response = SeriesHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Series " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = SeriesHateoas.class),
+            @ApiResponse(code = 201, message = "Series " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = SeriesHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type ClassificationSystem"),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
+            RIGHT_PARENTHESIS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    public ResponseEntity<SeriesHateoas> updateSeries(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+                @ApiParam(name = "systemID",
+                    value = "systemId of fonds to update.",
+                    required = true)
+                @PathVariable String systemID,
+                @ApiParam(name = "series",
+                    value = "Incoming series object",
+                    required = true)
+                @RequestBody Series series) throws NikitaException {
+        validateForUpdate(series);
+        Series updatedSeries = seriesService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)), series);
+        SeriesHateoas seriesHateoas = new SeriesHateoas(updatedSeries);
+        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedSeries));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .eTag(updatedSeries.getVersion().toString())
+                .body(seriesHateoas);
+    }
     // API - All GET Requests (CRUD - READ)
 
     // Retrieve a Series given a systemId
@@ -658,5 +706,38 @@ public class SeriesHateoasController extends NikitaController {
         caseFileHateoasHandler.addLinksOnRead(caseFileHateoas, request, new Authorisation());
       */
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    // API - All DELETE Requests (CRUD - DELETE)
+
+    // Delete a Series identified by systemID
+    // DELETE [contextPath][api]/arkivstruktur/arkivdel/{systemId}/
+    @ApiOperation(value = "Deletes a single Series entity identified by systemID", response = FondsHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Parent Fonds returned", response = FondsHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
+            method = RequestMethod.DELETE)
+    public ResponseEntity<FondsHateoas> deleteSeriesBySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the series to delete",
+                    required = true)
+            @PathVariable("systemID") final String seriesSystemId) {
+
+        Series series = seriesService.findBySystemId(seriesSystemId);
+        Fonds fonds = series.getReferenceFonds();
+        FondsHateoas fondsHateoas = new FondsHateoas(fonds);
+        fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
+        seriesService.deleteEntity(seriesSystemId);
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, fonds));
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .eTag(fonds.getVersion().toString())
+                .body(fondsHateoas);
     }
 }

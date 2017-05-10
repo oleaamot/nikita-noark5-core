@@ -1,12 +1,14 @@
 package nikita.model.noark5.v4;
 
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
+import nikita.util.exceptions.NikitaMalformedHeaderException;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 
 import static nikita.config.Constants.ONLY_WHITESPACE;
+import static org.springframework.http.HttpHeaders.ETAG;
 
 /**
  * Created by tsodring on 5/8/17.
@@ -149,7 +151,7 @@ public class NoarkEntity implements INikitaEntity, Comparable<NoarkEntity>   {
 
     @Override
     public int compareTo(NoarkEntity otherEntity) {
-        if (null != otherEntity && null != otherEntity.getSystemId() && null != systemId) {
+        if (null != otherEntity) { // && null != otherEntity.getSystemId() && null != systemId) {
             return systemId.compareTo(otherEntity.getSystemId());
         }
         return -1;

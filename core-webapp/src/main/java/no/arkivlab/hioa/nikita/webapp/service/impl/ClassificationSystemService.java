@@ -9,7 +9,6 @@ import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,6 +21,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -33,19 +33,19 @@ public class ClassificationSystemService implements IClassificationSystemService
 
     private static final Logger logger = LoggerFactory.getLogger(ClassificationSystemService.class);
 
-    @Autowired
-    IClassService classService;
-
-    @Autowired
-    IClassificationSystemRepository classificationSystemRepository;
-
-    @Autowired
-    EntityManager entityManager;
+    private IClassService classService;
+    private IClassificationSystemRepository classificationSystemRepository;
+    private EntityManager entityManager;
 
     //@Value("${nikita-noark5-core.pagination.maxPageSize}")
-    Integer maxPageSize = new Integer(10);
+    private Integer maxPageSize = new Integer(10);
 
-    public ClassificationSystemService() {
+    public ClassificationSystemService(IClassService classService,
+                                       IClassificationSystemRepository classificationSystemRepository,
+                                       EntityManager entityManager) {
+        this.classService = classService;
+        this.classificationSystemRepository = classificationSystemRepository;
+        this.entityManager = entityManager;
     }
 
     // All CREATE operations
@@ -92,7 +92,7 @@ public class ClassificationSystemService implements IClassificationSystemService
 
     // systemId
     public ClassificationSystem findBySystemId(String systemId) {
-        return classificationSystemRepository.findBySystemId(systemId);
+        return getClassificationSystemOrThrow(systemId);
     }
 
     // title
@@ -410,5 +410,44 @@ public class ClassificationSystemService implements IClassificationSystemService
         return typedQuery.getResultList();
     }
 
+    // All UPDATE operations
+    @Override
+    public ClassificationSystem handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull ClassificationSystem incomingClassificationSystem) {
+        ClassificationSystem existingClassificationSystem = getClassificationSystemOrThrow(systemId);
+        // Copy all the values you are allowed to copy ....
+        if (null != incomingClassificationSystem.getDescription()) {
+            existingClassificationSystem.setDescription(incomingClassificationSystem.getDescription());
+        }
+        if (null != incomingClassificationSystem.getTitle()) {
+            existingClassificationSystem.setTitle(incomingClassificationSystem.getTitle());
+        }        existingClassificationSystem.setVersion(version);
+        classificationSystemRepository.save(existingClassificationSystem);
+        return existingClassificationSystem;
+    }
 
+    // All DELETE operations
+    @Override
+    public void deleteEntity(@NotNull String classificationSystemSystemId) {
+        ClassificationSystem classificationSystem = getClassificationSystemOrThrow(classificationSystemSystemId);
+        classificationSystemRepository.delete(classificationSystem);
+    }
+
+    // All HELPER operations
+    /**
+     * Internal helper method. Rather than having a find and try catch in multiple methods, we have it here once.
+     * If you call this, be aware that you will only ever get a valid ClassificationSystem back. If there is no valid
+     * ClassificationSystem, an exception is thrown
+     *
+     * @param classificationSystemSystemId
+     * @return
+     */
+    protected ClassificationSystem getClassificationSystemOrThrow(@NotNull String classificationSystemSystemId) {
+        ClassificationSystem classificationSystem = classificationSystemRepository.findBySystemId(classificationSystemSystemId);
+        if (classificationSystem == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " ClassificationSystem, using systemId " + classificationSystemSystemId;
+            logger.info(info);
+            throw new NoarkEntityNotFoundException(info);
+        }
+        return classificationSystem;
+    }
 }

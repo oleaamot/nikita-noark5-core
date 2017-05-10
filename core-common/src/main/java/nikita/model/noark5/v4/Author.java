@@ -13,8 +13,8 @@ import static nikita.config.N5ResourceMappings.AUTHOR;
 @Entity
 @Table(name = "author")
 // Enable soft delete of Author
-@SQLDelete(sql="UPDATE author SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE author SET deleted = true WHERE pk_author_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_author_id"))
 public class Author extends NoarkEntity {
 

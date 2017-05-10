@@ -16,8 +16,8 @@ import static nikita.config.N5ResourceMappings.FONDS_CREATOR;
 @Entity
 @Table(name = "fonds_creator")
 // Enable soft delete of Fonds
-@SQLDelete(sql = "UPDATE fonds_creator SET deleted = true WHERE id = ?")
-@Where(clause = "deleted <> true")
+// @SQLDelete(sql = "UPDATE fonds_creator SET deleted = true WHERE pk_fonds_creator_id = ? and version = ?")
+// @Where(clause = "deleted <> true")
 @JsonDeserialize(using = FondsCreatorDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_fonds_creator_id"))
 public class FondsCreator extends NoarkEntity implements IFondsCreatorEntity {
@@ -70,7 +70,6 @@ public class FondsCreator extends NoarkEntity implements IFondsCreatorEntity {
     public void setDescription(String description) {
         this.description = description;
     }
-
 
     @Override
     public String getBaseTypeName() {

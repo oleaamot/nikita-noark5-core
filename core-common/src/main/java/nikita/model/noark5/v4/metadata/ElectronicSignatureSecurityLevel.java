@@ -14,9 +14,8 @@ import static nikita.config.N5ResourceMappings.ELECTRONIC_SIGNATURE_SECURITY_LEV
 @Entity
 @Table(name = "electronic_signature_security_level")
 // Enable soft delete
-@SQLDelete(sql = "UPDATE electronic_signature_security_level SET delete" +
-        "d = true WHERE id = ?")
-@Where(clause = "deleted <> true")
+// @SQLDelete(sql = "UPDATE electronic_signature_security_level SET deleted = true WHERE pk_electronic_signature_security_level_id  = ? and version = ?")
+// @Where(clause = "deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_electronic_signature_security_level_id"))
 public class ElectronicSignatureSecurityLevel extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;

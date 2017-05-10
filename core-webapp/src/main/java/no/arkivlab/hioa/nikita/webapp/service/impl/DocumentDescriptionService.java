@@ -7,7 +7,6 @@ import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentDescriptionSer
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,10 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -31,26 +32,23 @@ import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 @Transactional
 public class DocumentDescriptionService implements IDocumentDescriptionService {
 
-
     private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 
-    @Autowired
-    DocumentObjectService documentObjectService;
-
-    @Autowired
-    IDocumentDescriptionRepository documentDescriptionRepository;
-
-    @Autowired
-    EntityManager entityManager;
-
+    private DocumentObjectService documentObjectService;
+    private IDocumentDescriptionRepository documentDescriptionRepository;
+    private EntityManager entityManager;
     //@Value("${nikita-noark5-core.pagination.maxPageSize}")
-    Integer maxPageSize = new Integer(10);
+    private Integer maxPageSize = new Integer(10);
 
-    public DocumentDescriptionService() {
+    public DocumentDescriptionService(DocumentObjectService documentObjectService,
+                                      IDocumentDescriptionRepository documentDescriptionRepository,
+                                      EntityManager entityManager) {
+        this.documentObjectService = documentObjectService;
+        this.documentDescriptionRepository = documentDescriptionRepository;
+        this.entityManager = entityManager;
     }
 
     // All CREATE operations
-
     @Override
     public DocumentObject createDocumentObjectAssociatedWithDocumentDescription(String documentDescriptionSystemId, DocumentObject documentObject) {
         DocumentObject persistedDocumentObject = null;
@@ -99,7 +97,7 @@ public class DocumentDescriptionService implements IDocumentDescriptionService {
 
     // systemId
     public DocumentDescription findBySystemId(String systemId) {
-        return documentDescriptionRepository.findBySystemId(systemId);
+        return getDocumentDescriptionOrThrow(systemId);
     }
 
     // title
@@ -356,5 +354,66 @@ public class DocumentDescriptionService implements IDocumentDescriptionService {
         typedQuery.setFirstResult(skip);
         typedQuery.setMaxResults(maxPageSize);
         return typedQuery.getResultList();
+    }
+
+    // All UPDATE operations
+    @Override
+    public DocumentDescription handleUpdate(@NotNull String systemId, @NotNull Long version,
+                                            @NotNull DocumentDescription incomingDocumentDescription) {
+        DocumentDescription existingDocumentDescription = getDocumentDescriptionOrThrow(systemId);
+        // Copy all the values you are allowed to copy ....
+        if (null != incomingDocumentDescription.getDescription()) {
+            existingDocumentDescription.setDescription(incomingDocumentDescription.getDescription());
+        }
+        if (null != incomingDocumentDescription.getTitle()) {
+            existingDocumentDescription.setTitle(incomingDocumentDescription.getTitle());
+        }
+        if (null != incomingDocumentDescription.getDocumentMedium()) {
+            existingDocumentDescription.setDocumentMedium(existingDocumentDescription.getDocumentMedium());
+        }
+        if (null != incomingDocumentDescription.getAssociatedWithRecordAs()) {
+            existingDocumentDescription.setAssociatedWithRecordAs(incomingDocumentDescription.getAssociatedWithRecordAs());
+        }
+        if (null != incomingDocumentDescription.getDocumentNumber()) {
+            existingDocumentDescription.setDocumentNumber(incomingDocumentDescription.getDocumentNumber());
+        }
+
+        existingDocumentDescription.setVersion(version);
+        documentDescriptionRepository.save(existingDocumentDescription);
+        return existingDocumentDescription;
+    }
+
+    // All DELETE operations
+    @Override
+    public void deleteEntity(@NotNull String documentDescriptionSystemId) {
+        // See issue for a description of why this code was written this way
+        // https://github.com/HiOA-ABI/nikita-noark5-core/issues/82
+        DocumentDescription documentDescription = getDocumentDescriptionOrThrow(documentDescriptionSystemId);
+        Query q = entityManager.createNativeQuery("DELETE FROM record_document_description WHERE F_PK_DOCUMENT_DESCRIPTION_ID  = :id ;");
+        q.setParameter("id", documentDescription.getId());
+        q.executeUpdate();
+
+        entityManager.remove(documentDescription);
+        entityManager.flush();
+        entityManager.clear();
+    }
+
+    // All HELPER operations
+    /**
+     * Internal helper method. Rather than having a find and try catch in multiple methods, we have it here once.
+     * If you call this, be aware that you will only ever get a valid DocumentDescription back. If there is no valid
+     * DocumentDescription, an exception is thrown
+     *
+     * @param documentDescriptionSystemId
+     * @return
+     */
+    protected DocumentDescription getDocumentDescriptionOrThrow(@NotNull String documentDescriptionSystemId) {
+        DocumentDescription documentDescription = documentDescriptionRepository.findBySystemId(documentDescriptionSystemId);
+        if (documentDescription == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " DocumentDescription, using systemId " + documentDescriptionSystemId;
+            logger.info(info);
+            throw new NoarkEntityNotFoundException(info);
+        }
+        return documentDescription;
     }
 }

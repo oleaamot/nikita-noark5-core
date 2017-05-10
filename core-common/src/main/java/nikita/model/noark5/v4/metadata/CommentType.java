@@ -14,9 +14,8 @@ import static nikita.config.N5ResourceMappings.COMMENT_TYPE;
 @Entity
 @Table(name = "comment_type")
 // Enable soft delete
-@SQLDelete(sql = "UPDATE comment_type SET delete" +
-        "d = true WHERE id = ?")
-@Where(clause = "deleted <> true")
+// @SQLDelete(sql = "UPDATE comment_type SET deleted = true WHERE pk_comment_type_id = ? and version = ?")
+// @Where(clause = "deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_comment_type_id"))
 public class CommentType extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;

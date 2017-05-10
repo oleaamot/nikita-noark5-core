@@ -27,8 +27,8 @@ import static nikita.config.N5ResourceMappings.CASE_FILE;
 @Entity
 @Table(name = "case_file")
 // Enable soft delete of CaseFile
-@SQLDelete(sql="UPDATE case_file SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE case_file SET deleted = true WHERE pk_file_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @Indexed(index = "case_file")
 @JsonDeserialize(using = CaseFileDeserializer.class)
 public class CaseFile extends File implements Serializable, INikitaEntity, IPrecedence, ICaseParty {

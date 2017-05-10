@@ -12,8 +12,8 @@ import static nikita.config.N5ResourceMappings.ELECTRONIC_SIGNATURE;
 @Entity
 @Table(name = "electronic_signature")
 // Enable soft delete of ElectronicSignature
-@SQLDelete(sql="UPDATE electronic_signature SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE electronic_signature SET deleted = true WHERE pk_electronic_signature_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_electronic_signature_id"))
 public class ElectronicSignature extends NoarkEntity {
 

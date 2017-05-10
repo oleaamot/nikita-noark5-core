@@ -5,7 +5,9 @@ import nikita.model.noark5.v4.interfaces.IClassified;
 import nikita.model.noark5.v4.interfaces.IDisposal;
 import nikita.model.noark5.v4.interfaces.IScreening;
 import nikita.model.noark5.v4.interfaces.entities.INoarkCreateEntity;
+import nikita.model.noark5.v4.joins.RecordDocumentDescription;
 import nikita.util.deserialisers.RecordDeserializer;
+import nikita.util.exceptions.NikitaEntityNotFoundException;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -13,9 +15,7 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.TreeSet;
-import java.util.Set;
+import java.util.*;
 
 import static nikita.config.N5ResourceMappings.REGISTRATION;
 
@@ -23,8 +23,8 @@ import static nikita.config.N5ResourceMappings.REGISTRATION;
 @Table(name = "record")
 @Inheritance(strategy = InheritanceType.JOINED)
 // Enable soft delete of Record
-@SQLDelete(sql = "UPDATE record SET deleted = true WHERE id = ?")
-@Where(clause = "deleted <> true")
+// @SQLDelete(sql = "UPDATE record SET deleted = true WHERE pk_record_id = ? and version = ?")
+// @Where(clause = "deleted <> true")
 @Indexed(index = "record")
 @JsonDeserialize(using = RecordDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_record_id"))
@@ -80,6 +80,10 @@ public class Record extends NoarkEntity implements INoarkCreateEntity, IClassifi
     private Class referenceClass;
 
     // Links to DocumentDescriptions
+/*    @OneToMany(mappedBy = "referenceDocumentObject", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecordDocumentDescription> referenceRecordDocumentDescription = new ArrayList<>();
+*/
+
     @ManyToMany
     @JoinTable(name = "record_document_description", joinColumns = @JoinColumn(name = "f_pk_record_id",
             referencedColumnName = "pk_record_id"),
@@ -213,6 +217,24 @@ public class Record extends NoarkEntity implements INoarkCreateEntity, IClassifi
     @Override
     public void setReferenceScreening(Screening referenceScreening) {
         this.referenceScreening = referenceScreening;
+    }
+
+    /**
+     * Identify who is the parent of this object.
+     */
+    public NoarkEntity chooseParent() {
+        if (null != referenceFile) {
+            return referenceFile;
+        }
+        else if (null != referenceClass) {
+            return referenceClass;
+        }
+        else if (null != referenceSeries) {
+            return referenceSeries;
+        }
+        else { // This should be impossible, a record cannot exist without a parent
+            throw new NikitaEntityNotFoundException("Could not find parent object for " + this.toString());
+        }
     }
 
     @Override

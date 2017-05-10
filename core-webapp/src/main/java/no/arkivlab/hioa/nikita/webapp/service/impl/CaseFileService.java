@@ -50,7 +50,7 @@ public class CaseFileService implements ICaseFileService {
 
     // systemId
     public CaseFile findBySystemId(String systemId) {
-        return caseFileRepository.findBySystemId(systemId);
+        return getCaseFileOrThrow(systemId);
     }
 
     @Override
@@ -84,6 +84,44 @@ public class CaseFileService implements ICaseFileService {
         typedQuery.setMaxResults(maxPageSize);
         return typedQuery.getResultList();
     }
+
+    // All UPDATE operations
+    @Override
+    public CaseFile handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull CaseFile incomingCaseFile) {
+        CaseFile existingCaseFile = getCaseFileOrThrow(systemId);
+        // Copy all the values you are allowed to copy ....
+        if (null != incomingCaseFile.getDescription()) {
+            existingCaseFile.setDescription(incomingCaseFile.getDescription());
+        }
+        if (null != incomingCaseFile.getTitle()) {
+            existingCaseFile.setTitle(incomingCaseFile.getTitle());
+        }
+        if (null != incomingCaseFile.getAdministrativeUnit()) {
+            existingCaseFile.setAdministrativeUnit(incomingCaseFile.getAdministrativeUnit());
+        }
+        if (null != incomingCaseFile.getRecordsManagementUnit()) {
+            existingCaseFile.setRecordsManagementUnit(incomingCaseFile.getRecordsManagementUnit());
+        }
+        if (null != incomingCaseFile.getCaseResponsible()) {
+            existingCaseFile.setCaseResponsible(incomingCaseFile.getCaseResponsible());
+        }
+        if (null != incomingCaseFile.getCaseSequenceNumber()) {
+            existingCaseFile.setCaseSequenceNumber(incomingCaseFile.getCaseSequenceNumber());
+        }
+
+        existingCaseFile.setVersion(version);
+        caseFileRepository.save(existingCaseFile);
+        return existingCaseFile;
+    }
+
+    // All DELETE operations
+    @Override
+    public void deleteEntity(@NotNull String caseFileSystemId) {
+        CaseFile caseFile = getCaseFileOrThrow(caseFileSystemId);
+        caseFileRepository.delete(caseFile);
+    }
+
+    // All HELPER operations
     /**
      * Internal helper method. Rather than having a find and try catch in multiple methods, we have it here once.
      * If you call this, be aware that you will only ever get a valid CaseFile back. If there is no valid
@@ -101,4 +139,6 @@ public class CaseFileService implements ICaseFileService {
         }
         return caseFile;
     }
+
+    
 }

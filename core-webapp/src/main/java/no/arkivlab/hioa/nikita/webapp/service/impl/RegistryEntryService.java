@@ -1,9 +1,9 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
-import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.Record;
 import nikita.model.noark5.v4.RegistryEntry;
+import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.model.noark5.v4.secondary.PostalAddress;
 import nikita.model.noark5.v4.secondary.Precedence;
 import nikita.repository.n5v4.IRegistryEntryRepository;
@@ -24,9 +24,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
-import java.util.TreeSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 
@@ -123,7 +123,63 @@ public class RegistryEntryService implements IRegistryEntryService {
 
     // systemId
     public RegistryEntry findBySystemId(String systemId) {
-        return registryEntryRepository.findBySystemId(systemId);
+        return getRegistryEntryOrThrow(systemId);
+    }
+
+
+    @Override
+    public Precedence createPrecedenceAssociatedWithRecord(String registryEntrySystemID, Precedence precedence) {
+
+        RegistryEntry registryEntry = getRegistryEntryOrThrow(registryEntrySystemID);
+        NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(precedence);
+        NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(precedence);
+        // bidirectional relationship @ManyToMany, set both sides of relationship
+        registryEntry.getReferencePrecedence().add(precedence);
+        precedence.getReferenceRegistryEntry().add(registryEntry);
+        return precedenceService.createNewPrecedence(precedence);
+
+    }
+
+    // All UPDATE operations
+    @Override
+    public RegistryEntry handleUpdate(@NotNull String systemId, @NotNull Long version,
+                                      @NotNull RegistryEntry incomingRegistryEntry) {
+        RegistryEntry existingRegistryEntry = getRegistryEntryOrThrow(systemId);
+        // Copy all the values you are allowed to copy ....
+        if (null != incomingRegistryEntry.getDescription()) {
+            existingRegistryEntry.setDescription(incomingRegistryEntry.getDescription());
+        }
+        if (null != incomingRegistryEntry.getTitle()) {
+            existingRegistryEntry.setTitle(incomingRegistryEntry.getTitle());
+        }
+        if (null != incomingRegistryEntry.getDocumentMedium()) {
+            existingRegistryEntry.setDocumentMedium(incomingRegistryEntry.getDocumentMedium());
+        }
+        if (null != incomingRegistryEntry.getDocumentDate()) {
+            existingRegistryEntry.setDocumentDate(incomingRegistryEntry.getDocumentDate());
+        }
+        if (null != incomingRegistryEntry.getDueDate()) {
+            existingRegistryEntry.setDueDate(incomingRegistryEntry.getDueDate() );
+        }
+        if (null != incomingRegistryEntry.getFreedomAssessmentDate()) {
+            existingRegistryEntry.setFreedomAssessmentDate(incomingRegistryEntry.getFreedomAssessmentDate());
+        }
+        if (null != incomingRegistryEntry.getLoanedDate()) {
+            existingRegistryEntry.setLoanedDate(incomingRegistryEntry.getLoanedDate() );
+        }
+        if (null != incomingRegistryEntry.getLoanedTo()) {
+            existingRegistryEntry.setLoanedTo(incomingRegistryEntry.getLoanedTo());
+        }
+        existingRegistryEntry.setVersion(version);
+        registryEntryRepository.save(existingRegistryEntry);
+        return existingRegistryEntry;
+    }
+    
+    // All DELETE operations
+    @Override
+    public void deleteEntity(@NotNull String registryEntrySystemId) {
+        RegistryEntry registryEntry = getRegistryEntryOrThrow(registryEntrySystemId);
+        registryEntryRepository.delete(registryEntry);
     }
 
     /**
@@ -144,16 +200,4 @@ public class RegistryEntryService implements IRegistryEntryService {
         return registryEntry;
     }
 
-    @Override
-    public Precedence createPrecedenceAssociatedWithRecord(String registryEntrySystemID, Precedence precedence) {
-
-        RegistryEntry registryEntry = getRegistryEntryOrThrow(registryEntrySystemID);
-        NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(precedence);
-        NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(precedence);
-        // bidirectional relationship @ManyToMany, set both sides of relationship
-        registryEntry.getReferencePrecedence().add(precedence);
-        precedence.getReferenceRegistryEntry().add(registryEntry);
-        return (Precedence) precedenceService.createNewPrecedence(precedence);
-
-    }
 }

@@ -56,18 +56,6 @@ public class FondsService implements IFondsService {
         this.entityManager = entityManager;
     }
 
-    @Override
-    public Fonds handleUpdate(String systemId, Long version, Fonds incomingFonds) {
-        Fonds existingFonds = fondsRepository.findBySystemId(systemId);
-        // Here copy all the values you are allowed to copy ....
-        existingFonds.setDescription(incomingFonds.getDescription());
-        existingFonds.setTitle(incomingFonds.getTitle());
-        existingFonds.setVersion(version);
-        fondsRepository.save(existingFonds);
-        return existingFonds;
-    }
-
-
     // All CREATE operations
 
     /**
@@ -206,7 +194,7 @@ public class FondsService implements IFondsService {
 
     // systemId
     public Fonds findBySystemId(String systemId) {
-        return fondsRepository.findBySystemId(systemId);
+        return getFondsOrThrow(systemId);
     }
 
     // title
@@ -566,18 +554,33 @@ public class FondsService implements IFondsService {
         return typedQuery.getResultList();
     }
 
-    /**
-     * Persists a updated fonds to the database.
-     *
-     * @param fonds fonds object with some values set
-     * @return the newly persisted fonds object
-     */
+    // All UPDATE operations
     @Override
-    public Fonds updateFonds(Fonds fonds) {
-        return fondsRepository.save(fonds);
+    public Fonds handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull Fonds incomingFonds) {
+        Fonds existingFonds = getFondsOrThrow(systemId);
+        // Copy all the values you are allowed to copy ....
+        if (null != incomingFonds.getDescription()) {
+            existingFonds.setDescription(incomingFonds.getDescription());
+        }
+        if (null != incomingFonds.getTitle()) {
+            existingFonds.setTitle(incomingFonds.getTitle());
+        }
+        if (null != incomingFonds.getDocumentMedium()) {
+            existingFonds.setDocumentMedium(existingFonds.getDocumentMedium());
+        }
+        existingFonds.setVersion(version);
+        fondsRepository.save(existingFonds);
+        return existingFonds;
     }
 
+    // All DELETE operations
+    @Override
+    public void deleteEntity(@NotNull String fondsSystemId) {
+        Fonds fonds = getFondsOrThrow(fondsSystemId);
+        fondsRepository.delete(fonds);
+    }
 
+    // All HELPER operations
     /**
      * Internal helper method. Rather than having a find and try catch in multiple methods, we have it here once.
      * If you call this, be aware that you will only ever get a valid Fonds back. If there is no valid

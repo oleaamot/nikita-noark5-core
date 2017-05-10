@@ -14,8 +14,8 @@ import static nikita.config.N5ResourceMappings.POSTAL_ADDRESS;
 @Entity
 @Table(name = "postal_address")
 // Enable soft delete of PostalAddress
-@SQLDelete(sql="UPDATE postalAddress SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE postalAddress SET deleted = true WHERE pk_postal_address_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_postal_address_id"))
 public class PostalAddress extends NoarkEntity{
 

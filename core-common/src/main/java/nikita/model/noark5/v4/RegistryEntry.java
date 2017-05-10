@@ -22,8 +22,8 @@ import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
 @Table(name = "registry_entry")
 @Inheritance(strategy = InheritanceType.JOINED)
 // Enable soft delete of RegistryEntry
-@SQLDelete(sql="UPDATE registry_entry SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE registry_entry SET deleted = true WHERE pk_record_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @Indexed(index = "registry_entry")
 @JsonDeserialize(using = RegistryEntryDeserializer.class)
 public class RegistryEntry extends BasicRecord implements IElectronicSignature, IPrecedence, ICorrespondencePart,

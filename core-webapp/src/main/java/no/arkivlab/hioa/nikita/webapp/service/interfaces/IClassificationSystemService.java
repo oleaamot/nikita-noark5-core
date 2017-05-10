@@ -3,10 +3,12 @@ package no.arkivlab.hioa.nikita.webapp.service.interfaces;
 
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.ClassificationSystem;
+import nikita.model.noark5.v4.DocumentObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -106,4 +108,9 @@ public interface IClassificationSystemService {
 	List<ClassificationSystem> findByOwnedBy(String ownedBy, Sort sort);
 	Page<ClassificationSystem> findByOwnedBy(String ownedBy, Pageable pageable);
 
+    // All UPDATE operations
+	ClassificationSystem handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull ClassificationSystem incomingClassificationSystem);
+
+    // All DELETE operations
+    void deleteEntity(@NotNull String systemId);
 }

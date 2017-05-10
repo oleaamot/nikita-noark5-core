@@ -15,8 +15,8 @@ import static nikita.config.N5ResourceMappings.DELETION;
 @Entity
 @Table(name = "deletion")
 // Enable soft delete of Deletion
-@SQLDelete(sql="UPDATE deletion SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE deletion SET deleted = true WHERE pk_deletion_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_deletion_id"))
 public class Deletion extends  NoarkEntity implements IDeletionEntity{
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.*;
 import nikita.util.deserialisers.FileDeserializer;
+import nikita.util.exceptions.NikitaEntityNotFoundException;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -20,8 +21,8 @@ import static nikita.config.N5ResourceMappings.FILE;
 @Table(name = "file")
 @Inheritance(strategy = InheritanceType.JOINED)
 // Enable soft delete of File
-@SQLDelete(sql="UPDATE file SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE file SET deleted = true WHERE pk_file_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @Indexed(index = "file")
 @JsonDeserialize(using = FileDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_file_id"))
@@ -52,14 +53,14 @@ public class File extends NoarkGeneralEntity  implements IDocumentMedium, IStora
     private String documentMedium;
 
     // Link to StorageLocation
-    @ManyToMany (cascade=CascadeType.ALL)
+    @ManyToMany (cascade=CascadeType.PERSIST)
     @JoinTable(name = "file_storage_location", joinColumns = @JoinColumn(name = "f_pk_file_id",
             referencedColumnName = "pk_file_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
             referencedColumnName = "pk_storage_location_id"))
     private Set<StorageLocation> referenceStorageLocation = new TreeSet<>();
 
     // Links to Keywords
-    @ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany(cascade=CascadeType.PERSIST)
     @JoinTable(name = "file_keyword", joinColumns = @JoinColumn(name = "f_pk_file_id",
             referencedColumnName = "pk_file_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_keyword_id",
             referencedColumnName = "pk_keyword_id"))
@@ -247,6 +248,24 @@ public class File extends NoarkGeneralEntity  implements IDocumentMedium, IStora
     @Override
     public void setReferenceCrossReference(Set<CrossReference> referenceCrossReference) {
         this.referenceCrossReference = referenceCrossReference;
+    }
+
+    /**
+     * Identify who is the parent of this object.
+     */
+    public NoarkEntity chooseParent() {
+        if (null != referenceParentFile) {
+            return referenceParentFile;
+        }
+        else if (null != referenceClass) {
+            return referenceClass;
+        }
+        else if (null != referenceSeries) {
+            return referenceSeries;
+        }
+        else { // This should be impossible, a File cannot exist without a parent
+            throw new NikitaEntityNotFoundException("Could not find parent object for " + this.toString());
+        }
     }
 
     @Override

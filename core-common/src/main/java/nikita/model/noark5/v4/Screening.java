@@ -15,8 +15,8 @@ import static nikita.config.N5ResourceMappings.SCREENING;
 @Entity
 @Table(name = "screening")
 // Enable soft delete of Screening
-@SQLDelete(sql="UPDATE screening SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE screening SET deleted = true WHERE pk_screening_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_screening_id"))
 public class Screening extends NoarkEntity implements IScreeningEntity {
 

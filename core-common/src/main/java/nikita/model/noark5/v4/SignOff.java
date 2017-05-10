@@ -16,8 +16,8 @@ import static nikita.config.N5ResourceMappings.SIGN_OFF;
 @Entity
 @Table(name = "sign_off")
 // Enable soft delete of SignOff
-@SQLDelete(sql="UPDATE sign_off SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE sign_off SET deleted = true WHERE pk_sign_off_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_sign_off_id"))
 public class SignOff extends NoarkEntity {
 
@@ -43,6 +43,7 @@ public class SignOff extends NoarkEntity {
     private RegistryEntry referenceSignedOffRecord;
     /** M??? - referanseAvskrivesAvKorrespondansepart
      * Note this is new to v4, I think. Missing Metatdata number */
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pk_correspondence_part_id")
     private CorrespondencePart referenceSignedOffCorrespondencePart;

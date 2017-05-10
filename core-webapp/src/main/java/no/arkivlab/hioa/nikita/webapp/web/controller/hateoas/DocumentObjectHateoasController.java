@@ -6,16 +6,26 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.DocumentObject;
+import nikita.model.noark5.v4.NoarkEntity;
+import nikita.model.noark5.v4.Record;
+import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
+import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
+import nikita.model.noark5.v4.hateoas.RecordHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaEntityNotFoundException;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.DocumentDescriptionHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.RecordHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentObjectService;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkNotAcceptableException;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.StorageException;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.Resource;
@@ -42,17 +52,25 @@ public class DocumentObjectHateoasController {
     private IDocumentObjectService documentObjectService;
     private IDocumentObjectHateoasHandler documentObjectHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
+    private DocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
+    private RecordHateoasHandler recordHateoasHandler;
 
     public DocumentObjectHateoasController(IDocumentObjectService documentObjectService,
                                            IDocumentObjectHateoasHandler documentObjectHateoasHandler,
-                                           ApplicationEventPublisher applicationEventPublisher) {
+                                           ApplicationEventPublisher applicationEventPublisher,
+                                           DocumentDescriptionHateoasHandler documentDescriptionHateoasHandler,
+                                           RecordHateoasHandler recordHateoasHandler) {
+
         this.documentObjectService = documentObjectService;
         this.documentObjectHateoasHandler = documentObjectHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.documentDescriptionHateoasHandler = documentDescriptionHateoasHandler;
+        this.recordHateoasHandler = recordHateoasHandler;
     }
 
     // API - All GET Requests (CRUD - READ)
-
+    // Get a documentObject identified by systemID
+    // GET [contextPath][api]/arkivstruktur/dokumentobjekt/{systemID}
     @ApiOperation(value = "Retrieves a single DocumentObject entity given a systemId", response = DocumentObject.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "DocumentObject returned", response = DocumentObject.class),
@@ -82,6 +100,8 @@ public class DocumentObjectHateoasController {
                 .body(documentObjectHateoas);
     }
 
+    // Get all documentObject
+    // GET [contextPath][api]/arkivstruktur/dokumentobjekt/
     @ApiOperation(value = "Retrieves multiple DocumentObject entities limited by ownership rights", notes = "The field skip" +
             "tells how many DocumentObject rows of the result set to ignore (starting at 0), while  top tells how many rows" +
             " after skip to return. Note if the value of top is greater than system value " +
@@ -110,6 +130,8 @@ public class DocumentObjectHateoasController {
                 .body(documentObjectHateoas);
     }
 
+    // Get a file identified by systemID retrievable with referanseFile
+    // GET [contextPath][api]/arkivstruktur/dokumentobjekt/{systemID}/referanseFil
     @ApiOperation(value = "Downloads a file associated with the documentObject identified by a systemId",
             response = DocumentObjectHateoas.class)
     @ApiResponses(value = {
@@ -151,6 +173,8 @@ public class DocumentObjectHateoasController {
 
     // API - All POST Requests (CRUD - CREATE)
 
+    // upload a file and associate it with a documentObject
+    // POST [contextPath][api]/arkivstruktur/dokumentobjekt/{systemID}/referanseFil
     @ApiOperation(value = "Uploads a file and associates it with the documentObject identified by a systemId",
             response = DocumentObjectHateoas.class)
     @ApiResponses(value = {
@@ -230,4 +254,64 @@ public class DocumentObjectHateoasController {
             throw new StorageException(e.toString());
         }
     }
+
+    // Delete a DocumentObject identified by systemID
+    // DELETE [contextPath][api]/arkivstruktur/dokumentobjekt/{systemId}/
+    @ApiOperation(value = "Deletes a single DocumentObject entity identified by systemID", response = HateoasNoarkObject.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Parent entity (DocumentDescription or Record) returned", response = HateoasNoarkObject.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
+            method = RequestMethod.DELETE)
+    public ResponseEntity<HateoasNoarkObject> deleteDocumentObjectBySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the documentObject to delete",
+                    required = true)
+            @PathVariable("systemID") final String systemID) {
+
+        DocumentObject documentObject = documentObjectService.findBySystemId(systemID);
+        NoarkEntity parentEntity = documentObject.chooseParent();
+        documentObjectService.deleteEntity(systemID);
+        HateoasNoarkObject hateoasNoarkObject;
+        if (parentEntity instanceof DocumentDescription) {
+            hateoasNoarkObject = new DocumentDescriptionHateoas(parentEntity);
+            documentDescriptionHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+        }
+        else if (parentEntity instanceof Record) {
+            hateoasNoarkObject = new RecordHateoas(parentEntity);
+            recordHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+        }
+        else {
+            throw new NikitaException("Internal error. Could process" + request.getRequestURI());
+        }
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, documentObject));
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(hateoasNoarkObject);
+    }
 }
+/*
+
+properties check
+    public void checkForObligatoryDocumentObjectValues(DocumentObject documentObject) {
+        if (documentObject.getVersionNumber() == null) {
+            throw new NikitaMalformedInputDataException("The dokumentobjekt you tried to create is " +
+                    "malformed. The versjonsnummer field is mandatory, and you have submitted an empty value.");
+        }
+        if (documentObject.getVariantFormat() == null) {
+            throw new NikitaMalformedInputDataException("The dokumentobjekt you tried to create is " +
+                    "malformed. The variantformat field is mandatory, and you have submitted an empty value.");
+        }
+        if (documentObject.getFormat() == null) {
+            throw new NikitaMalformedInputDataException("The dokumentobjekt you tried to create is " +
+                    "malformed. The format field is mandatory, and you have submitted an empty value.");
+        }
+    }
+
+
+ */

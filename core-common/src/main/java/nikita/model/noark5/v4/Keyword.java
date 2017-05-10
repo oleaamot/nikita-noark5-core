@@ -13,8 +13,8 @@ import static nikita.config.N5ResourceMappings.KEYWORD;
 @Entity
 @Table(name = "keyword")
 // Enable soft delete of Keyword
-@SQLDelete(sql="UPDATE keyword SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE keyword SET deleted = true WHERE pk_keyword_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_keyword_id"))
 public class Keyword extends  NoarkEntity {
 

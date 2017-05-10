@@ -5,24 +5,23 @@ import nikita.model.noark5.v4.interfaces.IConversion;
 import nikita.model.noark5.v4.interfaces.IElectronicSignature;
 import nikita.model.noark5.v4.interfaces.entities.INoarkCreateEntity;
 import nikita.util.deserialisers.DocumentObjectDeserializer;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import nikita.util.exceptions.NikitaEntityNotFoundException;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.TreeSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT;
 
 @Entity
 @Table(name = "document_object")
-// Enable soft delete of DocumentObject
-@SQLDelete(sql="UPDATE document_object SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// Enable soft delete of DocumentObject ... Temporarily disabled because we can 'delete' things without ref integrity
+// @SQLDelete(sql="UPDATE document_object SET deleted = true WHERE pk_document_object_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @Indexed(index = "document_object")
 @JsonDeserialize(using = DocumentObjectDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_document_object_id"))
@@ -134,6 +133,7 @@ public class DocumentObject  extends NoarkEntity implements INoarkCreateEntity,
     // Links to Conversion
     @OneToMany(mappedBy = "referenceDocumentObject")
     private Set<Conversion> referenceConversion = new TreeSet<>();
+
     // Link to ElectronicSignature
     @OneToOne
     @JoinColumn(name="pk_electronic_signature_id")
@@ -271,6 +271,18 @@ public class DocumentObject  extends NoarkEntity implements INoarkCreateEntity,
 
     public void setReferenceElectronicSignature(ElectronicSignature referenceElectronicSignature) {
         this.referenceElectronicSignature = referenceElectronicSignature;
+    }
+
+    public NoarkEntity chooseParent() {
+        if (null != referenceDocumentDescription) {
+            return referenceDocumentDescription;
+        }
+        else if (null != referenceRecord) {
+            return referenceRecord;
+        }
+        else { // This should be impossible, a documentObject cannot exist without a parent
+            throw new NikitaEntityNotFoundException("Could not find parent object for " + this.toString());
+        }
     }
 
     @Override

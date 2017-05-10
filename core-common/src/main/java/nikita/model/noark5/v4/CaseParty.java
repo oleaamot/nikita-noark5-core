@@ -18,8 +18,8 @@ import static nikita.config.N5ResourceMappings.CASE_PARTY;
 @Entity
 @Table(name = "case_party")
 // Enable soft delete of CaseParty
-@SQLDelete(sql="UPDATE case_party SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE case_party SET deleted = true WHERE pk_case_party_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_case_party_id"))
 public class CaseParty extends NoarkGeneralEntity implements ICasePartyEntity {
 

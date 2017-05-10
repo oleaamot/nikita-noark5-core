@@ -6,9 +6,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import nikita.model.noark5.v4.FondsCreator;
-import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
 import nikita.util.CommonUtils;
-import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
 import nikita.util.exceptions.NikitaMalformedInputDataException;
 
 import java.io.IOException;
@@ -21,8 +19,7 @@ import java.io.IOException;
  * Having a own deserialiser is done to have more fine grained control over the input. This allows us to be less strict
  * with property names, allowing for both English and Norwegian property names
  *
- * Both English and Norwegian property names can be used in the incoming JSON as well as there being no requirement with
- * regards to small and large letters in property names.
+
  *
  * Note this implementation expects that the fondsCreator object to deserialise is in compliance with the Noark standard where
  * certain properties i.e. createdBy and createdDate are set by the core, not the caller. This deserializer will not 
@@ -39,7 +36,7 @@ import java.io.IOException;
  *  - Unknown property values in the JSON will trigger an exception
  *  - Missing obligatory property values in the JSON will trigger an exception
  */
-public class FondsCreatorDeserializer extends JsonDeserializer implements ObligatoryPropertiesCheck {
+public class FondsCreatorDeserializer extends JsonDeserializer {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -53,9 +50,6 @@ public class FondsCreatorDeserializer extends JsonDeserializer implements Obliga
         // Deserialise general properties
         CommonUtils.Hateoas.Deserialize.deserialiseFondsCreator(fondsCreator, objectNode);
 
-        // Check that all obligatory values are present
-        checkForObligatoryFondsCreatorValues(fondsCreator);
-
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
@@ -66,28 +60,4 @@ public class FondsCreatorDeserializer extends JsonDeserializer implements Obliga
 
         return fondsCreator;
     }
-
-    @Override
-    /**
-     *
-     * FondsCreator is not a INoarkGeneralEntity
-     */
-    public void checkForObligatoryNoarkValues(INoarkGeneralEntity noarkEntity) {}
-
-    /**
-     *
-     * FondsCreator is not a INoarkGeneralEntity
-     */
-    public void checkForObligatoryFondsCreatorValues(FondsCreator fondsCreator) {
-
-        if (fondsCreator.getFondsCreatorId() == null) {
-            throw new NikitaMalformedInputDataException("The arkivskaper you tried to create is malformed. The "
-                    + "arkivskaperID field is mandatory, and you have submitted an empty value.");
-        }
-        if (fondsCreator.getFondsCreatorName() == null) {
-            throw new NikitaMalformedInputDataException("The arkivskaper you tried to create is malformed. The "
-                    + "arkivskaperNavn field is mandatory, and you have submitted an empty value.");
-        }
-    }
-
 }

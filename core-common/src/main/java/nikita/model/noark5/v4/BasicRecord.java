@@ -20,8 +20,8 @@ import static nikita.config.N5ResourceMappings.BASIC_RECORD;
 @Table(name = "basic_record")
 @Inheritance(strategy = InheritanceType.JOINED)
 // Enable soft delete of BasicRecord
-@SQLDelete(sql="UPDATE basic_record SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE basic_record SET deleted = true WHERE pk_record_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @Indexed(index = "basic_record")
 @JsonDeserialize(using = BasicRecordDeserializer.class)
 public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleDescriptionEntity,
@@ -72,29 +72,30 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
     @Field
     protected String ownedBy;
     // Link to StorageLocation
-    @ManyToMany (cascade=CascadeType.ALL)
+    @ManyToMany (cascade=CascadeType.PERSIST)
     @JoinTable(name = "basic_record_storage_location", joinColumns = @JoinColumn(name = "f_pk_basic_record_id",
             referencedColumnName = "pk_record_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
             referencedColumnName = "pk_storage_location_id"))
-    protected Set<StorageLocation> referenceStorageLocation = new TreeSet<StorageLocation>();
+    protected Set<StorageLocation> referenceStorageLocation = new TreeSet<>();
+
     // Links to Keywords
     @ManyToMany
     @JoinTable(name = "basic_record_keyword", joinColumns = @JoinColumn(name = "f_pk_record_id",
             referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_keyword_id", referencedColumnName = "pk_keyword_id"))
-    protected Set<Keyword> referenceKeyword = new TreeSet<Keyword>();
+    protected Set<Keyword> referenceKeyword = new TreeSet<>();
     // Links to Authors
     @ManyToMany
     @JoinTable(name = "basic_record_author", joinColumns = @JoinColumn(name = "f_pk_record_id",
             referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_author_id", referencedColumnName = "pk_author_id"))
-    protected Set<Author> referenceAuthor = new TreeSet<Author>();
+    protected Set<Author> referenceAuthor = new TreeSet<>();
     // Links to Comments
     @ManyToMany
     @JoinTable(name = "basic_record_comment", joinColumns = @JoinColumn(name = "f_pk_record_id",
             referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_comment_id", referencedColumnName = "pk_comment_id"))
-    protected Set<Comment> referenceComment = new TreeSet<Comment>();
+    protected Set<Comment> referenceComment = new TreeSet<>();
     // Links to CrossReference
     @OneToMany(mappedBy = "referenceBasicRecord")
     protected Set<CrossReference> referenceCrossReference;

@@ -9,18 +9,22 @@ import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.DocumentObject;
+import nikita.model.noark5.v4.Record;
 import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
 import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
+import nikita.model.noark5.v4.hateoas.RecordHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentDescriptionHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRecordHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentDescriptionService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,6 +35,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
@@ -44,15 +50,18 @@ public class DocumentDescriptionHateoasController {
     private IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
     private IDocumentObjectHateoasHandler documentObjectHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
+    private IRecordHateoasHandler recordHateoasHandler;
 
     public DocumentDescriptionHateoasController(IDocumentDescriptionService documentDescriptionService,
                                                 IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler,
                                                 IDocumentObjectHateoasHandler documentObjectHateoasHandler,
-                                                ApplicationEventPublisher applicationEventPublisher) {
+                                                ApplicationEventPublisher applicationEventPublisher,
+                                                IRecordHateoasHandler recordHateoasHandler) {
         this.documentDescriptionService = documentDescriptionService;
         this.documentDescriptionHateoasHandler = documentDescriptionHateoasHandler;
         this.documentObjectHateoasHandler = documentObjectHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.recordHateoasHandler = recordHateoasHandler;
     }
 
     // API - All POST Requests (CRUD - CREATE)
@@ -218,4 +227,60 @@ public class DocumentDescriptionHateoasController {
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(documentObjectHateoas);
     }
+
+    // Delete a DocumentDescription identified by systemID
+    // DELETE [contextPath][api]/arkivstruktur/dokumentobjekt/{systemId}/
+    @ApiOperation(value = "Deletes a single DocumentDescription entity identified by systemID", response = RecordHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Parent Fonds returned", response = RecordHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
+            method = RequestMethod.DELETE)
+    public ResponseEntity<RecordHateoas> deleteDocumentDescriptionBySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the documentDescription to delete",
+                    required = true)
+            @PathVariable("systemID") final String systemID) {
+
+        DocumentDescription documentDescription = documentDescriptionService.findBySystemId(systemID);
+        List<Record> record = new ArrayList<>();
+        record.addAll(documentDescription.getReferenceRecord());
+        documentDescriptionService.deleteEntity(systemID);
+        RecordHateoas recordHateoas = new RecordHateoas((List<INikitaEntity>) (List)record);
+        recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, documentDescription));
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(recordHateoas);
+    }
 }
+
+
+/*
+properties check
+    public void checkForObligatoryDocumentDescriptionValues(DocumentDescription documentDescription) {
+        if (documentDescription.getDocumentStatus() == null) {
+            throw new NikitaMalformedInputDataException("The dokumentbeskrivelse you tried to create is " +
+                    "malformed. The documentstatus field is mandatory, and you have submitted an empty value.");
+        }
+        if (documentDescription.getDocumentType() == null) {
+            throw new NikitaMalformedInputDataException("The dokumentbeskrivelse you tried to create is " +
+                    "malformed. The documenttype field is mandatory, and you have submitted an empty value.");
+        }
+        if (documentDescription.getTitle() == null) {
+            throw new NikitaMalformedInputDataException("The dokumentbeskrivelse you tried to create is " +
+                    "malformed. The tittel field is mandatory, and you have submitted an empty value.");
+        }
+        if (documentDescription.getAssociatedWithRecordAs() == null) {
+            throw new NikitaMalformedInputDataException("The dokumentbeskrivelse you tried to create is " +
+                    "malformed. The tilknyttetRegistreringSom field is mandatory, and you have submitted an empty value.");
+        }
+    }
+
+
+ */

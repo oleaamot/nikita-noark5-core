@@ -7,21 +7,18 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
+import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.*;
-import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
-import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
-import nikita.model.noark5.v4.hateoas.RecordHateoas;
-import nikita.model.noark5.v4.hateoas.SeriesHateoas;
+import nikita.model.noark5.v4.hateoas.*;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentDescriptionHateoasHandler;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRecordHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.*;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRecordService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,20 +42,24 @@ public class RecordHateoasController {
     private IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
     private IDocumentObjectHateoasHandler documentObjectHateoasHandler;
     private IRecordHateoasHandler recordHateoasHandler;
+    private ISeriesHateoasHandler seriesHateoasHandler;
+    private IFileHateoasHandler fileHateoasHandler;
+    private IClassHateoasHandler classHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
 
     public RecordHateoasController(IRecordService recordService,
                                    IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler,
-                                   IDocumentObjectHateoasHandler documentObjectHateoasHandler,
-                                   IRecordHateoasHandler recordHateoasHandler,
-                                   ApplicationEventPublisher applicationEventPublisher) {
+                                   IDocumentObjectHateoasHandler documentObjectHateoasHandler
+            , IRecordHateoasHandler recordHateoasHandler, ISeriesHateoasHandler seriesHateoasHandler, IFileHateoasHandler fileHateoasHandler, IClassHateoasHandler classHateoasHandler, ApplicationEventPublisher applicationEventPublisher) {
         this.recordService = recordService;
         this.documentDescriptionHateoasHandler = documentDescriptionHateoasHandler;
         this.documentObjectHateoasHandler = documentObjectHateoasHandler;
         this.recordHateoasHandler = recordHateoasHandler;
+        this.seriesHateoasHandler = seriesHateoasHandler;
+        this.fileHateoasHandler = fileHateoasHandler;
+        this.classHateoasHandler = classHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
     }
-
 
     // API - All POST Requests (CRUD - CREATE)
 
@@ -556,5 +557,50 @@ public class RecordHateoasController {
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(documentDescriptionHateoas);
+    }
+
+    // Delete a Record identified by systemID
+    // DELETE [contextPath][api]/arkivstruktur/registrering/{systemId}/
+    @ApiOperation(value = "Deletes a single Record entity identified by systemID", response = HateoasNoarkObject.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Parent entity (DocumentDescription or Record) returned", response = HateoasNoarkObject.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
+            method = RequestMethod.DELETE)
+    public ResponseEntity<HateoasNoarkObject> deleteRecordBySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the record to delete",
+                    required = true)
+            @PathVariable("systemID") final String systemID) {
+
+        Record record = recordService.findBySystemId(systemID);
+        NoarkEntity parentEntity = record.chooseParent();
+        HateoasNoarkObject hateoasNoarkObject;
+        if (parentEntity instanceof Series) {
+            hateoasNoarkObject = new SeriesHateoas(parentEntity);
+            seriesHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+        }
+        else if (parentEntity instanceof File) {
+            hateoasNoarkObject = new FileHateoas(parentEntity);
+            fileHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+        }
+        else if (parentEntity instanceof Class) {
+            hateoasNoarkObject = new ClassHateoas(parentEntity);
+            classHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+        }
+        else {
+            throw new no.arkivlab.hioa.nikita.webapp.util.exceptions.NikitaException("Internal error. Could not process"
+                    + request.getRequestURI());
+        }
+        recordService.deleteEntity(systemID);
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, record));
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(hateoasNoarkObject);
     }
 }

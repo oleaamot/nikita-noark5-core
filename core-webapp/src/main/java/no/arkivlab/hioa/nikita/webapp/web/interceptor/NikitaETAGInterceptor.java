@@ -48,7 +48,8 @@ public class NikitaETAGInterceptor extends HandlerInterceptorAdapter {
                         etagWithQuotes.length() < 3) {
                     throw new NikitaMalformedHeaderException("eTag is malformed in following request: " +
                             "[" + request.getRequestURI() + "]. ETag must be quoted and contain content. The ETag " +
-                            "you submitted is [" + request.getHeader(ETAG) + "]");
+                            "you submitted is [" + request.getHeader(ETAG) + "]. Note if you e.g are running curl " +
+                            "from the commandline, yo might need to escape the quotes");
                 }
                 etagWithoutQuotes = etagWithQuotes.substring(1, etagWithQuotes.length() - 1);
                 try {

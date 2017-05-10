@@ -14,9 +14,8 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_TYPE;
 @Entity
 @Table(name = "document_type")
 // Enable soft delete
-@SQLDelete(sql = "UPDATE document_type SET delete" +
-        "d = true WHERE id = ?")
-@Where(clause = "deleted <> true")
+// @SQLDelete(sql = "UPDATE document_type SET deleted = true WHERE pk_document_type_id = ? and version = ?")
+// @Where(clause = "deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_document_type_id"))
 public class DocumentType extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;

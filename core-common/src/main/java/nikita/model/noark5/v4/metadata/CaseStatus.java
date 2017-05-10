@@ -14,9 +14,8 @@ import static nikita.config.N5ResourceMappings.CASE_STATUS;
 @Entity
 @Table(name = "case_status")
 // Enable soft delete
-@SQLDelete(sql = "UPDATE case_status SET delete" +
-        "d = true WHERE id = ?")
-@Where(clause = "deleted <> true")
+// @SQLDelete(sql = "UPDATE case_status SET deleted = true WHERE pk_case_status_id = ? and version = ?")
+// @Where(clause = "deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_case_status_id"))
 public class CaseStatus extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;

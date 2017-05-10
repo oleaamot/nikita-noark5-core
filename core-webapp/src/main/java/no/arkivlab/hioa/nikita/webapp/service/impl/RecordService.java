@@ -1,5 +1,6 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
+import nikita.model.noark5.v4.ClassificationSystem;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.Record;
 import nikita.repository.n5v4.IRecordRepository;
@@ -16,10 +17,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
@@ -30,19 +33,19 @@ public class RecordService implements IRecordService {
 
     private static final Logger logger = LoggerFactory.getLogger(RecordService.class);
 
-    @Autowired
-    DocumentDescriptionService documentDescriptionService;
-
-    @Autowired
-    IRecordRepository recordRepository;
-
-    @Autowired
-    EntityManager entityManager;
+    private DocumentDescriptionService documentDescriptionService;
+    private IRecordRepository recordRepository;
+    private EntityManager entityManager;
 
     //@Value("${nikita-noark5-core.pagination.maxPageSize}")
-    Integer maxPageSize = new Integer(10);
+    private Integer maxPageSize = new Integer(10);
 
-    public RecordService() {
+    public RecordService(DocumentDescriptionService documentDescriptionService,
+                         IRecordRepository recordRepository,
+                         EntityManager entityManager) {
+        this.documentDescriptionService = documentDescriptionService;
+        this.recordRepository = recordRepository;
+        this.entityManager = entityManager;
     }
 
     // All CREATE operations
@@ -103,9 +106,8 @@ public class RecordService implements IRecordService {
 
     // systemId
     public Record findBySystemId(String systemId) {
-        return recordRepository.findBySystemId(systemId);
+        return getRecordOrThrow(systemId);
     }
-
 
     // createdDate
     public List<Record> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy) {
@@ -325,4 +327,51 @@ public class RecordService implements IRecordService {
         typedQuery.setMaxResults(maxPageSize);
         return typedQuery.getResultList();
     }
+
+    // All UPDATE operations
+    @Override
+    public Record handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull Record incomingRecord) {
+        Record existingRecord = getRecordOrThrow(systemId);
+        // Here copy all the values you are allowed to copy ....
+        // TODO: FIND ALL VALUES
+        // This might be a class that can only have values set via parameter values rather than request bodies
+        existingRecord.setVersion(version);
+        recordRepository.save(existingRecord);
+        return existingRecord;
+    }
+
+    // All DELETE operations
+    @Override
+    public void deleteEntity(@NotNull String recordSystemId) {
+        Record record = getRecordOrThrow(recordSystemId);
+
+        // See issue for a description of why this code was written this way
+        // https://github.com/HiOA-ABI/nikita-noark5-core/issues/82
+        //Query q = entityManager.createNativeQuery("DELETE FROM fonds_fonds_creator WHERE pk_fonds_creator_id  = :id ;");
+        //q.setParameter("id", record.getId());
+        //q.executeUpdate();
+        entityManager.remove(record);
+        entityManager.flush();
+        entityManager.clear();
+    }
+
+    // All HELPER operations
+    /**
+     * Internal helper method. Rather than having a find and try catch in multiple methods, we have it here once.
+     * If you call this, be aware that you will only ever get a valid Record back. If there is no valid
+     * Record, an exception is thrown
+     *
+     * @param recordSystemId
+     * @return
+     */
+    protected Record getRecordOrThrow(@NotNull String recordSystemId) {
+        Record record = recordRepository.findBySystemId(recordSystemId);
+        if (record == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " Record, using systemId " + recordSystemId;
+            logger.info(info);
+            throw new NoarkEntityNotFoundException(info);
+        }
+        return record;
+    }
+
 }

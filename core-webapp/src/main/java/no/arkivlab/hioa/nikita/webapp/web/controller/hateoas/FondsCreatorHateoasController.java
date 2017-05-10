@@ -21,6 +21,7 @@ import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsCreatorService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -31,14 +32,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
+import static org.springframework.http.HttpHeaders.ETAG;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH,
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
-public class FondsCreatorHateoasController {
+public class FondsCreatorHateoasController extends NoarkController {
 
     private IFondsCreatorService fondsCreatorService;
     private IFondsService fondsService;
@@ -214,9 +217,10 @@ public class FondsCreatorHateoasController {
                                                                           required = true)
                                                                   @RequestBody FondsCreator fondsCreator,
                                                                   @ApiParam(name = "systemId",
-                                                                  value = "systemId of FondsCreator to retrieve.",
-                                                                  required = true) String systemID) {
-        FondsCreator createdFonds = fondsCreatorService.updateFondsCreator(systemID, fondsCreator);
+                                                                          value = "systemId of FondsCreator to retrieve.",
+                                                                          required = true) String systemID) {
+        FondsCreator createdFonds = fondsCreatorService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)),
+                fondsCreator);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, createdFonds));
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(createdFonds);
         fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
@@ -256,5 +260,36 @@ public class FondsCreatorHateoasController {
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(fondsCreatorHateoas);
+    }
+    // Delete a FondsCreator identified by systemID
+    // DELETE [contextPath][api]/arkivstruktur/arkivskaper/{systemId}/
+    @ApiOperation(value = "Deletes a single FondsCreator entity identified by systemID", response = FondsHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Parent Fonds returned", response = FondsHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + FONDS_CREATOR + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
+            method = RequestMethod.DELETE)
+    public ResponseEntity<FondsHateoas> deleteSeriesBySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the fondsCreator to delete",
+                    required = true)
+            @PathVariable("systemID") final String seriesSystemId) {
+
+        FondsCreator fondsCreator = fondsCreatorService.findBySystemId(seriesSystemId);
+
+        List<Fonds> fonds = new ArrayList<>();
+        fonds.addAll(fondsCreator.getReferenceFonds());
+        FondsHateoas fondsHateoas = new FondsHateoas((List<INikitaEntity>) (List)fonds);
+        fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
+        fondsCreatorService.deleteEntity(seriesSystemId);
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, fondsCreator));
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(fondsHateoas);
     }
 }

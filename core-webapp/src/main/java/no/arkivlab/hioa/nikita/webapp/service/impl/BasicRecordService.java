@@ -3,6 +3,7 @@ package no.arkivlab.hioa.nikita.webapp.service.impl;
 import nikita.model.noark5.v4.BasicRecord;
 import nikita.repository.n5v4.IBasicRecordRepository;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IBasicRecordService;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +15,10 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.validation.constraints.NotNull;
 import java.util.List;
+
+import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 
 @Service
 @Transactional
@@ -22,12 +26,13 @@ public class BasicRecordService implements IBasicRecordService {
 
     private static final Logger logger = LoggerFactory.getLogger(BasicRecordService.class);
 
-    EntityManager entityManager;
-    IBasicRecordRepository basicRecordRepository;
+    private EntityManager entityManager;
+    private IBasicRecordRepository basicRecordRepository;
     //@Value("${nikita-noark5-core.pagination.maxPageSize}")
-    Integer maxPageSize = new Integer(10);
+    private Integer maxPageSize = new Integer(10);
 
-    public BasicRecordService(EntityManager entityManager, IBasicRecordRepository basicRecordRepository) {
+    public BasicRecordService(EntityManager entityManager,
+                              IBasicRecordRepository basicRecordRepository) {
         this.entityManager = entityManager;
         this.basicRecordRepository = basicRecordRepository;
     }
@@ -58,6 +63,51 @@ public class BasicRecordService implements IBasicRecordService {
 
     // systemId
     public BasicRecord findBySystemId(String systemId) {
-        return basicRecordRepository.findBySystemId(systemId);
+        return getBasicRecordOrThrow(systemId);
+    }
+
+
+    // All UPDATE operations
+    @Override
+    public BasicRecord handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull BasicRecord incomingBasicRecord) {
+        BasicRecord existingBasicRecord = getBasicRecordOrThrow(systemId);
+        // Here copy all the values you are allowed to copy ....
+        if (null != incomingBasicRecord.getDescription()) {
+            existingBasicRecord.setDescription(incomingBasicRecord.getDescription());
+        }
+        if (null != incomingBasicRecord.getTitle()) {
+            existingBasicRecord.setTitle(incomingBasicRecord.getTitle());
+        }
+        if (null != incomingBasicRecord.getDocumentMedium()) {
+            existingBasicRecord.setDocumentMedium(existingBasicRecord.getDocumentMedium());
+        }        existingBasicRecord.setVersion(version);
+        basicRecordRepository.save(existingBasicRecord);
+        return existingBasicRecord;
+    }
+
+    // All DELETE operations
+    @Override
+    public void deleteEntity(@NotNull String basicRecordSystemId) {
+        BasicRecord basicRecord = getBasicRecordOrThrow(basicRecordSystemId);
+        basicRecordRepository.delete(basicRecord);
+    }
+
+    // All HELPER operations
+    /**
+     * Internal helper method. Rather than having a find and try catch in multiple methods, we have it here once.
+     * If you call this, be aware that you will only ever get a valid BasicRecord back. If there is no valid
+     * BasicRecord, an exception is thrown
+     *
+     * @param basicRecordSystemId
+     * @return
+     */
+    protected BasicRecord getBasicRecordOrThrow(@NotNull String basicRecordSystemId) {
+        BasicRecord basicRecord = basicRecordRepository.findBySystemId(basicRecordSystemId);
+        if (basicRecord == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " BasicRecord, using systemId " + basicRecordSystemId;
+            logger.info(info);
+            throw new NoarkEntityNotFoundException(info);
+        }
+        return basicRecord;
     }
 }

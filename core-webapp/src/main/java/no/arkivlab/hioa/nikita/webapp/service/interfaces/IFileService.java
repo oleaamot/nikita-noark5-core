@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -113,4 +114,9 @@ public interface IFileService {
 	List<File> findByOwnedBy(String ownedBy, Sort sort);
 	Page<File> findByOwnedBy(String ownedBy, Pageable pageable);
 
+	// All UPDATE operations
+	File handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull File file);
+
+	// All DELETE operations
+	void deleteEntity(@NotNull String systemId);
 }

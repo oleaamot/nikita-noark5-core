@@ -12,8 +12,8 @@ import static nikita.config.N5ResourceMappings.CONVERSION;
 @Entity
 @Table(name = "conversion")
 // Enable soft delete of Conversion
-@SQLDelete(sql="UPDATE conversion SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE conversion SET deleted = true WHERE pk_conversion_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_conversion_id"))
 public class Conversion extends NoarkEntity {
 

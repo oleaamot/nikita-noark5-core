@@ -14,9 +14,8 @@ import static nikita.config.N5ResourceMappings.MEETING_PARTICIPANT_FUNCTION;
 @Entity
 @Table(name = "meeting_participant_function")
 // Enable soft delete
-@SQLDelete(sql = "UPDATE meeting_participant_function SET delete" +
-        "d = true WHERE id = ?")
-@Where(clause = "deleted <> true")
+// @SQLDelete(sql = "UPDATE meeting_participant_function SET deleted = true WHERE pk_meeting_participant_function_id = ? and version = ?")
+// @Where(clause = "deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_meeting_participant_function_id"))
 public class MeetingParticipantFunction extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;

@@ -11,8 +11,8 @@ import static nikita.config.N5ResourceMappings.MEETING_PARTICIPANT;
 @Entity
 @Table(name = "meeting_participant")
 // Enable soft delete of MeetingParticipant
-@SQLDelete(sql="UPDATE meeting_participant SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE meeting_participant SET deleted = true WHERE pk_meeting_participant_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_meeting_participant_id"))
 public class MeetingParticipant extends NoarkEntity {
 

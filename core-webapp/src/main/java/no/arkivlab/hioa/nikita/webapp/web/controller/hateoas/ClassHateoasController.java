@@ -8,15 +8,21 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
 import nikita.model.noark5.v4.Class;
+import nikita.model.noark5.v4.ClassificationSystem;
+import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.hateoas.ClassHateoas;
+import nikita.model.noark5.v4.hateoas.ClassificationSystemHateoas;
+import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassificationSystemHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IClassService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,15 +42,18 @@ import static nikita.config.N5ResourceMappings.SYSTEM_ID;
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 public class ClassHateoasController {
 
-    IClassService classService;
-    IClassHateoasHandler classHateoasHandler;
+    private IClassService classService;
+    private IClassHateoasHandler classHateoasHandler;
+    private IClassificationSystemHateoasHandler classificationSystemHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
 
     public ClassHateoasController(IClassService classService,
                                   IClassHateoasHandler classHateoasHandler,
+                                  IClassificationSystemHateoasHandler classificationSystemHateoasHandler,
                                   ApplicationEventPublisher applicationEventPublisher) {
         this.classService = classService;
         this.classHateoasHandler = classHateoasHandler;
+        this.classificationSystemHateoasHandler = classificationSystemHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
@@ -134,5 +143,45 @@ public class ClassHateoasController {
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(classHateoas);
+    }
+
+    // Delete a Class identified by systemID
+    // DELETE [contextPath][api]/arkivstruktur/dokumentobjekt/{systemId}/
+    @ApiOperation(value = "Deletes a single Class entity identified by systemID", response = HateoasNoarkObject.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Parent entity (DocumentDescription or Record) returned", response = HateoasNoarkObject.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
+            method = RequestMethod.DELETE)
+    public ResponseEntity<HateoasNoarkObject> deleteClassBySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the class to delete",
+                    required = true)
+            @PathVariable("systemID") final String systemID) {
+
+        Class klass = classService.findBySystemId(systemID);
+        NoarkEntity parentEntity = klass.chooseParent();
+        classService.deleteEntity(systemID);
+        HateoasNoarkObject hateoasNoarkObject;
+        if (parentEntity instanceof Class) {
+            hateoasNoarkObject = new ClassHateoas(parentEntity);
+            classHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+        }
+        else if (parentEntity instanceof ClassificationSystem) {
+            hateoasNoarkObject = new ClassificationSystemHateoas(parentEntity);
+            classificationSystemHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+        }
+        else {
+            throw new NikitaException("Internal error. Could process" + request.getRequestURI());
+        }
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, klass));
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(hateoasNoarkObject);
     }
 }

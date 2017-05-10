@@ -3,6 +3,7 @@ package no.arkivlab.hioa.nikita.webapp.service.interfaces;
 import nikita.model.noark5.v4.Fonds;
 import nikita.model.noark5.v4.FondsCreator;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public interface IFondsCreatorService {
@@ -24,6 +25,9 @@ public interface IFondsCreatorService {
     // systemId
     FondsCreator findBySystemId(String systemId);
 
-    // -- All UPDATE  operations
-    FondsCreator updateFondsCreator(String systemID, FondsCreator fondsCreator);
+    // All UPDATE operations
+    FondsCreator handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull FondsCreator fondsCreator);
+
+    // All DELETE operations
+    void deleteEntity(@NotNull String systemId);
 }

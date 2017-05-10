@@ -15,8 +15,8 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_MEDIUM;
 @Entity
 @Table(name = "document_medium")
 // Enable soft delete of DocumentMedium
-@SQLDelete(sql="UPDATE document_medium SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE document_medium SET deleted = true WHERE pk_document_medium_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_document_medium_id"))
 public class DocumentMedium extends MetadataSuperClass implements INikitaEntity {
     private static final long serialVersionUID = 1L;

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -85,4 +86,9 @@ public interface IRecordService {
 	List<Record> findByOwnedBy(String ownedBy, Sort sort);
 	Page<Record> findByOwnedBy(String ownedBy, Pageable pageable);
 
+	// All UPDATE operations
+	Record handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull Record record);
+
+	// All DELETE operations
+	void deleteEntity(@NotNull String systemId);
 }

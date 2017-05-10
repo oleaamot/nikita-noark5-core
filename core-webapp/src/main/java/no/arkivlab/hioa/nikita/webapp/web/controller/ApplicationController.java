@@ -3,8 +3,10 @@ package no.arkivlab.hioa.nikita.webapp.web.controller;
 import com.codahale.metrics.annotation.Counted;
 import groovy.util.MapEntry;
 import io.swagger.annotations.Api;
+import javafx.application.Application;
 import nikita.util.CommonUtils;
 import no.arkivlab.hioa.nikita.webapp.model.application.*;
+import no.arkivlab.hioa.nikita.webapp.service.application.service.ApplicationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,6 +44,12 @@ public class ApplicationController {
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationController.class);
 
+    private ApplicationService applicationService;
+
+    public ApplicationController(ApplicationService applicationService) {
+        this.applicationService = applicationService;
+    }
+
     /**
      * identify the interfaces the core supports
      *
@@ -49,14 +57,13 @@ public class ApplicationController {
      */
     // API - All GET Requests (CRUD - READ)
     @Counted
-    @CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET, RequestMethod.OPTIONS})
     @RequestMapping(method = {RequestMethod.GET})
     @ResponseBody
     public ResponseEntity <ApplicationDetails> identify(HttpServletRequest request) {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
-                .body(getApplicationDetails());
+                .body(applicationService. getApplicationDetails());
     }
 
     @Counted
@@ -65,7 +72,7 @@ public class ApplicationController {
     public ResponseEntity<FondsStructureDetails> fondsStructure(HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
-                .body(new FondsStructureDetails());
+                .body(applicationService.getFondsStructureDetails());
     }
 
     @Counted
@@ -74,7 +81,7 @@ public class ApplicationController {
     public ResponseEntity<MetadataDetails> metadataPath(HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
-                .body(new MetadataDetails());
+                .body(applicationService.getMetadataDetails());
     }
 
     @Counted
@@ -83,85 +90,6 @@ public class ApplicationController {
     public ResponseEntity<CaseHandlingDetails> caseHandling(HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
-                .body(new CaseHandlingDetails());
-    }
-
-    /**
-     * Creates a list of the supported supported login methods.
-     * These are: JWT
-     *
-     * @return
-     */
-
-    protected void addLoginInformation(List<ConformityLevel> conformityLevels) {
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
-        ConformityLevel loginJWT = new ConformityLevel();
-        loginJWT.setHref(uri + SLASH + LOGIN_PATH);
-        loginJWT.setRel(NIKITA_CONFORMANCE_REL + LOGIN_REL_PATH + SLASH + LOGIN_JWT + SLASH);
-        conformityLevels.add(loginJWT);
-    }
-
-    /**
-     * Creates a list of the officially supported resource links.
-     * These are: arkivstruktur, sakarkiv, metadata, administrasjon and loggingogsporing
-     *
-     * @return
-     */
-
-    protected void addConformityLevels(List<ConformityLevel> conformityLevels) {
-
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
-
-        // ConformityLevel : arkivstruktur
-        ConformityLevel conformityLevelFondsStructure = new ConformityLevel();
-        conformityLevelFondsStructure.setHref(uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH);
-        conformityLevelFondsStructure.setRel(NOARK_CONFORMANCE_REL + NOARK_FONDS_STRUCTURE_PATH + SLASH);
-        conformityLevels.add(conformityLevelFondsStructure);
-
-        // ConformityLevel : sakarkiv
-        ConformityLevel conformityLevelCaseHandling = new ConformityLevel();
-        conformityLevelCaseHandling.setHref(uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH);
-        conformityLevelCaseHandling.setRel(NOARK_CONFORMANCE_REL + NOARK_CASE_HANDLING_PATH + SLASH);
-        conformityLevels.add(conformityLevelCaseHandling);
-
-        // ConformityLevel : metadata
-        ConformityLevel conformityLevelMetadata = new ConformityLevel();
-        conformityLevelMetadata.setHref(uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH);
-        conformityLevelMetadata.setRel(NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH);
-        conformityLevels.add(conformityLevelMetadata);
-
-        /*
-        // These will be added as the development progresses.
-        // They are not really specified properly in the interface standard.
-        // ConformityLevel : administrasjon
-        ConformityLevel conformityLevelAdministration = new ConformityLevel();
-        conformityLevelAdministration.setHref(uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_ADMINISTRATION_PATH);
-        conformityLevelAdministration.setRel(NOARK_CONFORMANCE_REL + NOARK_ADMINISTRATION_PATH + SLASH);
-        conformityLevels.add(conformityLevelAdministration);
-
-        // ConformityLevel : loggingogsporing
-        ConformityLevel conformityLevelLogging = new ConformityLevel();
-        conformityLevelLogging.setHref(uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_LOGGING_PATH);
-        conformityLevelLogging.setRel(NOARK_CONFORMANCE_REL + NOARK_LOGGING_PATH + SLASH);
-        conformityLevels.add(conformityLevelLogging);
-        */
-    }
-
-    protected ApplicationDetails getApplicationDetails() {
-        ApplicationDetails applicationDetails;
-        ArrayList<ConformityLevel> conformityLevels = new ArrayList(10);
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        if (!username.equals("anonymousUser")) {
-            addConformityLevels(conformityLevels);
-        }
-
-        /* Show login relation also for logged in users to allow user
-         * change also when logged in.
-         */
-        addLoginInformation(conformityLevels);
-
-        applicationDetails = new ApplicationDetails(conformityLevels);
-        return applicationDetails;
+                .body(applicationService.getCaseHandlingDetails());
     }
 }

@@ -60,7 +60,7 @@ curloptsCreateFondsCreatorUpdate+=("${curlPutOpts[@]}");
 curloptsCreateFondsCreatorUpdate+=(  --header Etag:\"0\" --data '{"arkivskaperID": "123456789U", "arkivskaperNavn": "Eksempel kommune UPDATED",  "beskrivelse": "Eksempel kommune ligger i eksempel fylke nord for nord UPDATED" } ' 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/arkivskaper/'$systemIDCreatedFondsCreator );
 systemIDCreatedFondsCreator=$(curl "${curloptsCreateFondsCreatorUpdate[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "updated FondsCreator 1      ($systemIDCreatedFondsCreator) \n";
-echo "${curloptsCreateFondsCreatorUpdate[@]}";
+#echo "${curloptsCreateFondsCreatorUpdate[@]}";
 
 
 # Setup curl options for fondsCreator from existing fonds
@@ -82,6 +82,7 @@ curloptsCreateSeries+=( --data @"$curl_files_dir"series-data.json  'http://local
 # Create a series object and capture the systemId
 systemIDCreatedSeries=$(curl "${curloptsCreateSeries[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created  Series 1            ($systemIDCreatedSeries) \n";
+#echo ${curloptsCreateSeries[@]};
 
 # Setup curl options for file
 curloptsCreateFile+=("${curlPostOpts[@]}");
@@ -103,7 +104,7 @@ curloptsCreateRecord+=( --data @"$curl_files_dir"record-data.json 'http://localh
 # Create record 1 associated with a file 1 and capture systemId
 systemIDCreatedRecord=$(curl "${curloptsCreateRecord[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created    Record 1            ($systemIDCreatedRecord) associated with ($systemIDCreatedFile) \n";
-
+#echo ${curloptsCreateRecord[@]};
 
 # Setup curl options for documentDescription
 curloptsCreateDocumentDescription+=("${curlPostOpts[@]}");
@@ -112,6 +113,7 @@ curloptsCreateDocumentDescription+=( --data @"$curl_files_dir"document-descripti
 # Create documentDescription 1 associated with a file 1 / record 1 and capture systemId
 systemIDCreatedDocumentDescription=$(curl "${curloptsCreateDocumentDescription[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created     DocumentDescription ($systemIDCreatedDocumentDescription) associated with ($systemIDCreatedRecord) \n";
+#echo ${curloptsCreateDocumentDescription[@]};
 
 # Setup curl options for documentObject
 curloptsCreateDocumentObject+=("${curlPostOpts[@]}");
@@ -138,9 +140,10 @@ curloptsDownloadFile+=("${curlGetFileOpts[@]}");
 curloptsDownloadFile+=( 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/dokumentobjekt/'$systemIDCreatedDocumentObject'/referanseFil' )
 
 resultFileDownload=$(curl "${curloptsDownloadFile[@]}");
-echo "${curloptsDownloadFile[@]}";
+#echo "${curloptsDownloadFile[@]}";
 printf "downloaded file from DocumentObject  ($systemIDCreatedDocumentObject) Result $resultFileDownload\n";
 
+exit;
 
 curloptsCreateBasicRecord+=("${curlPostOpts[@]}");
 curloptsCreateBasicRecord+=( --data @"$curl_files_dir"basic-record-data.json 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/mappe/'$systemIDCreatedFile'/ny-basisregistrering' )

@@ -18,8 +18,8 @@ import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART;
 @Entity
 @Table(name = "correspondence_part")
 // Enable soft delete of CorrespondencePart
-@SQLDelete(sql="UPDATE correspondence_part SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE correspondence_part SET deleted = true WHERE pk_correspondence_part_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @JsonDeserialize(using = CorrespondencePartDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_correspondence_part_id"))
 public class CorrespondencePart extends NoarkEntity implements ICorrespondencePartEntity {
@@ -75,7 +75,7 @@ public class CorrespondencePart extends NoarkEntity implements ICorrespondencePa
     private String caseHandler;
 
     // Links to PostalAddress
-    @ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany(cascade=CascadeType.PERSIST)
     private Set<PostalAddress> postalAddress = new TreeSet<>();
 
     // Links to Record

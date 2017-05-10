@@ -24,7 +24,7 @@ import static nikita.config.Constants.*;
  */
 @RestController("BrowserApplicationController")
 @RequestMapping(value = "/")
-public class BrowserApplicationController extends ApplicationController {
+public class BrowserApplicationController {
 /*
     @RequestMapping(method = {RequestMethod.GET})
     public ModelAndView identifyForBrowser(HttpServletRequest request) {

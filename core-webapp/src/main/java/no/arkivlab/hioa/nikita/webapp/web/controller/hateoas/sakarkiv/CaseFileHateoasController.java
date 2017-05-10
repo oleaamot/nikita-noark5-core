@@ -7,19 +7,23 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
-import nikita.model.noark5.v4.CaseFile;
-import nikita.model.noark5.v4.RegistryEntry;
-import nikita.model.noark5.v4.hateoas.CaseFileHateoas;
-import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
+import nikita.model.noark5.v4.*;
+import nikita.model.noark5.v4.Class;
+import nikita.model.noark5.v4.hateoas.*;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
+import nikita.util.exceptions.NikitaMalformedInputDataException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ICaseFileHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRegistryEntryHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ISeriesHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ICaseFileService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,15 +48,21 @@ public class CaseFileHateoasController {
     private ICaseFileHateoasHandler caseFileHateoasHandler;
     private IRegistryEntryHateoasHandler registryEntryHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
+    private ISeriesHateoasHandler seriesHateoasHandler;
+    private IClassHateoasHandler classHateoasHandler;
 
     public CaseFileHateoasController(ICaseFileService caseFileService,
                                      ICaseFileHateoasHandler caseFileHateoasHandler,
                                      IRegistryEntryHateoasHandler registryEntryHateoasHandler,
-                                     ApplicationEventPublisher applicationEventPublisher) {
+                                     ApplicationEventPublisher applicationEventPublisher,
+                                     ISeriesHateoasHandler seriesHateoasHandler,
+                                     IClassHateoasHandler classHateoasHandler) {
         this.caseFileService = caseFileService;
         this.caseFileHateoasHandler = caseFileHateoasHandler;
         this.registryEntryHateoasHandler = registryEntryHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.seriesHateoasHandler = seriesHateoasHandler;
+        this.classHateoasHandler = classHateoasHandler;
     }
 
     // API - All POST Requests (CRUD - CREATE)
@@ -180,4 +190,81 @@ public class CaseFileHateoasController {
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(caseFileHateoas);
     }
+    
+    // Delete a CaseFile identified by systemID
+    // DELETE [contextPath][api]/sakarkiv/saksmappe/{systemId}/
+    @ApiOperation(value = "Deletes a single CaseFile entity identified by systemID", response = HateoasNoarkObject.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Parent entity (DocumentDescription or CaseFile) returned", response = HateoasNoarkObject.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
+            method = RequestMethod.DELETE)
+    public ResponseEntity<HateoasNoarkObject> deleteCaseFileBySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the caseFile to delete",
+                    required = true)
+            @PathVariable("systemID") final String systemID) {
+
+        CaseFile caseFile = caseFileService.findBySystemId(systemID);
+        NoarkEntity parentEntity = caseFile.chooseParent();
+        HateoasNoarkObject hateoasNoarkObject;
+        if (parentEntity instanceof Series) {
+            hateoasNoarkObject = new SeriesHateoas(parentEntity);
+            seriesHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+        }
+        // TODO: Can a casefile have a Class as parent???
+        else if (parentEntity instanceof Class) {
+            hateoasNoarkObject = new ClassHateoas(parentEntity);
+            classHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+        }
+        else {
+            throw new NikitaException("Internal error. Could not process " + request.getRequestURI());
+        }
+        caseFileService.deleteEntity(systemID);
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, caseFile));
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(hateoasNoarkObject);
+    }
 }
+/*
+
+    // TODO: Consider gathering all the missing fields as a string and returning all in one go
+    // But the developer of the client should know what's required!
+    public void checkForObligatoryCaseFileValues(CaseFile caseFile) {
+
+        if (caseFile.getFileId() == null) {
+            throw new NikitaMalformedInputDataException("The saksmappe you tried to create is malformed. The "
+                    + "mappeID field is mandatory, and you have submitted an empty value.");
+        }
+        if (caseFile.getCaseDate() == null) {
+            throw new NikitaMalformedInputDataException("The saksmappe you tried to create is malformed. The "
+                    + "saksDato field is mandatory, and you have submitted an empty value.");
+        }
+        if (caseFile.getAdministrativeUnit() == null) {
+            throw new NikitaMalformedInputDataException("The saksmappe you tried to create is malformed. The "
+                    + "field administrativEnhet is mandatory, and you have submitted an empty value.");
+        }
+        if (caseFile.getCaseResponsible() == null) {
+            throw new NikitaMalformedInputDataException("The saksmappe  you tried to create is malformed. The "
+                    + "saksansvarlig field is mandatory, and you have submitted an empty value.");
+        }
+        if (caseFile.getCaseStatus() == null) {
+            throw new NikitaMalformedInputDataException("The saksmappe you tried to create is malformed. The "
+                    + "saksstatus field is mandatory, and you have submitted an empty value.");
+        }
+    }
+ @Override
+
+public void checkForObligatoryNoarkValues(INoarkGeneralEntity noarkEntity) {
+    if (noarkEntity.getTitle() == null) {
+        throw new NikitaMalformedInputDataException("The saksmappe you tried to create is malformed. The "
+                + "tittel field is mandatory, and you have submitted an empty value.");
+    }
+}
+ */

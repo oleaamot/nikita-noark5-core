@@ -19,8 +19,8 @@ import static nikita.config.N5ResourceMappings.CLASSIFIED;
 @Entity
 @Table(name = "classified")
 // Enable soft delete of Classified
-@SQLDelete(sql="UPDATE classified SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE classified SET deleted = true WHERE pk_classified_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_classified_id"))
 public class Classified extends NoarkEntity implements IClassifiedEntity {
 

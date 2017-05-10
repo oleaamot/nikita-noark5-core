@@ -19,8 +19,8 @@ import static nikita.config.N5ResourceMappings.SERIES;
 @Entity
 @Table(name = "series")
 // Enable soft delete of Series
-@SQLDelete(sql="UPDATE series SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE series SET deleted = true WHERE pk_series_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @Indexed(index = "series")
 @JsonDeserialize(using = SeriesDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_series_id"))

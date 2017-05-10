@@ -6,6 +6,7 @@ import nikita.model.noark5.v4.interfaces.ICrossReference;
 import nikita.model.noark5.v4.interfaces.IDisposal;
 import nikita.model.noark5.v4.interfaces.IScreening;
 import nikita.util.deserialisers.ClassDeserializer;
+import nikita.util.exceptions.NikitaEntityNotFoundException;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -21,8 +22,8 @@ import static nikita.config.N5ResourceMappings.CLASS;
 @Entity
 @Table(name = "class")
 // Enable soft delete of Class
-@SQLDelete(sql="UPDATE class SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE class SET deleted = true WHERE pk_class_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @Indexed(index = "class")
 @JsonDeserialize(using = ClassDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_class_id"))
@@ -183,7 +184,17 @@ public class Class extends NoarkGeneralEntity implements IDisposal, IScreening, 
     public void setReferenceCrossReference(Set<CrossReference> referenceCrossReference) {
         this.referenceCrossReference = referenceCrossReference;
     }
-
+    public NoarkEntity chooseParent() {
+        if (null != referenceParentClass) {
+            return referenceParentClass;
+        }
+        else if (null != referenceClassificationSystem) {
+            return referenceClassificationSystem;
+        }
+        else { // This should be impossible, a class cannot exist without a parent
+            throw new NikitaEntityNotFoundException("Could not find parent object for " + this.toString());
+        }
+    }
     @Override
     public String toString() {
         return "Class{" + super.toString() +

@@ -14,9 +14,8 @@ import static nikita.config.N5ResourceMappings.SCREENING_DOCUMENT;
 @Entity
 @Table(name = "screening_document")
 // Enable soft delete
-@SQLDelete(sql = "UPDATE screening_document SET delete" +
-        "d = true WHERE id = ?")
-@Where(clause = "deleted <> true")
+// @SQLDelete(sql = "UPDATE screening_document SET deleted = true WHERE pk_screening_document_id = ? and version = ?")
+// @Where(clause = "deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_screening_document_id"))
 public class ScreeningDocument extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;

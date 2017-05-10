@@ -7,13 +7,19 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
-import nikita.model.noark5.v4.BasicRecord;
-import nikita.model.noark5.v4.hateoas.BasicRecordHateoas;
+import nikita.model.noark5.v4.*;
+import nikita.model.noark5.v4.Class;
+import nikita.model.noark5.v4.hateoas.*;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IBasicRecordHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFileHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ISeriesHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IBasicRecordService;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NikitaException;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,11 +42,22 @@ public class BasicRecordHateoasController {
     private IBasicRecordService basicRecordService;
     private IBasicRecordHateoasHandler basicRecordHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
+    private ISeriesHateoasHandler seriesHateoasHandler;
+    private IFileHateoasHandler fileHateoasHandler;
+    private IClassHateoasHandler classHateoasHandler;
 
     public BasicRecordHateoasController(IBasicRecordService basicRecordService,
-                                        IBasicRecordHateoasHandler basicRecordHateoasHandler) {
+                                        IBasicRecordHateoasHandler basicRecordHateoasHandler,
+                                        ApplicationEventPublisher applicationEventPublisher,
+                                        ISeriesHateoasHandler seriesHateoasHandler,
+                                        IFileHateoasHandler fileHateoasHandler,
+                                        IClassHateoasHandler classHateoasHandler) {
         this.basicRecordService = basicRecordService;
         this.basicRecordHateoasHandler = basicRecordHateoasHandler;
+        this.applicationEventPublisher = applicationEventPublisher;
+        this.seriesHateoasHandler = seriesHateoasHandler;
+        this.fileHateoasHandler = fileHateoasHandler;
+        this.classHateoasHandler = classHateoasHandler;
     }
 
     // API - All GET Requests (CRUD - READ)
@@ -97,4 +114,50 @@ public class BasicRecordHateoasController {
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(basicRecordHateoas);
     }
+
+    // Delete a Record identified by systemID
+    // DELETE [contextPath][api]/arkivstruktur/registrering/{systemId}/
+    @ApiOperation(value = "Deletes a single Record entity identified by systemID", response = HateoasNoarkObject.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Parent entity (DocumentDescription or Record) returned", response = HateoasNoarkObject.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
+            method = RequestMethod.DELETE)
+    public ResponseEntity<HateoasNoarkObject> deleteRecordBySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the record to delete",
+                    required = true)
+            @PathVariable("systemID") final String systemID) {
+
+        BasicRecord basicRecord = basicRecordService.findBySystemId(systemID);
+        NoarkEntity parentEntity = basicRecord.chooseParent();
+        HateoasNoarkObject hateoasNoarkObject;
+        if (parentEntity instanceof Series) {
+            hateoasNoarkObject = new SeriesHateoas(parentEntity);
+            seriesHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+        }
+        else if (parentEntity instanceof File) {
+            hateoasNoarkObject = new FileHateoas(parentEntity);
+            fileHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+        }
+        else if (parentEntity instanceof Class) {
+            hateoasNoarkObject = new ClassHateoas(parentEntity);
+            classHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+        }
+        else {
+            throw new NikitaException("Internal error. Could not process"
+                    + request.getRequestURI());
+        }
+        basicRecordService.deleteEntity(systemID);
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, basicRecord));
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(hateoasNoarkObject);
+    }
+
 }

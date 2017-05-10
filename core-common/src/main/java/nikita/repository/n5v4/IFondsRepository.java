@@ -120,6 +120,10 @@ public interface IFondsRepository extends PagingAndSortingRepository<Fonds, Long
     List<Fonds> findByOwnedBy(String ownedBy, Sort sort);
     Page<Fonds> findByOwnedBy(String ownedBy, Pageable pageable);
 
+    // All DELETE operation
+
+    void delete(Fonds fonds);
+
     // child fonds TODO: Do this!!
     /*
     List<Fonds> findByOwnedBy(String ownedBy);

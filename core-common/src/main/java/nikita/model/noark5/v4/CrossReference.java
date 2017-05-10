@@ -11,8 +11,8 @@ import static nikita.config.N5ResourceMappings.CROSS_REFERENCE;
 @Entity
 @Table(name = "cross_reference")
 // Enable soft delete of CrossReference
-@SQLDelete(sql="UPDATE cross_reference SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE cross_reference SET deleted = true WHERE pk_cross_reference_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_cross_reference_id"))
 public class CrossReference extends NoarkEntity implements ICrossReferenceEntity {
 

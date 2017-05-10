@@ -1,10 +1,12 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
 import nikita.model.noark5.v4.DocumentObject;
+import nikita.model.noark5.v4.Fonds;
 import nikita.repository.n5v4.IDocumentObjectRepository;
 import no.arkivlab.hioa.nikita.webapp.config.WebappProperties;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentObjectService;
 import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
+import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.StorageException;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.StorageFileNotFoundException;
 import org.slf4j.Logger;
@@ -25,6 +27,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,6 +43,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
+
 @Service
 @Transactional
 @EnableConfigurationProperties(WebappProperties.class)
@@ -49,7 +54,7 @@ public class DocumentObjectService implements IDocumentObjectService {
     private final String checksumAlgorithm;
     private final Logger logger = LoggerFactory.getLogger(DocumentObjectService.class);
     //@Value("${nikita-noark5-core.pagination.maxPageSize}")
-    Integer maxPageSize = new Integer(10);
+    private Integer maxPageSize = new Integer(10);
     private IDocumentObjectRepository documentObjectRepository;
     private EntityManager entityManager;
 
@@ -214,7 +219,7 @@ public class DocumentObjectService implements IDocumentObjectService {
 
     // systemId
     public DocumentObject findBySystemId(String systemId) {
-        return documentObjectRepository.findBySystemId(systemId);
+        return getDocumentObjectOrThrow(systemId);
     }
 
     // createdDate
@@ -342,5 +347,57 @@ public class DocumentObjectService implements IDocumentObjectService {
         typedQuery.setFirstResult(skip);
         typedQuery.setMaxResults(maxPageSize);
         return typedQuery.getResultList();
+    }
+
+
+    // All UPDATE operations
+    @Override
+    public DocumentObject handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull DocumentObject incomingDocumentObject) {
+        DocumentObject existingDocumentObject = getDocumentObjectOrThrow(systemId);
+        // Here copy all the values you are allowed to copy ....
+        if (null != incomingDocumentObject.getFormat()) {
+            existingDocumentObject.setFormat(incomingDocumentObject.getFormat());
+        }
+        if (null != incomingDocumentObject.getFormatDetails()) {
+            existingDocumentObject.setFormatDetails(incomingDocumentObject.getFormatDetails());
+        }
+        if (null != incomingDocumentObject.getOriginalFilename()) {
+            existingDocumentObject.setOriginalFilename(incomingDocumentObject.getOriginalFilename());
+        }
+        if (null != incomingDocumentObject.getVariantFormat()) {
+            existingDocumentObject.setVariantFormat(incomingDocumentObject.getVariantFormat());
+        }
+        if (null != incomingDocumentObject.getVersionNumber()) {
+            existingDocumentObject.setVersionNumber(incomingDocumentObject.getVersionNumber());
+        }
+        existingDocumentObject.setVersion(version);
+        documentObjectRepository.save(existingDocumentObject);
+        return existingDocumentObject;
+    }
+
+    // All DELETE operations
+    @Override
+    public void deleteEntity(@NotNull String documentObjectSystemId) {
+        DocumentObject documentObject = getDocumentObjectOrThrow(documentObjectSystemId);
+        documentObjectRepository.delete(documentObject);
+    }
+
+    // All HELPER operations
+    /**
+     * Internal helper method. Rather than having a find and try catch in multiple methods, we have it here once.
+     * If you call this, be aware that you will only ever get a valid DocumentObject back. If there is no valid
+     * DocumentObject, an exception is thrown
+     *
+     * @param documentObjectSystemId
+     * @return
+     */
+    protected DocumentObject getDocumentObjectOrThrow(@NotNull String documentObjectSystemId) {
+        DocumentObject documentObject = documentObjectRepository.findBySystemId(documentObjectSystemId);
+        if (documentObject == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " DocumentObject, using systemId " + documentObjectSystemId;
+            logger.info(info);
+            throw new NoarkEntityNotFoundException(info);
+        }
+        return documentObject;
     }
 }

@@ -20,8 +20,8 @@ import static nikita.config.N5ResourceMappings.FONDS;
 @Entity
 @Table(name = "fonds")
 // Enable soft delete of Fonds
-@SQLDelete(sql="UPDATE fonds SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE fonds SET deleted = true WHERE pk_fonds_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @Indexed(index = "fonds")
 @JsonDeserialize(using = FondsDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_fonds_id"))
@@ -56,7 +56,7 @@ public class Fonds extends NoarkGeneralEntity implements IStorageLocation, IDocu
     private Set<Fonds> referenceChildFonds = new TreeSet<>();
 
     // Links to StorageLocations
-    @ManyToMany (cascade=CascadeType.ALL)
+    @ManyToMany (cascade=CascadeType.PERSIST)
     @JoinTable(name = "fonds_storage_location", joinColumns = @JoinColumn(name = "f_pk_fonds_id",
             referencedColumnName = "pk_fonds_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
             referencedColumnName = "pk_storage_location_id"))

@@ -7,9 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import nikita.model.noark5.v4.CaseFile;
-import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
 import nikita.util.CommonUtils;
-import nikita.util.deserialisers.interfaces.ObligatoryPropertiesCheck;
 import nikita.util.exceptions.NikitaMalformedInputDataException;
 
 import java.io.IOException;
@@ -27,8 +25,7 @@ import static nikita.config.N5ResourceMappings.*;
  * Having a own deserialiser is done to have more fine grained control over the input. This allows us to be less strict
  * with property names, allowing for both English and Norwegian property names
  *
- * Both English and Norwegian property names can be used in the incoming JSON as well as there being no requirement with
- * regards to small and large letters in property names.
+
  *
  * Note this implementation expects that the CaseFile object to deserialise is in compliance with the Noark standard where
  * certain properties i.e. createdBy and createdDate are set by the core, not the caller. This deserializer will not 
@@ -45,7 +42,7 @@ import static nikita.config.N5ResourceMappings.*;
  *  - Unknown property values in the JSON will trigger an exception
  *  - Missing obligatory property values in the JSON will trigger an exception
  */
-public class CaseFileDeserializer extends JsonDeserializer implements ObligatoryPropertiesCheck {
+public class CaseFileDeserializer extends JsonDeserializer {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -148,9 +145,6 @@ public class CaseFileDeserializer extends JsonDeserializer implements Obligatory
             caseFile.setLoanedTo(currentNode.textValue());
             objectNode.remove(CASE_LOANED_TO);
         }
-        // Check that all obligatory values are present
-        checkForObligatoryNoarkValues(caseFile);
-        checkForObligatoryCaseFileValues(caseFile);
 
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
@@ -164,43 +158,5 @@ public class CaseFileDeserializer extends JsonDeserializer implements Obligatory
         caseFile.setReferencePrecedence(CommonUtils.Hateoas.Deserialize.deserialisePrecedences(objectNode));
 
         return caseFile;
-    }
-
-    @Override
-    /**
-     *
-     * The only field that is mandatory, according to arkivstruktur.xsd, when creating the object is 'title'
-     */
-    public void checkForObligatoryNoarkValues(INoarkGeneralEntity noarkEntity) {
-        if (noarkEntity.getTitle() == null) {
-            throw new NikitaMalformedInputDataException("The saksmappe you tried to create is malformed. The "
-                    + "tittel field is mandatory, and you have submitted an empty value.");
-        }
-    }
-
-    // TODO: Consider gathering all the missing fields as a string and returning all in one go
-    // But the developer of the client should know what's required!
-    public void checkForObligatoryCaseFileValues(CaseFile caseFile) {
-
-        if (caseFile.getFileId() == null) {
-            throw new NikitaMalformedInputDataException("The saksmappe you tried to create is malformed. The "
-                    + "mappeID field is mandatory, and you have submitted an empty value.");
-        }
-        if (caseFile.getCaseDate() == null) {
-            throw new NikitaMalformedInputDataException("The saksmappe you tried to create is malformed. The "
-                    + "saksDato field is mandatory, and you have submitted an empty value.");
-        }
-        if (caseFile.getAdministrativeUnit() == null) {
-            throw new NikitaMalformedInputDataException("The saksmappe you tried to create is malformed. The "
-                    + "field administrativEnhet is mandatory, and you have submitted an empty value.");
-        }
-        if (caseFile.getCaseResponsible() == null) {
-            throw new NikitaMalformedInputDataException("The saksmappe  you tried to create is malformed. The "
-                    + "saksansvarlig field is mandatory, and you have submitted an empty value.");
-        }
-        if (caseFile.getCaseStatus() == null) {
-            throw new NikitaMalformedInputDataException("The saksmappe you tried to create is malformed. The "
-                    + "saksstatus field is mandatory, and you have submitted an empty value.");
-        }
     }
 }

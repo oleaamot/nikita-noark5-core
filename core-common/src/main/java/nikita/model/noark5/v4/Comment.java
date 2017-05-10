@@ -15,8 +15,8 @@ import static nikita.config.N5ResourceMappings.COMMENT;
 @Entity
 @Table(name = "comment")
 // Enable soft delete of Comment
-@SQLDelete(sql="UPDATE comment SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE comment SET deleted = true WHERE pk_comment_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_comment_id"))
 public class Comment extends NoarkEntity implements ICommentEntity {
 

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -91,5 +92,10 @@ public interface IDocumentDescriptionService {
 	List<DocumentDescription> findByOwnedBy(String ownedBy);
 	List<DocumentDescription> findByOwnedBy(String ownedBy, Sort sort);
 	Page<DocumentDescription> findByOwnedBy(String ownedBy, Pageable pageable);
+	
+	// All UPDATE operations
+	DocumentDescription handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull DocumentDescription documentDescription);
 
+	// All DELETE operations
+	void deleteEntity(@NotNull String systemId);
 }

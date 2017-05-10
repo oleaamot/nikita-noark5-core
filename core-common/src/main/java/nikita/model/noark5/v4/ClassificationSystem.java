@@ -15,8 +15,8 @@ import static nikita.config.N5ResourceMappings.CLASSIFICATION_SYSTEM;
 @Entity
 @Table(name = "classification_system")
 // Enable soft delete of ClassificationSystem
-@SQLDelete(sql="UPDATE classification_system SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE classification_system SET deleted = true WHERE pk_classification_system_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @Indexed(index = "classification_system")
 @AttributeOverride(name = "id", column = @Column(name = "pk_classification_system_id"))
 public class ClassificationSystem extends NoarkGeneralEntity {

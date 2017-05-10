@@ -19,11 +19,14 @@ import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsCreatorHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ISeriesHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.model.application.FondsStructureDetails;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
+import no.arkivlab.hioa.nikita.webapp.service.application.service.ApplicationService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
 import org.hibernate.Session;
 import org.hibernate.search.FullTextSession;
@@ -31,7 +34,6 @@ import org.hibernate.search.Search;
 import org.hibernate.search.elasticsearch.ElasticsearchQueries;
 import org.hibernate.search.query.engine.spi.QueryDescriptor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +53,7 @@ import static org.springframework.http.HttpHeaders.ETAG;
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH,
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 @SuppressWarnings("unchecked")
-public class FondsHateoasController {
+public class FondsHateoasController extends NoarkController {
 
     private EntityManager entityManager;
     private IFondsService fondsService;
@@ -60,6 +62,7 @@ public class FondsHateoasController {
     private IFondsCreatorHateoasHandler fondsCreatorHateoasHandler;
     private ISeriesHateoasHandler seriesHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
+    private ApplicationService applicationService;
 
     public FondsHateoasController(EntityManager entityManager,
                                   IFondsService fondsService,
@@ -67,7 +70,8 @@ public class FondsHateoasController {
                                   IFondsHateoasHandler fondsHateoasHandler,
                                   IFondsCreatorHateoasHandler fondsCreatorHateoasHandler,
                                   ISeriesHateoasHandler seriesHateoasHandler,
-                                  ApplicationEventPublisher applicationEventPublisher) {
+                                  ApplicationEventPublisher applicationEventPublisher,
+                                  ApplicationService applicationService) {
         this.entityManager = entityManager;
         this.fondsService = fondsService;
         this.seriesService = seriesService;
@@ -75,6 +79,7 @@ public class FondsHateoasController {
         this.fondsCreatorHateoasHandler = fondsCreatorHateoasHandler;
         this.seriesHateoasHandler = seriesHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.applicationService = applicationService;
     }
 
     // API - All POST Requests (CRUD - CREATE)
@@ -102,6 +107,7 @@ public class FondsHateoasController {
                     value = "Incoming fonds object",
                     required = true)
             @RequestBody Fonds fonds) throws NikitaException {
+        validateForCreate(fonds);
         Fonds createdFonds = fondsService.createNewFonds(fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(createdFonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
@@ -143,6 +149,7 @@ public class FondsHateoasController {
                     required = true)
             @RequestBody Fonds fonds)
             throws NikitaException {
+        validateForCreate(fonds);
         Fonds createdFonds = fondsService.createFondsAssociatedWithFonds(systemID, fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(createdFonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
@@ -184,6 +191,7 @@ public class FondsHateoasController {
                     required = true)
             @RequestBody Series series)
             throws NikitaException {
+        validateForCreate(series);
         Series seriesCreated = fondsService.createSeriesAssociatedWithFonds(systemID, series);
         SeriesHateoas seriesHateoas = new SeriesHateoas(seriesCreated);
         seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
@@ -226,6 +234,7 @@ public class FondsHateoasController {
                     required = true)
             @RequestBody FondsCreator fondsCreator)
             throws NikitaException {
+        validateForCreate(fondsCreator);
         fondsService.createFondsCreatorAssociatedWithFonds(systemID, fondsCreator);
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(fondsCreator);
         fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
@@ -485,14 +494,16 @@ public class FondsHateoasController {
     public ResponseEntity<FondsHateoas> updateFonds(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
-                    value = "systemId of parent fonds to associate the fonds with.",
+                    value = "systemId of fonds to update.",
                     required = true)
             @PathVariable String systemID,
             @ApiParam(name = "fonds",
                     value = "Incoming fonds object",
                     required = true)
             @RequestBody Fonds fonds) throws NikitaException {
-        Fonds updatedFonds = fondsService.handleUpdate(systemID, Long.parseLong(request.getHeader(ETAG)), fonds);
+        validateForUpdate(fonds);
+
+        Fonds updatedFonds = fondsService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)), fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(updatedFonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedFonds));
@@ -500,5 +511,35 @@ public class FondsHateoasController {
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(updatedFonds.getVersion().toString())
                 .body(fondsHateoas);
+    }
+
+
+    // Delete a Fonds identified by systemID
+    // DELETE [contextPath][api]/arkivstruktur/arkiv/{systemId}/
+    @ApiOperation(value = "Deletes a single Fonds entity identified by systemID", response = FondsStructureDetails.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Parent ApplicationDetails returned", response = FondsStructureDetails.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
+            method = RequestMethod.DELETE)
+    public ResponseEntity<FondsStructureDetails> deleteFondsBySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the series to delete",
+                    required = true)
+            @PathVariable("systemID") final String systemID) {
+        Fonds fonds = fondsService.findBySystemId(systemID);
+        //TODO: When dealing with a fonds, if you have a parent fonds, then you must return the parent fonds
+        // but if you don't have a parent fonds you must return an applicationdetails. The only way to handle
+        // this is a little mesy, but probably just create the JSON manually here and return it as type string
+        fondsService.deleteEntity(systemID);
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, fonds));
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(applicationService.getFondsStructureDetails());
     }
 }

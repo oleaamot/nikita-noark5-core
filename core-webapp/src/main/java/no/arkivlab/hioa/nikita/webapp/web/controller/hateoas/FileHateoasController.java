@@ -14,13 +14,14 @@ import nikita.model.noark5.v4.interfaces.entities.ICrossReferenceEntity;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IBasicRecordHateoasHandler;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFileHateoasHandler;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRecordHateoasHandler;
+import nikita.util.exceptions.NikitaMalformedInputDataException;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.*;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFileService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,17 +45,24 @@ public class FileHateoasController {
     private IFileHateoasHandler fileHateoasHandler;
     private IRecordHateoasHandler recordHateoasHandler;
     private IBasicRecordHateoasHandler basicRecordHateoasHandler;
+    private ISeriesHateoasHandler seriesHateoasHandler;
+    private IClassHateoasHandler classHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
 
     public FileHateoasController(IFileService fileService,
                                  IFileHateoasHandler fileHateoasHandler,
                                  IRecordHateoasHandler recordHateoasHandler,
                                  IBasicRecordHateoasHandler basicRecordHateoasHandler,
+                                 ISeriesHateoasHandler seriesHateoasHandler,
+                                 IClassHateoasHandler classHateoasHandler,
                                  ApplicationEventPublisher applicationEventPublisher) {
+
         this.fileService = fileService;
         this.fileHateoasHandler = fileHateoasHandler;
         this.recordHateoasHandler = recordHateoasHandler;
         this.basicRecordHateoasHandler = basicRecordHateoasHandler;
+        this.seriesHateoasHandler = seriesHateoasHandler;
+        this.classHateoasHandler = classHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
@@ -853,4 +861,61 @@ public class FileHateoasController {
         */
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
+
+    // Delete a File identified by systemID
+    // DELETE [contextPath][api]/arkivstruktur/mappe/{systemId}/
+    @ApiOperation(value = "Deletes a single File entity identified by systemID", response = HateoasNoarkObject.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Parent entity (DocumentDescription or File) returned", response = HateoasNoarkObject.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
+            method = RequestMethod.DELETE)
+    public ResponseEntity<HateoasNoarkObject> deleteFileBySystemId(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the file to delete",
+                    required = true)
+            @PathVariable("systemID") final String systemID) {
+
+        File file = fileService.findBySystemId(systemID);
+        NoarkEntity parentEntity = file.chooseParent();
+        HateoasNoarkObject hateoasNoarkObject;
+        if (parentEntity instanceof Series) {
+            hateoasNoarkObject = new SeriesHateoas(parentEntity);
+            seriesHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+        }
+        else if (parentEntity instanceof File) {
+            hateoasNoarkObject = new FileHateoas(parentEntity);
+            fileHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+        }
+        else if (parentEntity instanceof Class) {
+            hateoasNoarkObject = new ClassHateoas(parentEntity);
+            classHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+        }
+        else {
+            throw new no.arkivlab.hioa.nikita.webapp.util.exceptions.NikitaException("Internal error. Could not process"
+                    + request.getRequestURI());
+        }
+        fileService.deleteEntity(systemID);
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, file));
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(hateoasNoarkObject);
+    }
 }
+
+/*
+Properties check
+public void checkForObligatoryFileValues(File file) {
+
+    if (file.getFileId() == null) {
+        throw new NikitaMalformedInputDataException("The mappe you tried to create is malformed. The "
+                + "mappeID field is mandatory, and you have submitted an empty value.");
+    }
+}
+
+ */

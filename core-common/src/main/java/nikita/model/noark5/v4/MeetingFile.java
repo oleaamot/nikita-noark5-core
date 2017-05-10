@@ -14,8 +14,8 @@ import static nikita.config.N5ResourceMappings.MEETING_FILE;
 @Entity
 @Table(name = "meeting_file")
 // Enable soft delete of MeetingFile
-@SQLDelete(sql="UPDATE meeting_file SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE meeting_file SET deleted = true WHERE pk_file_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 public class MeetingFile extends File {
 
 

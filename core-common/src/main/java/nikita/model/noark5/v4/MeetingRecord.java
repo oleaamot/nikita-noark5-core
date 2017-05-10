@@ -12,8 +12,8 @@ import static nikita.config.N5ResourceMappings.MEETING_RECORD;
 @Table(name = "meeting_record")
 @Inheritance(strategy = InheritanceType.JOINED)
 // Enable soft delete of MeetingRecord
-@SQLDelete(sql="UPDATE meeting_record SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE meeting_record SET deleted = true WHERE pk_record_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 public class MeetingRecord extends BasicRecord {
 
     /**

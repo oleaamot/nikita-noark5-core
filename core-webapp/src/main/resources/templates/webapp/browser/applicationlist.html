@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="layout">
+<head>
+<title th:text="#{msg.fonds.fonds} + ': ' +  #{msg.fonds.viewAll}"> Fonds: view all </title>
+</head>
+<body>
+    <h1 layout:fragment="header" th:text="#{msg.fonds.Fonds} + ': ' + #{msg.fonds.viewAll}">Fonds: view all</h1>
+    <div layout:fragment="content" class="container">
+        <div class="pull-right">
+            <a href="form.html" th:href="@{/fonds/(form)}"  th:text="${#strings.capitalize('__#{msg.create}__')} +' ' + #{msg.fonds.fonds}">Create fonds</a>
+        </div>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td th:text="#{msg.fonds.title}">title</td>
+                    <td th:text="#{msg.created}">created</td>
+                    <td th:text="#{msg.fonds.fondsStatus}">fonds status</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${fonds.empty}">
+                    <td colspan="4" th:text="#{msg.nodata}"></td>
+                </tr>
+                <tr th:each="fond : ${fonds}">
+                    <td><a href="view.html" th:href="@{'/gui/arkiv/' + ${fond.id}}" th:text="${fond.title}"> Title </a></td>
+                    <td th:text="${#calendars.format(fond.createdDate, 'yyyy-MM-dd')}">2012-07-12</td>
+                    <td th:text="${fond.fondsStatus}">Fonds Status</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

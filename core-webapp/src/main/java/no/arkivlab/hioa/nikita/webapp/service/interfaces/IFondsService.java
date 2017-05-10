@@ -8,13 +8,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 public interface IFondsService  {
-
-    Fonds handleUpdate(String systemId, Long version, Fonds incomingFonds);
 
     // -- All CREATE operations
     Fonds createNewFonds(Fonds fonds);
@@ -123,6 +122,10 @@ public interface IFondsService  {
     List<Fonds> findByOwnedBy(String ownedBy, Sort sort);
     Page<Fonds> findByOwnedBy(String ownedBy, Pageable pageable);
 
-    // -- All UPDATE operations
-    Fonds updateFonds(Fonds fonds);
+
+    // All UPDATE operations
+    Fonds handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull Fonds incomingFonds);
+
+    // All DELETE operations
+    void deleteEntity(@NotNull String systemId);
 }

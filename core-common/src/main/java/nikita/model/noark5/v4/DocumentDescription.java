@@ -21,8 +21,8 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_DESCRIPTION;
 @Entity
 @Table(name = "document_description")
 // Enable soft delete of DocumentDescription
-@SQLDelete(sql="UPDATE document_description SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE document_description SET deleted = true WHERE pk_document_description_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @Indexed(index = "document_description")
 @JsonDeserialize(using = DocumentDescriptionDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_document_description_id"))
@@ -146,7 +146,7 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
     private Set<Author> referenceAuthor = new TreeSet<>();
 
     // Link to StorageLocation
-    @ManyToMany (cascade=CascadeType.ALL)
+    @ManyToMany (cascade=CascadeType.PERSIST)
     @JoinTable(name = "document_description_storage_location", joinColumns = @JoinColumn(
             name = "f_pk_document_description_id",referencedColumnName = "pk_document_description_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
@@ -154,28 +154,28 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
     private Set<StorageLocation> referenceStorageLocation = new TreeSet<>();
 
     // Link to Classified
-    @ManyToOne (cascade=CascadeType.ALL)
+    @ManyToOne (cascade=CascadeType.PERSIST)
     @JoinColumn(name = "document_description_classified_id", referencedColumnName = "pk_classified_id")
     private Classified referenceClassified;
 
     // Link to Disposal
-    @ManyToOne (cascade=CascadeType.ALL)
+    @ManyToOne (cascade=CascadeType.PERSIST)
     @JoinColumn(name = "document_description_disposal_id", referencedColumnName = "pk_disposal_id")
     private Disposal referenceDisposal;
 
     // Link to DisposalUndertaken
-    @ManyToOne (cascade=CascadeType.ALL)
+    @ManyToOne (cascade=CascadeType.PERSIST)
     @JoinColumn(name = "document_description_disposal_undertaken_id",
             referencedColumnName = "pk_disposal_undertaken_id")
     private DisposalUndertaken referenceDisposalUndertaken;
 
     // Link to Deletion
-    @ManyToOne (cascade=CascadeType.ALL)
+    @ManyToOne (cascade=CascadeType.PERSIST)
     @JoinColumn(name = "document_description_deletion_id", referencedColumnName = "pk_deletion_id")
     private Deletion referenceDeletion;
 
     // Link to Screening
-    @ManyToOne (cascade=CascadeType.ALL)
+    @ManyToOne (cascade=CascadeType.PERSIST)
     @JoinColumn(name = "document_description_screening_id", referencedColumnName = "pk_screening_id")
     private Screening referenceScreening;
 

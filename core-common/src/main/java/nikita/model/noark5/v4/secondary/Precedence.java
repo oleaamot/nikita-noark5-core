@@ -18,8 +18,8 @@ import static nikita.config.N5ResourceMappings.PRECEDENCE;
 @Entity
 @Table(name = "precedence")
 // Enable soft delete of Precedence
-@SQLDelete(sql="UPDATE precedence SET deleted = true WHERE id = ?")
-@Where(clause="deleted <> true")
+// @SQLDelete(sql="UPDATE precedence SET deleted = true WHERE pk_precedence_id = ? and version = ?")
+// @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_precedence_id"))
 public class Precedence extends NoarkGeneralEntity implements IPrecedenceEntity{
 
