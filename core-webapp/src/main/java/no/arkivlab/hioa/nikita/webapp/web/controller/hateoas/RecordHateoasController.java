@@ -571,7 +571,7 @@ public class RecordHateoasController {
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
-    public ResponseEntity<HateoasNoarkObject> deleteRecordBySystemId(
+    public ResponseEntity<String> deleteRecordBySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemID of the record to delete",
@@ -579,7 +579,7 @@ public class RecordHateoasController {
             @PathVariable("systemID") final String systemID) {
 
         Record record = recordService.findBySystemId(systemID);
-        NoarkEntity parentEntity = record.chooseParent();
+      /*  NoarkEntity parentEntity = record.chooseParent();
         HateoasNoarkObject hateoasNoarkObject;
         if (parentEntity instanceof Series) {
             hateoasNoarkObject = new SeriesHateoas(parentEntity);
@@ -596,11 +596,11 @@ public class RecordHateoasController {
         else {
             throw new no.arkivlab.hioa.nikita.webapp.util.exceptions.NikitaException("Internal error. Could not process"
                     + request.getRequestURI());
-        }
+        } */
         recordService.deleteEntity(systemID);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, record));
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
-                .body(hateoasNoarkObject);
+                .body("{\"status\": \"deleted\"}");
     }
 }
