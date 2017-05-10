@@ -3,7 +3,6 @@ package no.arkivlab.hioa.nikita.webapp.web.controller;
 import com.codahale.metrics.annotation.Counted;
 import groovy.util.MapEntry;
 import io.swagger.annotations.Api;
-import javafx.application.Application;
 import nikita.util.CommonUtils;
 import no.arkivlab.hioa.nikita.webapp.model.application.*;
 import no.arkivlab.hioa.nikita.webapp.service.application.service.ApplicationService;
