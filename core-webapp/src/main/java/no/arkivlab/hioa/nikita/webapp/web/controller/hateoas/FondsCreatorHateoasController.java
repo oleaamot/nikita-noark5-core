@@ -273,7 +273,7 @@ public class FondsCreatorHateoasController extends NoarkController {
     @Timed
     @RequestMapping(value = SLASH + FONDS_CREATOR + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
-    public ResponseEntity<FondsHateoas> deleteSeriesBySystemId(
+    public ResponseEntity<String> deleteSeriesBySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemID of the fondsCreator to delete",
@@ -281,15 +281,15 @@ public class FondsCreatorHateoasController extends NoarkController {
             @PathVariable("systemID") final String seriesSystemId) {
 
         FondsCreator fondsCreator = fondsCreatorService.findBySystemId(seriesSystemId);
-
-        List<Fonds> fonds = new ArrayList<>();
+        fondsCreatorService.deleteEntity(seriesSystemId);
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, fondsCreator));
+/*        List<Fonds> fonds = new ArrayList<>();
         fonds.addAll(fondsCreator.getReferenceFonds());
         FondsHateoas fondsHateoas = new FondsHateoas((List<INikitaEntity>) (List)fonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
-        fondsCreatorService.deleteEntity(seriesSystemId);
-        applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, fondsCreator));
+  */
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
-                .body(fondsHateoas);
+                .body("{\"status\" : \"Success\"}");
     }
 }

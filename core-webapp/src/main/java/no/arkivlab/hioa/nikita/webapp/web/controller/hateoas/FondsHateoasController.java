@@ -526,7 +526,7 @@ public class FondsHateoasController extends NoarkController {
     @Timed
     @RequestMapping(value = SLASH + FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
-    public ResponseEntity<FondsStructureDetails> deleteFondsBySystemId(
+    public ResponseEntity<String> deleteFondsBySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemID of the series to delete",
@@ -537,9 +537,9 @@ public class FondsHateoasController extends NoarkController {
         // but if you don't have a parent fonds you must return an applicationdetails. The only way to handle
         // this is a little mesy, but probably just create the JSON manually here and return it as type string
         fondsService.deleteEntity(systemID);
-        applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, fonds));
+//        applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, fonds));
         return ResponseEntity.status(HttpStatus.OK)
-                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
-                .body(applicationService.getFondsStructureDetails());
+//                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body("{\"status\" : \"Success\"}");
     }
 }

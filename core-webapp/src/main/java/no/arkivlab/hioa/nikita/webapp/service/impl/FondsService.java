@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -577,7 +578,16 @@ public class FondsService implements IFondsService {
     @Override
     public void deleteEntity(@NotNull String fondsSystemId) {
         Fonds fonds = getFondsOrThrow(fondsSystemId);
-        fondsRepository.delete(fonds);
+
+        // Disassociate the link between Fonds and FondsCreator
+        // https://github.com/HiOA-ABI/nikita-noark5-core/issues/82
+        Query q = entityManager.createNativeQuery("DELETE FROM fonds_fonds_creator WHERE f_pk_fonds_id  = :id ;");
+        q.setParameter("id", fonds.getId());
+        q.executeUpdate();
+        entityManager.remove(fonds);
+        entityManager.flush();
+        entityManager.clear();
+        //fondsRepository.delete(fonds);
     }
 
     // All HELPER operations
