@@ -62,9 +62,30 @@
 	      </tr>
 	    </thead>
 	    <tbody>
-	      <tr ng-repeat="(key, value) in entry" class="mdl-data-table__cell--non-numeric">
+	      <tr ng-repeat="(key, value) in entry">
 	        <td class="mdl-data-table__cell--non-numeric">{{ key }}</td>
-	        <td class="mdl-data-table__cell--non-numeric">{{ value }}</td>
+		  <td class="mdl-data-table__cell--non-numeric">
+		    <div ng-if="key == '_links'">
+		      <div ng-repeat="link in value">
+			<br>{
+			<div ng-repeat="(lkey, lvalue) in link">
+			  <div ng-if="lkey == 'href'">
+			    <br>href: <div ng-click="hrefSelected(lvalue)">{{ lvalue }},</div>
+			  </div>
+			  <div ng-if="lkey == 'rel'">
+			    <br>{{ lkey }}: <a href="{{ lvalue }}">{{ lvalue }}</A>,
+			  </div>
+			  <div ng-if="lkey != 'href' && lkey != 'rel'">
+			    <br>{{ lkey }}: {{ lvalue }},
+			  </div>
+			</div>
+			<br>}
+		      </div>
+		    </div>
+		    <div ng-if="key != '_links' ">
+		      {{ value }}
+		    </div>
+		  </td>
 	      </tr>
 	    </tbody>
           </table>
