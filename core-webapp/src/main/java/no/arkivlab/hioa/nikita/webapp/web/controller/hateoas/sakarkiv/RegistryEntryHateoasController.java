@@ -7,10 +7,11 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
-import nikita.model.noark5.v4.*;
+import nikita.model.noark5.v4.DocumentFlow;
+import nikita.model.noark5.v4.DocumentObject;
+import nikita.model.noark5.v4.RegistryEntry;
+import nikita.model.noark5.v4.SignOff;
 import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
-import nikita.model.noark5.v4.hateoas.FileHateoas;
-import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
 import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
 import nikita.model.noark5.v4.hateoas.secondary.CorrespondencePartHateoas;
 import nikita.model.noark5.v4.hateoas.secondary.PrecedenceHateoas;
@@ -19,10 +20,7 @@ import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.model.noark5.v4.secondary.Precedence;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassHateoasHandler;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFileHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRegistryEntryHateoasHandler;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ISeriesHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.secondary.ICorrespondencePartHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRegistryEntryService;
@@ -32,10 +30,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
@@ -50,24 +46,15 @@ public class RegistryEntryHateoasController {
     private IRegistryEntryHateoasHandler registryEntryHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
     private ICorrespondencePartHateoasHandler correspondencePartHateoasHandler;
-    private ISeriesHateoasHandler seriesHateoasHandler;
-    private IFileHateoasHandler fileHateoasHandler;
-    private IClassHateoasHandler classHateoasHandler;
 
     public RegistryEntryHateoasController(IRegistryEntryService registryEntryService,
                                           IRegistryEntryHateoasHandler registryEntryHateoasHandler,
                                           ApplicationEventPublisher applicationEventPublisher,
-                                          ICorrespondencePartHateoasHandler correspondencePartHateoasHandler,
-                                          ISeriesHateoasHandler seriesHateoasHandler,
-                                          IFileHateoasHandler fileHateoasHandler,
-                                          IClassHateoasHandler classHateoasHandler) {
+                                          ICorrespondencePartHateoasHandler correspondencePartHateoasHandler) {
         this.registryEntryService = registryEntryService;
         this.registryEntryHateoasHandler = registryEntryHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
         this.correspondencePartHateoasHandler = correspondencePartHateoasHandler;
-        this.seriesHateoasHandler = seriesHateoasHandler;
-        this.fileHateoasHandler = fileHateoasHandler;
-        this.classHateoasHandler = classHateoasHandler;
     }
 
     // API - All POST Requests (CRUD - CREATE)
@@ -93,7 +80,7 @@ public class RegistryEntryHateoasController {
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_CORRESPONDENCE_PART, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<CorrespondencePartHateoas> createCorrespondencePartAssociatedWithRecord(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "systemId of record to associate the CorrespondencePart with.",
                     required = true)
@@ -138,7 +125,7 @@ public class RegistryEntryHateoasController {
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_PRECEDENCE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<PrecedenceHateoas> createPrecedenceAssociatedWithRecord(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "systemId of record to associate the Precedence with.",
                     required = true)
@@ -184,7 +171,7 @@ public class RegistryEntryHateoasController {
             SLASH + NEW_DOCUMENT_DESCRIPTION, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<SignOffHateoas>
     createSignOffAssociatedWithRecord(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "systemId of record to associate the signOff with.",
                     required = true)
@@ -230,7 +217,7 @@ public class RegistryEntryHateoasController {
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_DOCUMENT_OBJECT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> createDocumentObjectAssociatedWithRecord(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "systemID of record to associate the documentObject with.",
                     required = true)
@@ -269,7 +256,7 @@ public class RegistryEntryHateoasController {
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             CORRESPONDENCE_PART, method = RequestMethod.GET)
     public ResponseEntity<String> findAllCorrespondencePartAssociatedWithRecord(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "systemID of the file to retrieve associated Record",
                     required = true)
@@ -303,7 +290,7 @@ public class RegistryEntryHateoasController {
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             SIGN_OFF, method = RequestMethod.GET)
     public ResponseEntity<String> findAllSignOffAssociatedWithRecord(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "systemID of the file to retrieve associated Record",
                     required = true)
@@ -337,7 +324,7 @@ public class RegistryEntryHateoasController {
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             PRECEDENCE, method = RequestMethod.GET)
     public ResponseEntity<String> findAllPrecedenceAssociatedWithRecord(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "systemID of the registryEntry to retrieve associated Precedence",
                     required = true)
@@ -371,7 +358,7 @@ public class RegistryEntryHateoasController {
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             DOCUMENT_FLOW, method = RequestMethod.GET)
     public ResponseEntity<String> findAllDocumentFlowAssociatedWithRecord(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "systemID of the file to retrieve associated Record",
                     required = true)
@@ -391,7 +378,35 @@ public class RegistryEntryHateoasController {
     }
 
 
-    // Get all fonds
+    // Retrieve a single registryEntry identified by systemId
+    // GET [contextPath][api]/sakarkiv/journalpost/{systemID}
+    @ApiOperation(value = "Retrieves a single RegistryEntry entity given a systemId", response = RegistryEntry.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "RegistryEntry returned", response = RegistryEntry.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
+    public ResponseEntity<RegistryEntryHateoas> findOneRegistryEntrybySystemId(
+            HttpServletRequest request,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the registryEntry to retrieve",
+                    required = true)
+            @PathVariable("systemID") final String registryEntrySystemId) {
+        RegistryEntry registryEntry = registryEntryService.findBySystemId(registryEntrySystemId);
+
+        RegistryEntryHateoas registryEntryHateoas = new
+                RegistryEntryHateoas(registryEntry);
+        registryEntryHateoasHandler.addLinks(registryEntryHateoas, request, new Authorisation());
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .eTag(registryEntry.getVersion().toString())
+                .body(registryEntryHateoas);
+    }
+
+    // Get all registryEntry
     // GET [contextPath][api]/sakarkiv/journalpost/
     // http://rel.kxml.no/noark5/v4/api/sakarkiv/journalpost/
     @ApiOperation(value = "Retrieves multiple RegistryEntry entities limited by ownership rights", notes = "The field skip" +
@@ -409,7 +424,7 @@ public class RegistryEntryHateoasController {
     @Timed
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<RegistryEntryHateoas> findAllRegistryEntry(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
         RegistryEntryHateoas registryEntryHateoas = new
@@ -420,11 +435,12 @@ public class RegistryEntryHateoasController {
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(registryEntryHateoas);
     }
+
     // Delete a Record identified by systemID
-    // DELETE [contextPath][api]/arkivstruktur/registrering/{systemId}/
-    @ApiOperation(value = "Deletes a single Record entity identified by systemID", response = HateoasNoarkObject.class)
+    // DELETE [contextPath][api]/sakarkiv/journalpost/{systemId}/
+    @ApiOperation(value = "Deletes a single RegistryEntry entity identified by systemID", response = String.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Parent entity (DocumentDescription or Record) returned", response = HateoasNoarkObject.class),
+            @ApiResponse(code = 200, message = "Parent entity (DocumentDescription or Record) returned", response = String.class),
             @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
@@ -432,27 +448,17 @@ public class RegistryEntryHateoasController {
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
-    public ResponseEntity<HateoasNoarkObject> deleteRecordBySystemId(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "systemID",
+    public ResponseEntity<String> deleteRecordBySystemId(HttpServletRequest request,
+                                                         @ApiParam(name = "systemID",
                     value = "systemID of the record to delete",
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
         RegistryEntry registryEntry = registryEntryService.findBySystemId(systemID);
-        NoarkEntity parentEntity = registryEntry.chooseParent();
-        HateoasNoarkObject hateoasNoarkObject;
-        if (parentEntity instanceof File) {
-            hateoasNoarkObject = new FileHateoas(parentEntity);
-            fileHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
-        }
-        else {
-            throw new NikitaException("Internal error. Could not process" + request.getRequestURI());
-        }
         registryEntryService.deleteEntity(systemID);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, registryEntry));
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
-                .body(hateoasNoarkObject);
+                .body(CommonUtils.WebUtils.getSuccessStatusStringForDelete());
     }
 }
