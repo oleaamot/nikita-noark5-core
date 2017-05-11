@@ -78,6 +78,10 @@ public final class CommonUtils {
 
     public static final class WebUtils {
 
+        public final static String getSuccessStatusStringForDelete() {
+            return "{\"status\" : \"Success\"}";
+        }
+
         /**
          * requestMethodMap maps servletPaths to HTTP methods. If a particular
          * servletPath supports
