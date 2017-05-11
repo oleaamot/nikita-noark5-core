@@ -13,9 +13,6 @@ import nikita.model.noark5.v4.secondary.Precedence;
 import nikita.util.exceptions.NikitaException;
 import nikita.util.exceptions.NikitaMalformedInputDataException;
 import org.springframework.http.HttpMethod;
-import org.springframework.validation.ValidationUtils;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.http.HttpMethod.*;
 
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
@@ -28,9 +25,7 @@ import java.util.regex.Pattern;
 import static nikita.config.Constants.*;
 import static nikita.config.HATEOASConstants.*;
 import static nikita.config.N5ResourceMappings.*;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.HEAD;
-import static org.springframework.http.HttpMethod.OPTIONS;
+import static org.springframework.http.HttpMethod.*;
 
 public final class CommonUtils {
 
