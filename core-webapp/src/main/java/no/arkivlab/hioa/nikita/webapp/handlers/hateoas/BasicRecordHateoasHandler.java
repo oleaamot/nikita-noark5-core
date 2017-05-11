@@ -45,42 +45,42 @@ public class BasicRecordHateoasHandler extends RecordHateoasHandler implements I
     @Override
     public void addAuthor(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH +
                 BASIC_RECORD + SLASH + AUTHOR + SLASH, REL_FONDS_STRUCTURE_AUTHOR, false));
     }
 
     @Override
     public void addNewAuthor(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH +
                 BASIC_RECORD + SLASH + NEW_AUTHOR + SLASH, REL_FONDS_STRUCTURE_NEW_AUTHOR, false));
     }
 
     @Override
     public void addComment(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH +
                 BASIC_RECORD + SLASH + COMMENT + SLASH, REL_FONDS_STRUCTURE_COMMENT, false));
     }
 
     @Override
     public void addNewComment(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH +
                 BASIC_RECORD + SLASH + NEW_COMMENT + SLASH, REL_FONDS_STRUCTURE_NEW_COMMENT, false));
     }
 
     @Override
     public void addStorageLocation(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH +
                 BASIC_RECORD + SLASH + STORAGE_LOCATION + SLASH, REL_FONDS_STRUCTURE_STORAGE_LOCATION, false));
     }
 
     @Override
     public void addNewStorageLocation(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH +
                 BASIC_RECORD + SLASH + NEW_STORAGE_LOCATION + SLASH, REL_FONDS_STRUCTURE_NEW_STORAGE_LOCATION,
                 false));
     }
@@ -88,28 +88,28 @@ public class BasicRecordHateoasHandler extends RecordHateoasHandler implements I
     @Override
     public void addKeyword(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH +
                 BASIC_RECORD + SLASH + KEYWORD + SLASH, REL_FONDS_STRUCTURE_KEYWORD, false));
     }
 
     @Override
     public void addNewKeyword(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + BASIC_RECORD + SLASH +
-                NEW_KEYWORD + SLASH, REL_FONDS_STRUCTURE_NEW_KEYWORD, false));
+                NOARK_FONDS_STRUCTURE_PATH + SLASH +
+                BASIC_RECORD + SLASH + NEW_KEYWORD + SLASH, REL_FONDS_STRUCTURE_NEW_KEYWORD, false));
     }
 
     @Override
     public void addCrossReference(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH +
                 BASIC_RECORD + SLASH + CROSS_REFERENCE + SLASH, REL_FONDS_STRUCTURE_CROSS_REFERENCE, false));
     }
 
     @Override
     public void addNewCrossReference(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH +
                 BASIC_RECORD + SLASH + NEW_CROSS_REFERENCE + SLASH, REL_FONDS_STRUCTURE_NEW_CROSS_REFERENCE, false));
     }
 }
