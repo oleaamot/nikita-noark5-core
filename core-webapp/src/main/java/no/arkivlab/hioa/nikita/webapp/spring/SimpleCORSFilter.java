@@ -33,7 +33,7 @@ public class SimpleCORSFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        // Make sure this is a request for something that exisits. If it's not just pass it on in the filter
+        // Make sure this is a request for something that exists. If it's not just pass it on in the filter
         HttpMethod[] allowMethods = CommonUtils.WebUtils.getMethodsForRequest(request.getServletPath());
         if (allowMethods != null) {
             response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
