@@ -143,7 +143,7 @@ resultFileDownload=$(curl "${curloptsDownloadFile[@]}");
 #echo "${curloptsDownloadFile[@]}";
 printf "downloaded file from DocumentObject  ($systemIDCreatedDocumentObject) Result $resultFileDownload\n";
 
-exit;
+
 
 curloptsCreateBasicRecord+=("${curlPostOpts[@]}");
 curloptsCreateBasicRecord+=( --data @"$curl_files_dir"basic-record-data.json 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/mappe/'$systemIDCreatedFile'/ny-basisregistrering' )
