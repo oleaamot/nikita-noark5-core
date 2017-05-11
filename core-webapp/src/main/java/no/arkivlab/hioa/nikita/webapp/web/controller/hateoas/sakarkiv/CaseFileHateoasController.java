@@ -64,7 +64,9 @@ public class CaseFileHateoasController {
     }
 
     // API - All POST Requests (CRUD - CREATE)
-    //GET [contextPath][api]/sakarkiv/{systemId}/ny-journalpost
+
+    // Create a RegistryEntry entity
+    // POST [contextPath][api]/sakarkiv/{systemId}/ny-journalpost
     @ApiOperation(value = "Persists a RegistryEntry object associated with the given Series systemId",
             notes = "Returns the newly created record object after it was associated with a File object and " +
                     "persisted to the database", response = RegistryEntryHateoas.class)
@@ -106,7 +108,7 @@ public class CaseFileHateoasController {
     // API - All GET Requests (CRUD - READ)
 
     // Create a RegistryEntry object with default values
-    //GET [contextPath][api]/arkivstruktur/mappe/SYSTEM_ID/ny-basisregistrering
+    // GET [contextPath][api]/sakarkiv/mappe/SYSTEM_ID/ny-journalpost
     @ApiOperation(value = "Create a RegistryEntry with default values", response = RegistryEntry.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "RegistryEntry returned", response = RegistryEntry.class),
@@ -132,6 +134,8 @@ public class CaseFileHateoasController {
                 .body(registryEntryHateoas);
     }
 
+    // Retrieve a single casefile identified by systemId
+    //GET [contextPath][api]/sakarkiv/saksmappe/{systemID}
     @ApiOperation(value = "Retrieves a single CaseFile entity given a systemId", response = CaseFile.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "CaseFile returned", response = CaseFile.class),
