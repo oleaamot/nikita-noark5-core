@@ -30,6 +30,7 @@ import static nikita.config.HATEOASConstants.*;
 import static nikita.config.N5ResourceMappings.*;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.HEAD;
+import static org.springframework.http.HttpMethod.OPTIONS;
 
 public final class CommonUtils {
 
@@ -109,6 +110,9 @@ public final class CommonUtils {
             if (method.contains(GET)) {
                 methods.add(GET);
                 methods.add(HEAD);
+            }
+            if (!method.contains(OPTIONS)) {
+                methods.add(OPTIONS);
             }
             methods.addAll(method);
             requestMethodMap.put(servletPath, methods);
