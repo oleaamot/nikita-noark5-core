@@ -43,6 +43,7 @@ public class ApiError {
     public String getStackTrace() {
         return stackTrace;
     }
+
     public void setStackTrace(String stackTrace) {
         this.stackTrace = stackTrace;
     }
@@ -96,4 +97,12 @@ public class ApiError {
         return builder.toString();
     }
 
+    /**
+     * @return The details as a JSON string
+     */
+    public final String toJSON() {
+        final StringBuilder json = new StringBuilder();
+        json.append("{  \"status\" : ").append(status).append(", \"message\" : ").append(message).append(", \"developerMessage\" : ").append(developerMessage).append("}");
+        return json.toString();
+    }
 }

@@ -1,6 +1,6 @@
 package no.arkivlab.hioa.nikita.webapp.web.interceptor;
 
-import nikita.util.exceptions.NikitaMalformedHeaderException;
+import nikita.util.exceptions.NikitaETAGMalformedHeaderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,7 +35,7 @@ public class NikitaETAGInterceptor extends HandlerInterceptorAdapter {
         // All PUT requests must have an eTag. Otherwise reject it
         if (RequestMethod.PUT.name().equals(request.getMethod())) {
             if (request.getHeader(ETAG) == null) {
-                throw new NikitaMalformedHeaderException("eTag is missing on following request: " +
+                throw new NikitaETAGMalformedHeaderException("eTag is missing on following request: " +
                         "[" + request.getRequestURI() + "], Request method [" + request.getMethod() + "]" +
                         ". You cannot update an entity in the core unless you first ensure you have retrieved an" +
                         " entity with an eTag set. Using an entity from a list does not provide an eTag.");
@@ -46,7 +46,7 @@ public class NikitaETAGInterceptor extends HandlerInterceptorAdapter {
                 // < 3 characters means it cannot contain content between ""
                 if (!etagWithQuotes.startsWith("\"") && !etagWithQuotes.endsWith("\"") &&
                         etagWithQuotes.length() < 3) {
-                    throw new NikitaMalformedHeaderException("eTag is malformed in following request: " +
+                    throw new NikitaETAGMalformedHeaderException("eTag is malformed in following request: " +
                             "[" + request.getRequestURI() + "]. ETag must be quoted and contain content. The ETag " +
                             "you submitted is [" + request.getHeader(ETAG) + "]. Note if you e.g are running curl " +
                             "from the commandline, yo might need to escape the quotes");
@@ -55,18 +55,18 @@ public class NikitaETAGInterceptor extends HandlerInterceptorAdapter {
                 try {
                     long etagVal = Long.parseLong(etagWithoutQuotes);
                     if (etagVal < 0) {
-                        throw new NikitaMalformedHeaderException("eTag value is less than 0 for request: " +
+                        throw new NikitaETAGMalformedHeaderException("eTag value is less than 0 for request: " +
                                 "[" + request.getRequestURI() + "]. Value is [" + etagVal + "]. This is illegal" +
                                 "as ETAG values show version of an entity in the database and start at 0");
                     }
                 } catch (NumberFormatException nfe) {
-                    throw new NikitaMalformedHeaderException("eTag value is not numeric. Nikita  uses numeric ETAG " +
+                    throw new NikitaETAGMalformedHeaderException("eTag value is not numeric. Nikita  uses numeric ETAG " +
                             "values >= 0. The value in the request [" + request.getRequestURI() + "] is [" +
                             request.getHeader(ETAG) + "]");
                 }
             }
         }
-        // Important! You must return true if all is OK or further filer processing stops
+        // Important! You must return true if all is OK or further filter processing stops
         return true;
     }
 }
