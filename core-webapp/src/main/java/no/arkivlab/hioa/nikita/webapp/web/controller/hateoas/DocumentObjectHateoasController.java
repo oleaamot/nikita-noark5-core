@@ -16,15 +16,15 @@ import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
 import nikita.model.noark5.v4.hateoas.RecordHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
-import nikita.util.exceptions.NikitaEntityNotFoundException;
+import nikita.util.exceptions.NikitaException;
+import nikita.util.exceptions.NoarkEntityNotFoundException;
+import nikita.util.exceptions.NoarkNotAcceptableException;
+import nikita.util.exceptions.StorageException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.DocumentDescriptionHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.RecordHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentObjectService;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NikitaException;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkNotAcceptableException;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.StorageException;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.context.ApplicationEventPublisher;
@@ -89,7 +89,7 @@ public class DocumentObjectHateoasController {
             @PathVariable("systemID") final String documentObjectSystemId) {
         DocumentObject createdDocumentObject = documentObjectService.findBySystemId(documentObjectSystemId);
         if (createdDocumentObject == null) {
-            throw new NikitaEntityNotFoundException(documentObjectSystemId);
+            throw new NoarkEntityNotFoundException(documentObjectSystemId);
         }
         DocumentObjectHateoas documentObjectHateoas = new
                 DocumentObjectHateoas(createdDocumentObject);
@@ -151,7 +151,7 @@ public class DocumentObjectHateoasController {
             @PathVariable("systemID") final String documentObjectSystemId) throws IOException {
         DocumentObject documentObject = documentObjectService.findBySystemId(documentObjectSystemId);
         if (documentObject == null) {
-            throw new NikitaEntityNotFoundException(documentObjectSystemId);
+            throw new NoarkEntityNotFoundException(documentObjectSystemId);
         }
         Resource fileResource = documentObjectService.loadAsResource(documentObject);
         String acceptType = request.getHeader(HttpHeaders.ACCEPT);
@@ -195,7 +195,7 @@ public class DocumentObjectHateoasController {
         try {
             DocumentObject documentObject = documentObjectService.findBySystemId(documentObjectSystemId);
             if (documentObject == null) {
-                throw new NikitaEntityNotFoundException(documentObjectSystemId);
+                throw new NoarkEntityNotFoundException(documentObjectSystemId);
             }
             InputStream inputStream;
             // Following will be needed for uploading file in chunks

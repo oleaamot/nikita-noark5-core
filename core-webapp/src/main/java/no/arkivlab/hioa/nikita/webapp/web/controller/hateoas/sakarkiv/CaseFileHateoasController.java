@@ -11,11 +11,9 @@ import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.hateoas.*;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
-import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
 import nikita.util.CommonUtils;
-import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
-import nikita.util.exceptions.NikitaMalformedInputDataException;
+import nikita.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ICaseFileHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRegistryEntryHateoasHandler;
@@ -151,7 +149,7 @@ public class CaseFileHateoasController {
             @PathVariable("systemID") final String caseFileSystemId) {
         CaseFile caseFile = caseFileService.findBySystemId(caseFileSystemId);
         if (caseFile == null) {
-            throw new NikitaEntityNotFoundException(caseFileSystemId);
+            throw new NoarkEntityNotFoundException(caseFileSystemId);
         }
         CaseFileHateoas caseFileHateoas = new
                 CaseFileHateoas(caseFile);

@@ -8,13 +8,12 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.ClassificationSystem;
-import nikita.model.noark5.v4.Fonds;
 import nikita.model.noark5.v4.hateoas.ClassHateoas;
 import nikita.model.noark5.v4.hateoas.ClassificationSystemHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
-import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
+import nikita.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassificationSystemHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.model.application.FondsStructureDetails;
@@ -35,7 +34,6 @@ import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.CLASSIFICATION_SYSTEM;
-import static nikita.config.N5ResourceMappings.FONDS;
 import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
@@ -150,7 +148,7 @@ public class ClassificationSystemHateoasController {
             @PathVariable("systemID") final String classificationSystemId) {
         ClassificationSystem classificationSystem = classificationSystemService.findBySystemId(classificationSystemId);
         if (classificationSystem == null) {
-            throw new NikitaEntityNotFoundException(classificationSystemId);
+            throw new NoarkEntityNotFoundException(classificationSystemId);
         }
         ClassificationSystemHateoas classificationSystemHateoas = new ClassificationSystemHateoas(classificationSystem);
         classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, request, new Authorisation());

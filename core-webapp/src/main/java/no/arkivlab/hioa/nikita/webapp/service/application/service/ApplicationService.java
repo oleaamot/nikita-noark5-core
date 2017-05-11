@@ -1,32 +1,14 @@
 package no.arkivlab.hioa.nikita.webapp.service.application.service;
 
-import nikita.model.noark5.v4.BasicRecord;
-import nikita.model.noark5.v4.File;
-import nikita.model.noark5.v4.Record;
-import nikita.repository.n5v4.IFileRepository;
 import no.arkivlab.hioa.nikita.webapp.model.application.*;
-import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFileService;
-import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRecordService;
-import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static nikita.config.Constants.*;

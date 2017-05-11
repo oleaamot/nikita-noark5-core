@@ -2,10 +2,10 @@ package no.arkivlab.hioa.nikita.webapp.service.impl;
 
 import nikita.model.noark5.v4.Class;
 import nikita.repository.n5v4.IClassRepository;
+import nikita.util.exceptions.NoarkEntityEditWhenClosedException;
+import nikita.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IClassService;
 import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityEditWhenClosedException;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

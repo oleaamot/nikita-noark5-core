@@ -5,7 +5,7 @@ import nikita.model.noark5.v4.interfaces.IConversion;
 import nikita.model.noark5.v4.interfaces.IElectronicSignature;
 import nikita.model.noark5.v4.interfaces.entities.INoarkCreateEntity;
 import nikita.util.deserialisers.DocumentObjectDeserializer;
-import nikita.util.exceptions.NikitaEntityNotFoundException;
+import nikita.util.exceptions.NoarkEntityNotFoundException;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -281,7 +281,7 @@ public class DocumentObject  extends NoarkEntity implements INoarkCreateEntity,
             return referenceRecord;
         }
         else { // This should be impossible, a documentObject cannot exist without a parent
-            throw new NikitaEntityNotFoundException("Could not find parent object for " + this.toString());
+            throw new NoarkEntityNotFoundException("Could not find parent object for " + this.toString());
         }
     }
 

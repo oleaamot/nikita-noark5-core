@@ -1,10 +1,9 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl.secondary;
 
 import nikita.model.noark5.v4.secondary.CorrespondencePart;
-import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.repository.n5v4.secondary.ICorrespondencePartRepository;
+import nikita.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary.ICorrespondencePartService;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
 
-import static nikita.config.Constants.*;
+import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 
 @Service
 @Transactional

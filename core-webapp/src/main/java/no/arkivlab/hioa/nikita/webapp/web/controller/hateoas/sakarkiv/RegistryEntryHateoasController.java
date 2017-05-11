@@ -447,8 +447,7 @@ public class RegistryEntryHateoasController {
             fileHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
         }
         else {
-            throw new no.arkivlab.hioa.nikita.webapp.util.exceptions.NikitaException("Internal error. Could not process"
-                    + request.getRequestURI());
+            throw new NikitaException("Internal error. Could not process" + request.getRequestURI());
         }
         registryEntryService.deleteEntity(systemID);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, registryEntry));

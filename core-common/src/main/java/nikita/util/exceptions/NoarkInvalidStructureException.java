@@ -1,6 +1,6 @@
-package no.arkivlab.hioa.nikita.webapp.util.exceptions;
+package nikita.util.exceptions;
 
-public class NoarkInvalidStructureException extends NikitaException{
+public class NoarkInvalidStructureException extends NikitaException {
 
     String description;
 

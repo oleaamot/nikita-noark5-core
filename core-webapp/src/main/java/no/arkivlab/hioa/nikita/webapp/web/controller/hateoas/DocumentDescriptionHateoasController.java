@@ -15,14 +15,13 @@ import nikita.model.noark5.v4.hateoas.DocumentObjectHateoas;
 import nikita.model.noark5.v4.hateoas.RecordHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
-import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
+import nikita.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentDescriptionHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRecordHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentDescriptionService;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
 import org.springframework.context.ApplicationEventPublisher;
@@ -36,7 +35,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
@@ -126,7 +124,7 @@ public class DocumentDescriptionHateoasController {
             @PathVariable("systemID") final String documentDescriptionSystemId) {
         DocumentDescription documentDescription = documentDescriptionService.findBySystemId(documentDescriptionSystemId);
         if (documentDescription == null) {
-            throw new NikitaEntityNotFoundException(documentDescriptionSystemId);
+            throw new NoarkEntityNotFoundException(documentDescriptionSystemId);
         }
         DocumentDescriptionHateoas documentDescriptionHateoas = new
                 DocumentDescriptionHateoas(documentDescription);

@@ -1,4 +1,4 @@
-package no.arkivlab.hioa.nikita.webapp.util.exceptions;
+package nikita.util.exceptions;
 
 /**
  * Created by tsodring on 3/6/17.

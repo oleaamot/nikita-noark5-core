@@ -14,14 +14,12 @@ import nikita.model.noark5.v4.interfaces.entities.ICrossReferenceEntity;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
-import nikita.util.exceptions.NikitaMalformedInputDataException;
+import nikita.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.*;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFileService;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
-import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -897,7 +895,7 @@ public class FileHateoasController {
             classHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
         }
         else {
-            throw new no.arkivlab.hioa.nikita.webapp.util.exceptions.NikitaException("Internal error. Could not process"
+            throw new NikitaException("Internal error. Could not process"
                     + request.getRequestURI());
         }
         fileService.deleteEntity(systemID);

@@ -15,8 +15,8 @@ import nikita.model.noark5.v4.hateoas.ClassificationSystemHateoas;
 import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
-import nikita.util.exceptions.NikitaEntityNotFoundException;
 import nikita.util.exceptions.NikitaException;
+import nikita.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassificationSystemHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
@@ -107,7 +107,7 @@ public class ClassHateoasController {
             @PathVariable("systemID") final String classSystemId) {
         Class klass = classService.findBySystemId(classSystemId);
         if (klass == null) {
-            throw new NikitaEntityNotFoundException(classSystemId);
+            throw new NoarkEntityNotFoundException(classSystemId);
         }
         ClassHateoas classHateoas = new ClassHateoas(klass);
         classHateoasHandler.addLinks(classHateoas, request, new Authorisation());

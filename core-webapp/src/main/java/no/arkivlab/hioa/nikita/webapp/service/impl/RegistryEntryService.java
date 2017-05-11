@@ -7,11 +7,11 @@ import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.model.noark5.v4.secondary.PostalAddress;
 import nikita.model.noark5.v4.secondary.Precedence;
 import nikita.repository.n5v4.IRegistryEntryRepository;
+import nikita.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRegistryEntryService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary.ICorrespondencePartService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary.IPrecedenceService;
 import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -80,7 +80,7 @@ public class RegistryEntryService implements IRegistryEntryService {
         // bidirectional relationship @ManyToMany, set both sides of relationship
         registryEntry.getReferenceCorrespondencePart().add(correspondencePart);
         correspondencePart.getReferenceRegistryEntry().add(registryEntry);
-        return (CorrespondencePart) correspondencePartService.createNewCorrespondencePart(correspondencePart);
+        return correspondencePartService.createNewCorrespondencePart(correspondencePart);
     }
 
     @Override

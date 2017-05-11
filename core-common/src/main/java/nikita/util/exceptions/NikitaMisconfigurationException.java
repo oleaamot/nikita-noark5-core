@@ -1,4 +1,4 @@
-package no.arkivlab.hioa.nikita.webapp.util.exceptions;
+package nikita.util.exceptions;
 
 public class NikitaMisconfigurationException extends NikitaException {
 

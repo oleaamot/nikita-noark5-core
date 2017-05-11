@@ -6,9 +6,7 @@ import nikita.model.noark5.v4.interfaces.ICrossReference;
 import nikita.model.noark5.v4.interfaces.IDisposal;
 import nikita.model.noark5.v4.interfaces.IScreening;
 import nikita.util.deserialisers.ClassDeserializer;
-import nikita.util.exceptions.NikitaEntityNotFoundException;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import nikita.util.exceptions.NoarkEntityNotFoundException;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -192,7 +190,7 @@ public class Class extends NoarkGeneralEntity implements IDisposal, IScreening, 
             return referenceClassificationSystem;
         }
         else { // This should be impossible, a class cannot exist without a parent
-            throw new NikitaEntityNotFoundException("Could not find parent object for " + this.toString());
+            throw new NoarkEntityNotFoundException("Could not find parent object for " + this.toString());
         }
     }
     @Override

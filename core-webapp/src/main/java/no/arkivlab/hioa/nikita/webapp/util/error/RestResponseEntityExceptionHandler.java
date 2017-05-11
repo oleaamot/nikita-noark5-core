@@ -1,11 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.util.error;
 
 
-import nikita.util.exceptions.NikitaMalformedHeaderException;
-import nikita.util.exceptions.NikitaMalformedInputDataException;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkNotAcceptableException;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.StorageException;
+import nikita.util.exceptions.*;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -114,7 +110,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler(NikitaMalformedHeaderException.class)
-    public ResponseEntity<Object> handleMalformedHeaderExcpetion(final RuntimeException ex, final WebRequest request) {
+    public ResponseEntity<Object> handleMalformedHeaderException(final RuntimeException ex, final WebRequest request) {
         logger.error("400 Status Code", ex);
         logger.error(request.getDescription(true), ex);
 

@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.*;
 import nikita.util.deserialisers.FileDeserializer;
-import nikita.util.exceptions.NikitaEntityNotFoundException;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import nikita.util.exceptions.NoarkEntityNotFoundException;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -264,7 +262,7 @@ public class File extends NoarkGeneralEntity  implements IDocumentMedium, IStora
             return referenceSeries;
         }
         else { // This should be impossible, a File cannot exist without a parent
-            throw new NikitaEntityNotFoundException("Could not find parent object for " + this.toString());
+            throw new NoarkEntityNotFoundException("Could not find parent object for " + this.toString());
         }
     }
 

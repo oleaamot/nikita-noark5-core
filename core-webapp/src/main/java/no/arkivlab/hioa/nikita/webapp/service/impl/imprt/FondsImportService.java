@@ -4,11 +4,10 @@ import nikita.model.noark5.v4.Fonds;
 import nikita.model.noark5.v4.Series;
 import nikita.repository.n5v4.IFondsRepository;
 import nikita.util.exceptions.NikitaException;
+import nikita.util.exceptions.NoarkEntityEditWhenClosedException;
+import nikita.util.exceptions.NoarkEntityNotFoundException;
+import nikita.util.exceptions.NoarkInvalidStructureException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.imprt.IFondsImportService;
-import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityEditWhenClosedException;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkInvalidStructureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
-import static nikita.config.Constants.INFO_CANNOT_ASSOCIATE_WITH_CLOSED_OBJECT;
-import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
-import static nikita.config.Constants.INFO_INVALID_STRUCTURE;
+import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.STATUS_CLOSED;
 
 @Service

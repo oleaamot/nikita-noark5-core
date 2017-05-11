@@ -1,14 +1,13 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
 import nikita.model.noark5.v4.DocumentObject;
-import nikita.model.noark5.v4.Fonds;
 import nikita.repository.n5v4.IDocumentObjectRepository;
+import nikita.util.exceptions.NoarkEntityNotFoundException;
+import nikita.util.exceptions.StorageException;
+import nikita.util.exceptions.StorageFileNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.config.WebappProperties;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentObjectService;
 import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.StorageException;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.StorageFileNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

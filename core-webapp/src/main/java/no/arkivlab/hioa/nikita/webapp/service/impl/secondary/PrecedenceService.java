@@ -1,10 +1,9 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl.secondary;
 
-import nikita.model.noark5.v4.interfaces.IPrecedence;
 import nikita.model.noark5.v4.secondary.Precedence;
 import nikita.repository.n5v4.secondary.IPrecedenceRepository;
+import nikita.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary.IPrecedenceService;
-import no.arkivlab.hioa.nikita.webapp.util.exceptions.NoarkEntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
