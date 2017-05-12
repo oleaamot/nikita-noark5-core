@@ -18,13 +18,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
-import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART;
-import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART_TYPE;
-import static nikita.config.N5ResourceMappings.FONDS_STATUS;
+import static nikita.config.N5ResourceMappings.*;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH,
@@ -84,7 +81,7 @@ public class CorrespondencePartTypeController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.GET, value = CORRESPONDENCE_PART_TYPE + SLASH)
+    @RequestMapping(method = RequestMethod.GET, value = CORRESPONDENCE_PART_TYPE)
     public ResponseEntity<MetadataHateoas> findAll(HttpServletRequest request) {
         MetadataHateoas metadataHateoas = new MetadataHateoas(new ArrayList<>(correspondencePartTypeService.findAllAsList()),
                 CORRESPONDENCE_PART_TYPE);
@@ -95,7 +92,7 @@ public class CorrespondencePartTypeController {
     }
 
     // Retrieves a given correspondencePartType identified by a systemId
-    // GET [contextPath][api]/metadata/korrespondanseparttype/{systemId}/
+    // GET [contextPath][api]/metadata/korrespondanseparttype/{systemId}
     @ApiOperation(value = "Gets correspondencePartType identified by its systemId", notes = "Returns the requested " +
             " correspondencePartType object", response = CorrespondencePartType.class)
     @ApiResponses(value = {
@@ -111,7 +108,7 @@ public class CorrespondencePartTypeController {
             @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
     @Timed
-    @RequestMapping(value = CORRESPONDENCE_PART_TYPE + SLASH + "{systemID}" + SLASH, method = RequestMethod.GET)
+    @RequestMapping(value = CORRESPONDENCE_PART_TYPE + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<MetadataHateoas> findBySystemId(@PathVariable("systemID") final String systemId,
                                                           HttpServletRequest request) {
         CorrespondencePartType correspondencePartType = correspondencePartTypeService.findBySystemId(systemId);
