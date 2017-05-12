@@ -8,6 +8,7 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.secondary.ICor
 import org.springframework.stereotype.Component;
 
 import static nikita.config.Constants.*;
+import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART_TYPE;
 
 /**
  * Created by tsodring on 2/6/17.
@@ -33,7 +34,7 @@ public class CorrespondencePartHateoasHandler extends HateoasHandler implements 
     @Override
     public void addCorrespondencePartType(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_METADATA_PATH + SLASH + entity.getBaseTypeName(), REL_METADATA_CORRESPONDENCE_PART, false));
+                NOARK_METADATA_PATH + SLASH + CORRESPONDENCE_PART_TYPE, REL_METADATA_CORRESPONDENCE_PART_TYPE, false));
     }
 
     @Override
