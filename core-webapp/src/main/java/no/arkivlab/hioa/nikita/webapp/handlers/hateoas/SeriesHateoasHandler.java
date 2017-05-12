@@ -158,7 +158,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
     public void addNewClassificationSystem(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         if (authorisation.canCreateClassifcationSystemAttachedToSeries()) {
             hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                    NOARK_FONDS_STRUCTURE_PATH + SLASH + CLASSIFICATION_SYSTEM +
+                    NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES +
                     SLASH + entity.getSystemId() + SLASH + NEW_CLASSIFICATION_SYSTEM + SLASH,
                     REL_FONDS_STRUCTURE_NEW_CLASSIFICATION_SYSTEM, false));
         }
@@ -170,7 +170,7 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
      */
     public void addRegistration(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + REGISTRATION +
+                NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES +
                 SLASH + entity.getSystemId() + SLASH + REGISTRATION + SLASH, REL_FONDS_STRUCTURE_REGISTRATION,
                 false));
     }
