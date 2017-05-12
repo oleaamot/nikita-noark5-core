@@ -5,9 +5,7 @@ import no.arkivlab.hioa.nikita.webapp.util.serialisers.APIDetailsSerializer;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import static nikita.config.Constants.*;
-import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART;
-import static nikita.config.N5ResourceMappings.DOCUMENT_MEDIUM;
-import static nikita.config.N5ResourceMappings.FONDS_STATUS;
+import static nikita.config.N5ResourceMappings.*;
 
 @JsonSerialize(using = APIDetailsSerializer.class)
 public class MetadataDetails extends APIDetails {
@@ -32,8 +30,8 @@ public class MetadataDetails extends APIDetails {
 
         // Add support for CorrespondencePart
         aPIDetails.add(new APIDetail(
-                uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH + CORRESPONDENCE_PART,
-                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH + CORRESPONDENCE_PART + SLASH,
+                uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH + CORRESPONDENCE_PART_TYPE,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH + CORRESPONDENCE_PART_TYPE + SLASH,
                 true
         ));
     }
