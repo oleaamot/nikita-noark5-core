@@ -1,4 +1,4 @@
-package no.arkivlab.hioa.nikita.webapp.service.application.service;
+package no.arkivlab.hioa.nikita.webapp.service.application;
 
 import no.arkivlab.hioa.nikita.webapp.model.application.*;
 import org.slf4j.Logger;

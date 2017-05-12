@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.interfaces.entities.ICorrespondencePartEntity;
+import nikita.model.noark5.v4.metadata.CorrespondencePartType;
 import nikita.util.deserialisers.CorrespondencePartDeserializer;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -23,11 +22,6 @@ import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART;
 @JsonDeserialize(using = CorrespondencePartDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_correspondence_part_id"))
 public class CorrespondencePart extends NoarkEntity implements ICorrespondencePartEntity {
-
-    /** M087 - korrespondanseparttype (xs:string) */
-    @Column(name = "correspondence_part_type")
-    @Audited
-    private String correspondencePartType;
 
     /** M400 - korrespondansepartNavn (xs:string) */
     @Audited
@@ -74,6 +68,15 @@ public class CorrespondencePart extends NoarkEntity implements ICorrespondencePa
     @Audited
     private String caseHandler;
 
+    /**
+     * M087 - korrespondanseparttype (xs:string)
+     */
+    // Link to precursor CorrespondencePartType
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "correspondence_part_correspondence_part_type_id",
+            referencedColumnName = "pk_correspondence_part_type_id")
+    private CorrespondencePartType referenceCorrespondencePartType;
+
     // Links to PostalAddress
     @ManyToMany(cascade=CascadeType.PERSIST)
     private Set<PostalAddress> postalAddress = new TreeSet<>();
@@ -82,12 +85,12 @@ public class CorrespondencePart extends NoarkEntity implements ICorrespondencePa
     @ManyToMany(mappedBy = "referenceCorrespondencePart")
     private Set<RegistryEntry> referenceRegistryEntry = new TreeSet<>();
 
-    public String getCorrespondencePartType() {
-        return correspondencePartType;
+    public CorrespondencePartType getCorrespondencePartType() {
+        return referenceCorrespondencePartType;
     }
 
-    public void setCorrespondencePartType(String correspondencePartType) {
-        this.correspondencePartType = correspondencePartType;
+    public void setCorrespondencePartType(CorrespondencePartType referenceCorrespondencePartType) {
+        this.referenceCorrespondencePartType = referenceCorrespondencePartType;
     }
 
     public String getCorrespondencePartName() {
@@ -204,7 +207,6 @@ public class CorrespondencePart extends NoarkEntity implements ICorrespondencePa
                 ", postalTown='" + postalTown + '\'' +
                 ", postCode='" + postCode + '\'' +
                 ", correspondencePartName='" + correspondencePartName + '\'' +
-                ", correspondencePartType='" + correspondencePartType + '\'' +
                 '}';
     }
 }

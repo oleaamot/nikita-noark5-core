@@ -7,6 +7,7 @@ import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.hateoas.Link;
 import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.interfaces.entities.*;
+import nikita.model.noark5.v4.metadata.CorrespondencePartType;
 import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.model.noark5.v4.secondary.PostalAddress;
 import nikita.model.noark5.v4.secondary.Precedence;
@@ -44,9 +45,9 @@ public final class CommonUtils {
     public static final class Validation {
 
         /**
-         *  Home made validation utility. We decided not to use springs validation framework as it is done on a
-         *  per-class basis. We need to validate on a per-class, per-CRUD method basis. E.g. A incoming fonds
-         *  will be validated differently if it's a CREATE operation as opposed to a UPDATE operation.
+         * Home made validation utility. We decided not to use springs validation framework as it is done on a
+         * per-class basis. We need to validate on a per-class, per-CRUD method basis. E.g. A incoming fonds
+         * will be validated differently if it's a CREATE operation as opposed to a UPDATE operation.
          *
          * @param nikitaEntity
          * @return true if valid. If not valid an exception is thrown
@@ -54,12 +55,12 @@ public final class CommonUtils {
         public static boolean validateUpdateNoarkEntity(@NotNull INikitaEntity nikitaEntity) {
 
             if (nikitaEntity instanceof INoarkTitleDescriptionEntity) {
-                rejectIfEmptyOrWhitespace(((INoarkTitleDescriptionEntity)nikitaEntity).getDescription());
-                rejectIfEmptyOrWhitespace(((INoarkTitleDescriptionEntity)nikitaEntity).getTitle());
+                rejectIfEmptyOrWhitespace(((INoarkTitleDescriptionEntity) nikitaEntity).getDescription());
+                rejectIfEmptyOrWhitespace(((INoarkTitleDescriptionEntity) nikitaEntity).getTitle());
             }
             if (nikitaEntity instanceof INoarkTitleDescriptionEntity) {
-                rejectIfEmptyOrWhitespace(((INoarkTitleDescriptionEntity)nikitaEntity).getDescription());
-                rejectIfEmptyOrWhitespace(((INoarkTitleDescriptionEntity)nikitaEntity).getTitle());
+                rejectIfEmptyOrWhitespace(((INoarkTitleDescriptionEntity) nikitaEntity).getDescription());
+                rejectIfEmptyOrWhitespace(((INoarkTitleDescriptionEntity) nikitaEntity).getTitle());
             }
 
 
@@ -177,11 +178,29 @@ public final class CommonUtils {
 
             public static void deserialiseNoarkSystemIdEntity(INikitaEntity noarkSystemIdEntity,
                                                               ObjectNode objectNode) {
-                // Deserialize Deserialize systemId
+                // Deserialize systemId
                 JsonNode currentNode = objectNode.get(SYSTEM_ID);
                 if (null != currentNode) {
                     noarkSystemIdEntity.setSystemId(currentNode.textValue());
                     objectNode.remove(SYSTEM_ID);
+                }
+            }
+
+
+            public static void deserialiseNoarkMetadataEntity(IMetadataEntity metadataEntity,
+                                                              ObjectNode objectNode) {
+                // Deserialize systemId
+                deserialiseNoarkSystemIdEntity(metadataEntity, objectNode);
+
+                JsonNode currentNode = objectNode.get(CODE);
+                if (null != currentNode) {
+                    metadataEntity.setCode(currentNode.textValue());
+                    objectNode.remove(CODE);
+                }
+                currentNode = objectNode.get(DESCRIPTION);
+                if (null != currentNode) {
+                    metadataEntity.setCode(currentNode.textValue());
+                    objectNode.remove(DESCRIPTION);
                 }
             }
 
@@ -203,6 +222,12 @@ public final class CommonUtils {
                     }
                     objectNode.remove(KEYWORD);
                 }
+            }
+
+            public static void deserialiseCorrespondencePartType(ICorrespondencePartEntity correspondencePart,
+                                                                 ObjectNode objectNode) {
+                CorrespondencePartType correspondencePartType = new CorrespondencePartType();
+                deserialiseNoarkMetadataEntity(correspondencePartType, objectNode);
             }
 
             public static void deserialiseAuthor(IAuthor authorEntity,
@@ -721,18 +746,21 @@ public final class CommonUtils {
 
             public static void deserialiseCorrespondencePartEntity(ICorrespondencePartEntity correspondencePartEntity,
                                                                    ObjectNode objectNode) {
-                // Deserialize correspondencePartId
-                JsonNode currentNode = objectNode.get(CORRESPONDENCE_PART_TYPE);
-                if (null != currentNode) {
-                    correspondencePartEntity.setCorrespondencePartType(currentNode.textValue());
-                    objectNode.remove(CORRESPONDENCE_PART_TYPE);
-                }
+
                 // Deserialize correspondencePartName
-                currentNode = objectNode.get(CORRESPONDENCE_PART_NAME);
+                JsonNode currentNode = objectNode.get(CORRESPONDENCE_PART_NAME);
                 if (null != currentNode) {
                     correspondencePartEntity.setCorrespondencePartName(currentNode.textValue());
                     objectNode.remove(CORRESPONDENCE_PART_NAME);
                 }
+
+                // Deserialize correspondencePartType
+                currentNode = objectNode.get(CORRESPONDENCE_PART_TYPE);
+                if (null != currentNode) {
+                    deserialiseCorrespondencePartType(correspondencePartEntity, objectNode);
+                    objectNode.remove(CORRESPONDENCE_PART_TYPE);
+                }
+
                 // Deserialize postalAddress
                 // postalAddress
                 currentNode = objectNode.get(CORRESPONDENCE_PART_POSTAL_ADDRESS);
@@ -804,8 +832,14 @@ public final class CommonUtils {
             }
 
             public static void deserialiseFondsCreator(IFondsCreatorEntity fondsCreatorEntity, ObjectNode objectNode) {
+                // Deserialize systemID
+                JsonNode currentNode = objectNode.get(SYSTEM_ID);
+                if (null != currentNode) {
+                    fondsCreatorEntity.setSystemId(currentNode.textValue());
+                    objectNode.remove(SYSTEM_ID);
+                }
                 // Deserialize fondsCreatorId
-                JsonNode currentNode = objectNode.get(FONDS_CREATOR_ID);
+                currentNode = objectNode.get(FONDS_CREATOR_ID);
                 if (null != currentNode) {
                     fondsCreatorEntity.setFondsCreatorId(currentNode.textValue());
                     objectNode.remove(FONDS_CREATOR_ID);
@@ -1073,6 +1107,18 @@ public final class CommonUtils {
                 }
             }
 
+            public static void printMetadataEntity(JsonGenerator jgen, IMetadataEntity metadataEntity)
+                    throws IOException {
+                // TODO:  Looks like the interface standard requires basetype here. Make sure it's implemented
+                // e.g."mappetype" {}
+                jgen.writeFieldName(CORRESPONDENCE_PART_TYPE);
+                jgen.writeStartObject();
+                jgen.writeStringField(SYSTEM_ID, metadataEntity.getSystemId());
+                jgen.writeStringField(CODE, metadataEntity.getCode());
+                jgen.writeStringField(DESCRIPTION, metadataEntity.getDescription());
+                jgen.writeEndObject();
+            }
+
             public static void printCorrespondencePart(JsonGenerator jgen, ICorrespondencePartEntity correspondencePart)
                     throws IOException {
                 if (correspondencePart != null) {
@@ -1081,10 +1127,8 @@ public final class CommonUtils {
                         jgen.writeStringField(SYSTEM_ID,
                                 correspondencePart.getSystemId());
                     }
-
                     if (correspondencePart.getCorrespondencePartType() != null) {
-                        jgen.writeStringField(CORRESPONDENCE_PART_TYPE,
-                                correspondencePart.getCorrespondencePartType());
+                        printMetadataEntity(jgen, correspondencePart.getCorrespondencePartType());
                     }
                     if (correspondencePart.getCorrespondencePartName() != null) {
                         jgen.writeStringField(CORRESPONDENCE_PART_NAME,

@@ -16,6 +16,7 @@ import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
 import nikita.model.noark5.v4.hateoas.secondary.CorrespondencePartHateoas;
 import nikita.model.noark5.v4.hateoas.secondary.PrecedenceHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
+import nikita.model.noark5.v4.metadata.CorrespondencePartType;
 import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.model.noark5.v4.secondary.Precedence;
 import nikita.util.CommonUtils;
@@ -24,6 +25,7 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRegistryEntry
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.secondary.ICorrespondencePartHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRegistryEntryService;
+import no.arkivlab.hioa.nikita.webapp.service.interfaces.metadata.ICorrespondencePartTypeService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
 import org.springframework.context.ApplicationEventPublisher;
@@ -33,8 +35,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.Constants.*;
+import static nikita.config.MetadataConstants.CORRESPONDENCE_PART_CODE_EA;
 import static nikita.config.N5ResourceMappings.*;
 
 @RestController
@@ -46,15 +50,18 @@ public class RegistryEntryHateoasController {
     private IRegistryEntryHateoasHandler registryEntryHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
     private ICorrespondencePartHateoasHandler correspondencePartHateoasHandler;
+    ICorrespondencePartTypeService correspondencePartTypeService;
 
     public RegistryEntryHateoasController(IRegistryEntryService registryEntryService,
                                           IRegistryEntryHateoasHandler registryEntryHateoasHandler,
                                           ApplicationEventPublisher applicationEventPublisher,
-                                          ICorrespondencePartHateoasHandler correspondencePartHateoasHandler) {
+                                          ICorrespondencePartHateoasHandler correspondencePartHateoasHandler,
+                                          ICorrespondencePartTypeService correspondencePartTypeService) {
         this.registryEntryService = registryEntryService;
         this.registryEntryHateoasHandler = registryEntryHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
         this.correspondencePartHateoasHandler = correspondencePartHateoasHandler;
+        this.correspondencePartTypeService = correspondencePartTypeService;
     }
 
     // API - All POST Requests (CRUD - CREATE)
@@ -84,7 +91,7 @@ public class RegistryEntryHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemId of record to associate the CorrespondencePart with.",
                     required = true)
-            @PathVariable String systemID,
+            @PathVariable("systemID") String systemID,
             @ApiParam(name = "CorrespondencePart",
                     value = "Incoming CorrespondencePart object",
                     required = true)
@@ -129,7 +136,7 @@ public class RegistryEntryHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemId of record to associate the Precedence with.",
                     required = true)
-            @PathVariable String systemID,
+            @PathVariable("systemID") String systemID,
             @ApiParam(name = "Precedence",
                     value = "Incoming Precedence object",
                     required = true)
@@ -175,7 +182,7 @@ public class RegistryEntryHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemId of record to associate the signOff with.",
                     required = true)
-            @PathVariable String systemID,
+            @PathVariable("systemID") String systemID,
             @ApiParam(name = "signOff",
                     value = "Incoming signOff object",
                     required = true)
@@ -230,7 +237,7 @@ public class RegistryEntryHateoasController {
         /*
         DocumentObjectHateoas documentObjectHateoas =
                 new DocumentObjectHateoas(
-                        recordService.createDocumentObjectAssociatedWithRecord(recordSystemId,
+                        recordService.createDocumentObjectAssociatedWithRecord(systemID,
                                 documentObject));
         documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
@@ -275,6 +282,42 @@ public class RegistryEntryHateoasController {
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
+
+    // Create a suggested CorrespondencePart (like a template) object with default values (nothing persisted)
+    // GET [contextPath][api]/sakarkiv/journalpost/{systemId}/ny-korrespondansepart
+    @ApiOperation(value = "Suggests the contents of a new CorrespondencePart object", notes = "Returns a pre-filled CorrespondencePart object" +
+            " with values relevant for the logged-in user", response = CorrespondencePartHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "CorrespondencePart " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = CorrespondencePartHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.GET, value = {SLASH + LEFT_PARENTHESIS +
+            SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_CORRESPONDENCE_PART})
+    public ResponseEntity<CorrespondencePartHateoas> getCorrespondencePartTemplate(
+            HttpServletRequest request
+    ) throws NikitaException {
+        CorrespondencePart suggestedCorrespondencePart = new CorrespondencePart();
+        // TODO: This should be replaced with configurable data based on whoever is logged in
+        //       Currently just returns the test values
+
+        List<CorrespondencePartType> correspondencePartTypes = correspondencePartTypeService.findByCode(CORRESPONDENCE_PART_CODE_EA);
+        if (correspondencePartTypes.get(0) == null) {
+            throw new NikitaException("Internal error, metadata missing. [" + CORRESPONDENCE_PART_CODE_EA + "] returns no value");
+        }
+        CorrespondencePartType correspondencePartType = correspondencePartTypes.get(0);
+        suggestedCorrespondencePart.setCorrespondencePartType(correspondencePartType);
+        suggestedCorrespondencePart.setCorrespondencePartName("Frank Grimes");
+        CorrespondencePartHateoas correspondencePartHateoas = new CorrespondencePartHateoas(suggestedCorrespondencePart);
+        correspondencePartHateoasHandler.addLinksOnTemplate(correspondencePartHateoas, request, new Authorisation());
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(correspondencePartHateoas);
+    }
+    
     // Retrieve all SignOff associated with a RegistryEntry identified by systemId
     // GET [contextPath][api]/sakarkiv/journalpost/{systemId}/avskrivning
     // http://rel.kxml.no/noark5/v4/api/sakarkiv/avskrivning/

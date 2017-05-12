@@ -86,6 +86,18 @@ public class HateoasHandler implements IHateoasHandler {
     }
 
     @Override
+    public void addLinksOnTemplate(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+                                   IAuthorisation authorisation) {
+        setParameters(request);
+        this.authorisation = authorisation;
+
+        Iterable<INikitaEntity> entities = hateoasNoarkObject.getList();
+        for (INikitaEntity entity : entities) {
+            addEntityLinksOnTemplate(entity, hateoasNoarkObject);
+        }
+    }
+    
+    @Override
     public void addSelfLink(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         String systemId = entity.getSystemId();
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
@@ -108,6 +120,10 @@ public class HateoasHandler implements IHateoasHandler {
     @Override
     public void addEntityLinksOnCreate(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         addEntityLinks(entity, hateoasNoarkObject);
+    }
+
+    @Override
+    public void addEntityLinksOnTemplate(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
     }
 
     // Sub class should handle this, empty links otherwise!

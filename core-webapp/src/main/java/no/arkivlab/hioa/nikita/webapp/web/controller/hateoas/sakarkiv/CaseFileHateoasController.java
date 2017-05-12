@@ -82,19 +82,19 @@ public class CaseFileHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_REGISTRY_ENTRY, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<RegistryEntryHateoas> createRegistryEntryAssociatedWithFile(
             HttpServletRequest request,
-            @ApiParam(name = "fileSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of file to associate the record with",
                     required = true)
-            @PathVariable String fileSystemId,
+            @PathVariable("systemID") final String systemID,
             @ApiParam(name = "RegistryEntry",
                     value = "Incoming registryEntry object",
                     required = true)
             @RequestBody RegistryEntry registryEntry)  throws NikitaException {
-        RegistryEntry createdRegistryEntry = caseFileService.createRegistryEntryAssociatedWithCaseFile(fileSystemId,
+        RegistryEntry createdRegistryEntry = caseFileService.createRegistryEntryAssociatedWithCaseFile(systemID,
                 registryEntry);
         RegistryEntryHateoas registryEntryHateoas = new RegistryEntryHateoas(createdRegistryEntry);
         registryEntryHateoasHandler.addLinks(registryEntryHateoas, request, new Authorisation());

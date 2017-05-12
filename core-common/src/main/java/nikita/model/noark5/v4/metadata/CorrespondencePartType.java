@@ -1,12 +1,9 @@
 package nikita.model.noark5.v4.metadata;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import nikita.model.noark5.v4.secondary.CorrespondencePart;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART_TYPE;
 
@@ -23,5 +20,19 @@ public class CorrespondencePartType extends MetadataSuperClass {
     @Override
     public String getBaseTypeName() {
         return CORRESPONDENCE_PART_TYPE;
+    }
+
+    // Link to CorrespondencePart
+    // TODO :Revisit this. You don't need to be able to pick up the reverse of this
+    // relationship. It will be massive!
+    @OneToMany(mappedBy = "referenceCorrespondencePartType")
+    private Set<CorrespondencePart> referenceCorrespondencePart;
+
+    public Set<CorrespondencePart> getReferenceCorrespondencePart() {
+        return referenceCorrespondencePart;
+    }
+
+    public void setReferenceCorrespondencePart(Set<CorrespondencePart> referenceCorrespondencePart) {
+        this.referenceCorrespondencePart = referenceCorrespondencePart;
     }
 }

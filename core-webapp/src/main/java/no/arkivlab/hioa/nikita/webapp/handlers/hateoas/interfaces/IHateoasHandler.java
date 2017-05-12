@@ -16,14 +16,11 @@ public interface IHateoasHandler {
     void addLinks(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
                   IAuthorisation authorisation);
 
-    void addSelfLink(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
-
-    void addEntityLinks(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
-
-    void addDocumentMedium(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
-
     void addLinksOnCreate(IHateoasNoarkObject hateoasNoarkObject,
                           HttpServletRequest request, IAuthorisation authorisation);
+
+    void addLinksOnTemplate(IHateoasNoarkObject hateoasNoarkObject,
+                            HttpServletRequest request, IAuthorisation authorisationt);
 
     void addLinksOnRead(IHateoasNoarkObject hateoasNoarkObject,
                         HttpServletRequest request, IAuthorisation authorisation);
@@ -37,12 +34,20 @@ public interface IHateoasHandler {
     void addLinksOnNew(IHateoasNoarkObject hateoasNoarkObject,
                        HttpServletRequest request, IAuthorisation authorisation);
 
-    // In many ways, these should be private
+    void addSelfLink(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addEntityLinks(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
     void addEntityLinksOnCreate(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addEntityLinksOnTemplate(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addEntityLinksOnRead(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addEntityLinksOnNew(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
+    void addDocumentMedium(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
+
 
 
 }

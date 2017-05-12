@@ -1,5 +1,6 @@
 package nikita.model.noark5.v4.interfaces.entities;
 
+import nikita.model.noark5.v4.metadata.CorrespondencePartType;
 import nikita.model.noark5.v4.secondary.PostalAddress;
 
 import java.io.Serializable;
@@ -11,9 +12,9 @@ import java.util.Set;
 public interface ICorrespondencePartEntity extends INikitaEntity, Serializable {
 
 
-    String getCorrespondencePartType();
+    CorrespondencePartType getCorrespondencePartType();
 
-    void setCorrespondencePartType(String correspondencePartType);
+    void setCorrespondencePartType(CorrespondencePartType correspondencePartType);
 
     String getCorrespondencePartName();
 
