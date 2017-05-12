@@ -16,10 +16,6 @@ public interface IDocumentDescriptionHateoasHandler extends IHateoasHandler {
 
     void addNewDocumentObject(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
-    void addReferenceSeries(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
-
-    void addNewReferenceSeries(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
-
     void addClassified(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);
 
     void addNewClassified(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject);

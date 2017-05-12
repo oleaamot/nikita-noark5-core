@@ -44,23 +44,6 @@ public class DocumentDescriptionHateoasHandler extends HateoasHandler implements
         addDocumentMedium(entity, hateoasNoarkObject);
         addDocumentType(entity, hateoasNoarkObject);
         addDocumentStatus(entity, hateoasNoarkObject);
-        // links for reference entities
-        addReferenceSeries(entity, hateoasNoarkObject);
-        addNewReferenceSeries(entity, hateoasNoarkObject);
-    }
-
-    @Override
-    public void addReferenceSeries(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
-        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_DESCRIPTION + SLASH + entity.getSystemId() + SLASH + SERIES
-                + SLASH, REL_FONDS_STRUCTURE_REFERENCE_SERIES, false));
-    }
-
-    @Override
-    public void addNewReferenceSeries(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
-        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_DESCRIPTION + SLASH + entity.getSystemId() + SLASH +
-                NEW_SERIES + SLASH, REL_FONDS_STRUCTURE_NEW_REFERENCE_SERIES, false));
     }
 
     @Override
