@@ -9,10 +9,7 @@ import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ICaseFileHateoasHandler;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFileHateoasHandler;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsHateoasHandler;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ISeriesHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.*;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
@@ -22,7 +19,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,6 +41,7 @@ public class SeriesHateoasController extends NoarkController {
     private ISeriesService seriesService;
     private IFondsHateoasHandler fondsHateoasHandler;
     private ISeriesHateoasHandler seriesHateoasHandler;
+    private IRecordHateoasHandler recordHateoasHandler;
     private ICaseFileHateoasHandler caseFileHateoasHandler;
     private IFileHateoasHandler fileHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
@@ -52,16 +49,20 @@ public class SeriesHateoasController extends NoarkController {
     public SeriesHateoasController(ISeriesService seriesService,
                                    IFondsHateoasHandler fondsHateoasHandler,
                                    ISeriesHateoasHandler seriesHateoasHandler,
+                                   IRecordHateoasHandler recordHateoasHandler,
                                    ICaseFileHateoasHandler caseFileHateoasHandler,
                                    IFileHateoasHandler fileHateoasHandler,
                                    ApplicationEventPublisher applicationEventPublisher) {
+
         this.seriesService = seriesService;
         this.fondsHateoasHandler = fondsHateoasHandler;
         this.seriesHateoasHandler = seriesHateoasHandler;
+        this.recordHateoasHandler = recordHateoasHandler;
         this.caseFileHateoasHandler = caseFileHateoasHandler;
         this.fileHateoasHandler = fileHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
     }
+
     // API - All POST Requests (CRUD - CREATE)
 
     // Create a new file
@@ -84,7 +85,7 @@ public class SeriesHateoasController extends NoarkController {
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_FILE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<FileHateoas> createFileAssociatedWithSeries(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "systemId of series to associate the caseFile with",
                     required = true)
@@ -125,7 +126,7 @@ public class SeriesHateoasController extends NoarkController {
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH
             + NEW_CASE_FILE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<CaseFileHateoas> createCaseFileAssociatedWithSeries(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "systemId of series to associate the caseFile with",
                     required = true)
@@ -165,7 +166,7 @@ public class SeriesHateoasController extends NoarkController {
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> createRecordAssociatedWithSeries(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "systemId of series to associate the record with",
                     required = true)
@@ -207,7 +208,7 @@ public class SeriesHateoasController extends NoarkController {
     @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
             RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_SUCCESSOR, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> associateSeriesWithSeriesPrecursor(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "The systemId of the Series identified as a precursor",
                     required = true)
@@ -249,7 +250,7 @@ public class SeriesHateoasController extends NoarkController {
     @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
             RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_PRECURSOR, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> associateSeriesWithSeriesSuccessor(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "The systemId of the Series identified as a successor",
                     required = true)
@@ -289,7 +290,7 @@ public class SeriesHateoasController extends NoarkController {
     @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
             RIGHT_PARENTHESIS + SLASH + NEW_CLASSIFICATION_SYSTEM, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> associateSeriesWithClassificationSystem(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "The systemId of the Series",
                     required = true)
@@ -329,12 +330,12 @@ public class SeriesHateoasController extends NoarkController {
     @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
             RIGHT_PARENTHESIS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<SeriesHateoas> updateSeries(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-                @ApiParam(name = "systemID",
+            HttpServletRequest request,
+            @ApiParam(name = "systemID",
                     value = "systemId of fonds to update.",
                     required = true)
                 @PathVariable("systemID") String systemID,
-                @ApiParam(name = "series",
+            @ApiParam(name = "series",
                     value = "Incoming series object",
                     required = true)
                 @RequestBody Series series) throws NikitaException {
@@ -363,7 +364,7 @@ public class SeriesHateoasController extends NoarkController {
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.GET)
     public ResponseEntity<SeriesHateoas> findOneSeriesbySystemId(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "systemID of the series to retrieve",
                     required = true)
@@ -394,7 +395,7 @@ public class SeriesHateoasController extends NoarkController {
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_FILE,
             method = RequestMethod.GET)
     public ResponseEntity<FileHateoas> createDefaultFile(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
+            HttpServletRequest request, final HttpServletResponse response) {
 
         File defaultFile = new File();
         defaultFile.setTitle(TEST_TITLE);
@@ -423,7 +424,7 @@ public class SeriesHateoasController extends NoarkController {
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_CASE_FILE,
             method = RequestMethod.GET)
     public ResponseEntity<CaseFileHateoas> createDefaultCaseFile(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
+            HttpServletRequest request, final HttpServletResponse response) {
 
         CaseFile defaultCaseFile = new CaseFile();
         defaultCaseFile.setTitle(TEST_TITLE);
@@ -460,7 +461,7 @@ public class SeriesHateoasController extends NoarkController {
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SERIES_PRECURSOR,
             method = RequestMethod.GET)
     public ResponseEntity<String> findPrecursorToSeriesBySystemId(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = " systemID",
                     value = "systemId of the series to retrieve",
                     required = true)
@@ -492,7 +493,7 @@ public class SeriesHateoasController extends NoarkController {
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SERIES_SUCCESSOR,
             method = RequestMethod.GET)
     public ResponseEntity<String> findSuccessorToSeriesBySystemId(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = " systemID",
                     value = "systemId of the series to retrieve",
                     required = true)
@@ -524,7 +525,7 @@ public class SeriesHateoasController extends NoarkController {
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + FONDS,
             method = RequestMethod.GET)
     public ResponseEntity<String> findFondsAssociatedWithSeriesBySystemId(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "systemID of the Series",
                     required = true)
@@ -558,7 +559,7 @@ public class SeriesHateoasController extends NoarkController {
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + CLASSIFICATION_SYSTEM
             , method = RequestMethod.GET)
     public ResponseEntity<String> findClassificationSystemAssociatedWithSeriesBySystemId(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "systemID of the series to retrieve",
                     required = true)
@@ -595,7 +596,7 @@ public class SeriesHateoasController extends NoarkController {
     @Timed
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<SeriesHateoas> findAllSeries(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
 
@@ -626,17 +627,20 @@ public class SeriesHateoasController extends NoarkController {
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + REGISTRATION,
             method = RequestMethod.GET)
-    public ResponseEntity<String> findAllRecordAssociatedWithRecord(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+    public ResponseEntity<RecordHateoas> findAllRecordAssociatedWithSeries(
+            HttpServletRequest request,
             @RequestParam(name = "top", required = false) Integer top,
-            @RequestParam(name = "skip", required = false) Integer skip) {
-    /*
-        RecordHateoas recordHateoas = new
-                RecordHateoas((ArrayList<INikitaEntity>) (ArrayList)
-                recordService.findRecordByOwnerPaginated(top, skip));
-        recordHateoasHandler.addLinksOnRead(recordHateoas, request, new Authorisation());
-      */
-        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.OK);
+            @RequestParam(name = "skip", required = false) Integer skip,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the series to retrieve",
+                    required = true)
+            @PathVariable("systemID") final String systemID) {
+        Series series = seriesService.findBySystemId(systemID);
+        RecordHateoas recordHateoas = new RecordHateoas(new ArrayList<>(series.getReferenceRecord()));
+        recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(recordHateoas);
     }
 
     // Retrieve all Files associated with a Series (paginated)
@@ -658,7 +662,7 @@ public class SeriesHateoasController extends NoarkController {
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + FILE,
             method = RequestMethod.GET)
     public ResponseEntity<FileHateoas> findAllFileAssociatedWithSeries(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip,
             @ApiParam(name = "systemID",
@@ -696,7 +700,7 @@ public class SeriesHateoasController extends NoarkController {
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + CASE_FILE,
             method = RequestMethod.GET)
     public ResponseEntity<String> findAllCaseFileAssociatedWithCaseFile(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
     /*
@@ -723,7 +727,7 @@ public class SeriesHateoasController extends NoarkController {
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
     public ResponseEntity<FondsHateoas> deleteSeriesBySystemId(
-            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "systemID of the series to delete",
                     required = true)
