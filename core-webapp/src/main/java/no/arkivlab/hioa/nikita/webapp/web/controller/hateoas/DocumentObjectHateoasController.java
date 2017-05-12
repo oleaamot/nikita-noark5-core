@@ -26,6 +26,7 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjec
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentObjectService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.Resource;
@@ -44,10 +45,11 @@ import java.util.ArrayList;
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT;
 import static nikita.config.N5ResourceMappings.SYSTEM_ID;
+import static org.springframework.http.HttpHeaders.ETAG;
 
 @RestController
 @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_OBJECT)
-public class DocumentObjectHateoasController {
+public class DocumentObjectHateoasController extends NoarkController {
 
     private IDocumentObjectService documentObjectService;
     private IDocumentObjectHateoasHandler documentObjectHateoasHandler;
@@ -294,6 +296,48 @@ public class DocumentObjectHateoasController {
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(hateoasNoarkObject);
     }
+
+    // API - All PUT Requests (CRUD - UPDATE)
+    // Update a DocumentObject
+    // PUT [contextPath][api]/arkivstruktur/dokumentobjekt/{systemID}
+    @ApiOperation(value = "Updates a DocumentObject object", notes = "Returns the newly" +
+            " update DocumentObject object after it is persisted to the database", response = DocumentObjectHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "DocumentObject " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = DocumentObjectHateoas.class),
+            @ApiResponse(code = 201, message = "DocumentObject " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = DocumentObjectHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type DocumentObject"),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
+            RIGHT_PARENTHESIS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    public ResponseEntity<DocumentObjectHateoas> updateDocumentObject(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemId of documentObject to update.",
+                    required = true)
+            @PathVariable("systemID") String systemID,
+            @ApiParam(name = "documentObject",
+                    value = "Incoming documentObject object",
+                    required = true)
+            @RequestBody DocumentObject documentObject) throws NikitaException {
+        validateForUpdate(documentObject);
+
+        DocumentObject updatedDocumentObject = documentObjectService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)), documentObject);
+        DocumentObjectHateoas documentObjectHateoas = new DocumentObjectHateoas(updatedDocumentObject);
+        documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedDocumentObject));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .eTag(updatedDocumentObject.getVersion().toString())
+                .body(documentObjectHateoas);
+    }
+
 }
 /*
 

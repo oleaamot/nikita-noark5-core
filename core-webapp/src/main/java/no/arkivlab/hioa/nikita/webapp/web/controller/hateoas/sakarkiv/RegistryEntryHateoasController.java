@@ -26,25 +26,30 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.secondary.ICor
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRegistryEntryService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.metadata.ICorrespondencePartTypeService;
+import no.arkivlab.hioa.nikita.webapp.web.controller.hateoas.NoarkController;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.MetadataConstants.CORRESPONDENCE_PART_CODE_EA;
 import static nikita.config.N5ResourceMappings.*;
+import static org.springframework.http.HttpHeaders.ETAG;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH + SLASH + REGISTRY_ENTRY,
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
-public class RegistryEntryHateoasController {
+public class RegistryEntryHateoasController extends NoarkController {
 
     private IRegistryEntryService registryEntryService;
     private IRegistryEntryHateoasHandler registryEntryHateoasHandler;
@@ -503,5 +508,45 @@ public class RegistryEntryHateoasController {
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(CommonUtils.WebUtils.getSuccessStatusStringForDelete());
+    }
+
+
+    // Update a RegistryEntry with given values
+    // PUT [contextPath][api]/sakarkiv/journalpost/{systemId}
+    @ApiOperation(value = "Updates a RegistryEntry identified by a given systemId", notes = "Returns the newly updated registryEntry",
+            response = RegistryEntryHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "RegistryEntry " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = RegistryEntryHateoas.class),
+            @ApiResponse(code = 201, message = "RegistryEntry " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = RegistryEntryHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type RegistryEntry"),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.PUT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    public ResponseEntity<RegistryEntryHateoas> updateRegistryEntry(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemId of registryEntry to update",
+                    required = true)
+            @PathVariable("systemID") final String systemID,
+            @ApiParam(name = "RegistryEntry",
+                    value = "Incoming registryEntry object",
+                    required = true)
+            @RequestBody RegistryEntry registryEntry) throws NikitaException {
+        validateForUpdate(registryEntry);
+
+        RegistryEntry updatedRegistryEntry = registryEntryService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)), registryEntry);
+        RegistryEntryHateoas registryEntryHateoas = new RegistryEntryHateoas(updatedRegistryEntry);
+        registryEntryHateoasHandler.addLinks(registryEntryHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedRegistryEntry));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .eTag(updatedRegistryEntry.getVersion().toString())
+                .body(registryEntryHateoas);
     }
 }

@@ -22,6 +22,7 @@ import no.arkivlab.hioa.nikita.webapp.service.application.ApplicationService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IClassificationSystemService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,11 +36,12 @@ import java.util.ArrayList;
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.CLASSIFICATION_SYSTEM;
 import static nikita.config.N5ResourceMappings.SYSTEM_ID;
+import static org.springframework.http.HttpHeaders.ETAG;
 
 @RestController
 @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH,
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
-public class ClassificationSystemHateoasController {
+public class ClassificationSystemHateoasController extends NoarkController {
 
     private IClassificationSystemService classificationSystemService;
     private IClassificationSystemHateoasHandler classificationSystemHateoasHandler;
@@ -211,5 +213,46 @@ public class ClassificationSystemHateoasController {
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(applicationService.getFondsStructureDetails());
+    }
+
+    // API - All PUT Requests (CRUD - UPDATE)
+    // Update a ClassificationSystem
+    // PUT [contextPath][api]/arkivstruktur/klassifikasjonsystem/{systemID}
+    @ApiOperation(value = "Updates a ClassificationSystem object", notes = "Returns the newly" +
+            " update ClassificationSystem object after it is persisted to the database", response = ClassificationSystemHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "ClassificationSystem " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = ClassificationSystemHateoas.class),
+            @ApiResponse(code = 201, message = "ClassificationSystem " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = ClassificationSystemHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type ClassificationSystem"),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.PUT, value = CLASSIFICATION_SYSTEM + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
+            RIGHT_PARENTHESIS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    public ResponseEntity<ClassificationSystemHateoas> updateClassificationSystem(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemId of classificationSystem to update.",
+                    required = true)
+            @PathVariable("systemID") String systemID,
+            @ApiParam(name = "classificationSystem",
+                    value = "Incoming classificationSystem object",
+                    required = true)
+            @RequestBody ClassificationSystem classificationSystem) throws NikitaException {
+        validateForUpdate(classificationSystem);
+
+        ClassificationSystem updatedClassificationSystem = classificationSystemService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)), classificationSystem);
+        ClassificationSystemHateoas classificationSystemHateoas = new ClassificationSystemHateoas(updatedClassificationSystem);
+        classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedClassificationSystem));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .eTag(updatedClassificationSystem.getVersion().toString())
+                .body(classificationSystemHateoas);
     }
 }

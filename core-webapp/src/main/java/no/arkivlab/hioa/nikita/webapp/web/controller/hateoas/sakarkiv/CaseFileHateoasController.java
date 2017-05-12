@@ -20,8 +20,10 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRegistryEntry
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ISeriesHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ICaseFileService;
+import no.arkivlab.hioa.nikita.webapp.web.controller.hateoas.NoarkController;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,11 +38,12 @@ import java.util.Date;
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.CASE_FILE;
 import static nikita.config.N5ResourceMappings.SYSTEM_ID;
+import static org.springframework.http.HttpHeaders.ETAG;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH + SLASH + CASE_FILE,
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
-public class CaseFileHateoasController {
+public class CaseFileHateoasController extends NoarkController {
 
     private ICaseFileService caseFileService;
     private ICaseFileHateoasHandler caseFileHateoasHandler;
@@ -232,6 +235,46 @@ public class CaseFileHateoasController {
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(hateoasNoarkObject);
+    }
+
+    // Update a CaseFile with given values
+    // PUT [contextPath][api]/sakarkiv/saksmappe/{systemId}
+    @ApiOperation(value = "Updates a CaseFile identified by a given systemId", notes = "Returns the newly updated caseFile",
+            response = CaseFileHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "CaseFile " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = CaseFileHateoas.class),
+            @ApiResponse(code = 201, message = "CaseFile " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = CaseFileHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type CaseFile"),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
+            method = RequestMethod.PUT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    public ResponseEntity<CaseFileHateoas> updateCaseFile(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemId of caseFile to update",
+                    required = true)
+            @PathVariable("systemID") final String systemID,
+            @ApiParam(name = "CaseFile",
+                    value = "Incoming caseFile object",
+                    required = true)
+            @RequestBody CaseFile caseFile) throws NikitaException {
+        validateForUpdate(caseFile);
+
+        CaseFile updatedCaseFile = caseFileService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)), caseFile);
+        CaseFileHateoas caseFileHateoas = new CaseFileHateoas(updatedCaseFile);
+        caseFileHateoasHandler.addLinks(caseFileHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedCaseFile));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .eTag(updatedCaseFile.getVersion().toString())
+                .body(caseFileHateoas);
     }
 }
 /*

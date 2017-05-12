@@ -20,6 +20,7 @@ import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFileService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,11 +34,12 @@ import java.util.Date;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
+import static org.springframework.http.HttpHeaders.ETAG;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + FILE,
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
-public class FileHateoasController {
+public class FileHateoasController extends NoarkController {
 
     private IFileService fileService;
     private IFileHateoasHandler fileHateoasHandler;
@@ -725,7 +727,7 @@ public class FileHateoasController {
     @Counted
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.PUT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
-    public ResponseEntity<String> updateFile(
+    public ResponseEntity<FileHateoas> updateFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemId of file to update",
@@ -735,14 +737,16 @@ public class FileHateoasController {
                     value = "Incoming file object",
                     required = true)
             @RequestBody File file) throws NikitaException {
-        /*FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(systemID, file));
+        validateForUpdate(file);
+
+        File updatedFile = fileService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)), file);
+        FileHateoas fileHateoas = new FileHateoas(updatedFile);
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
-        return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedFile));
         return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(updatedFile.getVersion().toString())
                 .body(fileHateoas);
-        */
-        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
     // Finalise a File

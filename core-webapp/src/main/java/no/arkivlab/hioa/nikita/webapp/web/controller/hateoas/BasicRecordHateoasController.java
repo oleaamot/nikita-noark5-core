@@ -20,6 +20,7 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ISeriesHateoas
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IBasicRecordService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,11 +34,12 @@ import java.util.ArrayList;
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.BASIC_RECORD;
 import static nikita.config.N5ResourceMappings.SYSTEM_ID;
+import static org.springframework.http.HttpHeaders.ETAG;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + BASIC_RECORD,
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
-public class BasicRecordHateoasController {
+public class BasicRecordHateoasController extends NoarkController {
 
     private IBasicRecordService basicRecordService;
     private IBasicRecordHateoasHandler basicRecordHateoasHandler;
@@ -160,4 +162,44 @@ public class BasicRecordHateoasController {
                 .body(hateoasNoarkObject);
     }
 
+    // API - All PUT Requests (CRUD - UPDATE)
+    // Update a BasicRecord
+    // PUT [contextPath][api]/arkivstruktur/basisregistrering/{systemID}
+    @ApiOperation(value = "Updates a BasicRecord object", notes = "Returns the newly" +
+            " update BasicRecord object after it is persisted to the database", response = BasicRecordHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "BasicRecord " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = BasicRecordHateoas.class),
+            @ApiResponse(code = 201, message = "BasicRecord " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = BasicRecordHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type BasicRecord"),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
+            RIGHT_PARENTHESIS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    public ResponseEntity<BasicRecordHateoas> updateBasicRecord(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemId of basicRecord to update.",
+                    required = true)
+            @PathVariable("systemID") String systemID,
+            @ApiParam(name = "basicRecord",
+                    value = "Incoming basicRecord object",
+                    required = true)
+            @RequestBody BasicRecord basicRecord) throws NikitaException {
+        validateForUpdate(basicRecord);
+
+        BasicRecord updatedBasicRecord = basicRecordService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)), basicRecord);
+        BasicRecordHateoas basicRecordHateoas = new BasicRecordHateoas(updatedBasicRecord);
+        basicRecordHateoasHandler.addLinks(basicRecordHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedBasicRecord));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .eTag(updatedBasicRecord.getVersion().toString())
+                .body(basicRecordHateoas);
+    }
 }

@@ -24,6 +24,7 @@ import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentDescriptionService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
+import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,11 +39,12 @@ import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
+import static org.springframework.http.HttpHeaders.ETAG;
 
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + DOCUMENT_DESCRIPTION,
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
-public class DocumentDescriptionHateoasController {
+public class DocumentDescriptionHateoasController extends NoarkController {
 
     private IDocumentDescriptionService documentDescriptionService;
     private IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
@@ -256,15 +258,56 @@ public class DocumentDescriptionHateoasController {
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(recordHateoas);
     }
-}
 
+
+    // API - All PUT Requests (CRUD - UPDATE)
+    // Update a DocumentDescription
+    // PUT [contextPath][api]/arkivstruktur/dokumentobjekt/{systemID}
+    @ApiOperation(value = "Updates a DocumentDescription object", notes = "Returns the newly" +
+            " update DocumentDescription object after it is persisted to the database", response = DocumentDescriptionHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "DocumentDescription " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+                    response = DocumentDescriptionHateoas.class),
+            @ApiResponse(code = 201, message = "DocumentDescription " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+                    response = DocumentDescriptionHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 404, message = API_MESSAGE_PARENT_DOES_NOT_EXIST + " of type DocumentDescription"),
+            @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
+            RIGHT_PARENTHESIS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    public ResponseEntity<DocumentDescriptionHateoas> updateDocumentDescription(
+            final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
+            @ApiParam(name = "systemID",
+                    value = "systemId of documentDescription to update.",
+                    required = true)
+            @PathVariable("systemID") String systemID,
+            @ApiParam(name = "documentDescription",
+                    value = "Incoming documentDescription object",
+                    required = true)
+            @RequestBody DocumentDescription documentDescription) throws NikitaException {
+        validateForUpdate(documentDescription);
+
+        DocumentDescription updatedDocumentDescription = documentDescriptionService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)), documentDescription);
+        DocumentDescriptionHateoas documentDescriptionHateoas = new DocumentDescriptionHateoas(updatedDocumentDescription);
+        documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
+        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedDocumentDescription));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .eTag(updatedDocumentDescription.getVersion().toString())
+                .body(documentDescriptionHateoas);
+    }
+}
 
 /*
 properties check
     public void checkForObligatoryDocumentDescriptionValues(DocumentDescription documentDescription) {
         if (documentDescription.getDocumentStatus() == null) {
             throw new NikitaMalformedInputDataException("The dokumentbeskrivelse you tried to create is " +
-                    "malformed. The documentstatus field is mandatory, and you have submitted an empty value.");
+                    "malformed. The documentstatus field is mandatory, and you have subextends NoarkController {mitted an empty value.");
         }
         if (documentDescription.getDocumentType() == null) {
             throw new NikitaMalformedInputDataException("The dokumentbeskrivelse you tried to create is " +
