@@ -22,7 +22,7 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsHateoasH
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ISeriesHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.model.application.FondsStructureDetails;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
-import no.arkivlab.hioa.nikita.webapp.service.application.service.ApplicationService;
+import no.arkivlab.hioa.nikita.webapp.service.application.ApplicationService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
@@ -142,7 +142,7 @@ public class FondsHateoasController extends NoarkController {
             @ApiParam(name = "systemID",
                     value = "systemId of parent fonds to associate the fonds with.",
                     required = true)
-            @PathVariable String systemID,
+            @PathVariable("systemID") String systemID,
             @ApiParam(name = "fonds",
                     value = "Incoming fonds object",
                     required = true)
@@ -184,7 +184,7 @@ public class FondsHateoasController extends NoarkController {
             @ApiParam(name = "systemID",
                     value = "systemId of fonds to associate the series with.",
                     required = true)
-            @PathVariable String systemID,
+            @PathVariable("systemID") String systemID,
             @ApiParam(name = "series",
                     value = "Incoming series object",
                     required = true)
@@ -227,7 +227,7 @@ public class FondsHateoasController extends NoarkController {
             @ApiParam(name = "systemID",
                     value = "systemId of fonds to associate the series with.",
                     required = true)
-            @PathVariable String systemID,
+            @PathVariable("systemID") String systemID,
             @ApiParam(name = "fondsCreator",
                     value = "Incoming fondsCreator object",
                     required = true)
@@ -495,7 +495,7 @@ public class FondsHateoasController extends NoarkController {
             @ApiParam(name = "systemID",
                     value = "systemId of fonds to update.",
                     required = true)
-            @PathVariable String systemID,
+            @PathVariable("systemID") String systemID,
             @ApiParam(name = "fonds",
                     value = "Incoming fonds object",
                     required = true)

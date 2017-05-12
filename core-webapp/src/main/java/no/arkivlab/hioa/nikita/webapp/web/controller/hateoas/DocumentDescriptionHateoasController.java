@@ -79,22 +79,22 @@ public class DocumentDescriptionHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "documentDescriptionSystemId" +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
             RIGHT_PARENTHESIS + SLASH + NEW_DOCUMENT_OBJECT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<DocumentObjectHateoas>
     createDocumentObjectAssociatedWithDocumentDescription(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "documentDescriptionSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of documentDescription to associate the documentObject with.",
                     required = true)
-            @PathVariable String documentDescriptionSystemId,
+            @PathVariable String systemID,
             @ApiParam(name = "documentObject",
                     value = "Incoming documentObject object",
                     required = true)
             @RequestBody DocumentObject documentObject)
             throws NikitaException {
         DocumentObject createdDocumentObject = documentDescriptionService.createDocumentObjectAssociatedWithDocumentDescription(
-                documentDescriptionSystemId, documentObject);
+                systemID, documentObject);
         DocumentObjectHateoas documentObjectHateoas = new DocumentObjectHateoas(documentObject);
         documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdDocumentObject));
@@ -121,10 +121,10 @@ public class DocumentDescriptionHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemID of the documentDescription to retrieve",
                     required = true)
-            @PathVariable("systemID") final String documentDescriptionSystemId) {
-        DocumentDescription documentDescription = documentDescriptionService.findBySystemId(documentDescriptionSystemId);
+            @PathVariable("systemID") final String systemID) {
+        DocumentDescription documentDescription = documentDescriptionService.findBySystemId(systemID);
         if (documentDescription == null) {
-            throw new NoarkEntityNotFoundException(documentDescriptionSystemId);
+            throw new NoarkEntityNotFoundException(systemID);
         }
         DocumentDescriptionHateoas documentDescriptionHateoas = new
                 DocumentDescriptionHateoas(documentDescription);
@@ -211,12 +211,12 @@ public class DocumentDescriptionHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemID of the file to retrieve associated Record",
                     required = true)
-            @PathVariable("systemID") final String documentDescriptionSystemId) {
+            @PathVariable("systemID") final String systemID) {
 
-        DocumentDescription documentDescription = documentDescriptionService.findBySystemId(documentDescriptionSystemId);
+        DocumentDescription documentDescription = documentDescriptionService.findBySystemId(systemID);
         if (documentDescription == null) {
             throw new NoarkEntityNotFoundException("Could not find DocumentDescription object with systemID " +
-                    documentDescriptionSystemId);
+                    systemID);
         }
         DocumentObjectHateoas documentObjectHateoas = new
                 DocumentObjectHateoas(new ArrayList<>(documentDescription.getReferenceDocumentObject()));

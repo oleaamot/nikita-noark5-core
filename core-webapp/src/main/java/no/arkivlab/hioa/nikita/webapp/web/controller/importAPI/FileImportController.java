@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.FILE;
+import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 /**
  * Created by tsodring on 23/11/16.
@@ -56,19 +57,19 @@ public class FileImportController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_RECORD)
     public ResponseEntity<RecordHateoas> createRecordAssociatedWithFile(
-            @ApiParam(name = "fileSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of file to associate the record with",
                     required = true)
-            @PathVariable String fileSystemId,
+            @PathVariable("systemID") final String systemID,
             @ApiParam(name = "Record",
                     value = "Incoming record object",
                     required = true)
             @RequestBody Record record) throws NikitaException {
         RecordHateoas recordHateoas =
-                new RecordHateoas(fileImportService.createRecordAssociatedWithFile(fileSystemId, record));
+                new RecordHateoas(fileImportService.createRecordAssociatedWithFile(systemID, record));
         return new ResponseEntity<>(recordHateoas, HttpStatus.CREATED);
     }
     @ApiOperation(value = "Persists a BasicRecord object associated with the given Series systemId",
@@ -86,20 +87,20 @@ public class FileImportController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_BASIC_RECORD)
     public ResponseEntity<BasicRecordHateoas> createBasicRecordAssociatedWithFile(
-            @ApiParam(name = "fileSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of file to associate the basicRecord with",
                     required = true)
-            @PathVariable String fileSystemId,
+            @PathVariable("systemID") final String systemID,
             @ApiParam(name = "BasicRecord",
                     value = "Incoming basicRecord object",
                     required = true)
             @RequestBody BasicRecord basicRecord) throws NikitaException {
         BasicRecordHateoas basicRecordHateoas =
                 new BasicRecordHateoas(fileImportService.createBasicRecordAssociatedWithFile(
-                        fileSystemId, basicRecord));
+                        systemID, basicRecord));
         return new ResponseEntity<>(basicRecordHateoas, HttpStatus.CREATED);
     }
 }

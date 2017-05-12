@@ -80,15 +80,15 @@ public class RecordHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_DOCUMENT_DESCRIPTION, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<DocumentDescriptionHateoas>
     createDocumentDescriptionAssociatedWithRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "recordSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of record to associate the documentDescription with.",
                     required = true)
-            @PathVariable String recordSystemId,
+            @PathVariable String systemID,
             @ApiParam(name = "documentDescription",
                     value = "Incoming documentDescription object",
                     required = true)
@@ -96,7 +96,7 @@ public class RecordHateoasController {
             throws NikitaException {
 
         DocumentDescription createdDocumentDescription =
-                recordService.createDocumentDescriptionAssociatedWithRecord(recordSystemId, documentDescription);
+                recordService.createDocumentDescriptionAssociatedWithRecord(systemID, documentDescription);
         DocumentDescriptionHateoas documentDescriptionHateoas =
                 new DocumentDescriptionHateoas(createdDocumentDescription);
         documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
@@ -125,14 +125,14 @@ public class RecordHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_DOCUMENT_OBJECT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> createDocumentObjectAssociatedWithRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "recordSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of record to associate the documentObject with.",
                     required = true)
-            @PathVariable String recordSystemId,
+            @PathVariable String systemID,
             @ApiParam(name = "documentObject",
                     value = "Incoming documentObject object",
                     required = true)
@@ -141,7 +141,7 @@ public class RecordHateoasController {
         /*
         DocumentObjectHateoas documentObjectHateoas =
                 new DocumentObjectHateoas(
-                        recordService.createDocumentObjectAssociatedWithRecord(recordSystemId,
+                        recordService.createDocumentObjectAssociatedWithRecord(systemID,
                                 documentObject));
         documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
@@ -155,7 +155,7 @@ public class RecordHateoasController {
     // Add a reference to a secondary Series associated with the Record
     // POST [contextPath][api]/arkivstruktur/registrering/{systemId}/ny-referanseArkivdel
     // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-referanseArkivdel/
-    @ApiOperation(value = "Associates a secondary Series with a Record identified by recordSystemId",
+    @ApiOperation(value = "Associates a secondary Series with a Record identified by systemID",
             notes = "Returns the Record after the secondary Series is successfully associated with it." +
                     "Note a secondary series allows a Record to be associated with another Series.",
             response = RecordHateoas.class)
@@ -171,14 +171,14 @@ public class RecordHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_REFERENCE_SERIES, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addReferenceSeriesToRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "recordSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of Record to associate the secondary Series with",
                     required = true)
-            @PathVariable String recordSystemId,
+            @PathVariable String systemID,
             @ApiParam(name = "Series",
                     value = "series",
                     required = true)
@@ -194,7 +194,7 @@ public class RecordHateoasController {
     // Add a Classified (gradering) to a Record
     // POST [contextPath][api]/arkivstruktur/registrering/{systemId}/ny-gradering
     // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-gradering/
-    @ApiOperation(value = "Associates a Classified with a Record identified by recordSystemId",
+    @ApiOperation(value = "Associates a Classified with a Record identified by systemID",
             notes = "Returns the Record after the Classified is successfully associated with it." +
                     "Note a Record can only have one Classified. Update via PUT",
             response = RecordHateoas.class)
@@ -210,14 +210,14 @@ public class RecordHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_CLASSIFIED, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addNewClassifiedToRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "recordSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of Record to associate the Classified with",
                     required = true)
-            @PathVariable String recordSystemId,
+            @PathVariable String systemID,
             @ApiParam(name = "Classified",
                     value = "classified",
                     required = true)
@@ -232,7 +232,7 @@ public class RecordHateoasController {
     // Add a Disposal to a Record
     // POST [contextPath][api]/arkivstruktur/registrering/{systemId}/ny-kassasjon
     // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-kassasjon/
-    @ApiOperation(value = "Associates a Disposal with a Record identified by recordSystemId",
+    @ApiOperation(value = "Associates a Disposal with a Record identified by systemID",
             notes = "Returns the Record after the Disposal is successfully associated with it." +
                     "Note a Record can only have one Disposal. Update via PUT",
             response = RecordHateoas.class)
@@ -248,14 +248,14 @@ public class RecordHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_DISPOSAL, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addNewDisposalToRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "recordSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of Record to associate the Disposal with",
                     required = true)
-            @PathVariable String recordSystemId,
+            @PathVariable String systemID,
             @ApiParam(name = "Disposal",
                     value = "disposal",
                     required = true)
@@ -271,7 +271,7 @@ public class RecordHateoasController {
     // Add a screening (skjerming) to a Record
     // POST [contextPath][api]/arkivstruktur/registrering/{systemId}/ny-skjerming
     // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-skjerming/
-    @ApiOperation(value = "Associates a Screening with a Record identified by recordSystemId",
+    @ApiOperation(value = "Associates a Screening with a Record identified by systemID",
             notes = "Returns the Record after the Screening is successfully associated with it." +
                     "Note a Record can only have one Screening. Update via PUT",
             response = RecordHateoas.class)
@@ -287,14 +287,14 @@ public class RecordHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_SCREENING, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addNewScreeningToRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "recordSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of Record to associate the Screening with",
                     required = true)
-            @PathVariable String recordSystemId,
+            @PathVariable String systemID,
             @ApiParam(name = "Screening",
                     value = "screening",
                     required = true)
@@ -310,7 +310,7 @@ public class RecordHateoasController {
     // Add a disposalUndertaken (utfoertKassasjon) to a Record
     // POST [contextPath][api]/arkivstruktur/registrering/{systemId}/ny-utfoertKassasjon
     // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-utfoertKassasjon/
-    @ApiOperation(value = "Associates a DisposalUndertaken with a Record identified by recordSystemId",
+    @ApiOperation(value = "Associates a DisposalUndertaken with a Record identified by systemID",
             notes = "Returns the Record after the DisposalUndertaken is successfully associated with it." +
                     "Note a Record can only have one DisposalUndertaken. Update via PUT",
             response = RecordHateoas.class)
@@ -326,14 +326,14 @@ public class RecordHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_DISPOSAL_UNDERTAKEN, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addNewDisposalUndertakenToRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "recordSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of Record to associate the DisposalUndertaken with",
                     required = true)
-            @PathVariable String recordSystemId,
+            @PathVariable String systemID,
             @ApiParam(name = "DisposalUndertaken",
                     value = "disposalUndertaken",
                     required = true)
@@ -349,7 +349,7 @@ public class RecordHateoasController {
     // Add a Deletion  to a Record
     // POST [contextPath][api]/arkivstruktur/registrering/{systemId}/ny-sletting
     // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-sletting/
-    @ApiOperation(value = "Associates a Deletion with a Record identified by recordSystemId",
+    @ApiOperation(value = "Associates a Deletion with a Record identified by systemID",
             notes = "Returns the Record after the Deletion is successfully associated with it." +
                     "Note a Record can only have one Deletion. Update via PUT",
             response = RecordHateoas.class)
@@ -365,14 +365,14 @@ public class RecordHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_DELETION, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addNewDeletionToRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "recordSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of Record to associate the Deletion with",
                     required = true)
-            @PathVariable String recordSystemId,
+            @PathVariable String systemID,
             @ApiParam(name = "Deletion",
                     value = "deletion",
                     required = true)
@@ -404,8 +404,8 @@ public class RecordHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemID of the record to retrieve",
                     required = true)
-            @PathVariable("systemID") final String recordSystemId) {
-        Record record = recordService.findBySystemId(recordSystemId);
+            @PathVariable("systemID") final String systemID) {
+        Record record = recordService.findBySystemId(systemID);
         RecordHateoas recordHateoas = new RecordHateoas(record);
         recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
@@ -463,7 +463,7 @@ public class RecordHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemID of the Record to retrieve secondary Class for",
                     required = true)
-            @PathVariable("systemID") final String recordSystemId) {
+            @PathVariable("systemID") final String systemID) {
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -545,10 +545,10 @@ public class RecordHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemID of the file to retrieve associated Record",
                     required = true)
-            @PathVariable("systemID") final String recordSystemId) {
-        Record record = recordService.findBySystemId(recordSystemId);
+            @PathVariable("systemID") final String systemID) {
+        Record record = recordService.findBySystemId(systemID);
         if (record == null) {
-            throw new NoarkEntityNotFoundException("Could not find File object with systemID " + recordSystemId);
+            throw new NoarkEntityNotFoundException("Could not find File object with systemID " + systemID);
         }
         DocumentDescriptionHateoas documentDescriptionHateoas = new
                 DocumentDescriptionHateoas(new ArrayList<>(record.getReferenceDocumentDescription()));

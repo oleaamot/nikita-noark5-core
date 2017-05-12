@@ -81,20 +81,20 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_FILE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<FileHateoas> createFileAssociatedWithSeries(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "seriesSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of series to associate the caseFile with",
                     required = true)
-            @PathVariable String seriesSystemId,
+            @PathVariable String systemID,
             @ApiParam(name = "File",
                     value = "Incoming file object",
                     required = true)
             @RequestBody File file) throws NikitaException {
         validateForCreate(file);
-        File createdFile = seriesService.createFileAssociatedWithSeries(seriesSystemId, file);
+        File createdFile = seriesService.createFileAssociatedWithSeries(systemID, file);
         FileHateoas fileHateoas = new FileHateoas(createdFile);
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdFile));
@@ -122,20 +122,20 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS + SLASH
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH
             + NEW_CASE_FILE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<CaseFileHateoas> createCaseFileAssociatedWithSeries(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "seriesSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of series to associate the caseFile with",
                     required = true)
-            @PathVariable String seriesSystemId,
+            @PathVariable String systemID,
             @ApiParam(name = "caseFile",
                     value = "Incoming caseFile object",
                     required = true)
             @RequestBody CaseFile caseFile) throws NikitaException {
         validateForCreate(caseFile);
-        CaseFile createdCaseFile = seriesService.createCaseFileAssociatedWithSeries(seriesSystemId, caseFile);
+        CaseFile createdCaseFile = seriesService.createCaseFileAssociatedWithSeries(systemID, caseFile);
         CaseFileHateoas caseFileHateoas = new CaseFileHateoas(createdCaseFile);
         caseFileHateoasHandler.addLinks(caseFileHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdCaseFile));
@@ -162,20 +162,20 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> createRecordAssociatedWithSeries(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "seriesSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of series to associate the record with",
                     required = true)
-            @PathVariable String seriesSystemId,
+            @PathVariable String systemID,
             @ApiParam(name = "Record",
                     value = "Incoming record object",
                     required = true)
             @RequestBody Record record) throws NikitaException {
         //  validateForCreate(record);
-        //RecordHateoas recordHateoas = new RecordHateoas(seriesService.createRecordAssociatedWithSeries(seriesSystemId, record));
+        //RecordHateoas recordHateoas = new RecordHateoas(seriesService.createRecordAssociatedWithSeries(systemID, record));
         //recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
         // applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
         //  return ResponseEntity.status(HttpStatus.CREATED)
@@ -189,7 +189,7 @@ public class SeriesHateoasController extends NoarkController {
     // Associate Series with reference to successor
     // PUT [contextPath][api]/arkivstruktur/arkivdel/{systemIdArvtager}/referanseArvtager/
     @ApiOperation(value = "Associates a Series object (successor) as a successor to another Series object (precursor)" +
-            "identified by seriesPrecursorSystemId. ", notes = "Automatically sets the reverse relationship. " +
+            "identified by systemID. ", notes = "Automatically sets the reverse relationship. " +
             "Associates a precursor relationship as the same time. Returns both the successor as well as the precursor",
             response = SeriesHateoas.class)
     @ApiResponses(value = {
@@ -204,20 +204,20 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + "seriesPrecursorSystemId" +
+    @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
             RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_SUCCESSOR, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> associateSeriesWithSeriesPrecursor(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "seriesPrecursorSystemId",
+            @ApiParam(name = "systemID",
                     value = "The systemId of the Series identified as a precursor",
                     required = true)
-            @PathVariable String seriesPrecursorSystemId,
+            @PathVariable String systemID,
             @ApiParam(name = "id",
                     value = "Address of the Series identified as a successor",
                     required = true)
             @RequestParam StringBuffer id) throws NikitaException {
 
-        String seriesSuccessorSystemId = handleResolutionOfIncomingURLInternalGetSystemId(id);
+        String systemID_1 = handleResolutionOfIncomingURLInternalGetSystemId(id);
 //        SeriesHateoas seriesHateoas = new
 //                SeriesHateoas(seriesService.associateSeriesWithSeriesSuccessor(seriesPrecursorSys temId, urlToSeriesSuccessor));
 //        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
@@ -231,7 +231,7 @@ public class SeriesHateoasController extends NoarkController {
     // Associate Series with reference to precursor
     // PUT [contextPath][api]/arkivstruktur/arkivdel/{systemIdForloeper}/referanseForloeper/
     @ApiOperation(value = "Associates a Series object (precursor) as precursor to a Series object (successor)" +
-            "identified by seriesSuccessorSystemId. ", notes = "Automatically sets the reverse relationship. " +
+            "identified by systemID. ", notes = "Automatically sets the reverse relationship. " +
             "Associates a successor relationship as the same time. Returns both the successor as well as the precursor",
             response = SeriesHateoas.class)
     @ApiResponses(value = {
@@ -246,21 +246,21 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + "seriesSuccessorSystemId" +
+    @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
             RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_PRECURSOR, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> associateSeriesWithSeriesSuccessor(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "seriesSuccessorSystemId",
+            @ApiParam(name = "systemID",
                     value = "The systemId of the Series identified as a successor",
                     required = true)
-            @PathVariable String seriesSuccessorSystemId,
+            @PathVariable String systemID,
             @ApiParam(name = "id",
                     value = "Address of the Series identified as a precursor",
                     required = true)
             @RequestParam StringBuffer id) throws NikitaException {
-        String seriesPrecursorSystemId = handleResolutionOfIncomingURLInternalGetSystemId(id);
+        String systemID_2 = handleResolutionOfIncomingURLInternalGetSystemId(id);
 //        SeriesHateoas seriesHateoas = new
-//                SeriesHateoas(seriesService.associateSeriesWithSeriesSuccessor(seriesSystemId, caseFile));
+//                SeriesHateoas(seriesService.associateSeriesWithSeriesSuccessor(systemID, caseFile));
 //        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
 //        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, ));
 //   return ResponseEntity.status(HttpStatus.CREATED)
@@ -286,11 +286,11 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + "seriesSystemId" +
+    @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
             RIGHT_PARENTHESIS + SLASH + NEW_CLASSIFICATION_SYSTEM, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> associateSeriesWithClassificationSystem(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "seriesSystemId",
+            @ApiParam(name = "systemID",
                     value = "The systemId of the Series",
                     required = true)
             @PathVariable String classificationSystemSuccessorSystemId,
@@ -333,7 +333,7 @@ public class SeriesHateoasController extends NoarkController {
                 @ApiParam(name = "systemID",
                     value = "systemId of fonds to update.",
                     required = true)
-                @PathVariable String systemID,
+                @PathVariable("systemID") String systemID,
                 @ApiParam(name = "series",
                     value = "Incoming series object",
                     required = true)
@@ -367,10 +367,10 @@ public class SeriesHateoasController extends NoarkController {
             @ApiParam(name = "systemID",
                     value = "systemID of the series to retrieve",
                     required = true)
-            @PathVariable("systemID") final String seriesSystemId) {
-        Series series = seriesService.findBySystemId(seriesSystemId);
+            @PathVariable("systemID") final String systemID) {
+        Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
-            throw new NoarkEntityNotFoundException("Could not find series object with systemID " + seriesSystemId);
+            throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
         SeriesHateoas seriesHateoas = new
                 SeriesHateoas(series);
@@ -448,7 +448,7 @@ public class SeriesHateoasController extends NoarkController {
 
     // Retrieve the precursor to a Series given a systemId
     // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/forloeper/
-    @ApiOperation(value = "Retrieves a Series that is the precursor to the series identified by seriesSystemId",
+    @ApiOperation(value = "Retrieves a Series that is the precursor to the series identified by systemID",
             response = Series.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Series returned", response = Series.class),
@@ -461,13 +461,13 @@ public class SeriesHateoasController extends NoarkController {
             method = RequestMethod.GET)
     public ResponseEntity<String> findPrecursorToSeriesBySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = " seriesSystemId",
+            @ApiParam(name = " systemID",
                     value = "systemId of the series to retrieve",
                     required = true)
-            @PathVariable("systemID") final String seriesSystemId) {
-        /*Series series = seriesService.findBySystemId(seriesSystemId);
+            @PathVariable("systemID") final String systemID) {
+        /*Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
-            throw new NoarkEntityNotFoundException("Could not find series object with systemID " + seriesSystemId);
+            throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
         SeriesHateoas seriesHateoas = new
                 SeriesHateoas(series);
@@ -480,7 +480,7 @@ public class SeriesHateoasController extends NoarkController {
 
     // Retrieve the successor to a Series given a systemId
     // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/arvtager/
-    @ApiOperation(value = "Retrieves a Series that is the successor to the series identified by seriesSystemId",
+    @ApiOperation(value = "Retrieves a Series that is the successor to the series identified by systemID",
             response = Series.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Series returned", response = Series.class),
@@ -493,13 +493,13 @@ public class SeriesHateoasController extends NoarkController {
             method = RequestMethod.GET)
     public ResponseEntity<String> findSuccessorToSeriesBySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = " seriesSystemId",
+            @ApiParam(name = " systemID",
                     value = "systemId of the series to retrieve",
                     required = true)
-            @PathVariable("systemID") final String seriesSystemId) {
-        /*Series series = seriesService.findBySystemId(seriesSystemId);
+            @PathVariable("systemID") final String systemID) {
+        /*Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
-            throw new NoarkEntityNotFoundException("Could not find series object with systemID " + seriesSystemId);
+            throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
         SeriesHateoas seriesHateoas = new
                 SeriesHateoas(series);
@@ -528,11 +528,11 @@ public class SeriesHateoasController extends NoarkController {
             @ApiParam(name = "systemID",
                     value = "systemID of the Series",
                     required = true)
-            @PathVariable("systemID") final String seriesSystemId) {
+            @PathVariable("systemID") final String systemID) {
 
-        /*Series series = seriesService.findBySystemId(seriesSystemId);
+        /*Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
-            throw new NoarkEntityNotFoundException("Could not find series object with systemID " + seriesSystemId);
+            throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
         SeriesHateoas seriesHateoas = new
                 SeriesHateoas(series);
@@ -562,11 +562,11 @@ public class SeriesHateoasController extends NoarkController {
             @ApiParam(name = "systemID",
                     value = "systemID of the series to retrieve",
                     required = true)
-            @PathVariable("systemID") final String seriesSystemId) {
+            @PathVariable("systemID") final String systemID) {
 
-        /*Series series = seriesService.findBySystemId(seriesSystemId);
+        /*Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
-            throw new NoarkEntityNotFoundException("Could not find series object with systemID " + seriesSystemId);
+            throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
         SeriesHateoas seriesHateoas = new
                 SeriesHateoas(series);
@@ -664,11 +664,11 @@ public class SeriesHateoasController extends NoarkController {
             @ApiParam(name = "systemID",
                     value = "systemID of the series to retrieve",
                     required = true)
-            @PathVariable("systemID") final String seriesSystemId) {
+            @PathVariable("systemID") final String systemID) {
 
-        Series series = seriesService.findBySystemId(seriesSystemId);
+        Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
-            throw new NoarkEntityNotFoundException("Could not find series object with systemID " + seriesSystemId);
+            throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
         FileHateoas fileHateoas = new FileHateoas(new ArrayList<> (series.getReferenceFile()));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
@@ -727,13 +727,13 @@ public class SeriesHateoasController extends NoarkController {
             @ApiParam(name = "systemID",
                     value = "systemID of the series to delete",
                     required = true)
-            @PathVariable("systemID") final String seriesSystemId) {
+            @PathVariable("systemID") final String systemID) {
 
-        Series series = seriesService.findBySystemId(seriesSystemId);
+        Series series = seriesService.findBySystemId(systemID);
         Fonds fonds = series.getReferenceFonds();
         FondsHateoas fondsHateoas = new FondsHateoas(fonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
-        seriesService.deleteEntity(seriesSystemId);
+        seriesService.deleteEntity(systemID);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, fonds));
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))

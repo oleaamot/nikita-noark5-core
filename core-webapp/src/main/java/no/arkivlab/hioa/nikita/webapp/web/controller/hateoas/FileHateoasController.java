@@ -84,19 +84,19 @@ public class FileHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<RecordHateoas> createRecordAssociatedWithFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "fileSystemId",
                     value = "systemId of file to associate the record with",
                     required = true)
-            @PathVariable String fileSystemId,
+            @PathVariable("systemID") final String systemID,
             @ApiParam(name = "Record",
                     value = "Incoming record",
                     required = true)
             @RequestBody Record record) throws NikitaException {
-        Record createdRecord = fileService.createRecordAssociatedWithFile(fileSystemId, record);
+        Record createdRecord = fileService.createRecordAssociatedWithFile(systemID, record);
         RecordHateoas recordHateoas = new RecordHateoas(createdRecord);
         recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdRecord));
@@ -124,19 +124,19 @@ public class FileHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_BASIC_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<BasicRecordHateoas> createBasicRecordAssociatedWithFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "fileSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of file to associate the basicRecord with",
                     required = true)
-            @PathVariable String fileSystemId,
+            @PathVariable("systemID") final String systemID,
             @ApiParam(name = "BasicRecord",
                     value = "Incoming basicRecord",
                     required = true)
             @RequestBody BasicRecord basicRecord) throws NikitaException {
-        BasicRecord createdBasicRecord = fileService.createBasicRecordAssociatedWithFile(fileSystemId, basicRecord);
+        BasicRecord createdBasicRecord = fileService.createBasicRecordAssociatedWithFile(systemID, basicRecord);
         BasicRecordHateoas basicRecordHateoas = new BasicRecordHateoas(createdBasicRecord);
         basicRecordHateoasHandler.addLinks(basicRecordHateoas, request, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdBasicRecord));
@@ -164,14 +164,14 @@ public class FileHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_CROSS_REFERENCE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> createCrossReferenceAssociatedWithFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "fileSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of file to associate the basicRecord with",
                     required = true)
-            @PathVariable String fileSystemId,
+            @PathVariable("systemID") final String systemID,
             @ApiParam(name = "crossReferenceEntity",
                     value = "Noark entity that support cross reference functionality",
                     required = true)
@@ -204,14 +204,14 @@ public class FileHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_SUB_FILE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> createSubFileAssociatedWithFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "fileSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of the parent file",
                     required = true)
-            @PathVariable String fileSystemId,
+            @PathVariable("systemID") final String systemID,
             @ApiParam(name = "File",
                     value = "File to be (sub)File",
                     required = true)
@@ -226,7 +226,7 @@ public class FileHateoasController {
     // Add a Comment to a File
     // POST [contextPath][api]/arkivstruktur/mappe/{systemId}/ny-merknad
     // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-merknad/
-    @ApiOperation(value = "Associates a Comment with a File identified by fileSystemId",
+    @ApiOperation(value = "Associates a Comment with a File identified by systemID",
             notes = "Returns the File with the comment associated with it", response = FileHateoas.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = COMMENT + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
@@ -240,14 +240,14 @@ public class FileHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_COMMENT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addCommentToFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "fileSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of File to associate the Comment with",
                     required = true)
-            @PathVariable String fileSystemId,
+            @PathVariable("systemID") final String systemID,
             @ApiParam(name = "Comment",
                     value = "comment",
                     required = true)
@@ -263,7 +263,7 @@ public class FileHateoasController {
     // Add a Class to a File
     // POST [contextPath][api]/arkivstruktur/mappe/{systemId}/ny-klasse
     // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-klasse/
-    @ApiOperation(value = "Associates a Class with a File identified by fileSystemId",
+    @ApiOperation(value = "Associates a Class with a File identified by systemID",
             notes = "Returns the File with the Class associated with it", response = FileHateoas.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = CLASS + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
@@ -277,14 +277,14 @@ public class FileHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_CLASS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addClassToFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "fileSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of File to associate the Class with",
                     required = true)
-            @PathVariable String fileSystemId,
+            @PathVariable("systemID") final String systemID,
             @ApiParam(name = "klass",
                     value = "Class",
                     required = true)
@@ -299,7 +299,7 @@ public class FileHateoasController {
     // Add a reference to a secondary Series associated with the File
     // POST [contextPath][api]/arkivstruktur/mappe/{systemId}/ny-referanseArkivdel
     // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-referanseArkivdel/
-    @ApiOperation(value = "Associates a Secondary Series with a File identified by fileSystemId",
+    @ApiOperation(value = "Associates a Secondary Series with a File identified by systemID",
             notes = "Returns the File after the secondary Series is successfully associated with it." +
                     "Note a secondary series allows a File to be associated with another Series.",
             response = FileHateoas.class)
@@ -315,14 +315,14 @@ public class FileHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_REFERENCE_SERIES, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addReferenceSeriesToFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "fileSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of File to associate the secondary Series with",
                     required = true)
-            @PathVariable String fileSystemId,
+            @PathVariable("systemID") final String systemID,
             @ApiParam(name = "Series",
                     value = "series",
                     required = true)
@@ -338,7 +338,7 @@ public class FileHateoasController {
     // Add a secondary Class to a File
     // POST [contextPath][api]/arkivstruktur/mappe/{systemId}/ny-sekundaerklassifikasjon
     // http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-sekundaerklassifikasjon/
-    @ApiOperation(value = "Associates a Class with a File identified by fileSystemId as secondary Class",
+    @ApiOperation(value = "Associates a Class with a File identified by systemID as secondary Class",
             notes = "Returns the File with the Class associated with it. Note a File can only have one Class " +
                     "associated with it, but can have multiple secondary Class associated with it. An example" +
                     "is the use of K-Koder on case-handling and a secondary classification of person",
@@ -355,14 +355,14 @@ public class FileHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_SECONDARY_CLASSIFICATION, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addReferenceToSecondaryClassToFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "fileSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of File to associate the secondary Class with",
                     required = true)
-            @PathVariable String fileSystemId,
+            @PathVariable("systemID") final String systemID,
             @ApiParam(name = "klass",
                     value = "Class",
                     required = true)
@@ -392,11 +392,11 @@ public class FileHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemID of the file to retrieve associated Record",
                     required = true)
-            @PathVariable("systemID") final String fileSystemId) {
+            @PathVariable("systemID") final String systemID) {
 
-        File file = fileService.findBySystemId(fileSystemId);
+        File file = fileService.findBySystemId(systemID);
         if (file == null) {
-            throw new NoarkEntityNotFoundException("Could not find File object with systemID " + fileSystemId);
+            throw new NoarkEntityNotFoundException("Could not find File object with systemID " + systemID);
         }
         RecordHateoas recordHateoas = new
                 RecordHateoas(new ArrayList<> (file.getReferenceRecord()));
@@ -425,7 +425,7 @@ public class FileHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemID of the file to retrieve associated BasicRecord",
                     required = true)
-            @PathVariable("systemID") final String fileSystemId) {
+            @PathVariable("systemID") final String systemID) {
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -448,7 +448,7 @@ public class FileHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemID of the file to retrieve associated (sub)File",
                     required = true)
-            @PathVariable("systemID") final String fileSystemId) {
+            @PathVariable("systemID") final String systemID) {
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -520,8 +520,8 @@ public class FileHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemID of the file to retrieve",
                     required = true)
-            @PathVariable("systemID") final String fileSystemId) {
-        File file = fileService.findBySystemId(fileSystemId);
+            @PathVariable("systemID") final String systemID) {
+        File file = fileService.findBySystemId(systemID);
         // TODO: If null return not found exception
         FileHateoas fileHateoas = new FileHateoas(file);
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
@@ -580,7 +580,7 @@ public class FileHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemID of the file to retrieve comments for",
                     required = true)
-            @PathVariable("systemID") final String fileSystemId) {
+            @PathVariable("systemID") final String systemID) {
         //return new ResponseEntity<>(commentHateoas, HttpStatus.OK);
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
@@ -604,7 +604,7 @@ public class FileHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemID of the File to retrieve CrossReferences for",
                     required = true)
-            @PathVariable("systemID") final String fileSystemId) {
+            @PathVariable("systemID") final String systemID) {
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -627,7 +627,7 @@ public class FileHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemID of the File to retrieve a Class for",
                     required = true)
-            @PathVariable("systemID") final String fileSystemId) {
+            @PathVariable("systemID") final String systemID) {
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -650,7 +650,7 @@ public class FileHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemID of the File to retrieve a Class for",
                     required = true)
-            @PathVariable("systemID") final String fileSystemId) {
+            @PathVariable("systemID") final String systemID) {
         //return ResponseEntity.status(HttpStatus.CREATED)
         //        .eTag(series.getVersion().toString())
         //        .body(seriesHateoas);
@@ -676,7 +676,7 @@ public class FileHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemID of the File to retrieve secondary Class for",
                     required = true)
-            @PathVariable("systemID") final String fileSystemId) {
+            @PathVariable("systemID") final String systemID) {
         //return ResponseEntity.status(HttpStatus.CREATED)
         //        .eTag(klass.getVersion().toString())
         //        .body(classHateoas);
@@ -702,7 +702,7 @@ public class FileHateoasController {
             @ApiParam(name = "systemID",
                     value = "systemID of the File to retrieve secondary Class for",
                     required = true)
-            @PathVariable("systemID") final String fileSystemId) {
+            @PathVariable("systemID") final String systemID) {
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -724,19 +724,18 @@ public class FileHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
-            SLASH + FILE, method = RequestMethod.PUT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.PUT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> updateFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "fileSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of file to update",
                     required = true)
-            @PathVariable String fileSystemId,
+            @PathVariable("systemID") final String systemID,
             @ApiParam(name = "File",
                     value = "Incoming file object",
                     required = true)
             @RequestBody File file) throws NikitaException {
-        /*FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
+        /*FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(systemID, file));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -763,18 +762,18 @@ public class FileHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + FILE_END)
     public ResponseEntity<String> finaliseFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "fileSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of file to update",
                     required = true)
-            @PathVariable String fileSystemId) throws NikitaException {
+            @PathVariable("systemID") final String systemID) throws NikitaException {
 
         /*
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, ));
-        FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
+        FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(systemID, file));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -801,17 +800,17 @@ public class FileHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + FILE_EXPAND_TO_CASE_FILE)
     public ResponseEntity<String> expandFileToCaseFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "fileSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of file to expand",
                     required = true)
-            @PathVariable String fileSystemId) throws NikitaException {
+            @PathVariable("systemID") final String systemID) throws NikitaException {
         /*
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, ));
-        FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
+        FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(systemID, file));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -841,16 +840,16 @@ public class FileHateoasController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + FILE_EXPAND_TO_MEETING_FILE)
     public ResponseEntity<String> expandFileToMeetingFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
-            @ApiParam(name = "fileSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of file to expand",
                     required = true)
-            @PathVariable String fileSystemId) throws NikitaException {
+            @PathVariable("systemID") final String systemID) throws NikitaException {
         /* applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, ));
-        FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(fileSystemId, file));
+        FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(systemID, file));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
         return ResponseEntity.status(HttpStatus.CREATED)

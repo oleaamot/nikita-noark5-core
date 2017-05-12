@@ -2,7 +2,10 @@ package no.arkivlab.hioa.nikita.webapp.web.controller.importAPI;
 
 import com.codahale.metrics.annotation.Counted;
 import com.codahale.metrics.annotation.Timed;
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
 import nikita.util.exceptions.NikitaException;
@@ -13,9 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static nikita.config.Constants.*;
-import static nikita.config.Constants.API_MESSAGE_INTERNAL_SERVER_ERROR;
-import static nikita.config.Constants.API_MESSAGE_UNAUTHORISED_FOR_USER;
 import static nikita.config.N5ResourceMappings.CASE_FILE;
+import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 
 @RestController
@@ -42,20 +44,20 @@ public class CaseFileImportController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "fileSystemId" + RIGHT_PARENTHESIS + SLASH
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH
             + NEW_REGISTRY_ENTRY)
     public ResponseEntity<RegistryEntryHateoas> createRegistryEntryAssociatedWithFile(
-            @ApiParam(name = "fileSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of file to associate the record with",
                     required = true)
-            @PathVariable String fileSystemId,
+            @PathVariable("systemID") final String systemID,
             @ApiParam(name = "RegistryEntry",
                     value = "Incoming registryEntry object",
                     required = true)
             @RequestBody RegistryEntry registryEntry)  throws NikitaException {
         RegistryEntryHateoas registryEntryHateoas =
                 new RegistryEntryHateoas(caseFileImportService.createRegistryEntryAssociatedWithCaseFile(
-                        fileSystemId, registryEntry));
+                        systemID, registryEntry));
         return new ResponseEntity<> (registryEntryHateoas, HttpStatus.CREATED);
     }
 }

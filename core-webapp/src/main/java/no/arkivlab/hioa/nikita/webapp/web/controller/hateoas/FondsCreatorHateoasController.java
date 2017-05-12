@@ -119,7 +119,7 @@ public class FondsCreatorHateoasController extends NoarkController {
             @ApiParam(name = "systemId",
                     value = "systemId of FondsCreator to associate the Fonds with.",
                     required = true)
-            @PathVariable String systemID,
+            @PathVariable("systemID") String systemID,
             @ApiParam(name = "fonds",
                     value = "Incoming fonds object",
                     required = true)
@@ -217,7 +217,8 @@ public class FondsCreatorHateoasController extends NoarkController {
                                                                   @RequestBody FondsCreator fondsCreator,
                                                                   @ApiParam(name = "systemId",
                                                                           value = "systemId of FondsCreator to retrieve.",
-                                                                          required = true) String systemID) {
+                                                                          required = true)
+                                                                      @PathVariable("systemID") final String systemID) {
         FondsCreator createdFonds = fondsCreatorService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)),
                 fondsCreator);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, createdFonds));

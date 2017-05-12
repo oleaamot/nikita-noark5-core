@@ -18,7 +18,7 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassHateoasH
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IClassificationSystemHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.model.application.FondsStructureDetails;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
-import no.arkivlab.hioa.nikita.webapp.service.application.service.ApplicationService;
+import no.arkivlab.hioa.nikita.webapp.service.application.ApplicationService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IClassificationSystemService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;

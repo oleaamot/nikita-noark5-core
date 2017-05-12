@@ -7,7 +7,7 @@ import no.arkivlab.hioa.nikita.webapp.model.application.ApplicationDetails;
 import no.arkivlab.hioa.nikita.webapp.model.application.CaseHandlingDetails;
 import no.arkivlab.hioa.nikita.webapp.model.application.FondsStructureDetails;
 import no.arkivlab.hioa.nikita.webapp.model.application.MetadataDetails;
-import no.arkivlab.hioa.nikita.webapp.service.application.service.ApplicationService;
+import no.arkivlab.hioa.nikita.webapp.service.application.ApplicationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

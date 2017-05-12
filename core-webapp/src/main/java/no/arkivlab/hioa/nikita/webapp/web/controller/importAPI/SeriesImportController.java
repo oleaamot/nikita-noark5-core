@@ -9,13 +9,13 @@ import nikita.model.noark5.v4.hateoas.CaseFileHateoas;
 import nikita.model.noark5.v4.hateoas.FileHateoas;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.imprt.ISeriesImportService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.SERIES;
+import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
 @RequestMapping(value = IMPORT_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES)
@@ -25,8 +25,7 @@ import static nikita.config.N5ResourceMappings.SERIES;
         "entities or pageable iterable sets of series")
 public class SeriesImportController {
 
-    @Autowired
-    ISeriesImportService seriesImportService;
+    private ISeriesImportService seriesImportService;
 
     // TODO: Trying to get this to get a value, but it's not working. It just throws an exception
     // Revisit this!
@@ -36,11 +35,10 @@ public class SeriesImportController {
     String uri;
     String hrefSelf;
 
-    public SeriesImportController() {
-
+    public SeriesImportController(ISeriesImportService seriesImportService) {
+        this.seriesImportService = seriesImportService;
     }
-
-    // API - All POST Requests (CRUD - CREATE)
+// API - All POST Requests (CRUD - CREATE)
 
     @ApiOperation(value = "Persists a File object associated with the given Series systemId", notes = "Returns the " +
             "newly created file object after it was associated with a Series object and persisted to the database",
@@ -57,18 +55,18 @@ public class SeriesImportController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "seriesSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_FILE)
     public ResponseEntity<FileHateoas> createFileAssociatedWithSeries(
-            @ApiParam(name = "seriesSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of series to associate the caseFile with",
                     required = true)
-            @PathVariable String seriesSystemId,
+            @PathVariable String systemID,
             @ApiParam(name = "File",
                     value = "Incoming file object",
                     required = true)
             @RequestBody File file) throws NikitaException {
-        FileHateoas fileHateoas = new FileHateoas(seriesImportService.createFileAssociatedWithSeries(seriesSystemId, file));
+        FileHateoas fileHateoas = new FileHateoas(seriesImportService.createFileAssociatedWithSeries(systemID, file));
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
     }
 
@@ -87,21 +85,21 @@ public class SeriesImportController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "seriesSystemId" +
-            RIGHT_PARENTHESIS + SLASH + NEW_CASE_FILE)
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
+            NEW_CASE_FILE)
     public ResponseEntity<CaseFileHateoas>
     createCaseFileAssociatedWithSeries(
-            @ApiParam(name = "seriesSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of series to associate the caseFile with",
                     required = true)
-            @PathVariable String seriesSystemId,
+            @PathVariable String systemID,
             @ApiParam(name = "caseFile",
                     value = "Incoming caseFile object",
                     required = true)
             @RequestBody CaseFile caseFile) throws NikitaException {
 
         CaseFileHateoas caseFileHateoas = new
-                CaseFileHateoas(seriesImportService.createCaseFileAssociatedWithSeries(seriesSystemId, caseFile));
+                CaseFileHateoas(seriesImportService.createCaseFileAssociatedWithSeries(systemID, caseFile));
 
         // Looking at adding in the Hateoas links. Just proof of concept to have a reference point will be reimplemented
 

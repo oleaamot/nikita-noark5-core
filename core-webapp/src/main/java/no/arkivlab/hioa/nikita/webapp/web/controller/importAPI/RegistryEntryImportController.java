@@ -6,13 +6,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import nikita.config.Constants;
 import nikita.model.noark5.v4.DocumentDescription;
-import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.hateoas.DocumentDescriptionHateoas;
-import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
 import nikita.util.exceptions.NikitaException;
-import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRegistryEntryService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.imprt.IRegistryEntryImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
+import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 
 @RestController
 @RequestMapping(value = IMPORT_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH + SLASH + REGISTRY_ENTRY)
@@ -46,14 +43,14 @@ public class RegistryEntryImportController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + "recordSystemId" + RIGHT_PARENTHESIS +
+    @RequestMapping(method = RequestMethod.POST, value = LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_DOCUMENT_DESCRIPTION)
     public ResponseEntity<DocumentDescriptionHateoas>
     createDocumentDescriptionAssociatedWithRegistryEntry(
-            @ApiParam(name = "recordSystemId",
+            @ApiParam(name = "systemID",
                     value = "systemId of record/registryEntry to associate the documentDescription with.",
                     required = true)
-            @PathVariable String recordSystemId,
+            @PathVariable String systemID,
             @ApiParam(name = "documentDescription",
                     value = "Incoming documentDescription object",
                     required = true)
@@ -61,7 +58,7 @@ public class RegistryEntryImportController {
             throws NikitaException {
         DocumentDescriptionHateoas documentDescriptionHateoas =
                 new DocumentDescriptionHateoas(
-                        registryEntryImportService.createDocumentDescriptionAssociatedWithRegistryEntry(recordSystemId,
+                        registryEntryImportService.createDocumentDescriptionAssociatedWithRegistryEntry(systemID,
                                 documentDescription));
         return new ResponseEntity<>(documentDescriptionHateoas, HttpStatus.CREATED);
     }
