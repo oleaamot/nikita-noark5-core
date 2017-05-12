@@ -84,7 +84,7 @@ public class RegistryEntryHateoasHandler extends BasicRecordHateoasHandler imple
     @Override
     public void addNewSignOff(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + REGISTRY_ENTRY + SLASH +
+                NOARK_CASE_HANDLING_PATH + SLASH + REGISTRY_ENTRY + SLASH +
                 entity.getSystemId() + SLASH + NEW_SIGN_OFF + SLASH, REL_FONDS_STRUCTURE_NEW_SIGN_OFF, false));
     }
 
