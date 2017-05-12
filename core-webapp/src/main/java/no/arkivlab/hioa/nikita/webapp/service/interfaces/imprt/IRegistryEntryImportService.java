@@ -8,5 +8,5 @@ public interface IRegistryEntryImportService {
 
 	RegistryEntry save(RegistryEntry registryEntry);
 	DocumentDescription createDocumentDescriptionAssociatedWithRegistryEntry(
-			String recordSystemId, DocumentDescription documentDescription);
+            String systemID, DocumentDescription documentDescription);
 }

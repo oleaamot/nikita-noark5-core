@@ -1,8 +1,8 @@
 package no.arkivlab.hioa.nikita.webapp.service.interfaces;
 
-import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.RegistryEntry;
+import nikita.model.noark5.v4.secondary.CorrespondencePart;
 import nikita.model.noark5.v4.secondary.Precedence;
 
 import javax.validation.constraints.NotNull;
@@ -13,9 +13,9 @@ public interface IRegistryEntryService {
     // All save methods
     RegistryEntry save(RegistryEntry registryEntry);
     DocumentDescription createDocumentDescriptionAssociatedWithRegistryEntry(
-            String recordSystemId, DocumentDescription documentDescription);
+            String systemID, DocumentDescription documentDescription);
     CorrespondencePart createCorrespondencePartAssociatedWithRegistryEntry(
-            String recordSystemId, CorrespondencePart correspondencePart);
+            String systemID, CorrespondencePart correspondencePart);
     Precedence createPrecedenceAssociatedWithRecord(String registryEntrysystemID, Precedence precedence);
 
     // All find methods

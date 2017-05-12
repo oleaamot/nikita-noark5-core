@@ -66,8 +66,8 @@ public class RegistryEntryService implements IRegistryEntryService {
 
     @Override
     public CorrespondencePart createCorrespondencePartAssociatedWithRegistryEntry(
-            String recordSystemId, CorrespondencePart correspondencePart) {
-        RegistryEntry registryEntry = getRegistryEntryOrThrow(recordSystemId);
+            String systemID, CorrespondencePart correspondencePart) {
+        RegistryEntry registryEntry = getRegistryEntryOrThrow(systemID);
         Set <PostalAddress> postalAddresss = correspondencePart.getPostalAddress();
 
         for (PostalAddress postalAddress : postalAddresss) {
@@ -85,8 +85,8 @@ public class RegistryEntryService implements IRegistryEntryService {
 
     @Override
     public DocumentDescription createDocumentDescriptionAssociatedWithRegistryEntry(
-            String recordSystemId, DocumentDescription documentDescription){
-        RegistryEntry registryEntry = getRegistryEntryOrThrow(recordSystemId);
+            String systemID, DocumentDescription documentDescription) {
+        RegistryEntry registryEntry = getRegistryEntryOrThrow(systemID);
         TreeSet <Record> records = (TreeSet <Record>) documentDescription.getReferenceRecord();
 
         // It should always be instaniated ... check this ...

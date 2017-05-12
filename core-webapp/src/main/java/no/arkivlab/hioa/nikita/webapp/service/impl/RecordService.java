@@ -60,11 +60,11 @@ public class RecordService implements IRecordService {
     }
 
     @Override
-    public DocumentDescription createDocumentDescriptionAssociatedWithRecord(String recordSystemId, DocumentDescription documentDescription) {
+    public DocumentDescription createDocumentDescriptionAssociatedWithRecord(String systemID, DocumentDescription documentDescription) {
         DocumentDescription persistedDocumentDescription = null;
-        Record record = recordRepository.findBySystemId(recordSystemId);
+        Record record = recordRepository.findBySystemId(systemID);
         if (record == null) {
-            String info = INFO_CANNOT_FIND_OBJECT + " Record, using recordSystemId " + recordSystemId;
+            String info = INFO_CANNOT_FIND_OBJECT + " Record, using systemID " + systemID;
             logger.info(info) ;
             throw new NoarkEntityNotFoundException(info);
         }
@@ -339,8 +339,8 @@ public class RecordService implements IRecordService {
 
     // All DELETE operations
     @Override
-    public void deleteEntity(@NotNull String recordSystemId) {
-        Record record = getRecordOrThrow(recordSystemId);
+    public void deleteEntity(@NotNull String systemID) {
+        Record record = getRecordOrThrow(systemID);
 
         // See issue for a description of why this code was written this way
         // https://github.com/HiOA-ABI/nikita-noark5-core/issues/82
@@ -358,13 +358,13 @@ public class RecordService implements IRecordService {
      * If you call this, be aware that you will only ever get a valid Record back. If there is no valid
      * Record, an exception is thrown
      *
-     * @param recordSystemId
+     * @param systemID
      * @return
      */
-    protected Record getRecordOrThrow(@NotNull String recordSystemId) {
-        Record record = recordRepository.findBySystemId(recordSystemId);
+    protected Record getRecordOrThrow(@NotNull String systemID) {
+        Record record = recordRepository.findBySystemId(systemID);
         if (record == null) {
-            String info = INFO_CANNOT_FIND_OBJECT + " Record, using systemId " + recordSystemId;
+            String info = INFO_CANNOT_FIND_OBJECT + " Record, using systemId " + systemID;
             logger.info(info);
             throw new NoarkEntityNotFoundException(info);
         }

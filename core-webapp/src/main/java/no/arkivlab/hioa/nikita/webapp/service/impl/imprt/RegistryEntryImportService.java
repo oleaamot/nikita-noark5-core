@@ -57,12 +57,12 @@ public class RegistryEntryImportService implements IRegistryEntryImportService {
 
     @Override
     public DocumentDescription createDocumentDescriptionAssociatedWithRegistryEntry(
-            String recordSystemId, DocumentDescription documentDescription){
+            String systemID, DocumentDescription documentDescription) {
 
         DocumentDescription persistedDocumentDescription = null;
-        RegistryEntry registryEntry = registryEntryRepository.findBySystemId(recordSystemId);
+        RegistryEntry registryEntry = registryEntryRepository.findBySystemId(systemID);
         if (registryEntry == null) {
-            String info = INFO_CANNOT_FIND_OBJECT + " RegistryEntry, using registryEntrySystemId " + recordSystemId;
+            String info = INFO_CANNOT_FIND_OBJECT + " RegistryEntry, using registryEntrySystemId " + systemID;
             logger.info(info) ;
             throw new NoarkEntityNotFoundException(info);
         }

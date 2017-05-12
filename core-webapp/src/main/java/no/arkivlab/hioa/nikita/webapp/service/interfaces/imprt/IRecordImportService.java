@@ -9,6 +9,7 @@ public interface IRecordImportService {
 	// -- All CREATE operations
 
 	Record save(Record record);
-	DocumentDescription createDocumentDescriptionAssociatedWithRecord(String recordSystemId,
-																	  DocumentDescription documentDescription);
+
+    DocumentDescription createDocumentDescriptionAssociatedWithRecord(String systemID,
+                                                                      DocumentDescription documentDescription);
 }
