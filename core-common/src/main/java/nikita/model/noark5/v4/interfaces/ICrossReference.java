@@ -1,6 +1,6 @@
 package nikita.model.noark5.v4.interfaces;
 
-import nikita.model.noark5.v4.CrossReference;
+import nikita.model.noark5.v4.secondary.CrossReference;
 
 import java.util.Set;
 

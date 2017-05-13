@@ -1,10 +1,9 @@
-package nikita.model.noark5.v4;
+package nikita.model.noark5.v4.secondary;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import nikita.model.noark5.v4.*;
 import nikita.util.serializers.noark5v4.StorageLocationSerializer;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -20,7 +19,7 @@ import static nikita.config.N5ResourceMappings.STORAGE_LOCATION;
 // @Where(clause="deleted <> true")
 @JsonSerialize(using = StorageLocationSerializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_storage_location_id"))
-public class StorageLocation extends NoarkEntity{
+public class StorageLocation extends NoarkEntity {
 
     /**
      * M301 - oppbevaringssted (xs:string)

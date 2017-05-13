@@ -5,8 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
-import nikita.model.noark5.v4.secondary.CorrespondencePart;
+import nikita.model.noark5.v4.casehandling.CorrespondencePart;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaMalformedInputDataException;
 

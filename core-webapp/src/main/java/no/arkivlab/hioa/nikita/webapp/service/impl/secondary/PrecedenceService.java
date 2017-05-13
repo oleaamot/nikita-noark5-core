@@ -1,6 +1,6 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl.secondary;
 
-import nikita.model.noark5.v4.secondary.Precedence;
+import nikita.model.noark5.v4.casehandling.Precedence;
 import nikita.repository.n5v4.secondary.IPrecedenceRepository;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary.IPrecedenceService;

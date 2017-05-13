@@ -1,9 +1,9 @@
 package no.arkivlab.hioa.nikita.webapp.service.interfaces;
 
 
-import nikita.model.noark5.v4.CaseFile;
 import nikita.model.noark5.v4.File;
 import nikita.model.noark5.v4.Series;
+import nikita.model.noark5.v4.casehandling.CaseFile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

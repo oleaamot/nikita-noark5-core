@@ -1,6 +1,6 @@
 package nikita.model.noark5.v4.interfaces;
 
-import nikita.model.noark5.v4.Deletion;
+import nikita.model.noark5.v4.secondary.Deletion;
 
 /**
  *Created by tsodring on 12/7/16.

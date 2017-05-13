@@ -1,6 +1,6 @@
 package nikita.model.noark5.v4.interfaces;
 
-import nikita.model.noark5.v4.Author;
+import nikita.model.noark5.v4.secondary.Author;
 
 import java.util.Set;
 

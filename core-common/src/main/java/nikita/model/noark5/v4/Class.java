@@ -5,6 +5,7 @@ import nikita.model.noark5.v4.interfaces.IClassified;
 import nikita.model.noark5.v4.interfaces.ICrossReference;
 import nikita.model.noark5.v4.interfaces.IDisposal;
 import nikita.model.noark5.v4.interfaces.IScreening;
+import nikita.model.noark5.v4.secondary.*;
 import nikita.util.deserialisers.ClassDeserializer;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
 import org.hibernate.envers.Audited;

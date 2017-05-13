@@ -1,6 +1,6 @@
 package nikita.model.noark5.v4.interfaces;
 
-import nikita.model.noark5.v4.DisposalUndertaken;
+import nikita.model.noark5.v4.secondary.DisposalUndertaken;
 
 /**
  *Created by tsodring on 12/7/16.

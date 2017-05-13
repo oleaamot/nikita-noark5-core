@@ -1,7 +1,7 @@
 package nikita.util.serializers.noark5v4.hateoas;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import nikita.model.noark5.v4.RegistryEntry;
+import nikita.model.noark5.v4.casehandling.RegistryEntry;
 import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;

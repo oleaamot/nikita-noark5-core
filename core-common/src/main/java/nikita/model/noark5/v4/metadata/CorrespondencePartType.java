@@ -1,6 +1,6 @@
 package nikita.model.noark5.v4.metadata;
 
-import nikita.model.noark5.v4.secondary.CorrespondencePart;
+import nikita.model.noark5.v4.casehandling.CorrespondencePart;
 
 import javax.persistence.*;
 import java.util.Set;

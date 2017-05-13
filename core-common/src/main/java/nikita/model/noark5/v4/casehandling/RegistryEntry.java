@@ -1,21 +1,21 @@
-package nikita.model.noark5.v4;
+package nikita.model.noark5.v4.casehandling;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import nikita.model.noark5.v4.BasicRecord;
 import nikita.model.noark5.v4.interfaces.*;
-import nikita.model.noark5.v4.secondary.CorrespondencePart;
-import nikita.model.noark5.v4.secondary.Precedence;
+import nikita.model.noark5.v4.secondary.ElectronicSignature;
+import nikita.model.noark5.v4.secondary.SignOff;
 import nikita.util.deserialisers.RegistryEntryDeserializer;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.TreeSet;
 import java.util.Set;
+import java.util.TreeSet;
 
+import static nikita.config.Constants.NOARK_CASE_HANDLING_PATH;
 import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
 
 @Entity
@@ -313,6 +313,11 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Override
     public String getBaseTypeName() {
         return REGISTRY_ENTRY;
+    }
+
+    @Override
+    public String getFunctionalTypeName() {
+        return NOARK_CASE_HANDLING_PATH;
     }
 
     @Override

@@ -5,12 +5,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import nikita.model.noark5.v4.StorageLocation;
+import nikita.model.noark5.v4.secondary.StorageLocation;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 
-import static nikita.config.N5ResourceMappings.*;
+import static nikita.config.N5ResourceMappings.TITLE;
 
 /**
  * Created by tsodring on 1/9/17.

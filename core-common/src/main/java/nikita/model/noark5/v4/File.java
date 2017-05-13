@@ -3,6 +3,7 @@ package nikita.model.noark5.v4;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.*;
+import nikita.model.noark5.v4.secondary.*;
 import nikita.util.deserialisers.FileDeserializer;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
 import org.hibernate.envers.Audited;

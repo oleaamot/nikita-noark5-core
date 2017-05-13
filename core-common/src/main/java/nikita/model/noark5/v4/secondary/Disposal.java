@@ -1,8 +1,8 @@
-package nikita.model.noark5.v4;
+package nikita.model.noark5.v4.secondary;
 
+import nikita.model.noark5.v4.Class;
+import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.interfaces.entities.IDisposalEntity;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -21,7 +21,7 @@ import static nikita.config.N5ResourceMappings.DISPOSAL;
 // @SQLDelete(sql="UPDATE disposal SET deleted = true WHERE pk_disposal_id = ? and version = ?")
 // @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_disposal_id"))
-public class Disposal extends  NoarkEntity implements IDisposalEntity {
+public class Disposal extends NoarkEntity implements IDisposalEntity {
 
     private static final long serialVersionUID = 1L;
 

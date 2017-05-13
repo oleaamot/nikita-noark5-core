@@ -1,14 +1,14 @@
-package nikita.model.noark5.v4;
+package nikita.model.noark5.v4.casehandling;
 
+import nikita.model.noark5.v4.NoarkGeneralEntity;
 import nikita.model.noark5.v4.interfaces.entities.ICasePartyEntity;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.util.Set;
 import java.util.TreeSet;
 
+import static nikita.config.Constants.NOARK_CASE_HANDLING_PATH;
 import static nikita.config.N5ResourceMappings.CASE_PARTY;
 
 /**
@@ -178,10 +178,14 @@ public class CaseParty extends NoarkGeneralEntity implements ICasePartyEntity {
         this.contactPerson = contactPerson;
     }
 
-
     @Override
     public String getBaseTypeName() {
         return CASE_PARTY;
+    }
+
+    @Override
+    public String getFunctionalTypeName() {
+        return NOARK_CASE_HANDLING_PATH;
     }
 
     public Set<CaseFile> getReferenceCaseFile() {

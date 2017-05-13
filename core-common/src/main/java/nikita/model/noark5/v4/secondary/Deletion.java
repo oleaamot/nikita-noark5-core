@@ -1,8 +1,9 @@
-package nikita.model.noark5.v4;
+package nikita.model.noark5.v4.secondary;
 
+import nikita.model.noark5.v4.DocumentDescription;
+import nikita.model.noark5.v4.NoarkEntity;
+import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.interfaces.entities.IDeletionEntity;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ import static nikita.config.N5ResourceMappings.DELETION;
 // @SQLDelete(sql="UPDATE deletion SET deleted = true WHERE pk_deletion_id = ? and version = ?")
 // @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_deletion_id"))
-public class Deletion extends  NoarkEntity implements IDeletionEntity{
+public class Deletion extends NoarkEntity implements IDeletionEntity {
 
     private static final long serialVersionUID = 1L;
 

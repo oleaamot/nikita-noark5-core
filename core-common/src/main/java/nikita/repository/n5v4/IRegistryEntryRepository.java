@@ -1,6 +1,6 @@
 package nikita.repository.n5v4;
 
-import nikita.model.noark5.v4.RegistryEntry;
+import nikita.model.noark5.v4.casehandling.RegistryEntry;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,8 +1,10 @@
-package nikita.model.noark5.v4;
+package nikita.model.noark5.v4.secondary;
 
+import nikita.model.noark5.v4.Class;
+import nikita.model.noark5.v4.File;
+import nikita.model.noark5.v4.NoarkEntity;
+import nikita.model.noark5.v4.Record;
 import nikita.model.noark5.v4.interfaces.entities.ICrossReferenceEntity;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 

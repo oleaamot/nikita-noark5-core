@@ -101,7 +101,7 @@ public class HateoasHandler implements IHateoasHandler {
     public void addSelfLink(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         String systemId = entity.getSystemId();
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_FONDS_STRUCTURE_PATH + SLASH + entity.getBaseTypeName() + SLASH + systemId + SLASH,
+                entity.getFunctionalTypeName() + SLASH + entity.getBaseTypeName() + SLASH + systemId + SLASH,
                     getRelSelfLink(), false));
     }
 

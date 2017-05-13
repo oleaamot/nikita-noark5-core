@@ -21,7 +21,7 @@ public class MetadataHateoasHandler extends HateoasHandler implements IMetadataH
     public void addSelfLink(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         String systemId = entity.getSystemId();
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_METADATA_PATH + SLASH + entity.getBaseTypeName() + SLASH + systemId + SLASH,
+                entity.getFunctionalTypeName() + SLASH + entity.getBaseTypeName() + SLASH + systemId + SLASH,
                 getRelSelfLink(), false));
     }
 

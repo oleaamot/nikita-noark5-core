@@ -1,7 +1,8 @@
-package nikita.model.noark5.v4;
+package nikita.model.noark5.v4.secondary;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import nikita.model.noark5.v4.BasicRecord;
+import nikita.model.noark5.v4.DocumentDescription;
+import nikita.model.noark5.v4.NoarkEntity;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;

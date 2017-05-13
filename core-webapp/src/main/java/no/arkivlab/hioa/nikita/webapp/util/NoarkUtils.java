@@ -2,8 +2,10 @@ package no.arkivlab.hioa.nikita.webapp.util;
 
 
 import nikita.model.noark5.v4.interfaces.IDocumentMedium;
-import nikita.model.noark5.v4.interfaces.entities.*;
-import nikita.model.noark5.v4.secondary.CorrespondencePart;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkCreateEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkFinaliseEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
 import nikita.util.exceptions.NikitaException;
 import org.springframework.security.core.context.SecurityContextHolder;
 

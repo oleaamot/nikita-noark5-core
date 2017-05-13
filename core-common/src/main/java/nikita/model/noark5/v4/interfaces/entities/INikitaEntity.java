@@ -13,7 +13,24 @@ public interface INikitaEntity extends Serializable {
     void setDeleted(Boolean deleted);
     void setVersion(Long version);
     Long getVersion();
+
+    /**
+     * Tell nikita what you are. A Fonds returns "arkiv", a File "mappe" and
+     * CaseFile "saksmappe". Required when building endpoint URI in Hateaos links.
+     *
+     * @return The name of the base type of the entity
+     */
     String getBaseTypeName();
+
+    /**
+     * Tell nikita what kind of endpoint you belong to. A Fonds returns "arkivstruktur", as does
+     * a File, while a CaseFile returns "sakarkiv". DocumentStatus returns "metaadata".Required when
+     * building endpoint URI in Hateaos links.
+     *
+     * @return The name of the functional area the entity belongs to
+     */
+    String getFunctionalTypeName();
+
     //boolean validateForUpdate(String description);
     //boolean validateForCreate(String description);
 }

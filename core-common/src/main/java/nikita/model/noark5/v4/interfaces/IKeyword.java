@@ -1,6 +1,7 @@
 package nikita.model.noark5.v4.interfaces;
 
-import nikita.model.noark5.v4.Keyword;
+import nikita.model.noark5.v4.secondary.Keyword;
+
 import java.util.Set;
 
 /**

@@ -1,13 +1,11 @@
-package nikita.model.noark5.v4;
+package nikita.model.noark5.v4.casehandling;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import nikita.model.noark5.v4.File;
 import nikita.model.noark5.v4.interfaces.ICaseParty;
 import nikita.model.noark5.v4.interfaces.IPrecedence;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
-import nikita.model.noark5.v4.secondary.Precedence;
 import nikita.util.deserialisers.CaseFileDeserializer;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -15,9 +13,10 @@ import org.hibernate.search.annotations.Indexed;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.TreeSet;
 import java.util.Set;
+import java.util.TreeSet;
 
+import static nikita.config.Constants.NOARK_CASE_HANDLING_PATH;
 import static nikita.config.N5ResourceMappings.CASE_FILE;
 
 
@@ -225,6 +224,11 @@ public class CaseFile extends File implements Serializable, INikitaEntity, IPrec
     @Override
     public String getBaseTypeName() {
         return CASE_FILE;
+    }
+
+    @Override
+    public String getFunctionalTypeName() {
+        return NOARK_CASE_HANDLING_PATH;
     }
 
     public Set<CaseParty> getReferenceCaseParty() {

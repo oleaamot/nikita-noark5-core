@@ -1,7 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary;
 
 
-import nikita.model.noark5.v4.secondary.Precedence;
+import nikita.model.noark5.v4.casehandling.Precedence;
 
 public interface IPrecedenceService {
 

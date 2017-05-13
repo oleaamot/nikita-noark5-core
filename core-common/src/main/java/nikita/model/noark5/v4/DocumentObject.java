@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.IConversion;
 import nikita.model.noark5.v4.interfaces.IElectronicSignature;
 import nikita.model.noark5.v4.interfaces.entities.INoarkCreateEntity;
+import nikita.model.noark5.v4.secondary.Conversion;
+import nikita.model.noark5.v4.secondary.ElectronicSignature;
 import nikita.util.deserialisers.DocumentObjectDeserializer;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
 import org.hibernate.envers.Audited;

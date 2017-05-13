@@ -12,6 +12,7 @@ import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.hateoas.*;
 import nikita.model.noark5.v4.interfaces.entities.ICrossReferenceEntity;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
+import nikita.model.noark5.v4.secondary.Comment;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
 import nikita.util.exceptions.NoarkEntityNotFoundException;

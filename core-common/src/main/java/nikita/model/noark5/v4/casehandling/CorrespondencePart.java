@@ -1,10 +1,10 @@
-package nikita.model.noark5.v4.secondary;
+package nikita.model.noark5.v4.casehandling;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.NoarkEntity;
-import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.interfaces.entities.ICorrespondencePartEntity;
 import nikita.model.noark5.v4.metadata.CorrespondencePartType;
+import nikita.model.noark5.v4.secondary.PostalAddress;
 import nikita.util.deserialisers.CorrespondencePartDeserializer;
 import org.hibernate.envers.Audited;
 
@@ -12,6 +12,7 @@ import javax.persistence.*;
 import java.util.Set;
 import java.util.TreeSet;
 
+import static nikita.config.Constants.NOARK_CASE_HANDLING_PATH;
 import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART;
 
 @Entity
@@ -185,6 +186,11 @@ public class CorrespondencePart extends NoarkEntity implements ICorrespondencePa
     @Override
     public String getBaseTypeName() {
         return CORRESPONDENCE_PART;
+    }
+
+    @Override
+    public String getFunctionalTypeName() {
+        return NOARK_CASE_HANDLING_PATH;
     }
 
     public Set<RegistryEntry> getReferenceRegistryEntry() {

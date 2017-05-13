@@ -6,6 +6,8 @@ import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 
+import static nikita.config.Constants.NOARK_FONDS_STRUCTURE_PATH;
+
 /**
  * Created by tsodring on 5/8/17.
  */
@@ -16,7 +18,7 @@ public class NoarkEntity implements INikitaEntity, Comparable<NoarkEntity>   {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, insertable = true, updatable = false)
+    @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
     /**
@@ -89,6 +91,12 @@ public class NoarkEntity implements INikitaEntity, Comparable<NoarkEntity>   {
     // You should not use, me. All subclasses must implement this themselves
     public String getBaseTypeName() {
         return null;
+    }
+
+    @Override
+    // Most entities belong to arkivstruktur. These entities pick the value up here
+    public String getFunctionalTypeName() {
+        return NOARK_FONDS_STRUCTURE_PATH;
     }
 
     @Override

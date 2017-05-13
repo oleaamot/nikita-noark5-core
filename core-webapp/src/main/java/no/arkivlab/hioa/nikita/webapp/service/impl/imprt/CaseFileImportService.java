@@ -1,7 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl.imprt;
 
-import nikita.model.noark5.v4.CaseFile;
-import nikita.model.noark5.v4.RegistryEntry;
+import nikita.model.noark5.v4.casehandling.CaseFile;
+import nikita.model.noark5.v4.casehandling.RegistryEntry;
 import nikita.repository.n5v4.ICaseFileRepository;
 import nikita.util.exceptions.NikitaException;
 import nikita.util.exceptions.NoarkEntityNotFoundException;

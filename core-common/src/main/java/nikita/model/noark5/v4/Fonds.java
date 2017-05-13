@@ -5,9 +5,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.IDocumentMedium;
 import nikita.model.noark5.v4.interfaces.IFondsCreator;
 import nikita.model.noark5.v4.interfaces.IStorageLocation;
+import nikita.model.noark5.v4.secondary.StorageLocation;
 import nikita.util.deserialisers.FondsDeserializer;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
 

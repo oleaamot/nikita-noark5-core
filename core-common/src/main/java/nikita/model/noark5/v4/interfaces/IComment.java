@@ -1,6 +1,6 @@
 package nikita.model.noark5.v4.interfaces;
 
-import nikita.model.noark5.v4.Comment;
+import nikita.model.noark5.v4.secondary.Comment;
 
 import java.util.Set;
 

@@ -8,6 +8,7 @@ import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 
+import static nikita.config.Constants.NOARK_METADATA_PATH;
 import static nikita.config.Constants.ONLY_WHITESPACE;
 
 /**
@@ -160,6 +161,12 @@ public class MetadataSuperClass implements INikitaEntity, IMetadataEntity {
         throw new NikitaException("MetadataSuperClass exception. Internal exception. " +
                 "This exception can only occur if a new metadata entity is introduced and you forgot to override " +
                 "getBaseTypeName. Check logfile to see what caused this");
+    }
+
+    @Override
+    // All Metadata entities belong to "metadata". These entities pick the value up here
+    public String getFunctionalTypeName() {
+        return NOARK_METADATA_PATH;
     }
 
     @Override

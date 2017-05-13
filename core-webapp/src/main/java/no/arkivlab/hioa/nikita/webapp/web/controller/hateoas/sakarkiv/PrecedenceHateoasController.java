@@ -1,31 +1,13 @@
 package no.arkivlab.hioa.nikita.webapp.web.controller.hateoas.sakarkiv;
 
-import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
-import nikita.model.noark5.v4.hateoas.secondary.PrecedenceHateoas;
-import nikita.model.noark5.v4.secondary.Precedence;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.secondary.IPrecedenceHateoasHandler;
-import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
-//import no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary.IPrecedenceService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART;
-import static nikita.config.N5ResourceMappings.SYSTEM_ID;
+
+//import no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary.IPrecedenceService;
 
 /**
  * Created by tsodring on 4/25/17.

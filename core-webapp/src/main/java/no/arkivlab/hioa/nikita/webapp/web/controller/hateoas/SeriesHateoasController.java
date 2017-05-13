@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Counted;
 import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import nikita.model.noark5.v4.*;
+import nikita.model.noark5.v4.casehandling.CaseFile;
 import nikita.model.noark5.v4.hateoas.*;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;

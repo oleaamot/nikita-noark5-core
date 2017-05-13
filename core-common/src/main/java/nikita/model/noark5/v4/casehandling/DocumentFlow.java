@@ -1,12 +1,12 @@
-package nikita.model.noark5.v4;
+package nikita.model.noark5.v4.casehandling;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import nikita.model.noark5.v4.NoarkEntity;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.util.Date;
 
+import static nikita.config.Constants.NOARK_CASE_HANDLING_PATH;
 import static nikita.config.N5ResourceMappings.DOCUMENT_FLOW;
 
 @Entity
@@ -115,6 +115,11 @@ public class DocumentFlow extends NoarkEntity {
     @Override
     public String getBaseTypeName() {
         return DOCUMENT_FLOW;
+    }
+
+    @Override
+    public String getFunctionalTypeName() {
+        return NOARK_CASE_HANDLING_PATH;
     }
 
     public RegistryEntry getReferenceRegistryEntry() {

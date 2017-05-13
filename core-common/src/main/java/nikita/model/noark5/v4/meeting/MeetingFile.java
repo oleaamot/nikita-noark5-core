@@ -1,13 +1,12 @@
-package nikita.model.noark5.v4;
+package nikita.model.noark5.v4.meeting;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import nikita.model.noark5.v4.File;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.TreeSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static nikita.config.N5ResourceMappings.MEETING_FILE;
 

@@ -1,13 +1,12 @@
 package nikita.model.noark5.v4.secondary;
 
 import nikita.model.noark5.v4.NoarkEntity;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import nikita.model.noark5.v4.casehandling.CorrespondencePart;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.TreeSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static nikita.config.N5ResourceMappings.POSTAL_ADDRESS;
 

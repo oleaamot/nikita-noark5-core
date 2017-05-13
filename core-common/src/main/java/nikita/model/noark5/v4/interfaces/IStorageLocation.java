@@ -1,7 +1,8 @@
 package nikita.model.noark5.v4.interfaces;
 
+import nikita.model.noark5.v4.secondary.StorageLocation;
+
 import java.util.Set;
-import nikita.model.noark5.v4.StorageLocation;
 /**
  * Created by tsodring on 12/7/16.
  */

@@ -1,9 +1,9 @@
 package no.arkivlab.hioa.nikita.webapp.service.interfaces;
 
 import nikita.model.noark5.v4.DocumentDescription;
-import nikita.model.noark5.v4.RegistryEntry;
-import nikita.model.noark5.v4.secondary.CorrespondencePart;
-import nikita.model.noark5.v4.secondary.Precedence;
+import nikita.model.noark5.v4.casehandling.CorrespondencePart;
+import nikita.model.noark5.v4.casehandling.Precedence;
+import nikita.model.noark5.v4.casehandling.RegistryEntry;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

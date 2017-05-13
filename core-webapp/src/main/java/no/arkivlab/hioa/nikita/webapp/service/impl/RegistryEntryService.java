@@ -2,10 +2,10 @@ package no.arkivlab.hioa.nikita.webapp.service.impl;
 
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.Record;
-import nikita.model.noark5.v4.RegistryEntry;
-import nikita.model.noark5.v4.secondary.CorrespondencePart;
+import nikita.model.noark5.v4.casehandling.CorrespondencePart;
+import nikita.model.noark5.v4.casehandling.Precedence;
+import nikita.model.noark5.v4.casehandling.RegistryEntry;
 import nikita.model.noark5.v4.secondary.PostalAddress;
-import nikita.model.noark5.v4.secondary.Precedence;
 import nikita.repository.n5v4.IRegistryEntryRepository;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRegistryEntryService;

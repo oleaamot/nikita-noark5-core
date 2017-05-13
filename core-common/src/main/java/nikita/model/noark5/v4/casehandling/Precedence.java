@@ -1,11 +1,7 @@
-package nikita.model.noark5.v4.secondary;
+package nikita.model.noark5.v4.casehandling;
 
-import nikita.model.noark5.v4.CaseFile;
 import nikita.model.noark5.v4.NoarkGeneralEntity;
-import nikita.model.noark5.v4.RegistryEntry;
 import nikita.model.noark5.v4.interfaces.entities.IPrecedenceEntity;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -13,6 +9,7 @@ import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
 
+import static nikita.config.Constants.NOARK_CASE_HANDLING_PATH;
 import static nikita.config.N5ResourceMappings.PRECEDENCE;
 
 @Entity
@@ -124,6 +121,11 @@ public class Precedence extends NoarkGeneralEntity implements IPrecedenceEntity{
     @Override
     public String getBaseTypeName() {
         return PRECEDENCE;
+    }
+
+    @Override
+    public String getFunctionalTypeName() {
+        return NOARK_CASE_HANDLING_PATH;
     }
 
     public Set<RegistryEntry> getReferenceRegistryEntry() {

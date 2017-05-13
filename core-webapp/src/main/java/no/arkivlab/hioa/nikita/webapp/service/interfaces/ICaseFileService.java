@@ -1,9 +1,8 @@
 package no.arkivlab.hioa.nikita.webapp.service.interfaces;
 
 
-import nikita.model.noark5.v4.CaseFile;
-import nikita.model.noark5.v4.Fonds;
-import nikita.model.noark5.v4.RegistryEntry;
+import nikita.model.noark5.v4.casehandling.CaseFile;
+import nikita.model.noark5.v4.casehandling.RegistryEntry;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

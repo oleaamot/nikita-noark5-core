@@ -1,6 +1,6 @@
 package nikita.model.noark5.v4.interfaces;
 
-import nikita.model.noark5.v4.Conversion;
+import nikita.model.noark5.v4.secondary.Conversion;
 
 import java.util.Set;
 

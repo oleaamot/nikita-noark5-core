@@ -1,7 +1,9 @@
-package nikita.model.noark5.v4;
+package nikita.model.noark5.v4.secondary;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import nikita.model.noark5.v4.BasicRecord;
+import nikita.model.noark5.v4.Class;
+import nikita.model.noark5.v4.File;
+import nikita.model.noark5.v4.NoarkEntity;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -16,7 +18,7 @@ import static nikita.config.N5ResourceMappings.KEYWORD;
 // @SQLDelete(sql="UPDATE keyword SET deleted = true WHERE pk_keyword_id = ? and version = ?")
 // @Where(clause="deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_keyword_id"))
-public class Keyword extends  NoarkEntity {
+public class Keyword extends NoarkEntity {
 
     /**
      * M022 - noekkelord (xs:string)

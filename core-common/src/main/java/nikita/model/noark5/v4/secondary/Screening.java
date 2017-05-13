@@ -1,8 +1,8 @@
-package nikita.model.noark5.v4;
+package nikita.model.noark5.v4.secondary;
 
+import nikita.model.noark5.v4.Class;
+import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.interfaces.entities.IScreeningEntity;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
