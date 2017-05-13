@@ -24,14 +24,21 @@ public class MetadataDetails extends APIDetails {
         // Add support for FondsStatus
         aPIDetails.add(new APIDetail(
                 uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH + FONDS_STATUS,
-                NOARK_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH + FONDS_STATUS + SLASH,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH + FONDS_STATUS + SLASH,
                 true
         ));
 
         // Add support for CorrespondencePart
         aPIDetails.add(new APIDetail(
                 uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH + CORRESPONDENCE_PART_TYPE,
-                NOARK_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH + CORRESPONDENCE_PART_TYPE + SLASH,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH + CORRESPONDENCE_PART_TYPE + SLASH,
+                true
+        ));
+
+        // Add support for new CorrespondencePart
+        aPIDetails.add(new APIDetail(
+                uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH + NEW_CORRESPONDENCE_PART_TYPE,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH + NEW_CORRESPONDENCE_PART_TYPE + SLASH,
                 true
         ));
     }

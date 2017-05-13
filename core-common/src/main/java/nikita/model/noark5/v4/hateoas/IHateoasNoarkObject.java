@@ -14,6 +14,8 @@ public interface IHateoasNoarkObject {
 
     void addSelfLink(Link selfLink);
 
+    void addLink(Link selfLink);
+
     Set<Link> getSelfLinks();
 
     boolean isSingleEntity();

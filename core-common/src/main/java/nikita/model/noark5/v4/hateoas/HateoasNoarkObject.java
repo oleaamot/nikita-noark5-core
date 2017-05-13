@@ -46,6 +46,7 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
      */
     private boolean singleEntity = true;
 
+
     public HateoasNoarkObject(INikitaEntity entity) {
         entityList.add(entity);
     }
@@ -82,6 +83,10 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
         selfLinks.add(selfLink);
     }
 
+    @Override
+    public void addLink(Link selfLink) {
+        selfLinks.add(selfLink);
+    }
     @Override
     public Set <Link> getSelfLinks() {
         return selfLinks;

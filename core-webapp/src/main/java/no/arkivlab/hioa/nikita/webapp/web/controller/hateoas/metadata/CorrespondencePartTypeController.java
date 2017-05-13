@@ -140,7 +140,6 @@ public class CorrespondencePartTypeController {
         MetadataHateoas metadataHateoas = new MetadataHateoas(correspondencePartType);
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
-                .eTag(correspondencePartType.getVersion().toString())
                 .body(metadataHateoas);
     }
 

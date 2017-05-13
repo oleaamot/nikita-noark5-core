@@ -59,7 +59,6 @@ public class CorrespondencePartService implements ICorrespondencePartService {
         return correspondencePartRepository.findBySystemId(correspondencePartSystemId);
     }
 
-
     /**
      * Internal helper method. Rather than having a find and try catch in multiple methods, we have it here once.
      * If you call this, be aware that you will only ever get a valid CorrespondencePart back. If there is no valid

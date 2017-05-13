@@ -46,6 +46,7 @@ public class CorrespondencePartDeserializer extends JsonDeserializer {
         CorrespondencePart correspondencePart = new CorrespondencePart();
         ObjectNode objectNode = mapper.readTree(jsonParser);
 
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkSystemIdEntity(correspondencePart, objectNode);
         CommonUtils.Hateoas.Deserialize.deserialiseCorrespondencePartEntity(correspondencePart, objectNode);
 
         // Check that there are no additional values left after processing the tree
