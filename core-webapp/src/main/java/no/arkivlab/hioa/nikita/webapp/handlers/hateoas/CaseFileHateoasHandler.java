@@ -43,14 +43,6 @@ public class CaseFileHateoasHandler extends HateoasHandler implements ICaseFileH
     }
 
     @Override
-    public void addSelfLink(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
-        String systemId = entity.getSystemId();
-        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                entity.getFunctionalTypeName() + SLASH + entity.getBaseTypeName() + SLASH + systemId + SLASH,
-                getRelSelfLink(), false));
-    }
-
-    @Override
     public void addNewClass(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_CASE_HANDLING_PATH + SLASH + CASE_FILE + SLASH + entity.getSystemId() + SLASH + NEW_CLASS

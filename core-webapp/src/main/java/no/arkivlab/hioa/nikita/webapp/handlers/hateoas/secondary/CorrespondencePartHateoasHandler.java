@@ -37,11 +37,4 @@ public class CorrespondencePartHateoasHandler extends HateoasHandler implements 
                 NOARK_METADATA_PATH + SLASH + CORRESPONDENCE_PART_TYPE, REL_METADATA_CORRESPONDENCE_PART_TYPE, false));
     }
 
-    @Override
-    public void addSelfLink(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
-        String systemId = entity.getSystemId();
-        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                entity.getFunctionalTypeName() + SLASH + entity.getBaseTypeName() + SLASH + systemId + SLASH,
-                getRelSelfLink(), false));
-    }
 }

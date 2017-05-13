@@ -36,16 +36,6 @@ public class RegistryEntryHateoasHandler extends BasicRecordHateoasHandler imple
         addNewCorrespondencePart(entity, hateoasNoarkObject);
     }
 
-
-
-    @Override
-    public void addSelfLink(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
-        String systemId = entity.getSystemId();
-        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                entity.getFunctionalTypeName() + SLASH + entity.getBaseTypeName() + SLASH + systemId + SLASH,
-                getRelSelfLink(), false));
-    }
-
     @Override
     public void addElectronicSignature(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +

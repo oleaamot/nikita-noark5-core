@@ -18,14 +18,6 @@ import static nikita.config.Constants.*;
 public class MetadataHateoasHandler extends HateoasHandler implements IMetadataHateoasHandler {
 
     @Override
-    public void addSelfLink(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
-        String systemId = entity.getSystemId();
-        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                entity.getFunctionalTypeName() + SLASH + entity.getBaseTypeName() + SLASH + systemId + SLASH,
-                getRelSelfLink(), false));
-    }
-
-    @Override
     public void addEntityLinks(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         addCode(entity, hateoasNoarkObject);
     }
