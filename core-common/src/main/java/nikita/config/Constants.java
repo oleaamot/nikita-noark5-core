@@ -108,7 +108,7 @@ public final class Constants {
     // Create for new metadata objects
     public static final String NEW_DOCUMENT_MEDIUM = NEW + DASH + DOCUMENT_MEDIUM;
     public static final String NEW_FONDS_STATUS = NEW + DASH + FONDS_STATUS;
-    public static final String NEW_CORRESPONDENCE_PART_TYPE = NEW + DASH + NEW_CORRESPONDENCE_PART;
+    public static final String NEW_CORRESPONDENCE_PART_TYPE = NEW + DASH + CORRESPONDENCE_PART_TYPE;
 
     public static final String SERIES_ASSOCIATE_AS_SUCCESSOR = "referanseArvtager";
     public static final String SERIES_ASSOCIATE_AS_PRECURSOR = "referanseForloeper";
