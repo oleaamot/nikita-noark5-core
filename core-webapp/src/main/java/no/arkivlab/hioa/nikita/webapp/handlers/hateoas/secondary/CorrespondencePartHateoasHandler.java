@@ -33,9 +33,10 @@ public class CorrespondencePartHateoasHandler extends HateoasHandler implements 
 
     @Override
     public void addCorrespondencePartType(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
-        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                NOARK_METADATA_PATH + SLASH + CORRESPONDENCE_PART_TYPE, NIKITA_CONFORMANCE_REL +
-                NOARK_METADATA_PATH + CORRESPONDENCE_PART_TYPE + SLASH, false));
+        hateoasNoarkObject.addLink(entity, new Link(contextPath +
+                HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH + CORRESPONDENCE_PART_TYPE,
+                REL_METADATA_CORRESPONDENCE_PART_TYPE,
+                false));
     }
 
 }

@@ -52,7 +52,7 @@ public class MetadataHateoasHandler extends HateoasHandler implements IMetadataH
     public void addCode(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_METADATA_PATH + SLASH + entity.getBaseTypeName() + SLASH + entity.getSystemId() + SLASH,
-                NIKITA_CONFORMANCE_REL + entity.getBaseTypeName() + SLASH, false));
+                REL_METADATA + entity.getBaseTypeName() + SLASH, false));
     }
     @Override
     public void addNewCode(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
