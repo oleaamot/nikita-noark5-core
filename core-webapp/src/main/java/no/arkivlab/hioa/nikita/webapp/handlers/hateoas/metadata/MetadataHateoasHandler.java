@@ -35,7 +35,7 @@ public class MetadataHateoasHandler extends HateoasHandler implements IMetadataH
             if (entity == null) {
                 throw new NikitaException("Internal error, could not create metadata new object");
             }
-            String rel = NOARK_CONFORMANCE_REL + NEW + DASH + entity.getBaseTypeName() + SLASH;
+            String rel = NIKITA_CONFORMANCE_REL + NEW + DASH + entity.getBaseTypeName() + SLASH;
             Link newCodeLink = new Link(contextPath + HATEOAS_API_PATH + SLASH +
                     NOARK_METADATA_PATH + SLASH + NEW + DASH + entity.getBaseTypeName(),
                     rel, false);
