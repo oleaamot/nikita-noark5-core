@@ -13,6 +13,8 @@ public interface IFondsStatusService {
 
     Iterable<FondsStatus> findAll();
 
+    List<FondsStatus> findAllAsList();
+
     FondsStatus findBySystemId(String systemId);
 
     FondsStatus update(FondsStatus fondsStatus);

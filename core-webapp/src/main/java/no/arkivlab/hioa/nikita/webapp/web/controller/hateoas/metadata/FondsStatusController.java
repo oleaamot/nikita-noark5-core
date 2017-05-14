@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.FONDS_STATUS;
@@ -84,9 +85,10 @@ public class FondsStatusController {
     @Timed
     @RequestMapping(method = RequestMethod.GET, value = FONDS_STATUS)
     public ResponseEntity<MetadataHateoas> findAll(HttpServletRequest request) {
-        //ArrayList <FondsStatus> fondsStatusList = (ArrayList<FondsStatus>) fondsStatusService.findAll2();
-        MetadataHateoas metadataHateoas = null; //new MetadataHateoas(new ArrayList<FondsStatus>(fondsStatusService.findAll()));
+        MetadataHateoas metadataHateoas = new MetadataHateoas(new ArrayList<>(fondsStatusService.findAllAsList()),
+                FONDS_STATUS);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(metadataHateoas);

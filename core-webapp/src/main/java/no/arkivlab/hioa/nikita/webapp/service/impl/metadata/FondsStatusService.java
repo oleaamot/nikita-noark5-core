@@ -97,4 +97,10 @@ public class FondsStatusService implements IFondsStatusService {
     public FondsStatus update(FondsStatus fondsStatus) {
         return fondsStatusRepository.save(fondsStatus);
     }
+
+    @Override
+    public List<FondsStatus> findAllAsList() {
+        return fondsStatusRepository.findAll();
+    }
+
 }
