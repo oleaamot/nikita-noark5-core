@@ -24,7 +24,7 @@ public class MetadataDetails extends APIDetails {
         // Add support for FondsStatus
         aPIDetails.add(new APIDetail(
                 uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH + FONDS_STATUS,
-                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH + FONDS_STATUS + SLASH,
+                REL_METADATA_FONDS_STATUS,
                 true
         ));
 
