@@ -1,14 +1,11 @@
 package nikita.model.noark5.v4;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
-import java.util.TreeSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static nikita.config.N5ResourceMappings.CLASSIFICATION_SYSTEM;
 
@@ -17,7 +14,7 @@ import static nikita.config.N5ResourceMappings.CLASSIFICATION_SYSTEM;
 // Enable soft delete of ClassificationSystem
 // @SQLDelete(sql="UPDATE classification_system SET deleted = true WHERE pk_classification_system_id = ? and version = ?")
 // @Where(clause="deleted <> true")
-@Indexed(index = "classification_system")
+//@Indexed(index = "classification_system")
 @AttributeOverride(name = "id", column = @Column(name = "pk_classification_system_id"))
 public class ClassificationSystem extends NoarkGeneralEntity {
 

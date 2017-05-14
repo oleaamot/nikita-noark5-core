@@ -8,7 +8,6 @@ import nikita.model.noark5.v4.interfaces.IStorageLocation;
 import nikita.model.noark5.v4.secondary.StorageLocation;
 import nikita.util.deserialisers.FondsDeserializer;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -21,7 +20,7 @@ import static nikita.config.N5ResourceMappings.FONDS;
 // Enable soft delete of Fonds
 // @SQLDelete(sql="UPDATE fonds SET deleted = true WHERE pk_fonds_id = ? and version = ?")
 // @Where(clause="deleted <> true")
-@Indexed(index = "fonds")
+//@Indexed(index = "fonds")
 @JsonDeserialize(using = FondsDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_fonds_id"))
 public class Fonds extends NoarkGeneralEntity implements IStorageLocation, IDocumentMedium, IFondsCreator {

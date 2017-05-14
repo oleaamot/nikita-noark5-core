@@ -8,7 +8,6 @@ import nikita.model.noark5.v4.secondary.*;
 import nikita.util.deserialisers.DocumentDescriptionDeserializer;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -22,7 +21,7 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_DESCRIPTION;
 // Enable soft delete of DocumentDescription
 // @SQLDelete(sql="UPDATE document_description SET deleted = true WHERE pk_document_description_id = ? and version = ?")
 // @Where(clause="deleted <> true")
-@Indexed(index = "document_description")
+//@Indexed(index = "document_description")
 @JsonDeserialize(using = DocumentDescriptionDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_document_description_id"))
 //TODO: Important! Should DocumentDescription have links to Series???

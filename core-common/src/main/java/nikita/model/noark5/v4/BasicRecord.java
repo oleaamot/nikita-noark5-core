@@ -7,7 +7,6 @@ import nikita.model.noark5.v4.secondary.*;
 import nikita.util.deserialisers.BasicRecordDeserializer;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -21,7 +20,7 @@ import static nikita.config.N5ResourceMappings.BASIC_RECORD;
 // Enable soft delete of BasicRecord
 // @SQLDelete(sql="UPDATE basic_record SET deleted = true WHERE pk_record_id = ? and version = ?")
 // @Where(clause="deleted <> true")
-@Indexed(index = "basic_record")
+//@Indexed(index = "basic_record")
 @JsonDeserialize(using = BasicRecordDeserializer.class)
 public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleDescriptionEntity,
         IStorageLocation, IKeyword, IComment, ICrossReference, IAuthor {

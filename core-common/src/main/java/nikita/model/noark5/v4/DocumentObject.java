@@ -10,7 +10,6 @@ import nikita.util.deserialisers.DocumentObjectDeserializer;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,7 +23,7 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT;
 // Enable soft delete of DocumentObject ... Temporarily disabled because we can 'delete' things without ref integrity
 // @SQLDelete(sql="UPDATE document_object SET deleted = true WHERE pk_document_object_id = ? and version = ?")
 // @Where(clause="deleted <> true")
-@Indexed(index = "document_object")
+//@Indexed(index = "document_object")
 @JsonDeserialize(using = DocumentObjectDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_document_object_id"))
 public class DocumentObject  extends NoarkEntity implements INoarkCreateEntity,

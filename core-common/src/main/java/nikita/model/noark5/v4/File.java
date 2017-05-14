@@ -8,7 +8,6 @@ import nikita.util.deserialisers.FileDeserializer;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -22,7 +21,7 @@ import static nikita.config.N5ResourceMappings.FILE;
 // Enable soft delete of File
 // @SQLDelete(sql="UPDATE file SET deleted = true WHERE pk_file_id = ? and version = ?")
 // @Where(clause="deleted <> true")
-@Indexed(index = "file")
+//@Indexed(index = "file")
 @JsonDeserialize(using = FileDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_file_id"))
 public class File extends NoarkGeneralEntity  implements IDocumentMedium, IStorageLocation, IKeyword, IClassified,

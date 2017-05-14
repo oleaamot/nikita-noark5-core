@@ -6,7 +6,6 @@ import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.secondary.*;
 import nikita.util.deserialisers.SeriesDeserializer;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -20,7 +19,7 @@ import static nikita.config.N5ResourceMappings.SERIES;
 // Enable soft delete of Series
 // @SQLDelete(sql="UPDATE series SET deleted = true WHERE pk_series_id = ? and version = ?")
 // @Where(clause="deleted <> true")
-@Indexed(index = "series")
+//@Indexed(index = "series")
 @JsonDeserialize(using = SeriesDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_series_id"))
 public class Series extends NoarkGeneralEntity implements IStorageLocation, IDocumentMedium, IClassified, IScreening,

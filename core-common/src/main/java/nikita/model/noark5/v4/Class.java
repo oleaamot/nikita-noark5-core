@@ -10,7 +10,6 @@ import nikita.util.deserialisers.ClassDeserializer;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -23,7 +22,7 @@ import static nikita.config.N5ResourceMappings.CLASS;
 // Enable soft delete of Class
 // @SQLDelete(sql="UPDATE class SET deleted = true WHERE pk_class_id = ? and version = ?")
 // @Where(clause="deleted <> true")
-@Indexed(index = "class")
+//@Indexed(index = "class")
 @JsonDeserialize(using = ClassDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_class_id"))
 public class Class extends NoarkGeneralEntity implements IDisposal, IScreening, IClassified, ICrossReference {

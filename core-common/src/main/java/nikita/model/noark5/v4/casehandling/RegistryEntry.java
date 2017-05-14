@@ -8,7 +8,6 @@ import nikita.model.noark5.v4.secondary.SignOff;
 import nikita.util.deserialisers.RegistryEntryDeserializer;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,7 +23,7 @@ import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
 // Enable soft delete of RegistryEntry
 // @SQLDelete(sql="UPDATE registry_entry SET deleted = true WHERE pk_record_id = ? and version = ?")
 // @Where(clause="deleted <> true")
-@Indexed(index = "registry_entry")
+//@Indexed(index = "registry_entry")
 @JsonDeserialize(using = RegistryEntryDeserializer.class)
 public class RegistryEntry extends BasicRecord implements IElectronicSignature, IPrecedence, ICorrespondencePart,
         ISignOff, IDocumentFlow {

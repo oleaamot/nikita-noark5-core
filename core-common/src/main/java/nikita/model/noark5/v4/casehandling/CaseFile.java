@@ -8,7 +8,6 @@ import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.deserialisers.CaseFileDeserializer;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,7 +27,7 @@ import static nikita.config.N5ResourceMappings.CASE_FILE;
 // Enable soft delete of CaseFile
 // @SQLDelete(sql="UPDATE case_file SET deleted = true WHERE pk_file_id = ? and version = ?")
 // @Where(clause="deleted <> true")
-@Indexed(index = "case_file")
+//@Indexed(index = "case_file")
 @JsonDeserialize(using = CaseFileDeserializer.class)
 public class CaseFile extends File implements Serializable, INikitaEntity, IPrecedence, ICaseParty {
 

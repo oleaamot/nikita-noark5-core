@@ -12,7 +12,6 @@ import nikita.util.deserialisers.RecordDeserializer;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -27,7 +26,7 @@ import static nikita.config.N5ResourceMappings.REGISTRATION;
 // Enable soft delete of Record
 // @SQLDelete(sql = "UPDATE record SET deleted = true WHERE pk_record_id = ? and version = ?")
 // @Where(clause = "deleted <> true")
-@Indexed(index = "record")
+//@Indexed(index = "record")
 @JsonDeserialize(using = RecordDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_record_id"))
 public class Record extends NoarkEntity implements INoarkCreateEntity, IClassified, IScreening, IDisposal {
