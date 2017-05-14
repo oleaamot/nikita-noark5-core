@@ -1,6 +1,9 @@
 package nikita.config;
 
 
+import static nikita.config.Constants.DASH;
+import static nikita.config.Constants.NEW;
+
 public final class N5ResourceMappings {
 
     // Commonly used entities for REST request mappings
@@ -49,6 +52,7 @@ public final class N5ResourceMappings {
     public static final String FINALISED_DATE = "avsluttetDato";
     public static final String FINALISED_BY = "avsluttetAv";
     public static final String DOCUMENT_MEDIUM = "dokumentmedium";
+    public static final String NEW_DOCUMENT_MEDIUM = NEW + DASH + DOCUMENT_MEDIUM;
 
     // Fonds
     public static final String FONDS_STATUS = "arkivstatus";
