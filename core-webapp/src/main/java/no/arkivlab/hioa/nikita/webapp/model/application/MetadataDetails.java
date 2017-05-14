@@ -31,7 +31,7 @@ public class MetadataDetails extends APIDetails {
         // Add support for CorrespondencePart
         aPIDetails.add(new APIDetail(
                 uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH + CORRESPONDENCE_PART_TYPE,
-                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH + CORRESPONDENCE_PART_TYPE + SLASH,
+                REL_METADATA_CORRESPONDENCE_PART_TYPE,
                 true
         ));
 
