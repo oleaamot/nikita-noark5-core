@@ -82,7 +82,7 @@ public class FondsStatusController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.GET, value = FONDS_STATUS + SLASH)
+    @RequestMapping(method = RequestMethod.GET, value = FONDS_STATUS)
     public ResponseEntity<MetadataHateoas> findAll(HttpServletRequest request) {
         //ArrayList <FondsStatus> fondsStatusList = (ArrayList<FondsStatus>) fondsStatusService.findAll2();
         MetadataHateoas metadataHateoas = null; //new MetadataHateoas(new ArrayList<FondsStatus>(fondsStatusService.findAll()));
