@@ -95,7 +95,7 @@ public class FondsHateoasHandler extends HateoasHandler implements IFondsHateoas
 
     public void addFondsStatus(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH
-                + FONDS_STATUS + SLASH, REL_METADATA_FONDS_STATUS, false));
+                + FONDS_STATUS, REL_METADATA_FONDS_STATUS, false));
     }
 
     public void addNewFonds(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
