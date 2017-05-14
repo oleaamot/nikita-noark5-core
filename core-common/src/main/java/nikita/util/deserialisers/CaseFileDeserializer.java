@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.casehandling.CaseFile;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaMalformedInputDataException;
@@ -144,6 +145,17 @@ public class CaseFileDeserializer extends JsonDeserializer {
         if (null != currentNode) {
             caseFile.setLoanedTo(currentNode.textValue());
             objectNode.remove(CASE_LOANED_TO);
+        }
+        // Deserialize referenceSeries
+        currentNode = objectNode.get(REFERENCE_SERIES);
+        if (null != currentNode) {
+            Series series = new Series();
+            String systemID = currentNode.textValue();
+            if (systemID != null) {
+                series.setSystemId(systemID);
+            }
+            caseFile.setReferenceSeries(series);
+            objectNode.remove(REFERENCE_SERIES);
         }
 
         // Check that there are no additional values left after processing the tree

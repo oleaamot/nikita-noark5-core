@@ -7,14 +7,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import nikita.model.noark5.v4.File;
-import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
+import nikita.model.noark5.v4.Series;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaMalformedInputDataException;
 
 import java.io.IOException;
 
-import static nikita.config.N5ResourceMappings.FILE_ID;
-import static nikita.config.N5ResourceMappings.FILE_PUBLIC_TITLE;
+import static nikita.config.N5ResourceMappings.*;
 
 /**
  * Created by tsodring on 1/6/17.
@@ -73,6 +72,18 @@ public class FileDeserializer extends JsonDeserializer {
         file.setReferenceDisposal(CommonUtils.Hateoas.Deserialize.deserialiseDisposal(objectNode));
         file.setReferenceScreening(CommonUtils.Hateoas.Deserialize.deserialiseScreening(objectNode));
         file.setReferenceClassified(CommonUtils.Hateoas.Deserialize.deserialiseClassified(objectNode));
+
+        // Deserialize referenceSeries
+        currentNode = objectNode.get(REFERENCE_SERIES);
+        if (null != currentNode) {
+            Series series = new Series();
+            String systemID = currentNode.textValue();
+            if (systemID != null) {
+                series.setSystemId(systemID);
+            }
+            file.setReferenceSeries(series);
+            objectNode.remove(REFERENCE_SERIES);
+        }
 
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
