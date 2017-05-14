@@ -37,7 +37,7 @@ public class MetadataHateoasHandler extends HateoasHandler implements IMetadataH
             }
             String rel = REL_METADATA + NEW + DASH + entity.getBaseTypeName() + SLASH;
             Link newCodeLink = new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                    NIKITA_CONFORMANCE_REL + SLASH + NEW + DASH + entity.getBaseTypeName(),
+                    NOARK_METADATA_PATH + SLASH + NEW + DASH + entity.getBaseTypeName(),
                     rel, false);
             hateoasNoarkObject.addLink(newCodeLink);
         }
