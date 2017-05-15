@@ -64,13 +64,13 @@ public class RegistryEntryHateoasSerializer extends HateoasSerializer implements
         CommonUtils.Hateoas.Serialize.printComment(jgen, registryEntry);
         // TODO: FIX THIS CommonCommonUtils.Hateoas.Serialize.printCrossReference(jgen, registryEntry);
         if (registryEntry.getRecordYear() != null) {
-            jgen.writeStringField(REGISTRY_ENTRY_YEAR, Integer.toString(registryEntry.getRecordYear()));
+            jgen.writeNumberField(REGISTRY_ENTRY_YEAR, registryEntry.getRecordYear().intValue());
         }
         if (registryEntry.getRecordSequenceNumber() != null) {
-            jgen.writeStringField(REGISTRY_ENTRY_SEQUENCE_NUMBER, Integer.toString(registryEntry.getRecordSequenceNumber()));
+            jgen.writeNumberField(REGISTRY_ENTRY_SEQUENCE_NUMBER, registryEntry.getRecordSequenceNumber().intValue());
         }
         if (registryEntry.getRegistryEntryNumber() != null) {
-            jgen.writeStringField(REGISTRY_ENTRY_NUMBER, Integer.toString(registryEntry.getRegistryEntryNumber()));
+            jgen.writeNumberField(REGISTRY_ENTRY_NUMBER, registryEntry.getRegistryEntryNumber().intValue());
         }
         if (registryEntry.getRegistryEntryType() != null) {
             jgen.writeStringField(REGISTRY_ENTRY_TYPE, registryEntry.getRegistryEntryType());
@@ -97,7 +97,7 @@ public class RegistryEntryHateoasSerializer extends HateoasSerializer implements
             jgen.writeStringField(REGISTRY_ENTRY_RECORD_FREEDOM_ASSESSMENT_DATE, DATE_FORMAT.format(registryEntry.getFreedomAssessmentDate()));
         }
         if (registryEntry.getNumberOfAttachments() != null) {
-            jgen.writeStringField(REGISTRY_ENTRY_NUMBER_OF_ATTACHMENTS, Integer.toString(registryEntry.getNumberOfAttachments()));
+            jgen.writeNumberField(REGISTRY_ENTRY_NUMBER_OF_ATTACHMENTS, registryEntry.getNumberOfAttachments().intValue());
         }
         if (registryEntry.getLoanedDate() != null) {
             jgen.writeStringField(CASE_LOANED_DATE, DATE_FORMAT.format(registryEntry.getLoanedDate()));
