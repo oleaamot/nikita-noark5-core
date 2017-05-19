@@ -78,10 +78,10 @@ public class CaseFileHateoasSerializer extends HateoasSerializer implements IHat
             jgen.writeStringField(REFERENCE_SERIES, caseFile.getReferenceSeries().getSystemId());
         }
         if (caseFile.getCaseYear() != null) {
-            jgen.writeStringField(CASE_YEAR, caseFile.getCaseYear().toString());
+            jgen.writeNumberField(CASE_YEAR, caseFile.getCaseYear().intValue());
         }
         if (caseFile.getCaseSequenceNumber() != null) {
-            jgen.writeStringField(CASE_SEQUENCE_NUMBER, caseFile.getCaseSequenceNumber().toString());
+            jgen.writeNumberField(CASE_SEQUENCE_NUMBER, caseFile.getCaseSequenceNumber().intValue());
         }
         if (caseFile.getCaseDate() != null) {
             jgen.writeStringField(CASE_DATE, DATE_FORMAT.format(caseFile.getCaseDate()));

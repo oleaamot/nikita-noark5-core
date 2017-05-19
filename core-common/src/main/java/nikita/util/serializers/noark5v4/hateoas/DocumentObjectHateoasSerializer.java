@@ -40,7 +40,7 @@ public class DocumentObjectHateoasSerializer extends HateoasSerializer implement
         CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, documentObject);
 
         if (documentObject.getVersionNumber() != null) {
-            jgen.writeStringField(DOCUMENT_OBJECT_VERSION_NUMBER, Integer.toString(documentObject.getVersionNumber()));
+            jgen.writeNumberField(DOCUMENT_OBJECT_VERSION_NUMBER, documentObject.getVersionNumber().intValue());
         }
         if (documentObject.getVariantFormat() != null) {
             jgen.writeStringField(DOCUMENT_OBJECT_VARIANT_FORMAT, documentObject.getVariantFormat());
