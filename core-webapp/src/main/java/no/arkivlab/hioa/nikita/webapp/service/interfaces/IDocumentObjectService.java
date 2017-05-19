@@ -34,6 +34,8 @@ public interface IDocumentObjectService {
 
 	// -- All READ operations
 
+	List<DocumentObject> findDocumentObjectByAnyColumn(String column, String value);
+
     List<DocumentObject> findDocumentObjectByOwnerPaginated(Integer top, Integer skip);
 
     List<DocumentObject> findAll();
