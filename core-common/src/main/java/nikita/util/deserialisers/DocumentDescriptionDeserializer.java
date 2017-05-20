@@ -104,6 +104,7 @@ public class DocumentDescriptionDeserializer extends JsonDeserializer {
         }
         // Deserialize general documentDescription properties
         CommonUtils.Hateoas.Deserialize.deserialiseDocumentMedium(documentDescription, objectNode);
+        CommonUtils.Hateoas.Deserialize.deserialiseStorageLocation(documentDescription, objectNode);
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
