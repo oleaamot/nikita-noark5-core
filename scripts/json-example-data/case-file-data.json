@@ -3,7 +3,7 @@
   "offentligTittel": "Public title of the test file",
   "tittel": "Title of the test file",
   "beskrivelse": "Description of the test file",
-  "oppbevaringsted" : [ "location 1", "location2", "location3" ],
+  "oppbevaringssted" : [ "location 1", "location2", "location3" ],
   "dokumentmedium": "Elektronisk arkiv",
   "saksaar": "2017",
   "sakssekvensnummer": "1",
