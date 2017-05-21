@@ -130,7 +130,7 @@ public final class N5ResourceMappings {
     // CorrespondencePart
     public static final String CORRESPONDENCE_PART  = "korrespondansepart";
     public static final String CORRESPONDENCE_PART_TYPE = "korrespondanseparttype";
-    public static final String CORRESPONDENCE_PART_NAME = "korrespondansepartNavn";
+    public static final String CORRESPONDENCE_PART_NAME = "navn";
     public static final String CORRESPONDENCE_PART_POSTAL_ADDRESS = "postadresse";
     public static final String CORRESPONDENCE_PART_POST_CODE = "postnummer";
     public static final String CORRESPONDENCE_PART_POSTAL_TOWN = "poststed";

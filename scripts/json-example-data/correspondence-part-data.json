@@ -1,6 +1,6 @@
 {
 "korrespondanseparttype" : "Avsender",
-"korrespondansepartNavn" : "Frank Grimes",
+"navn" : "Frank Grimes",
 "postadresse" : ["Administrasjonsbygget", "Eksempelveien 1"],
 "postnummer" : "0000",
 "poststed" : "Eksempelby",

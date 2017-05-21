@@ -24,7 +24,7 @@ import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART;
 @AttributeOverride(name = "id", column = @Column(name = "pk_correspondence_part_id"))
 public class CorrespondencePart extends NoarkEntity implements ICorrespondencePartEntity {
 
-    /** M400 - korrespondansepartNavn (xs:string) */
+    /** M400 - korrespondansepartNavn (xs:string), named 'name' in the service interface spec */
     @Audited
     @Column(name = "correspondence_part_name")
     private String correspondencePartName;
