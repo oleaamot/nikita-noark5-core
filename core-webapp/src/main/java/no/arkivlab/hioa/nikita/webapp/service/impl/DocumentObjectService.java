@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
+import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT_FILE_NAME;
 
 @Service
 @Transactional
@@ -325,6 +326,26 @@ public class DocumentObjectService implements IDocumentObjectService {
     }
 
     // All READ operations
+
+
+    @Override
+    public List<DocumentObject> findDocumentObjectByAnyColumn(String column, String value) {
+        String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<DocumentObject> criteriaQuery = criteriaBuilder.createQuery(DocumentObject.class);
+        Root<DocumentObject> from = criteriaQuery.from(DocumentObject.class);
+        CriteriaQuery<DocumentObject> select = criteriaQuery.select(from);
+
+        if (column.equalsIgnoreCase(DOCUMENT_OBJECT_FILE_NAME)) {
+            column = "originalFilename";
+        }
+
+        criteriaQuery.where(criteriaBuilder.equal(from.get("ownedBy"), loggedInUser));
+        criteriaQuery.where(criteriaBuilder.equal(from.get(column), value));
+        TypedQuery<DocumentObject> typedQuery = entityManager.createQuery(select);
+        return typedQuery.getResultList();
+    }
+
     @Override
     public List<DocumentObject> findDocumentObjectByOwnerPaginated(Integer top, Integer skip) {
 

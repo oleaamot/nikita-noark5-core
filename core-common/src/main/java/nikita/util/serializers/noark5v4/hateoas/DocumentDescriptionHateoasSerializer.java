@@ -61,6 +61,7 @@ public class DocumentDescriptionHateoasSerializer extends HateoasSerializer impl
         CommonUtils.Hateoas.Serialize.printDeletion(jgen, documentDescription);
         CommonUtils.Hateoas.Serialize.printScreening(jgen, documentDescription);
         CommonUtils.Hateoas.Serialize.printClassified(jgen, documentDescription);
+        CommonUtils.Hateoas.Serialize.printStorageLocation(jgen, documentDescription);
         CommonUtils.Hateoas.Serialize.printElectronicSignature(jgen, documentDescription);
         CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, documentDescriptionHateoas.getLinks(documentDescription));
         jgen.writeEndObject();

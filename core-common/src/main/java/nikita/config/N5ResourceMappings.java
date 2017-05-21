@@ -21,9 +21,9 @@ public final class N5ResourceMappings {
     public static final String REGISTRY_ENTRY = "journalpost";
     public static final String DOCUMENT_DESCRIPTION = "dokumentbeskrivelse";
     public static final String DOCUMENT_OBJECT = "dokumentobjekt";
-    public static final String STORAGE_LOCATION = "oppbevaringsted";
+    public static final String STORAGE_LOCATION = "oppbevaringssted";
     // Not part of interface standard
-    public static final String STORAGE_LOCATIONS = "oppbevaringsteder";
+    public static final String STORAGE_LOCATIONS = "oppbevaringssteder";
 
     public static final String KEYWORD = "noekkelord";
 
@@ -130,7 +130,7 @@ public final class N5ResourceMappings {
     // CorrespondencePart
     public static final String CORRESPONDENCE_PART  = "korrespondansepart";
     public static final String CORRESPONDENCE_PART_TYPE = "korrespondanseparttype";
-    public static final String CORRESPONDENCE_PART_NAME = "korrespondansepartNavn";
+    public static final String CORRESPONDENCE_PART_NAME = "navn";
     public static final String CORRESPONDENCE_PART_POSTAL_ADDRESS = "postadresse";
     public static final String CORRESPONDENCE_PART_POST_CODE = "postnummer";
     public static final String CORRESPONDENCE_PART_POSTAL_TOWN = "poststed";

@@ -24,10 +24,11 @@ import static nikita.config.N5ResourceMappings.*;
 //        It seems that secondary entities are generated as hateoas links if they have odata support
 //        So we could reintroduce them when we get odata support
 @Component("caseFileHateoasHandler")
-public class CaseFileHateoasHandler extends HateoasHandler implements ICaseFileHateoasHandler {
+public class CaseFileHateoasHandler extends FileHateoasHandler implements ICaseFileHateoasHandler {
 
     @Override
     public void addEntityLinks(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+        super.addEntityLinks(entity, hateoasNoarkObject);
         addNewClass(entity, hateoasNoarkObject);
         //addClass(entity, hateoasNoarkObject);
         addNewPrecedence(entity, hateoasNoarkObject);

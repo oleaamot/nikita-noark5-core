@@ -2,5 +2,6 @@
   "dokumenttype" : "type dokument",
   "dokumentstatus" : "status of document",
   "tittel": "Title of the test document desciprion",
-  "tilknyttetRegistreringSom" : "Associated with record as"
+  "tilknyttetRegistreringSom" : "Associated with record as",
+  "oppbevaringsted" : [ "location 1", "location2", "location3" ]
 }

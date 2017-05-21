@@ -44,6 +44,7 @@ import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT;
+import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT_FILE_NAME;
 import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 import static org.springframework.http.HttpHeaders.ETAG;
 
@@ -121,11 +122,30 @@ public class DocumentObjectHateoasController extends NoarkController {
     public ResponseEntity<DocumentObjectHateoas> findAllDocumentObject(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @RequestParam(name = "top", required = false) Integer top,
-            @RequestParam(name = "skip", required = false) Integer skip) {
+            @RequestParam(name = "skip", required = false) Integer skip,
+            @RequestParam(name = "filter", required = false) String filter) {
 
-        DocumentObjectHateoas documentObjectHateoas = new
-                DocumentObjectHateoas((ArrayList<INikitaEntity>) (ArrayList)
-                documentObjectService.findDocumentObjectByOwnerPaginated(top, skip));
+        String reg = " ";
+        String[] pieces;
+        DocumentObjectHateoas documentObjectHateoas = null;
+
+        if (filter != null) {
+            pieces = filter.split(reg);
+
+            if (pieces.length == 3 && pieces[1].equalsIgnoreCase("eq")) {
+                pieces[2] = pieces[2].replace("\'", "");
+                documentObjectHateoas = new
+                        DocumentObjectHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                        documentObjectService.findDocumentObjectByAnyColumn(pieces[0], pieces[2]));
+
+            }
+        }
+
+        if (null == documentObjectHateoas) {
+            documentObjectHateoas = new
+                    DocumentObjectHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                    documentObjectService.findDocumentObjectByOwnerPaginated(top, skip));
+        }
         documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
