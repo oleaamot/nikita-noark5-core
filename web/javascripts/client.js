@@ -112,3 +112,76 @@ let login = app.controller('LoginController', ['$scope', '$http', function($scop
     });
   };
 }]);
+
+let postliste = app.controller('PostlisteController', ['$scope', '$http', function ($scope, $http) {
+    // FIXME find link dynamically
+    url = base_url + "/hateoas-api/arkivstruktur/arkiv";
+    token = GetUserToken();
+    $http({
+	method: 'GET',
+	url: url,
+	headers: {'Authorization': token },
+    }).then(function successCallback(response) {
+	$scope.status = '[GET succeeded]';
+	$scope.response = response;
+	$scope.fonds = response.data.results;
+	$scope.series = ''
+	$scope.journalpost = '';
+	for (e in response.data.results) {
+	    console.log(response.data.results[e].tittel);
+	}
+    }, function errorCallback(response) {
+	$scope.status = '[GET failed]';
+	$scope.fonds = '';
+	$scope.series = '';
+	$scope.casefiles = '';
+    });
+
+    $scope.fondsUpdate = function(fonds){
+	console.log('fonds selected ' + fonds);
+	$scope.journalpost = '';
+	for (rel in fonds._links) {
+	    href = fonds._links[rel].href;
+	    relation = fonds._links[rel].rel;
+	    if (relation == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivdel/'){
+		$scope.casefiles = '';
+		console.log("fetching " + href);
+		token = GetUserToken();
+		$http({
+		    method: 'GET',
+		    url: href,
+		    headers: {'Authorization': token },
+		}).then(function successCallback(response) {
+		    $scope.series = response.data.results;
+		}, function errorCallback(response) {
+		    $scope.series = '';
+		});
+	    }
+	}
+    }
+    $scope.seriesUpdate = function(series){
+	console.log('series selected ' + series);
+	$scope.journalpost = '';
+	if (!series) {
+	    return
+	}
+	for (rel in series._links) {
+	    href = series._links[rel].href;
+	    relation = series._links[rel].rel;
+	    // FIXME use http://rel.kxml.no/noark5/v4/api/sakarkiv/saksmappe/ when it work
+	    if (relation == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/mappe/'){
+		console.log("fetching " + href);
+		token = GetUserToken();
+		$http({
+		    method: 'GET',
+		    url: href,
+		    headers: {'Authorization': token },
+		}).then(function successCallback(response) {
+		    $scope.casefiles = response.data.results;
+		}, function errorCallback(response) {
+		    $scope.casefiles = '';
+		});
+	    }
+	}
+    }
+}]);
