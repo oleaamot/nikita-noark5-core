@@ -12,10 +12,13 @@
     <p><a href="login.html">logg inn</a> (Status: {{ status }})</p>
     <form ng-submit="send_form()" method="post">
       
-      Arkiv: <select ng-options="fond.tittel for fond in fonds" ng-model="selectedFonds" ng-change="fondsUpdate(selectedFonds)"></select>
+      <p>Arkiv: <select ng-options="fond.tittel for fond in fonds" ng-model="selectedFonds" ng-change="fondsUpdate(selectedFonds)"></select>
 
-      Arkivdel: <select ng-options="serie.tittel for serie in series" name="s" ng-model="selectedSeries" ng-change="seriesUpdate(selectedSeries)">
+      Arkivdel: <select ng-options="serie.tittel for serie in series" ng-model="selectedSeries" ng-change="seriesUpdate(selectedSeries)">
       </select>
+
+	<br>Søk: <input name="search" width="30">
+      </p>
       
       <table ng-if="casefiles">
 	<thead>
@@ -27,12 +30,18 @@
 	  </tr>
 	</thead>
 	<tbody ng-repeat="entry in casefiles">
-	  <tr>
+	  <tr ng-click="fileSelected(entry)">
 	    <td>{{ entry.mappeID }}</td>
 	    <td>{{ entry.opprettetDato }}</td>
 	    <td ng-if="entry.offentligTittel">{{ entry.offentligTittel }}</td>
 	    <td ng-if="!entry.offentligTittel">{{ entry.tittel }}</td>
 	    <td>{{ entry.administrativEnhet }}</td>
+	  </tr>
+	  <tr ng-if"entry.records">
+	    <td></td>
+	    <td colspan="3"><div ng-repeat="r in entry.records">
+		<br>{{ r.systemID }}
+	    </div></td>
 	  </tr>
 	</tbody>
       </table>
