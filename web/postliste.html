@@ -26,7 +26,6 @@
 	    <th>MappeID</th>
 	    <th>Opprettet dato</th>
 	    <th>Offentlig tittel</th>
-	    <th>Adm. enhet</th>
 	  </tr>
 	</thead>
 	<tbody ng-repeat="entry in casefiles">
@@ -35,12 +34,15 @@
 	    <td>{{ entry.opprettetDato }}</td>
 	    <td ng-if="entry.offentligTittel">{{ entry.offentligTittel }}</td>
 	    <td ng-if="!entry.offentligTittel">{{ entry.tittel }}</td>
-	    <td>{{ entry.administrativEnhet }}</td>
 	  </tr>
 	  <tr ng-if"entry.records">
 	    <td></td>
-	    <td colspan="3"><div ng-repeat="r in entry.records">
-		<br>{{ r.dokumentbeskrivelse.systemID }} - {{ r.dokumentbeskrivelse.tittel }}
+	    <td colspan="2"><div ng-repeat="r in entry.records">
+		<br>[{{ r.dokumentbeskrivelse.dokumenttype }}]
+		Dok.dato: {{ r.dokumentbeskrivelse.dokumentsDato }}
+		J.dato: {{ r.dokumentbeskrivelse.journaldato }}
+		J.id: {{ r.dokumentbeskrivelse.journalaar }}/{{ r.dokumentbeskrivelse.sekvensnummer }}
+		<br>{{ r.dokumentbeskrivelse.tittel }}
 	    </div></td>
 	  </tr>
 	</tbody>
