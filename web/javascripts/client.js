@@ -191,29 +191,27 @@ let postliste = app.controller('PostlisteController', ['$scope', '$http', functi
 		    url: href,
 		    headers: {'Authorization': GetUserToken() },
 		}).then(function successCallback(response) {
-		    for (record in response.data.results) {
-			response.data.results.forEach(function(record) {
-			    console.log("record " + record);
-			    for (rel in record._links) {
-				relation = record._links[rel].rel;
-				console.log("found " + relation);
-				if (relation == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/dokumentbeskrivelse/') {
-				    href = record._links[rel].href;
-				    console.log("fetching " + href);
-				    $http({
-					method: 'GET',
-					url: href,
-					headers: {'Authorization': GetUserToken() },
-				    }).then(docdesc => {
-					record.dokumentbeskrivelse =
-					    docdesc.data.results[0];
-				    }, response2 => {
-					record.dokumentbeskrivelse = '';
-				    });
-				}
+		    response.data.results.forEach(function(record) {
+			console.log("record " + record);
+			for (rel in record._links) {
+			    relation = record._links[rel].rel;
+			    console.log("found " + relation);
+			    if (relation == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/dokumentbeskrivelse/') {
+				href = record._links[rel].href;
+				console.log("fetching " + href);
+				$http({
+				    method: 'GET',
+				    url: href,
+				    headers: {'Authorization': GetUserToken() },
+				}).then(function successCallback(docdesc) {
+				    record.dokumentbeskrivelse =
+					docdesc.data.results[0];
+				}, function errorCallback(docdesc) {
+				    record.dokumentbeskrivelse = '';
+				});
 			    }
-			});
-		    }
+			}
+		    });
 		    file.records = response.data.results;
 		}, function errorCallback(response) {
 		    file.records = '';
