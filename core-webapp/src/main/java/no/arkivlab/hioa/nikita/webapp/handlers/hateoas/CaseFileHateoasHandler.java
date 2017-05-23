@@ -28,7 +28,26 @@ public class CaseFileHateoasHandler extends FileHateoasHandler implements ICaseF
 
     @Override
     public void addEntityLinks(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
-        super.addEntityLinks(entity, hateoasNoarkObject);
+        // Not calling  super.addEntityLinks(entity, hateoasNoarkObject);
+        // because addExpandToCaseFile, addExpandToMeetingFile, addSubFile, addNewSubFile
+        // are not applicable. Instead we invoke the methods directly here.
+        // Methods from base class
+        addEndFile(entity, hateoasNoarkObject);
+        addRegistration(entity, hateoasNoarkObject);
+        addNewRegistration(entity, hateoasNoarkObject);
+        addBasicRecord(entity, hateoasNoarkObject);
+        addNewBasicRecord(entity, hateoasNoarkObject);
+        addComment(entity, hateoasNoarkObject);
+        addNewComment(entity, hateoasNoarkObject);
+        addCrossReference(entity, hateoasNoarkObject);
+        addNewCrossReference(entity, hateoasNoarkObject);
+        addClass(entity, hateoasNoarkObject);
+        addNewClass(entity, hateoasNoarkObject);
+        addReferenceSeries(entity, hateoasNoarkObject);
+        addNewReferenceSeries(entity, hateoasNoarkObject);
+        addReferenceSecondaryClassification(entity, hateoasNoarkObject);
+        addNewReferenceSecondaryClassification(entity, hateoasNoarkObject);
+        // Methods from this class
         addNewClass(entity, hateoasNoarkObject);
         //addClass(entity, hateoasNoarkObject);
         addNewPrecedence(entity, hateoasNoarkObject);
