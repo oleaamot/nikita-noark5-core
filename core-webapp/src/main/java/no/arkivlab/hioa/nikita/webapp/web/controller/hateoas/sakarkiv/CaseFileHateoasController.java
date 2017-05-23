@@ -40,6 +40,7 @@ import java.util.Date;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.CASE_FILE;
+import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
 import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 import static org.springframework.http.HttpHeaders.ETAG;
 
@@ -141,7 +142,7 @@ public class CaseFileHateoasController extends NoarkController {
     }
 
     // Retrieve a single casefile identified by systemId
-    //GET [contextPath][api]/sakarkiv/saksmappe/{systemID}
+    // GET [contextPath][api]/sakarkiv/saksmappe/{systemID}
     @ApiOperation(value = "Retrieves a single CaseFile entity given a systemId", response = CaseFile.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "CaseFile returned", response = CaseFile.class),
@@ -168,6 +169,37 @@ public class CaseFileHateoasController extends NoarkController {
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(caseFile.getVersion().toString())
                 .body(caseFileHateoas);
+    }
+
+    // Retrieve all RegistryEntry associated with a casefile identified by systemId
+    // GET [contextPath][api]/sakarkiv/saksmappe/{systemID}/journalpost
+    @ApiOperation(value = "Retrieves all RegistryEntry associated with a CaseFile identified by systemId",
+            response = RegistryEntry.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "RegistryEntry list returned", response = RegistryEntryHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + REGISTRY_ENTRY,
+            method = RequestMethod.GET)
+    public ResponseEntity<RegistryEntryHateoas> findRegistryEntryAssociatedWithCaseFileBySystemId(
+            HttpServletRequest request,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the caseFile to retrieve",
+                    required = true)
+            @PathVariable("systemID") final String caseFileSystemId) {
+        CaseFile caseFile = caseFileService.findBySystemId(caseFileSystemId);
+        if (caseFile == null) {
+            throw new NoarkEntityNotFoundException(caseFileSystemId);
+        }
+        RegistryEntryHateoas registryEntryHateoas = new
+                RegistryEntryHateoas(new ArrayList<> (caseFile.getReferenceRecord()));
+        registryEntryHateoasHandler.addLinks(registryEntryHateoas, request, new Authorisation());
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(registryEntryHateoas);
     }
 
     @ApiOperation(value = "Retrieves multiple CaseFile entities limited by ownership rights", notes = "The field skip" +

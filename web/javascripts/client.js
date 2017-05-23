@@ -122,35 +122,27 @@ let postliste = app.controller('PostlisteController', ['$scope', '$http', functi
 	url: url,
 	headers: {'Authorization': token },
     }).then(function successCallback(response) {
-	$scope.status = '[GET succeeded]';
-	$scope.response = response;
+	$scope.status = 'success';
 	$scope.fonds = response.data.results;
-	$scope.series = ''
-	$scope.journalpost = '';
-	for (e in response.data.results) {
-	    console.log(response.data.results[e].tittel);
-	}
     }, function errorCallback(response) {
-	$scope.status = '[GET failed]';
+	$scope.status = 'failure';
 	$scope.fonds = '';
-	$scope.series = '';
-	$scope.casefiles = '';
     });
+    $scope.series = '';
+    $scope.casefiles = '';
 
     $scope.fondsUpdate = function(fonds){
-	console.log('fonds selected ' + fonds);
-	$scope.journalpost = '';
+	console.log('fonds selected ' + fonds.tittel);
+	$scope.casefiles = '';
 	for (rel in fonds._links) {
 	    href = fonds._links[rel].href;
 	    relation = fonds._links[rel].rel;
 	    if (relation == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivdel/'){
-		$scope.casefiles = '';
 		console.log("fetching " + href);
-		token = GetUserToken();
 		$http({
 		    method: 'GET',
 		    url: href,
-		    headers: {'Authorization': token },
+		    headers: {'Authorization': GetUserToken() },
 		}).then(function successCallback(response) {
 		    $scope.series = response.data.results;
 		}, function errorCallback(response) {
@@ -160,8 +152,7 @@ let postliste = app.controller('PostlisteController', ['$scope', '$http', functi
 	}
     }
     $scope.seriesUpdate = function(series){
-	console.log('series selected ' + series);
-	$scope.journalpost = '';
+	console.log('series selected ' + series.tittel);
 	if (!series) {
 	    return
 	}
@@ -171,15 +162,59 @@ let postliste = app.controller('PostlisteController', ['$scope', '$http', functi
 	    // FIXME use http://rel.kxml.no/noark5/v4/api/sakarkiv/saksmappe/ when it work
 	    if (relation == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/mappe/'){
 		console.log("fetching " + href);
-		token = GetUserToken();
 		$http({
 		    method: 'GET',
 		    url: href,
-		    headers: {'Authorization': token },
+		    headers: {'Authorization': GetUserToken() },
 		}).then(function successCallback(response) {
 		    $scope.casefiles = response.data.results;
 		}, function errorCallback(response) {
 		    $scope.casefiles = '';
+		});
+	    }
+	}
+    }
+    $scope.fileSelected = function(file){
+	console.log('file selected ' + file.tittel);
+	if (file.records) {
+            file.records = '';
+            return;
+	}
+	for (rel in file._links) {
+	    relation = file._links[rel].rel;
+	    // FIXME use http://rel.kxml.no/noark5/v4/api/sakarkiv/journalpost/ when it work
+	    if (relation == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/registrering/'){
+		href = file._links[rel].href;
+		console.log("fetching " + href);
+		$http({
+		    method: 'GET',
+		    url: href,
+		    headers: {'Authorization': GetUserToken() },
+		}).then(function successCallback(response) {
+		    response.data.results.forEach(function(record) {
+			console.log("record " + record);
+			for (rel in record._links) {
+			    relation = record._links[rel].rel;
+			    console.log("found " + relation);
+			    if (relation == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/dokumentbeskrivelse/') {
+				href = record._links[rel].href;
+				console.log("fetching " + href);
+				$http({
+				    method: 'GET',
+				    url: href,
+				    headers: {'Authorization': GetUserToken() },
+				}).then(function successCallback(docdesc) {
+				    record.dokumentbeskrivelse =
+					docdesc.data.results[0];
+				}, function errorCallback(docdesc) {
+				    record.dokumentbeskrivelse = '';
+				});
+			    }
+			}
+		    });
+		    file.records = response.data.results;
+		}, function errorCallback(response) {
+		    file.records = '';
 		});
 	    }
 	}
