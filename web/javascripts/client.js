@@ -176,7 +176,11 @@ let postliste = app.controller('PostlisteController', ['$scope', '$http', functi
     }
   $scope.fileSelected = function(file){
       console.log('file selected ' + file.tittel);
-	for (rel in file._links) {
+      if (file.records) {
+          file.records = '';
+          return;
+      }
+      for (rel in file._links) {
 	    href = file._links[rel].href;
 	    relation = file._links[rel].rel;
 	    // FIXME use http://rel.kxml.no/noark5/v4/api/sakarkiv/journalpost/ when it work
@@ -192,6 +196,6 @@ let postliste = app.controller('PostlisteController', ['$scope', '$http', functi
 		    file.records = '';
 		});
 	    }
-	}
+      }
   }
 }]);
