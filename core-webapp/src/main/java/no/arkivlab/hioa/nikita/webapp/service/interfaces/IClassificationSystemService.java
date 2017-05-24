@@ -3,7 +3,6 @@ package no.arkivlab.hioa.nikita.webapp.service.interfaces;
 
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.ClassificationSystem;
-import nikita.model.noark5.v4.DocumentObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,7 +30,7 @@ public interface IClassificationSystemService {
 	ClassificationSystem findById(Long id);
 
 	// systemId
-	ClassificationSystem findBySystemId(String systemId);
+    ClassificationSystem findBySystemIdOrderBySystemId(String systemId);
 
 	// title
 	List<ClassificationSystem> findByTitleAndOwnedBy(String title, String ownedBy);

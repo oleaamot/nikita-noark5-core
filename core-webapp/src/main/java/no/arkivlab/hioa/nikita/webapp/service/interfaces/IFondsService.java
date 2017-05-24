@@ -35,7 +35,7 @@ public interface IFondsService  {
     Fonds findById(Long id);
 
     // systemId
-    Fonds findBySystemId(String systemId);
+    Fonds findBySystemIdOrderBySystemId(String systemId);
 
     // title
     List<Fonds> findByTitleAndOwnedBy(String title, String ownedBy);

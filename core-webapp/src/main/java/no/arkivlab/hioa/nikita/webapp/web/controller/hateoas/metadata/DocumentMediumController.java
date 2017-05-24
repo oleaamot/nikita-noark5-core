@@ -111,9 +111,9 @@ public class DocumentMediumController {
     @Counted
     @Timed
     @RequestMapping(value = DOCUMENT_MEDIUM + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH, method = RequestMethod.GET)
-    public ResponseEntity<MetadataHateoas> findBySystemId(@PathVariable("systemID") final String systemId,
-                                                          HttpServletRequest request) {
-        DocumentMedium documentMedium = documentMediumService.findBySystemId(systemId);
+    public ResponseEntity<MetadataHateoas> findBySystemIdOrderBySystemId(@PathVariable("systemID") final String systemId,
+                                                                         HttpServletRequest request) {
+        DocumentMedium documentMedium = documentMediumService.findBySystemIdOrderBySystemId(systemId);
         MetadataHateoas metadataHateoas = new MetadataHateoas(documentMedium);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

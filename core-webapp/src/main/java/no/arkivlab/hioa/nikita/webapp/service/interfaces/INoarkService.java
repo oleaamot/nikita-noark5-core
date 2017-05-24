@@ -11,5 +11,6 @@ import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 public interface INoarkService {
     INikitaEntity updateNoarkEntity(String systemId, Long version, INikitaEntity updatedEntity);
     INikitaEntity createNewNoarkEntity(INikitaEntity entity);
-    INikitaEntity findBySystemId(String systemId);
+
+    INikitaEntity findBySystemIdOrderBySystemId(String systemId);
 }

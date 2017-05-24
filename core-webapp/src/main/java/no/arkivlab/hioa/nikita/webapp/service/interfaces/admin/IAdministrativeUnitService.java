@@ -12,7 +12,7 @@ public interface IAdministrativeUnitService {
 
     AdministrativeUnit createNewAdministrativeUnit(AdministrativeUnit entity);
 
-    AdministrativeUnit findBySystemId(String administrativeUnitSystemId);
+    AdministrativeUnit findBySystemIdOrderBySystemId(String administrativeUnitSystemId);
 
     List<AdministrativeUnit> findAll();
 }

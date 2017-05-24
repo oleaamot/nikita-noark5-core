@@ -59,7 +59,7 @@ public class ClassificationSystemService implements IClassificationSystemService
     @Override
     public Class createClassAssociatedWithClassificationSystem(String classificationSystemSystemId, Class klass) {
         Class persistedClass = null;
-        ClassificationSystem classificationSystem = classificationSystemRepository.findBySystemId(classificationSystemSystemId);
+        ClassificationSystem classificationSystem = classificationSystemRepository.findBySystemIdOrderBySystemId(classificationSystemSystemId);
         if (classificationSystem == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " ClassificationSystem, using classificationSystemSystemId " + classificationSystemSystemId;
             logger.info(info) ;
@@ -91,7 +91,7 @@ public class ClassificationSystemService implements IClassificationSystemService
     }
 
     // systemId
-    public ClassificationSystem findBySystemId(String systemId) {
+    public ClassificationSystem findBySystemIdOrderBySystemId(String systemId) {
         return getClassificationSystemOrThrow(systemId);
     }
 
@@ -442,7 +442,7 @@ public class ClassificationSystemService implements IClassificationSystemService
      * @return
      */
     protected ClassificationSystem getClassificationSystemOrThrow(@NotNull String classificationSystemSystemId) {
-        ClassificationSystem classificationSystem = classificationSystemRepository.findBySystemId(classificationSystemSystemId);
+        ClassificationSystem classificationSystem = classificationSystemRepository.findBySystemIdOrderBySystemId(classificationSystemSystemId);
         if (classificationSystem == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " ClassificationSystem, using systemId " + classificationSystemSystemId;
             logger.info(info);

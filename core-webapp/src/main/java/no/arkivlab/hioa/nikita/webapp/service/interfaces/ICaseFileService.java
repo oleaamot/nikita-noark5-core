@@ -17,7 +17,7 @@ public interface ICaseFileService {
 
 	List<CaseFile> findAllCaseFileBySeries(Series series);
 
-	CaseFile findBySystemId(String systemId);
+    CaseFile findBySystemIdOrderBySystemId(String systemId);
 
     List<CaseFile> findCaseFileByOwnerPaginated(Integer top, Integer skip);
     // All UPDATE operations

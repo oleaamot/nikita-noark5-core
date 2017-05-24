@@ -59,8 +59,8 @@ public class SeriesStatusService implements ISeriesStatusService {
      * @return
      */
     @Override
-    public SeriesStatus findBySystemId(String systemId) {
-        return seriesStatusRepository.findBySystemId(systemId);
+    public SeriesStatus findBySystemIdOrderBySystemId(String systemId) {
+        return seriesStatusRepository.findBySystemIdOrderBySystemId(systemId);
     }
 
     /**

@@ -153,7 +153,7 @@ public class FondsCreatorHateoasController extends NoarkController {
                                                                value = "systemId of FondsCreator to retrieve.",
                                                                required = true)
                                                        @PathVariable("systemID") final String fondsCreatorSystemId) {
-        FondsCreator fondsCreator = fondsCreatorService.findBySystemId(fondsCreatorSystemId);
+        FondsCreator fondsCreator = fondsCreatorService.findBySystemIdOrderBySystemId(fondsCreatorSystemId);
         if (fondsCreator == null) {
             throw new NoarkEntityNotFoundException("Could not find FondsCreator object with systemID " +
                     fondsCreatorSystemId);
@@ -280,7 +280,7 @@ public class FondsCreatorHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String seriesSystemId) {
 
-        FondsCreator fondsCreator = fondsCreatorService.findBySystemId(seriesSystemId);
+        FondsCreator fondsCreator = fondsCreatorService.findBySystemIdOrderBySystemId(seriesSystemId);
         fondsCreatorService.deleteEntity(seriesSystemId);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, fondsCreator));
 /*        List<Fonds> fonds = new ArrayList<>();

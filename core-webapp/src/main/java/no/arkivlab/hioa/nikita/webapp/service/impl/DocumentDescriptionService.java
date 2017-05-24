@@ -52,7 +52,7 @@ public class DocumentDescriptionService implements IDocumentDescriptionService {
     @Override
     public DocumentObject createDocumentObjectAssociatedWithDocumentDescription(String documentDescriptionSystemId, DocumentObject documentObject) {
         DocumentObject persistedDocumentObject = null;
-        DocumentDescription documentDescription = documentDescriptionRepository.findBySystemId(documentDescriptionSystemId);
+        DocumentDescription documentDescription = documentDescriptionRepository.findBySystemIdOrderBySystemId(documentDescriptionSystemId);
         if (documentDescription == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " DocumentDescription, using documentDescriptionSystemId " + documentDescriptionSystemId;
             logger.info(info) ;
@@ -96,7 +96,7 @@ public class DocumentDescriptionService implements IDocumentDescriptionService {
     }
 
     // systemId
-    public DocumentDescription findBySystemId(String systemId) {
+    public DocumentDescription findBySystemIdOrderBySystemId(String systemId) {
         return getDocumentDescriptionOrThrow(systemId);
     }
 
@@ -408,7 +408,7 @@ public class DocumentDescriptionService implements IDocumentDescriptionService {
      * @return
      */
     protected DocumentDescription getDocumentDescriptionOrThrow(@NotNull String documentDescriptionSystemId) {
-        DocumentDescription documentDescription = documentDescriptionRepository.findBySystemId(documentDescriptionSystemId);
+        DocumentDescription documentDescription = documentDescriptionRepository.findBySystemIdOrderBySystemId(documentDescriptionSystemId);
         if (documentDescription == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " DocumentDescription, using systemId " + documentDescriptionSystemId;
             logger.info(info);

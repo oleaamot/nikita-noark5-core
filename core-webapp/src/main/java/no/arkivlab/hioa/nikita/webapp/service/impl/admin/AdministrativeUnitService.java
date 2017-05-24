@@ -62,8 +62,8 @@ public class AdministrativeUnitService implements IAdministrativeUnitService {
      * @return
      */
     @Override
-    public AdministrativeUnit findBySystemId(String systemId) {
-        return administrativeUnitRepository.findBySystemId(systemId);
+    public AdministrativeUnit findBySystemIdOrderBySystemId(String systemId) {
+        return administrativeUnitRepository.findBySystemIdOrderBySystemId(systemId);
     }
 
     /**
@@ -99,7 +99,7 @@ public class AdministrativeUnitService implements IAdministrativeUnitService {
      * @return
      */
     protected AdministrativeUnit getAdministrativeUnitOrThrow(@NotNull String administrativeUnitSystemId) {
-        AdministrativeUnit administrativeUnit = administrativeUnitRepository.findBySystemId(administrativeUnitSystemId);
+        AdministrativeUnit administrativeUnit = administrativeUnitRepository.findBySystemIdOrderBySystemId(administrativeUnitSystemId);
         if (administrativeUnit == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " AdministrativeUnit, using systemId " + administrativeUnitSystemId;
             logger.info(info);

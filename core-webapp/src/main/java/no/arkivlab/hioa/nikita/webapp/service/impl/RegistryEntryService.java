@@ -76,7 +76,7 @@ public class RegistryEntryService implements IRegistryEntryService {
         // in the database and make sure the proper CorrespondencePartType is associated with the CorrespondencePart
         if (incomingCorrespondencePartType != null && incomingCorrespondencePartType.getSystemId() != null) {
             CorrespondencePartType actualCorrespondencePartType =
-                    correspondencePartTypeRepository.findBySystemId(incomingCorrespondencePartType.getSystemId());
+                    correspondencePartTypeRepository.findBySystemIdOrderBySystemId(incomingCorrespondencePartType.getSystemId());
             if (actualCorrespondencePartType != null) {
                 correspondencePart.setCorrespondencePartType(actualCorrespondencePartType);
             }
@@ -201,7 +201,7 @@ public class RegistryEntryService implements IRegistryEntryService {
     }
 
     // systemId
-    public RegistryEntry findBySystemId(String systemId) {
+    public RegistryEntry findBySystemIdOrderBySystemId(String systemId) {
         return getRegistryEntryOrThrow(systemId);
     }
 
@@ -270,7 +270,7 @@ public class RegistryEntryService implements IRegistryEntryService {
      * @return
      */
     protected RegistryEntry getRegistryEntryOrThrow(@NotNull String registryEntrySystemId) {
-        RegistryEntry registryEntry = registryEntryRepository.findBySystemId(registryEntrySystemId);
+        RegistryEntry registryEntry = registryEntryRepository.findBySystemIdOrderBySystemId(registryEntrySystemId);
         if (registryEntry == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " RegistryEntry, using systemId " + registryEntrySystemId;
             logger.info(info);

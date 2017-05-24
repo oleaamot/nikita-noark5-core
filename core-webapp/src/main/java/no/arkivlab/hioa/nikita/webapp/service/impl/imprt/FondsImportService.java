@@ -77,7 +77,7 @@ public class FondsImportService implements IFondsImportService {
     @Override
     public Fonds createFondsAssociatedWithFonds(String parentFondsSystemId, Fonds childFonds) {
         Fonds persistedChildFonds = null;
-        Fonds parentFonds = fondsRepository.findBySystemId(parentFondsSystemId);
+        Fonds parentFonds = fondsRepository.findBySystemIdOrderBySystemId(parentFondsSystemId);
 
         if (parentFonds == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Fonds, using fondsSystemId " + parentFondsSystemId + " when " +
@@ -114,7 +114,7 @@ public class FondsImportService implements IFondsImportService {
     @Override
     public Series createSeriesAssociatedWithFonds(String fondsSystemId, Series series) {
         Series persistedSeries = null;
-        Fonds fonds = fondsRepository.findBySystemId(fondsSystemId);
+        Fonds fonds = fondsRepository.findBySystemIdOrderBySystemId(fondsSystemId);
 
         if (fonds == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Fonds, using fondsSystemId " + fondsSystemId;

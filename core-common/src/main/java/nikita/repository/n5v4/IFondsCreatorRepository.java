@@ -23,5 +23,5 @@ public interface IFondsCreatorRepository extends PagingAndSortingRepository<Fond
 
 
     // systemId
-    FondsCreator findBySystemId(String systemId);
+    FondsCreator findBySystemIdOrderBySystemId(String systemId);
 }

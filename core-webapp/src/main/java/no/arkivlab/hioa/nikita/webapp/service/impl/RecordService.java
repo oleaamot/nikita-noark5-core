@@ -62,7 +62,7 @@ public class RecordService implements IRecordService {
     @Override
     public DocumentDescription createDocumentDescriptionAssociatedWithRecord(String systemID, DocumentDescription documentDescription) {
         DocumentDescription persistedDocumentDescription = null;
-        Record record = recordRepository.findBySystemId(systemID);
+        Record record = recordRepository.findBySystemIdOrderBySystemId(systemID);
         if (record == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Record, using systemID " + systemID;
             logger.info(info) ;
@@ -102,7 +102,7 @@ public class RecordService implements IRecordService {
     }
 
     // systemId
-    public Record findBySystemId(String systemId) {
+    public Record findBySystemIdOrderBySystemId(String systemId) {
         return getRecordOrThrow(systemId);
     }
 
@@ -362,7 +362,7 @@ public class RecordService implements IRecordService {
      * @return
      */
     protected Record getRecordOrThrow(@NotNull String systemID) {
-        Record record = recordRepository.findBySystemId(systemID);
+        Record record = recordRepository.findBySystemIdOrderBySystemId(systemID);
         if (record == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Record, using systemId " + systemID;
             logger.info(info);

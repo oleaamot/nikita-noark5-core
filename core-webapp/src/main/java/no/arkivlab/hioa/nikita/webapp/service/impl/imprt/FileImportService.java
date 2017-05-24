@@ -57,7 +57,7 @@ public class FileImportService implements IFileImportService {
     @Override
     public Record createRecordAssociatedWithFile(String fileSystemId, Record record) {
         Record persistedRecord = null;
-        File file = fileRepository.findBySystemId(fileSystemId);
+        File file = fileRepository.findBySystemIdOrderBySystemId(fileSystemId);
         if (file == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " File, using fileSystemId " + fileSystemId;
             logger.info(info) ;
@@ -73,7 +73,7 @@ public class FileImportService implements IFileImportService {
     @Override
     public BasicRecord createBasicRecordAssociatedWithFile(String fileSystemId, BasicRecord basicRecord) {
         BasicRecord persistedBasicRecord = null;
-        File file = fileRepository.findBySystemId(fileSystemId);
+        File file = fileRepository.findBySystemIdOrderBySystemId(fileSystemId);
         if (file == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " File, using fileSystemId " + fileSystemId;
             logger.info(info) ;

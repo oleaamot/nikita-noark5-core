@@ -80,7 +80,7 @@ public class BasicRecordHateoasController extends NoarkController {
                     value = "systemID of the basicRecord to retrieve",
                     required = true)
             @PathVariable("systemID") final String basicRecordSystemId) {
-        BasicRecord createdBasicRecord = basicRecordService.findBySystemId(basicRecordSystemId);
+        BasicRecord createdBasicRecord = basicRecordService.findBySystemIdOrderBySystemId(basicRecordSystemId);
         BasicRecordHateoas basicRecordHateoas = new BasicRecordHateoas(createdBasicRecord);
         basicRecordHateoasHandler.addLinks(basicRecordHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -136,7 +136,7 @@ public class BasicRecordHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        BasicRecord basicRecord = basicRecordService.findBySystemId(systemID);
+        BasicRecord basicRecord = basicRecordService.findBySystemIdOrderBySystemId(systemID);
         NoarkEntity parentEntity = basicRecord.chooseParent();
         HateoasNoarkObject hateoasNoarkObject;
         if (parentEntity instanceof Series) {

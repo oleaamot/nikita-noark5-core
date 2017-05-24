@@ -33,7 +33,7 @@ public interface IClassificationSystemRepository extends PagingAndSortingReposit
 
 
     // systemId
-    ClassificationSystem findBySystemId(String systemId);
+    ClassificationSystem findBySystemIdOrderBySystemId(String systemId);
 
     // title
     List<ClassificationSystem> findByTitleAndOwnedBy(String title, String ownedBy);

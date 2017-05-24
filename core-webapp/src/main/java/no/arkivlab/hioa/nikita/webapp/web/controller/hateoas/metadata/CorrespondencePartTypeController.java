@@ -110,9 +110,9 @@ public class CorrespondencePartTypeController {
     @Timed
     @RequestMapping(value = CORRESPONDENCE_PART_TYPE + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.GET)
-    public ResponseEntity<MetadataHateoas> findBySystemId(@PathVariable("systemID") final String systemId,
-                                                          HttpServletRequest request) {
-        CorrespondencePartType correspondencePartType = correspondencePartTypeService.findBySystemId(systemId);
+    public ResponseEntity<MetadataHateoas> findBySystemIdOrderBySystemId(@PathVariable("systemID") final String systemId,
+                                                                         HttpServletRequest request) {
+        CorrespondencePartType correspondencePartType = correspondencePartTypeService.findBySystemIdOrderBySystemId(systemId);
         MetadataHateoas metadataHateoas = new MetadataHateoas(correspondencePartType);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

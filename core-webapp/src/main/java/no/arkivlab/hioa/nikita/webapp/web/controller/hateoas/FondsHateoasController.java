@@ -265,7 +265,7 @@ public class FondsHateoasController extends NoarkController {
                     value = "systemId of fonds to retrieve.",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        Fonds fonds = fondsService.findBySystemId(systemID);
+        Fonds fonds = fondsService.findBySystemIdOrderBySystemId(systemID);
         if (fonds == null) {
             throw new NoarkEntityNotFoundException("Could not find fonds object with systemID " + systemID);
         }
@@ -353,7 +353,7 @@ public class FondsHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        Fonds fonds = fondsService.findBySystemId(systemID);
+        Fonds fonds = fondsService.findBySystemIdOrderBySystemId(systemID);
         if (fonds == null) {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
@@ -531,7 +531,7 @@ public class FondsHateoasController extends NoarkController {
                     value = "systemID of the series to delete",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        Fonds fonds = fondsService.findBySystemId(systemID);
+        Fonds fonds = fondsService.findBySystemIdOrderBySystemId(systemID);
         //TODO: When dealing with a fonds, if you have a parent fonds, then you must return the parent fonds
         // but if you don't have a parent fonds you must return an applicationdetails. The only way to handle
         // this is a little mesy, but probably just create the JSON manually here and return it as type string

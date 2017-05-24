@@ -18,7 +18,7 @@ public interface MetadataRepository<INikitaEntity, ID extends Serializable> exte
 
     List<INikitaEntity> findAll();
 
-    INikitaEntity findBySystemId(String systemId);
+    INikitaEntity findBySystemIdOrderBySystemId(String systemId);
 
     List<INikitaEntity> findByDescription(String description);
 

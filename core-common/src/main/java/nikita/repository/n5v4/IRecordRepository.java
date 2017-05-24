@@ -33,7 +33,7 @@ public interface IRecordRepository extends PagingAndSortingRepository<Record, Lo
 
 
     // systemId
-    Record findBySystemId(String systemId);
+    Record findBySystemIdOrderBySystemId(String systemId);
 
     // createdDate
     List<Record> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy);

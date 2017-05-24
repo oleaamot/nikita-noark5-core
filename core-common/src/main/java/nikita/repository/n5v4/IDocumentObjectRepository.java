@@ -33,7 +33,7 @@ public interface IDocumentObjectRepository extends PagingAndSortingRepository<Do
 
 
     // systemId
-    DocumentObject findBySystemId(String systemId);
+    DocumentObject findBySystemIdOrderBySystemId(String systemId);
 
     // createdDate
     List<DocumentObject> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy);

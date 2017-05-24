@@ -1,6 +1,5 @@
 package nikita.repository.n5v4;
 
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -19,6 +18,6 @@ public interface NoarkEntityRepository<INikitaEntity, ID extends Serializable> e
 
     List<INikitaEntity> findAll();
 
-    INikitaEntity findBySystemId(String systemId);
+    INikitaEntity findBySystemIdOrderBySystemId(String systemId);
 
 }

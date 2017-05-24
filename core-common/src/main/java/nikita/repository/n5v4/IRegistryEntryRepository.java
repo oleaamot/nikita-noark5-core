@@ -12,6 +12,6 @@ public interface IRegistryEntryRepository extends PagingAndSortingRepository<Reg
     @Override
     RegistryEntry save(RegistryEntry registryEntry);
 
-    RegistryEntry findBySystemId(String systemId);
+    RegistryEntry findBySystemIdOrderBySystemId(String systemId);
 
 }

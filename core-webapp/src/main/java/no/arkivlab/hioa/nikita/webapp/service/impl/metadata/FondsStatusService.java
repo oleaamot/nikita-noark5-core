@@ -59,8 +59,8 @@ public class FondsStatusService implements IFondsStatusService {
      * @return
      */
     @Override
-    public FondsStatus findBySystemId(String systemId) {
-        return fondsStatusRepository.findBySystemId(systemId);
+    public FondsStatus findBySystemIdOrderBySystemId(String systemId) {
+        return fondsStatusRepository.findBySystemIdOrderBySystemId(systemId);
     }
 
     /**

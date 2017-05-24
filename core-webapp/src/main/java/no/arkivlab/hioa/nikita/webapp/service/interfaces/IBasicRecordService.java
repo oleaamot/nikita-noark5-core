@@ -8,7 +8,7 @@ import java.util.List;
 public interface IBasicRecordService {
     List<BasicRecord> findBasicRecordByOwnerPaginated(Integer top, Integer skip);
 
-    BasicRecord findBySystemId(String basicRecordSystemId);
+    BasicRecord findBySystemIdOrderBySystemId(String basicRecordSystemId);
 
     // All UPDATE operations
     BasicRecord handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull BasicRecord incomingBasicRecord);

@@ -29,7 +29,7 @@ public interface IClassService {
 	Class findById(Long id);
 
 	// systemId
-	Class findBySystemId(String systemId);
+    Class findBySystemIdOrderBySystemId(String systemId);
 
 	// title
 	List<Class> findByTitleAndOwnedBy(String title, String ownedBy);

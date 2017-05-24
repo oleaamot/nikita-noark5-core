@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import javax.print.Doc;
 import javax.validation.constraints.NotNull;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -47,7 +46,7 @@ public interface IDocumentObjectService {
 	DocumentObject findById(Long id);
 
 	// systemId
-	DocumentObject findBySystemId(String systemId);
+    DocumentObject findBySystemIdOrderBySystemId(String systemId);
 
 	// createdDate
 	List<DocumentObject> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy);

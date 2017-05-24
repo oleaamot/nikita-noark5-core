@@ -33,7 +33,7 @@ public interface IClassRepository extends PagingAndSortingRepository<Class, Long
 
 
     // systemId
-    Class findBySystemId(String systemId);
+    Class findBySystemIdOrderBySystemId(String systemId);
 
     // title
     List<Class> findByTitleAndOwnedBy(String title, String ownedBy);

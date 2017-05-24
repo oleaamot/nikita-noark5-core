@@ -23,7 +23,7 @@ public interface IFondsCreatorService {
     FondsCreator findById(Long id);
 
     // systemId
-    FondsCreator findBySystemId(String systemId);
+    FondsCreator findBySystemIdOrderBySystemId(String systemId);
 
     // All UPDATE operations
     FondsCreator handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull FondsCreator fondsCreator);

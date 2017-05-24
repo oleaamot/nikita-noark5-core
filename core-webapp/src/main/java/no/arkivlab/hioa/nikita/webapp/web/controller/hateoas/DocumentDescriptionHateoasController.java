@@ -124,7 +124,7 @@ public class DocumentDescriptionHateoasController extends NoarkController {
                     value = "systemID of the documentDescription to retrieve",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        DocumentDescription documentDescription = documentDescriptionService.findBySystemId(systemID);
+        DocumentDescription documentDescription = documentDescriptionService.findBySystemIdOrderBySystemId(systemID);
         if (documentDescription == null) {
             throw new NoarkEntityNotFoundException(systemID);
         }
@@ -215,7 +215,7 @@ public class DocumentDescriptionHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        DocumentDescription documentDescription = documentDescriptionService.findBySystemId(systemID);
+        DocumentDescription documentDescription = documentDescriptionService.findBySystemIdOrderBySystemId(systemID);
         if (documentDescription == null) {
             throw new NoarkEntityNotFoundException("Could not find DocumentDescription object with systemID " +
                     systemID);
@@ -247,7 +247,7 @@ public class DocumentDescriptionHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        DocumentDescription documentDescription = documentDescriptionService.findBySystemId(systemID);
+        DocumentDescription documentDescription = documentDescriptionService.findBySystemIdOrderBySystemId(systemID);
         List<Record> record = new ArrayList<>();
         record.addAll(documentDescription.getReferenceRecord());
         documentDescriptionService.deleteEntity(systemID);

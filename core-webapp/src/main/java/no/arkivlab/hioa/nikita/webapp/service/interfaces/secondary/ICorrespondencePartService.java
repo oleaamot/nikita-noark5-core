@@ -23,5 +23,5 @@ public interface ICorrespondencePartService {
 
     CorrespondencePartPerson createNewCorrespondencePartPerson(CorrespondencePartPerson correspondencePartPerson);
 
-    CorrespondencePart findBySystemId(String correspondencePartSystemId);
+    CorrespondencePart findBySystemIdOrderBySystemId(String correspondencePartSystemId);
 }

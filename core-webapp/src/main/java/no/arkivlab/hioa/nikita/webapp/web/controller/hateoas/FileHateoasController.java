@@ -398,7 +398,7 @@ public class FileHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        File file = fileService.findBySystemId(systemID);
+        File file = fileService.findBySystemIdOrderBySystemId(systemID);
         if (file == null) {
             throw new NoarkEntityNotFoundException("Could not find File object with systemID " + systemID);
         }
@@ -525,7 +525,7 @@ public class FileHateoasController extends NoarkController {
                     value = "systemID of the file to retrieve",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        File file = fileService.findBySystemId(systemID);
+        File file = fileService.findBySystemIdOrderBySystemId(systemID);
         // TODO: If null return not found exception
         FileHateoas fileHateoas = new FileHateoas(file);
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
@@ -884,7 +884,7 @@ public class FileHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        File file = fileService.findBySystemId(systemID);
+        File file = fileService.findBySystemIdOrderBySystemId(systemID);
         NoarkEntity parentEntity = file.chooseParent();
         HateoasNoarkObject hateoasNoarkObject;
         if (parentEntity instanceof Series) {

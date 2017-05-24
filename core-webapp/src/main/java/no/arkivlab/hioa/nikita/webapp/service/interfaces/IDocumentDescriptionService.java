@@ -31,7 +31,7 @@ public interface IDocumentDescriptionService {
 	DocumentDescription findById(Long id);
 
 	// systemId
-	DocumentDescription findBySystemId(String systemId);
+    DocumentDescription findBySystemIdOrderBySystemId(String systemId);
 
 	// title
 	List<DocumentDescription> findByTitleAndOwnedBy(String title, String ownedBy);

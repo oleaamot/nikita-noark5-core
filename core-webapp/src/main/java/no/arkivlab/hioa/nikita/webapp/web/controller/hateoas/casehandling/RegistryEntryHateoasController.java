@@ -359,7 +359,7 @@ public class RegistryEntryHateoasController extends NoarkController {
                     value = "systemID of the file to retrieve associated Record",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        /*  Record record = recordService.findBySystemId(systemID);
+        /*  Record record = recordService.findBySystemIdOrderBySystemId(systemID);
             if (record == null) {
             throw new NoarkEntityNotFoundException("Could not find File object with systemID " + systemID);
         }
@@ -567,7 +567,7 @@ public class RegistryEntryHateoasController extends NoarkController {
                     value = "systemID of the file to retrieve associated Record",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        /*  Record record = recordService.findBySystemId(systemID);
+        /*  Record record = recordService.findBySystemIdOrderBySystemId(systemID);
             if (record == null) {
             throw new NoarkEntityNotFoundException("Could not find File object with systemID " + systemID);
         }
@@ -601,7 +601,7 @@ public class RegistryEntryHateoasController extends NoarkController {
                     value = "systemID of the registryEntry to retrieve associated Precedence",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        /*   Record record = recordService.findBySystemId(systemID);
+        /*   Record record = recordService.findBySystemIdOrderBySystemId(systemID);
         if (record == null) {
             throw new NoarkEntityNotFoundException("Could not find File object with systemID " + systemID);
         }
@@ -635,7 +635,7 @@ public class RegistryEntryHateoasController extends NoarkController {
                     value = "systemID of the file to retrieve associated Record",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        /*  Record record = recordService.findBySystemId(systemID);
+        /*  Record record = recordService.findBySystemIdOrderBySystemId(systemID);
             if (record == null) {
             throw new NoarkEntityNotFoundException("Could not find File object with systemID " + systemID);
         }
@@ -667,7 +667,7 @@ public class RegistryEntryHateoasController extends NoarkController {
                     value = "systemID of the registryEntry to retrieve",
                     required = true)
             @PathVariable("systemID") final String registryEntrySystemId) {
-        RegistryEntry registryEntry = registryEntryService.findBySystemId(registryEntrySystemId);
+        RegistryEntry registryEntry = registryEntryService.findBySystemIdOrderBySystemId(registryEntrySystemId);
 
         RegistryEntryHateoas registryEntryHateoas = new
                 RegistryEntryHateoas(registryEntry);
@@ -726,7 +726,7 @@ public class RegistryEntryHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        RegistryEntry registryEntry = registryEntryService.findBySystemId(systemID);
+        RegistryEntry registryEntry = registryEntryService.findBySystemIdOrderBySystemId(systemID);
         registryEntryService.deleteEntity(systemID);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, registryEntry));
         return ResponseEntity.status(HttpStatus.OK)

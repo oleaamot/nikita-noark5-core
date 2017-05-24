@@ -32,7 +32,7 @@ public interface IFileService {
 	File findById(Long id);
 
 	// systemId
-	File findBySystemId(String systemId);
+    File findBySystemIdOrderBySystemId(String systemId);
 
 	// title
 	List<File> findByTitleAndOwnedBy(String title, String ownedBy);

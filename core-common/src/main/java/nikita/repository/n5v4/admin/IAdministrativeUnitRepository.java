@@ -20,7 +20,7 @@ public interface IAdministrativeUnitRepository extends PagingAndSortingRepositor
     AdministrativeUnit findById(Long id);
 
     // systemId
-    AdministrativeUnit findBySystemId(String systemId);
+    AdministrativeUnit findBySystemIdOrderBySystemId(String systemId);
 
     // administrativeUnitName
     AdministrativeUnit findByAdministrativeUnitName(String administrativeUnitName);

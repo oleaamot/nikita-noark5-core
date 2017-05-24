@@ -44,7 +44,6 @@ import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT;
-import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT_FILE_NAME;
 import static nikita.config.N5ResourceMappings.SYSTEM_ID;
 import static org.springframework.http.HttpHeaders.ETAG;
 
@@ -90,7 +89,7 @@ public class DocumentObjectHateoasController extends NoarkController {
                     value = "systemID of the documentObject to retrieve",
                     required = true)
             @PathVariable("systemID") final String documentObjectSystemId) {
-        DocumentObject createdDocumentObject = documentObjectService.findBySystemId(documentObjectSystemId);
+        DocumentObject createdDocumentObject = documentObjectService.findBySystemIdOrderBySystemId(documentObjectSystemId);
         if (createdDocumentObject == null) {
             throw new NoarkEntityNotFoundException(documentObjectSystemId);
         }
@@ -171,7 +170,7 @@ public class DocumentObjectHateoasController extends NoarkController {
                     value = "systemID of the documentObject that has a file associated with it",
                     required = true)
             @PathVariable("systemID") final String documentObjectSystemId) throws IOException {
-        DocumentObject documentObject = documentObjectService.findBySystemId(documentObjectSystemId);
+        DocumentObject documentObject = documentObjectService.findBySystemIdOrderBySystemId(documentObjectSystemId);
         if (documentObject == null) {
             throw new NoarkEntityNotFoundException(documentObjectSystemId);
         }
@@ -215,7 +214,7 @@ public class DocumentObjectHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String documentObjectSystemId) {
         try {
-            DocumentObject documentObject = documentObjectService.findBySystemId(documentObjectSystemId);
+            DocumentObject documentObject = documentObjectService.findBySystemIdOrderBySystemId(documentObjectSystemId);
             if (documentObject == null) {
                 throw new NoarkEntityNotFoundException(documentObjectSystemId);
             }
@@ -296,7 +295,7 @@ public class DocumentObjectHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        DocumentObject documentObject = documentObjectService.findBySystemId(systemID);
+        DocumentObject documentObject = documentObjectService.findBySystemIdOrderBySystemId(systemID);
         NoarkEntity parentEntity = documentObject.chooseParent();
         documentObjectService.deleteEntity(systemID);
         HateoasNoarkObject hateoasNoarkObject;

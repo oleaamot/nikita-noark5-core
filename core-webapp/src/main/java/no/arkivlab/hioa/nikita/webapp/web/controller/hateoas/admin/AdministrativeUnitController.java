@@ -117,9 +117,9 @@ public class AdministrativeUnitController extends NoarkController {
     @Timed
     @RequestMapping(value = ADMINISTRATIVE_UNIT + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH,
             method = RequestMethod.GET)
-    public ResponseEntity<AdministrativeUnitHateoas> findBySystemId(@PathVariable("systemID") final String systemId,
-                                                                    HttpServletRequest request) {
-        AdministrativeUnit administrativeUnit = administrativeUnitService.findBySystemId(systemId);
+    public ResponseEntity<AdministrativeUnitHateoas> findBySystemIdOrderBySystemId(@PathVariable("systemID") final String systemId,
+                                                                                   HttpServletRequest request) {
+        AdministrativeUnit administrativeUnit = administrativeUnitService.findBySystemIdOrderBySystemId(systemId);
         AdministrativeUnitHateoas adminHateoas = new AdministrativeUnitHateoas(administrativeUnit);
         administrativeUnitHateoasHandler.addLinks(adminHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

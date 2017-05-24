@@ -160,7 +160,7 @@ public class CaseFileHateoasController extends NoarkController {
                     value = "systemID of the caseFile to retrieve",
                     required = true)
             @PathVariable("systemID") final String caseFileSystemId) {
-        CaseFile caseFile = caseFileService.findBySystemId(caseFileSystemId);
+        CaseFile caseFile = caseFileService.findBySystemIdOrderBySystemId(caseFileSystemId);
         if (caseFile == null) {
             throw new NoarkEntityNotFoundException(caseFileSystemId);
         }
@@ -192,7 +192,7 @@ public class CaseFileHateoasController extends NoarkController {
                     value = "systemID of the caseFile to retrieve",
                     required = true)
             @PathVariable("systemID") final String caseFileSystemId) {
-        CaseFile caseFile = caseFileService.findBySystemId(caseFileSystemId);
+        CaseFile caseFile = caseFileService.findBySystemIdOrderBySystemId(caseFileSystemId);
         if (caseFile == null) {
             throw new NoarkEntityNotFoundException(caseFileSystemId);
         }
@@ -252,7 +252,7 @@ public class CaseFileHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        CaseFile caseFile = caseFileService.findBySystemId(systemID);
+        CaseFile caseFile = caseFileService.findBySystemIdOrderBySystemId(systemID);
         NoarkEntity parentEntity = caseFile.chooseParent();
         HateoasNoarkObject hateoasNoarkObject;
         if (parentEntity instanceof Series) {

@@ -34,7 +34,7 @@ public interface IRecordService {
 	Record findById(Long id);
 
 	// systemId
-	Record findBySystemId(String systemId);
+    Record findBySystemIdOrderBySystemId(String systemId);
 
 	// createdDate
 	List<Record> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy);

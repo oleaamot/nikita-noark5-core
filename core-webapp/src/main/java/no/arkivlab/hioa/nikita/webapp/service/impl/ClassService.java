@@ -51,7 +51,7 @@ public class ClassService implements IClassService {
 
     public  Class createClassAssociatedWithClass(String classSystemId, Class klass) {
         Class persistedClass = null;
-        Class parentKlass = classRepository.findBySystemId(classSystemId);
+        Class parentKlass = classRepository.findBySystemIdOrderBySystemId(classSystemId);
         if (parentKlass == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Class, using classSystemId " + classSystemId;
             logger.info(info);
@@ -87,7 +87,7 @@ public class ClassService implements IClassService {
     }
 
     // systemId
-    public Class findBySystemId(String systemId) {
+    public Class findBySystemIdOrderBySystemId(String systemId) {
         return getClassOrThrow(systemId);
     }
 
@@ -435,7 +435,7 @@ public class ClassService implements IClassService {
      * @return
      */
     protected Class getClassOrThrow(@NotNull String classSystemId) {
-        Class klass = classRepository.findBySystemId(classSystemId);
+        Class klass = classRepository.findBySystemIdOrderBySystemId(classSystemId);
         if (null == klass) {
             String info = INFO_CANNOT_FIND_OBJECT + " Class, using systemId " + classSystemId;
             logger.info(info);

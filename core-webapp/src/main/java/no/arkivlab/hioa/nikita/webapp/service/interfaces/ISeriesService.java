@@ -35,7 +35,7 @@ public interface ISeriesService  {
 	Series findById(Long id);
 
 	// systemId
-	Series findBySystemId(String systemId);
+    Series findBySystemIdOrderBySystemId(String systemId);
 
 	// title
 	List<Series> findByTitleAndOwnedBy(String title, String ownedBy);

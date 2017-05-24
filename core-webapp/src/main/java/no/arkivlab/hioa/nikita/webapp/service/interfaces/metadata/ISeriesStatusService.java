@@ -13,7 +13,7 @@ public interface ISeriesStatusService {
 
     Iterable<SeriesStatus> findAll();
 
-    SeriesStatus findBySystemId(String systemId);
+    SeriesStatus findBySystemIdOrderBySystemId(String systemId);
 
     SeriesStatus update(SeriesStatus seriesStatus);
 

@@ -60,7 +60,7 @@ public class FileService implements IFileService {
     @Override
     public Record createRecordAssociatedWithFile(String fileSystemId, Record record) {
         Record persistedRecord = null;
-        File file = fileRepository.findBySystemId(fileSystemId);
+        File file = fileRepository.findBySystemIdOrderBySystemId(fileSystemId);
         if (file == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " File, using fileSystemId " + fileSystemId;
             logger.info(info) ;
@@ -76,7 +76,7 @@ public class FileService implements IFileService {
     @Override
     public BasicRecord createBasicRecordAssociatedWithFile(String fileSystemId, BasicRecord basicRecord) {
         BasicRecord persistedBasicRecord = null;
-        File file = fileRepository.findBySystemId(fileSystemId);
+        File file = fileRepository.findBySystemIdOrderBySystemId(fileSystemId);
         if (file == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " File, using fileSystemId " + fileSystemId;
             logger.info(info) ;
@@ -108,7 +108,7 @@ public class FileService implements IFileService {
     }
 
     // systemId
-    public File findBySystemId(String systemId) {
+    public File findBySystemIdOrderBySystemId(String systemId) {
         return getFileOrThrow(systemId);
     }
 
@@ -479,7 +479,7 @@ public class FileService implements IFileService {
      * @return
      */
     protected File getFileOrThrow(@NotNull String fileSystemId) {
-        File file = fileRepository.findBySystemId(fileSystemId);
+        File file = fileRepository.findBySystemIdOrderBySystemId(fileSystemId);
         if (file == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " File, using systemId " + fileSystemId;
             logger.info(info);

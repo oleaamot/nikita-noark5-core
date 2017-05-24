@@ -53,7 +53,7 @@ public class CaseFileImportService extends FileImportService implements ICaseFil
     @Override
     public RegistryEntry createRegistryEntryAssociatedWithCaseFile(String fileSystemId, RegistryEntry registryEntry) {
         RegistryEntry persistedRecord = null;
-        CaseFile file = caseFileRepository.findBySystemId(fileSystemId);
+        CaseFile file = caseFileRepository.findBySystemIdOrderBySystemId(fileSystemId);
         if (file == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " CaseFile, using fileSystemId " + fileSystemId;
             logger.info(info) ;

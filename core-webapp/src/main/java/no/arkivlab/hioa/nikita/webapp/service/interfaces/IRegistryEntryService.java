@@ -30,7 +30,7 @@ public interface IRegistryEntryService {
     Precedence createPrecedenceAssociatedWithRecord(String registryEntrysystemID, Precedence precedence);
 
     // All find methods
-    RegistryEntry findBySystemId(String systemId);
+    RegistryEntry findBySystemIdOrderBySystemId(String systemId);
     List<RegistryEntry> findRegistryEntryByOwnerPaginated(Integer top, Integer skip);
 
     // All UPDATE operations
