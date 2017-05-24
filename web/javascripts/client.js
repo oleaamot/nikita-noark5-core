@@ -114,7 +114,9 @@ let login = app.controller('LoginController', ['$scope', '$http', function($scop
 }]);
 
 let postliste = app.controller('PostlisteController', ['$scope', '$http', function ($scope, $http) {
-    // FIXME find link dynamically
+    // FIXME find href for rel
+    // 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkiv/'
+    // dynamically
     url = base_url + "/hateoas-api/arkivstruktur/arkiv";
     token = GetUserToken();
     $http({
@@ -159,8 +161,7 @@ let postliste = app.controller('PostlisteController', ['$scope', '$http', functi
 	for (rel in series._links) {
 	    href = series._links[rel].href;
 	    relation = series._links[rel].rel;
-	    // FIXME use http://rel.kxml.no/noark5/v4/api/sakarkiv/saksmappe/ when it work
-	    if (relation == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/mappe/'){
+	    if (relation == 'http://rel.kxml.no/noark5/v4/api/sakarkiv/saksmappe/'){
 		console.log("fetching " + href);
 		$http({
 		    method: 'GET',
@@ -182,8 +183,7 @@ let postliste = app.controller('PostlisteController', ['$scope', '$http', functi
 	}
 	for (rel in file._links) {
 	    relation = file._links[rel].rel;
-	    // FIXME use http://rel.kxml.no/noark5/v4/api/sakarkiv/journalpost/ when it work
-	    if (relation == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/registrering/'){
+	    if (relation == 'http://rel.kxml.no/noark5/v4/api/sakarkiv/journalpost/'){
 		href = file._links[rel].href;
 		console.log("fetching " + href);
 		$http({
