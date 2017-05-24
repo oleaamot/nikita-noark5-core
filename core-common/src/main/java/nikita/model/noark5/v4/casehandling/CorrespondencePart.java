@@ -73,7 +73,7 @@ public class CorrespondencePart extends NoarkEntity implements ICorrespondencePa
      * M087 - korrespondanseparttype (xs:string)
      */
     // Link to precursor CorrespondencePartType
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "correspondence_part_correspondence_part_type_id",
             referencedColumnName = "pk_correspondence_part_type_id")
     private CorrespondencePartType referenceCorrespondencePartType;

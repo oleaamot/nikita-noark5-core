@@ -1,6 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.service.interfaces;
 
 
+import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.casehandling.CaseFile;
 import nikita.model.noark5.v4.casehandling.RegistryEntry;
 
@@ -14,7 +15,9 @@ public interface ICaseFileService {
 
 	RegistryEntry createRegistryEntryAssociatedWithCaseFile(String fileSystemId, RegistryEntry registryEntry);
 
-    CaseFile findBySystemId(String systemId);
+	List<CaseFile> findAllCaseFileBySeries(Series series);
+
+	CaseFile findBySystemId(String systemId);
 
     List<CaseFile> findCaseFileByOwnerPaginated(Integer top, Integer skip);
     // All UPDATE operations

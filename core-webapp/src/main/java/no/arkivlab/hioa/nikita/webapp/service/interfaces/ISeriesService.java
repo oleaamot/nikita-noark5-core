@@ -25,8 +25,11 @@ public interface ISeriesService  {
 	// -- All READ operations
     List<Series> findAll();
 
+    List<CaseFile> findAllCaseFileBySeries(String systemId);
+
     List<Series> findAll(Sort sort);
-	Page<Series> findAll(Pageable pageable);
+
+    Page<Series> findAll(Pageable pageable);
 
 	// id
 	Series findById(Long id);

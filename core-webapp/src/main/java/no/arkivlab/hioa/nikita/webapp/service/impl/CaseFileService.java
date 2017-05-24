@@ -1,5 +1,6 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl;
 
+import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.casehandling.CaseFile;
 import nikita.model.noark5.v4.casehandling.RegistryEntry;
 import nikita.repository.n5v4.ICaseFileRepository;
@@ -85,6 +86,10 @@ public class CaseFileService implements ICaseFileService {
         return typedQuery.getResultList();
     }
 
+    @Override
+    public List<CaseFile> findAllCaseFileBySeries(Series series) {
+        return caseFileRepository.findByReferenceSeries(series);
+    }
     // All UPDATE operations
     @Override
     public CaseFile handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull CaseFile incomingCaseFile) {
