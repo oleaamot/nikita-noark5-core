@@ -10,6 +10,7 @@ import nikita.config.Constants;
 import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.hateoas.*;
+import nikita.model.noark5.v4.hateoas.casehandling.CaseFileHateoas;
 import nikita.model.noark5.v4.interfaces.entities.ICrossReferenceEntity;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.model.noark5.v4.secondary.Comment;

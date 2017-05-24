@@ -1,6 +1,6 @@
 package no.arkivlab.hioa.nikita.webapp.web.controller.gui.user;
 
-import no.arkivlab.hioa.nikita.webapp.model.security.User;
+import nikita.model.noark5.v4.admin.User;
 import no.arkivlab.hioa.nikita.webapp.service.IUserService;
 import no.arkivlab.hioa.nikita.webapp.util.exceptions.UsernameExistsException;
 import org.springframework.beans.factory.annotation.Autowired;

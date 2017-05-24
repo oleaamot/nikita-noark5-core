@@ -46,10 +46,6 @@ public class StorageLocation extends NoarkEntity {
     @JsonIgnore
     private Set<BasicRecord> referenceBasicRecord = new TreeSet<>();
 
-    @ManyToMany(mappedBy = "referenceStorageLocation")
-    @JsonIgnore
-
-    private Set<DocumentDescription> referenceDocumentDescription = new TreeSet<>();
 
     public String getStorageLocation() {
         return storageLocation;
@@ -94,14 +90,6 @@ public class StorageLocation extends NoarkEntity {
 
     public void setReferenceBasicRecord(Set<BasicRecord> referenceBasicRecord) {
         this.referenceBasicRecord = referenceBasicRecord;
-    }
-
-    public Set<DocumentDescription> getReferenceDocumentDescription() {
-        return referenceDocumentDescription;
-    }
-
-    public void setReferenceDocumentDescription(Set<DocumentDescription> referenceDocumentDescription) {
-        this.referenceDocumentDescription = referenceDocumentDescription;
     }
 
     @Override

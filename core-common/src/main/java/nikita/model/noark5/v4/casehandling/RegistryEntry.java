@@ -2,10 +2,11 @@ package nikita.model.noark5.v4.casehandling;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.BasicRecord;
+import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePart;
 import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.secondary.ElectronicSignature;
 import nikita.model.noark5.v4.secondary.SignOff;
-import nikita.util.deserialisers.RegistryEntryDeserializer;
+import nikita.util.deserialisers.casehandling.RegistryEntryDeserializer;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 

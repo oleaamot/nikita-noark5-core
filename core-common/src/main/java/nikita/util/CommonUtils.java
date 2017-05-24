@@ -3,15 +3,21 @@ package nikita.util;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import nikita.config.N5ResourceMappings;
 import nikita.model.noark5.v4.FondsCreator;
 import nikita.model.noark5.v4.Series;
+import nikita.model.noark5.v4.admin.AdministrativeUnit;
+import nikita.model.noark5.v4.admin.User;
 import nikita.model.noark5.v4.casehandling.CaseParty;
-import nikita.model.noark5.v4.casehandling.CorrespondencePart;
 import nikita.model.noark5.v4.casehandling.DocumentFlow;
 import nikita.model.noark5.v4.casehandling.Precedence;
+import nikita.model.noark5.v4.casehandling.secondary.*;
 import nikita.model.noark5.v4.hateoas.Link;
 import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.interfaces.entities.*;
+import nikita.model.noark5.v4.interfaces.entities.admin.IAdministrativeUnitEntity;
+import nikita.model.noark5.v4.interfaces.entities.admin.IUserEntity;
+import nikita.model.noark5.v4.interfaces.entities.casehandling.*;
 import nikita.model.noark5.v4.metadata.CorrespondencePartType;
 import nikita.model.noark5.v4.secondary.*;
 import nikita.util.exceptions.NikitaException;
@@ -37,9 +43,6 @@ public final class CommonUtils {
      * Holds a list of serlvetPaths and their HTTP methods
      */
     private static Map<String, Set<HttpMethod>> requestMethodMap = new HashMap<>();
-
-    private final static String[] documentMedium = {DOCUMENT_MEDIUM_ELECTRONIC, DOCUMENT_MEDIUM_PHYSICAL,
-            DOCUMENT_MEDIUM_MIXED};
 
     // You shall not instantiate me!
     private CommonUtils() {
@@ -202,7 +205,7 @@ public final class CommonUtils {
                 }
                 currentNode = objectNode.get(DESCRIPTION);
                 if (null != currentNode) {
-                    metadataEntity.setDescription(currentNode.textValue());
+                    metadataEntity.setCode(currentNode.textValue());
                     objectNode.remove(DESCRIPTION);
                 }
             }
@@ -227,12 +230,19 @@ public final class CommonUtils {
                 }
             }
 
-            public static void deserialiseCorrespondencePartType(ICorrespondencePartEntity correspondencePart,
-                                                                 ObjectNode objectNode) {
-
+            private static void deserialiseCorrespondencePartType(ICorrespondencePartEntity correspondencePart,
+                                                                  ObjectNode objectNode) {
                 CorrespondencePartType correspondencePartType = new CorrespondencePartType();
+                JsonNode currentNode = objectNode.get(CORRESPONDENCE_PART_TYPE);
+                if (null != currentNode) {
+                    ObjectNode correspondencePartTypeObjectNode = currentNode.deepCopy();
+                    deserialiseNoarkMetadataEntity(correspondencePartType, correspondencePartTypeObjectNode);
+                    objectNode.remove(CORRESPONDENCE_PART_TYPE);
+                } else {
+                    throw new NikitaMalformedInputDataException("The CorrespondencePartType object you tried to " +
+                            "create is missing  " + CORRESPONDENCE_PART_TYPE);
+                }
                 correspondencePart.setCorrespondencePartType(correspondencePartType);
-                deserialiseNoarkMetadataEntity(correspondencePartType, objectNode);
             }
 
             public static void deserialiseAuthor(IAuthor authorEntity,
@@ -615,46 +625,46 @@ public final class CommonUtils {
                     objectNode.remove(CASE_PARTY_ROLE);
                 }
                 // Deserialize postalAddress
-                currentNode = objectNode.get(CASE_PARTY_POSTAL_ADDRESS);
+                currentNode = objectNode.get(N5ResourceMappings.POSTAL_ADDRESS);
                 if (null != currentNode) {
                     casePartyEntity.setPostalAddress(currentNode.textValue());
-                    objectNode.remove(CASE_PARTY_POSTAL_ADDRESS);
+                    objectNode.remove(N5ResourceMappings.POSTAL_ADDRESS);
                 }
                 // Deserialize postCode
-                currentNode = objectNode.get(CASE_PARTY_POST_CODE);
+                currentNode = objectNode.get(N5ResourceMappings.POSTAL_NUMBER);
                 if (null != currentNode) {
                     casePartyEntity.setPostCode(currentNode.textValue());
-                    objectNode.remove(CASE_PARTY_POST_CODE);
+                    objectNode.remove(N5ResourceMappings.POSTAL_NUMBER);
                 }
                 // Deserialize postalTown
-                currentNode = objectNode.get(CASE_PARTY_POSTAL_TOWN);
+                currentNode = objectNode.get(POSTAL_TOWN);
                 if (null != currentNode) {
                     casePartyEntity.setPostalTown(currentNode.textValue());
-                    objectNode.remove(CASE_PARTY_POSTAL_TOWN);
+                    objectNode.remove(POSTAL_TOWN);
                 }
                 // Deserialize foreignAddress
-                currentNode = objectNode.get(CASE_PARTY_FOREIGN_ADDRESS);
+                currentNode = objectNode.get(FOREIGN_ADDRESS);
                 if (null != currentNode) {
                     casePartyEntity.setForeignAddress(currentNode.textValue());
-                    objectNode.remove(CASE_PARTY_FOREIGN_ADDRESS);
+                    objectNode.remove(FOREIGN_ADDRESS);
                 }
                 // Deserialize emailAddress
-                currentNode = objectNode.get(CASE_PARTY_EMAIL_ADDRESS);
+                currentNode = objectNode.get(N5ResourceMappings.EMAIL_ADDRESS);
                 if (null != currentNode) {
                     casePartyEntity.setEmailAddress(currentNode.textValue());
-                    objectNode.remove(CASE_PARTY_EMAIL_ADDRESS);
+                    objectNode.remove(N5ResourceMappings.EMAIL_ADDRESS);
                 }
                 // Deserialize telephoneNumber
-                currentNode = objectNode.get(CASE_PARTY_TELEPHONE_NUMBER);
+                currentNode = objectNode.get(N5ResourceMappings.TELEPHONE_NUMBER);
                 if (null != currentNode) {
                     casePartyEntity.setTelephoneNumber(currentNode.textValue());
-                    objectNode.remove(CASE_PARTY_TELEPHONE_NUMBER);
+                    objectNode.remove(N5ResourceMappings.TELEPHONE_NUMBER);
                 }
                 // Deserialize contactPerson
-                currentNode = objectNode.get(CASE_PARTY_CONTACT_PERSON);
+                currentNode = objectNode.get(CONTACT_PERSON);
                 if (null != currentNode) {
                     casePartyEntity.setContactPerson(currentNode.textValue());
-                    objectNode.remove(CASE_PARTY_CONTACT_PERSON);
+                    objectNode.remove(CONTACT_PERSON);
                 }
             }
 
@@ -735,118 +745,274 @@ public final class CommonUtils {
                 return caseParties;
             }
 
-            public static Set<CorrespondencePart> deserialiseCorrespondencePart(ObjectNode objectNode) {
-                // TODO: I seem tobe missing my body of code ...
+            public static void deserialiseAdministrativeUnitEntity(IAdministrativeUnitEntity administrativeUnit,
+                                                                   ObjectNode objectNode) {
+                if (null != administrativeUnit) {
 
-                /*TreeSet<CorrespondencePart> correspondenceParts = new TreeSet<> ();
+                    deserialiseNoarkSystemIdEntity(administrativeUnit, objectNode);
+                    deserialiseNoarkCreateEntity(administrativeUnit, objectNode);
+                    deserialiseNoarkFinaliseEntity(administrativeUnit, objectNode);
 
-                JsonNode jsonCorrespondenceParts = objectNode.get(CORRESPONDENCE_PART);
-                for ( : jsonCorrespondenceParts) {
+                    // Deserialize kortnavn
+                    JsonNode currentNode = objectNode.get(SHORT_NAME);
+                    if (null != currentNode) {
+                        administrativeUnit.setShortName(currentNode.textValue());
+                        objectNode.remove(SHORT_NAME);
+                    }
 
+                    // Deserialize administrativEnhetNavn
+                    currentNode = objectNode.get(ADMINISTRATIVE_UNIT_NAME);
+                    if (null != currentNode) {
+                        administrativeUnit.setAdministrativeUnitName(currentNode.textValue());
+                        objectNode.remove(ADMINISTRATIVE_UNIT_NAME);
+                    }
+
+                    // It is unclear if status values are to be set by special endpoint calls
+                    // e.g. adminunit->avsluttAdministrativeEnhet
+                    // Deserialize administrativEnhetsstatus
+                    currentNode = objectNode.get(ADMINISTRATIVE_UNIT_STATUS);
+                    if (null != currentNode) {
+                        administrativeUnit.setAdministrativeUnitStatus(currentNode.textValue());
+                        objectNode.remove(ADMINISTRATIVE_UNIT_STATUS);
+                    }
+
+                    // Deserialize referanseOverordnetEnhet
+                    currentNode = objectNode.get(ADMINISTRATIVE_UNIT_PARENT_REFERENCE);
+                    if (null != currentNode) {
+                        AdministrativeUnit parent = new AdministrativeUnit();
+                        parent.setSystemId(currentNode.textValue());
+                        parent.getReferenceChildAdministrativeUnit().add((AdministrativeUnit) administrativeUnit);
+                        administrativeUnit.setParentAdministrativeUnit(parent);
+                        objectNode.remove(ADMINISTRATIVE_UNIT_PARENT_REFERENCE);
+                    }
                 }
-                return correspondenceParts;
-                */
-                return null;
             }
 
-            public static void deserialiseCorrespondencePartEntity(ICorrespondencePartEntity correspondencePartEntity,
-                                                                   ObjectNode objectNode) {
+            public static void deserialiseUserEntity(IUserEntity user, ObjectNode objectNode) {
 
-                // Deserialize correspondencePartName
-                JsonNode currentNode = objectNode.get(CORRESPONDENCE_PART_NAME);
+            }
+
+            public static void deserialiseContactInformationEntity(IContactInformationEntity contactInformation,
+                                                                   ObjectNode objectNode) {
+                if (contactInformation != null) {
+                    // Deserialize telefonnummer
+                    JsonNode currentNode = objectNode.get(TELEPHONE_NUMBER);
+                    if (null != currentNode) {
+                        contactInformation.setTelephoneNumber(currentNode.textValue());
+                        objectNode.remove(TELEPHONE_NUMBER);
+                    }
+                    // Deserialize epostadresse
+                    currentNode = objectNode.get(EMAIL_ADDRESS);
+                    if (null != currentNode) {
+                        contactInformation.setEmailAddress(currentNode.textValue());
+                        objectNode.remove(EMAIL_ADDRESS);
+                    }
+                    // Deserialize mobiltelefon
+                    currentNode = objectNode.get(MOBILE_TELEPHONE_NUMBER);
+                    if (null != currentNode) {
+                        contactInformation.setMobileTelephoneNumber(currentNode.textValue());
+                        objectNode.remove(MOBILE_TELEPHONE_NUMBER);
+                    }
+                }
+            }
+
+            public static void deserialiseSimpleAddressEntity(ISimpleAddressEntity simpleAddress, ObjectNode objectNode) {
+                if (simpleAddress != null) {
+                    // Deserialize adresselinje1
+                    JsonNode currentNode = objectNode.get(ADDRESS_LINE_1);
+                    if (null != currentNode) {
+                        simpleAddress.setAddressLine1(currentNode.textValue());
+                        objectNode.remove(ADDRESS_LINE_1);
+                    }
+                    // Deserialize adresselinje2
+                    currentNode = objectNode.get(ADDRESS_LINE_2);
+                    if (null != currentNode) {
+                        simpleAddress.setAddressLine2(currentNode.textValue());
+                        objectNode.remove(ADDRESS_LINE_2);
+                    }
+                    // Deserialize adresselinje3
+                    currentNode = objectNode.get(ADDRESS_LINE_3);
+                    if (null != currentNode) {
+                        simpleAddress.setAddressLine3(currentNode.textValue());
+                        objectNode.remove(ADDRESS_LINE_3);
+                    }
+                    // Deserialize postnummer
+                    currentNode = objectNode.get(POSTAL_NUMBER);
+                    if (null != currentNode) {
+                        simpleAddress.setPostalNumber(new PostalNumber(currentNode.textValue()));
+                        objectNode.remove(POSTAL_NUMBER);
+                    }
+                    // Deserialize poststed
+                    currentNode = objectNode.get(POSTAL_TOWN);
+                    if (null != currentNode) {
+                        simpleAddress.setPostalTown(currentNode.textValue());
+                        objectNode.remove(POSTAL_TOWN);
+                    }
+                    // Deserialize landkode
+                    currentNode = objectNode.get(COUNTRY_CODE);
+                    if (null != currentNode) {
+                        simpleAddress.setCountryCode(currentNode.textValue());
+                        objectNode.remove(COUNTRY_CODE);
+                    }
+                }
+            }
+
+            public static void deserialiseCorrespondencePartPersonEntity(ICorrespondencePartPersonEntity
+                                                                                 correspondencePartPersonEntity,
+                                                                         ObjectNode objectNode) {
+
+                deserialiseCorrespondencePartType(correspondencePartPersonEntity, objectNode);
+
+                // Deserialize foedselsnummer
+                JsonNode currentNode = objectNode.get(SOCIAL_SECURITY_NUMBER);
                 if (null != currentNode) {
-                    correspondencePartEntity.setCorrespondencePartName(currentNode.textValue());
-                    objectNode.remove(CORRESPONDENCE_PART_NAME);
+                    correspondencePartPersonEntity.setSocialSecurityNumber(currentNode.textValue());
+                    objectNode.remove(SOCIAL_SECURITY_NUMBER);
                 }
 
-                // Deserialize correspondencePartType
-                currentNode = objectNode.get(CORRESPONDENCE_PART_TYPE);
+                // Deserialize dnummer
+                currentNode = objectNode.get(D_NUMBER);
                 if (null != currentNode) {
-                    CorrespondencePartType correspondencePartType = new CorrespondencePartType();
-                    correspondencePartEntity.setCorrespondencePartType(correspondencePartType);
+                    correspondencePartPersonEntity.setdNumber(currentNode.textValue());
+                    objectNode.remove(D_NUMBER);
+                }
 
-                    JsonNode currentNode2 = currentNode.findValue(SYSTEM_ID);
-                    if (null != currentNode2) {
-                        correspondencePartType.setSystemId(currentNode2.textValue());
-                        //objectNode.remove(CODE);
-                    }
-                    currentNode2 = currentNode.findValue(CODE);
-                    if (null != currentNode2) {
-                        correspondencePartType.setCode(currentNode2.textValue());
-                        //objectNode.remove(CODE);
-                    }
-                    currentNode2 = currentNode.findValue(DESCRIPTION);
-                    if (null != currentNode2) {
-                        correspondencePartType.setDescription(currentNode2.textValue());
-                        //objectNode.remove(DESCRIPTION);
-                    }
-
-                    //deserialiseNoarkMetadataEntity(correspondencePartType, objectNode);
-//                    deserialiseCorrespondencePartType(correspondencePartEntity, objectNode);
-                    objectNode.remove(CORRESPONDENCE_PART_TYPE);
+                // Deserialize navn
+                currentNode = objectNode.get(NAME);
+                if (null != currentNode) {
+                    correspondencePartPersonEntity.setName(currentNode.textValue());
+                    objectNode.remove(NAME);
                 }
 
                 // Deserialize postalAddress
-                // postalAddress
-                currentNode = objectNode.get(CORRESPONDENCE_PART_POSTAL_ADDRESS);
+                currentNode = objectNode.get(N5ResourceMappings.POSTAL_ADDRESS);
                 if (null != currentNode) {
-                    if (currentNode.isArray()) {
-                        currentNode.iterator();
-                        for (JsonNode node : currentNode) {
-                            correspondencePartEntity.addPostalAddress(node.textValue());
-                        }
-                    }
-                    objectNode.remove(CORRESPONDENCE_PART_POSTAL_ADDRESS);
+                    PostalAddress postalAddressEntity = new PostalAddress();
+                    postalAddressEntity.setAddressType(POSTAL_ADDRESS);
+                    deserialiseSimpleAddressEntity(postalAddressEntity, currentNode.deepCopy());
+                    correspondencePartPersonEntity.setPostalAddress(postalAddressEntity);
+                    objectNode.remove(N5ResourceMappings.POSTAL_ADDRESS);
                 }
 
-                // Deserialize postCode
-                currentNode = objectNode.get(CORRESPONDENCE_PART_POST_CODE);
+                // Deserialize residingAddress
+                currentNode = objectNode.get(RESIDING_ADDRESS);
                 if (null != currentNode) {
-                    correspondencePartEntity.setPostCode(currentNode.textValue());
-                    objectNode.remove(CORRESPONDENCE_PART_POST_CODE);
+                    ResidingAddress residingAddressEntity = new ResidingAddress();
+                    residingAddressEntity.setAddressType(RESIDING_ADDRESS);
+                    deserialiseSimpleAddressEntity(residingAddressEntity, currentNode.deepCopy());
+                    correspondencePartPersonEntity.setResidingAddress(residingAddressEntity);
+                    objectNode.remove(RESIDING_ADDRESS);
                 }
-                // Deserialize postalTown
-                currentNode = objectNode.get(CORRESPONDENCE_PART_POSTAL_TOWN);
+
+                // Deserialize kontaktinformasjon
+                currentNode = objectNode.get(CONTACT_INFORMATION);
                 if (null != currentNode) {
-                    correspondencePartEntity.setPostalTown(currentNode.textValue());
-                    objectNode.remove(CORRESPONDENCE_PART_POSTAL_TOWN);
+                    ContactInformation contactInformation = new ContactInformation();
+                    deserialiseContactInformationEntity(contactInformation, currentNode.deepCopy());
+                    correspondencePartPersonEntity.setContactInformation(contactInformation);
+                    objectNode.remove(CONTACT_INFORMATION);
                 }
-                // Deserialize country
-                currentNode = objectNode.get(CORRESPONDENCE_PART_COUNTRY);
+            }
+
+            public static void deserialiseCorrespondencePartInternalEntity(ICorrespondencePartInternalEntity
+                                                                                   correspondencePartInternal,
+                                                                           ObjectNode objectNode) {
+                deserialiseCorrespondencePartType(correspondencePartInternal, objectNode);
+
+                // Deserialize administrativEnhet
+                JsonNode currentNode = objectNode.get(ADMINISTRATIVE_UNIT);
                 if (null != currentNode) {
-                    correspondencePartEntity.setCountry(currentNode.textValue());
-                    objectNode.remove(CORRESPONDENCE_PART_COUNTRY);
+                    correspondencePartInternal.setAdministrativeUnit(currentNode.textValue());
+                    objectNode.remove(ADMINISTRATIVE_UNIT);
                 }
-                // Deserialize emailAddress
-                currentNode = objectNode.get(CORRESPONDENCE_PART_EMAIL_ADDRESS);
+                // Deserialize saksbehandler
+                currentNode = objectNode.get(CASE_HANDLER);
                 if (null != currentNode) {
-                    correspondencePartEntity.setEmailAddress(currentNode.textValue());
-                    objectNode.remove(CORRESPONDENCE_PART_EMAIL_ADDRESS);
+                    correspondencePartInternal.setCaseHandler(currentNode.textValue());
+                    objectNode.remove(CASE_HANDLER);
                 }
-                // Deserialize telephoneNumber
-                currentNode = objectNode.get(CORRESPONDENCE_PART_TELEPHONE_NUMBER);
+
+                // Deserialize referanseAdministratitivEnhet
+                currentNode = objectNode.get(REFERENCE_ADMINISTRATIVE_UNIT);
                 if (null != currentNode) {
-                    correspondencePartEntity.setTelephoneNumber(currentNode.textValue());
-                    objectNode.remove(CORRESPONDENCE_PART_TELEPHONE_NUMBER);
+                    AdministrativeUnit administrativeUnit = new AdministrativeUnit();
+                    deserialiseAdministrativeUnitEntity(administrativeUnit, currentNode.deepCopy());
+                    correspondencePartInternal.setReferenceAdministrativeUnit(administrativeUnit);
+                    objectNode.remove(REFERENCE_ADMINISTRATIVE_UNIT);
                 }
-                // Deserialize contactPerson
-                currentNode = objectNode.get(CORRESPONDENCE_PART_CONTACT_PERSON);
+
+                // Deserialize referanseSaksbehandler
+                currentNode = objectNode.get(REFERENCE_CASE_HANDLER);
                 if (null != currentNode) {
-                    correspondencePartEntity.setContactPerson(currentNode.textValue());
-                    objectNode.remove(CORRESPONDENCE_PART_CONTACT_PERSON);
+                    User user = new User();
+                    deserialiseUserEntity(user, currentNode.deepCopy());
+                    correspondencePartInternal.setReferenceCaseHandler(user);
+                    objectNode.remove(REFERENCE_CASE_HANDLER);
                 }
-                // Deserialize administrativeUnit
-                currentNode = objectNode.get(CORRESPONDENCE_PART_ADMINISTRATIVE_UNIT);
+            }
+
+            public static void deserialiseCorrespondencePartUnitEntity(ICorrespondencePartUnitEntity
+                                                                               correspondencePartUnit,
+                                                                       ObjectNode objectNode) {
+                deserialiseCorrespondencePartType(correspondencePartUnit, objectNode);
+
+                // Deserialize kontaktperson
+                JsonNode currentNode = objectNode.get(CONTACT_PERSON);
                 if (null != currentNode) {
-                    correspondencePartEntity.setAdministrativeUnit(currentNode.textValue());
-                    objectNode.remove(CORRESPONDENCE_PART_ADMINISTRATIVE_UNIT);
+                    correspondencePartUnit.setContactPerson(currentNode.textValue());
+                    objectNode.remove(CONTACT_PERSON);
                 }
-                // Deserialize caseHandler
-                currentNode = objectNode.get(CORRESPONDENCE_PART_CASE_HANDLER);
+
+                // Deserialize navn
+                currentNode = objectNode.get(NAME);
                 if (null != currentNode) {
-                    correspondencePartEntity.setCaseHandler(currentNode.textValue());
-                    objectNode.remove(CORRESPONDENCE_PART_CASE_HANDLER);
+                    correspondencePartUnit.setName(currentNode.textValue());
+                    objectNode.remove(NAME);
                 }
+
+                // Deserialize organisasjonsnummer
+                currentNode = objectNode.get(ORGANISATION_NUMBER);
+                if (null != currentNode) {
+                    correspondencePartUnit.setOrganisationNumber(currentNode.textValue());
+                    objectNode.remove(ORGANISATION_NUMBER);
+                }
+
+                // Deserialize kontaktperson
+                currentNode = objectNode.get(CONTACT_PERSON);
+                if (null != currentNode) {
+                    correspondencePartUnit.setContactPerson(currentNode.textValue());
+                    objectNode.remove(CONTACT_PERSON);
+                }
+
+                // Deserialize postadresse
+                currentNode = objectNode.get(N5ResourceMappings.POSTAL_ADDRESS);
+                if (null != currentNode) {
+                    PostalAddress postalAddressEntity = new PostalAddress();
+                    postalAddressEntity.setAddressType(POSTAL_ADDRESS);
+                    deserialiseSimpleAddressEntity(postalAddressEntity, currentNode.deepCopy());
+                    correspondencePartUnit.setPostalAddress(postalAddressEntity);
+                    objectNode.remove(N5ResourceMappings.POSTAL_ADDRESS);
+                }
+
+                // Deserialize forretningsadresse
+                currentNode = objectNode.get(BUSINESS_ADDRESS);
+                if (null != currentNode) {
+                    BusinessAddress businessAddressEntity = new BusinessAddress();
+                    businessAddressEntity.setAddressType(BUSINESS_ADDRESS);
+                    deserialiseSimpleAddressEntity(businessAddressEntity, currentNode.deepCopy());
+                    correspondencePartUnit.setBusinessAddress(businessAddressEntity);
+                    objectNode.remove(BUSINESS_ADDRESS);
+                }
+
+                // Deserialize kontaktinformasjon
+                currentNode = objectNode.get(CONTACT_INFORMATION);
+                if (null != currentNode) {
+                    ContactInformation contactInformation = new ContactInformation();
+                    deserialiseContactInformationEntity(contactInformation, currentNode.deepCopy());
+                    correspondencePartUnit.setContactInformation(contactInformation);
+                    objectNode.remove(CONTACT_INFORMATION);
+                }
+
             }
 
             // TODO: Double check how the JSON of this looks if multiple fondsCreators are embedded within a fonds
@@ -1085,25 +1251,25 @@ public final class CommonUtils {
                                     jgen.writeStringField(CASE_PARTY_ROLE, caseParty.getCasePartyRole());
                                 }
                                 if (caseParty.getPostalAddress() != null) {
-                                    jgen.writeStringField(CASE_PARTY_POSTAL_ADDRESS, caseParty.getPostalAddress());
+                                    jgen.writeStringField(N5ResourceMappings.POSTAL_ADDRESS, caseParty.getPostalAddress());
                                 }
                                 if (caseParty.getPostCode() != null) {
-                                    jgen.writeStringField(CASE_PARTY_POST_CODE, caseParty.getPostCode());
+                                    jgen.writeStringField(N5ResourceMappings.POSTAL_NUMBER, caseParty.getPostCode());
                                 }
                                 if (caseParty.getPostalTown() != null) {
-                                    jgen.writeStringField(CASE_PARTY_POSTAL_TOWN, caseParty.getPostalTown());
+                                    jgen.writeStringField(POSTAL_TOWN, caseParty.getPostalTown());
                                 }
                                 if (caseParty.getForeignAddress() != null) {
-                                    jgen.writeStringField(CASE_PARTY_FOREIGN_ADDRESS, caseParty.getForeignAddress());
+                                    jgen.writeStringField(FOREIGN_ADDRESS, caseParty.getForeignAddress());
                                 }
                                 if (caseParty.getEmailAddress() != null) {
-                                    jgen.writeStringField(CASE_PARTY_EMAIL_ADDRESS, caseParty.getEmailAddress());
+                                    jgen.writeStringField(N5ResourceMappings.EMAIL_ADDRESS, caseParty.getEmailAddress());
                                 }
                                 if (caseParty.getTelephoneNumber() != null) {
-                                    jgen.writeStringField(CASE_PARTY_TELEPHONE_NUMBER, caseParty.getTelephoneNumber());
+                                    jgen.writeStringField(N5ResourceMappings.TELEPHONE_NUMBER, caseParty.getTelephoneNumber());
                                 }
                                 if (caseParty.getContactPerson() != null) {
-                                    jgen.writeStringField(CASE_PARTY_CONTACT_PERSON, caseParty.getContactPerson());
+                                    jgen.writeStringField(CONTACT_PERSON, caseParty.getContactPerson());
                                 }
                                 jgen.writeEndObject();
                             }
@@ -1144,61 +1310,149 @@ public final class CommonUtils {
                 jgen.writeEndObject();
             }
 
-            public static void printCorrespondencePart(JsonGenerator jgen, ICorrespondencePartEntity correspondencePart)
-                    throws IOException {
-                if (correspondencePart != null) {
 
-                    if (correspondencePart.getSystemId() != null) {
-                        jgen.writeStringField(SYSTEM_ID,
-                                correspondencePart.getSystemId());
-                    }
+            private static void printCorrespondencePart(JsonGenerator jgen, ICorrespondencePartEntity correspondencePart)
+                    throws IOException {
+
+                if (correspondencePart != null) {
+                    printSystemIdEntity(jgen, correspondencePart);
                     if (correspondencePart.getCorrespondencePartType() != null) {
                         printMetadataEntity(jgen, correspondencePart.getCorrespondencePartType());
                     }
-                    if (correspondencePart.getCorrespondencePartName() != null) {
-                        jgen.writeStringField(CORRESPONDENCE_PART_NAME,
-                                correspondencePart.getCorrespondencePartName());
+                }
+            }
+
+
+            public static void printContactInformation(JsonGenerator jgen, IContactInformationEntity contactInformation)
+                    throws IOException {
+
+                if (null != contactInformation) {
+                    jgen.writeFieldName(CONTACT_INFORMATION);
+                    jgen.writeStartObject();
+                    if (null != contactInformation.getEmailAddress()) {
+                        jgen.writeStringField(EMAIL_ADDRESS, contactInformation.getEmailAddress());
                     }
-                    if (correspondencePart.getPostalAddress() != null) {
-                        Set<PostalAddress> postalAddresses = correspondencePart.getPostalAddress();
-                        jgen.writeArrayFieldStart(CORRESPONDENCE_PART_POSTAL_ADDRESS);
-                        for (PostalAddress postalAddress : postalAddresses) {
-                            jgen.writeString(postalAddress.getPostalAddress());
+                    if (null != contactInformation.getMobileTelephoneNumber()) {
+                        jgen.writeStringField(MOBILE_TELEPHONE_NUMBER, contactInformation.getMobileTelephoneNumber());
+                    }
+                    if (null != contactInformation.getTelephoneNumber()) {
+                        jgen.writeStringField(TELEPHONE_NUMBER, contactInformation.getTelephoneNumber());
+                    }
+                    jgen.writeEndObject();
+                }
+            }
+
+            public static void printAddress(JsonGenerator jgen, ISimpleAddressEntity address) throws IOException {
+
+                if (null != address) {
+                    jgen.writeFieldName(address.getAddressType());
+                    jgen.writeStartObject();
+                    printSystemIdEntity(jgen, address);
+
+                    if (null != address.getAddressLine1()) {
+                        jgen.writeStringField(ADDRESS_LINE_1, address.getAddressLine1());
+                    }
+                    if (null != address.getAddressLine2()) {
+                        jgen.writeStringField(ADDRESS_LINE_2, address.getAddressLine2());
+                    }
+                    if (null != address.getAddressLine3()) {
+                        jgen.writeStringField(ADDRESS_LINE_3, address.getAddressLine3());
+                    }
+                    if (null != address.getPostalNumber()) {
+                        PostalNumber postalNumber = address.getPostalNumber();
+                        if (null != postalNumber && null != postalNumber.getPostalNumber()) {
+                            jgen.writeStringField(POSTAL_NUMBER, postalNumber.getPostalNumber());
                         }
-                        jgen.writeEndArray();
                     }
-                    if (correspondencePart.getPostCode() != null) {
-                        jgen.writeStringField(CORRESPONDENCE_PART_POST_CODE,
-                                correspondencePart.getPostCode());
+                    if (null != address.getPostalTown()) {
+                        jgen.writeStringField(POSTAL_TOWN, address.getPostalTown());
                     }
-                    if (correspondencePart.getPostalTown() != null) {
-                        jgen.writeStringField(CORRESPONDENCE_PART_POSTAL_TOWN,
-                                correspondencePart.getPostalTown());
+                    if (null != address.getCountryCode()) {
+                        jgen.writeStringField(COUNTRY_CODE, address.getCountryCode());
                     }
-                    if (correspondencePart.getCountry() != null) {
-                        jgen.writeStringField(CORRESPONDENCE_PART_COUNTRY,
-                                correspondencePart.getCountry());
+                    jgen.writeEndObject();
+                }
+            }
+
+            public static void printCorrespondencePartPerson(JsonGenerator jgen,
+                                                             ICorrespondencePartPersonEntity correspondencePartPerson)
+                    throws IOException {
+                if (null != correspondencePartPerson) {
+                    printCorrespondencePart(jgen, correspondencePartPerson);
+
+                    if (null != correspondencePartPerson.getSocialSecurityNumber()) {
+                        jgen.writeStringField(SOCIAL_SECURITY_NUMBER, correspondencePartPerson.getSocialSecurityNumber());
                     }
-                    if (correspondencePart.getEmailAddress() != null) {
-                        jgen.writeStringField(CORRESPONDENCE_PART_EMAIL_ADDRESS,
-                                correspondencePart.getEmailAddress());
+                    if (null != correspondencePartPerson) {
+                        jgen.writeStringField(D_NUMBER, correspondencePartPerson.getdNumber());
                     }
-                    if (correspondencePart.getTelephoneNumber() != null) {
-                        jgen.writeStringField(CORRESPONDENCE_PART_TELEPHONE_NUMBER,
-                                correspondencePart.getTelephoneNumber());
+                    if (null != correspondencePartPerson.getName()) {
+                        jgen.writeStringField(NAME, correspondencePartPerson.getName());
                     }
-                    if (correspondencePart.getContactPerson() != null) {
-                        jgen.writeStringField(CORRESPONDENCE_PART_CONTACT_PERSON,
-                                correspondencePart.getContactPerson());
+                    if (null != correspondencePartPerson.getPostalAddress()) {
+                        printAddress(jgen, correspondencePartPerson.getPostalAddress());
                     }
-                    if (correspondencePart.getAdministrativeUnit() != null) {
-                        jgen.writeStringField(CORRESPONDENCE_PART_ADMINISTRATIVE_UNIT,
-                                correspondencePart.getAdministrativeUnit());
+                    if (null != correspondencePartPerson.getResidingAddress()) {
+                        printAddress(jgen, correspondencePartPerson.getResidingAddress());
                     }
-                    if (correspondencePart.getCaseHandler() != null) {
-                        jgen.writeStringField(CORRESPONDENCE_PART_CASE_HANDLER,
-                                correspondencePart.getCaseHandler());
+                    if (null != correspondencePartPerson.getContactInformation()) {
+                        printContactInformation(jgen, correspondencePartPerson.getContactInformation());
                     }
+
+                }
+            }
+
+            public static void printCorrespondencePartInternal(JsonGenerator jgen,
+                                                               ICorrespondencePartInternalEntity correspondencePartInternal)
+                    throws IOException {
+                if (null != correspondencePartInternal) {
+                    printCorrespondencePart(jgen, correspondencePartInternal);
+                    if (null != correspondencePartInternal.getAdministrativeUnit()) {
+                        jgen.writeStringField(ADMINISTRATIVE_UNIT, correspondencePartInternal.getAdministrativeUnit());
+                    }
+                    if (null != correspondencePartInternal.getReferenceAdministrativeUnit()) {
+                        String systemID = correspondencePartInternal.getReferenceAdministrativeUnit().getSystemId();
+                        if (null != systemID) {
+                            jgen.writeStringField(REFERENCE_ADMINISTRATIVE_UNIT, systemID);
+                        }
+                    }
+                    if (null != correspondencePartInternal.getCaseHandler()) {
+                        jgen.writeStringField(CASE_HANDLER, correspondencePartInternal.getCaseHandler());
+                    }
+                    if (null != correspondencePartInternal.getReferenceCaseHandler()) {
+                        String systemID = correspondencePartInternal.getReferenceCaseHandler().getSystemId();
+                        if (null != systemID) {
+                            jgen.writeStringField(REFERENCE_CASE_HANDLER, systemID);
+                        }
+                    }
+                }
+            }
+
+            public static void printCorrespondencePartUnit(JsonGenerator jgen,
+                                                           ICorrespondencePartUnitEntity correspondencePartUnit)
+                    throws IOException {
+                if (null != correspondencePartUnit) {
+                    printCorrespondencePart(jgen, correspondencePartUnit);
+
+                    if (null != correspondencePartUnit.getOrganisationNumber()) {
+                        jgen.writeStringField(ORGANISATION_NUMBER, correspondencePartUnit.getOrganisationNumber());
+                    }
+                    if (null != correspondencePartUnit.getName()) {
+                        jgen.writeStringField(NAME, correspondencePartUnit.getName());
+                    }
+                    if (null != correspondencePartUnit.getBusinessAddress()) {
+                        printAddress(jgen, correspondencePartUnit.getBusinessAddress());
+                    }
+                    if (null != correspondencePartUnit.getPostalAddress()) {
+                        printAddress(jgen, correspondencePartUnit.getPostalAddress());
+                    }
+                    if (null != correspondencePartUnit.getContactInformation()) {
+                        printContactInformation(jgen, correspondencePartUnit.getContactInformation());
+                    }
+                    if (null != correspondencePartUnit.getContactPerson()) {
+                        jgen.writeStringField(CONTACT_PERSON, correspondencePartUnit.getContactPerson());
+                    }
+
                 }
             }
 

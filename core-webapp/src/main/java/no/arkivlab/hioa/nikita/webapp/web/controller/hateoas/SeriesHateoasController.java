@@ -6,6 +6,7 @@ import io.swagger.annotations.*;
 import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.casehandling.CaseFile;
 import nikita.model.noark5.v4.hateoas.*;
+import nikita.model.noark5.v4.hateoas.casehandling.CaseFileHateoas;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;

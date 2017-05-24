@@ -45,7 +45,7 @@ curloptsCreateFonds+=( --data @"$curl_files_dir"fonds-data.json  'http://localho
 # Create a fonds object and capture the systemId
 systemIDCreatedFonds=$(curl "${curloptsCreateFonds[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created Fonds 1             ($systemIDCreatedFonds) \n";
-echo  "${curloptsCreateFonds[@]}";
+#echo  "${curloptsCreateFonds[@]}";
 
 # Setup curl options for fondsCreator from root
 curloptsCreateFondsCreatorFromRoot+=("${curlPostOpts[@]}");
@@ -118,7 +118,7 @@ printf "created     DocumentDescription ($systemIDCreatedDocumentDescription) as
 # Setup curl options for documentObject
 curloptsCreateDocumentObject+=("${curlPostOpts[@]}");
 curloptsCreateDocumentObject+=( --data @"$curl_files_dir"document-object-data.json  'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/dokumentbeskrivelse/'$systemIDCreatedDocumentDescription'/ny-dokumentobjekt' )
-
+#echo "${curloptsCreateDocumentObject[@]}" "\n";
 # Create documentObject 1 associated with file 1 / record 1 / documentDescription 1 /  and capture systemId
 systemIDCreatedDocumentObject=$(curl "${curloptsCreateDocumentObject[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created      DocumentObject      ($systemIDCreatedDocumentObject) associated with ($systemIDCreatedDocumentDescription) \n";
@@ -170,10 +170,10 @@ systemIDCreatedRegistryEntry=$(curl "${curloptsCreateRegistryEntry[@]}" | jq '.s
 #echo "${curloptsCreateRegistryEntry[@]}";
 printf "created    RegistryEntry 1     ($systemIDCreatedRegistryEntry) associated with ($systemIDCreatedCaseFile)\n";
 
-# Setup curl options for correspondencePart
+# Setup curl options for correspondencePartPErson
 curloptsCorrespondencePart+=("${curlPostOpts[@]}");
-curloptsCorrespondencePart+=( --data @"$curl_files_dir"correspondence-part-data.json 'http://localhost:8092/noark5v4/hateoas-api/sakarkiv/journalpost/'$systemIDCreatedRegistryEntry'/ny-korrespondansepart' )
-echo "${curloptsCorrespondencePart[@]}";
+curloptsCorrespondencePart+=( --data @"$curl_files_dir"correspondence-part-person-data.json 'http://localhost:8092/noark5v4/hateoas-api/sakarkiv/journalpost/'$systemIDCreatedRegistryEntry'/ny-korrespondansepartperson' )
+#echo "${curloptsCorrespondencePart[@]}";
 
 systemIDCreatedCorrespondencePart=$(curl "${curloptsCorrespondencePart[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created   CorrespondencePart ($systemIDCreatedCorrespondencePart) \n";
@@ -210,7 +210,8 @@ printf "created    RegistryEntry 1     ($systemIDCreatedRegistryEntry) associate
 # Create documentDescription 1 associated with a caseFile 2 / registryEntry 1 and capture systemId
 systemIDCreatedDocumentDescription=$(curl "${curloptsCreateDocumentDescription[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created     DocumentDescription ($systemIDCreatedDocumentDescription) associated with ($systemIDCreatedRegistryEntry) \n";
-
+#echo "${curloptsCreateDocumentDescription[@]}" ;
+exit;
 # Create documentObject 1 associated with caseFile 2 / registryEntry 1 / documentDescription 1 /  and capture systemId
 systemIDCreatedDocumentObject=$(curl "${curloptsCreateDocumentObject[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created      DocumentObject      ($systemIDCreatedDocumentObject) associated with ($systemIDCreatedDocumentDescription) \n";

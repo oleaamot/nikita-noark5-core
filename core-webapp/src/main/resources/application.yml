@@ -137,7 +137,7 @@ nikita-noark5-core:
          protocol: http # or https
     details:
         conformity-levels:
-             official: arkivstruktur, sakarkiv
+             official: arkivstruktur, casehandling
              non-official: gui, import-api
     storage:
         location: /tmp/dokumenter

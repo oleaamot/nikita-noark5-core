@@ -1,7 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.security;
 
-import no.arkivlab.hioa.nikita.webapp.model.security.Authority;
-import no.arkivlab.hioa.nikita.webapp.model.security.User;
+import nikita.model.noark5.v4.admin.Authority;
+import nikita.model.noark5.v4.admin.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

@@ -11,6 +11,8 @@ public final class N5ResourceMappings {
     public static final String SUB_FONDS = "underarkiv";
     public static final String SERIES = "arkivdel";
     public static final String REFERENCE_SERIES = "referanseArkivdel";
+    public static final String REFERENCE_ADMINISTRATIVE_UNIT = "referanseAdministratitivEnhet";
+    public static final String REFERENCE_CASE_HANDLER = "referanseSaksbehandler";
     public static final String FILE = "mappe";
     public static final String CASE_FILE = "saksmappe";
     public static final String MEETING_FILE = "moetemappe";
@@ -32,14 +34,16 @@ public final class N5ResourceMappings {
     public static final String FILE_TYPE = "mappetype";
     public static final String FLOW_STATUS = "flytstatus";
     public static final String EVENT_TYPE = "hendelsetype";
+    // Might be confusion if it's land or lankode
     public static final String COUNTRY = "land";
+    public static final String COUNTRY_CODE = "landkode";
     public static final String CLASSIFIED_CODE = "graderingskode";
     public static final String CLASSIFICATION_TYPE = "klassifikasjonstype";
     public static final String ASSOCIATED_WITH_RECORD_AS = "tilknyttetregistreringsom";
     public static final String ACCESS_RESTRICTION = "tilgangsrestriksjon";
     public static final String ACCESS_CATEGORY = "tilgangskategori";
-    public static final String ZIP = "postnummer";
-
+    public static final String POSTAL_NUMBER = "postnummer";
+    public static final String POSTAL_TOWN = "poststed";
     // For the sessions endpoint
     public static final String SESSIONS = "sessions";
 
@@ -86,7 +90,7 @@ public final class N5ResourceMappings {
     public static final String CASE_YEAR = "saksaar";
     public static final String CASE_SEQUENCE_NUMBER = "sakssekvensnummer";
     public static final String CASE_DATE = "saksdato";
-    public static final String CASE_ADMINISTRATIVE_UNIT = "administrativEnhet";
+
     public static final String CASE_RESPONSIBLE = "saksansvarlig";
     public static final String CASE_RECORDS_MANAGEMENT_UNIT = "journalenhet";
     public static final String CASE_STATUS = "saksstatus";
@@ -98,13 +102,6 @@ public final class N5ResourceMappings {
     public static final String CASE_PARTY_ID = "saksPartID";
     public static final String CASE_PARTY_NAME = "sakspartNavn";
     public static final String CASE_PARTY_ROLE = "sakspartRolle";
-    public static final String CASE_PARTY_POSTAL_ADDRESS = "postadresse";
-    public static final String CASE_PARTY_POST_CODE = "postnummer";
-    public static final String CASE_PARTY_POSTAL_TOWN = "poststed";
-    public static final String CASE_PARTY_FOREIGN_ADDRESS = "utenlandsadresse";
-    public static final String CASE_PARTY_EMAIL_ADDRESS = "utenlandsadresse";
-    public static final String CASE_PARTY_TELEPHONE_NUMBER = "";
-    public static final String CASE_PARTY_CONTACT_PERSON = "kontaktperson";
 
     // Record
     public static final String RECORD_ARCHIVED_BY = "arkivertAv";
@@ -129,21 +126,32 @@ public final class N5ResourceMappings {
 
     // CorrespondencePart
     public static final String CORRESPONDENCE_PART  = "korrespondansepart";
+
+    public static final String CORRESPONDENCE_PART_PERSON = "korrespondansepartperson";
+    public static final String CORRESPONDENCE_PART_INTERNAL = "korrespondansepartintern";
+    public static final String CORRESPONDENCE_PART_UNIT = "korrespondansepartenhet";
     public static final String CORRESPONDENCE_PART_TYPE = "korrespondanseparttype";
     public static final String CORRESPONDENCE_PART_NAME = "navn";
-    public static final String CORRESPONDENCE_PART_POSTAL_ADDRESS = "postadresse";
-    public static final String CORRESPONDENCE_PART_POST_CODE = "postnummer";
-    public static final String CORRESPONDENCE_PART_POSTAL_TOWN = "poststed";
-    public static final String CORRESPONDENCE_PART_COUNTRY = "land";
-    public static final String CORRESPONDENCE_PART_EMAIL_ADDRESS = "epostadresse";
-    public static final String CORRESPONDENCE_PART_TELEPHONE_NUMBER = "telefonnummer";
-    public static final String CORRESPONDENCE_PART_CASE_HANDLER = "saksbehandler";
-    public static final String CORRESPONDENCE_PART_CONTACT_PERSON = "kontaktperson";
-    public static final String CORRESPONDENCE_PART_ADMINISTRATIVE_UNIT = "administrativEnhet";
+    public static final String POST_CODE = "postnummer";
 
-
-    public static final String POSTAL_ADDRESS = "postadresse";
+    public static final String SOCIAL_SECURITY_NUMBER = "foedselsnummer";
+    public static final String D_NUMBER = "dnummer";
+    public static final String CASE_HANDLER = "saksbehandler";
+    // This is probably CORRESPONDENCE_PART_NAME. Waiting for clarification
+    public static final String NAME = "navn";
+    public static final String ADDRESS_LINE_1 = "adresselinje1";
+    public static final String ADDRESS_LINE_2 = "adresselinje2";
+    public static final String ADDRESS_LINE_3 = "adresselinje3";
+    public static final String CONTACT_INFORMATION = "kontaktinformasjon";
+    public static final String EMAIL_ADDRESS = "epostadresse";
     public static final String TELEPHONE_NUMBER = "telefonnummer";
+    public static final String MOBILE_TELEPHONE_NUMBER = "mobiltelefon";
+    public static final String FOREIGN_ADDRESS = "utenlandsadresse";
+    public static final String CONTACT_PERSON = "kontaktperson";
+    public static final String ORGANISATION_NUMBER = "organisasjonsnummer";
+    public static final String POSTAL_ADDRESS = "postadresse";
+    public static final String RESIDING_ADDRESS = "bostedsadresse";
+    public static final String BUSINESS_ADDRESS = "forretningsadresse";
 
     // DocumentDescription
     public static final String DOCUMENT_DESCRIPTION_ASSOCIATION_DATE = "tilknyttetDato";
@@ -310,6 +318,16 @@ public final class N5ResourceMappings {
     public static final String DOCUMENT_TYPE = "dokumenttype";
 
     public static final String CLASSIFICATION_SYSTEM_TYPE = "klassifikasjonstype";
+
+    public static final String ADMINISTRATIVE_UNIT = "administrativEnhet";
+    public static final String NEW_ADMINISTRATIVE_UNIT = NEW + DASH + "administrativEnhet";
+    public static final String ADMINISTRATIVE_UNIT_STATUS = "administrativEnhetsstatus";
+    public static final String ADMINISTRATIVE_UNIT_NAME = "administrativEnhetNavn";
+    public static final String ADMINISTRATIVE_UNIT_PARENT_REFERENCE = "referanseOverordnetEnhet";
+
+    public static final String SHORT_NAME = "kortnavn";
+
+
     private N5ResourceMappings() {
         throw new AssertionError();
     }

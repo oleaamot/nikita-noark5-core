@@ -96,15 +96,23 @@ public class DocumentDescriptionDeserializer extends JsonDeserializer {
             }
             objectNode.remove(DOCUMENT_DESCRIPTION_ASSOCIATION_DATE);
         }
+
         // Deserialize associatedBy
         currentNode = objectNode.get(DOCUMENT_DESCRIPTION_ASSOCIATED_BY);
         if (null != currentNode) {
             documentDescription.setAssociatedBy(currentNode.textValue());
             objectNode.remove(DOCUMENT_DESCRIPTION_ASSOCIATED_BY);
         }
+
+        // Deserialize storageLocation
+        currentNode = objectNode.get(STORAGE_LOCATION);
+        if (null != currentNode) {
+            documentDescription.setStorageLocation(currentNode.textValue());
+            objectNode.remove(STORAGE_LOCATION);
+        }
+
         // Deserialize general documentDescription properties
         CommonUtils.Hateoas.Deserialize.deserialiseDocumentMedium(documentDescription, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseStorageLocation(documentDescription, objectNode);
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {

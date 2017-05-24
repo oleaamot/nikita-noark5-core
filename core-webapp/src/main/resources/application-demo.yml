@@ -118,7 +118,7 @@ nikita-noark5-core:
          name: nikita.hioa.no
     details:
         conformity-levels:
-            official: arkivstruktur, sakarkiv, metadata
+            official: arkivstruktur, casehandling, metadata
             non-official: gui, import-api
     storage:
         location: /tmp/dokumenter

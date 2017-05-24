@@ -3,5 +3,6 @@
   "tittel" : "Title of the registry entry",
   "journalposttype": "Organinternt dokument uten oppfølging",
   "journalstatus": "Journalført",
-  "journaldato": "2017-01-12"
+  "journaldato": "2017-01-12",
+  "dokumentetsDato": "2017-01-12"
 }

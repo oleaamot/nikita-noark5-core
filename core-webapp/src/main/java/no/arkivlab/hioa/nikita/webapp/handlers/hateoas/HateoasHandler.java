@@ -27,7 +27,7 @@ public class HateoasHandler implements IHateoasHandler {
     protected String contextServletPath = "";
     protected String servletPath = "";
     protected String contextPath = "";
-    IAuthorisation authorisation;
+    protected IAuthorisation authorisation;
 
     @Override
     public void addLinks(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,

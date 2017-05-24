@@ -67,6 +67,10 @@ public final class Constants {
     public static final String NEW_REFERENCE_SERIES = NEW + DASH + REFERENCE_SERIES;
 
 
+    public static final String PERSON = "person";
+    public static final String UNIT = "enhet";
+    public static final String INTERNAL = "intern";
+
     // Other arkivstruktur commands
     public static final String FILE_END = "avslutt-mappe";
     public static final String FILE_EXPAND_TO_CASE_FILE = "utvid-til-" + CASE_FILE;
@@ -92,12 +96,15 @@ public final class Constants {
     public static final String NEW_SIGN_OFF = NEW + DASH + SIGN_OFF;
     public static final String NEW_DOCUMENT_FLOW = NEW + DASH + DOCUMENT_FLOW;
     public static final String NEW_CORRESPONDENCE_PART = NEW + DASH + CORRESPONDENCE_PART;
+    public static final String NEW_CORRESPONDENCE_PART_PERSON = NEW_CORRESPONDENCE_PART + PERSON;
+    public static final String NEW_CORRESPONDENCE_PART_UNIT = NEW_CORRESPONDENCE_PART + UNIT;
+    public static final String NEW_CORRESPONDENCE_PART_INTERNAL = NEW_CORRESPONDENCE_PART + INTERNAL;
     public static final String NEW_SERIES_SUCCESSOR = NEW + DASH + SERIES_SUCCESSOR;
     public static final String NEW_SERIES_PRECURSOR = NEW + DASH + SERIES_PRECURSOR;
 
     public static final String DOCUMENT_FILE = "fil";
 
-    // Create for new sakarkiv objects
+    // Create for new casehandling objects
     public static final String NEW_CASE_FILE = NEW + DASH + CASE_FILE;
     public static final String NEW_REGISTRY_ENTRY = NEW + DASH + REGISTRY_ENTRY;
     public static final String NEW_PRECEDENCE = NEW + DASH + PRECEDENCE;
@@ -350,9 +357,17 @@ public final class Constants {
     public static final String REL_FONDS_STRUCTURE_DOCUMENT_FLOW = REL_CASE_HANDLING + DOCUMENT_FLOW + SLASH;
     public static final String REL_FONDS_STRUCTURE_NEW_DOCUMENT_FLOW = REL_CASE_HANDLING + NEW_DOCUMENT_FLOW + SLASH;
 
-    // CorrespondencePart
-    public static final String REL_FONDS_STRUCTURE_CORRESPONDENCE_PART = REL_CASE_HANDLING + CORRESPONDENCE_PART + SLASH;
-    public static final String REL_FONDS_STRUCTURE_NEW_CORRESPONDENCE_PART = REL_CASE_HANDLING + NEW_CORRESPONDENCE_PART + SLASH;
+    // CorrespondencePartPerson
+    public static final String REL_CASE_HANDLING_CORRESPONDENCE_PART_PERSON = REL_CASE_HANDLING + CORRESPONDENCE_PART_PERSON + SLASH;
+    public static final String REL_CASE_HANDLING_NEW_CORRESPONDENCE_PART_PERSON = REL_CASE_HANDLING + NEW_CORRESPONDENCE_PART_PERSON + SLASH;
+
+    // CorrespondencePartUnit
+    public static final String REL_CASE_HANDLING_CORRESPONDENCE_PART_UNIT = REL_CASE_HANDLING + CORRESPONDENCE_PART_UNIT + SLASH;
+    public static final String REL_CASE_HANDLING_NEW_CORRESPONDENCE_PART_UNIT = REL_CASE_HANDLING + NEW_CORRESPONDENCE_PART_UNIT + SLASH;
+
+    // CorrespondencePartInternal
+    public static final String REL_CASE_HANDLING_CORRESPONDENCE_PART_INTERNAL = REL_CASE_HANDLING + CORRESPONDENCE_PART_INTERNAL + SLASH;
+    public static final String REL_CASE_HANDLING_NEW_CORRESPONDENCE_PART_INTERNAL = REL_CASE_HANDLING + NEW_CORRESPONDENCE_PART_INTERNAL + SLASH;
 
     // Fil
     public static final String REL_FONDS_STRUCTURE_DOCUMENT_FILE = REL_FONDS_STRUCTURE + DOCUMENT_FILE + SLASH;
@@ -373,6 +388,8 @@ public final class Constants {
     // M086 dokumenttype
     public static final String REL_METADATA_CLASSIFICATION_SYSTEM_TYPE = REL_METADATA + CLASSIFICATION_SYSTEM_TYPE + SLASH;
     //public static final String REL_METADATA_CLASSIFICATION_SYSTEM_TYPE = REL_METADATA + CLASSIFICATION_SYSTEM + SLASH;
+
+    public static final String REL_ADMIN_ADMINISTRATIVE_UNIT = REL_ADMINISTRATION + NEW_ADMINISTRATIVE_UNIT + SLASH;
 
     private Constants() {
     }

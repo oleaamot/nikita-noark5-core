@@ -1,6 +1,6 @@
 package no.arkivlab.hioa.nikita.webapp.security.service;
 
-import no.arkivlab.hioa.nikita.webapp.model.security.User;
+import nikita.model.noark5.v4.admin.User;
 import no.arkivlab.hioa.nikita.webapp.security.JwtUserFactory;
 import no.arkivlab.hioa.nikita.webapp.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

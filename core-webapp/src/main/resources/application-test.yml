@@ -118,7 +118,7 @@ nikita-noark5-core:
          address: localhost
     details:
         conformity-levels:
-            official: arkivstruktur, sakarkiv
+            official: arkivstruktur, casehandling
             non-official: gui, import-api
     storage:
         location: /tmp/dokumenter

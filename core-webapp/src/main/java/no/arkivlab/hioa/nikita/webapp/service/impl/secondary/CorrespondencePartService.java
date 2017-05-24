@@ -1,6 +1,9 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl.secondary;
 
-import nikita.model.noark5.v4.casehandling.CorrespondencePart;
+import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePart;
+import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePartInternal;
+import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePartPerson;
+import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePartUnit;
 import nikita.repository.n5v4.secondary.ICorrespondencePartRepository;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary.ICorrespondencePartService;
@@ -30,28 +33,73 @@ public class CorrespondencePartService implements ICorrespondencePartService {
     }
 
     @Override
-    public CorrespondencePart updateCorrespondencePart(String systemId, Long version, CorrespondencePart incomingCorrespondencePart) {
-        CorrespondencePart existingCorrespondencePart = getCorrespondencePartOrThrow(systemId);
+    public CorrespondencePartPerson updateCorrespondencePartPerson(String systemId, Long version,
+                                                                   CorrespondencePartPerson incomingCorrespondencePart) {
+        CorrespondencePartPerson existingCorrespondencePart =
+                (CorrespondencePartPerson) getCorrespondencePartOrThrow(systemId);
+
         // Copy all the values you are allowed to copy ....
-        existingCorrespondencePart.setAdministrativeUnit(incomingCorrespondencePart.getAdministrativeUnit());
-        existingCorrespondencePart.setCaseHandler(incomingCorrespondencePart.getCaseHandler());
-        existingCorrespondencePart.setContactPerson(incomingCorrespondencePart.getContactPerson());
-        existingCorrespondencePart.setCorrespondencePartName(incomingCorrespondencePart.getCorrespondencePartName());
-        existingCorrespondencePart.setCountry(incomingCorrespondencePart.getCountry());
-        existingCorrespondencePart.setPostalTown(incomingCorrespondencePart.getPostalTown());
-        existingCorrespondencePart.setTelephoneNumber(incomingCorrespondencePart.getTelephoneNumber());
+        existingCorrespondencePart.setContactInformation(incomingCorrespondencePart.getContactInformation());
         existingCorrespondencePart.setCorrespondencePartType(incomingCorrespondencePart.getCorrespondencePartType());
-        existingCorrespondencePart.setEmailAddress(incomingCorrespondencePart.getEmailAddress());
+        existingCorrespondencePart.setdNumber(incomingCorrespondencePart.getdNumber());
+        existingCorrespondencePart.setName(incomingCorrespondencePart.getName());
+        existingCorrespondencePart.setSocialSecurityNumber(incomingCorrespondencePart.getSocialSecurityNumber());
         existingCorrespondencePart.setPostalAddress(incomingCorrespondencePart.getPostalAddress());
-        existingCorrespondencePart.setPostCode(incomingCorrespondencePart.getPostCode());
+        existingCorrespondencePart.setResidingAddress(incomingCorrespondencePart.getResidingAddress());
         existingCorrespondencePart.setVersion(version);
         correspondencePartRepository.save(existingCorrespondencePart);
         return existingCorrespondencePart;
     }
 
     @Override
-    public CorrespondencePart createNewCorrespondencePart(CorrespondencePart entity) {
-        return correspondencePartRepository.save(entity);
+    public CorrespondencePartInternal updateCorrespondencePartInternal(String systemId, Long version,
+                                                                       CorrespondencePartInternal incomingCorrespondencePart) {
+        CorrespondencePartInternal existingCorrespondencePart =
+                (CorrespondencePartInternal) getCorrespondencePartOrThrow(systemId);
+        // Copy all the values you are allowed to copy ....
+        existingCorrespondencePart.setCorrespondencePartType(incomingCorrespondencePart.getCorrespondencePartType());
+        existingCorrespondencePart.setAdministrativeUnit(incomingCorrespondencePart.getAdministrativeUnit());
+        existingCorrespondencePart.setCaseHandler(incomingCorrespondencePart.getCaseHandler());
+        existingCorrespondencePart.setReferenceAdministrativeUnit(incomingCorrespondencePart.getReferenceAdministrativeUnit());
+        existingCorrespondencePart.setReferenceCaseHandler(incomingCorrespondencePart.getReferenceCaseHandler());
+        existingCorrespondencePart.setVersion(version);
+        correspondencePartRepository.save(existingCorrespondencePart);
+        return existingCorrespondencePart;
+    }
+
+    @Override
+    public CorrespondencePartUnit updateCorrespondencePartUnit(String systemId, Long version,
+                                                               CorrespondencePartUnit incomingCorrespondencePart) {
+        CorrespondencePartUnit existingCorrespondencePart =
+                (CorrespondencePartUnit) getCorrespondencePartOrThrow(systemId);
+        // Copy all the values you are allowed to copy ....
+        existingCorrespondencePart.setBusinessAddress(incomingCorrespondencePart.getBusinessAddress());
+        existingCorrespondencePart.setPostalAddress(incomingCorrespondencePart.getPostalAddress());
+        existingCorrespondencePart.setContactInformation(incomingCorrespondencePart.getContactInformation());
+        existingCorrespondencePart.setContactPerson(incomingCorrespondencePart.getContactPerson());
+        existingCorrespondencePart.setOrganisationNumber(incomingCorrespondencePart.getOrganisationNumber());
+        existingCorrespondencePart.setName(incomingCorrespondencePart.getName());
+        existingCorrespondencePart.setVersion(version);
+        correspondencePartRepository.save(existingCorrespondencePart);
+        return existingCorrespondencePart;
+    }
+
+
+    @Override
+    public CorrespondencePartPerson createNewCorrespondencePartPerson(CorrespondencePartPerson
+                                                                              correspondencePartPerson) {
+        return correspondencePartRepository.save(correspondencePartPerson);
+    }
+
+    @Override
+    public CorrespondencePartUnit createNewCorrespondencePartUnit(CorrespondencePartUnit correspondencePartUnit) {
+        return correspondencePartRepository.save(correspondencePartUnit);
+    }
+
+    @Override
+    public CorrespondencePartInternal createNewCorrespondencePartInternal(CorrespondencePartInternal
+                                                                                  correspondencePartInternal) {
+        return correspondencePartRepository.save(correspondencePartInternal);
     }
 
     @Override

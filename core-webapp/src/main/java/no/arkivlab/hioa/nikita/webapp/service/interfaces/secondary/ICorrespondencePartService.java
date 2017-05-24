@@ -1,14 +1,27 @@
 package no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary;
 
 
-import nikita.model.noark5.v4.casehandling.CorrespondencePart;
+import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePart;
+import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePartInternal;
+import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePartPerson;
+import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePartUnit;
 
 public interface ICorrespondencePartService {
 
-    CorrespondencePart updateCorrespondencePart(String systemId, Long version,
-                                                CorrespondencePart incomingCorrespondencePart);
+    CorrespondencePartPerson updateCorrespondencePartPerson(String systemId, Long version,
+                                                            CorrespondencePartPerson incomingCorrespondencePart);
 
-    CorrespondencePart createNewCorrespondencePart(CorrespondencePart entity);
+    CorrespondencePartUnit updateCorrespondencePartUnit(String systemId, Long version,
+                                                        CorrespondencePartUnit incomingCorrespondencePart);
+
+    CorrespondencePartInternal updateCorrespondencePartInternal(String systemId, Long version,
+                                                                CorrespondencePartInternal incomingCorrespondencePart);
+
+    CorrespondencePartUnit createNewCorrespondencePartUnit(CorrespondencePartUnit correspondencePartUnit);
+
+    CorrespondencePartInternal createNewCorrespondencePartInternal(CorrespondencePartInternal correspondencePartUnit);
+
+    CorrespondencePartPerson createNewCorrespondencePartPerson(CorrespondencePartPerson correspondencePartPerson);
 
     CorrespondencePart findBySystemId(String correspondencePartSystemId);
 }

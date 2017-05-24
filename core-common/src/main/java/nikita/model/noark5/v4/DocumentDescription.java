@@ -26,7 +26,7 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_DESCRIPTION;
 @AttributeOverride(name = "id", column = @Column(name = "pk_document_description_id"))
 //TODO: Important! Should DocumentDescription have links to Series???
 public class DocumentDescription extends NoarkEntity implements  INoarkTitleDescriptionEntity,
-        INoarkCreateEntity, IDocumentMedium, IStorageLocation, IDeletion, IScreening, IDisposal, IClassified,
+        INoarkCreateEntity, IDocumentMedium, ISingleStorageLocation, IDeletion, IScreening, IDisposal, IClassified,
         IDisposalUndertaken, IComment, IElectronicSignature, IAuthor {
 
     private static final long serialVersionUID = 1L;
@@ -121,6 +121,10 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
     @Field
     private String associatedBy;
 
+    @Column(name = "storage_location")
+    @Audited
+    private String storageLocation;
+
     // Links to Records
     @ManyToMany(mappedBy = "referenceDocumentDescription")
     private Set<Record> referenceRecord = new TreeSet<>();
@@ -142,14 +146,6 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
             referencedColumnName = "pk_document_description_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_author_id", referencedColumnName = "pk_author_id"))
     private Set<Author> referenceAuthor = new TreeSet<>();
-
-    // Link to StorageLocation
-    @ManyToMany (cascade=CascadeType.PERSIST)
-    @JoinTable(name = "document_description_storage_location", joinColumns = @JoinColumn(
-            name = "f_pk_document_description_id",referencedColumnName = "pk_document_description_id"),
-            inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
-            referencedColumnName = "pk_storage_location_id"))
-    private Set<StorageLocation> referenceStorageLocation = new TreeSet<>();
 
     // Link to Classified
     @ManyToOne (cascade=CascadeType.PERSIST)
@@ -296,6 +292,16 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
         this.referenceDocumentObject = referenceDocumentObject;
     }
 
+    @Override
+    public String getStorageLocation() {
+        return storageLocation;
+    }
+
+    @Override
+    public void setStorageLocation(String storageLocation) {
+        this.storageLocation = storageLocation;
+    }
+
     public Set<Comment> getReferenceComment() {
         return referenceComment;
     }
@@ -312,16 +318,6 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
     @Override
     public void setReferenceAuthor(Set<Author> referenceAuthor) {
         this.referenceAuthor = referenceAuthor;
-    }
-
-    @Override
-    public Set<StorageLocation> getReferenceStorageLocation() {
-        return referenceStorageLocation;
-    }
-
-    @Override
-    public void setReferenceStorageLocation(Set<StorageLocation> referenceStorageLocation) {
-        this.referenceStorageLocation = referenceStorageLocation;
     }
 
     @Override

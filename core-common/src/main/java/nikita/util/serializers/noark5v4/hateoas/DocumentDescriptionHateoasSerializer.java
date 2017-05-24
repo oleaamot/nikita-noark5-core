@@ -53,7 +53,6 @@ public class DocumentDescriptionHateoasSerializer extends HateoasSerializer impl
         }
         if (documentDescription.getAssociatedWithRecordAs() != null) {
             jgen.writeStringField(DOCUMENT_DESCRIPTION_ASSOCIATED_WITH_RECORD_AS, documentDescription.getAssociatedWithRecordAs());
-
         }
         CommonUtils.Hateoas.Serialize.printComment(jgen, documentDescription);
         CommonUtils.Hateoas.Serialize.printDisposal(jgen, documentDescription);
@@ -61,7 +60,9 @@ public class DocumentDescriptionHateoasSerializer extends HateoasSerializer impl
         CommonUtils.Hateoas.Serialize.printDeletion(jgen, documentDescription);
         CommonUtils.Hateoas.Serialize.printScreening(jgen, documentDescription);
         CommonUtils.Hateoas.Serialize.printClassified(jgen, documentDescription);
-        CommonUtils.Hateoas.Serialize.printStorageLocation(jgen, documentDescription);
+        if (documentDescription.getStorageLocation() != null) {
+            jgen.writeStringField(STORAGE_LOCATION, documentDescription.getStorageLocation());
+        }
         CommonUtils.Hateoas.Serialize.printElectronicSignature(jgen, documentDescription);
         CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, documentDescriptionHateoas.getLinks(documentDescription));
         jgen.writeEndObject();

@@ -36,7 +36,7 @@ public class ApplicationService {
 
     /**
      * Creates a list of the officially supported resource links.
-     * These are: arkivstruktur, sakarkiv, metadata, administrasjon and loggingogsporing
+     * These are: arkivstruktur, casehandling, metadata, administrasjon and loggingogsporing
      *
      * @return
      */
@@ -51,7 +51,7 @@ public class ApplicationService {
         conformityLevelFondsStructure.setRel(NOARK_CONFORMANCE_REL + NOARK_FONDS_STRUCTURE_PATH + SLASH);
         conformityLevels.add(conformityLevelFondsStructure);
 
-        // ConformityLevel : sakarkiv
+        // ConformityLevel : casehandling
         ConformityLevel conformityLevelCaseHandling = new ConformityLevel();
         conformityLevelCaseHandling.setHref(uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH);
         conformityLevelCaseHandling.setRel(NOARK_CONFORMANCE_REL + NOARK_CASE_HANDLING_PATH + SLASH);

@@ -1,6 +1,6 @@
 package no.arkivlab.hioa.nikita.webapp.security.repository;
 
-import no.arkivlab.hioa.nikita.webapp.model.security.User;
+import nikita.model.noark5.v4.admin.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

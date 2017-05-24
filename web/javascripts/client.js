@@ -55,7 +55,7 @@ let updateIndexView = function(url, $scope, $http) {
 	$scope.allow = response.headers('Allow');
 	$scope.links = response.data._links;
 	$scope.data = response.data;
-	$scope.results = response.data.results
+        $scope.results = response.data.results;
 	delete $scope.data._links;
 	delete $scope.data.results;
     }, function errorCallback(response) {
@@ -152,7 +152,7 @@ let postliste = app.controller('PostlisteController', ['$scope', '$http', functi
 		});
 	    }
 	}
-    }
+    };
     $scope.seriesUpdate = function(series){
 	console.log('series selected ' + series.tittel);
 	if (!series) {
@@ -174,7 +174,7 @@ let postliste = app.controller('PostlisteController', ['$scope', '$http', functi
 		});
 	    }
 	}
-    }
+    };
     $scope.fileSelected = function(file){
 	console.log('file selected ' + file.tittel);
 	if (file.records) {
@@ -183,7 +183,7 @@ let postliste = app.controller('PostlisteController', ['$scope', '$http', functi
 	}
 	for (rel in file._links) {
 	    relation = file._links[rel].rel;
-	    if (relation == 'http://rel.kxml.no/noark5/v4/api/sakarkiv/journalpost/'){
+        if (relation == 'http://rel.kxml.no/noark5/v4/api/casehandling/journalpost/') {
 		href = file._links[rel].href;
 		console.log("fetching " + href);
 		$http({

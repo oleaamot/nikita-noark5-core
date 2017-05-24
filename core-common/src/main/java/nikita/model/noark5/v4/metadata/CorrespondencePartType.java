@@ -1,6 +1,7 @@
 package nikita.model.noark5.v4.metadata;
 
-import nikita.model.noark5.v4.casehandling.CorrespondencePart;
+import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePart;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -10,10 +11,8 @@ import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART_TYPE;
 // Noark 5v4 korrespondanseparttype
 @Entity
 @Table(name = "correspondence_part_type")
-// Enable soft delete
-// @SQLDelete(sql = "UPDATE correspondence_part_type SET deleted = true WHERE pk_correspondence_part_type_id = ? and version = ?")
-// @Where(clause = "deleted <> true")
 @AttributeOverride(name = "id", column = @Column(name = "pk_correspondence_part_type_id"))
+@Audited
 public class CorrespondencePartType extends MetadataSuperClass {
     private static final long serialVersionUID = 1L;
 

@@ -1,14 +1,11 @@
 package nikita.model.noark5.v4.metadata;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import static nikita.config.N5ResourceMappings.ZIP;
+import static nikita.config.N5ResourceMappings.POSTAL_NUMBER;
 
 // Noark 5v4 postnummer
 @Entity
@@ -22,6 +19,6 @@ public class PostalCode extends MetadataSuperClass {
 
     @Override
     public String getBaseTypeName() {
-        return ZIP;
+        return POSTAL_NUMBER;
     }
 }

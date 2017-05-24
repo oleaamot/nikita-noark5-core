@@ -2,11 +2,12 @@ package no.arkivlab.hioa.nikita.webapp.service.impl;
 
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.Record;
-import nikita.model.noark5.v4.casehandling.CorrespondencePart;
 import nikita.model.noark5.v4.casehandling.Precedence;
 import nikita.model.noark5.v4.casehandling.RegistryEntry;
-import nikita.model.noark5.v4.secondary.PostalAddress;
+import nikita.model.noark5.v4.casehandling.secondary.*;
+import nikita.model.noark5.v4.metadata.CorrespondencePartType;
 import nikita.repository.n5v4.IRegistryEntryRepository;
+import nikita.repository.n5v4.metadata.ICorrespondencePartTypeRepository;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRegistryEntryService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.secondary.ICorrespondencePartService;
@@ -25,7 +26,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
@@ -41,15 +41,20 @@ public class RegistryEntryService implements IRegistryEntryService {
     private ICorrespondencePartService correspondencePartService;
     private IPrecedenceService precedenceService;
     private IRegistryEntryRepository registryEntryRepository;
+    private ICorrespondencePartTypeRepository correspondencePartTypeRepository;
     private EntityManager entityManager;
 
     public RegistryEntryService(DocumentDescriptionService documentDescriptionService,
                                 ICorrespondencePartService correspondencePartService,
+                                IPrecedenceService precedenceService,
                                 IRegistryEntryRepository registryEntryRepository,
+                                ICorrespondencePartTypeRepository correspondencePartTypeRepository,
                                 EntityManager entityManager) {
         this.documentDescriptionService = documentDescriptionService;
         this.correspondencePartService = correspondencePartService;
+        this.precedenceService = precedenceService;
         this.registryEntryRepository = registryEntryRepository;
+        this.correspondencePartTypeRepository = correspondencePartTypeRepository;
         this.entityManager = entityManager;
     }
 
@@ -63,16 +68,44 @@ public class RegistryEntryService implements IRegistryEntryService {
         return registryEntry;
     }
 
+    private void associateCorrespondencePartTypeWithCorrespondencePart(@NotNull CorrespondencePart correspondencePart) {
+        CorrespondencePartType incomingCorrespondencePartType = correspondencePart.getCorrespondencePartType();
+        // It should never get this far with a null value
+        // It should be rejected at controller level
+        // The incoming CorrespondencePartType will not have @id field set. Therefore, we have to look it up
+        // in the database and make sure the proper CorrespondencePartType is associated with the CorrespondencePart
+        if (incomingCorrespondencePartType != null && incomingCorrespondencePartType.getSystemId() != null) {
+            CorrespondencePartType actualCorrespondencePartType =
+                    correspondencePartTypeRepository.findBySystemId(incomingCorrespondencePartType.getSystemId());
+            if (actualCorrespondencePartType != null) {
+                correspondencePart.setCorrespondencePartType(actualCorrespondencePartType);
+            }
+        }
+    }
 
     @Override
-    public CorrespondencePart createCorrespondencePartAssociatedWithRegistryEntry(
-            String systemID, CorrespondencePart correspondencePart) {
+    public CorrespondencePartPerson createCorrespondencePartPersonAssociatedWithRegistryEntry(
+            String systemID, CorrespondencePartPerson correspondencePart) {
         RegistryEntry registryEntry = getRegistryEntryOrThrow(systemID);
-        Set <PostalAddress> postalAddresss = correspondencePart.getPostalAddress();
 
-        for (PostalAddress postalAddress : postalAddresss) {
+        associateCorrespondencePartTypeWithCorrespondencePart(correspondencePart);
+
+        ContactInformation contactInformation = correspondencePart.getContactInformation();
+        if (null != contactInformation) {
+            NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(contactInformation);
+            NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(contactInformation);
+        }
+
+        SimpleAddress postalAddress = correspondencePart.getPostalAddress();
+        if (null != postalAddress) {
             NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(postalAddress);
             NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(postalAddress);
+        }
+
+        SimpleAddress residingAddress = correspondencePart.getResidingAddress();
+        if (null != residingAddress) {
+            NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(residingAddress);
+            NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(residingAddress);
         }
 
         NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(correspondencePart);
@@ -80,7 +113,53 @@ public class RegistryEntryService implements IRegistryEntryService {
         // bidirectional relationship @ManyToMany, set both sides of relationship
         registryEntry.getReferenceCorrespondencePart().add(correspondencePart);
         correspondencePart.getReferenceRegistryEntry().add(registryEntry);
-        return correspondencePartService.createNewCorrespondencePart(correspondencePart);
+        return correspondencePartService.createNewCorrespondencePartPerson(correspondencePart);
+    }
+
+    @Override
+    public CorrespondencePartInternal createCorrespondencePartInternalAssociatedWithRegistryEntry(
+            String systemID, CorrespondencePartInternal correspondencePart) {
+        RegistryEntry registryEntry = getRegistryEntryOrThrow(systemID);
+
+        NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(correspondencePart);
+        NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(correspondencePart);
+        // bidirectional relationship @ManyToMany, set both sides of relationship
+        registryEntry.getReferenceCorrespondencePart().add(correspondencePart);
+        correspondencePart.getReferenceRegistryEntry().add(registryEntry);
+        return correspondencePartService.createNewCorrespondencePartInternal(correspondencePart);
+    }
+
+    @Override
+    public CorrespondencePartUnit createCorrespondencePartUnitAssociatedWithRegistryEntry(
+            String systemID, CorrespondencePartUnit correspondencePart) {
+        RegistryEntry registryEntry = getRegistryEntryOrThrow(systemID);
+
+        associateCorrespondencePartTypeWithCorrespondencePart(correspondencePart);
+
+        ContactInformation contactInformation = correspondencePart.getContactInformation();
+        if (null != contactInformation) {
+            NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(contactInformation);
+            NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(contactInformation);
+        }
+
+        SimpleAddress postalAddress = correspondencePart.getPostalAddress();
+        if (null != postalAddress) {
+            NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(postalAddress);
+            NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(postalAddress);
+        }
+
+        SimpleAddress businessAddress = correspondencePart.getBusinessAddress();
+        if (null != businessAddress) {
+            NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(businessAddress);
+            NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(businessAddress);
+        }
+
+        NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(correspondencePart);
+        NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(correspondencePart);
+        // bidirectional relationship @ManyToMany, set both sides of relationship
+        registryEntry.getReferenceCorrespondencePart().add(correspondencePart);
+        correspondencePart.getReferenceRegistryEntry().add(registryEntry);
+        return correspondencePartService.createNewCorrespondencePartUnit(correspondencePart);
     }
 
     @Override

@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.model.noark5.v4.casehandling.RegistryEntry;
-import nikita.model.noark5.v4.hateoas.RegistryEntryHateoas;
+import nikita.model.noark5.v4.hateoas.casehandling.RegistryEntryHateoas;
 import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.imprt.ICaseFileImportService;
 import org.springframework.beans.factory.annotation.Autowired;
