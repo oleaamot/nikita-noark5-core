@@ -700,17 +700,22 @@ public class SeriesHateoasController extends NoarkController {
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + CASE_FILE,
             method = RequestMethod.GET)
-    public ResponseEntity<String> findAllCaseFileAssociatedWithCaseFile(
+    public ResponseEntity<CaseFileHateoas> findAllCaseFileAssociatedWithCaseFile(
             HttpServletRequest request,
-            @RequestParam(name = "top", required = false) Integer top,
-            @RequestParam(name = "skip", required = false) Integer skip) {
-    /*
+            @ApiParam(name = "systemID",
+                    value = "systemID of the series to retrieve",
+                    required = true)
+            @PathVariable("systemID") final String systemID
+            ) {
+        seriesService.findAllCaseFileBySeries(systemID);
+
         CaseFileHateoas caseFileHateoas = new
                 CaseFileHateoas((ArrayList<INikitaEntity>) (ArrayList)
-                caseFileService.findCaseFileByOwnerPaginated(top, skip));
+                seriesService.findAllCaseFileBySeries(systemID));
         caseFileHateoasHandler.addLinksOnRead(caseFileHateoas, request, new Authorisation());
-      */
-        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(caseFileHateoas);
     }
 
     // API - All DELETE Requests (CRUD - DELETE)

@@ -35,14 +35,16 @@
 	    <td ng-if="entry.offentligTittel">{{ entry.offentligTittel }}</td>
 	    <td ng-if="!entry.offentligTittel">{{ entry.tittel }}</td>
 	  </tr>
-	  <tr ng-if"entry.records">
+	  <tr ng-if="entry.records">
 	    <td></td>
 	    <td colspan="2"><div ng-repeat="r in entry.records">
-		<br>[{{ r.dokumentbeskrivelse.dokumenttype }}]
-		Dok.dato: {{ r.dokumentbeskrivelse.dokumentsDato }}
-		J.dato: {{ r.dokumentbeskrivelse.journaldato }}
-		J.id: {{ r.dokumentbeskrivelse.journalaar }}/{{ r.dokumentbeskrivelse.sekvensnummer }}
-		<br>{{ r.dokumentbeskrivelse.tittel }}
+		[{{ r.journalposttype }}]
+		Dok.dato: {{ r.dokumentetsDato }}
+		J.dato: {{ r.journaldato }}
+		J.id: {{ r.journalyear }}/{{ r.journalsekvensnummer }}<br>
+		<div ng-if="r.offentligTittel">{{ r.offentligTittel }}<br></div>
+		<div ng-if="!r.offentligTittel">{{ r.tittel }}<br></div>
+		<div ng-if="r.beskrivelse">{{ r.beskrivelse }}<br></div>
 	    </div></td>
 	  </tr>
 	</tbody>

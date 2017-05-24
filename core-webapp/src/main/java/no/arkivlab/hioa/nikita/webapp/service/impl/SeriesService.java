@@ -136,6 +136,12 @@ public class SeriesService implements ISeriesService {
         return seriesRepository.findAll();
     }
 
+    public List<CaseFile> findAllCaseFileBySeries(String systemId) {
+        Series series = getSeriesOrThrow(systemId);
+        return caseFileService.findAllCaseFileBySeries(series);
+    }
+
+
     public List<Series> findAll(Sort sort) {
         return seriesRepository.findAll(sort);
     }

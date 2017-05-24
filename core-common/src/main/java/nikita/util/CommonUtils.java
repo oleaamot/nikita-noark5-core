@@ -202,7 +202,7 @@ public final class CommonUtils {
                 }
                 currentNode = objectNode.get(DESCRIPTION);
                 if (null != currentNode) {
-                    metadataEntity.setCode(currentNode.textValue());
+                    metadataEntity.setDescription(currentNode.textValue());
                     objectNode.remove(DESCRIPTION);
                 }
             }
@@ -229,7 +229,9 @@ public final class CommonUtils {
 
             public static void deserialiseCorrespondencePartType(ICorrespondencePartEntity correspondencePart,
                                                                  ObjectNode objectNode) {
+
                 CorrespondencePartType correspondencePartType = new CorrespondencePartType();
+                correspondencePart.setCorrespondencePartType(correspondencePartType);
                 deserialiseNoarkMetadataEntity(correspondencePartType, objectNode);
             }
 
@@ -760,7 +762,27 @@ public final class CommonUtils {
                 // Deserialize correspondencePartType
                 currentNode = objectNode.get(CORRESPONDENCE_PART_TYPE);
                 if (null != currentNode) {
-                    deserialiseCorrespondencePartType(correspondencePartEntity, objectNode);
+                    CorrespondencePartType correspondencePartType = new CorrespondencePartType();
+                    correspondencePartEntity.setCorrespondencePartType(correspondencePartType);
+
+                    JsonNode currentNode2 = currentNode.findValue(SYSTEM_ID);
+                    if (null != currentNode2) {
+                        correspondencePartType.setSystemId(currentNode2.textValue());
+                        //objectNode.remove(CODE);
+                    }
+                    currentNode2 = currentNode.findValue(CODE);
+                    if (null != currentNode2) {
+                        correspondencePartType.setCode(currentNode2.textValue());
+                        //objectNode.remove(CODE);
+                    }
+                    currentNode2 = currentNode.findValue(DESCRIPTION);
+                    if (null != currentNode2) {
+                        correspondencePartType.setDescription(currentNode2.textValue());
+                        //objectNode.remove(DESCRIPTION);
+                    }
+
+                    //deserialiseNoarkMetadataEntity(correspondencePartType, objectNode);
+//                    deserialiseCorrespondencePartType(correspondencePartEntity, objectNode);
                     objectNode.remove(CORRESPONDENCE_PART_TYPE);
                 }
 
@@ -1114,7 +1136,7 @@ public final class CommonUtils {
                     throws IOException {
                 // TODO:  Looks like the interface standard requires basetype here. Make sure it's implemented
                 // e.g."mappetype" {}
-                jgen.writeFieldName(CORRESPONDENCE_PART_TYPE);
+                jgen.writeFieldName(metadataEntity.getBaseTypeName());
                 jgen.writeStartObject();
                 jgen.writeStringField(SYSTEM_ID, metadataEntity.getSystemId());
                 jgen.writeStringField(CODE, metadataEntity.getCode());
