@@ -102,6 +102,10 @@ public class ApplicationService {
         return new FondsStructureDetails();
     }
 
+    public AdministrationDetails getAdministrationDetails() {
+        return new AdministrationDetails();
+    }
+
     public MetadataDetails getMetadataDetails() {
         return new MetadataDetails();
     }
