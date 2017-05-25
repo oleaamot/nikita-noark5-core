@@ -3,10 +3,7 @@ package no.arkivlab.hioa.nikita.webapp.web.controller;
 import com.codahale.metrics.annotation.Counted;
 import io.swagger.annotations.Api;
 import nikita.util.CommonUtils;
-import no.arkivlab.hioa.nikita.webapp.model.application.ApplicationDetails;
-import no.arkivlab.hioa.nikita.webapp.model.application.CaseHandlingDetails;
-import no.arkivlab.hioa.nikita.webapp.model.application.FondsStructureDetails;
-import no.arkivlab.hioa.nikita.webapp.model.application.MetadataDetails;
+import no.arkivlab.hioa.nikita.webapp.model.application.*;
 import no.arkivlab.hioa.nikita.webapp.service.application.ApplicationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,6 +66,15 @@ public class ApplicationController {
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(applicationService.getMetadataDetails());
+    }
+
+    @Counted
+    @RequestMapping(value = HATEOAS_API_PATH + SLASH + NOARK_ADMINISTRATION_PATH, method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<AdministrationDetails> adminPath(HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(applicationService.getAdministrationDetails());
     }
 
     @Counted
