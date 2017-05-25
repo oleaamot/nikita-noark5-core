@@ -28,7 +28,7 @@ import static nikita.config.N5ResourceMappings.*;
 import static org.springframework.http.HttpHeaders.ETAG;
 
 @RestController
-@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH,
+@RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_ADMINISTRATION_PATH + SLASH,
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 public class AdministrativeUnitController extends NoarkController {
 
