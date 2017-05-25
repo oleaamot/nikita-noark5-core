@@ -5,7 +5,7 @@ import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 
-import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART_INTERNAL;
+import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART_UNIT;
 
 @Entity
 @Table(name = "correspondence_part_unit")
@@ -97,7 +97,7 @@ public class CorrespondencePartUnit extends CorrespondencePart implements ICorre
 
     @Override
     public String getBaseTypeName() {
-        return CORRESPONDENCE_PART_INTERNAL;
+        return CORRESPONDENCE_PART_UNIT;
     }
 
     @Override
