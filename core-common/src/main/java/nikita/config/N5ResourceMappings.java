@@ -319,8 +319,15 @@ public final class N5ResourceMappings {
 
     public static final String CLASSIFICATION_SYSTEM_TYPE = "klassifikasjonstype";
 
+    public static final String USER = "bruker";
+    public static final String NEW_USER = NEW + DASH + USER;
+
+    public static final String RIGHT = "rettighet";
+    public static final String NEW_RIGHT = NEW + DASH + RIGHT;
+
     public static final String ADMINISTRATIVE_UNIT = "administrativEnhet";
     public static final String NEW_ADMINISTRATIVE_UNIT = NEW + DASH + "administrativEnhet";
+
     public static final String ADMINISTRATIVE_UNIT_STATUS = "administrativEnhetsstatus";
     public static final String ADMINISTRATIVE_UNIT_NAME = "administrativEnhetNavn";
     public static final String ADMINISTRATIVE_UNIT_PARENT_REFERENCE = "referanseOverordnetEnhet";
