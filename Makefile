@@ -9,6 +9,8 @@ build:
 	mvn -Dmaven.test.skip=true clean install
 run: build
 	mvn -f core-webapp/pom.xml spring-boot:run
+clean:
+	mvn -Dmaven.test.skip=true clean
 
 # This target should be run after spinning up elasticsearch and the application.
 # The tester might have more dependencies but you should at least have installed
