@@ -74,9 +74,9 @@ public class RegistryEntryService implements IRegistryEntryService {
         // It should be rejected at controller level
         // The incoming CorrespondencePartType will not have @id field set. Therefore, we have to look it up
         // in the database and make sure the proper CorrespondencePartType is associated with the CorrespondencePart
-        if (incomingCorrespondencePartType != null && incomingCorrespondencePartType.getSystemId() != null) {
+        if (incomingCorrespondencePartType != null && incomingCorrespondencePartType.getCode() != null) {
             CorrespondencePartType actualCorrespondencePartType =
-                    correspondencePartTypeRepository.findBySystemIdOrderBySystemId(incomingCorrespondencePartType.getSystemId());
+                    correspondencePartTypeRepository.findByCode(incomingCorrespondencePartType.getCode());
             if (actualCorrespondencePartType != null) {
                 correspondencePart.setCorrespondencePartType(actualCorrespondencePartType);
             }

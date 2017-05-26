@@ -1,0 +1,158 @@
+package nikita.model.noark5.v4.metadata;
+
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
+import nikita.util.exceptions.NikitaException;
+import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.Field;
+
+import javax.persistence.*;
+
+import static nikita.config.Constants.NOARK_METADATA_PATH;
+import static nikita.config.Constants.ONLY_WHITESPACE;
+
+/**
+ * Created by tsodring on 3/23/17.
+ */
+@MappedSuperclass
+public class MetadataSuperClassBase implements INikitaEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pk_id", nullable = false, insertable = true, updatable = false)
+    protected Long id;
+
+    /**
+     * M001 - systemID (xs:string)
+     */
+    @Column(name = "system_id", unique = true)
+    @Audited
+    @Field
+    protected String systemId;
+
+    /**
+     * M021 - beskrivelse (xs:string)
+     */
+    @Column(name = "description")
+    @Audited
+    protected String description;
+
+    @Column(name = "owned_by")
+    @Audited
+    protected String ownedBy;
+
+    @Version
+    @Column(name = "version")
+    protected Long version;
+
+    // Used for soft delete.
+    @Column(name = "deleted")
+    @Audited
+    private Boolean deleted;
+
+    @Override
+    public String getSystemId() {
+        return systemId;
+    }
+
+    @Override
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    @Override
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    @Override
+    public String getOwnedBy() {
+        return ownedBy;
+    }
+
+    @Override
+    public void setOwnedBy(String ownedBy) {
+        this.ownedBy = ownedBy;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public Long getVersion() {
+        return version;
+    }
+
+    @Override
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    //@Override
+    public boolean validateForUpdate(String description) {
+        // Gonna be the same validation for both create and delte
+        return validateForCreate(description);
+    }
+
+    //@Override
+    public boolean validateForCreate(String errorDescription) {
+        if (description == null) {
+            errorDescription += "beskrivelse field is empty. ";
+            return false;
+        }
+        if (description.contains(ONLY_WHITESPACE)) {
+            errorDescription += "beskrivelse field contains only whitespace. ";
+            return false;
+        }
+        if (description.contains(ONLY_WHITESPACE)) {
+            errorDescription += "kode field contains only whitespace. ";
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    // This method should never be called. This exception can only occur if you add a new
+    // metadata entity and forget to override this method
+    public String getBaseTypeName() {
+        throw new NikitaException("MetadataSuperClass exception. Internal exception. " +
+                "This exception can only occur if a new metadata entity is introduced and you forgot to override " +
+                "getBaseTypeName. Check logfile to see what caused this");
+    }
+
+    @Override
+    // All Metadata entities belong to "metadata". These entities pick the value up here
+    public String getFunctionalTypeName() {
+        return NOARK_METADATA_PATH;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getName() + " {" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", deleted=" + deleted +
+                ", version=" + version +
+                ", ownedBy='" + ownedBy + '\'' +
+                '}';
+    }
+}

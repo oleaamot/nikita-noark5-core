@@ -83,7 +83,7 @@ public class CorrespondencePartTypeService implements ICorrespondencePartTypeSer
      * @return
      */
     @Override
-    public List<CorrespondencePartType> findByCode(String code) {
+    public CorrespondencePartType findByCode(String code) {
         return correspondencePartTypeRepository.findByCode(code);
     }
 

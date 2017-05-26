@@ -13,7 +13,7 @@ import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART_TYPE;
 @Table(name = "correspondence_part_type")
 @AttributeOverride(name = "id", column = @Column(name = "pk_correspondence_part_type_id"))
 @Audited
-public class CorrespondencePartType extends MetadataSuperClass {
+public class CorrespondencePartType extends UniqueCodeMetadataSuperClass {
     private static final long serialVersionUID = 1L;
 
     @Override

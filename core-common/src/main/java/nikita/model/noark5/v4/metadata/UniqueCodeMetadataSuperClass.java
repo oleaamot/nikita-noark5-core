@@ -10,12 +10,13 @@ import javax.persistence.MappedSuperclass;
  * Created by tsodring on 3/23/17.
  */
 @MappedSuperclass
-public class MetadataSuperClass extends MetadataSuperClassBase implements IMetadataEntity {
+public class UniqueCodeMetadataSuperClass extends MetadataSuperClassBase implements IMetadataEntity {
+
 
     /**
      * M -  (xs:string)
      */
-    @Column(name = "code")
+    @Column(name = "code", unique = true)
     @Audited
     protected String code;
 

@@ -37,7 +37,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.MetadataConstants.CORRESPONDENCE_PART_CODE_EA;
@@ -394,13 +393,12 @@ public class RegistryEntryHateoasController extends NoarkController {
     ) throws NikitaException {
         CorrespondencePartPerson suggestedCorrespondencePart = new CorrespondencePartPerson();
 
-        List<CorrespondencePartType> correspondencePartTypes =
+        CorrespondencePartType correspondencePartType =
                 correspondencePartTypeService.findByCode(CORRESPONDENCE_PART_CODE_EA);
-        if (correspondencePartTypes.get(0) == null) {
+        if (correspondencePartType == null) {
             throw new NikitaException("Internal error, metadata missing. [" +
                     CORRESPONDENCE_PART_CODE_EA + "] returns no value");
         }
-        CorrespondencePartType correspondencePartType = correspondencePartTypes.get(0);
         suggestedCorrespondencePart.setCorrespondencePartType(correspondencePartType);
 
         PostalAddress postalAddress = new PostalAddress();
@@ -462,13 +460,12 @@ public class RegistryEntryHateoasController extends NoarkController {
     ) throws NikitaException {
         CorrespondencePartUnit suggestedCorrespondencePart = new CorrespondencePartUnit();
 
-        List<CorrespondencePartType> correspondencePartTypes =
+        CorrespondencePartType correspondencePartType =
                 correspondencePartTypeService.findByCode(CORRESPONDENCE_PART_CODE_EA);
-        if (correspondencePartTypes.get(0) == null) {
+        if (correspondencePartType == null) {
             throw new NikitaException("Internal error, metadata missing. [" +
                     CORRESPONDENCE_PART_CODE_EA + "] returns no value");
         }
-        CorrespondencePartType correspondencePartType = correspondencePartTypes.get(0);
         suggestedCorrespondencePart.setCorrespondencePartType(correspondencePartType);
 
         PostalAddress postalAddress = new PostalAddress();
@@ -529,13 +526,12 @@ public class RegistryEntryHateoasController extends NoarkController {
     ) throws NikitaException {
         CorrespondencePartInternal suggestedCorrespondencePart = new CorrespondencePartInternal();
 
-        List<CorrespondencePartType> correspondencePartTypes =
+        CorrespondencePartType correspondencePartType =
                 correspondencePartTypeService.findByCode(CORRESPONDENCE_PART_CODE_EA);
-        if (correspondencePartTypes.get(0) == null) {
+        if (correspondencePartType == null) {
             throw new NikitaException("Internal error, metadata missing. [" +
                     CORRESPONDENCE_PART_CODE_EA + "] returns no value");
         }
-        CorrespondencePartType correspondencePartType = correspondencePartTypes.get(0);
         suggestedCorrespondencePart.setCorrespondencePartType(correspondencePartType);
 
         // The reason this is not implemented is that we are missing AdministrativeUnit and multiple users

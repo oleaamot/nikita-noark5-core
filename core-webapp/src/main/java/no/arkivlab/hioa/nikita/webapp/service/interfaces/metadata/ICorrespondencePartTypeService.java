@@ -21,5 +21,5 @@ public interface ICorrespondencePartTypeService {
 
     List<CorrespondencePartType> findByDescription(String description);
 
-    List<CorrespondencePartType> findByCode(String code);
+    CorrespondencePartType findByCode(String code);
 }
