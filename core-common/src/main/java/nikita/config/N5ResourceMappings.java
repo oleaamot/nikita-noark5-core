@@ -320,6 +320,7 @@ public final class N5ResourceMappings {
     public static final String CLASSIFICATION_SYSTEM_TYPE = "klassifikasjonstype";
 
     public static final String USER = "bruker";
+    public static final String USER_NAME = "brukerNavn";
     public static final String NEW_USER = NEW + DASH + USER;
 
     public static final String RIGHT = "rettighet";

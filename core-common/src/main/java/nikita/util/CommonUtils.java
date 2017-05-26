@@ -1663,10 +1663,11 @@ public final class CommonUtils {
 
                 Set<FondsCreator> fondsCreators = fondsCreatorObject.getReferenceFondsCreator();
                 if (fondsCreators != null) {
-                    // TODO: Will this cause an exception?
                     for (FondsCreator fondsCreator : fondsCreators) {
                         if (fondsCreator != null) {
+                            jgen.writeObjectFieldStart(FONDS_CREATOR);
                             printFondsCreator(jgen, fondsCreator);
+                            jgen.writeEndObject();
                         }
                     }
                 }
@@ -1676,7 +1677,9 @@ public final class CommonUtils {
                                                  IFondsCreatorEntity fondsCreatorEntity)
                     throws IOException {
                 if (fondsCreatorEntity != null) {
-                    jgen.writeObjectFieldStart(FONDS_CREATOR);
+                    if (fondsCreatorEntity.getSystemId() != null) {
+                        jgen.writeStringField(SYSTEM_ID, fondsCreatorEntity.getSystemId());
+                    }
                     if (fondsCreatorEntity.getFondsCreatorId() != null) {
                         jgen.writeStringField(FONDS_CREATOR_ID, fondsCreatorEntity.getFondsCreatorId());
                     }
@@ -1686,10 +1689,8 @@ public final class CommonUtils {
                     if (fondsCreatorEntity.getDescription() != null) {
                         jgen.writeStringField(DESCRIPTION, fondsCreatorEntity.getDescription());
                     }
-                    jgen.writeEndObject();
                 }
             }
-
 
             public static void printElectronicSignature(JsonGenerator jgen,
                                                         IElectronicSignature electronicSignatureEntity)

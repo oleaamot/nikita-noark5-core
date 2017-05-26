@@ -43,7 +43,6 @@ public class FondsHateoasSerializer extends HateoasSerializer implements IHateoa
         CommonUtils.Hateoas.Serialize.printStorageLocation(jgen, fonds);
         CommonUtils.Hateoas.Serialize.printCreateEntity(jgen, fonds);
         CommonUtils.Hateoas.Serialize.printFinaliseEntity(jgen, fonds);
-        CommonUtils.Hateoas.Serialize.printFondsCreators(jgen, fonds);
         CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, fondsHateoas.getLinks(fonds));
         jgen.writeEndObject();
     }
