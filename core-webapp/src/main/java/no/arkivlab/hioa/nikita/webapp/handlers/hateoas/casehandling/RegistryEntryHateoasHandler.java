@@ -109,7 +109,7 @@ public class RegistryEntryHateoasHandler extends BasicRecordHateoasHandler imple
     public void addNewCorrespondencePartPerson(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
         hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
                 NOARK_CASE_HANDLING_PATH + SLASH + REGISTRY_ENTRY + SLASH +
-                entity.getSystemId() + SLASH + NEW_CORRESPONDENCE_PART + SLASH,
+                entity.getSystemId() + SLASH + NEW_CORRESPONDENCE_PART_PERSON + SLASH,
                 REL_CASE_HANDLING_NEW_CORRESPONDENCE_PART_PERSON, false));
     }
 
