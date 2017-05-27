@@ -40,7 +40,6 @@ public class CorrespondencePartService implements ICorrespondencePartService {
 
         // Copy all the values you are allowed to copy ....
         existingCorrespondencePart.setContactInformation(incomingCorrespondencePart.getContactInformation());
-        existingCorrespondencePart.setCorrespondencePartType(incomingCorrespondencePart.getCorrespondencePartType());
         existingCorrespondencePart.setdNumber(incomingCorrespondencePart.getdNumber());
         existingCorrespondencePart.setName(incomingCorrespondencePart.getName());
         existingCorrespondencePart.setSocialSecurityNumber(incomingCorrespondencePart.getSocialSecurityNumber());
@@ -57,7 +56,7 @@ public class CorrespondencePartService implements ICorrespondencePartService {
         CorrespondencePartInternal existingCorrespondencePart =
                 (CorrespondencePartInternal) getCorrespondencePartOrThrow(systemId);
         // Copy all the values you are allowed to copy ....
-        existingCorrespondencePart.setCorrespondencePartType(incomingCorrespondencePart.getCorrespondencePartType());
+
         existingCorrespondencePart.setAdministrativeUnit(incomingCorrespondencePart.getAdministrativeUnit());
         existingCorrespondencePart.setCaseHandler(incomingCorrespondencePart.getCaseHandler());
         existingCorrespondencePart.setReferenceAdministrativeUnit(incomingCorrespondencePart.getReferenceAdministrativeUnit());
@@ -123,5 +122,33 @@ public class CorrespondencePartService implements ICorrespondencePartService {
             throw new NoarkEntityNotFoundException(info);
         }
         return correspondencePart;
+    }
+
+    @Override
+    public void deleteCorrespondencePartUnit(@NotNull String code) {
+        CorrespondencePartUnit correspondencePartUnit = (CorrespondencePartUnit) getCorrespondencePartOrThrow(code);
+        correspondencePartRepository.delete(correspondencePartUnit);
+    }
+
+    @Override
+    public void deleteCorrespondencePartPerson(@NotNull String code) {
+        CorrespondencePartPerson correspondencePartPerson = (CorrespondencePartPerson) getCorrespondencePartOrThrow(code);
+        correspondencePartRepository.delete(correspondencePartPerson);
+    }
+
+    @Override
+    public void deleteCorrespondencePartInternal(@NotNull String code) {
+        CorrespondencePartInternal correspondencePartInternal = (CorrespondencePartInternal) getCorrespondencePartOrThrow(code);
+
+/*
+        // Disassociate the link between Fonds and FondsCreator
+        // https://github.com/HiOA-ABI/nikita-noark5-core/issues/82
+        Query q = entityManager.createNativeQuery("DELETE FROM fonds_fonds_creator WHERE f_pk_fonds_id  = :id ;");
+        q.setParameter("id", fonds.getId());
+        q.executeUpdate();
+        entityManager.remove(fonds);
+        entityManager.flush();
+        entityManager.clear();*/
+        correspondencePartRepository.delete(correspondencePartInternal);
     }
 }
