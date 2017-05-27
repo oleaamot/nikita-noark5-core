@@ -20,6 +20,14 @@ Release 0.2 UNRELEASED
  * Started on prototype to show the public mail journal.
  * Improved performance by disabling Sprint FileWatcher.
  * Added support for 'arkivskaper', 'saksmappe' and 'journalpost'.
+ * Added support for some metadata codelists.
+ * Added support for Cross-origin resource sharing (CORS).
+ * Changed login method from Basic Auth to JSON Web Token (RFC 7519) style.
+ * Added support for GET-ing ny-* URLs.
+ * Added support for modifying entities using PUT and eTag.
+ * Added support for returning XML output on request.
+ * Removed support for English field and class names, limiting ourself
+   to the official names.
  * ...
 
 Release 0.1 2017-01-31 (commit 6ec4acb9c1d5b72fd4bf58074769233e78483bb4)
