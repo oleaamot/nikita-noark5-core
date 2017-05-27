@@ -16,6 +16,6 @@ Release 0.2 UNRELEASED
  * Added support for docker container images
  * ...
 
-Release 0.1 2017-01-31
+Release 0.1 2017-01-31 (commit 6ec4acb9c1d5b72fd4bf58074769233e78483bb4)
 -----------------------
  * Able to store archive metadata.
