@@ -68,12 +68,6 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
-        <!-- Allows live reloading of changed class files -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-        </dependency>
-
         <!-- In memory database, used for demo mode only -->
         <dependency>
             <groupId>com.h2database</groupId>
