@@ -323,7 +323,7 @@ public final class CommonUtils {
                         finaliseEntity.setFinalisedDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The Noark object you tried to create " +
-                                "has a malformed avsluttetData/finalisedDate. Make sure format is " +
+                                "has a malformed avsluttetDato. Make sure format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
                     objectNode.remove(FINALISED_DATE);
