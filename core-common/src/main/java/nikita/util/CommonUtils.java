@@ -441,7 +441,7 @@ public final class CommonUtils {
                         commentEntity.setCommentDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The Comment object you tried to create " +
-                                "has a malformed merknadsdato/commentDate. Make sure the format is " +
+                                "has a malformed merknadsdato. Make sure the format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
                     objectNode.remove(COMMENT_DATE);
@@ -511,7 +511,7 @@ public final class CommonUtils {
                         objectNode.remove(DISPOSAL_DATE);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The Disposal object you tried to create " +
-                                "has a malformed kassasjonsdato/disposalDate. Make sure the format is " +
+                                "has a malformed kassasjonsdato. Make sure the format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
                 }
@@ -546,7 +546,7 @@ public final class CommonUtils {
                         disposalUndertakenEntity.setDisposalDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The DisposalUndertaken object you tried to " +
-                                "create has a malformed kassasjonsdato/disposalDate. Make sure the format is " +
+                                "create has a malformed kassasjonsdato. Make sure the format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
                     objectNode.remove(DISPOSAL_UNDERTAKEN_DATE);
@@ -586,7 +586,7 @@ public final class CommonUtils {
                         deletionEntity.setDeletionDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The deletion object you tried to create " +
-                                "has a malformed slettetDato/deletionDate. Make sure the format is " +
+                                "has a malformed slettetDato. Make sure the format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
                     objectNode.remove(DELETION_DATE);
@@ -688,7 +688,7 @@ public final class CommonUtils {
                         precedenceEntity.setPrecedenceDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The deletion object you tried to create " +
-                                "has a malformed presedensDato/precedenceDate. Make sure the format is " +
+                                "has a malformed presedensDato. Make sure the format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
                     objectNode.remove(PRECEDENCE_DATE);
@@ -725,7 +725,7 @@ public final class CommonUtils {
                         precedenceEntity.setPrecedenceApprovedDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The deletion object you tried to create " +
-                                "has a malformed presedensGodkjentDato/precedenceApprovedDate. Make sure the format " +
+                                "has a malformed presedensGodkjentDato. Make sure the format " +
                                 "is " + NOARK_DATE_FORMAT_PATTERN);
                     }
                     objectNode.remove(PRECEDENCE_APPROVED_DATE);
@@ -1093,7 +1093,7 @@ public final class CommonUtils {
                         screeningEntity.setScreeningExpiresDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The deletion object you tried to create " +
-                                "has a malformed skjermingOpphoererDato/screeningExpiresDate. Make sure the" +
+                                "has a malformed skjermingOpphoererDato. Make sure the" +
                                 " format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
@@ -1136,7 +1136,7 @@ public final class CommonUtils {
                         classifiedEntity.setClassificationDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The screening object you tried to create " +
-                                "has a malformed graderingsdato/classificationDate. Make sure the format is " +
+                                "has a malformed graderingsdato. Make sure the format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
                     objectNode.remove(CLASSIFICATION_DATE);
@@ -1156,7 +1156,7 @@ public final class CommonUtils {
                         classifiedEntity.setClassificationDowngradedDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The screening object you tried to create " +
-                                "has a malformed nedgraderingsdato/classificationDowngradedDate. Make sure the " +
+                                "has a malformed nedgraderingsdato. Make sure the " +
                                 "format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
