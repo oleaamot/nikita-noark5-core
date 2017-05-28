@@ -183,7 +183,7 @@ let postliste = app.controller('PostlisteController', ['$scope', '$http', functi
 	}
 	for (rel in file._links) {
 	    relation = file._links[rel].rel;
-        if (relation == 'http://rel.kxml.no/noark5/v4/api/casehandling/journalpost/') {
+        if (relation == 'http://rel.kxml.no/noark5/v4/api/sakarkiv/journalpost/') {
 		href = file._links[rel].href;
 		console.log("fetching " + href);
 		$http({
