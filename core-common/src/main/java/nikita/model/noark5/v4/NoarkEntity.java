@@ -102,7 +102,7 @@ public class NoarkEntity implements INikitaEntity, Comparable<NoarkEntity>   {
     @Override
     public void setVersion(Long version) {
 
-        if (this.version != version) {
+        if (!this.version.equals(version)) {
             throw new RuntimeException("Concurrency Exception. Old version [" + this.version + "], new version "
                     + "[" + version + "]");
         }
