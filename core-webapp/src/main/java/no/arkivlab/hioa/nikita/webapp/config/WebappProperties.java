@@ -591,7 +591,7 @@ public class WebappProperties {
             return checksumAlgorithm;
         }
 
-        public void setChecksumAlgorithm(String checksum_algorithm) {
+        public void setChecksumAlgorithm(String checksumAlgorithm) {
             this.checksumAlgorithm = checksumAlgorithm;
         }
     }
