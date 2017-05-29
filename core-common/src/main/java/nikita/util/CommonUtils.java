@@ -299,8 +299,8 @@ public final class CommonUtils {
                         noarkCreateEntity.setCreatedDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The Noark object you tried to create " +
-                                "has a malformed opprettetData/createdDate. Make sure format is " +
-                                NOARK_DATE_FORMAT_PATTERN);
+                                "has a malformed opprettetDato. Make sure format is " +
+                                NOARK_DATE_TIME_FORMAT_PATTERN);
                     }
                     objectNode.remove(CREATED_DATE);
                 }
