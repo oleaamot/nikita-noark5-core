@@ -499,7 +499,7 @@ public final class CommonUtils {
                 // Deserialize preservationTime
                 currentNode = objectNode.get(DISPOSAL_PRESERVATION_TIME);
                 if (null != currentNode) {
-                    disposalEntity.setPreservationTime(Integer.getInteger(currentNode.textValue()));
+                    disposalEntity.setPreservationTime(Integer.valueOf(currentNode.textValue()));
                     objectNode.remove(DISPOSAL_PRESERVATION_TIME);
                 }
                 // Deserialize disposalDate

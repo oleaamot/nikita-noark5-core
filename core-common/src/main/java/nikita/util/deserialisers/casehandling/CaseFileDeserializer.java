@@ -81,13 +81,13 @@ public class CaseFileDeserializer extends JsonDeserializer {
         // Deserialize caseYear
         currentNode = objectNode.get(CASE_YEAR);
         if (null != currentNode) {
-            caseFile.setCaseYear(Integer.getInteger(currentNode.textValue()));
+            caseFile.setCaseYear(Integer.valueOf(currentNode.textValue()));
             objectNode.remove(CASE_YEAR);
         }
         // Deserialize caseSequenceNumber
         currentNode = objectNode.get(CASE_SEQUENCE_NUMBER);
         if (null != currentNode) {
-            caseFile.setCaseSequenceNumber(Integer.getInteger(currentNode.textValue()));
+            caseFile.setCaseSequenceNumber(Integer.valueOf(currentNode.textValue()));
             objectNode.remove(CASE_SEQUENCE_NUMBER);
         }
         // Deserialize caseDate

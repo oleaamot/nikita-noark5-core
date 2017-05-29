@@ -107,19 +107,19 @@ public class RegistryEntryDeserializer extends JsonDeserializer {
         // Deserialize recordYear
         currentNode = objectNode.get(REGISTRY_ENTRY_YEAR);
         if (null != currentNode) {
-            registryEntry.setRecordYear(Integer.getInteger(currentNode.textValue()));
+            registryEntry.setRecordYear(Integer.valueOf(currentNode.textValue()));
             objectNode.remove(REGISTRY_ENTRY_YEAR);
         }
         // Deserialize recordSequenceNumber
         currentNode = objectNode.get(REGISTRY_ENTRY_SEQUENCE_NUMBER);
         if (null != currentNode) {
-            registryEntry.setRecordSequenceNumber(Integer.getInteger(currentNode.textValue()));
+            registryEntry.setRecordSequenceNumber(Integer.valueOf(currentNode.textValue()));
             objectNode.remove(REGISTRY_ENTRY_SEQUENCE_NUMBER);
         }
         // Deserialize registryEntryNumber
         currentNode = objectNode.get(REGISTRY_ENTRY_NUMBER);
         if (null != currentNode) {
-            registryEntry.setRegistryEntryNumber(Integer.getInteger(currentNode.textValue()));
+            registryEntry.setRegistryEntryNumber(Integer.valueOf(currentNode.textValue()));
             objectNode.remove(REGISTRY_ENTRY_NUMBER);
         }
         // Deserialize registryEntryType
@@ -214,7 +214,7 @@ public class RegistryEntryDeserializer extends JsonDeserializer {
         // Deserialize numberOfAttachments
         currentNode = objectNode.get(REGISTRY_ENTRY_NUMBER_OF_ATTACHMENTS);
         if (null != currentNode) {
-            registryEntry.setNumberOfAttachments(Integer.getInteger(currentNode.textValue()));
+            registryEntry.setNumberOfAttachments(Integer.valueOf(currentNode.textValue()));
             objectNode.remove(REGISTRY_ENTRY_NUMBER_OF_ATTACHMENTS);
         }
         // Deserialize loanedDate
