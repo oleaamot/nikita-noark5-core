@@ -363,19 +363,19 @@ public final class CommonUtils {
             }
 
             public static String checkNodeObjectEmpty(JsonNode objectNode) {
-                String result = "";
+                StringBuffer result = new StringBuffer("");
                 if (objectNode.size() != 0) {
                     Iterator<Map.Entry<String, JsonNode>> nodes = objectNode.fields();
                     while (nodes.hasNext()) {
                         Map.Entry entry = nodes.next();
                         String keyField = (String) entry.getKey();
-                        result += keyField;
+                        result.append(keyField);
                         if (nodes.hasNext()) {
-                            result += ", ";
+                            result.append(", ");
                         }
                     }
                 }
-                return result;
+                return result.toString();
             }
 
             // TODO: FIX THIS!!!!
