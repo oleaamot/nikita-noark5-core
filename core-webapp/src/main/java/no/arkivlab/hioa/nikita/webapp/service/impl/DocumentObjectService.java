@@ -2,6 +2,7 @@ package no.arkivlab.hioa.nikita.webapp.service.impl;
 
 import nikita.model.noark5.v4.DocumentObject;
 import nikita.repository.n5v4.IDocumentObjectRepository;
+import nikita.util.exceptions.NikitaMalformedInputDataException;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
 import nikita.util.exceptions.StorageException;
 import nikita.util.exceptions.StorageFileNotFoundException;
@@ -52,7 +53,7 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT_FILE_NAME;
 public class DocumentObjectService implements IDocumentObjectService {
 
     private final Path rootLocation;
-    private final String checksumAlgorithm;
+    private final String defaultChecksumAlgorithm;
     private final Logger logger = LoggerFactory.getLogger(DocumentObjectService.class);
     //@Value("${nikita-noark5-core.pagination.maxPageSize}")
     private Integer maxPageSize = new Integer(10);
@@ -66,7 +67,7 @@ public class DocumentObjectService implements IDocumentObjectService {
                                  WebappProperties webappProperties) {
         this.documentObjectRepository = documentObjectRepository;
         this.entityManager = entityManager;
-        this.checksumAlgorithm = webappProperties.getChecksumProperties().getChecksumAlgorithm();
+        this.defaultChecksumAlgorithm = webappProperties.getChecksumProperties().getChecksumAlgorithm();
         this.rootLocation = Paths.get(webappProperties.getStorageProperties().getLocation());
     }
 
@@ -76,6 +77,15 @@ public class DocumentObjectService implements IDocumentObjectService {
         NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(documentObject);
         NoarkUtils.NoarkEntity.Create.setCreateEntityValues(documentObject);
         NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(documentObject);
+
+	// Make sure checksum algoritm is one we understand.  So far
+	// we only understand one algorithm, the default.
+	String currentChecksumAlgorithm = documentObject.getChecksumAlgorithm();
+	if (null != currentChecksumAlgorithm &&
+	    !this.defaultChecksumAlgorithm.equals(currentChecksumAlgorithm)) {
+	    // TODO figure out proper exception.
+	    throw new NikitaMalformedInputDataException("The checksum algorithm " + documentObject.getChecksumAlgorithm() + " is not supported");
+	}
         return documentObjectRepository.save(documentObject);
     }
 
@@ -89,6 +99,14 @@ public class DocumentObjectService implements IDocumentObjectService {
      * inputStream.read calculates the checksum while reading the input file as it is a DigestInputStream
      */
     public void storeAndCalculateChecksum(InputStream inputStream, DocumentObject documentObject) {
+	String checksumAlgorithm = documentObject.getChecksumAlgorithm();
+	if (null == checksumAlgorithm) {
+	    checksumAlgorithm = defaultChecksumAlgorithm;
+            documentObject.setChecksumAlgorithm(checksumAlgorithm);
+	}
+	if (null != documentObject.getReferenceDocumentFile()) {
+	    throw new StorageException("There is already a file associated with " + documentObject);
+	}
         try {
 
             MessageDigest md = MessageDigest.getInstance(checksumAlgorithm);
@@ -99,6 +117,7 @@ public class DocumentObjectService implements IDocumentObjectService {
 
             // Check if the document storage directory exists, if not try to create it
             // This should have been done with init!!
+            // TODO perhaps better to raise an error if somehow init failed to create it?
             if (!Files.exists(directory)) {
                 Files.createDirectory(directory);
             }
@@ -112,7 +131,8 @@ public class DocumentObjectService implements IDocumentObjectService {
                         " file is being associated with " + documentObject);
             }
 
-            // Create a DigestInputStream to be read with the checksumAlgorithm identified in the properties file
+            // Create a DigestInputStream to be read with the
+            // checksumAlgorithm identified in the properties file
             DigestInputStream digestInputStream = new DigestInputStream(inputStream, md);
             FileOutputStream outputStream = new FileOutputStream(path.toFile());
 
@@ -146,6 +166,18 @@ public class DocumentObjectService implements IDocumentObjectService {
                         "upload! This file is being associated with " + documentObject);
             }
 
+            if (!documentObject.getFileSize().equals(bytesTotal)) {
+                Files.delete(file);
+                String logmsg = "The uploaded file (" + file.getFileName() + ") length " +
+                    bytesTotal + " did not match the dokumentobjekt filstoerrelse " +
+                    documentObject.getFileSize() + " and was deleted.";
+                    logger.warn(logmsg);
+                String msg = logmsg +
+		    " Rejecting upload! This file is being associated with " +
+                    documentObject;
+                throw new StorageException(msg);
+            }
+
             // Get the digest
             byte[] digest = digestInputStream.getMessageDigest().digest();
 
@@ -154,8 +186,23 @@ public class DocumentObjectService implements IDocumentObjectService {
             for (byte b : digest) {
                 sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
             }
-            documentObject.setChecksum(sb.toString());
-            documentObject.setChecksumAlgorithm(checksumAlgorithm);
+            // TODO figure what the spec will say about existing
+            // values in documentObject.  For now, only set the values
+            // if they are blank, and reject the file if the checksum
+            // did not match.
+            String olddigest = documentObject.getChecksum();
+            String newdigest = sb.toString();
+            if (null == olddigest) {
+                documentObject.setChecksum(newdigest);
+            } else if (!olddigest.equals(newdigest)) {
+                Files.delete(file);
+                String msg = "The file (" + file.getFileName() + ") checksum " +
+                    newdigest +
+                    " do not match the already stored checksum.  Rejecting " +
+                    "upload! This file is being associated with " +
+                    documentObject;
+                throw new StorageException(msg);
+            }
             documentObject.setReferenceDocumentFile(file.toString());
 
         } catch (IOException e) {
