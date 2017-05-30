@@ -363,30 +363,6 @@ public class ClassificationSystemService implements IClassificationSystemService
         return classificationSystemRepository.save(classificationSystem);
     }
 
-    public ClassificationSystem updateClassificationSystemSetFinalized(Long id){
-        ClassificationSystem classificationSystem = classificationSystemRepository.findById(id);
-
-        if (classificationSystem == null) {
-            // TODO throw Object not find
-        }
-
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        classificationSystem.setFinalisedDate(new Date());
-        classificationSystem.setFinalisedBy(username);
-
-        return classificationSystemRepository.save(classificationSystem);
-    }
-
-    public ClassificationSystem updateClassificationSystemSetTitle(Long id, String newTitle){
-
-        ClassificationSystem classificationSystem = classificationSystemRepository.findById(id);
-
-
-        return classificationSystemRepository.save(classificationSystem);
-    }
-
-
     // All READ operations
     @Override
     public List<ClassificationSystem> findClassificationSystemByOwnerPaginated(Integer top, Integer skip) {
