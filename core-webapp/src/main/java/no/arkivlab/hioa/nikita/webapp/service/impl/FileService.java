@@ -399,7 +399,7 @@ public class FileService implements IFileService {
         File file = fileRepository.findById(id);
 
         if (file == null) {
-            // throw Object not find
+            // TODO throw Object not find
         }
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();

@@ -285,7 +285,7 @@ public class RecordService implements IRecordService {
         Record record = recordRepository.findById(id);
 
         if (record == null) {
-            // throw Object not find
+            // TODO throw Object not find
         }
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();

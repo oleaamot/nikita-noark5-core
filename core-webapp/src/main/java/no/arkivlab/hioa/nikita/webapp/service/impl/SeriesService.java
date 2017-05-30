@@ -484,7 +484,7 @@ public class SeriesService implements ISeriesService {
         Series series = seriesRepository.findById(id);
 
         if (series == null) {
-            // throw Object not find
+            // TODO throw Object not find
         }
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -501,9 +501,9 @@ public class SeriesService implements ISeriesService {
         Series series = seriesRepository.findById(id);
 
         if (series == null) {
-            // throw Object not find
+            // TODO throw Object not find
         } else if (series.getSeriesStatus().equals(STATUS_CLOSED)) {
-            // throw Object finalises, cannot be edited
+            // TODO throw Object finalises, cannot be edited
         }
         series.setTitle(newTitle);
         return seriesRepository.save(series);

@@ -363,7 +363,7 @@ public class ClassService implements IClassService {
         Class klass = classRepository.findById(id);
 
         if (klass == null) {
-            // throw Object not find
+            // TODO throw Object not find
         }
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();

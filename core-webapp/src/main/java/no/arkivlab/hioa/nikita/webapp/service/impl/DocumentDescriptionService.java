@@ -316,7 +316,7 @@ public class DocumentDescriptionService implements IDocumentDescriptionService {
         DocumentDescription documentDescription = documentDescriptionRepository.findById(id);
 
         if (documentDescription == null) {
-            // throw Object not find
+            // TODO throw Object not find
         }
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();

@@ -504,7 +504,7 @@ public class FondsService implements IFondsService {
         Fonds fonds = fondsRepository.findById(id);
 
         if (fonds == null) {
-            // throw Object not find
+            // TODO throw Object not find
         }
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -521,9 +521,9 @@ public class FondsService implements IFondsService {
         Fonds fonds = fondsRepository.findById(id);
 
         if (fonds == null) {
-            // throw Object not find
+            // TODO throw Object not find
         } else if (fonds.getFondsStatus().equals(STATUS_CLOSED)) {
-            // throw Object finalises, cannot be edited
+            // TODO throw Object finalises, cannot be edited
         }
         fonds.setTitle(newTitle);
         return fondsRepository.save(fonds);

@@ -367,7 +367,7 @@ public class ClassificationSystemService implements IClassificationSystemService
         ClassificationSystem classificationSystem = classificationSystemRepository.findById(id);
 
         if (classificationSystem == null) {
-            // throw Object not find
+            // TODO throw Object not find
         }
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
