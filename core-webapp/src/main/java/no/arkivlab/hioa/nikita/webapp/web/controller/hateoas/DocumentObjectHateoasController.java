@@ -189,7 +189,8 @@ public class DocumentObjectHateoasController extends NoarkController {
         response.addHeader("Content-Type", documentObject.getMimeType());
 
         InputStream filestream = fileResource.getInputStream();
-        IOUtils.copy(filestream, response.getOutputStream());
+        long bytesTotal = IOUtils.copyLarge(filestream,
+                                            response.getOutputStream());
         filestream.close();
         response.flushBuffer();
     }
