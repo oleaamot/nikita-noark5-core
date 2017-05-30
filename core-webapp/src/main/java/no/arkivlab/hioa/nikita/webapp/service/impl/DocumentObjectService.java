@@ -116,13 +116,28 @@ public class DocumentObjectService implements IDocumentObjectService {
             DigestInputStream digestInputStream = new DigestInputStream(inputStream, md);
             FileOutputStream outputStream = new FileOutputStream(path.toFile());
 
-            long bytesTotal = IOUtils.copyLarge(digestInputStream, outputStream);
+            long bytesTotal = -1;
+            try { // Try close without exceptions if copy() threw an exception.
+                bytesTotal = IOUtils.copyLarge(digestInputStream, outputStream);
+                
+                // Tidy up and close outputStream
+                outputStream.flush();
+                outputStream.close();
 
-            documentObject.setReferenceDocumentFile(file.toString());
-
-            // Tidy up and close outputStream
-            outputStream.flush();
-            outputStream.close();
+                // Finished with inputStream now as well
+                digestInputStream.close();
+            } finally {
+                try { // Try close without exceptions if copy() threw an exception.
+                    digestInputStream.close();
+                } catch(IOException e) {
+                    // swallow any error to expose exceptions from IOUtil.copy()
+                }
+                try { // same for outputStream
+                    outputStream.close();
+                } catch(IOException e) {
+                    // empty
+                }
+            }
 
             if (bytesTotal == 0L) {
                 Files.delete(file);
@@ -134,9 +149,6 @@ public class DocumentObjectService implements IDocumentObjectService {
             // Get the digest
             byte[] digest = digestInputStream.getMessageDigest().digest();
 
-            // Finished with inputStream now as well
-            digestInputStream.close();
-
             // Convert digest to HEX
             StringBuilder sb = new StringBuilder();
             for (byte b : digest) {
@@ -144,6 +156,7 @@ public class DocumentObjectService implements IDocumentObjectService {
             }
             documentObject.setChecksum(sb.toString());
             documentObject.setChecksumAlgorithm(checksumAlgorithm);
+            documentObject.setReferenceDocumentFile(file.toString());
 
         } catch (IOException e) {
             logger.error("When associating an uploaded file with " + documentObject + " an exception occurred." +

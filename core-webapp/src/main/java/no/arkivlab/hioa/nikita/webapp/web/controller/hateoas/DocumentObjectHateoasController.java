@@ -189,9 +189,21 @@ public class DocumentObjectHateoasController extends NoarkController {
         response.addHeader("Content-Type", documentObject.getMimeType());
 
         InputStream filestream = fileResource.getInputStream();
-        long bytesTotal = IOUtils.copyLarge(filestream,
-                                            response.getOutputStream());
-        filestream.close();
+        try {
+            long bytesTotal = IOUtils.copyLarge(filestream,
+                                                response.getOutputStream());
+            filestream.close();
+        } finally {
+            try {
+		// Try close without exceptions if copy() threw an
+		// exception.  If close() is called twice, the second
+		// close() should be ignored.
+                filestream.close();
+            } catch(IOException e) {
+                // swallow any error to expose exceptions from
+                // IOUtil.copy() if the second close() failed.
+            }
+        }
         response.flushBuffer();
     }
 
