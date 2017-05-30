@@ -8,6 +8,7 @@ import nikita.util.exceptions.StorageFileNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.config.WebappProperties;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IDocumentObjectService;
 import no.arkivlab.hioa.nikita.webapp.util.NoarkUtils;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,17 +116,7 @@ public class DocumentObjectService implements IDocumentObjectService {
             DigestInputStream digestInputStream = new DigestInputStream(inputStream, md);
             FileOutputStream outputStream = new FileOutputStream(path.toFile());
 
-            // TODO: Should 8096 be configurable via properties or hardcoded
-            // We expect large-ish files ...
-            byte[] byteArray = new byte[8096];
-            int bytesCount = 0;
-            Long bytesTotal = new Long(0);
-
-            // Copy from input stream to output stream
-            while ((bytesCount = digestInputStream.read(byteArray, 0, byteArray.length)) != -1) {
-                outputStream.write(byteArray, 0, bytesCount);
-                bytesTotal += bytesCount;
-            }
+            long bytesTotal = IOUtils.copyLarge(digestInputStream, outputStream);
 
             documentObject.setReferenceDocumentFile(file.toString());
 
