@@ -188,7 +188,9 @@ public class DocumentObjectHateoasController extends NoarkController {
         response.addHeader("Content-disposition", "inline; filename=" + documentObject.getOriginalFilename());
         response.addHeader("Content-Type", documentObject.getMimeType());
 
-        IOUtils.copy(fileResource.getInputStream(), response.getOutputStream());
+        InputStream filestream = fileResource.getInputStream();
+        IOUtils.copy(filestream, response.getOutputStream());
+        filestream.close();
         response.flushBuffer();
     }
 
