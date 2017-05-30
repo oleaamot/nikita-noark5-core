@@ -52,7 +52,6 @@ public class N5CoreApp extends SpringBootServletInitializer {
             TestDataSource.class,
             ProdDataSource.class,
             SecurityConfig.class,
-            SecurityOffConfig.class,
             ServiceConfig.class,
             ServletConfig.class,
             //Pac4JConfig.class,
