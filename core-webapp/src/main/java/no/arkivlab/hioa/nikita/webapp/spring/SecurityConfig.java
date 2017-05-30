@@ -5,7 +5,6 @@ import no.arkivlab.hioa.nikita.webapp.security.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -24,7 +23,6 @@ import static nikita.config.N5ResourceMappings.FONDS;
 import static nikita.config.PATHPatterns.PATTERN_METADATA_PATH;
 import static nikita.config.PATHPatterns.PATTERN_NEW_FONDS_STRUCTURE_ALL;
 
-@Profile("!nosecurity")
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -66,15 +64,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 
                 .authorizeRequests()
+
+                // TODO: Test to see if we can switch of OPTIONS. OPTIONS is being handled in SimpeCORSFilter.java
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("*").permitAll()
                 // GET [api]/metadata/**, public to read basic structure
                 .antMatchers(HttpMethod.GET, PATTERN_METADATA_PATH).permitAll()
                 // Allow OPTIONS command on everything root
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // Allow GET on root of application
                 .antMatchers(HttpMethod.GET, "/").permitAll()
-                // The following will like be removed soon ...
-                .antMatchers("/signup", "/user/register", "/webapp/login/**").permitAll()
                 // The metrics configuration is visible to all
                 .antMatchers("/management/**").permitAll()
                 // The swaggerUI related stuff. No authorisation required to see it.
@@ -84,10 +83,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, PATTERN_NEW_FONDS_STRUCTURE_ALL).hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.GET, PATTERN_NEW_FONDS_STRUCTURE_ALL).hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.OPTIONS, "/noark5v4/hateoas-api/arkivstruktur/ny-arkivskaper").permitAll()
-                // FIXME TEMP ADDED to test something
                 // POST PUT PATCH [api]/arkivstruktur/**, need admin
                 .antMatchers(HttpMethod.PUT, FONDS + SLASH + "**").hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.PATCH, FONDS + SLASH + "**").hasAuthority(ROLE_RECORDS_MANAGER)
+                .antMatchers(HttpMethod.DELETE, "/**").hasAuthority(ROLE_RECORDS_MANAGER)
                 // POST PUT PATCH DELETE [api]/metadata/**, need admin
                 .antMatchers(HttpMethod.PATCH, PATTERN_METADATA_PATH).hasAuthority(ROLE_RECORDS_MANAGER)
                 .antMatchers(HttpMethod.PUT, PATTERN_METADATA_PATH).hasAuthority(ROLE_RECORDS_MANAGER)
