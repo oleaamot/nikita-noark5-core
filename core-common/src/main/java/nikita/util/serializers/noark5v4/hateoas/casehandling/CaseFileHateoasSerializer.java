@@ -14,8 +14,6 @@ import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
-import static nikita.config.Constants.DATE_FORMAT;
-import static nikita.config.Constants.DATE_TIME_FORMAT;
 import static nikita.config.N5ResourceMappings.*;
 
 /**
@@ -64,13 +62,15 @@ public class CaseFileHateoasSerializer extends HateoasSerializer implements IHat
         }
         CommonUtils.Hateoas.Serialize.printStorageLocation(jgen, caseFile);
         if (caseFile.getCreatedDate() != null) {
-            jgen.writeStringField(CREATED_DATE, DATE_TIME_FORMAT.format(caseFile.getCreatedDate()));
+            jgen.writeStringField(CREATED_DATE,
+                                  Serialize.formatDateTime(caseFile.getCreatedDate()));
         }
         if (caseFile.getCreatedBy() != null) {
             jgen.writeStringField(CREATED_BY, caseFile.getCreatedBy());
         }
         if (caseFile.getFinalisedDate() != null) {
-            jgen.writeStringField(FINALISED_DATE, DATE_TIME_FORMAT.format(caseFile.getFinalisedDate()));
+            jgen.writeStringField(FINALISED_DATE,
+                                  Serialize.formatDateTime(caseFile.getFinalisedDate()));
         }
         if (caseFile.getFinalisedBy() != null) {
             jgen.writeStringField(FINALISED_BY, caseFile.getFinalisedBy());
@@ -85,7 +85,8 @@ public class CaseFileHateoasSerializer extends HateoasSerializer implements IHat
             jgen.writeNumberField(CASE_SEQUENCE_NUMBER, caseFile.getCaseSequenceNumber().intValue());
         }
         if (caseFile.getCaseDate() != null) {
-            jgen.writeStringField(CASE_DATE, DATE_FORMAT.format(caseFile.getCaseDate()));
+            jgen.writeStringField(CASE_DATE,
+                                  Serialize.formatDate(caseFile.getCaseDate()));
         }
         if (caseFile.getAdministrativeUnit() != null) {
             jgen.writeStringField(ADMINISTRATIVE_UNIT, caseFile.getAdministrativeUnit());
@@ -100,7 +101,8 @@ public class CaseFileHateoasSerializer extends HateoasSerializer implements IHat
             jgen.writeStringField(CASE_STATUS, caseFile.getCaseStatus());
         }
         if (caseFile.getLoanedDate() != null) {
-            jgen.writeStringField(CASE_LOANED_DATE, DATE_FORMAT.format(caseFile.getLoanedDate()));
+            jgen.writeStringField(CASE_LOANED_DATE,
+                                  Serialize.formatDate(caseFile.getLoanedDate()));
         }
         if (caseFile.getLoanedTo() != null) {
             jgen.writeStringField(CASE_LOANED_TO, caseFile.getLoanedTo());

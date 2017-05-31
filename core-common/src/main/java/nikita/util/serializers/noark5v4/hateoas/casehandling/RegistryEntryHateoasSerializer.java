@@ -10,8 +10,6 @@ import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 
 import java.io.IOException;
 
-import static nikita.config.Constants.DATE_FORMAT;
-import static nikita.config.Constants.DATE_TIME_FORMAT;
 import static nikita.config.N5ResourceMappings.*;
 
 /**
@@ -41,7 +39,8 @@ public class RegistryEntryHateoasSerializer extends HateoasSerializer implements
         CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, registryEntry);
         CommonUtils.Hateoas.Serialize.printCreateEntity(jgen, registryEntry);
         if (registryEntry.getArchivedDate() != null) {
-            jgen.writeStringField(RECORD_ARCHIVED_DATE, DATE_TIME_FORMAT.format(registryEntry.getArchivedDate()));
+            jgen.writeStringField(RECORD_ARCHIVED_DATE,
+                                  Serialize.formatDateTime(registryEntry.getArchivedDate()));
         }
         if (registryEntry.getArchivedBy() != null) {
             jgen.writeStringField(RECORD_ARCHIVED_BY, registryEntry.getArchivedBy());
@@ -80,28 +79,35 @@ public class RegistryEntryHateoasSerializer extends HateoasSerializer implements
             jgen.writeStringField(REGISTRY_ENTRY_STATUS, registryEntry.getRecordStatus());
         }
         if (registryEntry.getRecordDate() != null) {
-            jgen.writeStringField(REGISTRY_ENTRY_DATE, DATE_FORMAT.format(registryEntry.getRecordDate()));
+            jgen.writeStringField(REGISTRY_ENTRY_DATE,
+                                  Serialize.formatDate(registryEntry.getRecordDate()));
         }
         if (registryEntry.getDocumentDate() != null) {
-            jgen.writeStringField(REGISTRY_ENTRY_DOCUMENT_DATE, DATE_FORMAT.format(registryEntry.getDocumentDate()));
+            jgen.writeStringField(REGISTRY_ENTRY_DOCUMENT_DATE,
+                                  Serialize.formatDate(registryEntry.getDocumentDate()));
         }
         if (registryEntry.getReceivedDate() != null) {
-            jgen.writeStringField(REGISTRY_ENTRY_RECEIVED_DATE, DATE_FORMAT.format(registryEntry.getReceivedDate()));
+            jgen.writeStringField(REGISTRY_ENTRY_RECEIVED_DATE,
+                                  Serialize.formatDate(registryEntry.getReceivedDate()));
         }
         if (registryEntry.getSentDate() != null) {
-            jgen.writeStringField(REGISTRY_ENTRY_SENT_DATE, DATE_FORMAT.format(registryEntry.getSentDate()));
+            jgen.writeStringField(REGISTRY_ENTRY_SENT_DATE,
+                                  Serialize.formatDate(registryEntry.getSentDate()));
         }
         if (registryEntry.getDueDate() != null) {
-            jgen.writeStringField(REGISTRY_ENTRY_DUE_DATE, DATE_FORMAT.format(registryEntry.getDueDate()));
+            jgen.writeStringField(REGISTRY_ENTRY_DUE_DATE,
+                                  Serialize.formatDate(registryEntry.getDueDate()));
         }
         if (registryEntry.getFreedomAssessmentDate() != null) {
-            jgen.writeStringField(REGISTRY_ENTRY_RECORD_FREEDOM_ASSESSMENT_DATE, DATE_FORMAT.format(registryEntry.getFreedomAssessmentDate()));
+            jgen.writeStringField(REGISTRY_ENTRY_RECORD_FREEDOM_ASSESSMENT_DATE,
+                                  Serialize.formatDate(registryEntry.getFreedomAssessmentDate()));
         }
         if (registryEntry.getNumberOfAttachments() != null) {
             jgen.writeNumberField(REGISTRY_ENTRY_NUMBER_OF_ATTACHMENTS, registryEntry.getNumberOfAttachments().intValue());
         }
         if (registryEntry.getLoanedDate() != null) {
-            jgen.writeStringField(CASE_LOANED_DATE, DATE_FORMAT.format(registryEntry.getLoanedDate()));
+            jgen.writeStringField(CASE_LOANED_DATE,
+                                  Serialize.formatDate(registryEntry.getLoanedDate()));
         }
         if (registryEntry.getLoanedTo() != null) {
             jgen.writeStringField(CASE_LOANED_TO, registryEntry.getLoanedTo());

@@ -69,7 +69,7 @@ public class RecordDeserializer extends JsonDeserializer {
         currentNode = objectNode.get(RECORD_ARCHIVED_DATE);
         if (currentNode != null) {
             try {
-                Date parsedDate = Deserialize.dateTimeFormat.parse(currentNode.textValue());
+                Date parsedDate = Deserialize.parseDateTimeFormat(currentNode.textValue());
                 record.setArchivedDate(parsedDate);
                 objectNode.remove(RECORD_ARCHIVED_DATE);
             }

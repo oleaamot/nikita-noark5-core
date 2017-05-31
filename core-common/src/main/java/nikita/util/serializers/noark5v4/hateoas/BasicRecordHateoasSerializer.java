@@ -13,7 +13,6 @@ import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
-import static nikita.config.Constants.DATE_TIME_FORMAT;
 import static nikita.config.N5ResourceMappings.*;
 
 /**
@@ -44,7 +43,8 @@ public class BasicRecordHateoasSerializer extends HateoasSerializer implements I
         CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, basicRecord);
         CommonUtils.Hateoas.Serialize.printCreateEntity(jgen, basicRecord);
         if (basicRecord.getArchivedDate() != null) {
-            jgen.writeStringField(RECORD_ARCHIVED_DATE, DATE_TIME_FORMAT.format(basicRecord.getArchivedDate()));
+            jgen.writeStringField(RECORD_ARCHIVED_DATE,
+                                  Serialize.formatDateTime(basicRecord.getArchivedDate()));
         }
         if (basicRecord.getArchivedBy()!= null) {
             jgen.writeStringField(RECORD_ARCHIVED_BY, basicRecord.getArchivedBy());

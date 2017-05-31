@@ -94,7 +94,7 @@ public class CaseFileDeserializer extends JsonDeserializer {
         currentNode = objectNode.get(CASE_DATE);
         if (null != currentNode) {
             try {
-                Date parsedDate = CommonUtils.Hateoas.Deserialize.dateFormat.parse(currentNode.textValue());
+                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
                 caseFile.setCaseDate(parsedDate);
                 objectNode.remove(CASE_DATE);
             }
@@ -131,7 +131,7 @@ public class CaseFileDeserializer extends JsonDeserializer {
         currentNode = objectNode.get(CASE_LOANED_DATE);
         if (null != currentNode) {
             try {
-                Date parsedDate = CommonUtils.Hateoas.Deserialize.dateFormat.parse(currentNode.textValue());
+                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
                 caseFile.setLoanedDate(parsedDate);
                 objectNode.remove(CASE_LOANED_DATE);
             }

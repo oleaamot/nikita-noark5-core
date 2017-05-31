@@ -9,7 +9,6 @@ import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 
 import java.io.IOException;
 
-import static nikita.config.Constants.DATE_FORMAT;
 import static nikita.config.N5ResourceMappings.*;
 
 /**
@@ -45,10 +44,12 @@ public class SeriesHateoasSerializer extends HateoasSerializer implements IHateo
         CommonUtils.Hateoas.Serialize.printCreateEntity(jgen, series);
         CommonUtils.Hateoas.Serialize.printFinaliseEntity(jgen, series);
         if (series.getSeriesStartDate() != null) {
-            jgen.writeStringField(SERIES_START_DATE, DATE_FORMAT.format(series.getSeriesStartDate()));
+            jgen.writeStringField(SERIES_START_DATE,
+                                  Serialize.formatDate(series.getSeriesStartDate()));
         }
         if (series.getSeriesEndDate() != null) {
-            jgen.writeStringField(SERIES_END_DATE, DATE_FORMAT.format(series.getSeriesEndDate()));
+            jgen.writeStringField(SERIES_END_DATE,
+                                  Serialize.formatDate(series.getSeriesEndDate()));
         }
         if (series.getReferencePrecursor() != null && series.getReferencePrecursor().getSystemId() != null) {
             jgen.writeStringField(SERIES_PRECURSOR, series.getReferencePrecursor().getSystemId());

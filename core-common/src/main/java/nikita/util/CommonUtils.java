@@ -170,8 +170,19 @@ public final class CommonUtils {
 
         public static final class Deserialize {
 
-            public static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat(NOARK_DATE_TIME_FORMAT_PATTERN);
-            public static final SimpleDateFormat dateFormat = new SimpleDateFormat(NOARK_DATE_FORMAT_PATTERN);
+            public static Date parseDateFormat(String value)
+                throws ParseException
+            {
+                SimpleDateFormat dateFormat = new SimpleDateFormat(NOARK_DATE_FORMAT_PATTERN);
+                return dateFormat.parse(value);
+            }
+
+            public static Date parseDateTimeFormat(String value)
+                throws ParseException
+            {
+                SimpleDateFormat dateTimeFormat = new SimpleDateFormat(NOARK_DATE_TIME_FORMAT_PATTERN);
+                return dateTimeFormat.parse(value);
+            }
 
             public static void deserialiseDocumentMedium(IDocumentMedium documentMediumEntity, ObjectNode objectNode) {
                 // Deserialize documentMedium
@@ -295,7 +306,7 @@ public final class CommonUtils {
                 JsonNode currentNode = objectNode.get(CREATED_DATE);
                 if (null != currentNode) {
                     try {
-                        Date parsedDate = dateTimeFormat.parse(currentNode.textValue());
+                        Date parsedDate = parseDateFormat(currentNode.textValue());
                         noarkCreateEntity.setCreatedDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The Noark object you tried to create " +
@@ -319,7 +330,7 @@ public final class CommonUtils {
                 JsonNode currentNode = objectNode.get(FINALISED_DATE);
                 if (null != currentNode) {
                     try {
-                        Date parsedDate = dateTimeFormat.parse(currentNode.textValue());
+                        Date parsedDate = parseDateTimeFormat(currentNode.textValue());
                         finaliseEntity.setFinalisedDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The Noark object you tried to create " +
@@ -437,7 +448,7 @@ public final class CommonUtils {
                 currentNode = objectNode.get(COMMENT_DATE);
                 if (null != currentNode) {
                     try {
-                        Date parsedDate = dateFormat.parse(currentNode.textValue());
+                        Date parsedDate = parseDateFormat(currentNode.textValue());
                         commentEntity.setCommentDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The Comment object you tried to create " +
@@ -506,7 +517,7 @@ public final class CommonUtils {
                 currentNode = objectNode.get(DISPOSAL_DATE);
                 if (null != currentNode) {
                     try {
-                        Date parsedDate = dateFormat.parse(currentNode.textValue());
+                        Date parsedDate = parseDateFormat(currentNode.textValue());
                         disposalEntity.setDisposalDate(parsedDate);
                         objectNode.remove(DISPOSAL_DATE);
                     } catch (ParseException e) {
@@ -542,7 +553,7 @@ public final class CommonUtils {
                 currentNode = objectNode.get(DISPOSAL_UNDERTAKEN_DATE);
                 if (null != currentNode) {
                     try {
-                        Date parsedDate = dateFormat.parse(currentNode.textValue());
+                        Date parsedDate = parseDateFormat(currentNode.textValue());
                         disposalUndertakenEntity.setDisposalDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The DisposalUndertaken object you tried to " +
@@ -582,7 +593,7 @@ public final class CommonUtils {
                 currentNode = objectNode.get(DELETION_DATE);
                 if (null != currentNode) {
                     try {
-                        Date parsedDate = dateFormat.parse(currentNode.textValue());
+                        Date parsedDate = parseDateFormat(currentNode.textValue());
                         deletionEntity.setDeletionDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The deletion object you tried to create " +
@@ -684,7 +695,7 @@ public final class CommonUtils {
                 JsonNode currentNode = objectNode.get(PRECEDENCE_DATE);
                 if (null != currentNode) {
                     try {
-                        Date parsedDate = dateFormat.parse(currentNode.textValue());
+                        Date parsedDate = parseDateFormat(currentNode.textValue());
                         precedenceEntity.setPrecedenceDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The deletion object you tried to create " +
@@ -721,7 +732,7 @@ public final class CommonUtils {
                 currentNode = objectNode.get(PRECEDENCE_APPROVED_DATE);
                 if (null != currentNode) {
                     try {
-                        Date parsedDate = dateFormat.parse(currentNode.textValue());
+                        Date parsedDate = parseDateFormat(currentNode.textValue());
                         precedenceEntity.setPrecedenceApprovedDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The deletion object you tried to create " +
@@ -1089,7 +1100,7 @@ public final class CommonUtils {
                 currentNode = objectNode.get(SCREENING_EXPIRES_DATE);
                 if (null != currentNode) {
                     try {
-                        Date parsedDate = dateFormat.parse(currentNode.textValue());
+                        Date parsedDate = parseDateFormat(currentNode.textValue());
                         screeningEntity.setScreeningExpiresDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The deletion object you tried to create " +
@@ -1132,7 +1143,7 @@ public final class CommonUtils {
                 currentNode = objectNode.get(CLASSIFICATION_DATE);
                 if (null != currentNode) {
                     try {
-                        Date parsedDate = dateFormat.parse(currentNode.textValue());
+                        Date parsedDate = parseDateFormat(currentNode.textValue());
                         classifiedEntity.setClassificationDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The screening object you tried to create " +
@@ -1152,7 +1163,7 @@ public final class CommonUtils {
                 currentNode = objectNode.get(CLASSIFICATION_DOWNGRADED_DATE);
                 if (null != currentNode) {
                     try {
-                        Date parsedDate = dateFormat.parse(currentNode.textValue());
+                        Date parsedDate = parseDateFormat(currentNode.textValue());
                         classifiedEntity.setClassificationDowngradedDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The screening object you tried to create " +
@@ -1173,7 +1184,15 @@ public final class CommonUtils {
         }
 
         public static final class Serialize {
+            public static String formatDate(Date value) {
+                SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(NOARK_DATE_FORMAT_PATTERN);
+                return DATE_FORMAT.format(value);
+            }
 
+            public static String formatDateTime(Date value) {
+                SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat(NOARK_DATE_TIME_FORMAT_PATTERN);
+                return DATE_TIME_FORMAT.format(value);
+            }
 
             public static void printTitleAndDescription(JsonGenerator jgen,
                                                         INoarkTitleDescriptionEntity titleDescriptionEntity)
@@ -1194,7 +1213,8 @@ public final class CommonUtils {
                     throws IOException {
                 if (createEntity != null) {
                     if (createEntity.getCreatedDate() != null) {
-                        jgen.writeStringField(CREATED_DATE, DATE_TIME_FORMAT.format(createEntity.getCreatedDate()));
+                        jgen.writeStringField(CREATED_DATE,
+                                              formatDateTime(createEntity.getCreatedDate()));
                     }
                     if (createEntity.getCreatedBy() != null) {
                         jgen.writeStringField(CREATED_BY, createEntity.getCreatedBy());
@@ -1219,7 +1239,8 @@ public final class CommonUtils {
                     jgen.writeStringField(FINALISED_BY, finaliseEntity.getFinalisedBy());
                 }
                 if (finaliseEntity.getFinalisedDate() != null) {
-                    jgen.writeStringField(FINALISED_DATE, DATE_TIME_FORMAT.format(finaliseEntity.getFinalisedDate()));
+                    jgen.writeStringField(FINALISED_DATE,
+                                          formatDateTime(finaliseEntity.getFinalisedDate()));
                 }
             }
 
@@ -1481,8 +1502,8 @@ public final class CommonUtils {
                             jgen.writeObjectFieldStart(SIGN_OFF);
 
                             if (signOff.getSignOffDate() != null) {
-                                jgen.writeStringField(SIGN_OFF_DATE, DATE_FORMAT.format(
-                                        signOff.getSignOffDate()));
+                                jgen.writeStringField(SIGN_OFF_DATE,
+                                                      formatDate(signOff.getSignOffDate()));
                             }
                             if (signOff.getSignOffBy() != null) {
                                 jgen.writeStringField(SIGN_OFF_BY, signOff.getSignOffBy());
@@ -1514,12 +1535,12 @@ public final class CommonUtils {
                                 jgen.writeStringField(DOCUMENT_FLOW_FLOW_FROM, documentFlow.getFlowFrom());
                             }
                             if (documentFlow.getFlowReceivedDate() != null) {
-                                jgen.writeStringField(DOCUMENT_FLOW_FLOW_RECEIVED_DATE, DATE_FORMAT.format(
-                                        documentFlow.getFlowReceivedDate()));
+                                jgen.writeStringField(DOCUMENT_FLOW_FLOW_RECEIVED_DATE,
+                                                      formatDate(documentFlow.getFlowReceivedDate()));
                             }
                             if (documentFlow.getFlowSentDate() != null) {
-                                jgen.writeStringField(DOCUMENT_FLOW_FLOW_SENT_DATE, DATE_FORMAT.format(
-                                        documentFlow.getFlowSentDate()));
+                                jgen.writeStringField(DOCUMENT_FLOW_FLOW_SENT_DATE,
+                                                      formatDate(documentFlow.getFlowSentDate()));
                             }
                             if (documentFlow.getFlowStatus() != null) {
                                 jgen.writeStringField(DOCUMENT_FLOW_FLOW_STATUS, documentFlow.getFlowStatus());
@@ -1537,10 +1558,12 @@ public final class CommonUtils {
             public static void printPrecedence(JsonGenerator jgen, IPrecedenceEntity precedence) throws IOException {
                 if (precedence != null) {
                     if (null != precedence.getPrecedenceDate()) {
-                        jgen.writeStringField(PRECEDENCE_DATE, DATE_FORMAT.format(precedence.getPrecedenceDate()));
+                        jgen.writeStringField(PRECEDENCE_DATE,
+                                              formatDate(precedence.getPrecedenceDate()));
                     }
                     if (null != precedence.getCreatedDate()) {
-                        jgen.writeStringField(CREATED_DATE, DATE_TIME_FORMAT.format(precedence.getCreatedDate()));
+                        jgen.writeStringField(CREATED_DATE,
+                                              formatDateTime(precedence.getCreatedDate()));
                     }
                     if (null != precedence.getCreatedBy()) {
                         jgen.writeStringField(CREATED_BY, precedence.getCreatedBy());
@@ -1558,15 +1581,15 @@ public final class CommonUtils {
                         jgen.writeStringField(PRECEDENCE_SOURCE_OF_LAW, precedence.getSourceOfLaw());
                     }
                     if (null != precedence.getPrecedenceApprovedDate()) {
-                        jgen.writeStringField(PRECEDENCE_APPROVED_DATE, DATE_FORMAT.format(
-                                precedence.getPrecedenceApprovedDate()));
+                        jgen.writeStringField(PRECEDENCE_APPROVED_DATE,
+                                              formatDate(precedence.getPrecedenceApprovedDate()));
                     }
                     if (null != precedence.getPrecedenceApprovedBy()) {
                         jgen.writeStringField(PRECEDENCE_APPROVED_BY, precedence.getPrecedenceApprovedBy());
                     }
                     if (null != precedence.getFinalisedDate()) {
-                        jgen.writeStringField(FINALISED_DATE, DATE_TIME_FORMAT.format(
-                                precedence.getFinalisedDate()));
+                        jgen.writeStringField(FINALISED_DATE,
+                                              formatDateTime(precedence.getFinalisedDate()));
                     }
                     if (null != precedence.getFinalisedBy()) {
                         jgen.writeStringField(FINALISED_BY, precedence.getFinalisedBy());
@@ -1630,7 +1653,7 @@ public final class CommonUtils {
                             jgen.writeObjectFieldStart(ELECTRONIC_SIGNATURE);
                             if (conversion.getConvertedDate() != null) {
                                 jgen.writeStringField(CONVERTED_DATE,
-                                        DATE_FORMAT.format(conversion.getConvertedDate()));
+                                                      formatDate(conversion.getConvertedDate()));
                             }
                             if (conversion.getConvertedBy() != null) {
                                 jgen.writeStringField(CONVERTED_BY,
@@ -1707,8 +1730,8 @@ public final class CommonUtils {
                                 electronicSignature.getElectronicSignatureVerified());
                     }
                     if (electronicSignature.getVerifiedDate() != null) {
-                        jgen.writeStringField(ELECTRONIC_SIGNATURE_VERIFIED_DATE, DATE_FORMAT.format(
-                                electronicSignature.getVerifiedDate()));
+                        jgen.writeStringField(ELECTRONIC_SIGNATURE_VERIFIED_DATE,
+                                              formatDate(electronicSignature.getVerifiedDate()));
                     }
                     if (electronicSignature.getVerifiedBy() != null) {
                         jgen.writeStringField(ELECTRONIC_SIGNATURE_VERIFIED_BY,
@@ -1728,15 +1751,15 @@ public final class CommonUtils {
                             jgen.writeStringField(CLASSIFICATION, classified.getClassification());
                         }
                         if (classified.getClassificationDate() != null) {
-                            jgen.writeStringField(CLASSIFICATION_DATE, DATE_TIME_FORMAT.format(
-                                    classified.getClassificationDate()));
+                            jgen.writeStringField(CLASSIFICATION_DATE,
+                                                  formatDateTime(classified.getClassificationDate()));
                         }
                         if (classified.getClassificationBy() != null) {
                             jgen.writeStringField(CLASSIFICATION_BY, classified.getClassificationBy());
                         }
                         if (classified.getClassificationDowngradedDate() != null) {
                             jgen.writeStringField(CLASSIFICATION_DOWNGRADED_DATE,
-                                    DATE_TIME_FORMAT.format(classified.getClassificationDowngradedDate()));
+                                                  formatDateTime(classified.getClassificationDowngradedDate()));
                         }
                         if (classified.getClassificationDowngradedBy() != null) {
                             jgen.writeStringField(CLASSIFICATION_DOWNGRADED_BY,
@@ -1767,7 +1790,7 @@ public final class CommonUtils {
                         }
                         if (disposal.getDisposalDate() != null) {
                             jgen.writeStringField(DISPOSAL_DATE,
-                                    DATE_FORMAT.format(disposal.getDisposalDate()));
+                                                  formatDate(disposal.getDisposalDate()));
                         }
                         jgen.writeEndObject();
                     }
@@ -1785,7 +1808,7 @@ public final class CommonUtils {
                         }
                         if (disposalUndertaken.getDisposalDate() != null) {
                             jgen.writeStringField(DISPOSAL_UNDERTAKEN_DATE,
-                                    DATE_FORMAT.format(disposalUndertaken.getDisposalDate()));
+                                                  formatDate(disposalUndertaken.getDisposalDate()));
                         }
                         jgen.writeEndObject();
                     }
@@ -1805,7 +1828,8 @@ public final class CommonUtils {
                             jgen.writeStringField(DELETION_TYPE, deletion.getDeletionType());
                         }
                         if (deletion.getDeletionDate() != null) {
-                            jgen.writeStringField(DELETION_DATE, DATE_FORMAT.format(deletion.getDeletionDate()));
+                            jgen.writeStringField(DELETION_DATE,
+                                                  formatDate(deletion.getDeletionDate()));
                         }
                         jgen.writeEndObject();
                     }
@@ -1836,7 +1860,7 @@ public final class CommonUtils {
                         }
                         if (screening.getScreeningExpiresDate() != null) {
                             jgen.writeStringField(SCREENING_EXPIRES_DATE,
-                                    DATE_FORMAT.format(screening.getScreeningExpiresDate()));
+                                                  formatDate(screening.getScreeningExpiresDate()));
                         }
                         if (screening.getScreeningDuration() != null) {
                             jgen.writeStringField(SCREENING_DURATION,
@@ -1860,7 +1884,8 @@ public final class CommonUtils {
                             jgen.writeStringField(COMMENT_TYPE, comment.getCommentType());
                         }
                         if (comment.getCommentDate() != null) {
-                            jgen.writeStringField(COMMENT_DATE, DATE_FORMAT.format(comment.getCommentDate()));
+                            jgen.writeStringField(COMMENT_DATE,
+                                                  formatDate(comment.getCommentDate()));
                         }
                         if (comment.getCommentRegisteredBy() != null) {
                             jgen.writeStringField(COMMENT_REGISTERED_BY, comment.getCommentRegisteredBy());

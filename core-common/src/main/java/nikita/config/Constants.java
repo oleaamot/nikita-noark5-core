@@ -134,11 +134,6 @@ public final class Constants {
     public static final String NOARK_DATE_FORMAT_PATTERN = "yyyy-MM-dd";
     public static final String NOARK_TIME_FORMAT_PATTERN = "HH:mm:ss";
     public static final String NOARK_DATE_TIME_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
-
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(NOARK_DATE_FORMAT_PATTERN);
-    public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat(NOARK_TIME_FORMAT_PATTERN);
-    public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat(NOARK_DATE_TIME_FORMAT_PATTERN);
-
     public static final String ONLY_WHITESPACE = "\\s*";
 
     // OData variable names
