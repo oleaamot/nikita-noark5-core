@@ -66,10 +66,11 @@ public class Link implements Comparable<Link> {
     }
 
     @Override
-    public int equals(Link otherLink) {
-	if (otherLink == null) {
+    public boolean equals(Object other) {
+	if (other == null) {
 	    return false;
 	}
+	Link otherLink = (Link)other;
 	if (this == otherLink) {
 	    return true;
 	}
