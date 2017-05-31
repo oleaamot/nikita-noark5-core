@@ -17,6 +17,7 @@ import java.util.Date;
 
 import static nikita.config.Constants.NOARK_DATE_FORMAT_PATTERN;
 import static nikita.config.N5ResourceMappings.*;
+import static nikita.util.CommonUtils.Hateoas.Deserialize;
 
 /**
  * Created by tsodring on 1/6/17.

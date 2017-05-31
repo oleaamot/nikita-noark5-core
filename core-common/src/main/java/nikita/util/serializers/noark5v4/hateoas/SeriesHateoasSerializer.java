@@ -10,6 +10,7 @@ import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 import java.io.IOException;
 
 import static nikita.config.N5ResourceMappings.*;
+import static nikita.util.CommonUtils.Hateoas.Serialize;
 
 /**
  *

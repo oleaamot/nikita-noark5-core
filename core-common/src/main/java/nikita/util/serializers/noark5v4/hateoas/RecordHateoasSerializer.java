@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import static nikita.config.N5ResourceMappings.RECORD_ARCHIVED_BY;
 import static nikita.config.N5ResourceMappings.RECORD_ARCHIVED_DATE;
+import static nikita.util.CommonUtils.Hateoas.Serialize;
 
 /**
  * Serialise an outgoing Record object as JSON.
@@ -40,7 +41,7 @@ public class RecordHateoasSerializer extends HateoasSerializer implements IHateo
 
         if (record.getArchivedDate() != null) {
             jgen.writeStringField(RECORD_ARCHIVED_DATE,
-                                  Serializer.formatDateTime(record.getArchivedDate()));
+                                  Serialize.formatDateTime(record.getArchivedDate()));
         }
         if (record.getArchivedBy() != null) {
             jgen.writeStringField(RECORD_ARCHIVED_BY, record.getArchivedBy());

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 
 import static nikita.config.N5ResourceMappings.*;
+import static nikita.util.CommonUtils.Hateoas.Serialize;
 
 /**
  * Serialise an outgoing BasicRecord object as JSON.
