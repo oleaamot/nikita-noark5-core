@@ -168,6 +168,22 @@ public class NoarkEntity implements INikitaEntity, Comparable<NoarkEntity>   {
     }
 
     @Override
+    public boolean equals(Object other) {
+	if (null == other) {
+	    return false;
+	}
+	NoarkEntity otherEntity = (NoarkEntity)other;
+	if (this == other) {
+	    return true;
+	}
+	Long otherId = otherEntity.getId();
+        if (otherId != null) {
+            return id == otherId;
+        }
+        return false;
+    }
+
+    @Override
     public String toString() {
         return "id=" + id +
                 ", systemId='" + systemId + '\'' +
