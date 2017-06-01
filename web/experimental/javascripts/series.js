@@ -14,16 +14,15 @@ if (nikitaOptions.enabled) {
     console.log("nikita guiURL" + gui_base_url );
 }
 
-var SetLinkToChosenFile = function(t) {
-    localStorage.setItem("linkToChosenFile", t);
-    console.log("Setting linkToChosenFile="+t);
+var SetLinkToSeriesAllFile = function (t) {
+    localStorage.setItem("linkToSeriesAllFile", t);
+    console.log("Setting linkToSeriesAllFile=" + t);
 };
 
 var GetFondsSystemID = function(t) {
     console.log("Getting chosen fondsSystemId="+localStorage.getItem("chosenfonds"));
     return localStorage.getItem("chosenfonds");
 };
-
 
 var GetUserToken = function(t) {
     return localStorage.getItem("token");
@@ -34,7 +33,7 @@ var GetLinkToChosenSeries = function(t) {
 };
 
 var SetChosenSeries = function(seriesSystemId) {
-    localStorage.setItem("chosenseries", seriesSystemId);
+    localStorage.setItem("currentSeriesSystemId", seriesSystemId);
     console.log("Setting seriesSystemId="+seriesSystemId);
 };
 
@@ -60,10 +59,10 @@ let seriesController = app.controller('SeriesController', ['$scope', '$http', fu
     $scope.fileSelected = function(href, seriesSystemId){
         console.log('series selected link clicked ' + href);
         token = GetUserToken();
-        SetLinkToChosenFile(href);
+        SetLinkToSeriesAllFile(href);
         SetChosenSeries(seriesSystemId);
         window.location = gui_base_url + "/mappe.html";
-    }
+    };
 
     $scope.send_form = function() {
         token = GetUserToken();

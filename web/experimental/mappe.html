@@ -40,8 +40,8 @@
         <th>registrering</th>
     </tr>
     </thead>
-    <tbody>
-    <tr ng-repeat="file in files" class="mdl-data-table__cell--non-numeric">
+    <tbody ng-repeat="file in files">
+    <tr ng-click="fileSelected(file)" class="mdl-data-table__cell--non-numeric">
         <td class="mdl-data-table__cell--non-numeric">
             {{ file.mappeID }}
         </td>

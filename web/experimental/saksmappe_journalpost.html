@@ -1,0 +1,49 @@
+<!doctype html>
+<html ng-app="nikita">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <title>Saksmappe</title>
+    <script src="/node_modules/angular/angular.min.js"></script>
+    <script src="javascripts/config.js"></script>
+    <script src="javascripts/client.js"></script>
+</head>
+<body ng-controller="PostlisteController">
+<p><a href="login.html">logg inn</a> (Status: {{ status }})</p>
+<table ng-if="casefiles">
+    <thead>
+    <tr>
+        <th>MappeID</th>
+        <th>Opprettet dato</th>
+        <th>Offentlig tittel</th>
+    </tr>
+    </thead>
+    <tbody ng-repeat="entry in casefiles">
+    <tr ng-click="fileSelected(entry)">
+        <td>{{ entry.mappeID }}</td>
+        <td>{{ entry.opprettetDato }}</td>
+        <td ng-if="entry.offentligTittel">{{ entry.offentligTittel }}</td>
+        <td ng-if="!entry.offentligTittel">{{ entry.tittel }}</td>
+    </tr>
+    <tr ng-if="entry.records">
+        <td></td>
+        <td colspan="2">
+            <div ng-repeat="r in entry.records">
+                [{{ r.journalposttype }}]
+                Dok.dato: {{ r.dokumentetsDato }}
+                J.dato: {{ r.journaldato }}
+                J.id: {{ r.journalyear }}/{{ r.journalsekvensnummer }}<br>
+                <div ng-if="r.offentligTittel">{{ r.offentligTittel }}<br></div>
+                <div ng-if="!r.offentligTittel">{{ r.tittel }}<br></div>
+                <div ng-if="r.beskrivelse">{{ r.beskrivelse }}<br></div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<p>Denne webklient er del av
+    <a href="https://github.com/HiOA-ABI/nikita-noark5-core/">Nikita Noark 5 kjerne</a>, en fri
+    programvareimplementasjon av Noark 5 Tjenestegrensesnitt.</p>
+</body>
+</html>

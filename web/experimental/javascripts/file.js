@@ -17,35 +17,49 @@ var SetLinkToChosenFile = function(t) {
 };
 
 var GetSeriesSystemID = function(t) {
-    console.log("Getting chosen seriesSystemId="+localStorage.getItem("chosenseries"));
-    return localStorage.getItem("chosenseries");
+    console.log("Getting chosen seriesSystemId=" + localStorage.getItem("currentSeriesSystemId"));
+    return localStorage.getItem("currentSeriesSystemId");
 };
-
 
 var GetUserToken = function(t) {
     return localStorage.getItem("token");
 };
 
-var GetLinkToChosenFile = function(t) {
-    return localStorage.getItem("linkToChosenFile");
+var GetLinkToSeriesAllFile = function () {
+    return localStorage.getItem("linkToSeriesAllFile");
 };
 
 let fileController = app.controller('FileController', ['$scope', '$http', function ($scope, $http) {
     $scope.token = GetUserToken();
-    console.log("token="+$scope.token);
     $scope.series = GetSeriesSystemID();
 
-    var urlVal = GetLinkToChosenFile();
+    var urlVal = GetLinkToSeriesAllFile();
+    console.log("*****Link to chosen file is =" + urlVal);
+
     $http({
         method: 'GET',
         url: urlVal,
         headers: {'Authorization': $scope.token },
     }).then(function successCallback(response) {
         $scope.files = response.data.results;
-        console.log("file data is : " + JSON.stringify(response.data));
+        //console.log("file data is : " + JSON.stringify(response.data));
     }, function errorCallback(response) {
         // TODO: what should we do when it fails?
     });
+
+    $scope.fileSelected = function (file) {
+        console.log('file selected link clicked ' + JSON.stringify(file));
+
+        for (rel in file._links) {
+            relation = file._links[rel].rel;
+            if (relation == 'self') {
+                href = file._links[rel].href;
+                SetLinkToChosenFile(href);
+                console.log("fetching " + href);
+                window.location = gui_base_url + "/saksmappe.html";
+            }
+        }
+    };
 
     $scope.send_form = function() {
         token = GetUserToken();
@@ -69,6 +83,7 @@ let fileController = app.controller('FileController', ['$scope', '$http', functi
             alert(data.data);
         });
     };
+
     var changeLocation = function ($scope, url, forceReload) {
         $scope = $scope || angular.element(document).scope();
         console.log("URL" + url);

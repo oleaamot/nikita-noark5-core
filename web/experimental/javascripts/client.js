@@ -24,6 +24,11 @@ var GetUserToken = function(t) {
   return localStorage.getItem("token");
 };
 
+var GetFileSystemID = function (t) {
+    return localStorage.getItem("current_case_file");
+};
+
+
 var changeLocation = function ($scope, url, forceReload) {
     $scope = $scope || angular.element(document).scope();
     console.log("Changing location to URL" + url);
@@ -100,4 +105,73 @@ let login = app.controller('LoginController', ['$scope', '$http', function($scop
         alert(data.data);
     });
   };
+}]);
+
+
+let postliste = app.controller('CaseFileRegistryEntryController', ['$scope', '$http', function ($scope, $http) {
+    // FIXME find href for rel
+    // 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkiv/'
+    // dynamically
+    url = base_url + "/hateoas-api/arkivstruktur/arkiv";
+    token = GetUserToken();
+    file = GetFileSystemID();
+    $http({
+        method: 'GET',
+        url: url,
+        headers: {'Authorization': token},
+    }).then(function successCallback(response) {
+        $scope.status = 'success';
+        $scope.fonds = response.data.results;
+    }, function errorCallback(response) {
+        $scope.status = 'failure';
+        $scope.fonds = '';
+    });
+    $scope.series = '';
+    $scope.casefiles = '';
+
+
+    $scope.fileSelected = function (file) {
+        console.log('file selected ' + file.tittel);
+        if (file.records) {
+            file.records = '';
+            return;
+        }
+        for (rel in file._links) {
+            relation = file._links[rel].rel;
+            if (relation == 'http://rel.kxml.no/noark5/v4/api/sakarkiv/journalpost/') {
+                href = file._links[rel].href;
+                console.log("fetching " + href);
+                $http({
+                    method: 'GET',
+                    url: href,
+                    headers: {'Authorization': GetUserToken()},
+                }).then(function successCallback(response) {
+                    response.data.results.forEach(function (record) {
+                        console.log("record " + record);
+                        for (rel in record._links) {
+                            relation = record._links[rel].rel;
+                            console.log("found " + relation);
+                            if (relation == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/dokumentbeskrivelse/') {
+                                href = record._links[rel].href;
+                                console.log("fetching " + href);
+                                $http({
+                                    method: 'GET',
+                                    url: href,
+                                    headers: {'Authorization': GetUserToken()},
+                                }).then(function successCallback(docdesc) {
+                                    record.dokumentbeskrivelse =
+                                        docdesc.data.results[0];
+                                }, function errorCallback(docdesc) {
+                                    record.dokumentbeskrivelse = '';
+                                });
+                            }
+                        }
+                    });
+                    file.records = response.data.results;
+                }, function errorCallback(response) {
+                    file.records = '';
+                });
+            }
+        }
+    }
 }]);
