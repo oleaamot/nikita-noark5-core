@@ -1,17 +1,19 @@
 package nikita.model.noark5.v4;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
-import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.Field;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
-
-import static nikita.config.N5ResourceMappings.FONDS;
 
 /**
  * Created by tsodring on 5/8/17.
@@ -128,6 +130,35 @@ public class NoarkGeneralEntity extends NoarkEntity implements INoarkGeneralEnti
     public void setFinalisedBy(String finalisedBy) {
         this.finalisedBy = finalisedBy;
     }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(createdDate)
+                .toHashCode();
+    }
+
+    @Override
+    public int compareTo(NoarkEntity otherEntity) {
+        if (null == otherEntity) {
+            return -1;
+        }
+        return new CompareToBuilder()
+                .append(this.createdDate, ((NoarkGeneralEntity) otherEntity).createdDate)
+                .toComparison();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (null == other) {
+            return false;
+        }
+        NoarkEntity noarkEntity = (NoarkEntity) other;
+        return new EqualsBuilder()
+                .append(this.createdDate, ((NoarkGeneralEntity) noarkEntity).createdDate)
+                .isEquals();
+    }
+
 
     @Override
     public String toString() {

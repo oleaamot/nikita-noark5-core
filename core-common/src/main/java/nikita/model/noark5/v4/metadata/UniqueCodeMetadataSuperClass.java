@@ -49,6 +49,9 @@ public class UniqueCodeMetadataSuperClass extends MetadataSuperClassBase impleme
 
     @Override
     public int compareTo(MetadataSuperClassBase o) {
+        if (null == o) {
+            return -1;
+        }
         MetadataSuperClass otherEntity = (MetadataSuperClass) o;
         return new CompareToBuilder()
                 .append(this.code, otherEntity.code)
@@ -57,6 +60,9 @@ public class UniqueCodeMetadataSuperClass extends MetadataSuperClassBase impleme
 
     @Override
     public boolean equals(Object other) {
+        if (null == other) {
+            return false;
+        }
         MetadataSuperClass entity = (MetadataSuperClass) other;
         return new EqualsBuilder()
                 .append(this.code, entity.code)

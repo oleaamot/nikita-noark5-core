@@ -165,6 +165,9 @@ public class NoarkEntity implements INikitaEntity, Comparable<NoarkEntity>   {
 
     @Override
     public int compareTo(NoarkEntity otherEntity) {
+        if (null == otherEntity) {
+            return -1;
+        }
         return new CompareToBuilder()
                 .append(this.systemId, otherEntity.systemId)
                 .toComparison();
@@ -172,6 +175,9 @@ public class NoarkEntity implements INikitaEntity, Comparable<NoarkEntity>   {
 
     @Override
     public boolean equals(Object other) {
+        if (null == other) {
+            return false;
+        }
         NoarkEntity noarkEntity = (NoarkEntity) other;
         return new EqualsBuilder()
                 .append(this.systemId, noarkEntity.systemId)
