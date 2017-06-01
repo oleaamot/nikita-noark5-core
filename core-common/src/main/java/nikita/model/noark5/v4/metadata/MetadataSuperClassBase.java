@@ -167,9 +167,10 @@ public class MetadataSuperClassBase implements INikitaEntity, Comparable<Metadat
 
     @Override
     public boolean equals(Object other) {
-        if (null == other) {
+        if (other == this)
+            return true;
+        if (!(other instanceof MetadataSuperClassBase))
             return false;
-        }
         MetadataSuperClassBase entity = (MetadataSuperClassBase) other;
         return new EqualsBuilder()
                 .append(this.systemId, entity.systemId)

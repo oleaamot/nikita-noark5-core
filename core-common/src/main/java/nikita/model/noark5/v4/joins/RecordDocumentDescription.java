@@ -32,15 +32,14 @@ public class RecordDocumentDescription {
 
     //Getters and setters omitted for brevity
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) {
+    public boolean equals(Object other) {
+        if (other == this)
+            return true;
+        if (!(other instanceof RecordDocumentDescription))
             return false;
-        }
-
-        RecordDocumentDescription that = (RecordDocumentDescription) o;
-        return Objects.equals(record, that.record) &&
-                Objects.equals(documentDescription, that.documentDescription);
+        RecordDocumentDescription desc = (RecordDocumentDescription) other;
+        return Objects.equals(record, desc.record) &&
+            Objects.equals(documentDescription, desc.documentDescription);
     }
 
     @Override

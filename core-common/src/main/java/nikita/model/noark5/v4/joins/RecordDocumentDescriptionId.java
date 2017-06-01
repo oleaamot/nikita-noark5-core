@@ -25,12 +25,14 @@ public class RecordDocumentDescriptionId implements Serializable {
         return documentDescriptionId;
     }
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RecordDocumentDescriptionId that = (RecordDocumentDescriptionId) o;
-        return Objects.equals(recordId, that.recordId) &&
-                Objects.equals(documentDescriptionId, that.documentDescriptionId);
+    public boolean equals(Object other) {
+        if (this == other)
+            return true;
+        if (!(other instanceof RecordDocumentDescription))
+            return false;
+        RecordDocumentDescriptionId otherId = (RecordDocumentDescriptionId) other;
+        return Objects.equals(recordId, otherId.recordId) &&
+            Objects.equals(documentDescriptionId, otherId.documentDescriptionId);
     }
     @Override
     public int hashCode() {

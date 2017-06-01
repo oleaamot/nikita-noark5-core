@@ -61,32 +61,27 @@ public class ApiError {
     }
 
     @Override
-    public final boolean equals(final Object obj) {
-        if (this == obj) {
+    public final boolean equals(final Object other) {
+        if (this == other)
             return true;
-        }
-        if (obj == null) {
+        if (!(other instanceof ApiError))
             return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final ApiError other = (ApiError) obj;
+        final ApiError apiError = (ApiError) other;
         if (developerMessage == null) {
-            if (other.developerMessage != null) {
+            if (apiError.developerMessage != null) {
                 return false;
             }
-        } else if (!developerMessage.equals(other.developerMessage)) {
+        } else if (!developerMessage.equals(apiError.developerMessage)) {
             return false;
         }
         if (message == null) {
-            if (other.message != null) {
+            if (apiError.message != null) {
                 return false;
             }
-        } else if (!message.equals(other.message)) {
+        } else if (!message.equals(apiError.message)) {
             return false;
         }
-        return status == other.status;
+        return status == apiError.status;
     }
 
     // ignore stackTrace here!
