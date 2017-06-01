@@ -253,8 +253,8 @@ public class FondsCreatorHateoasController extends NoarkController {
         // TODO: This should be replaced with configurable data based on whoever is logged in
         //       Currently just returns the test values
         suggestedFondsCreator.setFondsCreatorId("123456789");
-        suggestedFondsCreator.setDescription("Eksempel kommune");
-        suggestedFondsCreator.setFondsCreatorName("Eksempel kommune ligger i eksempel fylke nord for nord");
+        suggestedFondsCreator.setFondsCreatorName("Eksempel kommune");
+        suggestedFondsCreator.setDescription("Eksempel kommune ligger i eksempel fylke nord for nord");
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(suggestedFondsCreator);
         fondsHateoasHandler.addLinksOnNew(fondsCreatorHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

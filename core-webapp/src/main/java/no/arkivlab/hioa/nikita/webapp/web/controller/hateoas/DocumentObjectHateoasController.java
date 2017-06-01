@@ -176,11 +176,12 @@ public class DocumentObjectHateoasController extends NoarkController {
         }
         Resource fileResource = documentObjectService.loadAsResource(documentObject);
         String acceptType = request.getHeader(HttpHeaders.ACCEPT);
-        if (!acceptType.equalsIgnoreCase(documentObject.getMimeType())) {
+        if (acceptType != null &&
+	    !acceptType.equalsIgnoreCase(documentObject.getMimeType())) {
             if (!acceptType.equals("*/*")) {
-                throw new NoarkNotAcceptableException("The request [" + request.getRequestURI() + "] is not acceptable"
-                        + "You have issued an Accept: " + acceptType + ", while the mimeType you are trying to retrieve"
-                        + "is [" + documentObject.getMimeType() + "]");
+                throw new NoarkNotAcceptableException("The request [" + request.getRequestURI() + "] is not acceptable. "
+                        + "You have issued an Accept: " + acceptType + ", while the mimeType you are trying to retrieve "
+                        + "is [" + documentObject.getMimeType() + "].");
             }
         }
         response.setContentType(documentObject.getMimeType());
@@ -189,9 +190,21 @@ public class DocumentObjectHateoasController extends NoarkController {
         response.addHeader("Content-Type", documentObject.getMimeType());
 
         InputStream filestream = fileResource.getInputStream();
-        long bytesTotal = IOUtils.copyLarge(filestream,
-                                            response.getOutputStream());
-        filestream.close();
+        try {
+            long bytesTotal = IOUtils.copyLarge(filestream,
+                                                response.getOutputStream());
+            filestream.close();
+        } finally {
+            try {
+		// Try close without exceptions if copy() threw an
+		// exception.  If close() is called twice, the second
+		// close() should be ignored.
+                filestream.close();
+            } catch(IOException e) {
+                // swallow any error to expose exceptions from
+                // IOUtil.copy() if the second close() failed.
+            }
+        }
         response.flushBuffer();
     }
 

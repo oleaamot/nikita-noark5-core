@@ -69,7 +69,7 @@ public class SeriesDeserializer extends JsonDeserializer {
         currentNode = objectNode.get(SERIES_START_DATE);
         if (null != currentNode) {
             try {
-                Date parsedDate = Deserialize.dateFormat.parse(currentNode.textValue());
+                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
                 series.setSeriesStartDate(parsedDate);
                 objectNode.remove(SERIES_START_DATE);
             } catch (ParseException e) {
@@ -82,7 +82,7 @@ public class SeriesDeserializer extends JsonDeserializer {
         currentNode = objectNode.get(SERIES_END_DATE);
         if (null != currentNode) {
             try {
-                Date parsedDate = Deserialize.dateFormat.parse(currentNode.textValue());
+                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
                 series.setSeriesEndDate(parsedDate);
                 objectNode.remove(SERIES_END_DATE);
             } catch (ParseException e) {

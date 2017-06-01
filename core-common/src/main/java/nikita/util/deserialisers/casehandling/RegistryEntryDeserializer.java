@@ -69,7 +69,7 @@ public class RegistryEntryDeserializer extends JsonDeserializer {
         currentNode = objectNode.get(RECORD_ARCHIVED_DATE);
         if (null != currentNode) {
             try {
-                Date parsedDate = Deserialize.dateTimeFormat.parse(currentNode.textValue());
+                Date parsedDate = Deserialize.parseDateTimeFormat(currentNode.textValue());
                 registryEntry.setArchivedDate(parsedDate);
                 objectNode.remove(RECORD_ARCHIVED_DATE);
             } catch (ParseException e) {
@@ -138,7 +138,7 @@ public class RegistryEntryDeserializer extends JsonDeserializer {
         currentNode = objectNode.get(REGISTRY_ENTRY_DATE);
         if (null != currentNode) {
             try {
-                Date parsedDate = CommonUtils.Hateoas.Deserialize.dateFormat.parse(currentNode.textValue());
+                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
                 registryEntry.setRecordDate(parsedDate);
                 objectNode.remove(REGISTRY_ENTRY_DATE);
             } catch (ParseException e) {
@@ -151,7 +151,7 @@ public class RegistryEntryDeserializer extends JsonDeserializer {
         currentNode = objectNode.get(REGISTRY_ENTRY_DOCUMENT_DATE);
         if (null != currentNode) {
             try {
-                Date parsedDate = CommonUtils.Hateoas.Deserialize.dateFormat.parse(currentNode.textValue());
+                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
                 registryEntry.setDocumentDate(parsedDate);
                 objectNode.remove(REGISTRY_ENTRY_DOCUMENT_DATE);
             } catch (ParseException e) {
@@ -165,7 +165,7 @@ public class RegistryEntryDeserializer extends JsonDeserializer {
         currentNode = objectNode.get(REGISTRY_ENTRY_RECEIVED_DATE);
         if (null != currentNode) {
             try {
-                Date parsedDate = CommonUtils.Hateoas.Deserialize.dateFormat.parse(currentNode.textValue());
+                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
                 registryEntry.setReceivedDate(parsedDate);
                 objectNode.remove(REGISTRY_ENTRY_RECEIVED_DATE);
             } catch (ParseException e) {
@@ -178,7 +178,7 @@ public class RegistryEntryDeserializer extends JsonDeserializer {
         currentNode = objectNode.get(REGISTRY_ENTRY_SENT_DATE);
         if (null != currentNode) {
             try {
-                Date parsedDate = CommonUtils.Hateoas.Deserialize.dateFormat.parse(currentNode.textValue());
+                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
                 registryEntry.setSentDate(parsedDate);
                 objectNode.remove(REGISTRY_ENTRY_SENT_DATE);
             } catch (ParseException e) {
@@ -191,7 +191,7 @@ public class RegistryEntryDeserializer extends JsonDeserializer {
         currentNode = objectNode.get(REGISTRY_ENTRY_DUE_DATE);
         if (null != currentNode) {
             try {
-                Date parsedDate = CommonUtils.Hateoas.Deserialize.dateFormat.parse(currentNode.textValue());
+                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
                 registryEntry.setDueDate(parsedDate);
                 objectNode.remove(REGISTRY_ENTRY_DUE_DATE);
             } catch (ParseException e) {
@@ -203,7 +203,7 @@ public class RegistryEntryDeserializer extends JsonDeserializer {
         currentNode = objectNode.get(REGISTRY_ENTRY_RECORD_FREEDOM_ASSESSMENT_DATE);
         if (null != currentNode) {
             try {
-                Date parsedDate = CommonUtils.Hateoas.Deserialize.dateFormat.parse(currentNode.textValue());
+                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
                 registryEntry.setFreedomAssessmentDate(parsedDate);
                 objectNode.remove(REGISTRY_ENTRY_RECORD_FREEDOM_ASSESSMENT_DATE);
             } catch (ParseException e) {
@@ -221,7 +221,7 @@ public class RegistryEntryDeserializer extends JsonDeserializer {
         currentNode = objectNode.get(CASE_LOANED_DATE);
         if (null != currentNode) {
             try {
-                Date parsedDate = CommonUtils.Hateoas.Deserialize.dateFormat.parse(currentNode.textValue());
+                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
                 registryEntry.setLoanedDate(parsedDate);
                 objectNode.remove(CASE_LOANED_DATE);
             } catch (ParseException e) {

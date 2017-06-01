@@ -66,6 +66,18 @@ public class Link implements Comparable<Link> {
     }
 
     @Override
+    public boolean equals(Object other) {
+	if (other == null) {
+	    return false;
+	}
+	Link otherLink = (Link)other;
+	if (this == otherLink) {
+	    return true;
+	}
+	return rel.equals(otherLink.getRel());
+    }
+
+    @Override
     public String toString() {
         return "Link " + linkName + " {" +
                 "href='" + href + '\'' +

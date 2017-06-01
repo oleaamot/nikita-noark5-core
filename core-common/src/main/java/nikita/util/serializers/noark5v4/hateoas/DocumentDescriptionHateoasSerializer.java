@@ -9,8 +9,8 @@ import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 
 import java.io.IOException;
 
-import static nikita.config.Constants.DATE_FORMAT;
 import static nikita.config.N5ResourceMappings.*;
+import static nikita.util.CommonUtils.Hateoas.Serialize;
 
 /**
  * Serialise an outgoing DocumentDescription object as JSON.
@@ -49,7 +49,8 @@ public class DocumentDescriptionHateoasSerializer extends HateoasSerializer impl
         }
         CommonUtils.Hateoas.Serialize.printCreateEntity(jgen, documentDescription);
         if (documentDescription.getAssociationDate()!= null) {
-            jgen.writeStringField(DOCUMENT_DESCRIPTION_ASSOCIATION_DATE, DATE_FORMAT.format(documentDescription.getAssociationDate()));
+            jgen.writeStringField(DOCUMENT_DESCRIPTION_ASSOCIATION_DATE,
+                                  Serialize.formatDate(documentDescription.getAssociationDate()));
         }
         if (documentDescription.getAssociatedWithRecordAs() != null) {
             jgen.writeStringField(DOCUMENT_DESCRIPTION_ASSOCIATED_WITH_RECORD_AS, documentDescription.getAssociatedWithRecordAs());
