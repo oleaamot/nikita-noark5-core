@@ -41,8 +41,8 @@
                 <th>mappeID</th>
                 <th>tittel</th>
                 <th>beskrivelse</th>
-                <th>oppbevaringssted</th>
-                <th>registrering</th>
+                <th>saksår</th>
+                <th>saksansvarlig</th>
             </tr>
             </thead>
             <tbody>
@@ -51,15 +51,16 @@
                     {{ casefile.mappeID }}
                 </td>
                 <td class="mdl-data-table__cell--non-numeric">
-                    {{ casefile.opprettetDato }}
+                    {{ casefile.tittel }}
                 </td>
                 <td class="mdl-data-table__cell--non-numeric">
-                    {{ casefile.tittel }}
+                    {{ casefile.beskrivelse }}
                 </td>
                 <td class="mdl-data-table__cell--non-numeric">
                     {{ casefile.saksaar }}
                 </td>
                 <td class="mdl-data-table__cell--non-numeric">
+                    {{ casefile.saksansvarlig }}
                 </td>
             </tr>
             </tbody>
@@ -74,9 +75,9 @@
             <thead>
             <tr>
                 <th>journalposttype</th>
+                <th>dokumentetsDato</th>
                 <th>tittel</th>
                 <th>journaldato</th>
-                <th>dokumentetsDato</th>
             </tr>
             </thead>
             <tbody ng-repeat="record in casefile.records">
@@ -85,13 +86,13 @@
                     {{ record.journalposttype }}
                 </td>
                 <td class="mdl-data-table__cell--non-numeric">
+                    {{ record.dokumentetsDato }}
+                </td>
+                <td class="mdl-data-table__cell--non-numeric">
                     {{ record.tittel }}
                 </td>
                 <td class="mdl-data-table__cell--non-numeric">
                     {{ record.journaldato }}
-                </td>
-                <td class="mdl-data-table__cell--non-numeric">
-                    {{ record.dokumentetsDato }}
                 </td>
             </tr>
             </tbody>
