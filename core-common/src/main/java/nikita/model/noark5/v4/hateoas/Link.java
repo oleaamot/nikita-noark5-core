@@ -1,5 +1,7 @@
 package nikita.model.noark5.v4.hateoas;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -58,25 +60,29 @@ public class Link implements Comparable<Link> {
     }
 
     @Override
-    public int compareTo(Link otherLink) {
-        if (otherLink != null) {
-            return rel.compareTo(otherLink.getRel());
-        }
-        return -1;
+    public int hashCode() {
+	return rel.hashCode();
+    }
+
+    @Override
+    public int compareTo(Link other) {
+        if (other == null)
+	    return -1;
+	return rel.compareTo(other.getRel());
     }
 
     @Override
     public boolean equals(Object other) {
-	if (other == null) {
-	    return false;
-	}
-	Link otherLink = (Link)other;
-	if (this == otherLink) {
+	if (other == this)
 	    return true;
-	}
-	return rel.equals(otherLink.getRel());
+	if (!(other instanceof Link))
+	    return false;
+        Link link = (Link) other;
+        return new EqualsBuilder()
+	    .append(this.rel, link.getRel())
+	    .isEquals();
     }
-
+    
     @Override
     public String toString() {
         return "Link " + linkName + " {" +
