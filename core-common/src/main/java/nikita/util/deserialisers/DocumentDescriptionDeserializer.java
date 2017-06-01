@@ -81,7 +81,7 @@ public class DocumentDescriptionDeserializer extends JsonDeserializer {
         // Deserialize documentNumber
         currentNode = objectNode.get(DOCUMENT_DESCRIPTION_DOCUMENT_NUMBER);
         if (null != currentNode) {
-            documentDescription.setDocumentNumber(Integer.valueOf(currentNode.textValue()));
+            documentDescription.setDocumentNumber(Integer.valueOf(currentNode.intValue()));
             objectNode.remove(DOCUMENT_DESCRIPTION_DOCUMENT_NUMBER);
         }
         // Deserialize associationDate
