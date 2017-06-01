@@ -139,12 +139,12 @@ public class NoarkGeneralEntity extends NoarkEntity implements INoarkGeneralEnti
     }
 
     @Override
-    public int compareTo(NoarkEntity otherEntity) {
+    public int compareTo(NoarkGeneralEntity otherEntity) {
         if (null == otherEntity) {
             return -1;
         }
         return new CompareToBuilder()
-                .append(this.createdDate, ((NoarkGeneralEntity) otherEntity).createdDate)
+                .append(this.createdDate, otherEntity.createdDate)
                 .toComparison();
     }
 
