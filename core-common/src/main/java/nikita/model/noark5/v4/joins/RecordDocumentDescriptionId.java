@@ -28,7 +28,7 @@ public class RecordDocumentDescriptionId implements Serializable {
     public boolean equals(Object other) {
         if (this == other)
             return true;
-        if (!(other instanceof RecordDocumentDescription))
+        if (!(other instanceof RecordDocumentDescriptionId))
             return false;
         RecordDocumentDescriptionId otherId = (RecordDocumentDescriptionId) other;
         return Objects.equals(recordId, otherId.recordId) &&
