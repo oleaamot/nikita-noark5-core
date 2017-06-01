@@ -145,7 +145,7 @@ public class NoarkGeneralEntity extends NoarkEntity implements INoarkGeneralEnti
         }
         return new CompareToBuilder()
                 .append(this.createdDate,
-                        (NoarkGeneralEntity)otherEntity.createdDate)
+                        ((NoarkGeneralEntity)otherEntity).createdDate)
                 .toComparison();
     }
 
