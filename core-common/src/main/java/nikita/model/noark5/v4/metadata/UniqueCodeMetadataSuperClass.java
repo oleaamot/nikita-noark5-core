@@ -62,9 +62,9 @@ public class UniqueCodeMetadataSuperClass extends MetadataSuperClassBase impleme
     public boolean equals(Object other) {
         if (other == this)
             return true;
-        if (!(other instanceof MetadataSuperClass))
+        if (!(other instanceof UniqueCodeMetadataSuperClass))
             return false;
-        MetadataSuperClass entity = (MetadataSuperClass) other;
+        UniqueCodeMetadataSuperClass entity = (UniqueCodeMetadataSuperClass) other;
         return new EqualsBuilder()
                 .append(this.code, entity.code)
                 .isEquals();
