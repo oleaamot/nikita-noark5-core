@@ -2,6 +2,9 @@ package nikita.model.noark5.v4.metadata;
 
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.exceptions.NikitaException;
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -14,7 +17,7 @@ import static nikita.config.Constants.ONLY_WHITESPACE;
  * Created by tsodring on 3/23/17.
  */
 @MappedSuperclass
-public class MetadataSuperClassBase implements INikitaEntity {
+public class MetadataSuperClassBase implements INikitaEntity, Comparable<MetadataSuperClassBase> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -143,6 +146,28 @@ public class MetadataSuperClassBase implements INikitaEntity {
     // All Metadata entities belong to "metadata". These entities pick the value up here
     public String getFunctionalTypeName() {
         return NOARK_METADATA_PATH;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(systemId)
+                .toHashCode();
+    }
+
+    @Override
+    public int compareTo(MetadataSuperClassBase otherEntity) {
+        return new CompareToBuilder()
+                .append(this.systemId, otherEntity.systemId)
+                .toComparison();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        MetadataSuperClassBase entity = (MetadataSuperClassBase) other;
+        return new EqualsBuilder()
+                .append(this.systemId, entity.systemId)
+                .isEquals();
     }
 
     @Override

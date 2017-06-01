@@ -1,6 +1,9 @@
 package nikita.model.noark5.v4;
 
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -154,33 +157,25 @@ public class NoarkEntity implements INikitaEntity, Comparable<NoarkEntity>   {
     }
 
     @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(systemId)
+                .toHashCode();
+    }
+
+    @Override
     public int compareTo(NoarkEntity otherEntity) {
-        if (null != otherEntity && otherEntity.getId() != null) {
-            if (id < otherEntity.getId()) {
-                return -1;
-            } else if (id > otherEntity.getId()) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-        return -1;
+        return new CompareToBuilder()
+                .append(this.systemId, otherEntity.systemId)
+                .toComparison();
     }
 
     @Override
     public boolean equals(Object other) {
-	if (null == other) {
-	    return false;
-	}
-	NoarkEntity otherEntity = (NoarkEntity)other;
-	if (this == other) {
-	    return true;
-	}
-	Long otherId = otherEntity.getId();
-        if (otherId != null) {
-            return id == otherId;
-        }
-        return false;
+        NoarkEntity noarkEntity = (NoarkEntity) other;
+        return new EqualsBuilder()
+                .append(this.systemId, noarkEntity.systemId)
+                .isEquals();
     }
 
     @Override
