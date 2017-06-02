@@ -1,19 +1,20 @@
 <!DOCTYPE html>
-<html lang="nb" ng-app="nikita-casefile">
+<html lang="nb" ng-app="nikita-registry-entry">
 <head>
     <script src="/experimental/javascripts/config.js"></script>
     <script src="/node_modules/angular/angular.min.js"></script>
-    <script src="/experimental/javascripts/casefile.js"></script>
+    <script src="/experimental/javascripts/registryentry.js"></script>
+    <script src="/node_modules/angular/ng-file-upload-bower-12.2.13/ng-file-upload.min.js"></script>
     <link rel="stylesheet" href="/node_modules/material-design-lite/material.min.css">
     <script src="/node_modules/material-design-lite/material.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
     <meta charset="UTF-8">
     <title>Liste av alle mappe-oppføringer tilkoblet arkivdel {{ series }} i Nikita</title>
 </head>
-<body ng-controller="CaseFileController">
+<body ng-controller="RegistryEntryController">
 
 <h2>Opprett ny journalpost</h2>
-<form ng-submit="send_form()" ng-controller="CaseFileController" method="post">
+<form ng-submit="send_form()" ng-controller="RegistryEntryController" method="post">
     <div class="mdl-grid-center">
         <div class="mdl-textfield mdl-js-textfield">
             <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text" name="tittel"/>
@@ -28,40 +29,37 @@
     </div>
     <div class="form-actions col-xs-offset-2 col-xs-10">
         <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-               value="Opprett mappe"/>
+               value="Ny journalpost"/>
     </div>
 </form>
 
-<h4>Saksmappe</h4>
+
+<h4>Journalpost</h4>
 <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
     <tr>
         <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
             <thead>
             <tr>
-                <th>mappeID</th>
+                <th>journalposttype</th>
+                <th>dokumentetsDato</th>
                 <th>tittel</th>
-                <th>beskrivelse</th>
-                <th>saksår</th>
-                <th>saksansvarlig</th>
+                <th>journaldato</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-click="fileSelected(casefile)" class="mdl-data-table__cell--non-numeric">
+            <tr ng-click="recordSelected(record)" class="mdl-data-table__cell--non-numeric">
+
                 <td class="mdl-data-table__cell--non-numeric">
-                    {{ casefile.mappeID }}
+                    {{ record.dokumentetsDato }}
                 </td>
                 <td class="mdl-data-table__cell--non-numeric">
-                    {{ casefile.tittel }}
+                    {{ record.journaldato }}
                 </td>
                 <td class="mdl-data-table__cell--non-numeric">
-                    {{ casefile.beskrivelse }}
+                    {{ record.journalposttype }}
                 </td>
                 <td class="mdl-data-table__cell--non-numeric">
-                    {{ casefile.saksaar }}
-                </td>
-                <td class="mdl-data-table__cell--non-numeric">
-                    {{ casefile.saksansvarlig }}
-                </td>
+                    {{ record.tittel }}
             </tr>
             </tbody>
         </table>
@@ -71,28 +69,30 @@
     </tr>
 
     <tr>
-        <table ng-if="casefile.records" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+        <table ng-if="record.documentDescription" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
             <thead>
             <tr>
-                <th>journalposttype</th>
-                <th>dokumentetsDato</th>
+                <th>dokumenttype</th>
+                <th>dokumentstatus</th>
                 <th>tittel</th>
-                <th>journaldato</th>
+                <th>tilknyttetRegistreringSom</th>
             </tr>
             </thead>
-            <tbody ng-repeat="record in casefile.records">
-            <tr ng-click="recordSelected(record)" class="mdl-data-table__cell--non-numeric">
+            <tbody ng-repeat="documentDescription in record.documentDescription">
+            <tr ng-click="fileSelected(record)" class="mdl-data-table__cell--non-numeric">
                 <td class="mdl-data-table__cell--non-numeric">
-                    {{ record.journalposttype }}
+                    {{ documentDescription.dokumenttype }}
                 </td>
                 <td class="mdl-data-table__cell--non-numeric">
-                    {{ record.dokumentetsDato }}
+                    {{ documentDescription.dokumentetsDato }}
                 </td>
                 <td class="mdl-data-table__cell--non-numeric">
-                    {{ record.tittel }}
+                    {{ documentDescription.tittel }}
                 </td>
                 <td class="mdl-data-table__cell--non-numeric">
-                    {{ record.journaldato }}
+                    {{ documentDescription.tilknyttetRegistreringSom }}
+                </td>
+                <td>
                 </td>
             </tr>
             </tbody>

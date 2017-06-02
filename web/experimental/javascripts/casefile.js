@@ -15,14 +15,14 @@ var GetLinkToChosenFile = function (t) {
     return localStorage.getItem("linkToChosenFile");
 };
 
-var SetLinkToChosenFile = function (t) {
-    localStorage.setItem("linkToChosenFile", t);
-    console.log("Setting linkToChosenFile=" + t);
+var SetLinkToChosenRecord = function (t) {
+    localStorage.setItem("linkToChosenRecord", t);
+    console.log("Setting linkToChosenRecord" + t);
 };
 
-var SetCurrentFileSystemId = function (fileSystemId) {
-    localStorage.setItem("currentFileSystemId", fileSystemId);
-    console.log("Setting currentFileSystemId=" + fileSystemId);
+var SetCurrentRecordSystemId = function (recordSystemId) {
+    localStorage.setItem("currentRecordSystemId", recordSystemId);
+    console.log("Setting currentRecordSystemId=" + recordSystemId);
 };
 
 var GetSeriesSystemID = function (t) {
@@ -40,19 +40,7 @@ let caseFileController = app.controller('CaseFileController', ['$scope', '$http'
     console.log("token=" + $scope.token);
     var urlVal = GetLinkToChosenFile();
     var casefile = '';
-    $http({
-        method: 'GET',
-        url: urlVal,
-        headers: {'Authorization': $scope.token},
-    }).then(function successCallback(response) {
-        $scope.casefile = response.data;
-        casefile = response.data;
-        console.log("case file data is : " + JSON.stringify(response.data));
-    }, function errorCallback(response) {
-        // TODO: what should we do when it fails?
-    });
 
-    console.log('casefileController starting selected ' + casefile.tittel);
     if (casefile.records) {
         casefile.records = '';
         return;
@@ -63,8 +51,7 @@ let caseFileController = app.controller('CaseFileController', ['$scope', '$http'
         headers: {'Authorization': $scope.token},
     }).then(function successCallback(response) {
         $scope.casefile = response.data;
-
-        console.log("casefile data is : " + JSON.stringify(response.data));
+//        console.log("casefile data is : " + JSON.stringify(response.data));
         for (rel in $scope.casefile._links) {
             relation = $scope.casefile._links[rel].rel;
             if (relation == 'http://rel.kxml.no/noark5/v4/api/sakarkiv/journalpost/') {
@@ -89,8 +76,6 @@ let caseFileController = app.controller('CaseFileController', ['$scope', '$http'
                 });
             }
         }
-
-
     }, function errorCallback(response) {
         // TODO: what should we do when it fails?
     });
@@ -117,7 +102,19 @@ let caseFileController = app.controller('CaseFileController', ['$scope', '$http'
             alert(data.data);
         });
     };
-    console.log("Retrieving data from URL " + urlVal);
+
+    $scope.recordSelected = function (record) {
+        console.log('record selected link clicked ' + JSON.stringify(record));
+        for (rel in record._links) {
+            relation = record._links[rel].rel;
+            if (relation == 'self') {
+                href = record._links[rel].href;
+                SetCurrentRecordSystemId(record.systemID);
+                SetLinkToChosenRecord(href);
+                window.location = gui_base_url + "/journalpost.html";
+            }
+        }
+    };
 
     var changeLocation = function ($scope, url, forceReload) {
         $scope = $scope || angular.element(document).scope();
@@ -134,5 +131,6 @@ let caseFileController = app.controller('CaseFileController', ['$scope', '$http'
             $scope.$apply();
         }
     };
+
 
 }]);
