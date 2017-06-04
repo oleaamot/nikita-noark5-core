@@ -7,8 +7,14 @@ storage.  Emails in this file is processed, either manually or
 automatically, and moved into its more final resting place in the
 archive (for example a case file) or deleted (if it is spam).
 
-This setup use fetchmail to download the email from the IMAP account,
-and procmail to store the emails in a Maildir folder.
+One setup proposal is to use fetchmail to download the email from the
+IMAP account, and procmail to store the emails in a mbox folder, and
+import it using import-mbox.  This will create one file (or case file)
+per email thread.
+
+Another setup proposal is to use fetchmail with something like
+archive-file that can read incoming email from stdin and store it in
+the archive.
 
 FIXME Dokumenter hvordan sende epost direkte inn i archive-file
 
@@ -32,4 +38,21 @@ PATH=/bin:/usr/bin:/usr/sbin
 MAILDIR=$HOME/Mail                # you'd better make sure it exists
 DEFAULT=$MAILDIR/spool-inbox/     # completely optional
 LOGFILE=$MAILDIR/spool-inbox-from # recommended
+```
+
+```
+#!/bin/sh
+
+cat <<EOF > /path/to/config
+set postmaster "somelocaluser"
+set daemon 120
+poll imap.example.com with proto IMAP
+  port 993
+  user imapuser
+  mda "/usr/bin/import-email --mappesystemid <someid> -"
+  fetchall
+  ssl
+EOF
+
+fetchmail -f /path/to/config
 ```
