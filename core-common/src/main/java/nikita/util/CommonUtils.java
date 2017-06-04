@@ -107,7 +107,7 @@ public final class CommonUtils {
          */
         public static void addRequestToMethodMap(@NotNull String servletPath, @NotNull Set<HttpMethod> method) {
 
-            Set<HttpMethod> methods = requestMethodMap.get(servletPath);
+            Set<HttpMethod> methods = requestMethodMap.get(servletPath.toLowerCase());
             if (null == methods) {
                 methods = new TreeSet<>();
             }
@@ -121,7 +121,7 @@ public final class CommonUtils {
                 methods.add(OPTIONS);
             }
             methods.addAll(method);
-            requestMethodMap.put(servletPath, methods);
+            requestMethodMap.put(servletPath.toLowerCase(), methods);
         }
 
 
@@ -158,7 +158,7 @@ public final class CommonUtils {
             Matcher matcher = pattern.matcher(servletPath.toLowerCase());
             String updatedServletPath = matcher.replaceFirst(LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS);
 
-            Set<HttpMethod> methods = requestMethodMap.get(updatedServletPath);
+            Set<HttpMethod> methods = requestMethodMap.get(updatedServletPath.toLowerCase());
             if (methods == null) {
                 return null;
             }
