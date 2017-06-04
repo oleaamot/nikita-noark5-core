@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/experimental/javascripts/config.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+    <script src="https://angular-file-upload.appspot.com/js/ng-file-upload-shim.js"></script>
+    <script src="https://angular-file-upload.appspot.com/js/ng-file-upload.js"></script>
+
+    <script src="/experimental/javascripts/new_registryentry.js"></script>
+
+    <link rel="stylesheet" href="/node_modules/material-design-lite/material.min.css">
+    <script src="/node_modules/material-design-lite/material.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <title>Opprett ny journalpost</title>
+</head>
+<body ng-app="nikita-nikita-new-registry-entry-entry" ng-controller="NewRegistryEntryController">
+
+
+<div class="mdl-grid-center">
+    <div class="mdl-textfield mdl-js-textfield">
+        <input class="mdl-textfield__input" placeholder="saksnr" ng-model="casefile.saksnr" type="text"
+               name="saksnr" disabled/>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield">
+        <input class="mdl-textfield__input" placeholder="sakstittel" ng-model="casefile.tittel" type="text"
+               name="sakstittle" disabled/>
+    </div>
+</div>
+
+<h4>Opprett ny journalpost</h4>
+
+<form ng-submit="send_form()" method="post">
+    <div class="mdl-grid-center">
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text" name="tittel"/>
+        </div>
+    </div>
+    <div class="mdl-grid-center">
+
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="beskrivelse" ng-model="beskrivelse" type="text"
+                   name="beskrivelse"/>
+        </div>
+    </div>
+    <div class="mdl-grid-center">
+
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="journalpost" ng-model="journalpost" type="text"
+                   name="journalpost"/>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select class="mdl-textfield__input" id="journalposttype" name="journalposttype">
+                <option></option>
+                <option value="I">Inngående dokument</option>
+                <option value="U">Utgående dokument</option>
+                <option value="N">Organinternt dokument for oppfølging</option>
+                <option value="X">Organinternt dokument uten oppfølging</option>
+                <option value="S">Saksframlegg</option>
+            </select>
+            <label class="mdl-textfield__label" for="journalposttype">journalposttype</label>
+        </div>
+    </div>
+    <div class="mdl-grid-center">
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="journalaar" ng-model="journalaar" type="number"
+                   name="journalaar"/>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="journalpostnummer" ng-model="journalpostnummer"
+                   type="number" name="journalpostnummer"/>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="journalsekvensnummer" ng-model="journalsekvensnummer"
+                   type="number" name="journalsekvensnummer"/>
+        </div>
+    </div>
+    <div class="form-actions col-xs-offset-2 col-xs-10">
+        <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+               value="Ny journalpost"/>
+    </div>
+</form>
+
+
+<hr>
+<p>Denne webklient er del av
+    <a href="https://github.com/HiOA-ABI/nikita-noark5-core/">Nikita
+        Noark 5 kjerne</a>, en fri programvareimplementasjon av Noark 5
+    Tjenestegrensesnitt.</p>
+
+</body>
+</html>

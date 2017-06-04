@@ -45,7 +45,8 @@ curloptsCreateFonds+=( --data @"$curl_files_dir"fonds-data.json  'http://localho
 # Create a fonds object and capture the systemId
 systemIDCreatedFonds=$(curl "${curloptsCreateFonds[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created Fonds 1             ($systemIDCreatedFonds) \n";
-#echo  "${curloptsCreateFonds[@]}";
+echo  "${curloptsCreateFonds[@]}";
+exit;
 
 # Setup curl options for fondsCreator from root
 curloptsCreateFondsCreatorFromRoot+=("${curlPostOpts[@]}");
@@ -131,6 +132,8 @@ curlPostFileOpts+=( -s  -X POST --header "Accept:application/vnd.noark5-v4+json"
 curloptsUploadFile+=("${curlPostFileOpts[@]}");
 curloptsUploadFile+=( -w "%{http_code}" 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/dokumentobjekt/'$systemIDCreatedDocumentObject'/referanseFil' )
 #echo "${curloptsUploadFile[@]} ";
+
+
 
 resultFileUpload=$(curl "${curloptsUploadFile[@]}");
 printf "uploaded file to DocumentObject  ($systemIDCreatedDocumentObject) Result $resultFileUpload\n";

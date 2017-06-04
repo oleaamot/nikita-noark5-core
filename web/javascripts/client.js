@@ -22,6 +22,7 @@ var GetUserToken = function(t) {
   return localStorage.getItem("token");
 };
 
+
 var changeLocation = function ($scope, url, forceReload) {
     $scope = $scope || angular.element(document).scope();
     console.log("URL" + url);

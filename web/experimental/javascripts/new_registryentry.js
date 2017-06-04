@@ -1,4 +1,4 @@
-var app = angular.module('nikita-registry-entry', ['ngFileUpload']);
+var app = angular.module('nikita-new-registry-entry', ['ngFileUpload']);
 
 
 var base_url = "http://localhost:8092/noark5v4";
@@ -6,23 +6,13 @@ var app_url = "http://localhost:8092/noark5v4/hateoas-api";
 var gui_base_url = "http://localhost:3000/experimental";
 
 
-var GetLinkToChosenRecord = function (t) {
+var GetLinkToChosenCaseFile = function (t) {
     return localStorage.getItem("linkToChosenRecord");
 };
 
-var SetLinkToChosenDocumentDescription = function (t) {
-    localStorage.setItem("linkToChosenDocumentDescription", t);
-    console.log("Setting linkToChosenDocumentDescription" + t);
-};
-
-var SetCurrentDocumentDescriptionSystemId = function (recordSystemId) {
-    localStorage.setItem("currentDocumentDescriptionSystemId", recordSystemId);
-    console.log("Setting currentDocumentDescriptionSystemId=" + recordSystemId);
-};
-
-var GetSeriesSystemID = function (t) {
-    console.log("Getting chosen currentSeriesSystemId=" + localStorage.getItem("currentSeriesSystemId"));
-    return localStorage.getItem("currentSeriesSystemId");
+var SetLinkToChosenCreatedRecord = function (t) {
+    localStorage.setItem("linkToCreatedRegistryEntry", t);
+    console.log("Setting linkToCreatedRegistryEntry" + t);
 };
 
 var GetUserToken = function (t) {
@@ -30,8 +20,10 @@ var GetUserToken = function (t) {
 };
 
 
-app.controller('RegistryEntryController', ['$scope', '$http', function ($scope, $http) {
+app.controller('NewRegistryEntryController', ['$scope', '$http', function ($scope, $http) {
 
+
+    $scope.rootFolders = 'bob';
 
     $scope.token = GetUserToken();
     console.log("token=" + $scope.token);

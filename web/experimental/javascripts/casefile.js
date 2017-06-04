@@ -11,8 +11,15 @@ if (nikitaOptions.enabled) {
     gui_base_url = nikitaOptions.guiBaseUrl;
 }
 
-var GetLinkToChosenFile = function (t) {
+var GetLinkToChosenFile = function () {
+    console.log("getting linktochosenfile" + localStorage.getItem("linkToChosenFile"));
     return localStorage.getItem("linkToChosenFile");
+};
+
+
+var SetChosenCaseFileObject = function (t) {
+    localStorage.setItem("chosenCaseFileObject", t);
+    console.log("Setting chosenCaseFileObject" + t);
 };
 
 var SetLinkToChosenRecord = function (t) {
@@ -116,6 +123,12 @@ let caseFileController = app.controller('CaseFileController', ['$scope', '$http'
         }
     };
 
+    $scope.newRegistryEntrySelected = function (casefile) {
+        console.log('new registry entry clicked ' + JSON.stringify(casefile));
+        SetChosenCaseFileObject(casefile);
+        window.location = gui_base_url + "/ny-journalpost.html";
+    };
+
     var changeLocation = function ($scope, url, forceReload) {
         $scope = $scope || angular.element(document).scope();
         console.log("URL" + url);
@@ -131,6 +144,4 @@ let caseFileController = app.controller('CaseFileController', ['$scope', '$http'
             $scope.$apply();
         }
     };
-
-
 }]);

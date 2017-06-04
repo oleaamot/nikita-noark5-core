@@ -1,17 +1,42 @@
 <!DOCTYPE html>
-<html lang="nb" ng-app="nikita-registry-entry">
+<html>
 <head>
     <script src="/experimental/javascripts/config.js"></script>
-    <script src="/node_modules/angular/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+    <script src="https://angular-file-upload.appspot.com/js/ng-file-upload-shim.js"></script>
+    <script src="https://angular-file-upload.appspot.com/js/ng-file-upload.js"></script>
+
     <script src="/experimental/javascripts/registryentry.js"></script>
-    <script src="/node_modules/angular/ng-file-upload-bower-12.2.13/ng-file-upload.min.js"></script>
+
     <link rel="stylesheet" href="/node_modules/material-design-lite/material.min.css">
     <script src="/node_modules/material-design-lite/material.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
-    <meta charset="UTF-8">
-    <title>Liste av alle mappe-oppføringer tilkoblet arkivdel {{ series }} i Nikita</title>
+    <style>
+        .thumb {
+            width: 24px;
+            height: 24px;
+            float: none;
+            position: relative;
+            top: 7px;
+        }
+    </style>
 </head>
-<body ng-controller="RegistryEntryController">
+<body ng-app="nikita-registry-entry" ng-controller="RegistryEntryController">
+<h4>Upload on file select</h4>
+<button type="file" ngf-select="uploadFiles($file, $invalidFiles)"
+        accept="pdf/*" ngf-max-height="1000" ngf-max-size="1MB">
+    Select File
+</button>
+<br><br>
+File:
+<div style="font:smaller">{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}
+    <span class="progress" ng-show="f.progress >= 0">
+          <div style="width:{{f.progress}}%"
+               ng-bind="f.progress + '%'"></div>
+      </span>
+</div>
+{{errorMsg}}
+
 
 <h2>Opprett ny journalpost</h2>
 <form ng-submit="send_form()" ng-controller="RegistryEntryController" method="post">
@@ -19,10 +44,14 @@
         <div class="mdl-textfield mdl-js-textfield">
             <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text" name="tittel"/>
         </div>
+    </div>
+    <div class="mdl-grid-center">
         <div class="mdl-textfield mdl-js-textfield">
             <input class="mdl-textfield__input" placeholder="beskrivelse" ng-model="beskrivelse" type="text"
                    name="beskrivelse"/>
         </div>
+    </div>
+    <div class="mdl-grid-center">
         <div class="mdl-textfield mdl-js-textfield">
             <input class="mdl-textfield__input" placeholder="mappeID" ng-model="mappeID" type="text" name="mappeID"/>
         </div>
@@ -104,5 +133,6 @@
     <a href="https://github.com/HiOA-ABI/nikita-noark5-core/">Nikita
         Noark 5 kjerne</a>, en fri programvareimplementasjon av Noark 5
     Tjenestegrensesnitt.</p>
+
 </body>
 </html>
