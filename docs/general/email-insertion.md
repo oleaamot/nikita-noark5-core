@@ -40,19 +40,35 @@ DEFAULT=$MAILDIR/spool-inbox/     # completely optional
 LOGFILE=$MAILDIR/spool-inbox-from # recommended
 ```
 
+This script fetches email via IMAP and pass it on to import-email.
+The password is in the fetchmailrc file.  The password can also be
+stored in ~/.netrc.  If the password is stored neiter places, the
+fetchmail program will interactively ask for a password and fail to
+work if not run interactively.
+
 ```
 #!/bin/sh
 
-cat <<EOF > /path/to/config
+fileid=mappesystemid
+
+fetchmailrc=$(tempfile) || exit 1
+trap "rm -f -- $tmpfile" EXIT
+
+# Make sure file is unreadable for others as it contain a password
+printf "" > $fetchmailrc
+chmod 700 $fetchmailrc
+
+cat <<EOF >> $fetchmailrc
 set postmaster "somelocaluser"
 set daemon 120
 poll imap.example.com with proto IMAP
   port 993
   user imapuser
-  mda "/usr/bin/import-email --mappesystemid <someid> -"
+  pass secretpwd
+  mda "/usr/bin/import-email --mda --storageurl https://url/to/storage/object"
   fetchall
   ssl
 EOF
 
-fetchmail -f /path/to/config
+fetchmail -f $fetchmailrc
 ```
