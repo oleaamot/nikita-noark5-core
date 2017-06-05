@@ -50,7 +50,7 @@ public class DocumentDescriptionHateoasSerializer extends HateoasSerializer impl
         CommonUtils.Hateoas.Serialize.printCreateEntity(jgen, documentDescription);
         if (documentDescription.getAssociationDate()!= null) {
             jgen.writeStringField(DOCUMENT_DESCRIPTION_ASSOCIATION_DATE,
-                                  Serialize.formatDate(documentDescription.getAssociationDate()));
+                    Serialize.formatDateTime(documentDescription.getAssociationDate()));
         }
         if (documentDescription.getAssociatedWithRecordAs() != null) {
             jgen.writeStringField(DOCUMENT_DESCRIPTION_ASSOCIATED_WITH_RECORD_AS, documentDescription.getAssociatedWithRecordAs());
