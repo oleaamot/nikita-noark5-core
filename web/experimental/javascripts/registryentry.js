@@ -1,31 +1,36 @@
 var app = angular.module('nikita-registry-entry', ['ngFileUpload']);
 
-
-var base_url = "http://localhost:8092/noark5v4";
-var app_url = "http://localhost:8092/noark5v4/hateoas-api";
 var gui_base_url = "http://localhost:3000/experimental";
 
-
-var GetLinkToChosenRecord = function (t) {
+var GetLinkToChosenRecord = function () {
     return localStorage.getItem("linkToChosenRecord");
 };
 
-var SetLinkToChosenDocumentDescription = function (t) {
+var SetLinkToCurrentDocumentDescription = function (t) {
+    localStorage.setItem("linkToCurrentDocumentDescription", t);
+    console.log("Setting linkToCurrentDocumentDescription" + t);
+};
+
+// href of the link to use when creating a document object
+var SetLinkToCurrentDocumentObject = function (t) {
+    localStorage.setItem("linkToCurrentDocumentObject", t);
+    console.log("Setting linkToCurrentDocumentObject" + t);
+};
+
+// href of the link to use when creating a document object
+var SetLinkToCreateDocumentDescription = function (t) {
     localStorage.setItem("linkToChosenDocumentDescription", t);
     console.log("Setting linkToChosenDocumentDescription" + t);
 };
+
 
 var SetCurrentDocumentDescriptionSystemId = function (recordSystemId) {
     localStorage.setItem("currentDocumentDescriptionSystemId", recordSystemId);
     console.log("Setting currentDocumentDescriptionSystemId=" + recordSystemId);
 };
 
-var GetSeriesSystemID = function (t) {
-    console.log("Getting chosen currentSeriesSystemId=" + localStorage.getItem("currentSeriesSystemId"));
-    return localStorage.getItem("currentSeriesSystemId");
-};
 
-var GetUserToken = function (t) {
+var GetUserToken = function () {
     return localStorage.getItem("token");
 };
 
@@ -97,15 +102,24 @@ app.controller('RegistryEntryController', ['$scope', '$http', function ($scope, 
     });
 
 
-    $scope.recordSelected = function (record) {
-        console.log('record selected link clicked ' + JSON.stringify(record));
+    $scope.documentSelected = function (documentDescription) {
+        console.log("registry entry redirect to " + gui_base_url + "/dokument.html");
+        window.location = gui_base_url + "/dokument.html";
+    };
+
+    $scope.newDocumentSelected = function (record) {
+
+        // setting these to ''so that when we hit the page
+        // any previous values will be ignored
+        SetLinkToCurrentDocumentObject('');
+        SetLinkToCurrentDocumentDescription('');
+
         for (rel in record._links) {
             relation = record._links[rel].rel;
-            if (relation == 'self') {
+            if (relation == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-dokumentbeskrivelse/') {
                 href = record._links[rel].href;
-                SetCurrentDocumentDescriptionSystemId(record.systemID);
-                SetLinkToChosenDocumentDescription(href);
-                window.location = gui_base_url + "/journalpost.html";
+                SetLinkToCreateDocumentDescription(href);
+                window.location = gui_base_url + "/dokument.html";
             }
         }
     };

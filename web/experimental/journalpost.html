@@ -14,22 +14,6 @@
 </head>
 
 <body ng-app="nikita-registry-entry" ng-controller="RegistryEntryController">
-<h4>Upload on file select</h4>
-<button type="file" ngf-select="uploadFiles($file, $invalidFiles)"
-        accept="pdf/*" ngf-max-height="1000" ngf-max-size="1MB">
-    Select File
-</button>
-<br><br>
-File:
-<div style="font:smaller">{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}
-    <span class="progress" ng-show="f.progress >= 0">
-          <div style="width:{{f.progress}}%"
-               ng-bind="f.progress + '%'"></div>
-      </span>
-</div>
-{{errorMsg}}
-
-
 <h4>Journalpost</h4>
 <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
     <tr>
@@ -43,7 +27,7 @@ File:
             </tr>
             </thead>
             <tbody>
-            <tr ng-click="recordSelected(record)" class="mdl-data-table__cell--non-numeric">
+            <tr class="mdl-data-table__cell--non-numeric">
 
                 <td class="mdl-data-table__cell--non-numeric">
                     {{ record.dokumentetsDato }}
@@ -77,7 +61,7 @@ File:
             </tr>
             </thead>
             <tbody ng-repeat="documentDescription in record.documentDescription">
-            <tr ng-click="fileSelected(record)" class="mdl-data-table__cell--non-numeric">
+            <tr ng-click="documentSelected(documentDescription)" class="mdl-data-table__cell--non-numeric">
                 <td class="mdl-data-table__cell--non-numeric">
                     {{ documentDescription.dokumenttype }}
                 </td>
@@ -97,7 +81,7 @@ File:
             </tr>
         </table>
 </table>
-<div>
+<div class="mdl-grid-center">
     <button ng-click="newDocumentSelected(record)" class="mdl-button mdl-button--raised mdl-button--colored">
         Nytt dokument
     </button>

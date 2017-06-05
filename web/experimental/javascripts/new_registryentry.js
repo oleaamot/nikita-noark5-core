@@ -65,9 +65,12 @@ app.controller('NewRegistryEntryController', ['$scope', '$http', function ($scop
             relation = record._links[rel].rel;
             if (relation == 'self') {
                 href = record._links[rel].href;
-                SetCurrentDocumentDescriptionSystemId(record.systemID);
+
                 SetLinkToChosenDocumentDescription(href);
                 window.location = gui_base_url + "/journalpost.html";
+            }
+            if (relation == '') {
+                SetCurrentDocumentDescriptionSystemId(record.systemID);
             }
         }
     };

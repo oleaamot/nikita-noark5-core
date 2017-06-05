@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <script src="/experimental/javascripts/config.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+    <script src="https://angular-file-upload.appspot.com/js/ng-file-upload-shim.js"></script>
+    <script src="https://angular-file-upload.appspot.com/js/ng-file-upload.js"></script>
+
+    <script src="/experimental/javascripts/document.js"></script>
+
+    <link rel="stylesheet" href="/node_modules/material-design-lite/material.min.css">
+    <script src="/node_modules/material-design-lite/material.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <title>Opprett ny journalpost</title>
+</head>
+<body ng-app="nikita-new-document" ng-controller="NewDocumentController">
+
+<h4>Opprett nytt dokument</h4>
+
+<div class="mdl-grid-center">
+    <div class="mdl-grid-center">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" name="journalpostnummer"
+                   value=" {{ record.journalpostnummer }} " disabled
+                   id="journalpostnummer"/>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" name="tittel" value="{{ record.tittel }}" disabled/>
+        </div>
+    </div>
+</div>
+
+<form ng-submit="send_form()" method="post">
+    <div class="mdl-grid-center">
+
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text"
+                   name="tittel"/>
+        </div>
+    </div>
+    <div class="mdl-grid-center">
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="beskrivelse" ng-model="beskrivelse" type="text"
+                   name="beskrivelse"/>
+        </div>
+    </div>
+    <div class="mdl-grid-center">
+
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="dokumentstatus" ng-model="dokumentstatus" type="text"
+                   name="dokumentstatus"/>
+            <select class="mdl-textfield__input" id="dokumentstatus" name="dokumentstatus">
+                <option value="B">Dokumentet er under redigering</option>
+                <option value="F">Dokumentet er ferdigstilt</option>
+            </select>
+            <label class="mdl-textfield__label" for="dokumentstatus">dokumentstatus</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select class="mdl-textfield__input" id="tilknyttetRegistreringSom" name="tilknyttetRegistreringSom">
+                <option value="H">Hoveddokument</option>
+                <option value="V">Vedlegg</option>
+            </select>
+            <label class="mdl-textfield__label" for="tilknyttetRegistreringSom">tilknyttetRegistreringSom</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="dokumenttype" ng-model="dokumenttype" type="text"
+                   name="dokumenttype"/>
+            <select class="mdl-textfield__input" id="dokumenttype" name="dokumenttype">
+                <option value="B">Brev</option>
+                <option value="R">Rundskriv</option>
+                <option value="F">Faktura</option>
+                <option value="O">Ordrebekreftelse</option>
+            </select>
+            <label class="mdl-textfield__label" for="dokumenttype">dokumenttype</label>
+        </div>
+    </div>
+    <div class="mdl-grid-center">
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="dokumentnummer" ng-model="dokumentnummer" type="number"
+                   name="dokumentnummer"/>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="tilknyttetDato" ng-model="tilknyttetDato"
+                   type="text" name="tilknyttetDato"/>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="tilknyttetAv" ng-model="tilknyttetAv"
+                   type="text" name="tilknyttetAv"/>
+        </div>
+    </div>
+
+    <div class="mdl-grid-center">
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="versjonsnummer" ng-model="versjonsnummer" type="text"
+                   name="versjonsnummer"/>
+        </div>
+    </div>
+    <div class="mdl-grid-center">
+
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="variantformat" ng-model="variantformat" type="text"
+                   name="variantformat"/>
+            <select class="mdl-textfield__input" id="variantformat" name="variantformat">
+                <option value="P">Produksjonsformat</option>
+                <option value="A">Arkivformat</option>
+                <option value="O">Dokument hvor deler av innholdet er skjermet</option>
+            </select>
+            <label class="mdl-textfield__label" for="variantformat">variantformat</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select class="mdl-textfield__input" id="mimeType" name="mimeType">
+                <option value="pdf">application/pdf</option>
+                <option value="odt">application/vnd.oasis.opendocument.text</option>
+                <option value="ods">application/vnd.oasis.opendocument.spreadsheet</option>
+                <option value="odp">application/vnd.oasis.opendocument.presentation</option>
+            </select>
+            <label class="mdl-textfield__label" for="mimeType">format</label>
+        </div>
+    </div>
+    <div class="mdl-grid-center">
+
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="sjekksum" ng-model="sjekksum" type="text"
+                   name="sjekksum"/>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="sjekksumAlgoritme" ng-model="sjekksumAlgoritme" type="text"
+                   name="sjekksumAlgoritme" disabled/>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="filstoerrelse" ng-model="filstoerrelse" type="number"
+                   name="filstoerrelse"/>
+        </div>
+    </div>
+
+    <div class="form-actions col-xs-offset-2 col-xs-10">
+        <input type="submit" ng-show="newDocument === true"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+               value="Lagre dokument detaljer"/>
+    </div>
+</form>
+
+<div class="mdl-grid-center">
+    <div>
+        <button ng-show="uploadFile === true" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                type="file" ngf-select="uploadFiles($file, $invalidFiles)"
+                accept="pdf/*" ngf-max-height="1000" ngf-max-size="1MB">
+            Last opp fil
+        </button>
+    </div>
+    <div>
+        <div style="font:smaller">{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}
+            <span class="progress" ng-show="f.progress >= 0">
+                <div style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
+            </span>
+        </div>
+    </div>
+</div>
+<hr>
+<div>
+    <a target="_blank" href="#" ng-click="downloadFile()">Last ned fil</a>
+    <!-- <button ng-show="uploadFile === true"
+            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+            ng-click="downloadFile()">
+
+    </button>
+    -->
+</div>
+<p>Denne webklient er del av
+    <a href="https://github.com/HiOA-ABI/nikita-noark5-core/">Nikita
+        Noark 5 kjerne</a>, en fri programvareimplementasjon av Noark 5
+    Tjenestegrensesnitt.</p>
+
+</body>
+</html>
