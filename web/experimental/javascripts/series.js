@@ -1,4 +1,3 @@
-
 let app = angular.module('nikita-series', []);
 
 let base_url = "http://localhost:8092/noark5v4";
@@ -6,12 +5,10 @@ let app_url = "http://localhost:8092/noark5v4/hateoas-api";
 let gui_base_url = "http://localhost:3000/experimental";
 
 if (nikitaOptions.enabled) {
-    base_url = nikitaOptions.protocol + "://" + nikitaOptions.baseUrl  + "/" + nikitaOptions.appName;
+    console.log("nikita baseURL" + nikitaOptions.baseUrl);
+    base_url = nikitaOptions.protocol + "://" + nikitaOptions.baseUrl + "/" + nikitaOptions.appName;
     app_url = base_url + "/" + nikitaOptions.apiName;
     gui_base_url = nikitaOptions.guiBaseUrl;
-    console.log("nikita baseURL" + base_url);
-    console.log("nikita appURL" + app_url );
-    console.log("nikita guiURL" + gui_base_url );
 }
 
 var SetLinkToSeriesAllFile = function (t) {

@@ -1,5 +1,16 @@
 var app = angular.module('nikita-new-document', ['ngFileUpload']);
 
+let base_url = "http://localhost:8092/noark5v4";
+let app_url = "http://localhost:8092/noark5v4/hateoas-api";
+let gui_base_url = "http://localhost:3000/experimental";
+
+if (nikitaOptions.enabled) {
+    console.log("nikita baseURL" + nikitaOptions.baseUrl);
+    base_url = nikitaOptions.protocol + "://" + nikitaOptions.baseUrl + "/" + nikitaOptions.appName;
+    app_url = base_url + "/" + nikitaOptions.apiName;
+    gui_base_url = nikitaOptions.guiBaseUrl;
+}
+
 var GetUserToken = function (t) {
     return localStorage.getItem("token");
 };

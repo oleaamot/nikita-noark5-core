@@ -1,4 +1,3 @@
-
 let app = angular.module('nikita-fonds', []);
 
 let base_url = "http://localhost:8092/noark5v4";
@@ -61,7 +60,7 @@ let fondsController = app.controller('FondsController', ['$scope', '$http', func
         SetLinkToChosenSeries(href);
         SetChosenFonds(fondSystemId);
         window.location = gui_base_url + "/arkivdel.html";
-    }
+    };
 
     $scope.send_form = function() {
 	token = GetUserToken();
