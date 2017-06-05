@@ -32,7 +32,6 @@ var GetUserToken = function (t) {
 
 app.controller('RegistryEntryController', ['$scope', '$http', function ($scope, $http) {
 
-
     $scope.token = GetUserToken();
     console.log("token=" + $scope.token);
     var urlVal = GetLinkToChosenRecord();

@@ -16,61 +16,52 @@
 <body ng-app="nikita-new-registry-entry" ng-controller="NewRegistryEntryController">
 
 
-<div class="mdl-grid-center">
-    <div class="mdl-grid-center">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" name="saksnr" value=" {{ casefile.mappeID }} " disabled
-                   id="saksnr"/>
-            <span class="mdl-textfield__error">Only alphabet and no spaces, please!</span>
-        </div>
-        <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" type="text" name="sakstittel" value="{{ casefile.tittel }}" disabled/>
-        </div>
-    </div>
-</div>
+<h4>Opprett nytt dokument</h4>
 
-<h4>Opprett ny journalpost</h4>
 
+"" : "Associated with record as"
 <form ng-submit="send_form()" method="post">
     <div class="mdl-grid-center">
         <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text" name="tittel"/>
+            <input class="mdl-textfield__input" placeholder="dokumenttype" ng-model="dokumenttype" type="text"
+                   name="dokumenttype"/>
         </div>
     </div>
     <div class="mdl-grid-center">
 
         <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" placeholder="beskrivelse" ng-model="beskrivelse" type="text"
-                   name="beskrivelse"/>
+            <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text"
+                   name="tittel"/>
         </div>
     </div>
     <div class="mdl-grid-center">
 
         <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" placeholder="journalposttype" ng-model="journalposttype" type="text"
-                   name="journalposttype"/>
-            <select class="mdl-textfield__input" id="journalposttype" name="journalposttype">
-                <option></option>
-                <option value="I">Inngående dokument</option>
-                <option value="U">Utgående dokument</option>
-                <option value="N">Organinternt dokument for oppfølging</option>
-                <option value="X">Organinternt dokument uten oppfølging</option>
-                <option value="S">Saksframlegg</option>
+            <input class="mdl-textfield__input" placeholder="dokumentstatus" ng-model="dokumentstatus" type="text"
+                   name="dokumentstatus"/>
+            <select class="mdl-textfield__input" id="dokumentstatus" name="dokumentstatus">
+                <option value="B">Dokumentet er under redigering</option>
+                <option value="F">Dokumentet er ferdigstilt</option>
             </select>
-            <label class="mdl-textfield__label" for="journalposttype">journalposttype</label>
+            <label class="mdl-textfield__label" for="dokumentstatus">dokumentstatus</label>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <select class="mdl-textfield__input" id="journalpoststatus" name="journalpoststatus">
-                <option></option>
-                <option value="J">Journalført</option>
-                <option value="F">Ferdigstilt fra saksbehandler</option>
-                <option value="G">Godkjent av leder</option>
-                <option value="E">Ekspedert</option>
-                <option value="A">Arkivert</option>
-                <option value="U">Utgår</option>
-                <option value="M">Midlertidig registrering av</option>
+            <select class="mdl-textfield__input" id="tilknyttetRegistreringSom" name="tilknyttetRegistreringSom">
+                <option value="H">Hoveddokument</option>
+                <option value="V">Vedlegg</option>
             </select>
-            <label class="mdl-textfield__label" for="journalpoststatus">journalpoststatus</label>
+            <label class="mdl-textfield__label" for="tilknyttetRegistreringSom">tilknyttetRegistreringSom</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="dokumenttype" ng-model="dokumenttype" type="text"
+                   name="dokumenttype"/>
+            <select class="mdl-textfield__input" id="dokumenttype" name="dokumenttype">
+                <option value="B">Brev</option>
+                <option value="R">Rundskriv</option>
+                <option value="F">Faktura</option>
+                <option value="O">Ordrebekreftelse</option>
+            </select>
+            <label class="mdl-textfield__label" for="dokumentstatus">dokumentstatus</label>
         </div>
     </div>
     <div class="mdl-grid-center">

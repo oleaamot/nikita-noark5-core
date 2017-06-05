@@ -19,7 +19,7 @@ var GetLinkToChosenFile = function () {
 
 var SetChosenCaseFileObject = function (t) {
     localStorage.setItem("chosenCaseFileObject", t);
-    console.log("Setting chosenCaseFileObject" + t);
+    console.log("Setting chosenCaseFileObject=" + JSON.stringify(t));
 };
 
 var SetLinkToChosenRecord = function (t) {

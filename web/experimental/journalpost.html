@@ -11,16 +11,8 @@
     <link rel="stylesheet" href="/node_modules/material-design-lite/material.min.css">
     <script src="/node_modules/material-design-lite/material.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
-    <style>
-        .thumb {
-            width: 24px;
-            height: 24px;
-            float: none;
-            position: relative;
-            top: 7px;
-        }
-    </style>
 </head>
+
 <body ng-app="nikita-registry-entry" ng-controller="RegistryEntryController">
 <h4>Upload on file select</h4>
 <button type="file" ngf-select="uploadFiles($file, $invalidFiles)"
@@ -38,41 +30,16 @@ File:
 {{errorMsg}}
 
 
-<h2>Opprett ny journalpost</h2>
-<form ng-submit="send_form()" ng-controller="RegistryEntryController" method="post">
-    <div class="mdl-grid-center">
-        <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text" name="tittel"/>
-        </div>
-    </div>
-    <div class="mdl-grid-center">
-        <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" placeholder="beskrivelse" ng-model="beskrivelse" type="text"
-                   name="beskrivelse"/>
-        </div>
-    </div>
-    <div class="mdl-grid-center">
-        <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" placeholder="mappeID" ng-model="mappeID" type="text" name="mappeID"/>
-        </div>
-    </div>
-    <div class="form-actions col-xs-offset-2 col-xs-10">
-        <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-               value="Ny journalpost"/>
-    </div>
-</form>
-
-
 <h4>Journalpost</h4>
 <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
     <tr>
         <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
             <thead>
             <tr>
-                <th>journalposttype</th>
                 <th>dokumentetsDato</th>
-                <th>tittel</th>
                 <th>journaldato</th>
+                <th>tittel</th>
+                <th>journalposttype</th>
             </tr>
             </thead>
             <tbody>
@@ -85,10 +52,12 @@ File:
                     {{ record.journaldato }}
                 </td>
                 <td class="mdl-data-table__cell--non-numeric">
+                    {{ record.tittel }}
+                </td>
+
+                <td class="mdl-data-table__cell--non-numeric">
                     {{ record.journalposttype }}
                 </td>
-                <td class="mdl-data-table__cell--non-numeric">
-                    {{ record.tittel }}
             </tr>
             </tbody>
         </table>
@@ -128,6 +97,12 @@ File:
             </tr>
         </table>
 </table>
+<div>
+    <button ng-click="newDocumentSelected(record)" class="mdl-button mdl-button--raised mdl-button--colored">
+        Nytt dokument
+    </button>
+</div>
+
 <hr>
 <p>Denne webklient er del av
     <a href="https://github.com/HiOA-ABI/nikita-noark5-core/">Nikita

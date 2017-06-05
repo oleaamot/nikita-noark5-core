@@ -6,26 +6,19 @@ var app_url = "http://localhost:8092/noark5v4/hateoas-api";
 
 var gui_base_url = "http://localhost:3000/experimental";
 
-var GetLinkToChosenCaseFile = function (t) {
-    return localStorage.getItem("chosenCaseFileObject");
+var GetLinkToChosenRecord = function (t) {
+    return localStorage.getItem("linkToChosenRecord");
 };
 
 var GetUserToken = function (t) {
     return localStorage.getItem("token");
 };
 
-
-var GetLinkToChosenFile = function () {
-    console.log("getting linktochosenfile" + localStorage.getItem("linkToChosenFile"));
-    return localStorage.getItem("linkToChosenFile");
+var SetLinkToChosenDocumentDescription = function (t) {
+    localStorage.setItem("linkToChosenDocumentDescription", t);
+    console.log("Setting linkToChosenDocumentDescription" + t);
 };
-
-
-var SetLinkToChosenRecord = function (t) {
-    localStorage.setItem("linkToChosenRecord", t);
-    console.log("Setting linkToChosenRecord" + t);
-};
-app.controller('NewRegistryEntryController', ['$scope', '$http', function ($scope, $http) {
+app.controller('NewDocumentDescriptionController', ['$scope', '$http', function ($scope, $http) {
 
     // Get todays date
     var currentTime = new Date();
@@ -33,17 +26,19 @@ app.controller('NewRegistryEntryController', ['$scope', '$http', function ($scop
     var day = currentTime.getDate();
     var year = currentTime.getFullYear();
 
+
     // Set default values to aid debugging
     $scope.tittel = "Test title of the new journalpost";
     $scope.beskrivelse = "Test description of the new journalpost";
+    $scope.mappeID = "2017/01";
     $scope.journalposttype = "Inngående dokument";
     $scope.journalaar = 2017;
     $scope.journalpostnummer = 201701;
     $scope.journalsekvensnummer = 201701011;
     $scope.dokumentetsDato = month + "-" + day + "-" + year;
     $scope.journaldato = month + "-" + day + "-" + year;
-    
-    
+
+
     $scope.token = GetUserToken();
     console.log("token=" + $scope.token);
     var urlVal = GetLinkToChosenFile();
