@@ -132,9 +132,12 @@ public class CaseFileHateoasController extends NoarkController {
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
 
         RegistryEntry defaultRegistryEntry = new RegistryEntry();
-        defaultRegistryEntry.setDescription(TEST_DESCRIPTION);
-        defaultRegistryEntry.setTitle(TEST_TITLE);
-        defaultRegistryEntry.setDocumentDate(new Date());
+
+        // TODO figure out good defaults to return
+        defaultRegistryEntry.setRecordDate(new Date());
+        defaultRegistryEntry.setRecordStatus(TEST_RECORD_STATUS);
+        defaultRegistryEntry.setRegistryEntryType(TEST_REGISTRY_ENTRY_TYPE);
+
         RegistryEntryHateoas registryEntryHateoas = new
                 RegistryEntryHateoas(defaultRegistryEntry);
         registryEntryHateoasHandler.addLinksOnNew(registryEntryHateoas, request, new Authorisation());
