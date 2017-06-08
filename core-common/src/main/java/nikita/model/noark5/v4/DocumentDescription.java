@@ -10,6 +10,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
@@ -34,7 +35,8 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
     /**
      * M083 - dokumenttype (xs:string)
      */
-    @Column(name = "document_type")
+    @NotNull
+    @Column(name = "document_type", nullable = false)
     @Audited
     @Field
     private String documentType;
@@ -42,7 +44,8 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
     /**
      * M054 - dokumentstatus (xs:string)
      */
-    @Column(name = "document_status")
+    @NotNull
+    @Column(name = "document_status", nullable = false)
     @Audited
     @Field
     private String documentStatus;
@@ -50,7 +53,8 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
     /**
      * M020 - tittel (xs:string)
      */
-    @Column(name = "title")
+    @NotNull
+    @Column(name = "title", nullable = false)
     @Audited
     @Field
     private String title;
@@ -91,7 +95,8 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
     /**
      * M217 - tilknyttetRegistreringSom (xs:string)
      */
-    @Column(name = "associated_with_record_as")
+    @NotNull
+    @Column(name = "associated_with_record_as", nullable = false)
     @Audited
     @Field
     private String associatedWithRecordAs;
@@ -99,7 +104,8 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
     /**
      * M007 - dokumentnummer (xs:integer)
      */
-    @Column(name = "document_number")
+    @NotNull
+    @Column(name = "document_number", nullable = false)
     @Audited
     @Field
     private Integer documentNumber;
@@ -107,7 +113,8 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
     /**
      * M620 - tilknyttetDato (xs:date)
      */
-    @Column(name = "association_date")
+    @NotNull
+    @Column(name = "association_date", nullable = false)
     @Temporal(TemporalType.DATE)
     @Audited
     @Field

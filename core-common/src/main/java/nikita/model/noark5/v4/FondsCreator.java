@@ -8,6 +8,7 @@ import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.TreeSet;
 import java.util.Set;
 
@@ -25,14 +26,16 @@ public class FondsCreator extends NoarkEntity implements IFondsCreatorEntity {
     /**
      * M006 - arkivskaperID (xs:string)
      */
-    @Column(name = "fonds_creator_id")
+    @NotNull
+    @Column(name = "fonds_creator_id", nullable = false)
     @Audited
     private String fondsCreatorId;
 
     /**
      * M023 - arkivskaperNavn (xs:string)
      */
-    @Column(name = "fonds_creator_name")
+    @NotNull
+    @Column(name = "fonds_creator_name", nullable = false)
     @Audited
     private String fondsCreatorName;
 

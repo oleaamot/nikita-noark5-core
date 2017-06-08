@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -24,7 +25,8 @@ public class NoarkGeneralEntity extends NoarkEntity implements INoarkGeneralEnti
     /**
      * M020 - tittel (xs:string)
      */
-    @Column(name = "title")
+    @NotNull
+    @Column(name = "title", nullable = false)
     @Audited
     @Field
     @Boost(1.3f)

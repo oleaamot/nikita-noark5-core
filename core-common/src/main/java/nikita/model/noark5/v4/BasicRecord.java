@@ -9,6 +9,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -38,7 +39,8 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
     /**
      * M020 - tittel (xs:string)
      */
-    @Column(name = "title")
+    @NotNull
+    @Column(name = "title", nullable = false)
     @Audited
     @Field
     protected String title;

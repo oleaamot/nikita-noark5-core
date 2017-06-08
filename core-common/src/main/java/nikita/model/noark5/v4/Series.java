@@ -8,6 +8,7 @@ import nikita.util.deserialisers.SeriesDeserializer;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
@@ -29,7 +30,8 @@ public class Series extends NoarkGeneralEntity implements IStorageLocation, IDoc
     /**
      * M051 - arkivdelstatus (xs:string)
      */
-    @Column(name = "series_status")
+    @NotNull
+    @Column(name = "series_status", nullable = false)
     @Audited
     private String seriesStatus;
 

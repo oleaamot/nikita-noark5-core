@@ -12,6 +12,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
@@ -33,7 +34,8 @@ public class DocumentObject  extends NoarkEntity implements INoarkCreateEntity,
     /**
      * M005 - versjonsnummer (xs:integer)
      **/
-    @Column(name = "version_number")
+    @NotNull
+    @Column(name = "version_number", nullable = false)
     @Audited
     @Field
     private Integer versionNumber;
@@ -41,7 +43,8 @@ public class DocumentObject  extends NoarkEntity implements INoarkCreateEntity,
     /**
      * M700 - variantformat (xs:string)
      */
-    @Column(name = "variant_format")
+    @NotNull
+    @Column(name = "variant_format", nullable = false)
     @Audited
     @Field
     private String variantFormat;
