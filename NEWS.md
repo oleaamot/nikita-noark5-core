@@ -5,7 +5,10 @@ These are the highlevel changes.  For details, see the git history.
 
 Release 0.2 UNRELEASED
 ----------------------
-
+ * Continued work on the angularjs GUI, including document upload
+ * Implemented correspondencepartPerson, correspondencepartUnit and correspondencepartInternal
+ * Applied for coverity coverage and started submitting code on regualr basis
+ * Started fixing bugs reported by coverity
  * Corrected and completed HATEOAS links to make sure entire API is
    available via URLs in \_links.
  * Corrected all relation URLs to use trailing slash.
