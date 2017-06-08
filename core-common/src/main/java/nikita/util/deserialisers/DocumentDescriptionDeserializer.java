@@ -88,7 +88,7 @@ public class DocumentDescriptionDeserializer extends JsonDeserializer {
         currentNode = objectNode.get(DOCUMENT_DESCRIPTION_ASSOCIATION_DATE);
         if (null != currentNode) {
             try {
-                Date parsedDate = Deserialize.parseTimeFormat(currentNode.textValue());
+                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
                 documentDescription.setAssociationDate(parsedDate);
             }
             catch (ParseException e) {
