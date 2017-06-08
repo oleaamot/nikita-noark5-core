@@ -11,6 +11,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
@@ -56,14 +57,16 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     /**
      * M082 - journalposttype (xs:string)
      */
-    @Column(name = "registry_entry_type")
+    @NotNull
+    @Column(name = "registry_entry_type", nullable = false)
     @Audited
     @Field
     private String registryEntryType;
 
     /**
-     * M053 - journalstatus (xs:string)
+     * M053 - journalstatus (xs:string, nullable = false)
      */
+    @NotNull
     @Column(name = "record_status")
     @Audited
     @Field
@@ -72,7 +75,8 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     /**
      * M101 - journaldato (xs:date)
      */
-    @Column(name = "record_date")
+    @NotNull
+    @Column(name = "record_date", nullable = false)
     @Temporal(TemporalType.DATE)
     @Audited
     @Field

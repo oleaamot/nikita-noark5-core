@@ -10,6 +10,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -52,7 +53,8 @@ public class CaseFile extends File implements Serializable, INikitaEntity, IPrec
     /**
      * M100 - saksdato (xs:date)
      */
-    @Column(name = "case_date")
+    @NotNull
+    @Column(name = "case_date", nullable = false)
     @Temporal(TemporalType.DATE)
     @Audited
     @Field
@@ -69,7 +71,8 @@ public class CaseFile extends File implements Serializable, INikitaEntity, IPrec
     /**
      * M306 - saksansvarlig (xs:string)
      */
-    @Column(name = "case_responsible")
+    @NotNull
+    @Column(name = "case_responsible", nullable = false)
     @Audited
     @Field
     protected String caseResponsible;
@@ -85,7 +88,8 @@ public class CaseFile extends File implements Serializable, INikitaEntity, IPrec
     /**
      * M052 - saksstatus (xs:string)
      */
-    @Column(name = "case_status")
+    @NotNull
+    @Column(name = "case_status", nullable = false)
     @Audited
     @Field
     protected String caseStatus;
