@@ -488,8 +488,8 @@ public final class CommonUtils {
                 if (disposalNode != null) {
                     disposal = new Disposal();
                     deserialiseDisposalEntity(disposal, objectNode);
+                    objectNode.remove(DISPOSAL);
                 }
-                objectNode.remove(DISPOSAL);
                 return disposal;
             }
 
@@ -534,8 +534,8 @@ public final class CommonUtils {
                 if (disposalUndertakenNode != null) {
                     disposalUndertaken = new DisposalUndertaken();
                     deserialiseDisposalUndertakenEntity(disposalUndertaken, objectNode);
+                    objectNode.remove(DISPOSAL_UNDERTAKEN);
                 }
-                objectNode.remove(DISPOSAL_UNDERTAKEN);
                 return disposalUndertaken;
             }
 
