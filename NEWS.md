@@ -5,7 +5,7 @@ These are the highlevel changes.  For details, see the git history.
 
 Release 0.X UNRELEASED
 ------------------------
- *
+ * Corrected some opprettetDato (M600) (de)serialisation errors.
 
 Release 0.1.1 2017-06-09 (commit a3932c87b22aee272e2a0385bb8a7d029a73faf4)
 --------------------------------------------------------------------------
