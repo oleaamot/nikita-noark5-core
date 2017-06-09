@@ -306,7 +306,7 @@ public final class CommonUtils {
                 JsonNode currentNode = objectNode.get(CREATED_DATE);
                 if (null != currentNode) {
                     try {
-                        Date parsedDate = parseDateFormat(currentNode.textValue());
+                        Date parsedDate = parseDateTimeFormat(currentNode.textValue());
                         noarkCreateEntity.setCreatedDate(parsedDate);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The Noark object you tried to create " +
