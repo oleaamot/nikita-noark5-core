@@ -335,7 +335,7 @@ public final class CommonUtils {
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The Noark object you tried to create " +
                                 "has a malformed avsluttetDato. Make sure format is " +
-                                NOARK_DATE_FORMAT_PATTERN);
+                                NOARK_DATE_TIME_FORMAT_PATTERN);
                     }
                     objectNode.remove(FINALISED_DATE);
                 }
