@@ -93,19 +93,7 @@ public class CaseFileDeserializer extends JsonDeserializer {
             objectNode.remove(CASE_SEQUENCE_NUMBER);
         }
         // Deserialize caseDate
-        currentNode = objectNode.get(CASE_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
-                caseFile.setCaseDate(parsedDate);
-                objectNode.remove(CASE_DATE);
-            }
-            catch (ParseException e) {
-                errors.append("The saksmappe you tried to create " +
-			      "has a malformed saksDato. Make sure format is " +
-			      NOARK_DATE_FORMAT_PATTERN + ". ");
-            }
-        }
+        caseFile.setCaseDate(Deserialize.deserializeDate(CASE_DATE, objectNode, errors));
         // Deserialize administrativeUnit
         currentNode = objectNode.get(ADMINISTRATIVE_UNIT);
         if (null != currentNode) {
@@ -131,19 +119,7 @@ public class CaseFileDeserializer extends JsonDeserializer {
             objectNode.remove(CASE_STATUS);
         }
         // Deserialize loanedDate
-        currentNode = objectNode.get(CASE_LOANED_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
-                caseFile.setLoanedDate(parsedDate);
-                objectNode.remove(CASE_LOANED_DATE);
-            }
-            catch (ParseException e) {
-                errors.append("The saksmappe you tried to create " +
-			      "has a malformed utlaantDato. Make sure format is " +
-			      NOARK_DATE_FORMAT_PATTERN + ". ");
-            }
-        }
+        caseFile.setLoanedDate(Deserialize.deserializeDate(CASE_LOANED_DATE, objectNode, errors));
         // Deserialize loanedTo
         currentNode = objectNode.get(CASE_LOANED_TO);
         if (null != currentNode) {

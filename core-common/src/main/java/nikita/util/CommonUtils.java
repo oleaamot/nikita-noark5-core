@@ -170,18 +170,62 @@ public final class CommonUtils {
 
         public static final class Deserialize {
 
-            public static Date parseDateFormat(String value)
-                throws ParseException
+            public static Date deserializeDate(String fieldname,
+                                               ObjectNode objectNode,
+                                               StringBuilder errors,
+                                               boolean required)
             {
-                SimpleDateFormat dateFormat = new SimpleDateFormat(NOARK_DATE_FORMAT_PATTERN);
-                return dateFormat.parse(value);
+                Date d = null;
+                JsonNode currentNode = objectNode.get(fieldname);
+                if (null != currentNode) {
+                    try {
+                        SimpleDateFormat dateFormat =
+                            new SimpleDateFormat(NOARK_DATE_FORMAT_PATTERN);
+                        d = dateFormat.parse(currentNode.textValue());
+                    } catch (ParseException e) {
+                        errors.append("Malformed " + fieldname + ". Make sure format is " +
+                                      NOARK_DATE_FORMAT_PATTERN + ". ");
+                    }
+                    objectNode.remove(fieldname);
+                } else if (required) {
+                    errors.append(fieldname + "is missing. ");
+                }
+                return d;
+            }
+            public static Date deserializeDate(String fieldname,
+                                               ObjectNode objectNode,
+                                               StringBuilder errors)
+            {
+                return deserializeDate(fieldname, objectNode, errors, false);
             }
 
-            public static Date parseDateTimeFormat(String value)
-                throws ParseException
+            public static Date deserializeDateTime(String fieldname,
+                                                   ObjectNode objectNode,
+                                                   StringBuilder errors,
+                                                   boolean required)
             {
-                SimpleDateFormat dateTimeFormat = new SimpleDateFormat(NOARK_DATE_TIME_FORMAT_PATTERN);
-                return dateTimeFormat.parse(value);
+                Date d = null;
+                JsonNode currentNode = objectNode.get(fieldname);
+                if (null != currentNode) {
+                    try {
+                        SimpleDateFormat dateFormat =
+                            new SimpleDateFormat(NOARK_DATE_TIME_FORMAT_PATTERN);
+                        d = dateFormat.parse(currentNode.textValue());
+                    } catch (ParseException e) {
+                        errors.append("Malformed " + fieldname + ". Make sure format is " +
+                                      NOARK_DATE_TIME_FORMAT_PATTERN + ". ");
+                    }
+                    objectNode.remove(fieldname);
+                } else if (required) {
+                    errors.append(fieldname + "is missing. ");
+                }
+                return d;
+            }
+            public static Date deserializeDateTime(String fieldname,
+                                                   ObjectNode objectNode,
+                                                   StringBuilder errors)
+            {
+                return deserializeDateTime(fieldname, objectNode, errors, false);
             }
 
             public static void deserialiseDocumentMedium(IDocumentMedium documentMediumEntity, ObjectNode objectNode, StringBuilder errors) {
@@ -303,21 +347,10 @@ public final class CommonUtils {
             public static void deserialiseNoarkCreateEntity(INoarkCreateEntity noarkCreateEntity,
                                                             ObjectNode objectNode, StringBuilder errors) {
                 // Deserialize createdDate
-                JsonNode currentNode = objectNode.get(CREATED_DATE);
-                if (null != currentNode) {
-                    try {
-                        Date parsedDate = parseDateTimeFormat(currentNode.textValue());
-                        noarkCreateEntity.setCreatedDate(parsedDate);
-                    } catch (ParseException e) {
-                        errors.append("The Noark object you tried to create " +
-                                      "has a malformed opprettetDato. Make sure format is " +
-                                      NOARK_DATE_TIME_FORMAT_PATTERN + ". ");
-                    }
-                    objectNode.remove(CREATED_DATE);
-                }
+                noarkCreateEntity.setCreatedDate(deserializeDateTime(CREATED_DATE, objectNode, errors));
 
                 // Deserialize createdBy
-                currentNode = objectNode.get(CREATED_BY);
+                JsonNode currentNode = objectNode.get(CREATED_BY);
                 if (null != currentNode) {
                     noarkCreateEntity.setCreatedBy(currentNode.textValue());
                     objectNode.remove(CREATED_BY);
@@ -327,21 +360,10 @@ public final class CommonUtils {
             public static void deserialiseNoarkFinaliseEntity(INoarkFinaliseEntity finaliseEntity,
                                                               ObjectNode objectNode, StringBuilder errors) {
                 // Deserialize finalisedDate
-                JsonNode currentNode = objectNode.get(FINALISED_DATE);
-                if (null != currentNode) {
-                    try {
-                        Date parsedDate = parseDateTimeFormat(currentNode.textValue());
-                        finaliseEntity.setFinalisedDate(parsedDate);
-                    } catch (ParseException e) {
-                        errors.append("The Noark object you tried to create " +
-                                      "has a malformed avsluttetDato. Make sure format is " +
-                                      NOARK_DATE_TIME_FORMAT_PATTERN + ". ");
-                    }
-                    objectNode.remove(FINALISED_DATE);
-                }
+                finaliseEntity.setFinalisedDate(deserializeDateTime(FINALISED_DATE, objectNode, errors));
 
                 // Deserialize finalisedBy
-                currentNode = objectNode.get(FINALISED_BY);
+                JsonNode currentNode = objectNode.get(FINALISED_BY);
                 if (null != currentNode) {
                     finaliseEntity.setFinalisedBy(currentNode.textValue());
                     objectNode.remove(FINALISED_BY);
@@ -445,18 +467,8 @@ public final class CommonUtils {
                 }
 
                 // Deserialize commentDate
-                currentNode = objectNode.get(COMMENT_DATE);
-                if (null != currentNode) {
-                    try {
-                        Date parsedDate = parseDateFormat(currentNode.textValue());
-                        commentEntity.setCommentDate(parsedDate);
-                    } catch (ParseException e) {
-                        errors.append("The Comment object you tried to create " +
-                                      "has a malformed merknadsdato. Make sure the format is " +
-                                      NOARK_DATE_FORMAT_PATTERN + ". ");
-                    }
-                    objectNode.remove(COMMENT_DATE);
-                }
+                commentEntity.setCommentDate(deserializeDate(COMMENT_DATE, objectNode, errors));
+
                 // Deserialize commentRegisteredBy
                 currentNode = objectNode.get(COMMENT_REGISTERED_BY);
                 if (null != currentNode) {
@@ -514,18 +526,7 @@ public final class CommonUtils {
                     objectNode.remove(DISPOSAL_PRESERVATION_TIME);
                 }
                 // Deserialize disposalDate
-                currentNode = objectNode.get(DISPOSAL_DATE);
-                if (null != currentNode) {
-                    try {
-                        Date parsedDate = parseDateFormat(currentNode.textValue());
-                        disposalEntity.setDisposalDate(parsedDate);
-                    } catch (ParseException e) {
-                        errors.append("The Disposal object you tried to create " +
-                                      "has a malformed kassasjonsdato. Make sure the format is " +
-                                      NOARK_DATE_FORMAT_PATTERN + ". ");
-                    }
-                    objectNode.remove(DISPOSAL_DATE);
-                }
+                disposalEntity.setDisposalDate(deserializeDate(DISPOSAL_DATE, objectNode, errors));
             }
 
             public static DisposalUndertaken deserialiseDisposalUndertaken(ObjectNode objectNode, StringBuilder errors) {
@@ -549,18 +550,7 @@ public final class CommonUtils {
                 }
 
                 // Deserialize disposalDate
-                currentNode = objectNode.get(DISPOSAL_UNDERTAKEN_DATE);
-                if (null != currentNode) {
-                    try {
-                        Date parsedDate = parseDateFormat(currentNode.textValue());
-                        disposalUndertakenEntity.setDisposalDate(parsedDate);
-                    } catch (ParseException e) {
-                        errors.append("The DisposalUndertaken object you tried to " +
-                                      "create has a malformed kassasjonsdato. Make sure the format is " +
-                                      NOARK_DATE_FORMAT_PATTERN + ". ");
-                    }
-                    objectNode.remove(DISPOSAL_UNDERTAKEN_DATE);
-                }
+                disposalUndertakenEntity.setDisposalDate(deserializeDate(DISPOSAL_UNDERTAKEN_DATE, objectNode, errors));
             }
 
             public static Deletion deserialiseDeletion(ObjectNode objectNode, StringBuilder errors) {
@@ -590,18 +580,8 @@ public final class CommonUtils {
                 }
 
                 // Deserialize deletionDate
-                currentNode = objectNode.get(DELETION_DATE);
-                if (null != currentNode) {
-                    try {
-                        Date parsedDate = parseDateFormat(currentNode.textValue());
-                        deletionEntity.setDeletionDate(parsedDate);
-                    } catch (ParseException e) {
-                        throw new NikitaMalformedInputDataException("The deletion object you tried to create " +
-                                "has a malformed slettetDato. Make sure the format is " +
-                                NOARK_DATE_FORMAT_PATTERN);
-                    }
-                    objectNode.remove(DELETION_DATE);
-                }
+                deletionEntity.setDeletionDate(deserializeDate(DELETION_DATE, objectNode, errors));
+
                 objectNode.remove(DELETION);
             }
 
@@ -692,20 +672,10 @@ public final class CommonUtils {
                 deserialiseNoarkFinaliseEntity(precedenceEntity, objectNode, errors);
 
                 // Deserialize precedenceDate
-                JsonNode currentNode = objectNode.get(PRECEDENCE_DATE);
-                if (null != currentNode) {
-                    try {
-                        Date parsedDate = parseDateFormat(currentNode.textValue());
-                        precedenceEntity.setPrecedenceDate(parsedDate);
-                    } catch (ParseException e) {
-                        errors.append("The deletion object you tried to create " +
-                                      "has a malformed presedensDato. Make sure the format is " +
-                                      NOARK_DATE_FORMAT_PATTERN + ". ");
-                    }
-                    objectNode.remove(PRECEDENCE_DATE);
-                }
+                precedenceEntity.setPrecedenceDate(deserializeDate(PRECEDENCE_DATE, objectNode, errors));
+
                 // Deserialize precedenceAuthority
-                currentNode = objectNode.get(PRECEDENCE_AUTHORITY);
+                JsonNode currentNode = objectNode.get(PRECEDENCE_AUTHORITY);
                 if (null != currentNode) {
                     precedenceEntity.setPrecedenceAuthority(currentNode.textValue());
                     objectNode.remove(PRECEDENCE_AUTHORITY);
@@ -729,18 +699,7 @@ public final class CommonUtils {
                     objectNode.remove(PRECEDENCE_STATUS);
                 }
                 // Deserialize precedenceApprovedDate
-                currentNode = objectNode.get(PRECEDENCE_APPROVED_DATE);
-                if (null != currentNode) {
-                    try {
-                        Date parsedDate = parseDateFormat(currentNode.textValue());
-                        precedenceEntity.setPrecedenceApprovedDate(parsedDate);
-                    } catch (ParseException e) {
-                        errors.append("The deletion object you tried to create " +
-                                      "has a malformed presedensGodkjentDato. Make sure the format " +
-                                      "is " + NOARK_DATE_FORMAT_PATTERN + ". ");
-                    }
-                    objectNode.remove(PRECEDENCE_APPROVED_DATE);
-                }
+                precedenceEntity.setPrecedenceApprovedDate(deserializeDate(PRECEDENCE_APPROVED_DATE, objectNode, errors));
             }
 
             public static Set<CaseParty> deserialiseCaseParties(ObjectNode objectNode, StringBuilder errors) {
@@ -1098,19 +1057,8 @@ public final class CommonUtils {
                     objectNode.remove(SCREENING_DOCUMENT);
                 }
                 // Deserialize screeningExpiresDate
-                currentNode = objectNode.get(SCREENING_EXPIRES_DATE);
-                if (null != currentNode) {
-                    try {
-                        Date parsedDate = parseDateFormat(currentNode.textValue());
-                        screeningEntity.setScreeningExpiresDate(parsedDate);
-                    } catch (ParseException e) {
-                        throw new NikitaMalformedInputDataException("The deletion object you tried to create " +
-                                "has a malformed skjermingOpphoererDato. Make sure the" +
-                                " format is " +
-                                NOARK_DATE_FORMAT_PATTERN);
-                    }
-                    objectNode.remove(SCREENING_EXPIRES_DATE);
-                }
+                screeningEntity.setScreeningExpiresDate(deserializeDate(SCREENING_EXPIRES_DATE, objectNode, errors));
+
                 // Deserialize screeningDuration
                 currentNode = objectNode.get(SCREENING_DURATION);
                 if (null != currentNode) {
@@ -1141,18 +1089,7 @@ public final class CommonUtils {
                     objectNode.remove(CLASSIFICATION);
                 }
                 // Deserialize classificationDate
-                currentNode = objectNode.get(CLASSIFICATION_DATE);
-                if (null != currentNode) {
-                    try {
-                        Date parsedDate = parseDateFormat(currentNode.textValue());
-                        classifiedEntity.setClassificationDate(parsedDate);
-                    } catch (ParseException e) {
-                        errors.append("The screening object you tried to create " +
-                                      "has a malformed graderingsdato. Make sure the format is " +
-                                      NOARK_DATE_FORMAT_PATTERN + ". ");
-                    }
-                    objectNode.remove(CLASSIFICATION_DATE);
-                }
+                classifiedEntity.setClassificationDate(deserializeDate(CLASSIFICATION_DATE, objectNode, errors));
 
                 // Deserialize classificationBy
                 currentNode = objectNode.get(CLASSIFICATION_BY);
@@ -1161,18 +1098,9 @@ public final class CommonUtils {
                     objectNode.remove(CLASSIFICATION_BY);
                 }
                 // Deserialize classificationDowngradedDate
-                currentNode = objectNode.get(CLASSIFICATION_DOWNGRADED_DATE);
-                if (null != currentNode) {
-                    try {
-                        Date parsedDate = parseDateFormat(currentNode.textValue());
-                        classifiedEntity.setClassificationDowngradedDate(parsedDate);
-                    } catch (ParseException e) {
-                        errors.append("The screening object you tried to create " +
-                                      "has a malformed nedgraderingsdato. Make sure the " +
-                                      "format is " + NOARK_DATE_FORMAT_PATTERN + ". ");
-                    }
-                    objectNode.remove(CLASSIFICATION_DOWNGRADED_DATE);
-                }
+                classifiedEntity.setClassificationDowngradedDate(deserializeDate(CLASSIFICATION_DOWNGRADED_DATE,
+                                                                                 objectNode, errors));
+
                 // Deserialize
                 currentNode = objectNode.get(CLASSIFICATION_DOWNGRADED_BY);
                 if (null != currentNode) {

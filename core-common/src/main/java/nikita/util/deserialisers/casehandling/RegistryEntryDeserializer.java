@@ -67,18 +67,7 @@ public class RegistryEntryDeserializer extends JsonDeserializer {
             objectNode.remove(RECORD_ARCHIVED_BY);
         }
         // Deserialize archivedDate
-        currentNode = objectNode.get(RECORD_ARCHIVED_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateTimeFormat(currentNode.textValue());
-                registryEntry.setArchivedDate(parsedDate);
-                objectNode.remove(RECORD_ARCHIVED_DATE);
-            } catch (ParseException e) {
-                errors.append("The journalpost object you tried to create " +
-                              "has a malformed arkivertDato. Make sure format is " +
-                              NOARK_DATE_FORMAT_PATTERN + ". ");
-            }
-        }
+        registryEntry.setArchivedDate(Deserialize.deserializeDateTime(RECORD_ARCHIVED_DATE, objectNode, errors));
         // Deserialize general basicRecord properties
         // Deserialize recordId
         currentNode = objectNode.get(BASIC_RECORD_ID);
@@ -141,87 +130,23 @@ public class RegistryEntryDeserializer extends JsonDeserializer {
             errors.append("The journalpost you tried to create is missing journalstatus. ");
         }
         // Deserialize recordDate
-        currentNode = objectNode.get(REGISTRY_ENTRY_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
-                registryEntry.setRecordDate(parsedDate);
-                objectNode.remove(REGISTRY_ENTRY_DATE);
-            } catch (ParseException e) {
-                errors.append("The journalpost you tried to create " +
-                              "has a malformed journaldato. Make sure format is " +
-                              NOARK_DATE_FORMAT_PATTERN + ". ");
-            }
-        } else {
-            errors.append("The journalpost you tried to create is missing journaldato.");
-        }
+        registryEntry.setRecordDate(Deserialize.deserializeDate(REGISTRY_ENTRY_DATE, objectNode, errors, true));
         // Deserialize documentDate
-        currentNode = objectNode.get(REGISTRY_ENTRY_DOCUMENT_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
-                registryEntry.setDocumentDate(parsedDate);
-                objectNode.remove(REGISTRY_ENTRY_DOCUMENT_DATE);
-            } catch (ParseException e) {
-                errors.append("The journalpost you tried to create " +
-                              "has a malformed dokumentetsDato. Make sure format is " +
-                              NOARK_DATE_FORMAT_PATTERN + ". ");
-            }
-        }
+        registryEntry.setDocumentDate(Deserialize.deserializeDate(REGISTRY_ENTRY_DOCUMENT_DATE, objectNode, errors));
 
         // Deserialize receivedDate
-        currentNode = objectNode.get(REGISTRY_ENTRY_RECEIVED_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
-                registryEntry.setReceivedDate(parsedDate);
-                objectNode.remove(REGISTRY_ENTRY_RECEIVED_DATE);
-            } catch (ParseException e) {
-                errors.append("The journalpost you tried to create " +
-                              "has a malformed mottattDato. Make sure format is " +
-                              NOARK_DATE_FORMAT_PATTERN + ". ");
-            }
-        }
+        registryEntry.setReceivedDate(Deserialize.deserializeDate(REGISTRY_ENTRY_RECEIVED_DATE, objectNode, errors));
 
         // Deserialize sentDate
-        currentNode = objectNode.get(REGISTRY_ENTRY_SENT_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
-                registryEntry.setSentDate(parsedDate);
-                objectNode.remove(REGISTRY_ENTRY_SENT_DATE);
-            } catch (ParseException e) {
-                errors.append("The journalpost you tried to create " +
-                              "has a malformed sendtDate. Make sure format is " +
-                              NOARK_DATE_FORMAT_PATTERN + ". ");
-            }
-        }
+        registryEntry.setSentDate(Deserialize.deserializeDate(REGISTRY_ENTRY_SENT_DATE, objectNode, errors));
+
         // Deserialize dueDate
-        currentNode = objectNode.get(REGISTRY_ENTRY_DUE_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
-                registryEntry.setDueDate(parsedDate);
-                objectNode.remove(REGISTRY_ENTRY_DUE_DATE);
-            } catch (ParseException e) {
-                errors.append("The journalpost you tried to create " +
-                              "has a malformed forfallsdato. Make sure format is " +
-                              NOARK_DATE_FORMAT_PATTERN);
-            }
-        }
+        registryEntry.setDueDate(Deserialize.deserializeDate(REGISTRY_ENTRY_DUE_DATE, objectNode, errors));
+
         // Deserialize freedomAssessmentDate
-        currentNode = objectNode.get(REGISTRY_ENTRY_RECORD_FREEDOM_ASSESSMENT_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
-                registryEntry.setFreedomAssessmentDate(parsedDate);
-                objectNode.remove(REGISTRY_ENTRY_RECORD_FREEDOM_ASSESSMENT_DATE);
-            } catch (ParseException e) {
-                errors.append("The journalpost you tried to create " +
-                              "has a malformed offentlighetsvurdertDato. Make sure format is "
-                              + NOARK_DATE_FORMAT_PATTERN + ". ");
-            }
-        }
+        registryEntry.setFreedomAssessmentDate(Deserialize.deserializeDate(REGISTRY_ENTRY_RECORD_FREEDOM_ASSESSMENT_DATE,
+                                                                           objectNode, errors));
+
         // Deserialize numberOfAttachments
         currentNode = objectNode.get(REGISTRY_ENTRY_NUMBER_OF_ATTACHMENTS);
         if (null != currentNode) {
@@ -229,18 +154,8 @@ public class RegistryEntryDeserializer extends JsonDeserializer {
             objectNode.remove(REGISTRY_ENTRY_NUMBER_OF_ATTACHMENTS);
         }
         // Deserialize loanedDate
-        currentNode = objectNode.get(CASE_LOANED_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
-                registryEntry.setLoanedDate(parsedDate);
-                objectNode.remove(CASE_LOANED_DATE);
-            } catch (ParseException e) {
-                errors.append("The journalpost you tried to create " +
-                              "has a malformed utlaantDato. Make sure format is " +
-                              NOARK_DATE_FORMAT_PATTERN + ". ");
-            }
-        }
+        registryEntry.setLoanedDate(Deserialize.deserializeDate(CASE_LOANED_DATE, objectNode, errors));
+
         // Deserialize loanedTo
         currentNode = objectNode.get(CASE_LOANED_TO);
         if (null != currentNode) {

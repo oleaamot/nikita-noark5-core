@@ -66,32 +66,12 @@ public class SeriesDeserializer extends JsonDeserializer {
             series.setSeriesStatus(currentNode.textValue());
             objectNode.remove(SERIES_STATUS);
         }
+
         // Deserialize seriesStartDate
-        currentNode = objectNode.get(SERIES_START_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
-                series.setSeriesStartDate(parsedDate);
-                objectNode.remove(SERIES_START_DATE);
-            } catch (ParseException e) {
-                errors.append("The arkivdel you tried to create " +
-                              "has a malformed arkivperiodeStartDato. Make sure format is " +
-                              NOARK_DATE_FORMAT_PATTERN + ". ");
-            }
-        }
+        series.setSeriesStartDate(Deserialize.deserializeDate(SERIES_START_DATE, objectNode, errors));
         // Deserialize seriesEndDate
-        currentNode = objectNode.get(SERIES_END_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
-                series.setSeriesEndDate(parsedDate);
-                objectNode.remove(SERIES_END_DATE);
-            } catch (ParseException e) {
-                errors.append("The arkivdel you tried to create " +
-                              "has a malformed arkivperiodeSluttDato. Make sure format is " +
-                              NOARK_DATE_FORMAT_PATTERN + ". ");
-            }
-        }
+        series.setSeriesEndDate(Deserialize.deserializeDate(SERIES_END_DATE, objectNode, errors));
+
         // Deserialize referencePrecursor
         currentNode = objectNode.get(SERIES_PRECURSOR);
         if (null != currentNode) {

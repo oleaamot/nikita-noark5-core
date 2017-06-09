@@ -66,19 +66,7 @@ public class BasicRecordDeserializer extends JsonDeserializer {
             objectNode.remove(RECORD_ARCHIVED_BY);
         }
         // Deserialize archivedDate
-        currentNode = objectNode.get(RECORD_ARCHIVED_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateTimeFormat(currentNode.textValue());
-                basicRecord.setArchivedDate(parsedDate);
-                objectNode.remove(RECORD_ARCHIVED_DATE);
-            }
-            catch (ParseException e) {
-                errors.append("The basisregistrering you tried to create " +
-                              "has a malformed arkivertDato. Make sure format is " +
-                              NOARK_DATE_TIME_FORMAT_PATTERN + ". ");
-            }
-        }
+        basicRecord.setArchivedDate(Deserialize.deserializeDateTime(RECORD_ARCHIVED_DATE, objectNode, errors));
         // Deserialize general basicRecord properties
         // Deserialize recordId
         currentNode = objectNode.get(BASIC_RECORD_ID);

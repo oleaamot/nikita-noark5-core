@@ -67,19 +67,7 @@ public class RecordDeserializer extends JsonDeserializer {
             objectNode.remove(RECORD_ARCHIVED_BY);
         }
         // Deserialize archivedDate
-        currentNode = objectNode.get(RECORD_ARCHIVED_DATE);
-        if (currentNode != null) {
-            try {
-                Date parsedDate = Deserialize.parseDateTimeFormat(currentNode.textValue());
-                record.setArchivedDate(parsedDate);
-                objectNode.remove(RECORD_ARCHIVED_DATE);
-            }
-            catch (ParseException e) {
-                errors.append("The registrering you tried to create " +
-                              "has a malformed arkivertDato. Make sure format is " +
-                              NOARK_DATE_TIME_FORMAT_PATTERN + ". ");
-            }
-        }
+        record.setArchivedDate(Deserialize.deserializeDateTime(RECORD_ARCHIVED_DATE, objectNode, errors));
 
         // TODO: Handle deserialize of referanseArkivdel
         // You need a minor change to the domain model to handle this

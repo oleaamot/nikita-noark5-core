@@ -86,19 +86,8 @@ public class DocumentDescriptionDeserializer extends JsonDeserializer {
             objectNode.remove(DOCUMENT_DESCRIPTION_DOCUMENT_NUMBER);
         }
         // Deserialize associationDate
-        currentNode = objectNode.get(DOCUMENT_DESCRIPTION_ASSOCIATION_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
-                documentDescription.setAssociationDate(parsedDate);
-            }
-            catch (ParseException e) {
-                errors.append("The dokumentbeskrivelse you tried to create " +
-                              "has a malformed tilknyttetDato. Make sure format is " +
-                              NOARK_DATE_FORMAT_PATTERN + ". ");
-            }
-            objectNode.remove(DOCUMENT_DESCRIPTION_ASSOCIATION_DATE);
-        }
+        documentDescription.setAssociationDate(Deserialize.deserializeDate(DOCUMENT_DESCRIPTION_ASSOCIATION_DATE,
+                                                                           objectNode, errors));
 
         // Deserialize associatedBy
         currentNode = objectNode.get(DOCUMENT_DESCRIPTION_ASSOCIATED_BY);
