@@ -519,14 +519,13 @@ public final class CommonUtils {
                     try {
                         Date parsedDate = parseDateFormat(currentNode.textValue());
                         disposalEntity.setDisposalDate(parsedDate);
-                        objectNode.remove(DISPOSAL_DATE);
                     } catch (ParseException e) {
                         throw new NikitaMalformedInputDataException("The Disposal object you tried to create " +
                                 "has a malformed kassasjonsdato. Make sure the format is " +
                                 NOARK_DATE_FORMAT_PATTERN);
                     }
+                    objectNode.remove(DISPOSAL_DATE);
                 }
-                objectNode.remove(DISPOSAL);
             }
 
             public static DisposalUndertaken deserialiseDisposalUndertaken(ObjectNode objectNode) {
