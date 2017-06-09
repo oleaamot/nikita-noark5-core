@@ -46,14 +46,15 @@ public class FileDeserializer extends JsonDeserializer {
     @Override
     public File deserialize(JsonParser jsonParser, DeserializationContext dc)
             throws IOException {
+        StringBuilder errors = new StringBuilder();
         File file = new File();
         ObjectNode objectNode = mapper.readTree(jsonParser);
 
         // Deserialise general properties
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkEntity(file, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseDocumentMedium(file, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseStorageLocation(file, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseKeyword(file, objectNode);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkEntity(file, objectNode, errors);
+        CommonUtils.Hateoas.Deserialize.deserialiseDocumentMedium(file, objectNode, errors);
+        CommonUtils.Hateoas.Deserialize.deserialiseStorageLocation(file, objectNode, errors);
+        CommonUtils.Hateoas.Deserialize.deserialiseKeyword(file, objectNode, errors);
 
         // Deserialize fileId
         JsonNode currentNode = objectNode.get(FILE_ID);
@@ -68,10 +69,10 @@ public class FileDeserializer extends JsonDeserializer {
             objectNode.remove(FILE_PUBLIC_TITLE);
         }
         // TODO: FIX THIS CommonCommonUtils.Hateoas.Deserialize.deserialiseCrossReference(file, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseComments(file, objectNode);
-        file.setReferenceDisposal(CommonUtils.Hateoas.Deserialize.deserialiseDisposal(objectNode));
-        file.setReferenceScreening(CommonUtils.Hateoas.Deserialize.deserialiseScreening(objectNode));
-        file.setReferenceClassified(CommonUtils.Hateoas.Deserialize.deserialiseClassified(objectNode));
+        CommonUtils.Hateoas.Deserialize.deserialiseComments(file, objectNode, errors);
+        file.setReferenceDisposal(CommonUtils.Hateoas.Deserialize.deserialiseDisposal(objectNode, errors));
+        file.setReferenceScreening(CommonUtils.Hateoas.Deserialize.deserialiseScreening(objectNode, errors));
+        file.setReferenceClassified(CommonUtils.Hateoas.Deserialize.deserialiseClassified(objectNode, errors));
 
         // Deserialize referenceSeries
         currentNode = objectNode.get(REFERENCE_SERIES);
@@ -88,10 +89,14 @@ public class FileDeserializer extends JsonDeserializer {
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The mappe you tried to create is malformed. The "
-                    + "following fields are not recognised as mappe fields  [" +
-                    CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
+            errors.append("The mappe you tried to create is malformed. The " +
+                    "following fields are not recognised as mappe fields  [" +
+                    CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]. ");
         }
+
+        if (0 < errors.length())
+            throw new NikitaMalformedInputDataException(errors.toString());
+
         return file;
     }
 }

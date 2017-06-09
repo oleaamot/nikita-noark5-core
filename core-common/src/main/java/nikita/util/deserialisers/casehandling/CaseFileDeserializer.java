@@ -51,14 +51,15 @@ public class CaseFileDeserializer extends JsonDeserializer {
     @Override
     public CaseFile deserialize(JsonParser jsonParser, DeserializationContext dc)
             throws IOException {
+        StringBuilder errors = new StringBuilder();
         CaseFile caseFile = new CaseFile();
         ObjectNode objectNode = mapper.readTree(jsonParser);
 
         // Deserialise properties for File
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkEntity(caseFile, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseDocumentMedium(caseFile, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseStorageLocation(caseFile, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseKeyword(caseFile, objectNode);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkEntity(caseFile, objectNode, errors);
+        CommonUtils.Hateoas.Deserialize.deserialiseDocumentMedium(caseFile, objectNode, errors);
+        CommonUtils.Hateoas.Deserialize.deserialiseStorageLocation(caseFile, objectNode, errors);
+        CommonUtils.Hateoas.Deserialize.deserialiseKeyword(caseFile, objectNode, errors);
 
         // Deserialize fileId
         JsonNode currentNode = objectNode.get(FILE_ID);
@@ -72,11 +73,11 @@ public class CaseFileDeserializer extends JsonDeserializer {
             caseFile.setOfficialTitle(currentNode.textValue());
             objectNode.remove(FILE_PUBLIC_TITLE);
         }
-        caseFile.setReferenceCrossReference(CommonUtils.Hateoas.Deserialize.deserialiseCrossReferences(objectNode));
-        CommonUtils.Hateoas.Deserialize.deserialiseComments(caseFile, objectNode);
-        caseFile.setReferenceDisposal(CommonUtils.Hateoas.Deserialize.deserialiseDisposal(objectNode));
-        caseFile.setReferenceScreening(CommonUtils.Hateoas.Deserialize.deserialiseScreening(objectNode));
-        caseFile.setReferenceClassified(CommonUtils.Hateoas.Deserialize.deserialiseClassified(objectNode));
+        caseFile.setReferenceCrossReference(CommonUtils.Hateoas.Deserialize.deserialiseCrossReferences(objectNode, errors));
+        CommonUtils.Hateoas.Deserialize.deserialiseComments(caseFile, objectNode, errors);
+        caseFile.setReferenceDisposal(CommonUtils.Hateoas.Deserialize.deserialiseDisposal(objectNode, errors));
+        caseFile.setReferenceScreening(CommonUtils.Hateoas.Deserialize.deserialiseScreening(objectNode, errors));
+        caseFile.setReferenceClassified(CommonUtils.Hateoas.Deserialize.deserialiseClassified(objectNode, errors));
 
         // Deserialise general properties for CaseFile
         // Deserialize caseYear
@@ -100,8 +101,9 @@ public class CaseFileDeserializer extends JsonDeserializer {
                 objectNode.remove(CASE_DATE);
             }
             catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The saksmappe you tried to create " +
-                        "has a malformed saksDato. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
+                errors.append("The saksmappe you tried to create " +
+			      "has a malformed saksDato. Make sure format is " +
+			      NOARK_DATE_FORMAT_PATTERN + ". ");
             }
         }
         // Deserialize administrativeUnit
@@ -137,8 +139,9 @@ public class CaseFileDeserializer extends JsonDeserializer {
                 objectNode.remove(CASE_LOANED_DATE);
             }
             catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The saksmappe you tried to create " +
-                        "has a malformed utlaantDato. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
+                errors.append("The saksmappe you tried to create " +
+			      "has a malformed utlaantDato. Make sure format is " +
+			      NOARK_DATE_FORMAT_PATTERN + ". ");
             }
         }
         // Deserialize loanedTo
@@ -162,13 +165,16 @@ public class CaseFileDeserializer extends JsonDeserializer {
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The saksmappe object you tried to create is malformed. The "
-                    + "following fields are not recognised as saksmappe fields [" +
-                    CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
+            errors.append("The saksmappe object you tried to create is malformed. The " +
+                          "following fields are not recognised as saksmappe fields [" +
+                          CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]. ");
         }
 
-        caseFile.setReferenceCaseParty(CommonUtils.Hateoas.Deserialize.deserialiseCaseParties(objectNode));
-        caseFile.setReferencePrecedence(CommonUtils.Hateoas.Deserialize.deserialisePrecedences(objectNode));
+        caseFile.setReferenceCaseParty(CommonUtils.Hateoas.Deserialize.deserialiseCaseParties(objectNode, errors));
+        caseFile.setReferencePrecedence(CommonUtils.Hateoas.Deserialize.deserialisePrecedences(objectNode, errors));
+
+        if (0 < errors.length())
+            throw new NikitaMalformedInputDataException(errors.toString());
 
         return caseFile;
     }

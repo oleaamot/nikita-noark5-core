@@ -29,14 +29,15 @@ public class AdministrativeUnitDeserializer extends JsonDeserializer {
     @Override
     public AdministrativeUnit deserialize(JsonParser jsonParser, DeserializationContext dc)
             throws IOException {
+        StringBuilder errors = new StringBuilder();
 
         AdministrativeUnit administrativeUnit = new AdministrativeUnit();
         ObjectNode objectNode = mapper.readTree(jsonParser);
 
         // Deserialise general properties
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkSystemIdEntity(administrativeUnit, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkCreateEntity(administrativeUnit, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkFinaliseEntity(administrativeUnit, objectNode);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkSystemIdEntity(administrativeUnit, objectNode, errors);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkCreateEntity(administrativeUnit, objectNode, errors);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkFinaliseEntity(administrativeUnit, objectNode, errors);
 
         // Deserialize administrativeUnitStatus
         JsonNode currentNode = objectNode.get(ADMINISTRATIVE_UNIT_STATUS);
@@ -75,10 +76,14 @@ public class AdministrativeUnitDeserializer extends JsonDeserializer {
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The administrativEnhet you tried to create is malformed. The "
-                    + "following fields are not recognised as administrativEnhet fields [" +
-                    CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
+            errors.append("The administrativEnhet you tried to create is malformed. The " +
+                          "following fields are not recognised as administrativEnhet fields [" +
+                          CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]. ");
         }
+
+        if (0 < errors.length())
+            throw new NikitaMalformedInputDataException(errors.toString());
+
         return administrativeUnit;
     }
 }

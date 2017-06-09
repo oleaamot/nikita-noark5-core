@@ -44,20 +44,25 @@ public class ClassifiactionSystemDeserializer extends JsonDeserializer {
     @Override
     public ClassificationSystem deserialize(JsonParser jsonParser, DeserializationContext dc)
             throws IOException {
+        StringBuilder errors = new StringBuilder();
 
         ClassificationSystem classificationSystem = new ClassificationSystem();
         ObjectNode objectNode = mapper.readTree(jsonParser);
 
         // Deserialise general properties
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkEntity(classificationSystem, objectNode);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkEntity(classificationSystem, objectNode, errors);
 
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The klassifikasjonssystem you tried to create is " +
-                    "malformed. The following fields are not recognised as klassifikasjonssystem fields [" +
-                    CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
+            errors.append("The klassifikasjonssystem you tried to create is " +
+                          "malformed. The following fields are not recognised as klassifikasjonssystem fields [" +
+                          CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]. ");
         }
+
+        if (0 < errors.length())
+            throw new NikitaMalformedInputDataException(errors.toString());
+
         return classificationSystem;
     }
 }

@@ -26,20 +26,25 @@ public class CorrespondencePartPersonDeserializer extends JsonDeserializer {
     @Override
     public CorrespondencePartPerson deserialize(JsonParser jsonParser, DeserializationContext dc)
             throws IOException {
+        StringBuilder errors = new StringBuilder();
 
         CorrespondencePartPerson correspondencePart = new CorrespondencePartPerson();
         ObjectNode objectNode = mapper.readTree(jsonParser);
 
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkSystemIdEntity(correspondencePart, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseCorrespondencePartPersonEntity(correspondencePart, objectNode);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkSystemIdEntity(correspondencePart, objectNode, errors);
+        CommonUtils.Hateoas.Deserialize.deserialiseCorrespondencePartPersonEntity(correspondencePart, objectNode, errors);
 
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The korrespondansepartperson you tried to create is malformed. The "
-                    + "following fields are not recognised as korrespondansepartperson fields [" +
-                    CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
+            errors.append("The korrespondansepartperson you tried to create is malformed. The " +
+                          "following fields are not recognised as korrespondansepartperson fields [" +
+                          CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]. ");
         }
+
+        if (0 < errors.length())
+            throw new NikitaMalformedInputDataException(errors.toString());
+
         return correspondencePart;
     }
 }
