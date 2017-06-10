@@ -45,12 +45,13 @@ public class ClassDeserializer extends JsonDeserializer {
     @Override
     public Class deserialize(JsonParser jsonParser, DeserializationContext dc)
             throws IOException {
+        StringBuilder errors = new StringBuilder();
 
         Class klass = new Class();
         ObjectNode objectNode = mapper.readTree(jsonParser);
 
         // Deserialise general properties
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkEntity(klass, objectNode);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkEntity(klass, objectNode, errors);
 
         // Deserialize classId
         JsonNode currentNode = objectNode.get(CLASS_ID);
@@ -62,10 +63,14 @@ public class ClassDeserializer extends JsonDeserializer {
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The klasse you tried to create is malformed. The "
-                    + "following fields are not recognised as klasse fields [" +
-                    CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
+            errors.append("The klasse you tried to create is malformed. The " +
+                          "following fields are not recognised as klasse fields [" +
+                          CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]. ");
         }
+
+        if (0 < errors.length())
+            throw new NikitaMalformedInputDataException(errors.toString());
+
         return klass;
     }
 }

@@ -47,12 +47,13 @@ public class DocumentObjectDeserializer extends JsonDeserializer {
     @Override
     public DocumentObject deserialize(JsonParser jsonParser, DeserializationContext dc)
             throws IOException {
+        StringBuilder errors = new StringBuilder();
         DocumentObject documentObject = new DocumentObject();
 
         ObjectNode objectNode = mapper.readTree(jsonParser);
 
         // Deserialise general DocumentObject properties
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkSystemIdEntity(documentObject, objectNode);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkSystemIdEntity(documentObject, objectNode, errors);
         // Deserialize versionNumber
         JsonNode currentNode = objectNode.get(DOCUMENT_OBJECT_VERSION_NUMBER);
         if (null != currentNode) {
@@ -77,7 +78,7 @@ public class DocumentObjectDeserializer extends JsonDeserializer {
             documentObject.setFormatDetails(currentNode.textValue());
             objectNode.remove(DOCUMENT_OBJECT_FORMAT_DETAILS);
         }
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkCreateEntity(documentObject, objectNode);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkCreateEntity(documentObject, objectNode, errors);
         // Deserialize referenceDocumentFile
         currentNode = objectNode.get(DOCUMENT_OBJECT_REFERENCE_DOCUMENT_FILE);
         if (null != currentNode) {
@@ -118,10 +119,14 @@ public class DocumentObjectDeserializer extends JsonDeserializer {
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The dokumentobjekt you tried to create is malformed. The "
-                    + "following fields are not recognised as dokumentobjekt fields [" +
-                    CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
+            errors.append("The dokumentobjekt you tried to create is malformed. The " +
+                          "following fields are not recognised as dokumentobjekt fields [" +
+                          CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]. ");
         }
+
+        if (0 < errors.length())
+            throw new NikitaMalformedInputDataException(errors.toString());
+
         return documentObject;
     }
 }

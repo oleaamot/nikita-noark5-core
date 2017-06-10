@@ -51,14 +51,15 @@ public class DocumentDescriptionDeserializer extends JsonDeserializer {
     @Override
     public DocumentDescription deserialize(JsonParser jsonParser, DeserializationContext dc)
             throws IOException {
+        StringBuilder errors = new StringBuilder();
         DocumentDescription documentDescription = new DocumentDescription();
 
         ObjectNode objectNode = mapper.readTree(jsonParser);
 
         // Deserialise general record properties
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkSystemIdEntity (documentDescription, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkCreateEntity(documentDescription, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkTitleDescriptionEntity(documentDescription, objectNode);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkSystemIdEntity (documentDescription, objectNode, errors);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkCreateEntity(documentDescription, objectNode, errors);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkTitleDescriptionEntity(documentDescription, objectNode, errors);
 
         // Deserialize documentType
         JsonNode currentNode = objectNode.get(DOCUMENT_DESCRIPTION_DOCUMENT_TYPE);
@@ -85,18 +86,8 @@ public class DocumentDescriptionDeserializer extends JsonDeserializer {
             objectNode.remove(DOCUMENT_DESCRIPTION_DOCUMENT_NUMBER);
         }
         // Deserialize associationDate
-        currentNode = objectNode.get(DOCUMENT_DESCRIPTION_ASSOCIATION_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
-                documentDescription.setAssociationDate(parsedDate);
-            }
-            catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The dokumentbeskrivelse you tried to create " +
-                        "has a malformed tilknyttetDato. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
-            }
-            objectNode.remove(DOCUMENT_DESCRIPTION_ASSOCIATION_DATE);
-        }
+        documentDescription.setAssociationDate(Deserialize.deserializeDate(DOCUMENT_DESCRIPTION_ASSOCIATION_DATE,
+                                                                           objectNode, errors));
 
         // Deserialize associatedBy
         currentNode = objectNode.get(DOCUMENT_DESCRIPTION_ASSOCIATED_BY);
@@ -113,14 +104,18 @@ public class DocumentDescriptionDeserializer extends JsonDeserializer {
         }
 
         // Deserialize general documentDescription properties
-        CommonUtils.Hateoas.Deserialize.deserialiseDocumentMedium(documentDescription, objectNode);
+        CommonUtils.Hateoas.Deserialize.deserialiseDocumentMedium(documentDescription, objectNode, errors);
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The dokumentbeskrivelse you tried to create is malformed. The "
-                    + "following fields are not recognised as dokumentbeskrivelse fields[" +
-                    CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
+            errors.append("The dokumentbeskrivelse you tried to create is malformed. The " +
+                          "following fields are not recognised as dokumentbeskrivelse fields[" +
+                          CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]. ");
         }
+
+        if (0 < errors.length())
+            throw new NikitaMalformedInputDataException(errors.toString());
+
         return documentDescription;
     }
 }

@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
-import static nikita.config.Constants.NOARK_DATE_FORMAT_PATTERN;
+import static nikita.config.Constants.NOARK_DATE_TIME_FORMAT_PATTERN;
 import static nikita.config.N5ResourceMappings.RECORD_ARCHIVED_BY;
 import static nikita.config.N5ResourceMappings.RECORD_ARCHIVED_DATE;
 import static nikita.util.CommonUtils.Hateoas.Deserialize;
@@ -52,13 +52,14 @@ public class RecordDeserializer extends JsonDeserializer {
     @Override
     public Record deserialize(JsonParser jsonParser, DeserializationContext dc)
             throws IOException {
+        StringBuilder errors = new StringBuilder();
         Record record = new Record();
 
         ObjectNode objectNode = mapper.readTree(jsonParser);
 
         // Deserialise general properties
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkSystemIdEntity (record, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkCreateEntity(record, objectNode);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkSystemIdEntity (record, objectNode, errors);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkCreateEntity(record, objectNode, errors);
         // Deserialize archivedBy
         JsonNode currentNode = objectNode.get(RECORD_ARCHIVED_BY);
         if (currentNode != null) {
@@ -66,18 +67,7 @@ public class RecordDeserializer extends JsonDeserializer {
             objectNode.remove(RECORD_ARCHIVED_BY);
         }
         // Deserialize archivedDate
-        currentNode = objectNode.get(RECORD_ARCHIVED_DATE);
-        if (currentNode != null) {
-            try {
-                Date parsedDate = Deserialize.parseDateTimeFormat(currentNode.textValue());
-                record.setArchivedDate(parsedDate);
-                objectNode.remove(RECORD_ARCHIVED_DATE);
-            }
-            catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The registrering you tried to create " +
-                        "has a malformed arkivertDato. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
-            }
-        }
+        record.setArchivedDate(Deserialize.deserializeDateTime(RECORD_ARCHIVED_DATE, objectNode, errors));
 
         // TODO: Handle deserialize of referanseArkivdel
         // You need a minor change to the domain model to handle this
@@ -89,10 +79,14 @@ public class RecordDeserializer extends JsonDeserializer {
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The registrering you tried to create is malformed. The "
-                    + "following fields are not recognised as registrering fields [" +
-                    CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
+            errors.append("The registrering you tried to create is malformed. The " +
+                          "following fields are not recognised as registrering fields [" +
+                          CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]. ");
         }
+
+        if (0 < errors.length())
+            throw new NikitaMalformedInputDataException(errors.toString());
+
         return record;
     }
 }

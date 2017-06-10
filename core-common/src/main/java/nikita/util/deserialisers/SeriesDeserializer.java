@@ -50,14 +50,15 @@ public class SeriesDeserializer extends JsonDeserializer {
     @Override
     public Series deserialize(JsonParser jsonParser, DeserializationContext dc)
             throws IOException {
+        StringBuilder errors = new StringBuilder();
 
         Series series = new Series();
         ObjectNode objectNode = mapper.readTree(jsonParser);
 
         // Deserialise general properties
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkEntity(series, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseDocumentMedium(series, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseStorageLocation(series, objectNode);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkEntity(series, objectNode, errors);
+        CommonUtils.Hateoas.Deserialize.deserialiseDocumentMedium(series, objectNode, errors);
+        CommonUtils.Hateoas.Deserialize.deserialiseStorageLocation(series, objectNode, errors);
 
         // Deserialize seriesStatus
         JsonNode currentNode = objectNode.get(SERIES_STATUS);
@@ -65,32 +66,12 @@ public class SeriesDeserializer extends JsonDeserializer {
             series.setSeriesStatus(currentNode.textValue());
             objectNode.remove(SERIES_STATUS);
         }
+
         // Deserialize seriesStartDate
-        currentNode = objectNode.get(SERIES_START_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
-                series.setSeriesStartDate(parsedDate);
-                objectNode.remove(SERIES_START_DATE);
-            } catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The arkivdel you tried to create " +
-                        "has a malformed arkivperiodeStartDato. Make sure format is " +
-                        NOARK_DATE_FORMAT_PATTERN);
-            }
-        }
+        series.setSeriesStartDate(Deserialize.deserializeDate(SERIES_START_DATE, objectNode, errors));
         // Deserialize seriesEndDate
-        currentNode = objectNode.get(SERIES_END_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateFormat(currentNode.textValue());
-                series.setSeriesEndDate(parsedDate);
-                objectNode.remove(SERIES_END_DATE);
-            } catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The arkivdel you tried to create " +
-                        "has a malformed arkivperiodeSluttDato. Make sure format is " +
-                        NOARK_DATE_FORMAT_PATTERN);
-            }
-        }
+        series.setSeriesEndDate(Deserialize.deserializeDate(SERIES_END_DATE, objectNode, errors));
+
         // Deserialize referencePrecursor
         currentNode = objectNode.get(SERIES_PRECURSOR);
         if (null != currentNode) {
@@ -112,19 +93,23 @@ public class SeriesDeserializer extends JsonDeserializer {
             // I would not set it here, as the service class should do this
             objectNode.remove(SERIES_SUCCESSOR);
         }
-        series.setReferenceDisposal(CommonUtils.Hateoas.Deserialize.deserialiseDisposal(objectNode));
-        series.setReferenceDisposalUndertaken(CommonUtils.Hateoas.Deserialize.deserialiseDisposalUndertaken(objectNode));
-        series.setReferenceDeletion(CommonUtils.Hateoas.Deserialize.deserialiseDeletion(objectNode));
-        series.setReferenceScreening(CommonUtils.Hateoas.Deserialize.deserialiseScreening(objectNode));
-        series.setReferenceClassified(CommonUtils.Hateoas.Deserialize.deserialiseClassified(objectNode));
+        series.setReferenceDisposal(CommonUtils.Hateoas.Deserialize.deserialiseDisposal(objectNode, errors));
+        series.setReferenceDisposalUndertaken(CommonUtils.Hateoas.Deserialize.deserialiseDisposalUndertaken(objectNode, errors));
+        series.setReferenceDeletion(CommonUtils.Hateoas.Deserialize.deserialiseDeletion(objectNode, errors));
+        series.setReferenceScreening(CommonUtils.Hateoas.Deserialize.deserialiseScreening(objectNode, errors));
+        series.setReferenceClassified(CommonUtils.Hateoas.Deserialize.deserialiseClassified(objectNode, errors));
 
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The arkivdel you tried to create is malformed. The "
-                    + "following fields are not recognised as arkivdel fields [" +
-                    CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
+            errors.append("The arkivdel you tried to create is malformed. The " +
+                          "following fields are not recognised as arkivdel fields [" +
+                          CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]. ");
         }
+
+        if (0 < errors.length())
+            throw new NikitaMalformedInputDataException(errors.toString());
+
         return series;
     }
 }

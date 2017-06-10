@@ -30,19 +30,24 @@ public class CorrespondencePartUnitDeserializer extends JsonDeserializer {
     @Override
     public CorrespondencePartUnit deserialize(JsonParser jsonParser, DeserializationContext dc)
             throws IOException {
+        StringBuilder errors = new StringBuilder();
 
         CorrespondencePartUnit correspondencePartUnit = new CorrespondencePartUnit();
         ObjectNode objectNode = mapper.readTree(jsonParser);
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkSystemIdEntity(correspondencePartUnit, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseCorrespondencePartUnitEntity(correspondencePartUnit, objectNode);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkSystemIdEntity(correspondencePartUnit, objectNode, errors);
+        CommonUtils.Hateoas.Deserialize.deserialiseCorrespondencePartUnitEntity(correspondencePartUnit, objectNode, errors);
 
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The korrespondansepartenhet you tried to create is malformed. The "
-                    + "following fields are not recognised as korrespondansepartenhet fields [" +
-                    CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
+            errors.append("The korrespondansepartenhet you tried to create is malformed. The " +
+                          "following fields are not recognised as korrespondansepartenhet fields [" +
+                          CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]. ");
         }
+
+        if (0 < errors.length())
+            throw new NikitaMalformedInputDataException(errors.toString());
+
         return correspondencePartUnit;
     }
 }
@@ -66,19 +71,19 @@ public class CorrespondencePartUnitDeserializer extends JsonDeserializer {
 
                 }
                 else {
-                    throw new NikitaMalformedInputDataException("The korrespondansepart you are trying to create " +
+                    errors.append("The korrespondansepart you are trying to create " +
                             "is malformed. kode under korrespondanseparttype has a non-recognised value. The value " +
-                            "you set is " + correspondencePartTypeCode);
+                            "you set is " + correspondencePartTypeCode + ". ");
                 }
             }
             else {
-                throw new NikitaMalformedInputDataException("The korrespondansepart you are trying to create " +
-                        "is malformed. kode under korrespondanseparttype has no value ");
+                errors.append("The korrespondansepart you are trying to create " +
+                        "is malformed. kode under korrespondanseparttype has no value. ");
             }
         }
         else {
-            throw new NikitaMalformedInputDataException("The korrespondansepart you are trying to create is malformed" +
+            errors.append("The korrespondansepart you are trying to create is malformed" +
                     ". It is missing korrespondanseparttype. It is not possible to construct a valid " +
-                    " korrespondansepart without this value being set");
+                    " korrespondansepart without this value being set. ");
         }
 */

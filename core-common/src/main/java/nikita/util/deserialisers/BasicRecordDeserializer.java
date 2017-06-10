@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
-import static nikita.config.Constants.NOARK_DATE_FORMAT_PATTERN;
+import static nikita.config.Constants.NOARK_DATE_TIME_FORMAT_PATTERN;
 import static nikita.config.N5ResourceMappings.*;
 import static nikita.util.CommonUtils.Hateoas.Deserialize;
 
@@ -50,13 +50,14 @@ public class BasicRecordDeserializer extends JsonDeserializer {
     @Override
     public BasicRecord deserialize(JsonParser jsonParser, DeserializationContext dc)
             throws IOException {
+        StringBuilder errors = new StringBuilder();
         BasicRecord basicRecord = new BasicRecord();
 
         ObjectNode objectNode = mapper.readTree(jsonParser);
 
         // Deserialise general record properties
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkSystemIdEntity (basicRecord, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseNoarkCreateEntity(basicRecord, objectNode);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkSystemIdEntity (basicRecord, objectNode, errors);
+        CommonUtils.Hateoas.Deserialize.deserialiseNoarkCreateEntity(basicRecord, objectNode, errors);
 
         // Deserialize archivedBy
         JsonNode currentNode = objectNode.get(RECORD_ARCHIVED_BY);
@@ -65,18 +66,7 @@ public class BasicRecordDeserializer extends JsonDeserializer {
             objectNode.remove(RECORD_ARCHIVED_BY);
         }
         // Deserialize archivedDate
-        currentNode = objectNode.get(RECORD_ARCHIVED_DATE);
-        if (null != currentNode) {
-            try {
-                Date parsedDate = Deserialize.parseDateTimeFormat(currentNode.textValue());
-                basicRecord.setArchivedDate(parsedDate);
-                objectNode.remove(RECORD_ARCHIVED_DATE);
-            }
-            catch (ParseException e) {
-                throw new NikitaMalformedInputDataException("The basisregistrering you tried to create " +
-                        "has a malformed arkivertDato. Make sure format is " + NOARK_DATE_FORMAT_PATTERN);
-            }
-        }
+        basicRecord.setArchivedDate(Deserialize.deserializeDateTime(RECORD_ARCHIVED_DATE, objectNode, errors));
         // Deserialize general basicRecord properties
         // Deserialize recordId
         currentNode = objectNode.get(BASIC_RECORD_ID);
@@ -102,15 +92,19 @@ public class BasicRecordDeserializer extends JsonDeserializer {
             basicRecord.setDescription(currentNode.textValue());
             objectNode.remove(DESCRIPTION);
         }
-        CommonUtils.Hateoas.Deserialize.deserialiseDocumentMedium(basicRecord, objectNode);
-        CommonUtils.Hateoas.Deserialize.deserialiseAuthor(basicRecord, objectNode);
+        CommonUtils.Hateoas.Deserialize.deserialiseDocumentMedium(basicRecord, objectNode, errors);
+        CommonUtils.Hateoas.Deserialize.deserialiseAuthor(basicRecord, objectNode, errors);
         // Check that there are no additional values left after processing the tree
         // If there are additional throw a malformed input exception
         if (objectNode.size() != 0) {
-            throw new NikitaMalformedInputDataException("The basisregistrering you tried to create is malformed. The "
-                    + "following fields are not recognised as basisregistrering fields [" +
-                    CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]");
+            errors.append("The basisregistrering you tried to create is malformed. The " +
+                          "following fields are not recognised as basisregistrering fields [" +
+                          CommonUtils.Hateoas.Deserialize.checkNodeObjectEmpty(objectNode) + "]. ");
         }
+
+        if (0 < errors.length())
+            throw new NikitaMalformedInputDataException(errors.toString());
+
         return basicRecord;
     }
 }
