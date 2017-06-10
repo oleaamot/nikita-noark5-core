@@ -1,7 +1,10 @@
 {
-  "dokumenttype" : "type dokument",
-  "dokumentstatus" : "status of document",
-  "tittel": "Title of the test document desciprion",
-  "tilknyttetRegistreringSom" : "Associated with record as",
-  "oppbevaringssted": "location 1"
+  "tittel": "Title of the test document description",
+  "beskrivelse" : "Living valley had silent eat merits esteem bed. In last an or went wise as left. Visited civilly ",
+  "dokumenttype" : "Brev",
+  "tilknyttetRegistreringSom" : "Hoveddokument",
+  "tilknyttetDato" : "2017-12-12",
+  "tilknyttetAv" : "Frank Grimes",
+  "dokumentnummer": 1,
+  "dokumentstatus": "Dokumentet er ferdigstilt"
 }

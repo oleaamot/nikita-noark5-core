@@ -1,25 +1,5 @@
-let app = angular.module('nikita-fonds', []);
+var app = angular.module('nikita-fonds', ['footer-module', 'datatables']);
 
-let base_url = "http://localhost:8092/noark5v4";
-let app_url = "http://localhost:8092/noark5v4/hateoas-api";
-let gui_base_url = "http://localhost:3000/experimental";
-
-if (nikitaOptions.enabled) {
-    console.log("nikita baseURL" + nikitaOptions.baseUrl);
-    base_url = nikitaOptions.protocol + "://" + nikitaOptions.baseUrl  + "/" + nikitaOptions.appName;
-    app_url = base_url + "/" + nikitaOptions.apiName;
-    gui_base_url = nikitaOptions.guiBaseUrl;
-}
-
-var SetLinkToChosenSeries = function(t) {
-    localStorage.setItem("linkToChosenSeries", t);
-    console.log("Setting linkToChosenSeries="+t);
-};
-
-var SetChosenFonds = function(fondSystemId) {
-    localStorage.setItem("chosenfonds", fondSystemId);
-    console.log("Setting fondSystemId="+fondSystemId);
-};
 
 var changeLocation = function ($scope, url, forceReload) {
     $scope = $scope || angular.element(document).scope();
@@ -37,10 +17,17 @@ var changeLocation = function ($scope, url, forceReload) {
     }
 };
 
-let fondsController = app.controller('FondsController', ['$scope', '$http', function ($scope, $http) {
-    $scope.token = GetUserToken();
-    console.log("token="+$scope.token);
-    $scope.fonds = "xyz";
+
+
+var fondsController = app.controller('FondsController', ['$scope', '$http',  'DTOptionsBuilder',
+    function ($scope, $http, DTOptionsBuilder) {
+
+        $scope.dtOptions = DTOptionsBuilder.newOptions()
+            .withDisplayLength(10)
+            .withOption('bLengthChange', false);
+
+        $scope.display_footer_note = display_footer_note;
+        $scope.token = GetUserToken();
     $http({
         method: 'GET',
         url: app_url + '/arkivstruktur/arkiv',

@@ -52,9 +52,14 @@ public class DocumentDescriptionHateoasSerializer extends HateoasSerializer impl
             jgen.writeStringField(DOCUMENT_DESCRIPTION_ASSOCIATION_DATE,
                     Serialize.formatDate(documentDescription.getAssociationDate()));
         }
+        if (documentDescription.getAssociationDate()!= null) {
+            jgen.writeStringField(DOCUMENT_DESCRIPTION_ASSOCIATION_BY,
+                    documentDescription.getAssociatedBy());
+        }
         if (documentDescription.getAssociatedWithRecordAs() != null) {
             jgen.writeStringField(DOCUMENT_DESCRIPTION_ASSOCIATED_WITH_RECORD_AS, documentDescription.getAssociatedWithRecordAs());
         }
+
         CommonUtils.Hateoas.Serialize.printComment(jgen, documentDescription);
         CommonUtils.Hateoas.Serialize.printDisposal(jgen, documentDescription);
         CommonUtils.Hateoas.Serialize.printDisposalUndertaken(jgen, documentDescription);

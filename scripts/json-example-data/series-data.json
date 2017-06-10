@@ -1,6 +1,7 @@
 {
   "tittel": "Title of the test series",
   "beskrivelse": "Description of the test series",
+  "arkivdelstatus": "Opprettet",
   "oppbevaringssted" : [ "location 1", "location2", "location3" ],
   "dokumentmedium": "Elektronisk arkiv"
 }

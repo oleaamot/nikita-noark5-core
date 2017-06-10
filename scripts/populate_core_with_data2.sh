@@ -69,7 +69,8 @@ curloptsCreateSeries+=( --data @"$curl_files_dir"series-data.json  'http://local
 # Create a series object and capture the systemId
 systemIDCreatedSeries=$(curl "${curloptsCreateSeries[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created  Series 1            ($systemIDCreatedSeries) \n";
-#echo ${curloptsCreateSeries[@]};
+echo ${curloptsCreateSeries[@]};
+
 
 # Setup curl options for caseFile
 curloptsCreateCaseFile+=("${curlPostOpts[@]}");
@@ -104,7 +105,7 @@ curloptsCreateDocumentDescription+=( --data @"$curl_files_dir"document-descripti
 
 # Create documentDescription 1 associated with a caseFile 1 / registryEntry 1 and capture systemId
 systemIDCreatedDocumentDescription=$(curl "${curloptsCreateDocumentDescription[@]}" | jq '.systemID' | sed 's/\"//g');
-#echo "${curloptsCreateDocumentDescription[@]}";
+echo "${curloptsCreateDocumentDescription[@]}";
 
 printf "created     DocumentDescription ($systemIDCreatedDocumentDescription) associated with ($systemIDCreatedRegistryEntry) \n";
 

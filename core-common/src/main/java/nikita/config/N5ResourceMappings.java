@@ -155,6 +155,7 @@ public final class N5ResourceMappings {
 
     // DocumentDescription
     public static final String DOCUMENT_DESCRIPTION_ASSOCIATION_DATE = "tilknyttetDato";
+    public static final String DOCUMENT_DESCRIPTION_ASSOCIATION_BY = "tilknyttetAv";
     public static final String DOCUMENT_DESCRIPTION_DOCUMENT_TYPE = "dokumenttype";
     public static final String DOCUMENT_DESCRIPTION_STATUS = "dokumentstatus";
     public static final String DOCUMENT_DESCRIPTION_ASSOCIATED_WITH_RECORD_AS = "tilknyttetRegistreringSom";

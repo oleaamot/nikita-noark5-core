@@ -46,7 +46,7 @@ curloptsCreateFonds+=( --data @"$curl_files_dir"fonds-data.json  'http://localho
 systemIDCreatedFonds=$(curl "${curloptsCreateFonds[@]}" | jq '.systemID' | sed 's/\"//g');
 printf "created Fonds 1             ($systemIDCreatedFonds) \n";
 echo  "${curloptsCreateFonds[@]}";
-exit;
+
 
 # Setup curl options for fondsCreator from root
 curloptsCreateFondsCreatorFromRoot+=("${curlPostOpts[@]}");
@@ -101,6 +101,8 @@ printf "created   File 1              ($systemIDCreatedFile) \n";
 # Setup curl options for Record
 curloptsCreateRecord+=("${curlPostOpts[@]}");
 curloptsCreateRecord+=( --data @"$curl_files_dir"record-data.json 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/mappe/'$systemIDCreatedFile'/ny-registrering' )
+echo  ${curloptsCreateRecord[@]};
+exit;
 
 # Create record 1 associated with a file 1 and capture systemId
 systemIDCreatedRecord=$(curl "${curloptsCreateRecord[@]}" | jq '.systemID' | sed 's/\"//g');
