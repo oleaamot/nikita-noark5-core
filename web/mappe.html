@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="nb" ng-app="nikita-file">
+<head>
+    <script src="/dependencies/internal/config.js"></script>
+    <script src="/dependencies/external/jQuery-2.2.4/jquery-2.2.4.min.js"></script>
+    <script src="/dependencies/external/angular-1.6.4/angular.min.js"></script>
+    <script src="/dependencies/internal/common_functionality.js"></script>
+    <script src="/dependencies/internal/file.js"></script>
+    <script src="/dependencies/external/material-design-lite/material.min.js"></script>
+    <link rel="stylesheet" href="/dependencies/external/material-design-lite//material.min.css">
+    <meta charset="UTF-8">
+    <title>Liste av alle mappe-oppføringer tilkoblet arkivdel {{ series }} i Nikita</title>
+</head>
+<body ng-controller="FileController">
+<h2>Opprett ny mappe</h2>
+<form ng-submit="send_form()" ng-controller="FileController" method="post">
+    <div class="mdl-grid-center">
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text" name="tittel" />
+        </div>
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="beskrivelse" ng-model="beskrivelse" type="text" name="beskrivelse" />
+        </div>
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" placeholder="mappeID" ng-model="mappeID" type="text" name="mappeID" />
+        </div>
+    </div>
+    <div class="form-actions col-xs-offset-2 col-xs-10">
+        <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" value="Opprett mappe" />
+    </div>
+</form>
+
+<h4>Liste av alle mappe-oppføringer tilkoblet arkivdel {{ series }} i Nikita</h4>
+<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+    <thead>
+    <tr>
+        <th>mappeID</th>
+        <th>tittel</th>
+        <th>beskrivelse</th>
+        <th>oppbevaringssted</th>
+        <th>registrering</th>
+    </tr>
+    </thead>
+    <tbody ng-repeat="file in files">
+    <tr ng-click="fileSelected(file)" class="mdl-data-table__cell--non-numeric">
+        <td class="mdl-data-table__cell--non-numeric">
+            {{ file.mappeID }}
+        </td>
+        <td class="mdl-data-table__cell--non-numeric">
+            {{ file.tittel }}
+        </td>
+        <td class="mdl-data-table__cell--non-numeric">
+            {{ file.beskrivelse }}
+        </td>
+        <td class="mdl-data-table__cell--non-numeric">
+            {{ file.oppbevaringssted }}
+        </td>
+        <td class="mdl-data-table__cell--non-numeric">
+            <div ng-repeat="l in file._links">
+                <div  ng-if="l.rel == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/registrering/' ">
+                    <div ng-click="regSelected(l.href, file.systemID)">
+                      registrering
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<p>Denne webklient er del av
+  <a href="https://github.com/HiOA-ABI/nikita-noark5-core/">Nikita
+    Noark 5 kjerne</a>, en fri programvareimplementasjon av Noark 5
+  Tjenestegrensesnitt.</p>
+</body>
+</html>

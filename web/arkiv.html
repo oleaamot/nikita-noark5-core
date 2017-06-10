@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="nb" ng-app="nikita-fonds">
+<head>
+    <meta charset="UTF-8">
+    <script src="/dependencies/internal/config.js"></script>
+    <script src="/dependencies/external/jQuery-2.2.4/jquery-2.2.4.min.js"></script>
+    <script src="/dependencies/external/angular-1.6.4/angular.min.js"></script>
+    <script src="/dependencies/internal/common_functionality.js"></script>
+    <script src="/dependencies/internal/fonds.js"></script>
+    <script src="/dependencies/external/material-design-lite/material.min.js"></script>
+    <link rel="stylesheet" href="/dependencies/external/material-design-lite//material.min.css">
+    <meta charset="UTF-8">
+    <title>Liste av alle arkiv-oppføringer i Nikita</title>
+</head>
+
+<body ng-controller="FondsController">
+
+<div ng-show="show_create_fonds">
+    <h2>Opprett nytt arkiv</h2>
+    <form ng-submit="send_form()" ng-controller="FondsController" method="post">
+        <div class="mdl-grid-center">
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text" name="tittel"/>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" placeholder="beskrivelse" ng-model="beskrivelse" type="text"
+                       name="beskrivelse"/>
+            </div>
+        </div>
+        <div class="form-actions col-xs-offset-2 col-xs-10">
+            <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                   value="Opprett arkiv"/>
+        </div>
+    </form>
+</div>
+
+<h4>Liste av alle arkiv-oppføringer i Nikita</h4>
+<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+    <thead>
+    <tr>
+        <th>tittel</th>
+        <th>beskrivelse</th>
+        <th>status</th>
+        <th>arkivdeler</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="fond in fonds" class="mdl-data-table__cell--non-numeric">
+        <td class="mdl-data-table__cell--non-numeric">
+            {{ fond.tittel }}
+        </td>
+        <td class="mdl-data-table__cell--non-numeric">
+            {{ fond.beskrivelse }}
+        </td>
+        <td class="mdl-data-table__cell--non-numeric" ng-click="hrefSelected(l.href)">
+            {{ fond.arkivstatus }}
+        </td>
+        <td class="mdl-data-table__cell--non-numeric">
+            <div ng-repeat="l in fond._links">
+                <div ng-if="l.rel == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivdel/' ">
+                    <div ng-click="seriesSelected(l.href, fond.systemID)">
+                        arkivdeler
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div ng-show="display_footer_note" footer></div>
+</body>
+</html>

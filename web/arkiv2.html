@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="nb" ng-app="nikita-fonds">
+<head>
+    <script src="/dependencies/internal/config.js"></script>
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="/dependencies/external/angular-1.6.4/angular.min.js"></script>
+    <script src="/dependencies/external/angular-1.6.4/angular-datatables.min.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="https://cdn.datatables.net/1.10.15/js/dataTables.material.min.js">
+    </script>
+
+    <script src="/dependencies/internal/common_functionality.js"></script>
+    <script src="/dependencies/internal/fonds_datatable.js"></script>
+
+    <script src="/node_modules/material-design-lite/material.min.js"></script>
+    <link rel="stylesheet" href="/node_modules/material-design-lite/material.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <meta charset="UTF-8">
+    <script type="text/javascript" class="init">
+
+        $(document).ready(function () {
+            $('#fondsTable').DataTable({
+                columnDefs: [
+                    {
+                        targets: [0, 1, 2],
+                        className: 'mdl-data-table__cell--non-numeric'
+                    }
+                ]
+            });
+        });
+    </script>
+    <title>Liste av alle arkiv-oppføringer i Nikita</title>
+
+</head>
+<body ng-controller="FondsController">
+
+<h4>Liste av alle arkiv-oppføringer i Nikita</h4>
+<table datatable="ng" dt-options="dtOptions" class="mdl-data-table">
+    <thead>
+    <tr>
+        <th>tittel</th>
+        <th>beskrivelse</th>
+        <th>status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="fond in fonds" class="mdl-data-table__cell--non-numeric">
+        <td class="mdl-data-table__cell--non-numeric">
+            {{ fond.tittel }}
+        </td>
+        <td class="mdl-data-table__cell--non-numeric">
+            {{ fond.beskrivelse }}
+        </td>
+        <td class="mdl-data-table__cell--non-numeric" ng-click="hrefSelected(l.href)">
+            {{ fond.arkivstatus }}
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div ng-show="display_footer_note" footer></div>
+</body>
+</html>
