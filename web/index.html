@@ -1,103 +1,14 @@
-<!doctype html>
-<html ng-app="nikita">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>nikita web</title>
-    <script src="node_modules/angular/angular.min.js"></script>
-    <script src="javascripts/config.js"></script>
-    <script src="javascripts/client.js"></script>
-    <link rel="stylesheet" href="/node_modules/material-design-lite/material.min.css">
-    <script src="/node_modules/material-design-lite/material.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
-    <script src="/node_modules/resolve-url/resolve-url.js"></script>
-  </head>
-  <body ng-controller="MainController">
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-      <header class="mdl-layout__header">
-	<div class="mdl-layout__header-row">
-	  <span class="mdl-layout-title">nikita web - v{{ app_version }}</span>
-	</div>
-      </header>
-      <main class="mdl-layout__content">
-      <div class="page-content">
-	<p ng-click="hrefSelected(current)">Current link: {{ current }} ({{ allow }})</p>
-	<div id="links_table_group">
-	<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-	  <thead>
-	    <tr>
-	      <th>href</th>
-	      <th>rel</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <tr ng-repeat="l in links"class="mdl-data-table__cell--non-numeric">
-	      <td class="mdl-data-table__cell--non-numeric" ng-click="hrefSelected(l.href)">{{ l.href }}</td>
-	      <td class="mdl-data-table__cell--non-numeric"><a href="{{ l.rel }}">{{ l.rel }}</a></td>
-	    </tr>
-	  </tbody>
-	</table>
-	<p ng-click="hrefSelected(parent)">Parent link: {{ parent }}</p>
-	<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-	  <thead>
-	    <tr>
-	      <th>attribute</th>
-	      <th>value</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <tr ng-repeat="(key, value) in data"class="mdl-data-table__cell--non-numeric">
-	      <td class="mdl-data-table__cell--non-numeric">{{ key }}</td>
-	      <td class="mdl-data-table__cell--non-numeric">{{ value }}</td>
-	    </tr>
-	  </tbody>
-	</table>
-	<div >
-	<h2 ng-if="results">Results</h2>
-	<div ng-repeat="entry in results">
-          <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-	    <thead>
-	      <tr>
-	        <th>attribute</th>
-	        <th>value</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-	      <tr ng-repeat="(key, value) in entry">
-	        <td class="mdl-data-table__cell--non-numeric">{{ key }}</td>
-		  <td class="mdl-data-table__cell--non-numeric">
-		    <div ng-if="key == '_links'">
-		      <div ng-repeat="link in value">
-			<br>{
-			<div ng-repeat="(lkey, lvalue) in link">
-			  <div ng-if="lkey == 'href'">
-			    <br>href: <div ng-click="hrefSelected(lvalue)">{{ lvalue }},</div>
-			  </div>
-			  <div ng-if="lkey == 'rel'">
-			    <br>{{ lkey }}: <a href="{{ lvalue }}">{{ lvalue }}</A>,
-			  </div>
-			  <div ng-if="lkey != 'href' && lkey != 'rel'">
-			    <br>{{ lkey }}: {{ lvalue }},
-			  </div>
-			</div>
-			<br>}
-		      </div>
-		    </div>
-		    <div ng-if="key != '_links' ">
-		      {{ value }}
-		    </div>
-		  </td>
-	      </tr>
-	    </tbody>
-          </table>
-	</div>
-	<p><a href="login.html">logg inn</a><p>
-	<hr>
-	<p>Denne webklient er del av
-	  <a href="https://github.com/HiOA-ABI/nikita-noark5-core/">Nikita Noark 5 kjerne</a>, en fri programvareimplementasjon av Noark 5 Tjenestegrensesnitt.</p>
-      </div>
-      </main>
-    </div>
-    </div>
-  </body>
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="refresh" content="1; url=login.html">
+	<script type="text/javascript">
+        window.location.href = "login.html"
+	</script>
+	<title>Page Redirection</title>
+</head>
+<body>
+Du må logge på nikita først. <a href='login.html'>Logg på her</a>.
+</body>
 </html>
