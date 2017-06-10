@@ -18,6 +18,9 @@ nikitaOptions = {
 
 console.log("Hello ....");
 
+// Set the base url for application
+var base_url =  "http://" + nikitaOptions.baseUrl + "/noark5v4";
+
 // Set the url for the GUI across all web pages
 var gui_base_url = nikitaOptions.guiBaseUrl;
 // Starting point for the application
