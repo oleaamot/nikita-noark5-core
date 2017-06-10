@@ -1,26 +1,4 @@
-let app = angular.module('nikita', []);
-
-// TODO: use endpoint class
-//let base_url = "http://n5test.kxml.no/api";
-let base_url = "http://localhost:8092/noark5v4";
-
-if (nikitaOptions.enabled) {
-    console.log("nikita baseURL" + nikitaOptions.baseUrl);
-    base_url = nikitaOptions.protocol + "://" + nikitaOptions.baseUrl  + "/" + nikitaOptions.appName;
-}
-
-let login_url = base_url + "/auth";
-
-// TODO: use class for token
-var SetUserToken = function(t) {
-  localStorage.setItem("token", t);
-  console.log("Adding token " + t + " to local storage");
-
-};
-
-var GetUserToken = function(t) {
-  return localStorage.getItem("token");
-};
+var app = angular.module('nikita', []);
 
 
 var changeLocation = function ($scope, url, forceReload) {
@@ -39,7 +17,7 @@ var changeLocation = function ($scope, url, forceReload) {
     }
 };
 
-let updateIndexView = function(url, $scope, $http) {
+var updateIndexView = function(url, $scope, $http) {
     $scope.current = url;
     if (url.lastIndexOf("/") == (url.length - 1)) {
 	parent =  "..";
@@ -68,7 +46,7 @@ let updateIndexView = function(url, $scope, $http) {
     });
 };
 
-let controller = app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
+var controller = app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
   token = GetUserToken();
   console.log("token="+$scope.token);
   $scope.app_version = "xyz";
@@ -91,7 +69,7 @@ let controller = app.controller('MainController', ['$scope', '$http', function (
   }
 }]);
 
-let login = app.controller('LoginController', ['$scope', '$http', function($scope, $http) {
+var login = app.controller('LoginController', ['$scope', '$http', function($scope, $http) {
   console.log("LoginController");
   $scope.send_form = function() {
     console.log($scope.password);
@@ -105,7 +83,7 @@ let login = app.controller('LoginController', ['$scope', '$http', function($scop
 	SetUserToken(data.data.token);
         console.log("hello" + status);
         console.log("Loggin in. Setting token to " + data.data.token);
-        changeLocation($scope, "./", true);
+        changeLocation($scope, "./arkiv.html", true);
     }, function(data, status, headers, config) {
 
         console.log("hello" + status);
@@ -114,7 +92,7 @@ let login = app.controller('LoginController', ['$scope', '$http', function($scop
   };
 }]);
 
-let postliste = app.controller('PostlisteController', ['$scope', '$http', function ($scope, $http) {
+var postliste = app.controller('PostlisteController', ['$scope', '$http', function ($scope, $http) {
     // FIXME find href for rel
     // 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkiv/'
     // dynamically

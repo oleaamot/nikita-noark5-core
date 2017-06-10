@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html ng-app="nikita">
+<html>
   <head>
     <meta charset="UTF-8">
   <title>Innlogging</title>
-      <script src="/dependencies/internal/config.js"></script>
-      <script src="/dependencies/external/angular-1.6.4/angular.min.js"></script>
-      <script src="/dependencies/internal/client.js"></script>
+      <script src="dependencies/internal/config.js"></script>
+      <script src="dependencies/external/angular-1.6.4/angular.min.js"></script>
+      <script src="dependencies/internal/client.js"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
   <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 </head>
-<body>
+<body ng-app="nikita" ng-controller="LoginController">
   <center>
       <h1>Login inn</h1>
       <form ng-submit="send_form()" ng-controller="LoginController" method="post">
@@ -24,6 +24,7 @@
 	</div>
 	<div class="form-actions col-xs-offset-2 col-xs-10">
 	  <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" value="Logg inn" />
+
           <a class="mdl-button mdl-js-button" href="{{ sign_up_url }}">Registrering</a>
 	</div>
       </form>
