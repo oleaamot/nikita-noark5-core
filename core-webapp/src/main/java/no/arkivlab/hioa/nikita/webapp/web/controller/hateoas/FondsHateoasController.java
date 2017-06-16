@@ -294,8 +294,6 @@ public class FondsHateoasController extends NoarkController {
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response) {
 
         Series defaultSeries = new Series();
-        defaultSeries.setTitle(TEST_TITLE);
-        defaultSeries.setDescription(TEST_DESCRIPTION);
         defaultSeries.setSeriesStatus(STATUS_OPEN);
         defaultSeries.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
         SeriesHateoas seriesHateoas = new
