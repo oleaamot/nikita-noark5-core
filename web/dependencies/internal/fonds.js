@@ -34,6 +34,26 @@ var fondsController = app.controller('FondsController', ['$scope', '$http',
         // TODO: what should we do when it fails?
     });
 
+    url = app_url + '/arkivstruktur/ny-arkiv';
+    $scope.formfields = ['tittel', 'beskrivelse'];
+    $http({
+        method: 'GET',
+        url: url,
+        headers: {'Authorization': $scope.token },
+    }).then(function successCallback(response) {
+	for (var key of Object.keys(response.data)) {
+	    if ("_links" === key) {
+	    } else {
+		//console.log(key,response.data[key]);
+		$scope[key] = response.data[key];
+		$scope.formfields.push(key);
+	    }
+	}
+        //console.log("ny-arkiv data is : " + JSON.stringify(response.data));
+    }, function errorCallback(response) {
+        // TODO: what should we do when it fails?
+    });
+
     // TODO : Add the href to local storage indicating what was clicked
     //
     $scope.seriesSelected = function(href, fondSystemId){
@@ -47,6 +67,10 @@ var fondsController = app.controller('FondsController', ['$scope', '$http',
     $scope.send_form = function() {
 	token = GetUserToken();
 	url = app_url + '/arkivstruktur/ny-arkiv';
+	formdata = {};
+	for (var key of $scope.formfields) {
+	    formdata[key] = $scope[key];
+	}
 	$http({
 	    url: url,
 	    method: "POST",
@@ -54,7 +78,7 @@ var fondsController = app.controller('FondsController', ['$scope', '$http',
 		'Content-Type': 'application/vnd.noark5-v4+json',
 		'Authorization': token,
 	    },
-	    data: { tittel: $scope.tittel, beskrivelse: $scope.beskrivelse },
+	    data: formdata,
 	}).then(function(data, status, headers, config) {
             changeLocation($scope, "./arkiv.html", true);
 	}, function(data, status, headers, config) {
