@@ -296,6 +296,7 @@ public class FondsHateoasController extends NoarkController {
         Series defaultSeries = new Series();
         defaultSeries.setTitle(TEST_TITLE);
         defaultSeries.setDescription(TEST_DESCRIPTION);
+        defaultSeries.setSeriesStatus(STATUS_OPEN);
         defaultSeries.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
         SeriesHateoas seriesHateoas = new
                 SeriesHateoas(defaultSeries);
