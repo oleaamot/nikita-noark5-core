@@ -386,9 +386,6 @@ public class SeriesHateoasController extends NoarkController {
 
     private File setFileDefaults(File defaultFile)
     {
-        defaultFile.setTitle(TEST_TITLE);
-        defaultFile.setOfficialTitle(TEST_TITLE);
-        defaultFile.setDescription(TEST_DESCRIPTION);
         defaultFile.setFileId("2017/01");
         defaultFile.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
         return defaultFile;
