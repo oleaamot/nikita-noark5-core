@@ -384,6 +384,25 @@ public class SeriesHateoasController extends NoarkController {
                 .body(seriesHateoas);
     }
 
+    private File setFileDefaults(File defaultFile)
+    {
+        defaultFile.setTitle(TEST_TITLE);
+        defaultFile.setOfficialTitle(TEST_TITLE);
+        defaultFile.setDescription(TEST_DESCRIPTION);
+        defaultFile.setFileId("2017/01");
+        defaultFile.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
+        return defaultFile;
+    }
+    private CaseFile setCaseFileDefaults(CaseFile defaultCaseFile)
+    {
+        defaultCaseFile = (CaseFile)setFileDefaults(defaultCaseFile);
+        defaultCaseFile.setCaseResponsible(TEST_USER_CASE_HANDLER_1);
+        defaultCaseFile.setAdministrativeUnit(TEST_ADMINISTRATIVE_UNIT);
+        defaultCaseFile.setCaseDate(new Date());
+        defaultCaseFile.setCaseStatus(STATUS_OPEN);
+        return defaultCaseFile;
+    }
+
     // Create a File object with default values
     // GET [contextPath][api]/arkivstruktur/arkivdel/{systemId}/ny-mappe/
     @ApiOperation(value = "Create a File with default values", response = File.class)
@@ -400,11 +419,7 @@ public class SeriesHateoasController extends NoarkController {
             HttpServletRequest request, final HttpServletResponse response) {
 
         File defaultFile = new File();
-        defaultFile.setTitle(TEST_TITLE);
-        defaultFile.setOfficialTitle(TEST_TITLE);
-        defaultFile.setFileId("2017/01");
-        defaultFile.setDescription(TEST_DESCRIPTION);
-        defaultFile.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
+        defaultFile = setFileDefaults(defaultFile);
         FileHateoas fileHateoas = new
                 FileHateoas(defaultFile);
         fileHateoasHandler.addLinksOnNew(fileHateoas, request, new Authorisation());
@@ -429,18 +444,7 @@ public class SeriesHateoasController extends NoarkController {
             HttpServletRequest request, final HttpServletResponse response) {
 
         CaseFile defaultCaseFile = new CaseFile();
-        defaultCaseFile.setTitle(TEST_TITLE);
-        defaultCaseFile.setOfficialTitle(TEST_TITLE);
-        defaultCaseFile.setFileId("2017/01");
-        defaultCaseFile.setDescription(TEST_DESCRIPTION);
-        defaultCaseFile.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
-        defaultCaseFile.setTitle(TEST_TITLE);
-        defaultCaseFile.setDescription(TEST_DESCRIPTION);
-        defaultCaseFile.setDocumentMedium(DOCUMENT_MEDIUM_ELECTRONIC);
-        defaultCaseFile.setCaseResponsible(TEST_USER_CASE_HANDLER_1);
-        defaultCaseFile.setAdministrativeUnit(TEST_ADMINISTRATIVE_UNIT);
-        defaultCaseFile.setCaseDate(new Date());
-        defaultCaseFile.setCaseStatus(STATUS_OPEN);
+        defaultCaseFile = setCaseFileDefaults(defaultCaseFile);
         CaseFileHateoas caseFileHateoas = new
                 CaseFileHateoas(defaultCaseFile);
         caseFileHateoasHandler.addLinksOnNew(caseFileHateoas, request, new Authorisation());
