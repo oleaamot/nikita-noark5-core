@@ -121,15 +121,15 @@ public final class Constants {
     public static final String SERIES_ASSOCIATE_AS_PRECURSOR = "referanseForloeper";
 
     // Some user identifiers used for testing
-    public static final String TEST_USER_CASE_HANDLER_1 = "test user case handler 1";
-    public static final String TEST_USER_CASE_HANDLER_2 = "test user case handler 2";
-    public static final String TEST_USER_ADMIN = "test user admin";
-    public static final String TEST_USER_RECORD_KEEPER = "test user record keeper";
+    public static final String TEST_USER_CASE_HANDLER_1 = "example test user case handler 1";
+    public static final String TEST_USER_CASE_HANDLER_2 = "example test user case handler 2";
+    public static final String TEST_USER_ADMIN = "example test user admin";
+    public static final String TEST_USER_RECORD_KEEPER = "example test user record keeper";
 
     // Some strings used during testing
-    public static final String TEST_TITLE = "test title";
-    public static final String TEST_DESCRIPTION = "test description";
-    public static final String TEST_ADMINISTRATIVE_UNIT = "test administrative unit";
+    public static final String TEST_TITLE = "example test title";
+    public static final String TEST_DESCRIPTION = "example test description";
+    public static final String TEST_ADMINISTRATIVE_UNIT = "example test administrative unit";
     public static final String TEST_RECORD_STATUS = "J";
     public static final String TEST_REGISTRY_ENTRY_TYPE = "I";
 
