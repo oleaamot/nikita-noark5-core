@@ -18,6 +18,26 @@ var fileController = app.controller('FileController', ['$scope', '$http', functi
         // TODO: what should we do when it fails?
     });
 
+    url = app_url + '/arkivstruktur/arkivdel/' + $scope.series + '/ny-mappe';
+    $scope.formfields = ['tittel', 'beskrivelse', 'mappeID'];
+    $http({
+        method: 'GET',
+        url: url,
+        headers: {'Authorization': $scope.token },
+    }).then(function successCallback(response) {
+        for (var key of Object.keys(response.data)) {
+            if ("_links" === key) {
+            } else {
+                //console.log(key,response.data[key]);
+                $scope[key] = response.data[key];
+                $scope.formfields.push(key);
+            }
+        }
+        //console.log("ny-mappe data is : " + JSON.stringify(response.data));
+    }, function errorCallback(response) {
+        // TODO: what should we do when it fails?
+    });
+
     $scope.fileSelected = function (file) {
         console.log('file selected link clicked ' + JSON.stringify(file));
 
@@ -36,6 +56,10 @@ var fileController = app.controller('FileController', ['$scope', '$http', functi
         token = GetUserToken();
         systemID = GetSeriesSystemID();
         url = app_url + '/arkivstruktur/arkivdel/' + systemID + '/ny-mappe';
+        formdata = {};
+        for (var key of $scope.formfields) {
+            formdata[key] = $scope[key];
+        }
         $http({
             url: url,
             method: "POST",
@@ -43,11 +67,7 @@ var fileController = app.controller('FileController', ['$scope', '$http', functi
                 'Content-Type': 'application/vnd.noark5-v4+json',
                 'Authorization': token,
             },
-            data: {
-		tittel: $scope.tittel,
-		beskrivelse: $scope.beskrivelse,
-		mappeID: $scope.mappeID,
-	    },
+            data: formdata,
         }).then(function(data, status, headers, config) {
             changeLocation($scope, "./mappe.html", true);
         }, function(data, status, headers, config) {
