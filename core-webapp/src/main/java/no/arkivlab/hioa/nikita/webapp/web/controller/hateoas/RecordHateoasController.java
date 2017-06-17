@@ -491,10 +491,8 @@ public class RecordHateoasController extends NoarkController {
         DocumentDescription defaultDocumentDescription = new DocumentDescription();
 
         defaultDocumentDescription.setAssociatedWithRecordAs(MAIN_DOCUMENT);
-        defaultDocumentDescription.setTitle(TEST_TITLE);
         defaultDocumentDescription.setDocumentType(LETTER);
         defaultDocumentDescription.setDocumentStatus(DOCUMENT_STATUS_FINALISED);
-        defaultDocumentDescription.setDescription(TEST_DESCRIPTION);
 
         DocumentDescriptionHateoas documentDescriptionHateoas = new
                 DocumentDescriptionHateoas(defaultDocumentDescription);
