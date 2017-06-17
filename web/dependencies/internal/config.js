@@ -45,10 +45,15 @@ var REL_DOCUMENT_FILE = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/fil/';
 
 
 // These will be picked up from the database
-var mimeTypeList = [{ id: 'pdf', value: 'application/pdf' },
+var mimeTypeList = [
+    { id: 'rfc822', value: 'message/rfc822' },
+    { id: 'pdf', value: 'application/pdf' },
     { id: 'odt', value: 'application/vnd.oasis.opendocument.text' },
     { id: 'ods', value: 'application/vnd.oasis.opendocument.spreadsheet' },
-    { id: 'odp', value: 'application/vnd.oasis.opendocument.presentation' } ];
+    { id: 'odp', value: 'application/vnd.oasis.opendocument.presentation' },
+    { id: 'tiff', value: 'image/tiff' },
+    { id: 'jpeg', value: 'image/jpeg' },
+];
 
 var variantFormatList = [{ id: 'P', value: 'Produksjonsformat' },
     { id: 'A', value: 'Arkivformat' },
