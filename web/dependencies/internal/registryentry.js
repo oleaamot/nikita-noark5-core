@@ -31,22 +31,29 @@ app.controller('RegistryEntryController', ['$scope', '$http', function ($scope, 
     // No chosen registryEntry, means we are creating a new registryEntry
     if (!urlVal) {
         $scope.createNewRegistryEntry = true;
-        // Get todays date
-        var currentTime = new Date();
-        var month = currentTime.getMonth() + 1;
-        var day = currentTime.getDate();
-        var year = currentTime.getFullYear();
-
-        // This should be replaced by a GET to a ny-journalpost
-        // Set default values to aid debugging
-        $scope.tittel = "Test title of the new journalpost";
-        $scope.beskrivelse = "Test description of the new journalpost";
-        $scope.journalposttype = "Inngående dokument";
-        $scope.journalaar = 2017;
-        $scope.journalpostnummer = 201701;
-        $scope.journalsekvensnummer = 201701011;
-        $scope.dokumentetsDato = year + "-" + month + "-" + day;
-        $scope.journaldato = year + "-" + month + "-" + day;
+        $scope.formfields = [
+            'tittel', 'beskrivelse', 'journalposttype', 'journalpoststatus',
+            'journalaar', 'journalpostnummer', 'journalsekvensnummer',
+            'dokumentetsDato', 'journaldato',
+        ];
+        console.log("token is : " + $scope.token);
+        $http({
+            method: 'GET',
+            // TODO figure out how to look up URL in _links
+            url: GetLinkToChosenFile() + 'ny-journalpost',
+            headers: {'Authorization': $scope.token },
+        }).then(function successCallback(response) {
+            for (var key of Object.keys(response.data)) {
+                if ("_links" === key) {
+                } else {
+                    $scope[key] = response.data[key];
+                    $scope.formfields.push(key);
+                }
+            }
+            console.log("ny-journalpost data is : " + JSON.stringify(response.data));
+        }, function errorCallback(response) {
+            // TODO: what should we do when it fails?
+        });
     }
     else {
         $scope.createNewRegistryEntry = false;
@@ -164,6 +171,10 @@ app.controller('RegistryEntryController', ['$scope', '$http', function ($scope, 
 
     $scope.send_form = function () {
         url = linkToCreateRegistryEntry();
+        formdata = {};
+        for (var key of $scope.formfields) {
+            formdata[key] = $scope[key];
+        }
         // check that it's not null, create a popup here if it is
         $http({
             url: url,
@@ -172,17 +183,7 @@ app.controller('RegistryEntryController', ['$scope', '$http', function ($scope, 
                 'Content-Type': 'application/vnd.noark5-v4+json',
                 'Authorization': GetUserToken()
             },
-            data: {
-                tittel: $scope.tittel,
-                beskrivelse: $scope.beskrivelse,
-                journalpoststatus: $scope.journalpoststatus,
-                journalposttype: $scope.journalposttype,
-                journalaar: $scope.journalaar,
-                journalpostnummer: $scope.journalpostnummer,
-                journalsekvensnummer: $scope.journalsekvensnummer,
-                dokumentetsDato: $scope.dokumentetsDato,
-                journaldato: $scope.journaldato
-            }
+            data: formdata,
         }).then(function successCallback(response) {
             var registryEntry = response.data;
             for (rel in registryEntry._links) {
