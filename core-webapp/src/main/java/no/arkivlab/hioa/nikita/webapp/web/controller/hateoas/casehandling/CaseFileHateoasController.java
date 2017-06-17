@@ -133,10 +133,18 @@ public class CaseFileHateoasController extends NoarkController {
 
         RegistryEntry defaultRegistryEntry = new RegistryEntry();
 
+        // TODO consider using Calendar date = new GregorianCalendar()
+        Date now = new Date();
+
         // TODO figure out good defaults to return
-        defaultRegistryEntry.setRecordDate(new Date());
+        defaultRegistryEntry.setRecordDate(now);
+        defaultRegistryEntry.setDocumentDate(now);
         defaultRegistryEntry.setRecordStatus(TEST_RECORD_STATUS);
         defaultRegistryEntry.setRegistryEntryType(TEST_REGISTRY_ENTRY_TYPE);
+        defaultRegistryEntry.setRecordYear(now.getYear() + 1900);
+        // TODO generate these
+        //defaultRegistryEntry.setRecordSequenceNumber(201701011);
+        //defaultRegistryEntry.setRegistryEntryNumber(201701);
 
         RegistryEntryHateoas registryEntryHateoas = new
                 RegistryEntryHateoas(defaultRegistryEntry);
