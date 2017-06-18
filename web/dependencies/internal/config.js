@@ -4,7 +4,7 @@
 
 
 nikitaOptions = {
-    baseUrl: 'localhost:8092',
+    baseUrl: 'http://localhost:8092/noark5v4',
     guiBaseUrl: 'http://localhost:3000/',
     appUrl: 'http://localhost:8092/noark5v4/hateoas-api',
     loginUrl: "http://localhost:8092/noark5v4/auth",
@@ -19,7 +19,7 @@ nikitaOptions = {
 console.log("Hello ....");
 
 // Set the base url for application
-var base_url =  "http://" + nikitaOptions.baseUrl + "/noark5v4";
+var base_url = nikitaOptions.baseUrl;
 
 // Set the url for the GUI across all web pages
 var gui_base_url = nikitaOptions.guiBaseUrl;
