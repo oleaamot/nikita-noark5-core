@@ -4,6 +4,7 @@
 
 
 nikitaOptions = {
+    //baseUrl: "http://n5test.kxml.no/api",
     baseUrl: 'http://localhost:8092/noark5v4',
     guiBaseUrl: 'http://localhost:3000/',
     appUrl: 'http://localhost:8092/noark5v4/hateoas-api',
