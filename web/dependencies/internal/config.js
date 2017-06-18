@@ -93,22 +93,22 @@ var GetFileSystemID = function (t) {
 };
 
 var GetLinkToChosenFile = function () {
-    console.log("getting linktochosenfile" + localStorage.getItem("linkToChosenFile"));
+    console.log("getting linktochosenfile="+localStorage.getItem("linkToChosenFile"));
     return localStorage.getItem("linkToChosenFile");
 };
 
 var SetLinkToChosenRecord = function (t) {
     localStorage.setItem("linkToChosenRecord", t);
-    console.log("Setting linkToChosenRecord" + t);
+    console.log("Setting linkToChosenRecord="+t);
 };
 
 var SetCurrentRecordSystemId = function (recordSystemId) {
     localStorage.setItem("currentRecordSystemId", recordSystemId);
-    console.log("Setting currentRecordSystemId=" + recordSystemId);
+    console.log("Setting currentRecordSystemId="+recordSystemId);
 };
 
 var GetSeriesSystemID = function () {
-    console.log("Getting chosen currentSeriesSystemId=" + localStorage.getItem("currentSeriesSystemId"));
+    console.log("Getting chosen currentSeriesSystemId="+localStorage.getItem("currentSeriesSystemId"));
     return localStorage.getItem("currentSeriesSystemId");
 };
 
@@ -125,7 +125,7 @@ var GetLinkToCreateDocumentDescription = function () {
 // href of the link to use when creating a document object
 var SetLinkToCreateDocumentDescription = function (t) {
     localStorage.setItem("linkToCreateDocumentDescription", t);
-    console.log("Setting linkToCreateDocumentDescription" + t);
+    console.log("Setting linkToCreateDocumentDescription="+t);
 };
 
 // href of the link to use when getting a document description
@@ -136,7 +136,7 @@ var GetLinkToDocumentDescription = function () {
 // href of the link to use when getting a document object
 var SetLinkToDocumentDescription = function (t) {
     localStorage.setItem("linkToDocumentDescription", t);
-    console.log("Setting linkToDocumentDescription" + t);
+    console.log("Setting linkToDocumentDescription="+t);
 };
 
 var SetLinkToChosenSeries = function(t) {
@@ -160,7 +160,7 @@ var GetLinkToSeriesAllFile = function () {
 
 var SetLinkToDocumentFile = function (t) {
     localStorage.setItem("linkToUploadDocumentFile", t);
-    console.log("Setting linkToUploadDocumentFile" + t);
+    console.log("Setting linkToUploadDocumentFile="+t);
 };
 
 var GetLinkToDocumentFile = function () {
@@ -170,5 +170,5 @@ var GetLinkToDocumentFile = function () {
 // href of the link to use when creating a document object
 var SetLinkToCreateDocumentObject = function (t) {
     localStorage.setItem("linkToChosenDocumentObject", t);
-    console.log("Setting linkToChosenDocumentObject" + t);
+    console.log("Setting linkToChosenDocumentObject="+t);
 };
