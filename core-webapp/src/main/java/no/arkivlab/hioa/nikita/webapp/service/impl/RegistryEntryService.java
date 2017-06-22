@@ -26,6 +26,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
@@ -84,6 +85,24 @@ public class RegistryEntryService implements IRegistryEntryService {
     }
 
     @Override
+    public Set<CorrespondencePartPerson> getCorrespondencePartPersonAssociatedWithRegistryEntry(String systemID) {
+        RegistryEntry registryEntry = getRegistryEntryOrThrow(systemID);
+        return registryEntry.getReferenceCorrespondencePartPerson();
+    }
+
+    @Override
+    public Set<CorrespondencePartInternal> getCorrespondencePartInternalAssociatedWithRegistryEntry(String systemID) {
+        RegistryEntry registryEntry = getRegistryEntryOrThrow(systemID);
+        return registryEntry.getReferenceCorrespondencePartInternal();
+    }
+
+    @Override
+    public Set<CorrespondencePartUnit> getCorrespondencePartUnitAssociatedWithRegistryEntry(String systemID) {
+        RegistryEntry registryEntry = getRegistryEntryOrThrow(systemID);
+        return registryEntry.getReferenceCorrespondencePartUnit();
+    }
+    
+    @Override
     public CorrespondencePartPerson createCorrespondencePartPersonAssociatedWithRegistryEntry(
             String systemID, CorrespondencePartPerson correspondencePart) {
         RegistryEntry registryEntry = getRegistryEntryOrThrow(systemID);
@@ -111,7 +130,7 @@ public class RegistryEntryService implements IRegistryEntryService {
         NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(correspondencePart);
         NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(correspondencePart);
         // bidirectional relationship @ManyToMany, set both sides of relationship
-        registryEntry.getReferenceCorrespondencePart().add(correspondencePart);
+        registryEntry.getReferenceCorrespondencePartPerson().add(correspondencePart);
         correspondencePart.getReferenceRegistryEntry().add(registryEntry);
         return correspondencePartService.createNewCorrespondencePartPerson(correspondencePart);
     }
@@ -124,7 +143,7 @@ public class RegistryEntryService implements IRegistryEntryService {
         NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(correspondencePart);
         NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(correspondencePart);
         // bidirectional relationship @ManyToMany, set both sides of relationship
-        registryEntry.getReferenceCorrespondencePart().add(correspondencePart);
+        registryEntry.getReferenceCorrespondencePartInternal().add(correspondencePart);
         correspondencePart.getReferenceRegistryEntry().add(registryEntry);
         return correspondencePartService.createNewCorrespondencePartInternal(correspondencePart);
     }
@@ -157,7 +176,7 @@ public class RegistryEntryService implements IRegistryEntryService {
         NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(correspondencePart);
         NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(correspondencePart);
         // bidirectional relationship @ManyToMany, set both sides of relationship
-        registryEntry.getReferenceCorrespondencePart().add(correspondencePart);
+        registryEntry.getReferenceCorrespondencePartUnit().add(correspondencePart);
         correspondencePart.getReferenceRegistryEntry().add(registryEntry);
         return correspondencePartService.createNewCorrespondencePartUnit(correspondencePart);
     }

@@ -2,10 +2,13 @@ package nikita.model.noark5.v4.casehandling.secondary;
 
 import nikita.model.noark5.v4.admin.AdministrativeUnit;
 import nikita.model.noark5.v4.admin.User;
+import nikita.model.noark5.v4.casehandling.RegistryEntry;
 import nikita.model.noark5.v4.interfaces.entities.casehandling.ICorrespondencePartInternalEntity;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART_UNIT;
 
@@ -35,6 +38,10 @@ public class CorrespondencePartInternal extends CorrespondencePart implements IC
 
     @ManyToOne
     private User referenceCaseHandler;
+
+    // Links to RegistryEntry
+    @ManyToMany(mappedBy = "referenceCorrespondencePartInternal")
+    private Set<RegistryEntry> referenceRegistryEntry = new TreeSet<>();
 
     public String getAdministrativeUnit() {
         return administrativeUnit;
@@ -73,6 +80,15 @@ public class CorrespondencePartInternal extends CorrespondencePart implements IC
         return CORRESPONDENCE_PART_UNIT;
     }
 
+    @Override
+    public Set<RegistryEntry> getReferenceRegistryEntry() {
+        return referenceRegistryEntry;
+    }
+
+    @Override
+    public void setReferenceRegistryEntry(Set<RegistryEntry> referenceRegistryEntry) {
+        this.referenceRegistryEntry = referenceRegistryEntry;
+    }
 
     @Override
     public String toString() {

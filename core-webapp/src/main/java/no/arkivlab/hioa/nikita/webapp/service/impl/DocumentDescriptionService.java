@@ -69,13 +69,11 @@ public class DocumentDescriptionService implements IDocumentDescriptionService {
 
     public DocumentDescription save(DocumentDescription documentDescription){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Date now = new Date();
         documentDescription.setSystemId(UUID.randomUUID().toString());
-        documentDescription.setCreatedDate(now);
+        documentDescription.setCreatedDate(new Date());
         documentDescription.setOwnedBy(username);
         documentDescription.setCreatedBy(username);
         documentDescription.setDeleted(false);
-        documentDescription.setAssociationDate(now);
         return documentDescriptionRepository.save(documentDescription);
     }
 

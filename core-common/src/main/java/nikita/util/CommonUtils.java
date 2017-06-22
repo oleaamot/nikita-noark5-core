@@ -21,7 +21,6 @@ import nikita.model.noark5.v4.interfaces.entities.casehandling.*;
 import nikita.model.noark5.v4.metadata.CorrespondencePartType;
 import nikita.model.noark5.v4.secondary.*;
 import nikita.util.exceptions.NikitaException;
-import nikita.util.exceptions.NikitaMalformedInputDataException;
 import org.springframework.http.HttpMethod;
 
 import javax.validation.constraints.NotNull;
@@ -1405,6 +1404,9 @@ public final class CommonUtils {
                 }
             }
 
+            /*
+            Temporarily out. n5v4 has a new way of dealing with correspondenceparts, but this also likely includes
+            listing correspondenceparts via the parent entity CorrespondencePart
             public static void printCorrespondenceParts(JsonGenerator jgen, ICorrespondencePart correspondencePartObject)
                     throws IOException {
                 Set<CorrespondencePart> correspondenceParts = correspondencePartObject.getReferenceCorrespondencePart();
@@ -1413,6 +1415,49 @@ public final class CommonUtils {
                     for (CorrespondencePart correspondencePart : correspondenceParts) {
                         jgen.writeStartObject();
                         printCorrespondencePart(jgen, correspondencePart);
+                        jgen.writeEndObject();
+                    }
+                    jgen.writeEndArray();
+                }
+            }
+            */
+
+            public static void printCorrespondencePartInternals(JsonGenerator jgen, ICorrespondencePart correspondencePartObject)
+                    throws IOException {
+                Set<CorrespondencePartInternal> correspondencePartInternals = correspondencePartObject.getReferenceCorrespondencePartInternal();
+                if (correspondencePartInternals != null && correspondencePartInternals.size() > 0) {
+                    jgen.writeArrayFieldStart(CORRESPONDENCE_PART_INTERNAL);
+                    for (ICorrespondencePartInternalEntity correspondencePart : correspondencePartInternals) {
+                        jgen.writeStartObject();
+                        printCorrespondencePartInternal(jgen, correspondencePart);
+                        jgen.writeEndObject();
+                    }
+                    jgen.writeEndArray();
+                }
+            }
+
+            public static void printCorrespondencePartUnits(JsonGenerator jgen, ICorrespondencePart correspondencePartObject)
+                    throws IOException {
+                Set<CorrespondencePartUnit> correspondencePartUnits = correspondencePartObject.getReferenceCorrespondencePartUnit();
+                if (correspondencePartUnits != null && correspondencePartUnits.size() > 0) {
+                    jgen.writeArrayFieldStart(CORRESPONDENCE_PART_UNIT);
+                    for (ICorrespondencePartUnitEntity correspondencePart : correspondencePartUnits) {
+                        jgen.writeStartObject();
+                        printCorrespondencePartUnit(jgen, correspondencePart);
+                        jgen.writeEndObject();
+                    }
+                    jgen.writeEndArray();
+                }
+            }
+
+            public static void printCorrespondencePartPersons(JsonGenerator jgen, ICorrespondencePart correspondencePartObject)
+                    throws IOException {
+                Set<CorrespondencePartPerson> correspondencePartPersons = correspondencePartObject.getReferenceCorrespondencePartPerson();
+                if (correspondencePartPersons != null && correspondencePartPersons.size() > 0) {
+                    jgen.writeArrayFieldStart(CORRESPONDENCE_PART_PERSON);
+                    for (ICorrespondencePartPersonEntity correspondencePart : correspondencePartPersons) {
+                        jgen.writeStartObject();
+                        printCorrespondencePartPerson(jgen, correspondencePart);
                         jgen.writeEndObject();
                     }
                     jgen.writeEndArray();

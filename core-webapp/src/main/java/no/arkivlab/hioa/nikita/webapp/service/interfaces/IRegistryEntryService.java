@@ -9,6 +9,7 @@ import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePartUnit;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 public interface IRegistryEntryService {
 
@@ -32,6 +33,12 @@ public interface IRegistryEntryService {
     // All find methods
     RegistryEntry findBySystemIdOrderBySystemId(String systemId);
     List<RegistryEntry> findRegistryEntryByOwnerPaginated(Integer top, Integer skip);
+
+    Set<CorrespondencePartPerson> getCorrespondencePartPersonAssociatedWithRegistryEntry(String systemID);
+
+    Set<CorrespondencePartInternal> getCorrespondencePartInternalAssociatedWithRegistryEntry(String systemID);
+
+    Set<CorrespondencePartUnit> getCorrespondencePartUnitAssociatedWithRegistryEntry(String systemID);
 
     // All UPDATE operations
     RegistryEntry handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull RegistryEntry incomingRegistryEntry);

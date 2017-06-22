@@ -2,15 +2,12 @@ package nikita.model.noark5.v4.casehandling.secondary;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.NoarkEntity;
-import nikita.model.noark5.v4.casehandling.RegistryEntry;
 import nikita.model.noark5.v4.interfaces.entities.casehandling.ICorrespondencePartEntity;
 import nikita.model.noark5.v4.metadata.CorrespondencePartType;
 import nikita.util.deserialisers.casehandling.CorrespondencePartUnitDeserializer;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.TreeSet;
 
 import static nikita.config.Constants.NOARK_CASE_HANDLING_PATH;
 
@@ -32,9 +29,6 @@ public class CorrespondencePart extends NoarkEntity implements ICorrespondencePa
             referencedColumnName = "pk_correspondence_part_type_id")
     private CorrespondencePartType referenceCorrespondencePartType;
 
-    // Links to RegistryEntry
-    @ManyToMany(mappedBy = "referenceCorrespondencePart")
-    private Set<RegistryEntry> referenceRegistryEntry = new TreeSet<>();
 
     @Override
     public CorrespondencePartType getCorrespondencePartType() {
@@ -44,16 +38,6 @@ public class CorrespondencePart extends NoarkEntity implements ICorrespondencePa
     @Override
     public void setCorrespondencePartType(CorrespondencePartType referenceCorrespondencePartType) {
         this.referenceCorrespondencePartType = referenceCorrespondencePartType;
-    }
-
-    @Override
-    public Set<RegistryEntry> getReferenceRegistryEntry() {
-        return referenceRegistryEntry;
-    }
-
-    @Override
-    public void setReferenceRegistryEntry(Set<RegistryEntry> referenceRegistryEntry) {
-        this.referenceRegistryEntry = referenceRegistryEntry;
     }
 
     @Override

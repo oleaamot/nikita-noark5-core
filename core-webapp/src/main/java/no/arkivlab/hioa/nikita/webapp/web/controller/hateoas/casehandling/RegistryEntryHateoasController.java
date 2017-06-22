@@ -37,6 +37,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Set;
 
 import static nikita.config.Constants.*;
 import static nikita.config.MetadataConstants.CORRESPONDENCE_PART_CODE_EA;
@@ -48,11 +49,11 @@ import static org.springframework.http.HttpHeaders.ETAG;
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
 public class RegistryEntryHateoasController extends NoarkController {
 
+    ICorrespondencePartTypeService correspondencePartTypeService;
     private IRegistryEntryService registryEntryService;
     private IRegistryEntryHateoasHandler registryEntryHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
     private ICorrespondencePartHateoasHandler correspondencePartHateoasHandler;
-    ICorrespondencePartTypeService correspondencePartTypeService;
 
     public RegistryEntryHateoasController(IRegistryEntryService registryEntryService,
                                           IRegistryEntryHateoasHandler registryEntryHateoasHandler,
@@ -338,38 +339,100 @@ public class RegistryEntryHateoasController extends NoarkController {
         return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
     }
 
-    // Retrieve all CorrespondencePart associated with a RegistryEntry identified by systemId
-    // GET [contextPath][api]/casehandling/journalpost/{systemId}/korrespondansepart
-    // http://rel.kxml.no/noark5/v4/api/sakarkiv/korrespondansepart/
-    @ApiOperation(value = "Retrieves a list of CorrespondenceParts associated with a RegistryEntry",
-            response = CorrespondencePart.class)
+    // Retrieve all CorrespondencePartPerson associated with a RegistryEntry identified by systemId
+    // GET [contextPath][api]/sakarkiv/journalpost/{systemId}/korrespondansepartperson
+    // http://rel.kxml.no/noark5/v4/api/sakarkiv/korrespondansepartperson/
+    @ApiOperation(value = "Retrieves a list of CorrespondencePartPersons associated with a RegistryEntry",
+            response = CorrespondencePartPersonHateoas.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "CorrespondencePart returned", response = CorrespondencePart.class), //CorrespondencePartHateoas
+            @ApiResponse(code = 200, message = "CorrespondencePartPerson returned",
+                    response = CorrespondencePartPersonHateoas.class),
             @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
-            CORRESPONDENCE_PART, method = RequestMethod.GET)
-    public ResponseEntity<String> findAllCorrespondencePartAssociatedWithRecord(
+            CORRESPONDENCE_PART_PERSON, method = RequestMethod.GET)
+    public ResponseEntity<CorrespondencePartPersonHateoas> findAllCorrespondencePartPersonAssociatedWithRecord(
             HttpServletRequest request,
             @ApiParam(name = "systemID",
                     value = "systemID of the file to retrieve associated Record",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        /*  Record record = recordService.findBySystemIdOrderBySystemId(systemID);
-            if (record == null) {
-            throw new NoarkEntityNotFoundException("Could not find File object with systemID " + systemID);
-        }
-        CorrespondencePartHateoas documentDescriptionHateoas = new
-                CorrespondencePartHateoas(new ArrayList<>(record.getReferenceCorrespondencePart()));
-        documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
+
+        Set<CorrespondencePartPerson> correspondencePartPerson =
+                registryEntryService.getCorrespondencePartPersonAssociatedWithRegistryEntry(systemID);
+        CorrespondencePartPersonHateoas correspondencePartHateoas =
+                new CorrespondencePartPersonHateoas(new ArrayList<>(correspondencePartPerson));
+        correspondencePartHateoasHandler.addLinksOnTemplate(correspondencePartHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
-                .body(documentDescriptionHateoas);
-                */
-        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
+                .body(correspondencePartHateoas);
+    }
+
+    // Retrieve all CorrespondencePartUnit associated with a RegistryEntry identified by systemId
+    // GET [contextPath][api]/sakarkiv/journalpost/{systemId}/korrespondansepartperson
+    // http://rel.kxml.no/noark5/v4/api/sakarkiv/korrespondansepartperson/
+    @ApiOperation(value = "Retrieves a list of CorrespondencePartUnits associated with a RegistryEntry",
+            response = CorrespondencePartUnitHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "CorrespondencePartUnit returned",
+                    response = CorrespondencePartUnitHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
+            CORRESPONDENCE_PART_UNIT, method = RequestMethod.GET)
+    public ResponseEntity<CorrespondencePartUnitHateoas> findAllCorrespondencePartUnitAssociatedWithRecord(
+            HttpServletRequest request,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the file to retrieve associated Record",
+                    required = true)
+            @PathVariable("systemID") final String systemID) {
+
+        Set<CorrespondencePartUnit> correspondencePartUnit =
+                registryEntryService.getCorrespondencePartUnitAssociatedWithRegistryEntry(systemID);
+        CorrespondencePartUnitHateoas correspondencePartHateoas =
+                new CorrespondencePartUnitHateoas(new ArrayList<>(correspondencePartUnit));
+        correspondencePartHateoasHandler.addLinksOnTemplate(correspondencePartHateoas, request, new Authorisation());
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(correspondencePartHateoas);
+    }
+
+    // Retrieve all CorrespondencePartInternal associated with a RegistryEntry identified by systemId
+    // GET [contextPath][api]/sakarkiv/journalpost/{systemId}/korrespondansepartperson
+    // http://rel.kxml.no/noark5/v4/api/sakarkiv/korrespondansepartperson/
+    @ApiOperation(value = "Retrieves a list of CorrespondencePartInternals associated with a RegistryEntry",
+            response = CorrespondencePartInternalHateoas.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "CorrespondencePartInternal returned",
+                    response = CorrespondencePartInternalHateoas.class),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
+            CORRESPONDENCE_PART_INTERNAL, method = RequestMethod.GET)
+    public ResponseEntity<CorrespondencePartInternalHateoas> findAllCorrespondencePartInternalAssociatedWithRecord(
+            HttpServletRequest request,
+            @ApiParam(name = "systemID",
+                    value = "systemID of the file to retrieve associated Record",
+                    required = true)
+            @PathVariable("systemID") final String systemID) {
+
+        Set<CorrespondencePartInternal> correspondencePartInternal =
+                registryEntryService.getCorrespondencePartInternalAssociatedWithRegistryEntry(systemID);
+        CorrespondencePartInternalHateoas correspondencePartHateoas =
+                new CorrespondencePartInternalHateoas(new ArrayList<>(correspondencePartInternal));
+        correspondencePartHateoasHandler.addLinksOnTemplate(correspondencePartHateoas, request, new Authorisation());
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(correspondencePartHateoas);
     }
 
 

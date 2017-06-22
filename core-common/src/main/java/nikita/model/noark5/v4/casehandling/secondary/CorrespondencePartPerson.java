@@ -1,11 +1,14 @@
 package nikita.model.noark5.v4.casehandling.secondary;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import nikita.model.noark5.v4.casehandling.RegistryEntry;
 import nikita.model.noark5.v4.interfaces.entities.casehandling.ICorrespondencePartPersonEntity;
 import nikita.util.deserialisers.casehandling.CorrespondencePartPersonDeserializer;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static nikita.config.Constants.NOARK_CASE_HANDLING_PATH;
 import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART_PERSON;
@@ -49,6 +52,10 @@ public class CorrespondencePartPerson extends CorrespondencePart implements ICor
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_postal_address_id")
     private PostalAddress postalAddress;
+
+    // Links to RegistryEntry
+    @ManyToMany(mappedBy = "referenceCorrespondencePartPerson")
+    private Set<RegistryEntry> referenceRegistryEntry = new TreeSet<>();
 
     public String getSocialSecurityNumber() {
         return socialSecurityNumber;
@@ -107,6 +114,14 @@ public class CorrespondencePartPerson extends CorrespondencePart implements ICor
     @Override
     public String getFunctionalTypeName() {
         return NOARK_CASE_HANDLING_PATH;
+    }
+
+    public Set<RegistryEntry> getReferenceRegistryEntry() {
+        return referenceRegistryEntry;
+    }
+
+    public void setReferenceRegistryEntry(Set<RegistryEntry> referenceRegistryEntry) {
+        this.referenceRegistryEntry = referenceRegistryEntry;
     }
 
     @Override

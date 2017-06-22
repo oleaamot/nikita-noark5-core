@@ -113,7 +113,9 @@ public class RegistryEntryHateoasSerializer extends HateoasSerializer implements
         if (registryEntry.getLoanedTo() != null) {
             jgen.writeStringField(CASE_LOANED_TO, registryEntry.getLoanedTo());
         }
-        CommonUtils.Hateoas.Serialize.printCorrespondenceParts(jgen, registryEntry);
+        CommonUtils.Hateoas.Serialize.printCorrespondencePartPersons(jgen, registryEntry);
+        CommonUtils.Hateoas.Serialize.printCorrespondencePartUnits(jgen, registryEntry);
+        CommonUtils.Hateoas.Serialize.printCorrespondencePartInternals(jgen, registryEntry);
         CommonUtils.Hateoas.Serialize.printSignOff(jgen, registryEntry);
         CommonUtils.Hateoas.Serialize.printDocumentFlow(jgen, registryEntry);
         //CommonUtils.Hateoas.Serialize.printPrecedence(jgen, registryEntry);

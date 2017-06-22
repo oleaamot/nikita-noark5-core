@@ -2,7 +2,9 @@ package nikita.model.noark5.v4.casehandling;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.BasicRecord;
-import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePart;
+import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePartInternal;
+import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePartPerson;
+import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePartUnit;
 import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.secondary.ElectronicSignature;
 import nikita.model.noark5.v4.secondary.SignOff;
@@ -157,15 +159,36 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     @Audited
     @Field
     private String recordsManagementUnit;
-    
-    // Links to CorrespondencePart
+
+    // Links to CorrespondencePartPerson
     @ManyToMany
-    @JoinTable(name = "registry_entry_correspondence_part",
+    @JoinTable(name = "registry_entry_correspondence_part_person",
             joinColumns = @JoinColumn(name = "f_pk_record_id",
                     referencedColumnName = "pk_record_id"),
-            inverseJoinColumns = @JoinColumn(name = "f_pk_correspondence_part_id",
+            inverseJoinColumns = @JoinColumn(name = "f_pk_correspondence_part_person_id",
                     referencedColumnName = "pk_correspondence_part_id"))
-    private Set<CorrespondencePart> referenceCorrespondencePart = new TreeSet<>();
+    private Set<CorrespondencePartPerson> referenceCorrespondencePartPerson = new TreeSet<>();
+
+
+    // Links to CorrespondencePartUnit
+    @ManyToMany
+    @JoinTable(name = "registry_entry_correspondence_part_unit",
+            joinColumns = @JoinColumn(name = "f_pk_record_id",
+                    referencedColumnName = "pk_record_id"),
+            inverseJoinColumns = @JoinColumn(name = "f_pk_correspondence_part_unit_id",
+                    referencedColumnName = "pk_correspondence_part_id"))
+    private Set<CorrespondencePartUnit> referenceCorrespondencePartUnit = new TreeSet<>();
+
+
+    // Links to CorrespondencePartInternal
+    @ManyToMany
+    @JoinTable(name = "registry_entry_correspondence_part_internal",
+            joinColumns = @JoinColumn(name = "f_pk_record_id",
+                    referencedColumnName = "pk_record_id"),
+            inverseJoinColumns = @JoinColumn(name = "f_pk_correspondence_part_internal_id",
+                    referencedColumnName = "pk_correspondence_part_id"))
+    private Set<CorrespondencePartInternal> referenceCorrespondencePartInternal = new TreeSet<>();
+
 
     // Links to DocumentFlow
     @OneToMany(mappedBy = "referenceRegistryEntry")
@@ -334,12 +357,28 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
         this.referenceDocumentFlow = referenceDocumentFlow;
     }
 
-    public Set<CorrespondencePart> getReferenceCorrespondencePart() {
-        return referenceCorrespondencePart;
+    public Set<CorrespondencePartPerson> getReferenceCorrespondencePartPerson() {
+        return referenceCorrespondencePartPerson;
     }
 
-    public void setReferenceCorrespondencePart(Set<CorrespondencePart> referenceCorrespondencePart) {
-        this.referenceCorrespondencePart = referenceCorrespondencePart;
+    public void setReferenceCorrespondencePartPerson(Set<CorrespondencePartPerson> referenceCorrespondencePartPerson) {
+        this.referenceCorrespondencePartPerson = referenceCorrespondencePartPerson;
+    }
+
+    public Set<CorrespondencePartUnit> getReferenceCorrespondencePartUnit() {
+        return referenceCorrespondencePartUnit;
+    }
+
+    public void setReferenceCorrespondencePartUnit(Set<CorrespondencePartUnit> referenceCorrespondencePartUnit) {
+        this.referenceCorrespondencePartUnit = referenceCorrespondencePartUnit;
+    }
+
+    public Set<CorrespondencePartInternal> getReferenceCorrespondencePartInternal() {
+        return referenceCorrespondencePartInternal;
+    }
+
+    public void setReferenceCorrespondencePartInternal(Set<CorrespondencePartInternal> referenceCorrespondencePartInternal) {
+        this.referenceCorrespondencePartInternal = referenceCorrespondencePartInternal;
     }
 
     public Set<SignOff> getReferenceSignOff() {
