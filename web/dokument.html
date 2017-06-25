@@ -44,118 +44,119 @@
     <!--
     <form ng-submit="send_form(documentDescription)" method="post">
     -->
-        <div>
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input id="document_description_title" class="mdl-textfield__input" type="text"
-                       value="{{documentDescription.tittel}} ">
-                <label class="mdl-textfield__label" for="document_description_title">dokumentets tittel</label>
-            </div>
+    <div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="document_description_title" class="mdl-textfield__input" type="text"
+                   value="{{documentDescription.tittel}} ">
+            <label class="mdl-textfield__label" for="document_description_title">dokumentets tittel</label>
         </div>
-        <div>
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-width">
-                <textarea id="document_description_description" class="mdl-textfield__input" type="text" rows="4">{{documentDescription.beskrivelse}} </textarea>
-                <label class="mdl-textfield__label" for="document_description_description">dokumentets
-                    beskrivelse</label>
-            </div>
+    </div>
+    <div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-width">
+            <textarea id="document_description_description" class="mdl-textfield__input" type="text" rows="4">{{documentDescription.beskrivelse}} </textarea>
+            <label class="mdl-textfield__label" for="document_description_description">dokumentets
+                beskrivelse</label>
+        </div>
+    </div>
+
+    <div class="mdl-grid-center">
+        <div id="documentStatusDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select id="document_status" class="mdl-textfield__input" ng-model="selectedDocumentStatus">
+                <option ng-selected="{{value.value == selectedDocumentStatus}}"
+                        ng-repeat="value in documentStatusList"
+                        value="{{value.value}} ">{{value.value}}
+                </option>
+            </select>
+            <label class="mdl-textfield__label" for="document_status">dokumentets status</label>
+        </div>
+        <div id="associatedWithRecordAsDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select id="tilknyttet_registrering_som" class="mdl-textfield__input"
+                    ng-model="selectedTilknyttetRegistreringSom">
+                <option ng-selected="{{value.value == selectedTilknyttetRegistreringSom}}"
+                        ng-repeat="value in tilknyttetRegistreringSomList"
+                        value="{{value.value}}">{{value.value}}
+                </option>
+            </select>
+            <label class="mdl-textfield__label" for="tilknyttet_registrering_som">tilknyttet registrering
+                som</label>
+        </div>
+        <div id="documentTypeDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select id="document_type" class="mdl-textfield__input" ng-model="selectedDocumentType">
+                <option ng-selected="{{value.value == selectedDocumentType}}" ng-repeat="value in documentTypeList"
+                        value="{{value.value}}">{{value.value}}
+                </option>
+            </select>
+            <label class="mdl-textfield__label" for="document_type">dokument type</label>
+        </div>
+    </div>
+
+    <div class="mdl-grid-center">
+        <div id="documentNumberDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="document_number" class="mdl-textfield__input" value="{{documentDescription.dokumentnummer}} "
+                   type="text"/>
+            <label class="mdl-textfield__label" for="document_number">dokument nummer</label>
+        </div>
+        <div id="documentAssociatedDateDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="document_associated_date" class="mdl-textfield__input"
+                   value="{{documentDescription.tilknyttetDato}} " type="text"/>
+            <label class="mdl-textfield__label" for="document_associated_date">tilknyttet dato</label>
+        </div>
+        <div id="documentAssociatedByDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="document_associated_by" class="mdl-textfield__input"
+                   value="{{documentDescription.tilknyttetAv}} " type="text"/>
+            <label class="mdl-textfield__label" for="document_associated_by">tilknyttet av</label>
+        </div>
+    </div>
+    <div class="mdl-grid-center">
+        <div id="versionNumberDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="version_number" class="mdl-textfield__input" value="{{documentObject.versjonsnummer}} "
+                   type="text"/>
+            <label class="mdl-textfield__label" for="version_number">versjonsnummer</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select class="mdl-textfield__input" ng-model="selectedVariantFormat">
+                <option ng-selected="{{value.value == selectedVariantFormat}}"
+                        ng-repeat="value in variantFormatList"
+                        value="{{value.value}}">{{value.value}}
+                </option>
+            </select>
+            <label class="mdl-textfield__label" for="mimeType">variant format</label>
+        </div>
+        <div id="mimeTypeDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select id="mimeType" class="mdl-textfield__input" ng-model="selectedMimeType">
+                <option ng-selected="{{value.value == selectedMimeType}}" ng-repeat="value in mimeTypeList"
+                        value="{{value.value}}">{{value.value}}
+                </option>
+            </select>
+            <label class="mdl-textfield__label" for="mimeType">mimeType</label>
+        </div>
+    </div>
+    <div class="mdl-grid-center">
+        <div id="checksumDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="checksum" class="mdl-textfield__input" value="{{documentObject.sjekksum}} "
+                   type="text"/>
+            <label class="mdl-textfield__label" for="checksum">sjekksum</label>
+        </div>
+        <div id="checksumAlgorithmDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="checksum_algorithm" class="mdl-textfield__input"
+                   value="SHA-256" type="text" disabled/>
+            <label class="mdl-textfield__label" for="checksum_algorithm">sjekksum algoritme</label>
         </div>
 
-        <div class="mdl-grid-center">
-            <div id="documentStatusDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <select id="document_status" class="mdl-textfield__input" ng-model="selectedDocumentStatus">
-                    <option ng-selected="{{value.value == selectedDocumentStatus}}"
-                            ng-repeat="value in documentStatusList"
-                            value="{{value.value}} ">{{value.value}}
-                    </option>
-                    <label class="mdl-textfield__label" for="document_status">dokumentets status</label>
-                </select>
-            </div>
-            <div id="associatedWithRecordAsDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <select id="tilknyttet_registrering_som" class="mdl-textfield__input"
-                        ng-model="selectedTilknyttetRegistreringSom">
-                    <option ng-selected="{{value.value == selectedTilknyttetRegistreringSom}}"
-                            ng-repeat="value in tilknyttetRegistreringSomList"
-                            value="{{value.value}}">{{value.value}}
-                    </option>
-                    <label class="mdl-textfield__label" for="tilknyttet_registrering_som">tilknyttet registrering
-                        som</label>
-                </select>
-            </div>
-            <div id="documentTypeDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <select id="document_type" class="mdl-textfield__input" ng-model="selectedDocumentType">
-                    <option ng-selected="{{value.value == selectedDocumentType}}" ng-repeat="value in documentTypeList"
-                            value="{{value.value}}">{{value.value}}
-                    </option>
-                    <label class="mdl-textfield__label" for="document_type">dokument type"</label>
-                </select>
-            </div>
+        <div id="fileSizeDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="file_size" class="mdl-textfield__input" value="{{documentObject.filstoerrelse}} "
+                   type="text"/>
+            <label class="mdl-textfield__label" for="file_size">filstørrelse</label>
         </div>
 
-        <div class="mdl-grid-center">
-            <div id="documentNumberDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input id="document_number" class="mdl-textfield__input" value="{{documentDescription.dokumentnummer}} "
-                       type="text"/>
-                <label class="mdl-textfield__label" for="document_number">dokument nummer</label>
-            </div>
-            <div id="documentAssociatedDateDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input id="document_associated_date" class="mdl-textfield__input"
-                       value="{{documentDescription.tilknyttetDato}} " type="text" />
-                <label class="mdl-textfield__label" for="document_associated_date">tilknyttet dato</label>
-            </div>
-            <div id="documentAssociatedByDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input id="document_associated_by" class="mdl-textfield__input"
-                       value="{{documentDescription.tilknyttetAv}} " type="text" />
-                <label class="mdl-textfield__label" for="document_associated_by">tilknyttet av</label>
-            </div>
-        </div>
-        <div class="mdl-grid-center">
-            <div id="versionNumberDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input id="version_number" class="mdl-textfield__input" value="{{documentObject.versjonsnummer}} "
-                       type="text"/>
-                <label class="mdl-textfield__label" for="version_number">versjonsnummer</label>
-            </div>
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <select class="mdl-textfield__input" ng-model="selectedVariantFormat">
-                    <option ng-selected="{{value.value == selectedVariantFormat}}"
-                            ng-repeat="value in variantFormatList"
-                            value="{{value.value}}">{{value.value}}
-                    </option>
-                </select>
-                <label class="mdl-textfield__label" for="mimeType">variant format</label>
-            </div>
-            <div id="mimeTypeDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <select id="mimeType" class="mdl-textfield__input" ng-model="selectedMimeType">
-                    <option ng-selected="{{value.value == selectedMimeType}}" ng-repeat="value in mimeTypeList"
-                            value="{{value.value}}">{{value.value}}
-                    </option>
-                </select>
-                <label class="mdl-textfield__label" for="mimeType">mimeType</label>
-            </div>
-        </div>
-        <div class="mdl-grid-center">
-            <div id="checksumDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input id="checksum" class="mdl-textfield__input" value="{{documentObject.sjekksum}} "
-                       type="text"/>
-                <label class="mdl-textfield__label" for="checksum">sjekksum</label>
-            </div>
-            <div id="checksumAlgorithmDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input id="checksum_algorithm" class="mdl-textfield__input"
-                       value="SHA-256" type="text" disabled/>
-                <label class="mdl-textfield__label" for="checksum_algorithm">sjekksum algoritme</label>
-            </div>
+    </div>
+</div>
 
-            <div id="fileSizeDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input id="file_size" class="mdl-textfield__input" value="{{documentObject.filstoerrelse}} "
-                       type="text"/>
-                <label class="mdl-textfield__label" for="file_size">filstørrelse</label>
-            </div>
-
-            <div ng-show="createNewDocument">
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                        ng-click="send_form()">
-                    Lagre dokument detaljer
-                </button>
-            </div>
-        </div>
+<div ng-show="createNewDocument" class="mdl-grid-center">
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+            ng-click="send_form()">
+        Lagre dokument detaljer
+    </button>
 </div>
 
 <div ng-show="!createNewDocument" class="mdl-grid-center">
@@ -171,7 +172,6 @@
                 Oppdater dokument detaljer
             </button>
         </div>
-
     </div>
     <div>
         <div style="font:smaller">{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}

@@ -25,7 +25,7 @@ var base_url = nikitaOptions.baseUrl;
 // Set the url for the GUI across all web pages
 var gui_base_url = nikitaOptions.guiBaseUrl;
 // Starting point for the application
-var app_url = nikitaOptions.appUrl
+var app_url = nikitaOptions.appUrl;
 // Set the url where POST requests with login credentials should be sent
 var login_url = nikitaOptions.loginUrl;
 // Whether or not to dsiplay link to nikita source
@@ -36,12 +36,16 @@ var seriesPageName = 'arkivdel.html';
 var caseFilePageName = 'saksmappe.html';
 var registryEntryPageName = 'journalpost.html';
 var documentPageName = 'dokument.html';
+var correspondencePartPersonPageName = 'korrespondansepartperson.html';
+var correspondencePartUnitPageName = 'korrespondansepartenhet.html';
 
 var REL_NEW_REGISTRY_ENTRY = 'http://nikita.arkivlab.no/noark5/v4/ny-journalpost/';
 var REL_NEW_DOCUMENT_DESCRIPTION = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-dokumentbeskrivelse/';
 var REL_DOCUMENT_DESCRIPTION = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/dokumentbeskrivelse/';
 var REL_DOCUMENT_OBJECT = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/dokumentobjekt/';
 var REL_NEW_DOCUMENT_OBJECT = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-dokumentobjekt/';
+var REL_NEW_CORRESPONDENCE_PART_PERSON = 'http://rel.kxml.no/noark5/v4/api/sakarkiv/ny-korrespondansepartperson/';
+//var REL_NEW_CORRESPONDENCE_PART_PERSON = 'http://rel.kxml.no/noark5/v4/api/sakarkiv/korrespondansepartperson/';
 var REL_DOCUMENT_FILE = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/fil/';
 
 
@@ -66,6 +70,15 @@ var documentTypeList = [{ id: 'B', value: 'Brev' },
 
 var tilknyttetRegistreringSomList = [ { id: 'H', value: 'Hoveddokument' },
                                       { id: 'V', value: 'Vedlegg' }];
+
+var correspondencePartTypeList = [{id: 'EA', value: 'Avsender'},
+    {id: 'EM', value: 'Mottaker'},
+    {id: 'EK', value: 'Kopimottaker'},
+    {id: 'GM', value: 'Gruppemottaker'},
+    {id: 'IA', value: 'Intern avsender'},
+    {id: 'IM', value: 'Intern mottaker'},
+    {id: 'IK', value: 'Intern kopimottaker'}
+];
 
 var documentStatusList = [{ id: 'B', value: 'Dokumentet er under redigering' },
                  { id: 'F', value: 'Dokumentet er ferdigstilt' }];
@@ -172,4 +185,45 @@ var GetLinkToDocumentFile = function () {
 var SetLinkToCreateDocumentObject = function (t) {
     localStorage.setItem("linkToChosenDocumentObject", t);
     console.log("Setting linkToChosenDocumentObject="+t);
+};
+
+
+var GetLinkToCorrespondencePartPerson = function () {
+    console.log("Getting linkToChosenCorrespondencePartPerson=" +
+        localStorage.getItem("linkToChosenCorrespondencePartPerson"));
+    return localStorage.getItem("linkToChosenCorrespondencePartPerson");
+};
+
+
+var SetLinkToCorrespondencePartPerson = function (t) {
+    localStorage.setItem("linkToChosenCorrespondencePartPerson", t);
+    console.log("Setting linkToChosenCorrespondencePartPerson=" + t);
+};
+
+var GetLinkToCreateCorrespondencePartPerson = function () {
+    console.log("Getting linkToCreateCorrespondencePartPerson=" +
+        localStorage.getItem("linkToCreateCorrespondencePartPerson"));
+    return localStorage.getItem("linkToCreateCorrespondencePartPerson");
+};
+
+var SetLinkToCreateCorrespondencePartPerson = function (t) {
+    localStorage.setItem("linkToCreateCorrespondencePartPerson", t);
+    console.log("Setting linkToCreateCorrespondencePartPerson=" + t);
+};
+
+var ClearLinkToCorrespondencePartPerson = function (t) {
+    console.log("Removing linkToChosenCorrespondencePartPerson=" +
+        localStorage.getItem("linkToChosenCorrespondencePartPerson"));
+    localStorage.removeItem("linkToChosenCorrespondencePartPerson")
+};
+
+var GetLinkToCorrespondencePartUnit = function () {
+    console.log("Getting linkToChosenCorrespondencePartUnit=" +
+        localStorage.getItem("linkToChosenCorrespondencePartUnit"));
+    return localStorage.getItem("linkToChosenCorrespondencePartUnit");
+};
+
+var SetLinkToCorrespondencePartUnit = function (t) {
+    localStorage.setItem("linkToChosenCorrespondencePartUnit", t);
+    console.log("Setting linkToChosenCorrespondencePartUnit=" + t);
 };

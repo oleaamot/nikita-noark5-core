@@ -125,8 +125,8 @@ app.controller('RegistryEntryController', ['$scope', '$http', function ($scope, 
     $scope.newDocumentSelected = function (registryEntry) {
         // setting these to ''so that when we hit the page
         // any previous values will be ignored
-        SetLinkToDocumentDescription('');
-        SetLinkToCreateDocumentDescription('')
+        SetLinkToDocumentDescription(null);
+        SetLinkToCreateDocumentDescription('');
 
         for (var rel in registryEntry._links) {
             relation = registryEntry._links[rel].rel;
@@ -140,9 +140,19 @@ app.controller('RegistryEntryController', ['$scope', '$http', function ($scope, 
             }
         }
 
-        if (getLinkToCreateDocumentDescription()) {
+        if (GetLinkToCreateDocumentDescription()) {
             window.location = gui_base_url + documentPageName;
         }
+    };
+
+    $scope.newCorrespondencePartPerson = function () {
+        ClearLinkToCorrespondencePartPerson();
+        window.location = gui_base_url + correspondencePartPersonPageName;
+    };
+
+    $scope.newCorrespondencePartUnit = function () {
+        SetLinkToCorrespondencePartUnit(null);
+        window.location = gui_base_url + correspondencePartUnitPageName;
     };
 
     $scope.documentSelected = function (documentDescription) {
