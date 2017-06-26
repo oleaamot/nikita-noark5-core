@@ -365,7 +365,7 @@ public class RegistryEntryHateoasController extends NoarkController {
                 registryEntryService.getCorrespondencePartPersonAssociatedWithRegistryEntry(systemID);
         CorrespondencePartPersonHateoas correspondencePartHateoas =
                 new CorrespondencePartPersonHateoas(new ArrayList<>(correspondencePartPerson));
-        correspondencePartHateoasHandler.addLinksOnTemplate(correspondencePartHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinks(correspondencePartHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(correspondencePartHateoas);
