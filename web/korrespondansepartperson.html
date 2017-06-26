@@ -190,23 +190,11 @@
     </div>
 
 </div>
-
-<!-- Consider just using the value for text on the button from a value in js instead -->
-<div ng-show="createCorrespondencePartPerson">
+<div>
     <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-            ng-click="send_form()">
-        Lagre korrespondansepart
+            ng-click="send_form()"> {{buttonLabel}}
     </button>
 </div>
-<div ng-show="!createCorrespondencePartPerson">
-    <div>
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                ng-click="send_form()">
-            Oppdater korrespondansepart
-        </button>
-    </div>
-</div>
-
 <hr>
 <div ng-show="display_footer_note" footer></div>
 </body>

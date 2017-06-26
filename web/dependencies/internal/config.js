@@ -45,8 +45,9 @@ var REL_DOCUMENT_DESCRIPTION = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/d
 var REL_DOCUMENT_OBJECT = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/dokumentobjekt/';
 var REL_NEW_DOCUMENT_OBJECT = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-dokumentobjekt/';
 var REL_NEW_CORRESPONDENCE_PART_PERSON = 'http://rel.kxml.no/noark5/v4/api/sakarkiv/ny-korrespondansepartperson/';
-//var REL_NEW_CORRESPONDENCE_PART_PERSON = 'http://rel.kxml.no/noark5/v4/api/sakarkiv/korrespondansepartperson/';
+var REL_CORRESPONDENCE_PART_PERSON = 'http://rel.kxml.no/noark5/v4/api/sakarkiv/korrespondansepartperson/';
 var REL_DOCUMENT_FILE = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/fil/';
+var REL_SELF = 'self';
 
 
 // These will be picked up from the database
@@ -187,15 +188,13 @@ var SetLinkToCreateDocumentObject = function (t) {
     console.log("Setting linkToChosenDocumentObject="+t);
 };
 
-
-var GetLinkToCorrespondencePartPerson = function () {
+var GetLinkToCurrentCorrespondencePartPerson = function () {
     console.log("Getting linkToChosenCorrespondencePartPerson=" +
         localStorage.getItem("linkToChosenCorrespondencePartPerson"));
     return localStorage.getItem("linkToChosenCorrespondencePartPerson");
 };
 
-
-var SetLinkToCorrespondencePartPerson = function (t) {
+var SetLinkToCurrentCorrespondencePartPerson = function (t) {
     localStorage.setItem("linkToChosenCorrespondencePartPerson", t);
     console.log("Setting linkToChosenCorrespondencePartPerson=" + t);
 };
