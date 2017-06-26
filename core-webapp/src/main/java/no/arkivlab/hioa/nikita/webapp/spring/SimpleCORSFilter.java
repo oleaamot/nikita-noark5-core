@@ -10,6 +10,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 
 @Component
 public class SimpleCORSFilter implements Filter {
@@ -31,11 +32,7 @@ public class SimpleCORSFilter implements Filter {
         if (allowMethods != null) {
             response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
             response.setHeader("Access-Control-Allow-Credentials", "true");
-            StringBuilder builder = new StringBuilder();
-            for (HttpMethod method : allowMethods) {
-                builder.append(method.toString() + ", ");
-            }
-            response.setHeader("Access-Control-Allow-Methods", builder.toString().substring(0, builder.length() - 2));
+            response.setHeader("Access-Control-Allow-Methods", String.join(", ", Arrays.toString(allowMethods)));
             response.setHeader("Access-Control-Max-Age", "3600");
             response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me, Authorization, Origin, ETAG");
             response.setHeader("Access-Control-Expose-Headers", "Allow, ETAG");
