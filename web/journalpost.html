@@ -23,7 +23,7 @@
     </div>
 </div>
 
- <!-- There are two main divs on this page. The first one is used to show the details of a registryEntry, while the second
+<!-- There are two main divs on this page. The first one is used to show the details of a registryEntry, while the second
 is used to create a new registryEntry. -->
 <div ng-show="!createNewRegistryEntry">
     <h4>Journalpost</h4>
@@ -56,55 +56,84 @@ is used to create a new registryEntry. -->
                 </tbody>
             </table>
         </tr>
-        <tr>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <table ng-if=" registryEntry.documentDescription" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                <thead>
-                <tr>
-                    <th>dokumenttype</th>
-                    <th>dokumentstatus</th>
-                    <th>tittel</th>
-                    <th>tilknyttetRegistreringSom</th>
-                </tr>
-                </thead>
-                <tbody ng-repeat="documentDescription in registryEntry.documentDescription">
-                <tr ng-click="documentSelected(documentDescription)" class="mdl-data-table__cell--non-numeric">
-                    <td class="mdl-data-table__cell--non-numeric">
-                        {{ documentDescription.dokumenttype }}
-                    </td>
-                    <td class="mdl-data-table__cell--non-numeric">
-                        {{ documentDescription.dokumentetsDato }}
-                    </td>
-                    <td class="mdl-data-table__cell--non-numeric">
-                        {{ documentDescription.tittel }}
-                    </td>
-                    <td class="mdl-data-table__cell--non-numeric">
-                        {{ documentDescription.tilknyttetRegistreringSom }}
-                    </td>
-                    <td>
-                    </td>
-                </tr>
-                </tbody>
-                </tr>
-            </table>
     </table>
-    <div class="mdl-grid-center">
-        <button ng-click="newDocumentSelected(registryEntry)" class="mdl-button mdl-button--raised mdl-button--colored">
-            Nytt dokument
-        </button>
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                ng-click="newCorrespondencePartPerson(registryEntry)">
-            Ny korrespondansepartperson
-        </button>
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                ng-click="newCorrespondencePartUnit(registryEntry)">
-            Ny korrespondansepartenhet
-        </button>
-    </div>
-</div>
 
+    <br>
+    <div>
+        <label>Dokumenter tilkobklet journalposten</label>
+    </div>
+    <table ng-if=" registryEntry.documentDescription" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+        <thead>
+        <tr>
+            <th>dokumenttype</th>
+            <th>dokumentstatus</th>
+            <th>tittel</th>
+            <th>tilknyttetRegistreringSom</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <td>
+                <button ng-click="newDocumentSelected(registryEntry)"
+                        class="mdl-button mdl-button--raised mdl-button--colored">
+                    Nytt dokument
+                </button>
+            </td>
+        </tr>
+        </tfoot>
+        <tbody ng-repeat="documentDescription in registryEntry.documentDescription">
+        <tr ng-click="documentSelected(documentDescription)" class="mdl-data-table__cell--non-numeric">
+            <td class="mdl-data-table__cell--non-numeric">
+                {{ documentDescription.dokumenttype }}
+            </td>
+            <td class="mdl-data-table__cell--non-numeric">
+                {{ documentDescription.dokumentetsDato }}
+            </td>
+            <td class="mdl-data-table__cell--non-numeric">
+                {{ documentDescription.tittel }}
+            </td>
+            <td class="mdl-data-table__cell--non-numeric">
+                {{ documentDescription.tilknyttetRegistreringSom }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <div>
+        <label>Korrespondansepartperson tilkobklet journalposten</label>
+    </div>
+    <table ng-if=" registryEntry.korrespondansepartperson"
+           class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+        <thead>
+        <tr>
+            <th>navn</th>
+            <th>korrespondanseparttype</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <td>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                        ng-click="newCorrespondencePartPerson(korrespondansepartperson)">
+                    Ny korrespondansepartperson
+                </button>
+            </td>
+        </tr>
+        </tfoot>
+        <tbody ng-repeat="korrespondansepartperson in registryEntry.korrespondansepartperson">
+        <tr ng-click="correspondencePartPersonSelected(korrespondansepartperson)"
+            class="mdl-data-table__cell--non-numeric">
+            <td class="mdl-data-table__cell--non-numeric">
+                {{ korrespondansepartperson.navn }}
+            </td>
+            <td class="mdl-data-table__cell--non-numeric">
+                {{ korrespondansepartperson.korrespondanseparttype.beskrivelse }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
 <div ng-show="createNewRegistryEntry">
     <h4>Opprett ny journalpost</h4>
     <form ng-submit="send_form()" method="post">

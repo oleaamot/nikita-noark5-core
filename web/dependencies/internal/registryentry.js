@@ -41,7 +41,7 @@ app.controller('RegistryEntryController', ['$scope', '$http', function ($scope, 
             method: 'GET',
             // TODO figure out how to look up URL in _links
             url: GetLinkToChosenFile() + 'ny-journalpost',
-            headers: {'Authorization': $scope.token },
+            headers: {'Authorization': $scope.token}
         }).then(function successCallback(response) {
             for (var key of Object.keys(response.data)) {
                 if ("_links" === key) {
@@ -66,6 +66,7 @@ app.controller('RegistryEntryController', ['$scope', '$http', function ($scope, 
         }).then(function successCallback(response) {
             // registryEntry is in $scope.registryEntry
             $scope.registryEntry = response.data;
+            console.log(" $scope.registryEntry  is " + JSON.stringify($scope.registryEntry));
             $scope.documentDescriptionETag = response.headers('eTag');
             // Now go through each rel and find the one linking to documentDescription
             for (var rel in $scope.registryEntry._links) {
@@ -73,6 +74,7 @@ app.controller('RegistryEntryController', ['$scope', '$http', function ($scope, 
                 if (relation === REL_DOCUMENT_DESCRIPTION) {
                     // here we have a link to the documentDescription
                     var documentDescriptionHref = $scope.registryEntry._links[rel].href;
+                    console.log("Found HREF " + documentDescriptionHref);
                     (function() {
                         $http({
                             method: 'GET',
@@ -115,6 +117,24 @@ app.controller('RegistryEntryController', ['$scope', '$http', function ($scope, 
                             alert("Problem with call to url [" + documentDescriptionHref + "] response is " + response);
                         });
                     }) (documentDescriptionHref);
+                }
+                if (relation === REL_CORRESPONDENCE_PART_PERSON) {
+                    // here we have a link to correpondencepartperson
+                    console.log("Found RED REL_CORRESPONDENCE_PART_PERSON " + REL_CORRESPONDENCE_PART_PERSON);
+                    var correspondencePartPersonHref = $scope.registryEntry._links[rel].href;
+                    console.log("Found HREF " + correspondencePartPersonHref);
+                    (function () {
+                        $http({
+                            method: 'GET',
+                            url: correspondencePartPersonHref,
+                            headers: {'Authorization': GetUserToken()}
+                        }).then(function successCallback(response) {
+                            $scope.registryEntry.korrespondansepartperson = response.data.results;
+                            console.log("korrespondansepartperson is " + JSON.stringify(response.data));
+                        }, function errorCallback(response) {
+                            alert("Problem with call to url [" + correspondencePartPersonHref + "] response is " + response);
+                        });
+                    })(correspondencePartPersonHref);
                 }
             }
         }, function errorCallback(response) {
@@ -164,6 +184,21 @@ app.controller('RegistryEntryController', ['$scope', '$http', function ($scope, 
         }
         console.log("registry entry redirect to " + gui_base_url + documentPageName + " for document selected");
         window.location = gui_base_url + documentPageName;
+    };
+
+    $scope.correspondencePartPersonSelected = function (correspondansepartperson) {
+        console.log("correspondansepartperson" + JSON.stringify(correspondansepartperson));
+        for (var rel in correspondansepartperson._links) {
+            var relation = correspondansepartperson._links[rel].rel;
+            if (relation === 'self') {
+                console.log("correspondansepartperson" + JSON.stringify(correspondansepartperson) + " href = " +
+                    correspondansepartperson._links[rel].href);
+                SetLinkToCurrentCorrespondencePartPerson(correspondansepartperson._links[rel].href);
+            }
+        }
+        console.log("registry entry redirect to " + gui_base_url + correspondencePartPersonPageName +
+            " for correspondencePartPerson selected");
+        window.location = gui_base_url + correspondencePartPersonPageName;
     };
 
     var linkToCreateRegistryEntry = function () {
