@@ -6,7 +6,6 @@ import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.IAuthorisation;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -142,8 +141,10 @@ public class HateoasHandler implements IHateoasHandler {
     }
 
     protected void setParameters(HttpServletRequest request) {
+        String url = request.getRequestURL().toString();
+        url = url.replaceAll(request.getServletPath(), "");
         this.servletPath = request.getServletPath();
-        this.contextPath = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
+        this.contextPath = url;
         this.contextServletPath = contextPath + servletPath + SLASH;
         this.servletPath += SLASH;
         this.contextPath += SLASH;
