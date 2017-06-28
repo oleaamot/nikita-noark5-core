@@ -5,6 +5,7 @@ import nikita.model.noark5.v4.hateoas.Link;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.IAuthorisation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,10 +24,12 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_MEDIUM;
 @Component("hateoasHandler")
 public class HateoasHandler implements IHateoasHandler {
 
-    protected String contextServletPath = "";
     protected String servletPath = "";
     protected String contextPath = "";
     protected IAuthorisation authorisation;
+
+    @Value("${hateoas.publicAddress}")
+    private String publicUrlPath;
 
     @Override
     public void addLinks(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
@@ -42,8 +45,8 @@ public class HateoasHandler implements IHateoasHandler {
         // If hateoasNoarkObject is a list add a self link.
         // { "entity": [], "_links": [] }
         if (!hateoasNoarkObject.isSingleEntity()) {
-            StringBuffer url = request.getRequestURL();
-            Link selfLink = new Link(url.toString(), getRelSelfLink(), false);
+            String url = this.contextPath + this.servletPath;
+            Link selfLink = new Link(url, getRelSelfLink(), false);
             hateoasNoarkObject.addSelfLink(selfLink);
         }
     }
@@ -141,12 +144,14 @@ public class HateoasHandler implements IHateoasHandler {
     }
 
     protected void setParameters(HttpServletRequest request) {
-        String url = request.getRequestURL().toString();
-        url = url.replaceAll(request.getServletPath(), "");
+        // Given the following request:
+        // http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/registrering/ny-dokumentbeskrivelse
+        // servletPath = [hateoas-api/arkivstruktur/registrering/ny-dokumentbeskrivelse]
+        // contextPath = [http://localhost:8092/noark5v4/]
+        // we need contextPath to build outgoing hateoas links
+        // but it doesn't look like we actually need servlet path for anything within the context of hateoas links
         this.servletPath = request.getServletPath();
-        this.contextPath = url;
-        this.contextServletPath = contextPath + servletPath + SLASH;
-        this.servletPath += SLASH;
+        this.contextPath = publicUrlPath;
         this.contextPath += SLASH;
     }
 }

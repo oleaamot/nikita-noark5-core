@@ -68,6 +68,9 @@ management:
 info:
     app.name: HiOA Noark 5 Core (Demo version)
     build.version: ${project.version}
+hateoas:
+    publicAddress: http://localhost:8092/noark5v4
+
     #ssl:
     #    key-store: classpath:saml/nikitaKeystore.jks
     #    key-store-password: **********

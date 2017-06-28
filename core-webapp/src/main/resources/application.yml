@@ -135,6 +135,8 @@ nikita-noark5-core:
          port: 8092
          address: localhost
          protocol: http # or https
+    hateoas:
+         publicaddress: https://nikita.hioa.no/noark5v4/
     details:
         conformity-levels:
              official: arkivstruktur, casehandling
