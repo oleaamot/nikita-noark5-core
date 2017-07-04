@@ -5,12 +5,14 @@
     <script src="/dependencies/external/angular-1.6.4/angular.min.js"></script>
     <script src="/dependencies/internal/common_functionality.js"></script>
     <script src="/dependencies/external/material-design-lite/material.min.js"></script>
+    <script src="/dependencies/internal/breadcrumb.js"></script>
     <script src="/dependencies/internal/registryentry.js"></script>
     <link rel="stylesheet" href="/dependencies/external/material-design-lite/material.min.css">
+
 </head>
 
-<body ng-app="nikita-new-registry-entry" ng-controller="RegistryEntryController">
-
+<body ng-app="nikita" ng-controller="RegistryEntryController">
+<div ng-show="display_breadcrumb" ng-include="'breadcrumb.html'"></div>
 <div class="mdl-grid-center">
     <div class="mdl-grid-center">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">

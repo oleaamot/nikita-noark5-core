@@ -5,7 +5,7 @@
 
 nikitaOptions = {
     //baseUrl: "http://n5test.kxml.no/api",
-    baseUrl: 'http://localhost:8092/noark5v4',
+    baseUrl: 'http://localhost:8092/noark5v4/',
     guiBaseUrl: 'http://localhost:3000/',
     appUrl: 'http://localhost:8092/noark5v4/hateoas-api',
     loginUrl: "http://localhost:8092/noark5v4/auth",
@@ -14,6 +14,7 @@ nikitaOptions = {
     apiName: 'hateoas-api',
     authPoint: 'auth',
     displayFooterNote: true,
+    displayBreadcrumb: true,
     enabled: true
 };
 
@@ -30,6 +31,7 @@ var app_url = nikitaOptions.appUrl;
 var login_url = nikitaOptions.loginUrl;
 // Whether or not to dsiplay link to nikita source
 var display_footer_note = nikitaOptions.displayFooterNote;
+var display_breadcrumb = nikitaOptions.displayBreadcrumb;
 
 var fondsPageName = 'arkiv.html';
 var seriesPageName = 'arkivdel.html';
@@ -46,7 +48,11 @@ var REL_DOCUMENT_OBJECT = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/dokume
 var REL_NEW_DOCUMENT_OBJECT = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-dokumentobjekt/';
 var REL_NEW_CORRESPONDENCE_PART_PERSON = 'http://rel.kxml.no/noark5/v4/api/sakarkiv/ny-korrespondansepartperson/';
 var REL_CORRESPONDENCE_PART_PERSON = 'http://rel.kxml.no/noark5/v4/api/sakarkiv/korrespondansepartperson/';
+var REL_CASE_FILE = 'http://rel.kxml.no/noark5/v4/api/sakarkiv/saksmappe/';
 var REL_DOCUMENT_FILE = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/fil/';
+
+var REL_SERIES = "http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivdel/";
+var REL_FONDS_STRUCTURE = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/';
 var REL_SELF = 'self';
 
 
@@ -88,6 +94,9 @@ var emptyList = [{ id: '', value: '' },
                  { id: '', value: '' },
                  { id: '', value: '' },
                  { id: '', value: '' }];
+
+var loginOptions = [{id: 'SA', value: "saksbehandler"},
+    {id: 'AR', value: "arkivar"}];
 
 
 console.log("Setting nikita gui_base_url: " + gui_base_url);
@@ -159,6 +168,29 @@ var SetLinkToChosenSeries = function(t) {
     console.log("Setting linkToChosenSeries="+t);
 };
 
+var SetChosenSeries = function (t) {
+    localStorage.setItem("chosenSeries", t);
+    console.log("Setting chosenSeries=" + t);
+};
+
+var GetChosenSeries = function () {
+    console.log("Fetting chosenSeries=" + localStorage.getItem("chosenSeries"));
+    return localStorage.getItem("chosenSeries");
+};
+
+
+var GetLinkToCurrentSeries = function () {
+    console.log("Getting linkToChosenSeries=" +
+        localStorage.getItem("linkToChosenSeries"));
+    return localStorage.getItem("linkToChosenSeries");
+};
+
+var SetLinkToCurrentSeries = function (t) {
+    console.log("Setting linkToChosenSeries=" + t);
+    return localStorage.setItem("linkToChosenSeries", t);
+};
+
+
 var SetChosenFonds = function(fondSystemId) {
     localStorage.setItem("chosenfonds", fondSystemId);
     console.log("Setting fondSystemId="+fondSystemId);
@@ -226,3 +258,47 @@ var SetLinkToCorrespondencePartUnit = function (t) {
     localStorage.setItem("linkToChosenCorrespondencePartUnit", t);
     console.log("Setting linkToChosenCorrespondencePartUnit=" + t);
 };
+
+
+var SetCurrentCaseFileNumber = function (t) {
+    localStorage.setItem("currentCaseFileNumber", t);
+    console.log("Setting currentCaseFileNumber=" + t);
+};
+
+var getCurrentCaseFileNumber = function () {
+    return localStorage.getItem("currentCaseFileNumber");
+};
+
+var SetCurrentCaseFile = function (t) {
+    localStorage.setItem("currentCaseFile", JSON.stringify(t));
+    console.log("Setting currentCaseFile=" + JSON.stringify(t));
+};
+
+var GetCurrentCaseFile = function () {
+    console.log("Getting currentCaseFile=" + JSON.stringify(localStorage.getItem("currentCaseFile")));
+    return localStorage.getItem("currentCaseFile");
+};
+
+var SetLinkToChosenCaseFile = function (t) {
+    localStorage.setItem("linkToCurrentCaseFile", JSON.stringify(t));
+    console.log("Setting linkToCurrentCaseFile=" + JSON.stringify(t));
+};
+
+var GetLinkToChosenCaseFile = function () {
+    console.log("Getting linkToCurrentCaseFile=" + localStorage.getItem("linkToCurrentCaseFile"));
+    return localStorage.getItem("linkToCurrentCaseFile");
+};
+
+
+var changeLocation = function ($scope, url, forceReload) {
+    $scope = $scope || angular.element(document).scope();
+    console.log("URL" + url);
+    if (forceReload || $scope.$$phase) {
+        window.location = url;
+    }
+    else {
+        $location.path(url);
+        $scope.$apply();
+    }
+};
+

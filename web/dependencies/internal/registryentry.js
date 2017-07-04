@@ -1,4 +1,4 @@
-var app = angular.module('nikita-new-registry-entry', []);
+var app = angular.module('nikita', ['nikita-shared']);
 
 /**
  * Controller for registryEntry/ journalpost
@@ -9,8 +9,11 @@ var app = angular.module('nikita-new-registry-entry', []);
  *
  */
 
-app.controller('RegistryEntryController', ['$scope', '$http', function ($scope, $http) {
 
+app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService', function ($scope, $http, breadcrumbService) {
+
+
+    $scope.display_breadcrumb = display_breadcrumb;
     // Get the chosen caseFile to display the saksnr and tittel
     $scope.token = GetUserToken();
     var urlVal = GetLinkToChosenFile();
@@ -21,6 +24,12 @@ app.controller('RegistryEntryController', ['$scope', '$http', function ($scope, 
         headers: {'Authorization': $scope.token}
     }).then(function successCallback(response) {
         $scope.casefile = response.data;
+        SetCurrentCaseFileNumber($scope.casefile.mappeID);
+        $scope.saksnr1 = getCurrentCaseFileNumber();
+        if ($scope.saksnr1)
+            $scope.saksnrSet = true;
+        else
+            $scope.saksnrSet = false;
     }, function errorCallback(response) {
         alert("Problem with call to url [" + urlVal + "] response is " + response);
     });

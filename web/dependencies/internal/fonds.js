@@ -23,7 +23,8 @@ var fondsController = app.controller('FondsController', ['$scope', '$http',
         $scope.display_footer_note = display_footer_note;
         $scope.token = GetUserToken();
         $scope.show_create_fonds = true;
-    $http({
+
+        $http({
         method: 'GET',
         url: app_url + '/arkivstruktur/arkiv',
         headers: {'Authorization': $scope.token },

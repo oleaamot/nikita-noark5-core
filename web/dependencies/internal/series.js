@@ -60,14 +60,10 @@ var seriesController = app.controller('SeriesController', ['$scope', '$http', fu
         // TODO: what should we do when it fails?
     });
 
-    // TODO : Add the href to local storage indicating what was clicked
-    //
-    $scope.fileSelected = function(href, seriesSystemId){
-        console.log('series selected link clicked ' + href);
-        token = GetUserToken();
-        SetLinkToSeriesAllFile(href);
-        SetChosenSeries(seriesSystemId);
-        window.location = gui_base_url + "/mappe.html";
+    $scope.casefileSelected = function (series) {
+        console.log('series selected clicked ' + JSON.stringify(series));
+        SetChosenSeries(series);
+        window.location = gui_base_url + "/saksmappe.html";
     };
 
     $scope.send_form = function() {
@@ -92,6 +88,7 @@ var seriesController = app.controller('SeriesController', ['$scope', '$http', fu
             alert(data.data);
         });
     };
+
     var changeLocation = function ($scope, url, forceReload) {
         $scope = $scope || angular.element(document).scope();
         console.log("URL" + url);
@@ -99,13 +96,20 @@ var seriesController = app.controller('SeriesController', ['$scope', '$http', fu
             window.location = url;
         }
         else {
-            //only use this if you want to replace the history stack
-            //$location.path(url).replace();
-
-            //this this if you want to change the URL and add it to the history stack
             $location.path(url);
             $scope.$apply();
         }
     };
+
+    var findAndSetChosenSeries = function (series) {
+        SetCurrentSeries(series);
+        for (var rel in series._links) {
+            var relation = series._links[rel].rel;
+            // find one that contains a link to a self
+            if (relation === REL_SELF) {
+                SetLinkToCurrentSeries(series._links[rel].href);
+            }
+        }
+    }
 
 }]);

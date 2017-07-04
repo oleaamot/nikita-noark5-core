@@ -14,7 +14,7 @@
  *
  */
 
-var app = angular.module('nikita-correspondencepart-person', [])
+var app = angular.module('nikita', [])
     .controller('CorrespondencePartPersonController', ['$scope', '$http', function ($scope, $http) {
 
         $scope.correspondencePartTypeList = correspondencePartTypeList;

@@ -16,14 +16,16 @@
 <form ng-submit="send_form()" ng-controller="SeriesController" method="post">
     <div class="mdl-grid-center">
         <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text" name="tittel" />
+            <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text" name="tittel"/>
         </div>
         <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" placeholder="beskrivelse" ng-model="beskrivelse" type="text" name="beskrivelse" />
+            <input class="mdl-textfield__input" placeholder="beskrivelse" ng-model="beskrivelse" type="text"
+                   name="beskrivelse"/>
         </div>
     </div>
     <div class="form-actions col-xs-offset-2 col-xs-10">
-        <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" value="Opprett arkivdel" />
+        <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+               value="Opprett arkivdel"/>
     </div>
 </form>
 
@@ -49,12 +51,8 @@
             {{ series.arkivdelstatus }}
         </td>
         <td class="mdl-data-table__cell--non-numeric">
-            <div ng-repeat="l in series._links">
-                <div  ng-if="l.rel == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/mappe/' ">
-                    <div ng-click="fileSelected(l.href, series.systemID)">
-                        mapper
-                    </div>
-                </div>
+            <div ng-click="casefileSelected(series)">
+                mapper
             </div>
         </td>
     </tr>
@@ -62,8 +60,8 @@
 </table>
 <hr>
 <p>Denne webklient er del av
-  <a href="https://github.com/HiOA-ABI/nikita-noark5-core/">Nikita
-    Noark 5 kjerne</a>, en fri programvareimplementasjon av Noark 5
-  Tjenestegrensesnitt.</p>
+    <a href="https://github.com/HiOA-ABI/nikita-noark5-core/">Nikita
+        Noark 5 kjerne</a>, en fri programvareimplementasjon av Noark 5
+    Tjenestegrensesnitt.</p>
 </body>
 </html>
