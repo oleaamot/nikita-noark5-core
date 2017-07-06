@@ -6,6 +6,7 @@
     <script src="/dependencies/external/angular-1.6.4/angular.min.js"></script>
     <script src="/dependencies/internal/common_functionality.js"></script>
     <script src="/dependencies/external/material-design-lite/material.min.js"></script>
+    <script src="/dependencies/internal/breadcrumb.js"></script>
     <script src="/dependencies/internal/document.js"></script>
     <script src="/dependencies/external/ng-file-upload-12.2.13/ng-file-upload-shim.js"></script>
     <script src="/dependencies/external/ng-file-upload-12.2.13/ng-file-upload.js"></script>
@@ -24,6 +25,7 @@
 
      https://stackoverflow.com/questions/31638890/mdl-textfield-not-taking-ngmodel-changes-into-account
 -->
+<div ng-show="display_breadcrumb" ng-include="'breadcrumb.html'"></div>
 <div>
     <div class="mdl-grid-center">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -41,19 +43,17 @@
 </div>
 
 <div>
-    <!--
-    <form ng-submit="send_form(documentDescription)" method="post">
-    -->
     <div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="document_description_title" class="mdl-textfield__input" type="text"
-                   value="{{documentDescription.tittel}} ">
+                   value="{{documentDescription.tittel}} " ng-dblclick="getTitleFromRegistryEntry()">
             <label class="mdl-textfield__label" for="document_description_title">dokumentets tittel</label>
         </div>
     </div>
     <div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-width">
-            <textarea id="document_description_description" class="mdl-textfield__input" type="text" rows="4">{{documentDescription.beskrivelse}} </textarea>
+            <textarea id="document_description_description" class="mdl-textfield__input" type="text" rows="4"
+                      ng-dblclick="getDescriptionFromRegistryEntry()">{{documentDescription.beskrivelse}} </textarea>
             <label class="mdl-textfield__label" for="document_description_description">dokumentets
                 beskrivelse</label>
         </div>
@@ -134,7 +134,7 @@
     <div class="mdl-grid-center">
         <div id="checksumDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="checksum" class="mdl-textfield__input" value="{{documentObject.sjekksum}} "
-                   type="text"/>
+                   type="text" disabled/>
             <label class="mdl-textfield__label" for="checksum">sjekksum</label>
         </div>
         <div id="checksumAlgorithmDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -145,10 +145,9 @@
 
         <div id="fileSizeDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="file_size" class="mdl-textfield__input" value="{{documentObject.filstoerrelse}} "
-                   type="text"/>
+                   type="text" disabled/>
             <label class="mdl-textfield__label" for="file_size">filstørrelse</label>
         </div>
-
     </div>
 </div>
 

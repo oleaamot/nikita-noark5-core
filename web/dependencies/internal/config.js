@@ -42,6 +42,7 @@ var correspondencePartPersonPageName = 'korrespondansepartperson.html';
 var correspondencePartUnitPageName = 'korrespondansepartenhet.html';
 
 var REL_NEW_REGISTRY_ENTRY = 'http://nikita.arkivlab.no/noark5/v4/ny-journalpost/';
+var REL_REGISTRY_ENTRY = 'http://rel.kxml.no/noark5/v4/api/sakarkiv/journalpost/';
 var REL_NEW_DOCUMENT_DESCRIPTION = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-dokumentbeskrivelse/';
 var REL_DOCUMENT_DESCRIPTION = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/dokumentbeskrivelse/';
 var REL_DOCUMENT_OBJECT = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/dokumentobjekt/';
@@ -220,6 +221,15 @@ var SetLinkToCreateDocumentObject = function (t) {
     console.log("Setting linkToChosenDocumentObject="+t);
 };
 
+var SetLinkToDocumentObject = function (t) {
+    localStorage.setItem("linkToDocumentObject", t);
+    console.log("Setting linkToDocumentObject=" + t);
+};
+
+var GetLinkToDocumentObject = function (t) {
+    return localStorage.setItem("linkToDocumentObject");
+};
+
 var GetLinkToCurrentCorrespondencePartPerson = function () {
     console.log("Getting linkToChosenCorrespondencePartPerson=" +
         localStorage.getItem("linkToChosenCorrespondencePartPerson"));
@@ -275,18 +285,48 @@ var SetCurrentCaseFile = function (t) {
 };
 
 var GetCurrentCaseFile = function () {
-    console.log("Getting currentCaseFile=" + JSON.stringify(localStorage.getItem("currentCaseFile")));
-    return localStorage.getItem("currentCaseFile");
+    console.log("Getting currentCaseFile=" + localStorage.getItem("currentCaseFile"));
+    return JSON.parse(localStorage.getItem("currentCaseFile"));
+};
+
+var SetCurrentRegistryEntry = function (t) {
+    localStorage.setItem("currentRegistryEntry", JSON.stringify(t));
+    console.log("Setting currentRegistryEntry=" + JSON.stringify(t));
+};
+
+var GetCurrentRegistryEntry = function () {
+    console.log("Getting currentRegistryEntry=" + localStorage.getItem("currentRegistryEntry"));
+    return JSON.parse(localStorage.getItem("currentRegistryEntry"));
 };
 
 var SetLinkToChosenCaseFile = function (t) {
-    localStorage.setItem("linkToCurrentCaseFile", JSON.stringify(t));
-    console.log("Setting linkToCurrentCaseFile=" + JSON.stringify(t));
+    localStorage.setItem("linkToCurrentCaseFile", t);
+    console.log("Setting linkToCurrentCaseFile=" + t);
 };
 
 var GetLinkToChosenCaseFile = function () {
     console.log("Getting linkToCurrentCaseFile=" + localStorage.getItem("linkToCurrentCaseFile"));
     return localStorage.getItem("linkToCurrentCaseFile");
+};
+
+var SetLinkToCreateRegistryEntry = function (t) {
+    localStorage.setItem("linkToCreateRegistryEntry", t);
+    console.log("Setting linkToCreateRegistryEntry=" + t);
+};
+
+var GetLinkToCreateRegistryEntry = function () {
+    console.log("Getting linkToCreateRegistryEntry=" + localStorage.getItem("linkToCreateRegistryEntry"));
+    return localStorage.getItem("linkToCreateRegistryEntry");
+};
+
+var SetLinkToGetRegistryEntry = function (t) {
+    localStorage.setItem("linkToGetRegistryEntry", t);
+    console.log("Setting linkToGetRegistryEntry=" + t);
+};
+
+var GetLinkToGetRegistryEntry = function () {
+    console.log("Getting linkToGetRegistryEntry=" + localStorage.getItem("linkToGetRegistryEntry"));
+    return localStorage.getItem("linkToGetRegistryEntry");
 };
 
 

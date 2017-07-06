@@ -2,8 +2,14 @@ var app = angular.module('nikita-document', ['ngFileUpload']);
 
 app.controller('DocumentController', ['$scope', '$http', function ($scope, $http) {
 
+    // Make a breadcrumbs value appear
+    $scope.printDocument = true;
+    $scope.display_breadcrumb = display_breadcrumb;
+    // Display journalpostnr and tittel for UX
+    $scope.registryEntry = GetCurrentRegistryEntry();
 
-//    dokumentstatus er der
+    // Needed for the breadcrumbs to display Sak(mappeID)
+    $scope.caseFile = GetCurrentCaseFile();
 
     $scope.mimeTypeList = mimeTypeList;
     $scope.variantFormatList = variantFormatList;
@@ -12,23 +18,12 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
     $scope.documentStatusList = documentStatusList;
 
     var urlDocumentDescription = GetLinkToDocumentDescription();
-    var urlVal = GetLinkToChosenRecord();
-
-    // Fetch the record to display journlpostnr and tittel
-    $http({
-        method: 'GET',
-        url: urlVal,
-        headers: {'Authorization': GetUserToken()}
-    }).then(function successCallback(response) {
-        $scope.registryEntry = response.data;
-    }, function errorCallback(response) {
-        alert("Could not find registryEntry using link=" + urlVal + " " + response);
-    });
 
     // check to see urlDocumentDescription exists, if it does, we are fetching real data
     if (urlDocumentDescription) {
         console.log("Curent urlDocumentDescription is" + JSON.stringify(urlDocumentDescription));
         $scope.createNewDocument = false;
+        $scope.label_document = "Dokument";
         var token = GetUserToken();
 
         $http({
@@ -82,6 +77,7 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
     }
     else {
         $scope.createNewDocument = true;
+        $scope.label_document = "Nytt dokument";
     }
 
     var changeLocation = function ($scope, url, forceReload) {
@@ -186,7 +182,7 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
                 relation = documentDescription._links[rel].rel;
                 if (relation == 'self') {
                     href = documentDescription._links[rel].href;
-                    SetLinkToCurrentDocumentDescription(href);
+                    SetLinkToDocumentDescription(href);
                 }
                 if (relation === REL_NEW_DOCUMENT_OBJECT) {
                     urlDocumentObject = documentDescription._links[rel].href;
@@ -205,11 +201,11 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
                     'ETAG': $scope.documentDescriptionETag
                 },
                 data: {
-                    sjekksum: $.trim(document.getElementById("checksum").value),
+                    //sjekksum: $.trim(document.getElementById("checksum").value),
                     versjonsnummer: Number($.trim(document.getElementById("version_number").value)),
                     variantformat: $scope.selectedVariantFormat,
-                    sjekksumAlgoritme: $.trim(document.getElementById("checksum_algorithm").value),
-                    filstoerrelse: Number($.trim(document.getElementById("file_size").value)),
+                    //sjekksumAlgoritme: $.trim(document.getElementById("checksum_algorithm").value),
+                    //filstoerrelse: Number($.trim(document.getElementById("file_size").value)),
                     mimeType: $.trim($scope.selectedMimeType)
                 },
             }).then(function successCallback(response) {
@@ -220,10 +216,10 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
                     relation = documentObject._links[rel].rel;
                     if (relation == 'self') {
                         href = documentObject._links[rel].href;
-                        SetLinkToCurrentDocumentObject(href);
+                        SetLinkToDocumentObject(href);
                     }
                 }
-                changeLocation($scope, "./dokument.html", true);
+                changeLocation($scope, "./dokument.html", false);
             }, function (data, status, headers, config) {
                 alert("Could not " + method + " document object " + data.data);
             });
@@ -231,4 +227,14 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
             alert("Could not " + method + "document description " + data.data);
         });
     };
+
+
+    $scope.getTitleFromRegistryEntry = function () {
+        $scope.documentDescription.tittel = $scope.registryEntry.tittel;
+    };
+
+    $scope.getDescriptionFromRegistryEntry = function () {
+        $scope.documentDescription.beskrivelse = $scope.registryEntry.beskrivelse;
+    }
+
 }]);

@@ -16,29 +16,14 @@ app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService
     $scope.display_breadcrumb = display_breadcrumb;
     // Get the chosen caseFile to display the saksnr and tittel
     $scope.token = GetUserToken();
-    var urlVal = GetLinkToChosenFile();
-
-    $http({
-        method: 'GET',
-        url: urlVal,
-        headers: {'Authorization': $scope.token}
-    }).then(function successCallback(response) {
-        $scope.casefile = response.data;
-        SetCurrentCaseFileNumber($scope.casefile.mappeID);
-        $scope.saksnr1 = getCurrentCaseFileNumber();
-        if ($scope.saksnr1)
-            $scope.saksnrSet = true;
-        else
-            $scope.saksnrSet = false;
-    }, function errorCallback(response) {
-        alert("Problem with call to url [" + urlVal + "] response is " + response);
-    });
+    $scope.caseFile = GetCurrentCaseFile();
+    SetCurrentCaseFileNumber($scope.caseFile.mappeID);
 
     // Get the registryEntry to display
-    urlVal = GetLinkToChosenRecord();
-
+    var registryEntry = GetCurrentRegistryEntry();
+    $scope.registryEntry = GetCurrentRegistryEntry();
     // No chosen registryEntry, means we are creating a new registryEntry
-    if (!urlVal) {
+    if (!registryEntry) {
         $scope.createNewRegistryEntry = true;
         $scope.formfields = [
             'tittel', 'beskrivelse', 'journalposttype', 'journalpoststatus',
@@ -46,35 +31,66 @@ app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService
             'dokumentetsDato', 'journaldato',
         ];
         console.log("token is : " + $scope.token);
-        $http({
-            method: 'GET',
-            // TODO figure out how to look up URL in _links
-            url: GetLinkToChosenFile() + 'ny-journalpost',
-            headers: {'Authorization': $scope.token}
-        }).then(function successCallback(response) {
-            for (var key of Object.keys(response.data)) {
-                if ("_links" === key) {
-                } else {
-                    $scope[key] = response.data[key];
-                    $scope.formfields.push(key);
+
+        var urlToCreateRegistryEntry = GetLinkToCreateRegistryEntry();
+        console.log("urlToCreateRegistryEntry is : " + urlToCreateRegistryEntry);
+        if (urlToCreateRegistryEntry) {
+
+            $http({
+                method: 'GET',
+                url: urlToCreateRegistryEntry,
+                headers: {
+                    'Accept': 'application/vnd.noark5-v4+json',
+                    'Authorization': GetUserToken()
                 }
-            }
-            console.log("ny-journalpost data is : " + JSON.stringify(response.data));
-        }, function errorCallback(response) {
-            // TODO: what should we do when it fails?
-        });
+            }).then(function successCallback(response) {
+                console.log("ny-journalpost data is : " + JSON.stringify(response.data));
+                for (var key of Object.keys(response.data)) {
+                    if ("_links" === key) {
+                    } else {
+                        $scope[key] = response.data[key];
+                        $scope.formfields.push(key);
+                    }
+                }
+
+                console.log("Status : " + JSON.stringify(response.status));
+                console.log("Config : " + JSON.stringify(response.config));
+            }, function errorCallback(response) {
+                console.log("Status : " + JSON.stringify(response.status));
+                console.log("Config : " + JSON.stringify(response.config));
+            });
+        }
+        else {
+            alert("Internal error. No url available to call GET:ny-journalpost");
+        }
     }
     else {
         $scope.createNewRegistryEntry = false;
 
+        var urlCurrentRegistryEntry = '';
+        var registryEntry = GetCurrentRegistryEntry();
+        /**
+         * Getting the latest copy of the registryEntry and any documents attached to it.
+         *  Can be necessary from a UX perspective, if someone changes something or adds
+         *   e.g a new document to the registryEntry
+         */
+        for (var rel in registryEntry._links) {
+            var relation = registryEntry._links[rel].rel;
+            if (relation === REL_SELF) {
+                urlCurrentRegistryEntry = registryEntry._links[rel].href;
+            }
+        }
+
         // Get the registryEntry
         $http({
             method: 'GET',
-            url: urlVal,
+            url: urlCurrentRegistryEntry,
             headers: {'Authorization': $scope.token}
         }).then(function successCallback(response) {
             // registryEntry is in $scope.registryEntry
             $scope.registryEntry = response.data;
+            // update the current registryEntry object
+            GetCurrentRegistryEntry($scope.registryEntry);
             console.log(" $scope.registryEntry  is " + JSON.stringify($scope.registryEntry));
             $scope.documentDescriptionETag = response.headers('eTag');
             // Now go through each rel and find the one linking to documentDescription
@@ -149,29 +165,25 @@ app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService
         }, function errorCallback(response) {
             alert("Problem with call to url [" + urlVal + "] response is " + response);
         });
+
+        console.log("$scope.createNewRegistryEntry = " + $scope.createNewRegistryEntry);
     }
 
     $scope.newDocumentSelected = function (registryEntry) {
         // setting these to ''so that when we hit the page
         // any previous values will be ignored
-        SetLinkToDocumentDescription(null);
+        SetLinkToDocumentDescription('');
         SetLinkToCreateDocumentDescription('');
 
+        console.log("Current registryEntry is " + JSON.stringify(registryEntry));
         for (var rel in registryEntry._links) {
             relation = registryEntry._links[rel].rel;
-            if (relation === REL_NEW_DOCUMENT_DESCRIPTION) {
+            if (relation == REL_NEW_DOCUMENT_DESCRIPTION) {
                 var href = registryEntry._links[rel].href;
                 SetLinkToCreateDocumentDescription(href);
             }
-            if (relation === REL_DOCUMENT_DESCRIPTION) {
-                var href = registryEntry._links[rel].href;
-                SetLinkToDocumentDescription(href);
-            }
         }
-
-        if (GetLinkToCreateDocumentDescription()) {
-            window.location = gui_base_url + documentPageName;
-        }
+        window.location = gui_base_url + documentPageName;
     };
 
     $scope.newCorrespondencePartPerson = function () {
@@ -185,13 +197,15 @@ app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService
     };
 
     $scope.documentSelected = function (documentDescription) {
+        console.log("documentDescription" + JSON.stringify(documentDescription));
         for (var rel in documentDescription._links) {
             var relation = documentDescription._links[rel].rel;
             if (relation === 'self') {
+                console.log("documentDescription" + JSON.stringify(documentDescription) + " href = " +
+                    documentDescription._links[rel].href);
                 SetLinkToDocumentDescription(documentDescription._links[rel].href);
             }
         }
-        console.log("registry entry redirect to " + gui_base_url + documentPageName + " for document selected");
         window.location = gui_base_url + documentPageName;
     };
 
@@ -210,26 +224,15 @@ app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService
         window.location = gui_base_url + correspondencePartPersonPageName;
     };
 
-    var linkToCreateRegistryEntry = function () {
-        if (!$scope.casefile) {
-            alert("CaseFile data is undefined");
-        }
-        for (rel in $scope.casefile._links) {
-            relation = $scope.casefile._links[rel].rel;
-            if (relation === REL_NEW_REGISTRY_ENTRY) {
-                return $scope.casefile._links[rel].href;
-            }
-        }
-        return null;
-    };
 
     $scope.send_form = function () {
-        url = linkToCreateRegistryEntry();
+        url = GetLinkToCreateRegistryEntry();
         formdata = {};
         for (var key of $scope.formfields) {
             formdata[key] = $scope[key];
         }
         // check that it's not null, create a popup here if it is
+        console.log("formdata  is " + JSON.stringify(formdata));
         $http({
             url: url,
             method: "POST",
@@ -240,9 +243,11 @@ app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService
             data: formdata,
         }).then(function successCallback(response) {
             var registryEntry = response.data;
+            $scope.registryEntry = response.data;
+            SetCurrentRegistryEntry(response.data);
             for (rel in registryEntry._links) {
                 relation = registryEntry._links[rel].rel;
-                if (relation === 'self') {
+                if (relation == 'self') {
                     href = registryEntry._links[rel].href;
                     SetLinkToChosenRecord(href);
                     window.location = gui_base_url + registryEntryPageName;

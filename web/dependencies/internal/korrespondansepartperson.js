@@ -19,66 +19,64 @@ var app = angular.module('nikita', [])
 
         $scope.correspondencePartTypeList = correspondencePartTypeList;
         var urlCorrespondencePartPerson = GetLinkToCurrentCorrespondencePartPerson();
-        var urlVal = GetLinkToChosenRecord();
 
-        // Fetch the record to display journalpostnr and tittel
-        $http({
-            method: 'GET',
-            url: urlVal,
-            headers: {'Authorization': GetUserToken()}
-        }).then(function successCallback(response) {
-            // fetching of journalpost ok, next fetch the current correspondencepartperson
-            $scope.registryEntry = response.data;
-            if (urlCorrespondencePartPerson) {
-                console.log("Curent urlCorrespondencePartPerson is" + JSON.stringify(urlCorrespondencePartPerson));
-                $scope.createCorrespondencePartPerson = false;
-                $scope.buttonLabel = "Oppdater korrespondansepartperson";
-                var token = GetUserToken();
-                $http({
-                    method: 'GET',
-                    url: urlCorrespondencePartPerson,
-                    headers: {'Authorization': token}
-                }).then(function successCallback(response) {
-                    $scope.correspondencePartPersonETag = response.headers('eTag');
-                    $scope.correspondencepartPerson = response.data;
-                    setCurrentCorrepsondencePartPersonFromRels($scope.correspondencepartPerson);
-                }, function errorCallback(response) {
-                    alert("Could not find correspondencePartPerson using link=" + urlCorrespondencePartPerson + " " + response);
-                });
-            }
-            // There is no current correspondencepartperson, so we must be making a new one, fetch default values
-            // from the noark 5 core
-            else {
-                $scope.createCorrespondencePartPerson = true;
-                $scope.buttonLabel = "Lagre korrespondansepartperson";
-                // Go through each rel of the registryentry
-                for (var rel in $scope.registryEntry._links) {
-                    var relation = $scope.registryEntry._links[rel].rel;
-                    // find one that contains a link to a  ny-korrespondansepartperson
-                    if (relation === REL_NEW_CORRESPONDENCE_PART_PERSON) {
-                        var correspondencePartPersonHref = $scope.registryEntry._links[rel].href;
-                        SetLinkToCreateCorrespondencePartPerson($scope.registryEntry._links[rel].href);
-                        // Issue a GET for the ny-korrespondansepartperson
-                        $http({
-                            method: 'GET',
-                            url: correspondencePartPersonHref,
-                            headers: {'Authorization': GetUserToken()}
-                        }).then(function successCallback(response) {
-                            console.log("Result from GET (" + correspondencePartPersonHref + ") is " + JSON.stringify(response.data));
-                            // populate the values in the GUI
-                            $scope.correspondencepartPerson = response.data;
-                            $scope.correspondencePartPersonETag = response.headers('eTag');
-                            $scope.selectedCorrespondencePartType = response.data.korrespondanseparttype.beskrivelse;
-                        }, function errorCallback(response) {
-                            alert("Problem with call to url [" + correspondencePartPersonHref + "] response is "
-                                + response);
-                        });
-                    }
+        // Display journalpostnr and tittel for UX
+        $scope.registryEntry = GetCurrentRegistryEntry();
+        // Needed for the breadcrumbs to display Sak(mappeID)
+        $scope.casefile = GetCurrentCaseFile();
+        // Make a breadcrumbs value appear
+        $scope.printCorrespondencePart = true;
+        $scope.display_breadcrumb = display_breadcrumb;
+
+        if (urlCorrespondencePartPerson) {
+            console.log("Curent urlCorrespondencePartPerson is" + JSON.stringify(urlCorrespondencePartPerson));
+            $scope.createCorrespondencePartPerson = false;
+            $scope.buttonLabel = "Oppdater korrespondansepartperson";
+            $scope.label_correspondansepart = "Korrespondansepartperson";
+            var token = GetUserToken();
+            $http({
+                method: 'GET',
+                url: urlCorrespondencePartPerson,
+                headers: {'Authorization': token}
+            }).then(function successCallback(response) {
+                $scope.correspondencePartPersonETag = response.headers('eTag');
+                $scope.correspondencepartPerson = response.data;
+                setCurrentCorrepsondencePartPersonFromRels($scope.correspondencepartPerson);
+            }, function errorCallback(response) {
+                alert("Could not find correspondencePartPerson using link=" + urlCorrespondencePartPerson + " " + response);
+            });
+        }
+        // There is no current correspondencepartperson, so we must be making a new one, fetch default values
+        // from the noark 5 core
+        else {
+            $scope.createCorrespondencePartPerson = true;
+            $scope.label_correspondansepart = "Ny Korrespondansepartperson";
+            $scope.buttonLabel = "Lagre korrespondansepartperson";
+            // Go through each rel of the registryentry
+            for (var rel in $scope.registryEntry._links) {
+                var relation = $scope.registryEntry._links[rel].rel;
+                // find one that contains a link to a  ny-korrespondansepartperson
+                if (relation === REL_NEW_CORRESPONDENCE_PART_PERSON) {
+                    var correspondencePartPersonHref = $scope.registryEntry._links[rel].href;
+                    SetLinkToCreateCorrespondencePartPerson($scope.registryEntry._links[rel].href);
+                    // Issue a GET for the ny-korrespondansepartperson
+                    $http({
+                        method: 'GET',
+                        url: correspondencePartPersonHref,
+                        headers: {'Authorization': GetUserToken()}
+                    }).then(function successCallback(response) {
+                        console.log("Result from GET (" + correspondencePartPersonHref + ") is " + JSON.stringify(response.data));
+                        // populate the values in the GUI
+                        $scope.correspondencepartPerson = response.data;
+                        $scope.correspondencePartPersonETag = response.headers('eTag');
+                        $scope.selectedCorrespondencePartType = response.data.korrespondanseparttype.beskrivelse;
+                    }, function errorCallback(response) {
+                        alert("Problem with call to url [" + correspondencePartPersonHref + "] response is "
+                            + response);
+                    });
                 }
             }
-        }, function errorCallback(response) {
-            alert("Could not find registryEntry using link=" + urlVal + " " + response);
-        });
+        }
 
         var setCurrentCorrepsondencePartPersonFromRels = function (correspondencepartPerson) {
             // Find the self link, need it when updating
