@@ -62,7 +62,6 @@ jwt:
 server:
     contextPath: /noark5v4
     port: 8092
-    address: localhost
 management:
     context-path: /management
 info:
