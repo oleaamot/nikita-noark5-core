@@ -52,6 +52,7 @@ var fondsController = app.controller('FondsController', ['$scope', '$http',
         }
 
 
+        // Probably don't need this!!
         $scope.documentMedium_selected = function () {
 
             if ($scope.selectedDocumentMedium == 'Elektronisk arkiv ') {
@@ -62,6 +63,15 @@ var fondsController = app.controller('FondsController', ['$scope', '$http',
             }
             console.log("oppbevaringsStedDisabled value [" + $scope.oppbevaringsStedDisabled +
                 "] val is [" + $scope.selectedDocumentMedium + "], [Elektronisk arkiv]");
+        };
+
+        /**
+         * series_list_selected
+         *
+         * Assumes the current fonds is set. Simply calls arkivdeliste.html
+         */
+        $scope.series_list_selected = function () {
+            changeLocation($scope, seriesListPageName, false);
         };
 
         /**

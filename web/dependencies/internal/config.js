@@ -36,6 +36,7 @@ var display_breadcrumb = nikitaOptions.displayBreadcrumb;
 var fondsListPageName = 'arkivliste.html';
 var fondsPageName = 'arkiv.html';
 var seriesPageName = 'arkivdel.html';
+var seriesListPageName = 'arkivdeliste.html';
 var caseFilePageName = 'saksmappe.html';
 var caseHandlerDashboardPageName = 'saksbehandler-dashboard.html';
 var registryEntryPageName = 'journalpost.html';
@@ -56,6 +57,7 @@ var REL_DOCUMENT_FILE = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/fil/';
 var REL_SERIES = "http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivdel/";
 var REL_FONDS_STRUCTURE = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/';
 var REL_FONDS_CREATOR = "http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivskaper/";
+var REL_SERIES = "http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivdel/";
 var REL_NEW_FONDS_CREATOR = "http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-arkivskaper/";
 var REL_SELF = 'self';
 
@@ -87,6 +89,10 @@ var documentMediumList = [
     {id: 'B', value: 'Blandet fysisk og elektronisk arkiv'}];
 
 var fondsStatusList = [
+    {id: 'O', value: 'Opprettet'},
+    {id: 'A', value: 'Avsluttet'}];
+
+var seriesStatusList = [
     {id: 'O', value: 'Opprettet'},
     {id: 'A', value: 'Avsluttet'}];
 
@@ -192,13 +198,13 @@ var SetLinkToChosenSeries = function (t) {
 };
 
 var SetChosenSeries = function (t) {
-    localStorage.setItem("chosenSeries", t);
-    console.log("Setting chosenSeries=" + t);
+    localStorage.setItem("chosenSeries", JSON.stringify(t));
+    console.log("Setting chosenSeries=" + JSON.stringify(t));
 };
 
 var GetChosenSeries = function () {
     console.log("Getting chosenSeries=" + localStorage.getItem("chosenSeries"));
-    return localStorage.getItem("chosenSeries");
+    return JSON.parse(localStorage.getItem("chosenSeries"));
 };
 
 

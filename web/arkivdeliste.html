@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="nb" ng-app="nikita-seriesList">
+<head>
+    <meta charset="UTF-8">
+    <script src="/dependencies/internal/config.js"></script>
+    <script src="/dependencies/external/jQuery-2.2.4/jquery-2.2.4.min.js"></script>
+    <script src="/dependencies/external/angular-1.6.4/angular.min.js"></script>
+    <script src="/dependencies/internal/common_functionality.js"></script>
+    <script src="/dependencies/internal/seriesList.js"></script>
+    <script src="/dependencies/external/material-design-lite/material.min.js"></script>
+    <link rel="stylesheet" href="/dependencies/external/material-design-lite//material.min.css">
+    <meta charset="UTF-8">
+    <title>Liste av alle arkivdeler som er koblet til arkiv ({{ fonds.systemID }})</title>
+</head>
+
+<body ng-controller="SeriesListController">
+<h4>Liste av alle arkivdeler som er koblet til arkiv ({{ fonds.systemID }})</h4>
+
+<div>
+    <div class="mdl-grid-center">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="fondsSystemID" class="mdl-textfield__input" type="text"
+                   value="{{fonds.systemID}} " disabled/>
+            <label class="mdl-textfield__label" for="fondsSystemID">arkiv systemID</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="fondsTittel" class="mdl-textfield__input" type="text"
+                   value="{{fonds.tittel}} " disabled/>
+            <label class="mdl-textfield__label" for="fondsTittel">arkiv tittel</label>
+        </div>
+    </div>
+</div>
+
+
+<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+    <thead>
+    <tr>
+        <th>systemID</th>
+        <th>tittel</th>
+        <th>arkivdelStatus</th>
+        <th>opprettetDato</th>
+        <th>avsluttetDato</th>
+    </tr>
+    </thead>
+
+    <tr ng-repeat="series in seriesList" ng-click="seriesList_selected(series)"
+        class="mdl-data-table__cell--non-numeric">
+        <td class="mdl-data-table__cell--non-numeric">
+            {{ series.systemID }}
+        </td>
+        <td class="mdl-data-table__cell--non-numeric">
+            {{ series.tittel }}
+        </td>
+        <td class="mdl-data-table__cell--non-numeric">
+            {{ series.arkivdelStatus }}
+        </td>
+        <td class="mdl-data-table__cell--non-numeric">
+            {{ series.opprettetDato }}
+        </td>
+        <td class="mdl-data-table__cell--non-numeric">
+            {{ series.avsluttetDato }}
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="mdl-grid-center">
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+            ng-click="series_selected(null)">
+        Opprett nytt arkivdel
+    </button>
+</div>
+<hr>
+
+<div ng-show="display_footer_note" footer></div>
+</body>
+</html>

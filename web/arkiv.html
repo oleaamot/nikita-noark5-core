@@ -96,44 +96,59 @@
             <label class="mdl-textfield__label" for="avsluttetDato">avsluttetDato</label>
         </div>
     </div>
+    <div ng-show="!showCreateFonds" class="mdl-grid-center">
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                ng-click="post_or_put_fonds()">
+            Oppdater arkiv
+        </button>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                ng-click="series_list_selected()">
+            Se arkivdeler
+        </button>
+    </div>
+    <div ng-show="showCreateFonds" class="mdl-grid-center">
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                ng-click="post_or_put_fonds()">
+            Opprett arkiv
+        </button>
+    </div>
+
 </div>
-<label>Arkivskaper</label>
 <div>
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input id="arkivskaperId" class="mdl-textfield__input" type="text"
-               value="{{fondsCreator.arkivskaperId}} "/>
-        <label class="mdl-textfield__label" for="arkivskaperId">arkivskaperId</label>
+    <label>Arkivskaper</label>
+    <div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="arkivskaperId" class="mdl-textfield__input" type="text"
+                   value="{{fondsCreator.arkivskaperId}} "/>
+            <label class="mdl-textfield__label" for="arkivskaperId">arkivskaperId</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="arkivskaperNavn" class="mdl-textfield__input" type="text"
+                   value="{{fondsCreator.arkivskaperNavn}} "/>
+            <label class="mdl-textfield__label" for="arkivskaperNavn">arkivskaperNavn</label>
+        </div>
     </div>
-
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input id="arkivskaperNavn" class="mdl-textfield__input" type="text"
-               value="{{fondsCreator.arkivskaperNavn}} "/>
-        <label class="mdl-textfield__label" for="arkivskaperNavn">arkivskaperNavn</label>
+    <div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="fondsCreatorBeskrivelse" class="mdl-textfield__input" type="text"
+                   value="{{fondsCreator.beskrivelse}} "/>
+            <label class="mdl-textfield__label" for="beskrivelse">beskrivelse</label>
+        </div>
+    </div>
+    <div ng-show="!showCreateFonds" class="mdl-grid-center">
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                ng-click="post_or_put_fonds()">
+            Oppdater arkivskaper
+        </button>
+    </div>
+    <div ng-show="showCreateFonds" class="mdl-grid-center">
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                ng-click="post_or_put_fonds()">
+            Opprett arkivskaper
+        </button>
     </div>
 </div>
-<div>
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input id="fondsCreatorBeskrivelse" class="mdl-textfield__input" type="text"
-               value="{{fondsCreator.beskrivelse}} "/>
-        <label class="mdl-textfield__label" for="beskrivelse">beskrivelse</label>
-    </div>
-</div>
-
-
-<div ng-show="!showCreateFonds" class="mdl-grid-center">
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-            ng-click="post_or_put_fonds()">
-        Oppdater arkiv
-    </button>
-</div>
-<div ng-show="showCreateFonds" class="mdl-grid-center">
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-            ng-click="post_or_put_fonds()">
-        Opprett arkiv
-    </button>
-</div>
-
-
 <hr>
 <div ng-show="display_footer_note" footer></div>
 </body>

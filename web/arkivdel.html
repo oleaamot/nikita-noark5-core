@@ -9,59 +9,105 @@
     <script src="/dependencies/external/material-design-lite/material.min.js"></script>
     <link rel="stylesheet" href="/dependencies/external/material-design-lite//material.min.css">
     <meta charset="UTF-8">
-    <title>Liste av alle arkivdel-oppføringer tilkoblet arkiv {{ fonds }} i Nikita</title>
+    <title>Liste av alle arkivdel-oppføringer tilkoblet arkiv {{ series }} i Nikita</title>
 </head>
 <body ng-controller="SeriesController">
-<h2>Opprett ny arkivdel</h2>
-<form ng-submit="send_form()" ng-controller="SeriesController" method="post">
-    <div class="mdl-grid-center">
-        <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text" name="tittel"/>
-        </div>
-        <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" placeholder="beskrivelse" ng-model="beskrivelse" type="text"
-                   name="beskrivelse"/>
-        </div>
-    </div>
-    <div class="form-actions col-xs-offset-2 col-xs-10">
-        <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-               value="Opprett arkivdel"/>
-    </div>
-</form>
 
-<h4>Liste av alle arkivdel-oppføringer tilkoblet arkiv {{ fonds }} i Nikita</h4>
-<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-    <thead>
-    <tr>
-        <th>tittel</th>
-        <th>beskrivelse</th>
-        <th>status</th>
-        <th>mapper</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="series in seriess" class="mdl-data-table__cell--non-numeric">
-        <td class="mdl-data-table__cell--non-numeric">
-            {{ series.tittel }}
-        </td>
-        <td class="mdl-data-table__cell--non-numeric">
-            {{ series.beskrivelse }}
-        </td>
-        <td class="mdl-data-table__cell--non-numeric">
-            {{ series.arkivdelstatus }}
-        </td>
-        <td class="mdl-data-table__cell--non-numeric">
-            <div ng-click="casefileSelected(series)">
-                mapper
-            </div>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<h2 ng-show="showCreateSeries">Opprett nytt arkivdel</h2>
+
+<div ng-include="'breadcrumb.html'"></div>
+
+<div>
+    <div class="mdl-grid-center">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="systemID" class="mdl-textfield__input" type="text"
+                   value="{{series.systemID}} " disabled/>
+            <label class="mdl-textfield__label" for="systemID">systemID</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="tittel" class="mdl-textfield__input" type="text"
+                   value="{{series.tittel}} "/>
+            <label class="mdl-textfield__label" for="tittel">tittel</label>
+        </div>
+    </div>
+    <div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="beskrivelse" class="mdl-textfield__input" type="text"
+                   value="{{series.beskrivelse}} "/>
+            <label class="mdl-textfield__label" for="beskrivelse">beskrivelse</label>
+        </div>
+    </div>
+    <div>
+        <div id="arkivstatusDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select id="arkivdelstatus" class="mdl-textfield__input" ng-model="selectedSeriesStatus">
+                <option ng-selected="{{value.value == selectedSeriesStatus}}"
+                        ng-repeat="value in seriesStatusList"
+                        value="{{value.value}} ">{{value.value}}
+                </option>
+            </select>
+            <label class="mdl-textfield__label" for="arkivdelstatus">arkivdelstatus</label>
+        </div>
+    </div>
+    <div>
+        <div id="dokumentMediumDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select id="dokumentMedium" class="mdl-textfield__input" ng-model="selectedDocumentMedium">
+                <option ng-selected="{{value.value == selectedDocumentMedium}}; documentMedium_selected()"
+                        ng-repeat="value in documentMediumList"
+                        value="{{value.value}} ">{{value.value}}
+                </option>
+            </select>
+            <label class="mdl-textfield__label" for="dokumentMedium">dokumentMedium</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="oppbevaringsSted" class="mdl-textfield__input" type="text"
+                   value="{{series.oppbevaringsSted}} " ng-show="oppbevaringsStedDisabled"/>
+            <label class="mdl-textfield__label" for="oppbevaringsSted">oppbevaringsSted</label>
+        </div>
+    </div>
+
+    <div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="opprettetAv" class="mdl-textfield__input" type="text"
+                   value="{{series.opprettetAv}} " disabled/>
+            <label class="mdl-textfield__label" for="opprettetAv">opprettetAv</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="opprettetDato" class="mdl-textfield__input" type="text"
+                   value="{{series.opprettetDato}} " disabled/>
+            <label class="mdl-textfield__label" for="opprettetDato">opprettetDato</label>
+        </div>
+    </div>
+    <div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="avsluttetAv" class="mdl-textfield__input" type="text"
+                   value="{{series.avsluttetAv}} " disabled/>
+            <label class="mdl-textfield__label" for="avsluttetAv">avsluttetAv</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="avsluttetDato" class="mdl-textfield__input" type="text"
+                   value="{{series.avsluttetDato}} " disabled/>
+            <label class="mdl-textfield__label" for="avsluttetDato">avsluttetDato</label>
+        </div>
+    </div>
+    <div ng-show="!showCreateSeries" class="mdl-grid-center">
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                ng-click="post_or_put_series()">
+            Oppdater arkiv
+        </button>
+    </div>
+    <div ng-show="showCreateSeries" class="mdl-grid-center">
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                ng-click="post_or_put_series()">
+            Opprett arkivdel
+        </button>
+    </div>
+
+</div>
 <hr>
-<p>Denne webklient er del av
-    <a href="https://github.com/HiOA-ABI/nikita-noark5-core/">Nikita
-        Noark 5 kjerne</a>, en fri programvareimplementasjon av Noark 5
-    Tjenestegrensesnitt.</p>
+<div ng-show="display_footer_note" footer></div>
 </body>
 </html>
