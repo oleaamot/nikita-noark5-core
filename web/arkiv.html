@@ -15,58 +15,108 @@
 
 <body ng-controller="FondsController">
 
-<div ng-show="show_create_fonds">
-    <h2>Opprett nytt arkiv</h2>
-    <form ng-submit="send_form()" ng-controller="FondsController" method="post">
-        <div class="mdl-grid-center">
-            <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text" name="tittel"/>
-            </div>
-            <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" placeholder="beskrivelse" ng-model="beskrivelse" type="text"
-                       name="beskrivelse"/>
-            </div>
+<h2>Opprett nytt arkiv</h2>
+
+<div ng-include="'breadcrumb.html'"></div>
+<div>
+    <div class="mdl-grid-center">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="systemID" class="mdl-textfield__input" type="text"
+                   value="{{fond.systemID}} " disabled/>
+            <label class="mdl-textfield__label" for="systemID">systemID</label>
         </div>
-        <div class="form-actions col-xs-offset-2 col-xs-10">
-            <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                   value="Opprett arkiv"/>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="tittel" class="mdl-textfield__input" type="text"
+                   value="{{fond.tittel}} "/>
+            <label class="mdl-textfield__label" for="tittel">tittel</label>
         </div>
-    </form>
+    </div>
+    <div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="beskrivelse" class="mdl-textfield__input" type="text"
+                   value="{{fond.beskrivelse}} "/>
+            <label class="mdl-textfield__label" for="beskrivelse">beskrivelse</label>
+        </div>
+    </div>
+    <div>
+        <div id="arkivstatusDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select id="arkivstatus" class="mdl-textfield__input" ng-model="selectedFondsStatus">
+                <option ng-selected="{{value.value == selectedFondsStatus}}"
+                        ng-repeat="value in fondsStatusList"
+                        value="{{value.value}} ">{{value.value}}
+                </option>
+            </select>
+            <label class="mdl-textfield__label" for="arkivstatus">arkivstatus</label>
+        </div>
+    </div>
+    <div>
+        <div id="dokumentMediumDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select id="dokumentMedium" class="mdl-textfield__input" ng-model="selectedDocumentMedium">
+                <option ng-selected="{{value.value == selectedDocumentMedium}}"
+                        ng-repeat="value in fondsStatusList"
+                        value="{{value.value}} ">{{value.value}}
+                </option>
+            </select>
+            <label class="mdl-textfield__label" for="dokumentMedium">dokumentMedium</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="oppbevaringsSted" class="mdl-textfield__input" type="text"
+                   value="{{fond.oppbevaringsSted}} " disabled/>
+            <label class="mdl-textfield__label" for="oppbevaringsSted">oppbevaringsSted</label>
+        </div>
+    </div>
+
+    <div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="opprettetAv" class="mdl-textfield__input" type="text"
+                   value="{{fond.opprettetAv}} " disabled/>
+            <label class="mdl-textfield__label" for="opprettetAv">opprettetAv</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="opprettetDato" class="mdl-textfield__input" type="text"
+                   value="{{fond.opprettetDato}} " disabled/>
+            <label class="mdl-textfield__label" for="opprettetDato">opprettetDato</label>
+        </div>
+    </div>
+    <div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="avsluttetAv" class="mdl-textfield__input" type="text"
+                   value="{{fond.avsluttetAv}} " disabled/>
+            <label class="mdl-textfield__label" for="avsluttetAv">avsluttetAv</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="avsluttetDato" class="mdl-textfield__input" type="text"
+                   value="{{fond.avsluttetDato}} " disabled/>
+            <label class="mdl-textfield__label" for="avsluttetDato">avsluttetDato</label>
+        </div>
+    </div>
 </div>
 
-<h4>Liste av alle arkiv-oppføringer i Nikita</h4>
-<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-    <thead>
-    <tr>
-        <th>tittel</th>
-        <th>beskrivelse</th>
-        <th>status</th>
-        <th>arkivdeler</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="fond in fonds" class="mdl-data-table__cell--non-numeric">
-        <td class="mdl-data-table__cell--non-numeric">
-            {{ fond.tittel }}
-        </td>
-        <td class="mdl-data-table__cell--non-numeric">
-            {{ fond.beskrivelse }}
-        </td>
-        <td class="mdl-data-table__cell--non-numeric" ng-click="hrefSelected(l.href)">
-            {{ fond.arkivstatus }}
-        </td>
-        <td class="mdl-data-table__cell--non-numeric">
-            <div ng-repeat="l in fond._links">
-                <div ng-if="l.rel == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivdel/' ">
-                    <div ng-click="seriesSelected(l.href, fond.systemID)">
-                        arkivdeler
-                    </div>
-                </div>
-            </div>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input id="arkivskaperId" class="mdl-textfield__input" type="text"
+               value="{{fondsCreator.arkivskaperId}} "/>
+        <label class="mdl-textfield__label" for="arkivskaperId">arkivskaperId</label>
+    </div>
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input id="arkivskaperNavn" class="mdl-textfield__input" type="text"
+               value="{{fondsCreator.arkivskaperNavn}} "/>
+        <label class="mdl-textfield__label" for="arkivskaperNavn">arkivskaperNavn</label>
+    </div>
+</div>
+<div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input id="fondsCreatorBeskrivelse" class="mdl-textfield__input" type="text"
+               value="{{fondsCreator.beskrivelse}} "/>
+        <label class="mdl-textfield__label" for="beskrivelse">beskrivelse</label>
+    </div>
+</div>
+
 <hr>
 <div ng-show="display_footer_note" footer></div>
 </body>

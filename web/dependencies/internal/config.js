@@ -33,9 +33,11 @@ var login_url = nikitaOptions.loginUrl;
 var display_footer_note = nikitaOptions.displayFooterNote;
 var display_breadcrumb = nikitaOptions.displayBreadcrumb;
 
+var fondsListPageName = 'arkivliste.html';
 var fondsPageName = 'arkiv.html';
 var seriesPageName = 'arkivdel.html';
 var caseFilePageName = 'saksmappe.html';
+var caseHandlerDashboardPageName = 'saksbehandler-dashboard.html';
 var registryEntryPageName = 'journalpost.html';
 var documentPageName = 'dokument.html';
 var correspondencePartPersonPageName = 'korrespondansepartperson.html';
@@ -175,7 +177,7 @@ var SetChosenSeries = function (t) {
 };
 
 var GetChosenSeries = function () {
-    console.log("Fetting chosenSeries=" + localStorage.getItem("chosenSeries"));
+    console.log("Getting chosenSeries=" + localStorage.getItem("chosenSeries"));
     return localStorage.getItem("chosenSeries");
 };
 
@@ -192,10 +194,16 @@ var SetLinkToCurrentSeries = function (t) {
 };
 
 
-var SetChosenFonds = function(fondSystemId) {
-    localStorage.setItem("chosenfonds", fondSystemId);
-    console.log("Setting fondSystemId="+fondSystemId);
+var SetChosenFonds = function (fonds) {
+    localStorage.setItem("chosenFonds", JSON.stringify(fonds));
+    console.log("Setting chosenFonds=" + JSON.stringify(fonds));
 };
+
+var GetChosenFonds = function () {
+    console.log("Getting chosenFonds =" + JSON.parse(localStorage.getItem("chosenFonds")));
+    return JSON.parse(localStorage.getItem("chosenFonds"));
+};
+
 
 var SetLinkToChosenFile = function(t) {
     localStorage.setItem("linkToChosenFile", t);
@@ -328,7 +336,6 @@ var GetLinkToGetRegistryEntry = function () {
     console.log("Getting linkToGetRegistryEntry=" + localStorage.getItem("linkToGetRegistryEntry"));
     return localStorage.getItem("linkToGetRegistryEntry");
 };
-
 
 var changeLocation = function ($scope, url, forceReload) {
     $scope = $scope || angular.element(document).scope();

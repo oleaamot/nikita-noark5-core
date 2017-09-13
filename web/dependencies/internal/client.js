@@ -74,13 +74,11 @@ var login = app.controller('LoginController', ['$scope', '$http', function ($sco
     console.log("LoginController");
     console.log("LoginOptions " + JSON.stringify(loginOptions));
     $scope.loginOptions = loginOptions;
-    //$scope.selectedLoginOption = loginOptions[0].value;
-    $scope.selectedLoginOption = "saksbehandler";
-
 
     $scope.send_form = function () {
         console.log($scope.password);
         console.log($scope.username);
+        selectedLoginOption = document.getElementById("login_type").value;
         $http({
             url: login_url,
             method: "POST",
@@ -88,17 +86,18 @@ var login = app.controller('LoginController', ['$scope', '$http', function ($sco
             data: {username: $scope.username, password: $scope.password},
         }).then(function (data, status, headers, config) {
             SetUserToken(data.data.token);
-            console.log("hello" + status);
-            console.log("Loggin in. Setting token to " + data.data.token);
-            if ($scope.selectedLoginOption == 'arkivar') {
-                changeLocation($scope, "./arkiv.html", true);
+            console.log("Logging in.token is " + data.data.token);
+            console.log("Logging in. redirecting to page for " + $scope.selectedLoginOption);
+            if (selectedLoginOption == 'arkivar') {
+                changeLocation($scope, fondsListPageName, true);
             }
-            else if ($scope.selectedLoginOption == 'saksbehandler') {
+            else if (selectedLoginOption == 'saksbehandler') {
+                //caseHandlerDashboardPageName
                 changeLocation($scope, "./saksbehandler-dashboard.html", true);
             }
         }, function (data, status, headers, config) {
 
-            console.log("hello" + status);
+            console.log("Login function " + status);
             alert(data.data);
         });
     };
