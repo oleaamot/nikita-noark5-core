@@ -1,7 +1,7 @@
 var app = angular.module('nikita-fonds', []);
 
 /**
- * Supports the following functionality:
+ * Enables the following functionality:
  *  1. Fills a list of all arkiv that a user has access to
  *  2. Changes location to the arkiv.html page when a row is clicked
  */

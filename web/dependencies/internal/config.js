@@ -53,35 +53,53 @@ var REL_NEW_CORRESPONDENCE_PART_PERSON = 'http://rel.kxml.no/noark5/v4/api/sakar
 var REL_CORRESPONDENCE_PART_PERSON = 'http://rel.kxml.no/noark5/v4/api/sakarkiv/korrespondansepartperson/';
 var REL_CASE_FILE = 'http://rel.kxml.no/noark5/v4/api/sakarkiv/saksmappe/';
 var REL_DOCUMENT_FILE = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/fil/';
-
 var REL_SERIES = "http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivdel/";
 var REL_FONDS_STRUCTURE = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/';
+var REL_FONDS_CREATOR = "http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivskaper/";
+var REL_NEW_FONDS_CREATOR = "http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-arkivskaper/";
 var REL_SELF = 'self';
 
 
 // These will be picked up from the database
 var mimeTypeList = [
-    { id: 'rfc822', value: 'message/rfc822' },
-    { id: 'pdf', value: 'application/pdf' },
-    { id: 'odt', value: 'application/vnd.oasis.opendocument.text' },
-    { id: 'ods', value: 'application/vnd.oasis.opendocument.spreadsheet' },
-    { id: 'odp', value: 'application/vnd.oasis.opendocument.presentation' },
-    { id: 'tiff', value: 'image/tiff' },
-    { id: 'jpeg', value: 'image/jpeg' },
+    {id: 'rfc822', value: 'message/rfc822'},
+    {id: 'pdf', value: 'application/pdf'},
+    {id: 'odt', value: 'application/vnd.oasis.opendocument.text'},
+    {id: 'ods', value: 'application/vnd.oasis.opendocument.spreadsheet'},
+    {id: 'odp', value: 'application/vnd.oasis.opendocument.presentation'},
+    {id: 'tiff', value: 'image/tiff'},
+    {id: 'jpeg', value: 'image/jpeg'},
 ];
 
-var variantFormatList = [{ id: 'P', value: 'Produksjonsformat' },
-    { id: 'A', value: 'Arkivformat' },
-    { id: 'O', value: 'Dokument hvor deler av innholdet er skjermet' }];
+var variantFormatList = [
+    {id: 'P', value: 'Produksjonsformat'},
+    {id: 'A', value: 'Arkivformat'},
+    {id: 'O', value: 'Dokument hvor deler av innholdet er skjermet'}];
 
-var documentTypeList = [{ id: 'B', value: 'Brev' },
-                        { id: 'F', value: 'Faktura' },
-                        { id: 'O', value: 'Ordrebekreftelse' }];
+var documentTypeList = [
+    {id: 'B', value: 'Brev'},
+    {id: 'F', value: 'Faktura'},
+    {id: 'O', value: 'Ordrebekreftelse'}];
 
-var tilknyttetRegistreringSomList = [ { id: 'H', value: 'Hoveddokument' },
-                                      { id: 'V', value: 'Vedlegg' }];
+var documentMediumList = [
+    {id: 'F', value: 'Fysisk medium'},
+    {id: 'E', value: 'Elektronisk arkiv'},
+    {id: 'B', value: 'Blandet fysisk og elektronisk arkiv'}];
 
-var correspondencePartTypeList = [{id: 'EA', value: 'Avsender'},
+var fondsStatusList = [
+    {id: 'O', value: 'Opprettet'},
+    {id: 'A', value: 'Avsluttet'}];
+
+var seriessStatusList = [
+    {id: 'O', value: 'Opprettet'},
+    {id: 'A', value: 'Avsluttet'}];
+
+var tilknyttetRegistreringSomList = [
+    {id: 'H', value: 'Hoveddokument'},
+    {id: 'V', value: 'Vedlegg'}];
+
+var correspondencePartTypeList = [
+    {id: 'EA', value: 'Avsender'},
     {id: 'EM', value: 'Mottaker'},
     {id: 'EK', value: 'Kopimottaker'},
     {id: 'GM', value: 'Gruppemottaker'},
@@ -90,15 +108,17 @@ var correspondencePartTypeList = [{id: 'EA', value: 'Avsender'},
     {id: 'IK', value: 'Intern kopimottaker'}
 ];
 
-var documentStatusList = [{ id: 'B', value: 'Dokumentet er under redigering' },
-                 { id: 'F', value: 'Dokumentet er ferdigstilt' }];
+var documentStatusList = [
+    {id: 'B', value: 'Dokumentet er under redigering'},
+    {id: 'F', value: 'Dokumentet er ferdigstilt'}];
 
-var emptyList = [{ id: '', value: '' },
-                 { id: '', value: '' },
-                 { id: '', value: '' },
-                 { id: '', value: '' }];
+var emptyList = [{id: '', value: ''},
+    {id: '', value: ''},
+    {id: '', value: ''},
+    {id: '', value: ''}];
 
-var loginOptions = [{id: 'SA', value: "saksbehandler"},
+var loginOptions = [
+    {id: 'SA', value: "saksbehandler"},
     {id: 'AR', value: "arkivar"}];
 
 
@@ -106,7 +126,7 @@ console.log("Setting nikita gui_base_url: " + gui_base_url);
 console.log("Setting nikita app_url: " + app_url);
 console.log("Setting nikita login_url: " + login_url);
 
-var SetUserToken = function(t) {
+var SetUserToken = function (t) {
     localStorage.setItem("token", t);
     console.log("Adding token " + t + " to local storage");
 };
@@ -120,22 +140,22 @@ var GetFileSystemID = function (t) {
 };
 
 var GetLinkToChosenFile = function () {
-    console.log("getting linktochosenfile="+localStorage.getItem("linkToChosenFile"));
+    console.log("getting linktochosenfile=" + localStorage.getItem("linkToChosenFile"));
     return localStorage.getItem("linkToChosenFile");
 };
 
 var SetLinkToChosenRecord = function (t) {
     localStorage.setItem("linkToChosenRecord", t);
-    console.log("Setting linkToChosenRecord="+t);
+    console.log("Setting linkToChosenRecord=" + t);
 };
 
 var SetCurrentRecordSystemId = function (recordSystemId) {
     localStorage.setItem("currentRecordSystemId", recordSystemId);
-    console.log("Setting currentRecordSystemId="+recordSystemId);
+    console.log("Setting currentRecordSystemId=" + recordSystemId);
 };
 
 var GetSeriesSystemID = function () {
-    console.log("Getting chosen currentSeriesSystemId="+localStorage.getItem("currentSeriesSystemId"));
+    console.log("Getting chosen currentSeriesSystemId=" + localStorage.getItem("currentSeriesSystemId"));
     return localStorage.getItem("currentSeriesSystemId");
 };
 
@@ -152,7 +172,7 @@ var GetLinkToCreateDocumentDescription = function () {
 // href of the link to use when creating a document object
 var SetLinkToCreateDocumentDescription = function (t) {
     localStorage.setItem("linkToCreateDocumentDescription", t);
-    console.log("Setting linkToCreateDocumentDescription="+t);
+    console.log("Setting linkToCreateDocumentDescription=" + t);
 };
 
 // href of the link to use when getting a document description
@@ -163,12 +183,12 @@ var GetLinkToDocumentDescription = function () {
 // href of the link to use when getting a document object
 var SetLinkToDocumentDescription = function (t) {
     localStorage.setItem("linkToDocumentDescription", t);
-    console.log("Setting linkToDocumentDescription="+t);
+    console.log("Setting linkToDocumentDescription=" + t);
 };
 
-var SetLinkToChosenSeries = function(t) {
+var SetLinkToChosenSeries = function (t) {
     localStorage.setItem("linkToChosenSeries", t);
-    console.log("Setting linkToChosenSeries="+t);
+    console.log("Setting linkToChosenSeries=" + t);
 };
 
 var SetChosenSeries = function (t) {
@@ -200,14 +220,14 @@ var SetChosenFonds = function (fonds) {
 };
 
 var GetChosenFonds = function () {
-    console.log("Getting chosenFonds =" + JSON.parse(localStorage.getItem("chosenFonds")));
+    console.log("Getting chosenFonds =" + localStorage.getItem("chosenFonds"));
     return JSON.parse(localStorage.getItem("chosenFonds"));
 };
 
 
-var SetLinkToChosenFile = function(t) {
+var SetLinkToChosenFile = function (t) {
     localStorage.setItem("linkToChosenFile", t);
-    console.log("Setting linkToChosenFile="+t);
+    console.log("Setting linkToChosenFile=" + t);
 };
 
 var GetLinkToSeriesAllFile = function () {
@@ -216,7 +236,7 @@ var GetLinkToSeriesAllFile = function () {
 
 var SetLinkToDocumentFile = function (t) {
     localStorage.setItem("linkToUploadDocumentFile", t);
-    console.log("Setting linkToUploadDocumentFile="+t);
+    console.log("Setting linkToUploadDocumentFile=" + t);
 };
 
 var GetLinkToDocumentFile = function () {
@@ -226,7 +246,7 @@ var GetLinkToDocumentFile = function () {
 // href of the link to use when creating a document object
 var SetLinkToCreateDocumentObject = function (t) {
     localStorage.setItem("linkToChosenDocumentObject", t);
-    console.log("Setting linkToChosenDocumentObject="+t);
+    console.log("Setting linkToChosenDocumentObject=" + t);
 };
 
 var SetLinkToDocumentObject = function (t) {
