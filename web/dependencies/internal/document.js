@@ -21,7 +21,7 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
 
     // check to see urlDocumentDescription exists, if it does, we are fetching real data
     if (urlDocumentDescription) {
-        console.log("Curent urlDocumentDescription is" + JSON.stringify(urlDocumentDescription));
+        console.log("Current urlDocumentDescription is" + JSON.stringify(urlDocumentDescription));
         $scope.createNewDocument = false;
         $scope.label_document = "Dokument";
         var token = GetUserToken();

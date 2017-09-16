@@ -32,7 +32,6 @@
     </div>
 </div>
 
-
 <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
     <thead>
     <tr>
@@ -44,7 +43,7 @@
     </tr>
     </thead>
 
-    <tr ng-repeat="series in seriesList" ng-click="seriesList_selected(series)"
+    <tr ng-repeat="series in seriesList" ng-click="series_selected(series)"
         class="mdl-data-table__cell--non-numeric">
         <td class="mdl-data-table__cell--non-numeric">
             {{ series.systemID }}

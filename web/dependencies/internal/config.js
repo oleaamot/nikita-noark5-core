@@ -8,6 +8,11 @@ nikitaOptions = {
     baseUrl: 'http://localhost:8092/noark5v4/',
     guiBaseUrl: 'http://localhost:3000/',
     appUrl: 'http://localhost:8092/noark5v4/hateoas-api',
+    // Probably retrieve this value on the fly when required, added as a option
+    // to speed things up!
+    fondsStructureRoot: 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/',
+    createFondsAddress: 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/ny-arkiv',
+    createFondsCreatorAddress: 'http://localhost:8092/noark5v4/hateoas-api/arkivstruktur/ny-arkivskaper',
     loginUrl: "http://localhost:8092/noark5v4/auth",
     protocol: 'http',
     appName: 'noark5v4',
@@ -18,7 +23,7 @@ nikitaOptions = {
     enabled: true
 };
 
-console.log("Hello ....");
+
 
 // Set the base url for application
 var base_url = nikitaOptions.baseUrl;
@@ -27,6 +32,10 @@ var base_url = nikitaOptions.baseUrl;
 var gui_base_url = nikitaOptions.guiBaseUrl;
 // Starting point for the application
 var app_url = nikitaOptions.appUrl;
+
+var fonds_structure_root = nikitaOptions.fondsStructureRoot;
+var create_fonds_address = nikitaOptions.createFondsAddress;
+var create_fonds__creator_address = nikitaOptions.createFondsCreatorAddress;
 // Set the url where POST requests with login credentials should be sent
 var login_url = nikitaOptions.loginUrl;
 // Whether or not to dsiplay link to nikita source
@@ -44,6 +53,10 @@ var documentPageName = 'dokument.html';
 var correspondencePartPersonPageName = 'korrespondansepartperson.html';
 var correspondencePartUnitPageName = 'korrespondansepartenhet.html';
 
+/*
+ These should probably be implemented as a 2D-array where we can easily pull out the required value
+ */
+
 var REL_NEW_REGISTRY_ENTRY = 'http://nikita.arkivlab.no/noark5/v4/ny-journalpost/';
 var REL_REGISTRY_ENTRY = 'http://rel.kxml.no/noark5/v4/api/sakarkiv/journalpost/';
 var REL_NEW_DOCUMENT_DESCRIPTION = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-dokumentbeskrivelse/';
@@ -56,8 +69,10 @@ var REL_CASE_FILE = 'http://rel.kxml.no/noark5/v4/api/sakarkiv/saksmappe/';
 var REL_DOCUMENT_FILE = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/fil/';
 var REL_SERIES = "http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivdel/";
 var REL_FONDS_STRUCTURE = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/';
+var REL_FONDS_STRUCTURE_NEW_FONDS = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-arkiv/';
 var REL_FONDS_CREATOR = "http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivskaper/";
 var REL_SERIES = "http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivdel/";
+var REL_NEW_SERIES = "http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-arkivdel/";
 var REL_NEW_FONDS_CREATOR = "http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny-arkivskaper/";
 var REL_SELF = 'self';
 

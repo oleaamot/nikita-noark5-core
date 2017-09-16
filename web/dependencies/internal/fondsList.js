@@ -39,6 +39,7 @@ var fondsListController = app.controller('FondsListController', ['$scope', '$htt
         $scope.fonds_selected = function (fonds) {
             console.log('fonds_selected clicked ' + JSON.stringify(fonds));
             if (fonds == null) {
+                // Important as business logic requires this to be null if we are creating a top-level fonds
                 SetChosenFonds(null);
             }
             else {

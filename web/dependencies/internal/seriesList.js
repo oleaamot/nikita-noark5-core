@@ -20,7 +20,7 @@ var seriesListController = app.controller('SeriesListController', ['$scope', '$h
                     url: urlSeriesList,
                     headers: {'Authorization': token}
                 }).then(function successCallback(response) {
-                    $scope.seriesList = response.data;
+                    $scope.seriesList = response.data.results;
                     console.log("Found following series " + JSON.stringify($scope.seriesList));
                 }, function errorCallback(response) {
                     console.log("Something failed. All  know is : " + JSON.stringify(response));

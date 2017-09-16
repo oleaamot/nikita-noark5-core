@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nb" ng-app="nikita-series">
+<html lang="nb" ng-app="nikita-series" ng-controller="SeriesController">
 <head>
     <script src="/dependencies/internal/config.js"></script>
     <script src="/dependencies/external/jQuery-2.2.4/jquery-2.2.4.min.js"></script>
@@ -9,13 +9,29 @@
     <script src="/dependencies/external/material-design-lite/material.min.js"></script>
     <link rel="stylesheet" href="/dependencies/external/material-design-lite//material.min.css">
     <meta charset="UTF-8">
-    <title>Liste av alle arkivdel-oppføringer tilkoblet arkiv {{ series }} i Nikita</title>
+    <title>Opprett nytt arkivdel tilkoblet arkiv {{ fonds.systemID }}</title>
 </head>
-<body ng-controller="SeriesController">
+<body>
 
-<h2 ng-show="showCreateSeries">Opprett nytt arkivdel</h2>
+<h2 ng-show="createSeries"></h2>
 
 <div ng-include="'breadcrumb.html'"></div>
+
+<div>
+    <div class="mdl-grid-center">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="fondsSystemID" class="mdl-textfield__input" type="text"
+                   value="{{fonds.systemID}} " disabled/>
+            <label class="mdl-textfield__label" for="fondsSystemID">arkiv systemID</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="fondsTittel" class="mdl-textfield__input" type="text"
+                   value="{{fonds.tittel}} " disabled/>
+            <label class="mdl-textfield__label" for="fondsTittel">arkiv tittel</label>
+        </div>
+    </div>
+</div>
 
 <div>
     <div class="mdl-grid-center">
@@ -68,6 +84,23 @@
     </div>
 
     <div>
+        <!-- TODO: Remove the \s| in pattern once mdl can autoload text properly -->
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="arkivperiodeStartDato" class="mdl-textfield__input" type="text"
+                   pattern="^\s|\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])\s$"
+                   value="{{series.arkivperiodeStartDato}} "/>
+            <label class="mdl-textfield__label" for="arkivperiodeStartDato">arkivperiodeStartDato</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="arkivperiodeSluttDato" class="mdl-textfield__input" type="text"
+                   pattern="^\s|\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])\s$"
+                   value="{{series.arkivperiodeSluttDato}} "/>
+            <label class="mdl-textfield__label" for="arkivperiodeSluttDato">arkivperiodeSluttDato</label>
+        </div>
+    </div>
+
+    <div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="opprettetAv" class="mdl-textfield__input" type="text"
                    value="{{series.opprettetAv}} " disabled/>
@@ -93,13 +126,13 @@
             <label class="mdl-textfield__label" for="avsluttetDato">avsluttetDato</label>
         </div>
     </div>
-    <div ng-show="!showCreateSeries" class="mdl-grid-center">
+    <div ng-show="!createSeries" class="mdl-grid-center">
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
                 ng-click="post_or_put_series()">
             Oppdater arkiv
         </button>
     </div>
-    <div ng-show="showCreateSeries" class="mdl-grid-center">
+    <div ng-show="createSeries" class="mdl-grid-center">
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
                 ng-click="post_or_put_series()">
             Opprett arkivdel
