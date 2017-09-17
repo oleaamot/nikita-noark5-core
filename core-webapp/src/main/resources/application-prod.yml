@@ -29,14 +29,14 @@ spring:
         validation-query: SELECT 1;
     jpa:
         database-platform: org.hibernate.dialect.MySQL5Dialect
-        database: MYSQL
-        show_sql: true
+        #database: MYSQL
+        show_sql: false
         properties:
-            hibernate.cache.use_second_level_cache: false
-            hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: true
-            hibernate.search.default.directory_provider: filesystem
-            hibernate.search.default.indexBase: core-webapp/target/lucene/indexes # This will probably be a /var/??? in production
+            #hibernate.cache.use_second_level_cache: false
+            #hibernate.cache.use_query_cache: false
+            #hibernate.generate_statistics: true
+            #hibernate.search.default.directory_provider: filesystem
+            #hibernate.search.default.indexBase: core-webapp/target/lucene/indexes # This will probably be a /var/??? in production
             hibernate.hbm2ddl.import_files: classpath:/db/mysql/prod/import.sql # Import some data into the demo
             hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
             hibernate.show_sql: false
