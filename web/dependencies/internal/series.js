@@ -2,6 +2,9 @@ var app = angular.module('nikita-series', []);
 
 var seriesController = app.controller('SeriesController', ['$scope', '$http', function ($scope, $http) {
 
+    // Used by GUI to show breadcrumbs
+    $scope.series_show_list = true;
+
     // Used to show or hide a text message
     $scope.createSeries = false;
 

@@ -23,6 +23,7 @@ var fondsListController = app.controller('FondsListController', ['$scope', '$htt
             headers: {'Authorization': $scope.token},
         }).then(function successCallback(response) {
             $scope.fonds = response.data.results;
+            SetChosenFonds(null);
             console.log("data is : " + JSON.stringify(response.data));
         }, function errorCallback(response) {
             console.log("Something failed. All  know is : " + JSON.stringify(response));

@@ -17,7 +17,7 @@
 
 <h2 ng-show="createFonds">Opprett nytt arkiv</h2>
 <h2 ng-show="!createFonds">Se arkiv</h2>
-
+<div ng-include="'arkiv_breadcrumb.html'"></div>
 <!-- <div ng-include="'breadcrumb.html'"></div> -->
 <label>Arkiv</label>
 <div>
@@ -55,7 +55,7 @@
     <div>
         <div id="dokumentMediumDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <select id="dokumentMedium" class="mdl-textfield__input" ng-model="selectedDocumentMedium">
-                <option ng-selected="{{value.value == selectedDocumentMedium}}; documentMedium_selected()"
+                <option ng-selected="{{value.value == selectedDocumentMedium}}"
                         ng-repeat="value in documentMediumList"
                         value="{{value.value}}">{{value.value}}
                 </option>

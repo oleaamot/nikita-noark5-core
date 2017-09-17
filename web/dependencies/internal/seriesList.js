@@ -9,6 +9,12 @@ var seriesListController = app.controller('SeriesListController', ['$scope', '$h
      */
     $scope.fonds = GetChosenFonds();
 
+    // Used by GUI to show breadcrumbs
+    $scope.series_show_list = true;
+
+
+
+
     if ($scope.fonds != null) {
         for (var rel in $scope.fonds._links) {
             var relation = $scope.fonds._links[rel].rel;
