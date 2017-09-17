@@ -9,7 +9,7 @@
     <script src="/dependencies/external/material-design-lite/material.min.js"></script>
     <link rel="stylesheet" href="/dependencies/external/material-design-lite//material.min.css">
     <meta charset="UTF-8">
-    <title>Opprett nytt arkivdel tilkoblet arkiv {{ fonds.systemID }}</title>
+    <title>nikita-noark5</title>
 </head>
 <body>
 
@@ -22,13 +22,13 @@
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="fondsSystemID" class="mdl-textfield__input" type="text"
                    value="{{fonds.systemID}} " disabled/>
-            <label class="mdl-textfield__label" for="fondsSystemID">arkiv systemID</label>
+            <label class="mdl-textfield__label" for="fondsSystemID">(arkiv) systemID</label>
         </div>
 
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="fondsTittel" class="mdl-textfield__input" type="text"
                    value="{{fonds.tittel}} " disabled/>
-            <label class="mdl-textfield__label" for="fondsTittel">arkiv tittel</label>
+            <label class="mdl-textfield__label" for="fondsTittel">(arkiv) tittel</label>
         </div>
     </div>
 </div>
@@ -55,22 +55,24 @@
         </div>
     </div>
     <div>
-        <div id="arkivstatusDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <div id="arkivdelstatusDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <select id="arkivdelstatus" class="mdl-textfield__input" ng-model="selectedSeriesStatus">
                 <option ng-selected="{{value.value == selectedSeriesStatus}}"
                         ng-repeat="value in seriesStatusList"
-                        value="{{value.value}} ">{{value.value}}
+                        value="{{value.value}}">{{value.value}}
                 </option>
             </select>
             <label class="mdl-textfield__label" for="arkivdelstatus">arkivdelstatus</label>
         </div>
     </div>
+
+
     <div>
         <div id="dokumentMediumDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <select id="dokumentMedium" class="mdl-textfield__input" ng-model="selectedDocumentMedium">
-                <option ng-selected="{{value.value == selectedDocumentMedium}}; documentMedium_selected()"
+                <option ng-selected="{{value.value == selectedDocumentMedium}}"
                         ng-repeat="value in documentMediumList"
-                        value="{{value.value}} ">{{value.value}}
+                        value="{{value.value}}">{{value.value}}
                 </option>
             </select>
             <label class="mdl-textfield__label" for="dokumentMedium">dokumentMedium</label>
@@ -78,7 +80,7 @@
 
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="oppbevaringsSted" class="mdl-textfield__input" type="text"
-                   value="{{series.oppbevaringsSted}} " ng-show="oppbevaringsStedDisabled"/>
+                   value="{{series.oppbevaringsSted}} " disabled/>
             <label class="mdl-textfield__label" for="oppbevaringsSted">oppbevaringsSted</label>
         </div>
     </div>
@@ -87,14 +89,14 @@
         <!-- TODO: Remove the \s| in pattern once mdl can autoload text properly -->
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="arkivperiodeStartDato" class="mdl-textfield__input" type="text"
-                   pattern="^\s|\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])\s$"
+                   pattern="^\s?|\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])[\s]?$"
                    value="{{series.arkivperiodeStartDato}} "/>
             <label class="mdl-textfield__label" for="arkivperiodeStartDato">arkivperiodeStartDato</label>
         </div>
 
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="arkivperiodeSluttDato" class="mdl-textfield__input" type="text"
-                   pattern="^\s|\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])\s$"
+                   pattern="^\s?|\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])[\s]?$"
                    value="{{series.arkivperiodeSluttDato}} "/>
             <label class="mdl-textfield__label" for="arkivperiodeSluttDato">arkivperiodeSluttDato</label>
         </div>
@@ -129,7 +131,7 @@
     <div ng-show="!createSeries" class="mdl-grid-center">
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
                 ng-click="post_or_put_series()">
-            Oppdater arkiv
+            Oppdater arkivdel
         </button>
     </div>
     <div ng-show="createSeries" class="mdl-grid-center">

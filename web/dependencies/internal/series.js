@@ -18,7 +18,7 @@ var seriesController = app.controller('SeriesController', ['$scope', '$http', fu
     // If the series exists set the contents of some drop down lists
     if ($scope.series != null) {
         $scope.selectedDocumentMedium = $scope.series.dokumentmedium;
-        $scope.selectedSeriesStatus = $scope.series.arkivstatus;
+        $scope.selectedSeriesStatus = $scope.series.arkivdelstatus;
         console.log("scope.selectedSeriesStatus is set to [" + $scope.selectedSeriesStatus + "]");
 
         // Retrieve the latest copy of the data and pull out the ETAG

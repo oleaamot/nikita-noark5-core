@@ -99,7 +99,7 @@ var documentTypeList = [
     {id: 'O', value: 'Ordrebekreftelse'}];
 
 var documentMediumList = [
-    {id: 'F', value: 'Fysisk medium'},
+    {id: 'F', value: 'Fysisk arkiv'},
     {id: 'E', value: 'Elektronisk arkiv'},
     {id: 'B', value: 'Blandet fysisk og elektronisk arkiv'}];
 
@@ -111,9 +111,6 @@ var seriesStatusList = [
     {id: 'O', value: 'Opprettet'},
     {id: 'A', value: 'Avsluttet'}];
 
-var seriessStatusList = [
-    {id: 'O', value: 'Opprettet'},
-    {id: 'A', value: 'Avsluttet'}];
 
 var tilknyttetRegistreringSomList = [
     {id: 'H', value: 'Hoveddokument'},

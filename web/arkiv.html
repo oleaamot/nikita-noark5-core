@@ -10,15 +10,15 @@
     <script src="/dependencies/external/material-design-lite/material.min.js"></script>
     <link rel="stylesheet" href="/dependencies/external/material-design-lite//material.min.css">
     <meta charset="UTF-8">
-    <title ng-show="showCreateFonds">Opprett nytt arkiv</title>
-    <title ng-show="!showCreateFonds">{{ fond.tittel }}</title>
+    <title>nikita-noark5</title>
 </head>
 
 <body ng-controller="FondsController">
 
 <h2 ng-show="createFonds">Opprett nytt arkiv</h2>
+<h2 ng-show="!createFonds">Se arkiv</h2>
 
-<div ng-include="'breadcrumb.html'"></div>
+<!-- <div ng-include="'breadcrumb.html'"></div> -->
 <label>Arkiv</label>
 <div>
     <div class="mdl-grid-center">
@@ -46,7 +46,7 @@
             <select id="arkivstatus" class="mdl-textfield__input" ng-model="selectedFondsStatus">
                 <option ng-selected="{{value.value == selectedFondsStatus}}"
                         ng-repeat="value in fondsStatusList"
-                        value="{{value.value}} ">{{value.value}}
+                        value="{{value.value}}">{{value.value}}
                 </option>
             </select>
             <label class="mdl-textfield__label" for="arkivstatus">arkivstatus</label>
@@ -57,7 +57,7 @@
             <select id="dokumentMedium" class="mdl-textfield__input" ng-model="selectedDocumentMedium">
                 <option ng-selected="{{value.value == selectedDocumentMedium}}; documentMedium_selected()"
                         ng-repeat="value in documentMediumList"
-                        value="{{value.value}} ">{{value.value}}
+                        value="{{value.value}}">{{value.value}}
                 </option>
             </select>
             <label class="mdl-textfield__label" for="dokumentMedium">dokumentMedium</label>
@@ -118,9 +118,15 @@
     <label>Arkivskaper</label>
     <div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input id="arkivskaperId" class="mdl-textfield__input" type="text"
-                   value="{{fondsCreator.arkivskaperId}} "/>
-            <label class="mdl-textfield__label" for="arkivskaperId">arkivskaperId</label>
+            <input id="fondsCreatorSystemId" class="mdl-textfield__input" type="text"
+                   value="{{fondsCreator.systemID}} " disabled/>
+            <label class="mdl-textfield__label" for="fondsCreatorSystemId">(arkivskaper) systemId</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="arkivskaperID" class="mdl-textfield__input" type="text"
+                   value="{{fondsCreator.arkivskaperID}} "/>
+            <label class="mdl-textfield__label" for="arkivskaperID">arkivskaperID</label>
         </div>
 
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -136,15 +142,15 @@
             <label class="mdl-textfield__label" for="beskrivelse">beskrivelse</label>
         </div>
     </div>
-    <div ng-show="!createFonds" class="mdl-grid-center">
+    <div ng-show="!createFondsCreator" class="mdl-grid-center">
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                ng-click="post_or_put_fonds()">
+                ng-click="post_or_put_fonds_creator()">
             Oppdater arkivskaper
         </button>
     </div>
-    <div ng-show="createFonds" class="mdl-grid-center">
+    <div ng-show="createFondsCreator" class="mdl-grid-center">
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                ng-click="post_or_put_fonds()">
+                ng-click="post_or_put_fonds_creator()">
             Opprett arkivskaper
         </button>
     </div>
