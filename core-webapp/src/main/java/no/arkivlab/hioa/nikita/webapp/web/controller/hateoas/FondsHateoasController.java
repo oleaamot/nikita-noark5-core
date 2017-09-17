@@ -318,18 +318,24 @@ public class FondsHateoasController extends NoarkController {
     @Timed
     @RequestMapping(value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + FONDS_CREATOR +
             SLASH, method = RequestMethod.GET)
-    public ResponseEntity<String> findFondsCreatorAssociatedWithFonds(
+    public ResponseEntity<FondsCreatorHateoas> findFondsCreatorAssociatedWithFonds(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
             @ApiParam(name = "systemID",
                     value = "systemId of fonds to retrieve.",
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        return new ResponseEntity<>(API_MESSAGE_NOT_IMPLEMENTED, HttpStatus.NOT_IMPLEMENTED);
-        //return ResponseEntity.status(HttpStatus.OK)
-        // .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
-        //        .eTag(fonds.getVersion().toString())
-        //        .body(fondsHateoas);
+        Fonds fonds = fondsService.findBySystemIdOrderBySystemId(systemID);
+        if (fonds == null) {
+            throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
+        }
+        FondsCreatorHateoas fondsCreatorHateoas = new
+                FondsCreatorHateoas(new ArrayList<>(fonds.getReferenceFondsCreator()));
+
+        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+        return ResponseEntity.status(HttpStatus.OK)
+                .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
+                .body(fondsCreatorHateoas);
     }
 
     // Get all Series associated with Fonds identified by systemId
