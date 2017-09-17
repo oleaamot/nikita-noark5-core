@@ -21,15 +21,15 @@ spring:
         livereload:
             enabled: false # we use gulp + BrowserSync for livereload
     datasource:
-        driverClassName: org.postgresql.Driver
-        url: jdbc:postgresql://localhost:5432/nikita_noark5_core_prod
-        name: nikita_noark5_core_prod
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/nikita_noark5_prod
+        name: nikita_noark5_prod
         username: nikita
         password: nikitapass
         validation-query: SELECT 1;
     jpa:
-        database-platform: org.hibernate.dialect.PostgreSQL82Dialect
-        database: POSTGRESQL
+        database-platform: org.hibernate.dialect.MySQL5Dialect
+        database: MYSQL
         show_sql: true
         properties:
             hibernate.cache.use_second_level_cache: false
@@ -37,21 +37,24 @@ spring:
             hibernate.generate_statistics: true
             hibernate.search.default.directory_provider: filesystem
             hibernate.search.default.indexBase: core-webapp/target/lucene/indexes # This will probably be a /var/??? in production
-            hibernate.hbm2ddl.import_files: classpath:/db/postgres/prod/import.sql # Import some data into the demo
-            hibernate.dialect: org.hibernate.dialect.PostgreSQL82Dialect
+            hibernate.hbm2ddl.import_files: classpath:/db/mysql/prod/import.sql # Import some data into the demo
+            hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
             hibernate.show_sql: false
             hibernate.hbm2ddl.auto: create
             # Enable these to support elasticsearch, but wait until out of beta!
             #hibernate.search.default.indexmanager: elasticsearch
             #hibernate.search.default.elasticsearch.index_schema_management_strategy: MERGE # on applicatoin startup, use existing index
             #hibernate.search.default.elasticsearch.host: https://localhost:9876 # Only required if not using localhost
-
     mail:
         host: localhost
     messages:
+        basename: i18n/messages
         cache-seconds: 1
     thymeleaf:
         cache: false
+    output:
+        ansi:
+          enabled: ALWAYS
 jwt:
   header: Authorization
   secret: mySecret
@@ -63,13 +66,20 @@ jwt:
 server:
     contextPath: /noark5v4
     port: 8092
-    address: localhost
-#    ssl:
- #       key-store: classpath:saml/nikitaKeystore.jks
-  #      key-store-password: hello
-   #     keyStoreType: PKCS12
-#        keyAlias: test-saml
+management:
+    context-path: /management
+info:
+    app.name: HiOA Noark 5 Core (Demo version)
+    build.version: ${project.version}
+hateoas:
+    publicAddress: http://localhost:8092/noark5v4
 
+    #ssl:
+    #    key-store: classpath:saml/nikitaKeystore.jks
+    #    key-store-password: **********
+    #    keyStoreType: JCEKS
+    #    #PKCS12
+    #    keyAlias: test-saml
 
 # ===================================================================
 # nikita-noark5-core specific properties
@@ -77,7 +87,7 @@ server:
 
 nikita-noark5-core:
     pagination:
-          _maxPageSize: 10
+      _maxPageSize: 10
     mail:
         from: nikita@example.com
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
@@ -95,25 +105,26 @@ nikita-noark5-core:
             enabled: false
             reportFrequency: 60 # in seconds
     logging:
+        level:
+            ROOT: DEBUG
         logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
             enabled: false
             host: localhost
             port: 5000
             queueSize: 512
-    hibernate:
-         dialect: org.hibernate.dialect.PostgreSQL82Dialect
-         show_sql: false
-         # hibernate.hbm2ddl.auto: create
-         hbm2ddl.auto: update
     persistence:
          jpa.generateDdl: true
+         # For Feide login
+    saml:
+         entityId: no:hioa:nikita:noark5
+
+         idPUrl: http://nikita.hioa.no
+         idPMetadata: https://idp-test.feide.no/simplesaml/saml2/idp/administration.php
     server:
          name: nikita.hioa.no
-         port: 8092
-         address: localhost
     details:
         conformity-levels:
-            official: arkivstruktur, casehandling
+            official: arkivstruktur, casehandling, metadata
             non-official: gui, import-api
     storage:
         location: /tmp/dokumenter
