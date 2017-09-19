@@ -13,23 +13,23 @@
 </head>
 <body>
 
-<h2 ng-show="createSeries">Opprett nytt arkiv</h2>
-<h2 ng-show="!createSeries">Se arkiv</h2>
+<h2 ng-show="createSeries">Opprett ny arkivdel</h2>
+<h2 ng-show="!createSeries">Se arkivdel</h2>
 
 <div ng-include="'arkiv_breadcrumb.html'"></div>
 
 <div>
     <div class="mdl-grid-center">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input id="fondsSystemID" class="mdl-textfield__input" type="text"
-                   value="{{fonds.systemID}} " disabled/>
-            <label class="mdl-textfield__label" for="fondsSystemID">(arkiv) systemID</label>
-        </div>
-
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="fondsTittel" class="mdl-textfield__input" type="text"
                    value="{{fonds.tittel}} " disabled/>
             <label class="mdl-textfield__label" for="fondsTittel">(arkiv) tittel</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="fondsSystemID" class="mdl-textfield__input" type="text"
+                   value="{{fonds.systemID}} " disabled/>
+            <label class="mdl-textfield__label" for="fondsSystemID">(arkiv) systemID</label>
         </div>
     </div>
 </div>
@@ -37,15 +37,15 @@
 <div>
     <div class="mdl-grid-center">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input id="systemID" class="mdl-textfield__input" type="text"
-                   value="{{series.systemID}} " disabled/>
-            <label class="mdl-textfield__label" for="systemID">systemID</label>
-        </div>
-
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="tittel" class="mdl-textfield__input" type="text"
                    value="{{series.tittel}} "/>
             <label class="mdl-textfield__label" for="tittel">tittel</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="systemID" class="mdl-textfield__input" type="text"
+                   value="{{series.systemID}} " disabled/>
+            <label class="mdl-textfield__label" for="systemID">systemID</label>
         </div>
     </div>
     <div>

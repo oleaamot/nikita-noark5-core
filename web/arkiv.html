@@ -23,15 +23,15 @@
 <div>
     <div class="mdl-grid-center">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input id="systemID" class="mdl-textfield__input" type="text"
-                   value="{{fonds.systemID}} " disabled/>
-            <label class="mdl-textfield__label" for="systemID">systemID</label>
-        </div>
-
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="tittel" class="mdl-textfield__input" type="text"
                    value="{{fonds.tittel}} "/>
             <label class="mdl-textfield__label" for="tittel">tittel</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="systemID" class="mdl-textfield__input" type="text"
+                   value="{{fonds.systemID}} " disabled/>
+            <label class="mdl-textfield__label" for="systemID">systemID</label>
         </div>
     </div>
     <div>
@@ -118,12 +118,6 @@
     <label>Arkivskaper</label>
     <div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input id="fondsCreatorSystemId" class="mdl-textfield__input" type="text"
-                   value="{{fondsCreator.systemID}} " disabled/>
-            <label class="mdl-textfield__label" for="fondsCreatorSystemId">(arkivskaper) systemId</label>
-        </div>
-
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="arkivskaperID" class="mdl-textfield__input" type="text"
                    value="{{fondsCreator.arkivskaperID}} "/>
             <label class="mdl-textfield__label" for="arkivskaperID">arkivskaperID</label>
@@ -133,6 +127,12 @@
             <input id="arkivskaperNavn" class="mdl-textfield__input" type="text"
                    value="{{fondsCreator.arkivskaperNavn}} "/>
             <label class="mdl-textfield__label" for="arkivskaperNavn">arkivskaperNavn</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="fondsCreatorSystemId" class="mdl-textfield__input" type="text"
+                   value="{{fondsCreator.systemID}} " disabled/>
+            <label class="mdl-textfield__label" for="fondsCreatorSystemId">(arkivskaper) systemId</label>
         </div>
     </div>
     <div>
