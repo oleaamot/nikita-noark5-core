@@ -2,10 +2,10 @@ var app = angular.module('nikita-casefile', []);
 var casefile_dashboard = app.controller('CaseFileDashboardController', ['$scope', '$http', function ($scope, $http) {
 
 
-    Hello();
+    localStorage.setItem("currentSeriesSystemId", seriesSystemId);
+    console.log("Setting seriesSystemId=" + seriesSystemId);
 
-
-    var Hello = function (seriesSystemId) {
+    var createCaseFile = function () {
         localStorage.setItem("currentSeriesSystemId", seriesSystemId);
         console.log("Setting seriesSystemId=" + seriesSystemId);
     };

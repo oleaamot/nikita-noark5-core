@@ -23,7 +23,7 @@ var app = angular.module('nikita', [])
         // Display journalpostnr and tittel for UX
         $scope.registryEntry = GetCurrentRegistryEntry();
         // Needed for the breadcrumbs to display Sak(mappeID)
-        $scope.casefile = GetCurrentCaseFile();
+        $scope.casefile = JSON.parse(GetChosenCaseFile());
         // Make a breadcrumbs value appear
         $scope.printCorrespondencePart = true;
         $scope.display_breadcrumb = display_breadcrumb;

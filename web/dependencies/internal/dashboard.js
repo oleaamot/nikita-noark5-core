@@ -24,6 +24,11 @@ app.controller('CaseFileDashboardController', ['$scope', '$http', function ($sco
     $scope.selectedSeries = selectedSeries;
     $scope.token = GetUserToken();
 
+    // Setting this to null so there is no confusion when we go to saksmappe.html
+    // Important this has to be done in order to create new case files!!!!
+    SetChosenCaseFile(null);
+
+
     var urlApplicationRoot = base_url;
     console.log("Attempting connection with " + urlApplicationRoot);
     $http({
@@ -63,9 +68,10 @@ app.controller('CaseFileDashboardController', ['$scope', '$http', function ($sco
                                     // Set the selected one to the last one
                                     // This will probably be set in the database somewhere
                                     selectedSeries = series.systemID;
-
-                                    getCaseFilesAssociatedWithSeries(series);
+                                    console.log("Note Current Series object is " + JSON.stringify(series));
+                                    SetChosenSeries(series);
                                 }
+                                getCaseFilesAssociatedWithSeries(series);
                             }, function errorCallback(response) {
                                 alert("Could not find series object to retrieve related files!" + JSON.stringify(response));
                             });
@@ -112,7 +118,7 @@ app.controller('CaseFileDashboardController', ['$scope', '$http', function ($sco
 
     $scope.fileSelectedShowDetailedView = function (casefile) {
         $scope.text = "doubleClick calls saksbehandler.html";
-        SetCurrentCaseFile(casefile);
+        SetChosenCaseFile(casefile);
 
         for (var rel in casefile._links) {
             //console.log("Checking all REL found : " + series._links[rel].rel + " Looking for " + REL_CASE_FILE);
@@ -131,8 +137,19 @@ app.controller('CaseFileDashboardController', ['$scope', '$http', function ($sco
             if (seriesList[i].value == selectedSeries) {
                 console.log("selectedSeriesChanged " + seriesList[i].value);
                 getCaseFilesAssociatedWithSeries(seriesList[i].object);
+                SetChosenSeries(selectedSeries);
             }
         }
+    };
+
+    /**
+     * createCaseFileSelected
+     *
+     * Simply makes saksmappe.html the visible page
+     */
+    $scope.createCaseFileSelected = function () {
+        console.log("createCaseFile selected");
+        changeLocation($scope, caseFilePageName, false);
     };
 
 }]);

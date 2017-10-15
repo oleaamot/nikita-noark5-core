@@ -96,8 +96,6 @@ var login = app.controller('LoginController', ['$scope', '$http', function ($sco
                 changeLocation($scope, "./saksbehandler-dashboard.html", true);
             }
         }, function (data, status, headers, config) {
-
-            console.log("Login function " + status);
             alert(data.data);
         });
     };

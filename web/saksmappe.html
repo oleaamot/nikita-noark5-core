@@ -21,14 +21,14 @@
 <div class="mdl-grid-center">
 
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input id="mappeID" class="mdl-textfield__input" type="text"
-               value="{{caseFile.mappeID}} " disabled/>
-        <label class="mdl-textfield__label" for="mappeID">mappeID</label>
+        <input id="case_file_file_id" class="mdl-textfield__input" type="text"
+               value="{{caseFile.mappeID}} "/>
+        <label class="mdl-textfield__label" for="case_file_file_id">mappeID</label>
     </div>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input id="saksdato" class="mdl-textfield__input" type="text"
-               value="{{caseFile.saksdato}} " disabled/>
-        <label class="mdl-textfield__label" for="saksdato">saksdato</label>
+        <input id="case_file_case_date" class="mdl-textfield__input" type="text"
+               value="{{caseFile.saksdato}} "/>
+        <label class="mdl-textfield__label" for="case_file_case_date">saksdato</label>
     </div>
     <div id="saksstatusDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
         <select id="saksstatus" class="mdl-textfield__input" ng-model="selectedCaseStatus">
@@ -42,29 +42,45 @@
 </div>
 
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input id="tittel" class="mdl-textfield__input" type="text"
+    <input id="case_file_title" class="mdl-textfield__input" type="text"
            value="{{caseFile.tittel}} "/>
-    <label class="mdl-textfield__label" for="tittel">tittel</label>
+    <label class="mdl-textfield__label" for="case_file_title">tittel</label>
 </div>
 
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input id="offentligTittel" class="mdl-textfield__input" type="text"
+    <input id="case_file_public_title" class="mdl-textfield__input" type="text"
            value="{{caseFile.offentligTittel}} "/>
-    <label class="mdl-textfield__label" for="offentligTittel">offentligTittel</label>
+    <label class="mdl-textfield__label" for="case_file_public_title">offentligTittel</label>
+</div>
+
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <input id="case_file_case_responsible" class="mdl-textfield__input" type="text"
+           value="{{caseFile.saksansvarlig}} "/>
+    <label class="mdl-textfield__label" for="case_file_case_responsible">saksansvarlig</label>
 </div>
 
 <div>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-width">
-        <textarea id="beskrivelse" class="mdl-textfield__input" type="text"
+        <textarea id="case_file_description" class="mdl-textfield__input" type="text"
                   rows="4">{{caseFile.beskrivelse }}</textarea>
-        <label class="mdl-textfield__label" for="beskrivelse">beskrivelse</label>
+        <label class="mdl-textfield__label" for="case_file_description">beskrivelse</label>
     </div>
 </div>
 
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input id="noekkelord" class="mdl-textfield__input" type="text"
+    <input id="case_file_keywords" class="mdl-textfield__input" type="text"
            value="{{caseFile.noekkelord}} "/>
-    <label class="mdl-textfield__label" for="noekkelord">noekkelord</label>
+    <label class="mdl-textfield__label" for="case_file_keywords">noekkelord</label>
+</div>
+
+<div id="dokumentMediumDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <select id="dokumentMedium" class="mdl-textfield__input" ng-model="selectedDocumentMedium">
+        <option ng-selected="{{value.value == selectedDocumentMedium}}"
+                ng-repeat="value in documentMediumList"
+                value="{{value.value}}">{{value.value}}
+        </option>
+    </select>
+    <label class="mdl-textfield__label" for="dokumentMedium">dokumentMedium</label>
 </div>
 
 <div>
@@ -76,49 +92,44 @@
 <div ng-show="showDetails">
     <div class="mdl-grid-center">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input id="saksansvarlig" class="mdl-textfield__input" type="text"
-                   value="{{caseFile.saksansvarlig}} " disabled/>
-            <label class="mdl-textfield__label" for="saksansvarlig">saksansvarlig</label>
+            <input id="case_file_case_year" class="mdl-textfield__input" type="text"
+                   value="{{caseFile.saksaar }} " disabled/>
+            <label class="mdl-textfield__label" for="case_file_case_year">saksaar</label>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input id="saksaar" class="mdl-textfield__input" type="text"
-                   value="{{caseFile.saksaar}} " disabled/>
-            <label class="mdl-textfield__label" for="saksaar">saksaar</label>
-        </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input id="sakssekvensnummer" class="mdl-textfield__input" type="text"
-                   value="{{caseFile.sakssekvensnummer}} " disabled/>
-            <label class="mdl-textfield__label" for="sakssekvensnummer">sakssekvensnummer</label>
+            <input id="case_file_case_sequence_number" class="mdl-textfield__input" type="text"
+                   value="{{caseFile.sakssekvensnummer }} " disabled/>
+            <label class="mdl-textfield__label" for="case_file_case_sequence_number">sakssekvensnummer</label>
         </div>
     </div>
 
     <div class="mdl-grid-center">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input id="administrativEnhet" class="mdl-textfield__input" type="text"
-                   value="{{caseFile.administrativEnhet}} " disabled/>
-            <label class="mdl-textfield__label" for="administrativEnhet">administrativEnhet</label>
+            <input id="case_file_administrative_unit" class="mdl-textfield__input" type="text"
+                   value="{{caseFile.administrativEnhet }} " disabled/>
+            <label class="mdl-textfield__label" for="case_file_administrative_unit">administrativEnhet</label>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input id="journalenhet" class="mdl-textfield__input" type="text"
-                   value="{{caseFile.journalenhet}} " disabled/>
-            <label class="mdl-textfield__label" for="journalenhet">journalenhet</label>
+            <input id="case_file_record_keeping_unit" class="mdl-textfield__input" type="text"
+                   value="{{caseFile.journalenhet }} " disabled/>
+            <label class="mdl-textfield__label" for="case_file_record_keeping_unit">journalenhet</label>
         </div>
     </div>
 
     <div class="mdl-grid-center">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="oppbevaringssted" class="mdl-textfield__input" type="text"
-                   value="{{caseFile.oppbevaringssted}} " disabled/>
+                   value="{{caseFile.oppbevaringssted }} " disabled/>
             <label class="mdl-textfield__label" for="oppbevaringssted">oppbevaringssted</label>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="utlaantDato" class="mdl-textfield__input" type="text"
-                   value="{{caseFile.utlaantDato}} " disabled/>
+                   value="{{caseFile.utlaantDato }} " disabled/>
             <label class="mdl-textfield__label" for="utlaantDato">utlaantDato</label>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="utlaantTil" class="mdl-textfield__input" type="text"
-                   value="{{caseFile.utlaantTil}} " disabled/>
+                   value="{{caseFile.utlaantTil }} " disabled/>
             <label class="mdl-textfield__label" for="utlaantTil">utlaantTil</label>
         </div>
     </div>
@@ -126,30 +137,25 @@
     <div class="mdl-grid-center">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="systemID" class="mdl-textfield__input" type="text"
-                   value="{{caseFile.systemID}} " disabled/>
+                   value="{{caseFile.systemID }} " disabled/>
             <label class="mdl-textfield__label" for="systemID">systemID</label>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="referanseArkivdel" class="mdl-textfield__input" type="text"
-                   value="{{caseFile.referanseArkivdel}} " disabled/>
+                   value="{{caseFile.referanseArkivdel }} " disabled/>
             <label class="mdl-textfield__label" for="referanseArkivdel">referanseArkivdel</label>
-        </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input id="dokumentmedium" class="mdl-textfield__input" type="text"
-                   value="{{caseFile.dokumentmedium}} " disabled/>
-            <label class="mdl-textfield__label" for="dokumentmedium">dokumentmedium</label>
         </div>
     </div>
 
     <div class="mdl-grid-center">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="opprettetDato" class="mdl-textfield__input" type="text"
-                   value="{{caseFile.opprettetDato}} " disabled/>
+                   value="{{caseFile.opprettetDato }} " disabled/>
             <label class="mdl-textfield__label" for="opprettetDato">opprettetDato</label>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="opprettetAv" class="mdl-textfield__input" type="text"
-                   value="{{caseFile.opprettetAv}} " disabled/>
+                   value="{{caseFile.opprettetAv }} " disabled/>
             <label class="mdl-textfield__label" for="opprettetAv">opprettetAv</label>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -195,11 +201,23 @@
         </table>
 </table>
 <div>
-    <button ng-click="createNewRegistryEntryPressed()" class="mdl-button mdl-button--raised mdl-button--colored">
+    <button ng-show="!caseFile" ng-click="post_or_put_case_file()"
+            class="mdl-button mdl-button--raised mdl-button--colored">
+        Opprett ny saksmappe
+    </button>
+
+    <button ng-show="caseFile" ng-click="post_or_put_case_file()"
+            class="mdl-button mdl-button--raised mdl-button--colored">
+        Oppdater saksmappe
+    </button>
+
+    <button ng-show="caseFile" ng-click="createNewRegistryEntryPressed()"
+            class="mdl-button mdl-button--raised mdl-button--colored">
         Opprett ny journalpost
     </button>
 </div>
 <hr>
 <div ng-show="display_footer_note" footer></div>
 </body>
+
 </html>

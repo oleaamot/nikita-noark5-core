@@ -16,12 +16,13 @@ app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService
     $scope.display_breadcrumb = display_breadcrumb;
     // Get the chosen caseFile to display the saksnr and tittel
     $scope.token = GetUserToken();
-    $scope.caseFile = GetCurrentCaseFile();
-    SetCurrentCaseFileNumber($scope.caseFile.mappeID);
+    $scope.caseFile = JSON.parse(GetChosenCaseFile());
+    $scope.registryEntryTypeList = registryEntryTypeList;
+    $scope.registryEntryStatusList = registryEntryStatusList;
 
     // Get the registryEntry to display
-    var registryEntry = GetCurrentRegistryEntry();
-    $scope.registryEntry = GetCurrentRegistryEntry();
+    var registryEntry = JSON.parse(GetCurrentRegistryEntry());
+    $scope.registryEntry = JSON.parse(GetCurrentRegistryEntry());
     // No chosen registryEntry, means we are creating a new registryEntry
     if (!registryEntry) {
         $scope.createNewRegistryEntry = true;
@@ -68,7 +69,7 @@ app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService
         $scope.createNewRegistryEntry = false;
 
         var urlCurrentRegistryEntry = '';
-        var registryEntry = GetCurrentRegistryEntry();
+        var registryEntry = JSON.parse(GetCurrentRegistryEntry());
         /**
          * Getting the latest copy of the registryEntry and any documents attached to it.
          *  Can be necessary from a UX perspective, if someone changes something or adds
@@ -81,6 +82,8 @@ app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService
             }
         }
 
+        console.log(" registryEntry GET " + urlCurrentRegistryEntry);
+
         // Get the registryEntry
         $http({
             method: 'GET',
@@ -90,7 +93,7 @@ app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService
             // registryEntry is in $scope.registryEntry
             $scope.registryEntry = response.data;
             // update the current registryEntry object
-            GetCurrentRegistryEntry($scope.registryEntry);
+            SetCurrentRegistryEntry($scope.registryEntry);
             console.log(" $scope.registryEntry  is " + JSON.stringify($scope.registryEntry));
             $scope.documentDescriptionETag = response.headers('eTag');
             // Now go through each rel and find the one linking to documentDescription
@@ -165,7 +168,6 @@ app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService
         }, function errorCallback(response) {
             alert("Problem with call to url [" + urlVal + "] response is " + response);
         });
-
         console.log("$scope.createNewRegistryEntry = " + $scope.createNewRegistryEntry);
     }
 
@@ -174,8 +176,17 @@ app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService
         // any previous values will be ignored
         SetLinkToDocumentDescription('');
         SetLinkToCreateDocumentDescription('');
+        SetChosenDocumentDescription(null);
+        SetCurrentRegistryEntry($scope.registryEntry);
 
-        console.log("Current registryEntry is " + JSON.stringify(registryEntry));
+
+        /*
+         TODO : This is where you are ... The problem is registryEntry is null on dokument.html/js page
+         Need to find out why
+
+
+         */
+        console.log("Current registryEntry is " + JSON.stringify($scope.registryEntry));
         for (var rel in registryEntry._links) {
             relation = registryEntry._links[rel].rel;
             if (relation == REL_NEW_DOCUMENT_DESCRIPTION) {

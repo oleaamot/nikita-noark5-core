@@ -6,10 +6,12 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
     $scope.printDocument = true;
     $scope.display_breadcrumb = display_breadcrumb;
     // Display journalpostnr and tittel for UX
-    $scope.registryEntry = GetCurrentRegistryEntry();
+    console.log("DocumentController - start! ");
+    console.log("GET Current gregistry entry value is " + GetCurrentRegistryEntry());
+    $scope.registryEntry = JSON.parse(GetCurrentRegistryEntry());
 
     // Needed for the breadcrumbs to display Sak(mappeID)
-    $scope.caseFile = GetCurrentCaseFile();
+    $scope.caseFile = JSON.parse(GetChosenCaseFile());
 
     $scope.mimeTypeList = mimeTypeList;
     $scope.variantFormatList = variantFormatList;
@@ -17,10 +19,16 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
     $scope.tilknyttetRegistreringSomList = tilknyttetRegistreringSomList;
     $scope.documentStatusList = documentStatusList;
 
-    var urlDocumentDescription = GetLinkToDocumentDescription();
+    // NB!!!!! Add in the selected one for lists
+
+
+    var documentDescription = GetChosenDocumentDescription();
 
     // check to see urlDocumentDescription exists, if it does, we are fetching real data
-    if (urlDocumentDescription) {
+    if (documentDescription) {
+
+        var urlDocumentDescription = GetLinkToDocumentDescription();
+
         console.log("Current urlDocumentDescription is" + JSON.stringify(urlDocumentDescription));
         $scope.createNewDocument = false;
         $scope.label_document = "Dokument";
@@ -135,7 +143,7 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
                 'Accept': mimeType,
             }
         }).success(function (data, status) {
-            console.log("Success on retrievinf file to download. File link was " + url);
+            console.log("Success on retrieving file to download. File link was " + url);
             return $scope.downloadFile = data;
         }).error(function (data, status) {
             alert("Could not start download of " + url)
@@ -149,10 +157,24 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
         var method='';
         if($scope.createNewDocument) {
             method = "POST";
-            urlDocumentDescription  = GetLinkToCreateDocumentDescription();
+            // Check the current series for a link to create a new casefile
+            for (var rel in $scope.registryEntry._links) {
+                var relation = $scope.registryEntry._links[rel].rel;
+                if (relation == REL_NEW_DOCUMENT_DESCRIPTION) {
+                    urlDocumentDescription = $scope.registryEntry._links[rel].href;
+                    console.log("URL for POST operation on registryEntry is " + urlDocumentDescription);
+                }
+            }
         } else {
             method = "PUT";
-            urlDocumentDescription  = GetLinkToDocumentDescription();
+
+            for (var rel in $scope.documentDescription._links) {
+                var relation = $scope.documentDescription._links[rel].rel;
+                if (relation == REL_SELF) {
+                    urlDocumentDescription = $scope.documentDescription._links[rel].href;
+                    console.log("URL for PUT operation on registryEntry is " + urlDocumentDescription);
+                }
+            }
         }
         console.log("Attempting " + method + " on " + urlDocumentDescription);
         $http({

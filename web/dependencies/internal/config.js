@@ -66,6 +66,7 @@ var REL_NEW_DOCUMENT_OBJECT = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/ny
 var REL_NEW_CORRESPONDENCE_PART_PERSON = 'http://rel.kxml.no/noark5/v4/api/sakarkiv/ny-korrespondansepartperson/';
 var REL_CORRESPONDENCE_PART_PERSON = 'http://rel.kxml.no/noark5/v4/api/sakarkiv/korrespondansepartperson/';
 var REL_CASE_FILE = 'http://rel.kxml.no/noark5/v4/api/sakarkiv/saksmappe/';
+var REL_NEW_CASE_FILE = 'http://rel.kxml.no/noark5/v4/api/sakarkiv/ny-saksmappe/';
 var REL_DOCUMENT_FILE = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/fil/';
 var REL_SERIES = "http://rel.kxml.no/noark5/v4/api/arkivstruktur/arkivdel/";
 var REL_FONDS_STRUCTURE = 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/';
@@ -103,8 +104,28 @@ var documentMediumList = [
     {id: 'E', value: 'Elektronisk arkiv'},
     {id: 'B', value: 'Blandet fysisk og elektronisk arkiv'}];
 
+var registryEntryTypeList = [
+    {id: 'I', value: 'Inngående dokument'},
+    {id: 'U', value: 'Utgående dokument'},
+    {id: 'N', value: 'Organinternt dokument for oppfølging'},
+    {id: 'S', value: 'Organinternt dokument uten oppfølging'}];
+
+var registryEntryStatusList = [
+    {id: 'J', value: 'Journalført'},
+    {id: 'F', value: 'Ferdigstilt fra saksbehandler'},
+    {id: 'G', value: 'Godkjent av leder'},
+    {id: 'E', value: 'Ekspedert'},
+    {id: 'A', value: 'Arkivert'},
+    {id: 'U', value: 'Utgår'},
+    {id: 'M', value: 'Midlertidig registrering av'}];
+
 var fondsStatusList = [
     {id: 'O', value: 'Opprettet'},
+    {id: 'A', value: 'Avsluttet'}];
+
+var caseStatusList = [
+    {id: 'UB', value: 'Under behandling'},
+    {id: 'U', value: 'Utgår'},
     {id: 'A', value: 'Avsluttet'}];
 
 var seriesStatusList = [
@@ -162,6 +183,17 @@ var GetLinkToChosenFile = function () {
     return localStorage.getItem("linkToChosenFile");
 };
 
+var SetChosenCaseFile = function (t) {
+    localStorage.setItem("chosenCaseFile", JSON.stringify(t));
+    console.log("Setting chosenCaseFile=" + JSON.stringify(t));
+};
+
+var GetChosenCaseFile = function () {
+    var chosenCaseFile = localStorage.getItem("chosenCaseFile");
+    console.log("Getting chosenCaseFile=" + chosenCaseFile);
+    return localStorage.getItem("chosenCaseFile");
+};
+
 var SetLinkToChosenRecord = function (t) {
     localStorage.setItem("linkToChosenRecord", t);
     console.log("Setting linkToChosenRecord=" + t);
@@ -191,6 +223,18 @@ var GetLinkToCreateDocumentDescription = function () {
 var SetLinkToCreateDocumentDescription = function (t) {
     localStorage.setItem("linkToCreateDocumentDescription", t);
     console.log("Setting linkToCreateDocumentDescription=" + t);
+};
+
+
+// href of the link to use when creating a document description
+var GetChosenDocumentDescription = function () {
+    return localStorage.getItem("chosenDocumentDescription");
+};
+
+// href of the link to use when creating a document object
+var SetChosenDocumentDescription = function (t) {
+    localStorage.setItem("chosenDocumentDescription", JSON.stringify(t));
+    console.log("Setting chosenDocumentDescription=" + t);
 };
 
 // href of the link to use when getting a document description
@@ -315,26 +359,6 @@ var SetLinkToCorrespondencePartUnit = function (t) {
     console.log("Setting linkToChosenCorrespondencePartUnit=" + t);
 };
 
-
-var SetCurrentCaseFileNumber = function (t) {
-    localStorage.setItem("currentCaseFileNumber", t);
-    console.log("Setting currentCaseFileNumber=" + t);
-};
-
-var getCurrentCaseFileNumber = function () {
-    return localStorage.getItem("currentCaseFileNumber");
-};
-
-var SetCurrentCaseFile = function (t) {
-    localStorage.setItem("currentCaseFile", JSON.stringify(t));
-    console.log("Setting currentCaseFile=" + JSON.stringify(t));
-};
-
-var GetCurrentCaseFile = function () {
-    console.log("Getting currentCaseFile=" + localStorage.getItem("currentCaseFile"));
-    return JSON.parse(localStorage.getItem("currentCaseFile"));
-};
-
 var SetCurrentRegistryEntry = function (t) {
     localStorage.setItem("currentRegistryEntry", JSON.stringify(t));
     console.log("Setting currentRegistryEntry=" + JSON.stringify(t));
@@ -342,7 +366,7 @@ var SetCurrentRegistryEntry = function (t) {
 
 var GetCurrentRegistryEntry = function () {
     console.log("Getting currentRegistryEntry=" + localStorage.getItem("currentRegistryEntry"));
-    return JSON.parse(localStorage.getItem("currentRegistryEntry"));
+    return localStorage.getItem("currentRegistryEntry");
 };
 
 var SetLinkToChosenCaseFile = function (t) {

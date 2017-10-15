@@ -90,14 +90,14 @@
         <!-- TODO: Remove the \s| in pattern once mdl can autoload text properly -->
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="arkivperiodeStartDato" class="mdl-textfield__input" type="text"
-                   pattern="^\s?|\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])[\s]?$"
+                   pattern="^[\s]?|\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])[\s]?$"
                    value="{{series.arkivperiodeStartDato}} "/>
             <label class="mdl-textfield__label" for="arkivperiodeStartDato">arkivperiodeStartDato</label>
         </div>
 
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input id="arkivperiodeSluttDato" class="mdl-textfield__input" type="text"
-                   pattern="^\s?|\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])[\s]?$"
+                   pattern="^[\s]?|\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])[\s]?$"
                    value="{{series.arkivperiodeSluttDato}} "/>
             <label class="mdl-textfield__label" for="arkivperiodeSluttDato">arkivperiodeSluttDato</label>
         </div>

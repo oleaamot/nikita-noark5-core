@@ -15,14 +15,15 @@
 <div ng-show="display_breadcrumb" ng-include="'breadcrumb.html'"></div>
 <div class="mdl-grid-center">
     <div class="mdl-grid-center">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input id="saksnr" class="mdl-textfield__input" type="text" name="saksnr" value=" {{ casefile.mappeID }} "
-                   disabled/>
-            <label class="mdl-textfield__label" for="saksnr">saksnummer</label>
-        </div>
 
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input id="sakstittel" class="mdl-textfield__input" value="{{ casefile.tittel }}" type="text" disabled/>
+            <input id="saksnr" class="mdl-textfield__input" type="text"
+                   value=" {{ caseFile.mappeID }} " disabled/>
+            <label class="mdl-textfield__label" for="saksnr">saksnummer</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="sakstittel" class="mdl-textfield__input" type="text"
+                   value="{{ caseFile.tittel }}" disabled/>
             <label class="mdl-textfield__label" for="sakstittel">sakstittel</label>
         </div>
     </div>
@@ -30,40 +31,94 @@
 
 <!-- There are two main divs on this page. The first one is used to show the details of a registryEntry, while the second
 is used to create a new registryEntry. -->
-<div ng-show="!createNewRegistryEntry">
-    <h4>Journalpost</h4>
-    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-        <tr>
-            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                <thead>
-                <tr>
-                    <th>dokumentetsDato</th>
-                    <th>journaldato</th>
-                    <th>tittel</th>
-                    <th>journalposttype</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="mdl-data-table__cell--non-numeric">
-                    <td class="mdl-data-table__cell--non-numeric">
-                        {{ registryEntry.dokumentetsDato }}
-                    </td>
-                    <td class="mdl-data-table__cell--non-numeric">
-                        {{ registryEntry.journaldato }}
-                    </td>
-                    <td class="mdl-data-table__cell--non-numeric">
-                        {{ registryEntry.tittel }}
-                    </td>
-                    <td class="mdl-data-table__cell--non-numeric">
-                        {{ registryEntry.journalposttype }}
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </tr>
-    </table>
+<div>
+    <h4 ng-show="createNewRegistryEntry">Opprett ny journalpost</h4>
+    <form ng-submit="send_form()" method="post">
 
-    <br>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="registry_entry_title" class="mdl-textfield__input" type="text"
+                   value=" {{ registryEntry.tittel }} " disabled/>
+            <label class="mdl-textfield__label" for="registry_entry_title">tittel</label>
+        </div>
+
+        <!--        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input id="registry_entry_" class="mdl-textfield__input" type="text"
+                           value=" {{ registryEntry. }} " disabled/>
+                    <label class="mdl-textfield__label" for="registry_entry_"></label>
+                </div>
+
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input id="registry_entry_" class="mdl-textfield__input" type="text"
+                           value=" {{ registryEntry. }} " disabled/>
+                    <label class="mdl-textfield__label" for="registry_entry_"></label>
+                </div>
+        -->
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="registry_entry_description" class="mdl-textfield__input" type="text"
+                   value=" {{ registryEntry.beskrivelse }} " disabled/>
+            <label class="mdl-textfield__label" for="registry_entry_description">beskrivelse</label>
+        </div>
+
+        <div class="mdl-grid-center">
+            <div id="registry_entry_type_div" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <select id="registry_entry_type" class="mdl-textfield__input" ng-model="selectedRegistryEntryType">
+                    <option ng-selected="{{value.value == selectedRegistryEntryType}}"
+                            ng-repeat="value in registryEntryTypeList"
+                            value="{{value.value}}">{{value.value}}
+                    </option>
+                </select>
+                <label class="mdl-textfield__label" for="registry_entry_type">journalposttype</label>
+            </div>
+            <div id="registry_entry_status_div" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <select id="registry_entry_status" class="mdl-textfield__input" ng-model="selectedRegistryEntryStatus">
+                    <option ng-selected="{{value.value == selectedRegistryEntryStatus}}"
+                            ng-repeat="value in registryEntryStatusList"
+                            value="{{value.value}}">{{value.value}}
+                    </option>
+                </select>
+                <label class="mdl-textfield__label" for="registry_entry_status">journalpoststatus</label>
+            </div>
+        </div>
+        <div class="mdl-grid-center">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input id="registry_entry_year" class="mdl-textfield__input" type="text"
+                       value=" {{ registryEntry.journalaar }} " disabled/>
+                <label class="mdl-textfield__label" for="registry_entry_year">journalaar</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input id="registry_entry_number" class="mdl-textfield__input" type="text"
+                       value=" {{ registryEntry.journalpostnummer }} " disabled/>
+                <label class="mdl-textfield__label" for="registry_entry_number">journalpostnummer</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input id="registry_entry_sequence_number" class="mdl-textfield__input" type="text"
+                       value=" {{ registryEntry.journalsekvensnummer }} " disabled/>
+                <label class="mdl-textfield__label" for="registry_entry_sequence_number">journalsekvensnummer</label>
+            </div>
+        </div>
+
+        <div class="mdl-grid-center">
+
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input id="registry_entry_document_date" class="mdl-textfield__input" type="text"
+                       value=" {{ registryEntry.dokumentetsDato }} " disabled/>
+                <label class="mdl-textfield__label" for="registry_entry_document_date">dokumentetsDato</label>
+            </div>
+
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input id="registry_entry_date" class="mdl-textfield__input" type="text"
+                       value=" {{ registryEntry.journaldato }} " disabled/>
+                <label class="mdl-textfield__label" for="registry_entry_date">journaldato</label>
+            </div>
+        </div>
+        <div ng-show="createNewRegistryEntry" class="form-actions col-xs-offset-2 col-xs-10">
+            <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                   value="Lagre journalpost"/>
+        </div>
+    </form>
+</div>
+
+<div ng-show="!createNewRegistryEntry">
     <div ng-if="registryEntry.documentDescription">
         <div>
             <label>Dokumenter tilkoblet journalposten</label>
@@ -151,78 +206,6 @@ is used to create a new registryEntry. -->
             Ny korrespondansepart
         </button>
     </div>
-</div>
-<div ng-show="createNewRegistryEntry">
-    <h4>Opprett ny journalpost</h4>
-    <form ng-submit="send_form()" method="post">
-        <div class="mdl-grid-center">
-            <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" placeholder="tittel" ng-model="tittel" type="text" name="tittel"/>
-            </div>
-        </div>
-        <div class="mdl-grid-center">
-            <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" placeholder="beskrivelse" ng-model="beskrivelse" type="text"
-                       name="beskrivelse"/>
-            </div>
-        </div>
-        <div class="mdl-grid-center">
-            <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" placeholder="journalposttype" ng-model="journalposttype" type="text"
-                       name="journalposttype"/>
-                <select class="mdl-textfield__input" id="journalposttype" name="journalposttype">
-                    <option></option>
-                    <option value="I">Inngående dokument</option>
-                    <option value="U">Utgående dokument</option>
-                    <option value="N">Organinternt dokument for oppfølging</option>
-                    <option value="X">Organinternt dokument uten oppfølging</option>
-                    <option value="S">Saksframlegg</option>
-                </select>
-                <label class="mdl-textfield__label" for="journalposttype">journalposttype</label>
-            </div>
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <select class="mdl-textfield__input" id="journalpoststatus" name="journalpoststatus">
-                    <option></option>
-                    <option value="J">Journalført</option>
-                    <option value="F">Ferdigstilt fra saksbehandler</option>
-                    <option value="G">Godkjent av leder</option>
-                    <option value="E">Ekspedert</option>
-                    <option value="A">Arkivert</option>
-                    <option value="U">Utgår</option>
-                    <option value="M">Midlertidig registrering av</option>
-                </select>
-                <label class="mdl-textfield__label" for="journalpoststatus">journalpoststatus</label>
-            </div>
-        </div>
-        <div class="mdl-grid-center">
-            <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" placeholder="journalaar" ng-model="journalaar" type="number"
-                       name="journalaar"/>
-            </div>
-            <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" placeholder="journalpostnummer" ng-model="journalpostnummer"
-                       type="number" name="journalpostnummer"/>
-            </div>
-            <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" placeholder="journalsekvensnummer" ng-model="journalsekvensnummer"
-                       type="number" name="journalsekvensnummer"/>
-            </div>
-        </div>
-        <div class="mdl-grid-center">
-            <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" placeholder="dokumentetsDato" ng-model="dokumentetsDato" type="text"
-                       name="dokumentetsDato"/>
-            </div>
-            <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" placeholder="journaldato" ng-model="journaldato"
-                       type="text" name="journaldato"/>
-            </div>
-        </div>
-        <div class="form-actions col-xs-offset-2 col-xs-10">
-            <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                   value="Lagre journalpost"/>
-        </div>
-    </form>
 </div>
 <hr>
 <div ng-show="display_footer_note" footer></div>
