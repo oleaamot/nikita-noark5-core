@@ -1,14 +1,15 @@
-var app = angular.module('nikita-document', ['ngFileUpload']);
+var app = angular.module('nikita', ['ngFileUpload']);
 
 app.controller('DocumentController', ['$scope', '$http', function ($scope, $http) {
+
+    console.log("GET Current registry entry value is " + GetCurrentRegistryEntry());
+    $scope.registryEntry = JSON.parse(GetCurrentRegistryEntry());
 
     // Make a breadcrumbs value appear
     $scope.printDocument = true;
     $scope.display_breadcrumb = display_breadcrumb;
     // Display journalpostnr and tittel for UX
     console.log("DocumentController - start! ");
-    console.log("GET Current gregistry entry value is " + GetCurrentRegistryEntry());
-    $scope.registryEntry = JSON.parse(GetCurrentRegistryEntry());
 
     // Needed for the breadcrumbs to display Sak(mappeID)
     $scope.caseFile = JSON.parse(GetChosenCaseFile());
@@ -20,12 +21,11 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
     $scope.documentStatusList = documentStatusList;
 
     // NB!!!!! Add in the selected one for lists
+    var documentDescription = JSON.parse(GetChosenDocumentDescription());
 
-
-    var documentDescription = GetChosenDocumentDescription();
-
+    console.log("Current documentDescription" + documentDescription);
     // check to see urlDocumentDescription exists, if it does, we are fetching real data
-    if (documentDescription) {
+    if (documentDescription != '') {
 
         var urlDocumentDescription = GetLinkToDocumentDescription();
 
@@ -206,11 +206,15 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
                     href = documentDescription._links[rel].href;
                     SetLinkToDocumentDescription(href);
                 }
-                if (relation === REL_NEW_DOCUMENT_OBJECT) {
-                    urlDocumentObject = documentDescription._links[rel].href;
+                if (method === "POST") {
+                    if (relation === REL_NEW_DOCUMENT_OBJECT) {
+                        urlDocumentObject = documentDescription._links[rel].href;
+                    }
                 }
-                if (relation === REL_DOCUMENT_OBJECT) {
-                    urlDocumentObject = documentDescription._links[rel].href;
+                else {
+                    if (relation === REL_DOCUMENT_OBJECT) {
+                        urlDocumentObject = documentDescription._links[rel].href;
+                    }
                 }
             }
             console.log("Attempting " + method + " on " + urlDocumentObject);

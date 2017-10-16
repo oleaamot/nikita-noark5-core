@@ -360,13 +360,14 @@ var SetLinkToCorrespondencePartUnit = function (t) {
 };
 
 var SetCurrentRegistryEntry = function (t) {
-    localStorage.setItem("currentRegistryEntry", JSON.stringify(t));
+    localStorage.setItem('currentRegistryEntry', JSON.stringify(t));
     console.log("Setting currentRegistryEntry=" + JSON.stringify(t));
+    console.log("The currentRegistryEntry value is the following =" + localStorage.getItem('currentRegistryEntry'));
 };
 
 var GetCurrentRegistryEntry = function () {
-    console.log("Getting currentRegistryEntry=" + localStorage.getItem("currentRegistryEntry"));
-    return localStorage.getItem("currentRegistryEntry");
+    console.log("Getting currentRegistryEntry=" + localStorage.getItem('currentRegistryEntry'));
+    return localStorage.getItem('currentRegistryEntry');
 };
 
 var SetLinkToChosenCaseFile = function (t) {

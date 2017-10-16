@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/dependencies/external/material-design-lite/material.min.css">
     <title>Opprett nytt dokument</title>
 </head>
-<body ng-app="nikita-document" ng-controller="DocumentController">
+<body ng-controller="DocumentController" ng-app="nikita">
 
 <!--
  Note I am cheating to make the page render properly value="{{object}} " is set to value="{{object}} ".
@@ -166,10 +166,11 @@
             Last opp fil
         </button>
         <div>
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                    ng-click="send_form()">
-                Oppdater dokument detaljer
-            </button>
+            <!--    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                        ng-click="send_form()">
+                    Oppdater dokument detaljer
+                </button>
+                -->
         </div>
     </div>
     <div>

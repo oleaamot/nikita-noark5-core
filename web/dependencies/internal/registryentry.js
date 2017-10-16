@@ -8,10 +8,7 @@ var app = angular.module('nikita', ['nikita-shared']);
  *     <script src="config.js"></script>
  *
  */
-
-
 app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService', function ($scope, $http, breadcrumbService) {
-
 
     $scope.display_breadcrumb = display_breadcrumb;
     // Get the chosen caseFile to display the saksnr and tittel
@@ -176,7 +173,7 @@ app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService
         // any previous values will be ignored
         SetLinkToDocumentDescription('');
         SetLinkToCreateDocumentDescription('');
-        SetChosenDocumentDescription(null);
+        SetChosenDocumentDescription('');
         SetCurrentRegistryEntry($scope.registryEntry);
 
 
@@ -209,6 +206,7 @@ app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService
 
     $scope.documentSelected = function (documentDescription) {
         console.log("documentDescription" + JSON.stringify(documentDescription));
+        SetChosenDocumentDescription(documentDescription);
         for (var rel in documentDescription._links) {
             var relation = documentDescription._links[rel].rel;
             if (relation === 'self') {
