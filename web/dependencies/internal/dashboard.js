@@ -137,7 +137,7 @@ app.controller('CaseFileDashboardController', ['$scope', '$http', function ($sco
             if (seriesList[i].value == selectedSeries) {
                 console.log("selectedSeriesChanged " + seriesList[i].value);
                 getCaseFilesAssociatedWithSeries(seriesList[i].object);
-                SetChosenSeries(selectedSeries);
+                SetChosenSeries(seriesList[i].object);
             }
         }
     };
