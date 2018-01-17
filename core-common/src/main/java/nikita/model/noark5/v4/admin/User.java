@@ -20,11 +20,35 @@ public class User extends NoarkEntity implements IUserEntity {
     @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
     private Long id;
 
+    /**
+     * M600 - opprettetDato (xs:dateTime)
+     */
     @Column(name = "account_created_date")
     @Temporal(TemporalType.TIMESTAMP)
-
     @Audited
-    protected Date createdDate;
+    private Date createdDate;
+
+    /**
+     * M601 - opprettetAv (xs:string)
+     */
+    @Column(name = "created_by")
+    @Audited
+    private String createdBy;
+
+    /**
+     * M602 - avsluttetDato (xs:dateTime)
+     */
+    @Column(name = "finalised_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Audited
+    private Date finalisedDate;
+
+    /**
+     * M603 - avsluttetAv (xs:string)
+     */
+    @Column(name = "finalised_by")
+    @Audited
+    private String finalisedBy;
 
     @NotNull
     @Column(name = "account_non_expired", nullable = false)
@@ -71,12 +95,43 @@ public class User extends NoarkEntity implements IUserEntity {
 
     @Column(name = "lang_key", length = 5)
     private String langKey;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "nikita_user_authority",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id")})
     private List<Authority> authorities;
+
+    @Override
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    @Override
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    @Override
+    public Date getFinalisedDate() {
+        return finalisedDate;
+    }
+
+    @Override
+    public void setFinalisedDate(Date finalisedDate) {
+        this.finalisedDate = finalisedDate;
+    }
+
+    @Override
+    public String getFinalisedBy() {
+        return finalisedBy;
+    }
+
+    @Override
+    public void setFinalisedBy(String finalisedBy) {
+        this.finalisedBy = finalisedBy;
+    }
 
     public Long getId() {
         return id;
