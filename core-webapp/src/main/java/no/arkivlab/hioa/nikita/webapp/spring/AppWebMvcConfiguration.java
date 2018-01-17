@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import no.arkivlab.hioa.nikita.webapp.web.interceptor.NikitaETAGInterceptor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.Ordered;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.CacheControl;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -13,12 +12,13 @@ import org.springframework.http.converter.json.AbstractJackson2HttpMessageConver
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import java.util.List;
 import java.util.Locale;
@@ -29,33 +29,13 @@ import java.util.concurrent.TimeUnit;
 @EnableSpringDataWebSupport
 public class AppWebMvcConfiguration extends WebMvcConfigurerAdapter {
 
-    /**
-      * Used to set a suffix for the thymelaf templates under resources. All content will be under webapp
-      * so we can use webapp as a suffix (even though I don't use it right now.)
-      * Set a suffix (.html, .jsp etc) that all the files have to use.
-      * The point of this is to make the (view) code generating html pages easier to read as we can ignore
-      * prefixes and suffixes in code.
-     */
-    @Bean
-    public ViewResolver getViewResolver() {
 
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        //resolver.setPrefix("webapp/");
-        resolver.setSuffix(".html");
-        return resolver;
-    }
-
-    /**
-      *  Used to create automatic redirects. So anyone visiting / will automatically
-      *  be sent to the loginPage.html
-     */
     @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/fonds").setViewName("webapp/noark/fonds/list");
-        registry.addViewController("/gui").setViewName("webapp/login/loginPage");
-
-        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+    public void configurePathMatch(final PathMatchConfigurer configurer) {
+        //configurer.setUseSuffixPatternMatch(false);
+        configurer.setUseTrailingSlashMatch(true);
     }
+
 
     /**
      * The MappingJackson2HttpMessageConverter is converting string literals to JSON and
