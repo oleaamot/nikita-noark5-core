@@ -2,6 +2,7 @@ package no.arkivlab.hioa.nikita.webapp.service.impl.metadata;
 
 import nikita.model.noark5.v4.metadata.CorrespondencePartType;
 import nikita.repository.n5v4.metadata.ICorrespondencePartTypeRepository;
+import nikita.util.exceptions.NoarkEntityNotFoundException;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.metadata.ICorrespondencePartTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +10,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
+
+import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 
 
 @Service
@@ -101,5 +105,31 @@ public class CorrespondencePartTypeService implements ICorrespondencePartTypeSer
     @Override
     public List<CorrespondencePartType> findAllAsList() {
         return correspondencePartTypeRepository.findAll();
+    }
+    // All DELETE operations
+
+
+    @Override
+    public void deleteEntity(@NotNull String correspondencePartTypeCode) {
+        CorrespondencePartType correspondencePartType = getCorrespondencePartTypeOrThrow(correspondencePartTypeCode);
+        correspondencePartTypeRepository.delete(correspondencePartType);
+    }
+
+    /**
+     * Internal helper method. Rather than having a find and try catch in multiple methods, we have it here once.
+     * If you call this, be aware that you will only ever get a valid CorrespondencePartType back. If there is no valid
+     * CorrespondencePartType, an exception is thrown
+     *
+     * @param correspondencePartTypeCode
+     * @return
+     */
+    protected CorrespondencePartType getCorrespondencePartTypeOrThrow(@NotNull String correspondencePartTypeCode) {
+        CorrespondencePartType correspondencePartType = correspondencePartTypeRepository.findByCode(correspondencePartTypeCode);
+        if (correspondencePartType == null) {
+            String info = INFO_CANNOT_FIND_OBJECT + " correspondencePartType, using kode " + correspondencePartTypeCode;
+            logger.info(info);
+            throw new NoarkEntityNotFoundException(info);
+        }
+        return correspondencePartType;
     }
 }

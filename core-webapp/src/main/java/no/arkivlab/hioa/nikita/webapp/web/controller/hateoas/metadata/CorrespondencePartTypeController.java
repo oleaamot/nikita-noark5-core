@@ -3,6 +3,7 @@ package no.arkivlab.hioa.nikita.webapp.web.controller.hateoas.metadata;
 import com.codahale.metrics.annotation.Counted;
 import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
@@ -13,6 +14,7 @@ import nikita.util.exceptions.NikitaException;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.metadata.IMetadataHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.metadata.ICorrespondencePartTypeService;
+import no.arkivlab.hioa.nikita.webapp.web.controller.hateoas.NoarkController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +28,7 @@ import static nikita.config.N5ResourceMappings.*;
 @RestController
 @RequestMapping(value = Constants.HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH,
         produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
-public class CorrespondencePartTypeController {
+public class CorrespondencePartTypeController extends NoarkController {
 
     private ICorrespondencePartTypeService correspondencePartTypeService;
     private IMetadataHateoasHandler metadataHateoasHandler;
@@ -159,16 +161,40 @@ public class CorrespondencePartTypeController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
     @Timed
-    @RequestMapping(method = RequestMethod.PUT, value = CORRESPONDENCE_PART_TYPE + SLASH + FONDS_STATUS)
-    public ResponseEntity<MetadataHateoas> updateCorrespondencePartType(@RequestBody CorrespondencePartType correspondencePartType,
-                                                             HttpServletRequest request)
+    @RequestMapping(method = RequestMethod.PUT, value = CORRESPONDENCE_PART_TYPE + UNIT + SLASH + LEFT_PARENTHESIS +
+            SYSTEM_ID + RIGHT_PARENTHESIS)
+    public ResponseEntity<MetadataHateoas> updateCorrespondencePartTypeUnit(
+            @RequestBody CorrespondencePartType correspondencePartType,
+            HttpServletRequest request)
             throws NikitaException {
-        CorrespondencePartType newCorrespondencePartType = correspondencePartTypeService.update(correspondencePartType);
-        MetadataHateoas metadataHateoas = new MetadataHateoas(correspondencePartType);
+        CorrespondencePartType updatedCorrespondencePartType = correspondencePartTypeService.update(correspondencePartType);
+        MetadataHateoas metadataHateoas = new MetadataHateoas(updatedCorrespondencePartType);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(correspondencePartType.getVersion().toString())
                 .body(metadataHateoas);
+    }
+
+    // Delete a correspondencePartType identified by systemID
+    // DELETE [contextPath][api]/sakarkiv/korrespondanseparttype/{kode}/
+    @ApiOperation(value = "Deletes a single CorrespondencePartType entity identified by kode")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "CorrespondencePartType deleted"),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = SLASH + LEFT_PARENTHESIS + CODE + RIGHT_PARENTHESIS,
+            method = RequestMethod.DELETE)
+    public ResponseEntity<String> deletecorrespondencePartTypeByCode(
+            @ApiParam(name = "kode",
+                    value = "kode of the correspondencePartType to delete",
+                    required = true)
+            @PathVariable("kode") final String kode) {
+        correspondencePartTypeService.deleteEntity(kode);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("{\"status\" : \"Success\"}");
     }
 }

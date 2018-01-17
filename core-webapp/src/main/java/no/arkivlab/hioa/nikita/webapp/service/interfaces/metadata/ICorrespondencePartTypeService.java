@@ -2,6 +2,7 @@ package no.arkivlab.hioa.nikita.webapp.service.interfaces.metadata;
 
 import nikita.model.noark5.v4.metadata.CorrespondencePartType;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -22,4 +23,6 @@ public interface ICorrespondencePartTypeService {
     List<CorrespondencePartType> findByDescription(String description);
 
     CorrespondencePartType findByCode(String code);
+
+    void deleteEntity(@NotNull String correspondencePartTypeCode);
 }
