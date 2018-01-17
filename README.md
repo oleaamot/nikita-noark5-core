@@ -20,7 +20,7 @@ You are encouraged to contribute. You can either hack on the code and send pull 
 For configuration purposes, take a look at the resources directory of core-webapp for application-*.yml files for
 setting properties in the various profiles.
 
-Currently we are using AGPLv3 license, but the code should be published as APLv2 when finished (depending on integrated libraries).
+The project has chosen the AGPLv3 license.
 
 We are skipping tests as there currently is an issue identifying the logged-in user when running tests. I am assuming the security context will have the default anonymous user, but it is in fact null. This causes the tests to fail. Currently there is no point running tests.
 
