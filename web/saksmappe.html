@@ -201,17 +201,17 @@
         </table>
 </table>
 <div>
-    <button ng-show="!caseFile" ng-click="post_or_put_case_file()"
+    <button ng-show="createNewCaseFile" ng-click="post_or_put_case_file()"
             class="mdl-button mdl-button--raised mdl-button--colored">
         Opprett ny saksmappe
     </button>
 
-    <button ng-show="caseFile" ng-click="post_or_put_case_file()"
+    <button ng-show="!createNewCaseFile" ng-click="post_or_put_case_file()"
             class="mdl-button mdl-button--raised mdl-button--colored">
         Oppdater saksmappe
     </button>
 
-    <button ng-show="caseFile" ng-click="createNewRegistryEntryPressed()"
+    <button ng-show="!createNewCaseFile" ng-click="createNewRegistryEntryPressed()"
             class="mdl-button mdl-button--raised mdl-button--colored">
         Opprett ny journalpost
     </button>

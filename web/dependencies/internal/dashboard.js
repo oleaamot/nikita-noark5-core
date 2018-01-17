@@ -15,12 +15,11 @@ var app = angular.module('nikita-casefile-dashboard', []);
 
 app.controller('CaseFileDashboardController', ['$scope', '$http', function ($scope, $http) {
 
-    var seriesList = [];
     var selectedSeries = '';
 
     $scope.text = "___";
 
-    $scope.seriesList = seriesList;
+    $scope.seriesList = [];
     $scope.selectedSeries = selectedSeries;
     $scope.token = GetUserToken();
 
@@ -64,10 +63,11 @@ app.controller('CaseFileDashboardController', ['$scope', '$http', function ($sco
                                     var series = response.data.results[i];
 
                                     console.log("pushing " + JSON.stringify(series.systemID));
-                                    seriesList.push({id: count++, value: series.systemID, object: series});
+                                    $scope.seriesList.push({id: count++, value: series.systemID, object: series});
                                     // Set the selected one to the last one
                                     // This will probably be set in the database somewhere
-                                    selectedSeries = series.systemID;
+                                    $scope.selectedSeries = series.systemID;
+                                    console.log("$scope.seriesList object is " + $scope.seriesList);
                                     console.log("Note Current Series object is " + JSON.stringify(series));
                                     SetChosenSeries(series);
                                 }
@@ -133,11 +133,11 @@ app.controller('CaseFileDashboardController', ['$scope', '$http', function ($sco
     $scope.selectedSeriesChanged = function (selectedSeries) {
         // Find the series object related to the value that was selected
 
-        for (var i in seriesList) {
-            if (seriesList[i].value == selectedSeries) {
-                console.log("selectedSeriesChanged " + seriesList[i].value);
-                getCaseFilesAssociatedWithSeries(seriesList[i].object);
-                SetChosenSeries(seriesList[i].object);
+        for (var i in $scope.seriesList) {
+            if ($scope.seriesList[i].value == selectedSeries) {
+                console.log("selectedSeriesChanged " + $scope.seriesList[i].value);
+                getCaseFilesAssociatedWithSeries($scope.seriesList[i].object);
+                SetChosenSeries($scope.seriesList[i].object);
             }
         }
     };

@@ -16,6 +16,32 @@ var caseFileController = app.controller('CaseFileController', ['$scope', '$http'
     if (!$scope.caseFile) {
         $scope.createNewCaseFile = true;
         console.log("caseFileController. Creating a new CaseFile");
+
+        // Using the current casefile object, go and find the
+        // REL_NEW_CASE_FILE href and issue a GET to get any default
+        // values defined in the core
+        $scope.series = GetChosenSeries();
+
+        for (var rel in $scope.series._links) {
+            var relation = $scope.series._links[rel].rel;
+            if (relation == REL_NEW_CASE_FILE) {
+                var urlGetNewCaseFile = $scope.series._links[rel].href;
+                console.log("Doing a GET on " + urlGetNewCaseFile);
+                $http({
+                    method: 'GET',
+                    url: urlGetNewCaseFile,
+                    headers: {'Authorization': $scope.token},
+                }).then(function successCallback(response) {
+                    $scope.caseFile = response.data;
+                    console.log("urlGetNewCaseFile: " + urlGetNewCaseFile +
+                        " results " + JSON.stringify(response.data));
+                }, function errorCallback(response) {
+                    alert(JSON.stringify(response));
+                });
+            }
+        }
+
+
     }
     else {
         console.log("caseFileController. Showing an existing CaseFile");
@@ -73,7 +99,7 @@ var caseFileController = app.controller('CaseFileController', ['$scope', '$http'
     }
 
     $scope.registryEntrySelected = function (registryEntry) {
-        SetCurrentRegistryEntry(registryEntry);
+        SetChosenRegistryEntryObject(registryEntry);
         changeLocation($scope, registryEntryPageName, true);
     };
 
@@ -96,6 +122,7 @@ var caseFileController = app.controller('CaseFileController', ['$scope', '$http'
 
     $scope.createNewRegistryEntryPressed = function () {
         SetCurrentRegistryEntry('');
+        SetChosenRegistryEntryObject('');
         console.log("Current casefile is " + $scope.caseFile);
         for (var rel in $scope.caseFile._links) {
             var relation = $scope.caseFile._links[rel].rel;
@@ -121,6 +148,7 @@ var caseFileController = app.controller('CaseFileController', ['$scope', '$http'
         // check that it's not null, create a popup here if it is
         var method = '';
 
+        console.log("post_or_put_case_file using series " + GetChosenSeries());
         // First find the REL/HREF pair of the current series so we have an address we can POST/PUT
         // data to
         if ($scope.createNewCaseFile) {
@@ -145,7 +173,7 @@ var caseFileController = app.controller('CaseFileController', ['$scope', '$http'
                 }
             }
         }
-
+        $scope.createNewCaseFile = false;
         console.log("Attempting " + method + " on " + urlCaseFile);
         $http({
             url: urlCaseFile,

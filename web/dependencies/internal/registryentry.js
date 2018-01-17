@@ -11,161 +11,172 @@ var app = angular.module('nikita', ['nikita-shared']);
 app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService', function ($scope, $http, breadcrumbService) {
 
     $scope.display_breadcrumb = display_breadcrumb;
-    // Get the chosen caseFile to display the saksnr and tittel
     $scope.token = GetUserToken();
-    $scope.caseFile = JSON.parse(GetChosenCaseFile());
+
+    $scope.documentMediumList = documentMediumList;
+    $scope.caseStatusList = caseStatusList;
     $scope.registryEntryTypeList = registryEntryTypeList;
     $scope.registryEntryStatusList = registryEntryStatusList;
 
-    // Get the registryEntry to display
-    var registryEntry = JSON.parse(GetCurrentRegistryEntry());
-    $scope.registryEntry = JSON.parse(GetCurrentRegistryEntry());
+    $scope.showDetails = false;
+    $scope.showDetailsText = "Flere detaljer";
+
+    $scope.caseFile = JSON.parse(GetChosenCaseFile());
+    $scope.registryEntry = JSON.parse(GetChosenRegistryEntryObject());
+
+    console.log("$scope.registryEntry is set to " + $scope.registryEntry);
     // No chosen registryEntry, means we are creating a new registryEntry
-    if (!registryEntry) {
+    if ($scope.registryEntry == '') {
         $scope.createNewRegistryEntry = true;
-        $scope.formfields = [
-            'tittel', 'beskrivelse', 'journalposttype', 'journalpoststatus',
-            'journalaar', 'journalpostnummer', 'journalsekvensnummer',
-            'dokumentetsDato', 'journaldato',
-        ];
-        console.log("token is : " + $scope.token);
+        console.log("registryEntryController. Creating a new RegistryEntry");
 
-        var urlToCreateRegistryEntry = GetLinkToCreateRegistryEntry();
-        console.log("urlToCreateRegistryEntry is : " + urlToCreateRegistryEntry);
-        if (urlToCreateRegistryEntry) {
-
-            $http({
-                method: 'GET',
-                url: urlToCreateRegistryEntry,
-                headers: {
-                    'Accept': 'application/vnd.noark5-v4+json',
-                    'Authorization': GetUserToken()
-                }
-            }).then(function successCallback(response) {
-                console.log("ny-journalpost data is : " + JSON.stringify(response.data));
-                for (var key of Object.keys(response.data)) {
-                    if ("_links" === key) {
-                    } else {
-                        $scope[key] = response.data[key];
-                        $scope.formfields.push(key);
-                    }
-                }
-
-                console.log("Status : " + JSON.stringify(response.status));
-                console.log("Config : " + JSON.stringify(response.config));
-            }, function errorCallback(response) {
-                console.log("Status : " + JSON.stringify(response.status));
-                console.log("Config : " + JSON.stringify(response.config));
-            });
-        }
-        else {
-            alert("Internal error. No url available to call GET:ny-journalpost");
+        // Using the current casefile object, go and find the
+        // REL_NEW_REGISTRY_ENTRY href and issue a GET to get any default
+        // values defined in the core
+        for (var rel in $scope.caseFile._links) {
+            var relation = $scope.caseFile._links[rel].rel;
+            if (relation == REL_NEW_REGISTRY_ENTRY) {
+                var urlGetNewRegistryEntry = $scope.caseFile._links[rel].href;
+                console.log("Doing a GET on " + urlGetNewRegistryEntry);
+                $http({
+                    method: 'GET',
+                    url: urlGetNewRegistryEntry,
+                    headers: {'Authorization': $scope.token},
+                }).then(function successCallback(response) {
+                    $scope.registryEntry = response.data;
+                    console.log("urlGetNewRegistryEntry: " + urlGetNewRegistryEntry +
+                        " results " + JSON.stringify(response.data));
+                }, function errorCallback(response) {
+                    alert(JSON.stringify(response));
+                });
+            }
         }
     }
     else {
+        console.log("registryEntryController. Showing an existing RegistryEntry");
+        console.log("registryEntryController. RegistryEntry is " + $scope.registryEntry);
         $scope.createNewRegistryEntry = false;
+        $scope.registryEntryETag = -1;
 
-        var urlCurrentRegistryEntry = '';
-        var registryEntry = JSON.parse(GetCurrentRegistryEntry());
-        /**
-         * Getting the latest copy of the registryEntry and any documents attached to it.
-         *  Can be necessary from a UX perspective, if someone changes something or adds
-         *   e.g a new document to the registryEntry
-         */
-        for (var rel in registryEntry._links) {
-            var relation = registryEntry._links[rel].rel;
-            if (relation === REL_SELF) {
-                urlCurrentRegistryEntry = registryEntry._links[rel].href;
+        console.log("registryEntryController. RegistryEntry _links is " + $scope.registryEntry._links);
+
+        // You need to do a GET because you need an ETAG!
+        // So you get the SELF REL of the current registryEntry
+        // and retrieve it again so you have an ETAG
+        for (var rel in $scope.registryEntry._links) {
+            var relation = $scope.registryEntry._links[rel].rel;
+            if (relation == REL_SELF) {
+                var urlRegistryEntry = $scope.registryEntry._links[rel].href;
+                console.log("Attempting GET on registryEntry : " + urlRegistryEntry);
+                $http({
+                    method: 'GET',
+                    url: urlRegistryEntry,
+                    headers: {'Authorization': $scope.token},
+                }).then(function successCallback(response) {
+                    $scope.registryEntry = response.data;
+                    SetChosenRegistryEntryObject(response.data);
+
+                    $scope.registryEntryETag = response.headers('eTag');
+                    $scope.selectedRegistryEntryType = $scope.registryEntry.journalposttype;
+                    $scope.selectedRegistryEntryStatus = $scope.registryEntry.journalstatus;
+
+                    console.log("GET on registryEntry : " + urlRegistryEntry +
+                        " results " + JSON.stringify(response.data));
+
+                    // Now go through each rel and find the one linking to documentDescription
+                    for (var rel in $scope.registryEntry._links) {
+                        var relation = $scope.registryEntry._links[rel].rel;
+                        if (relation === REL_DOCUMENT_DESCRIPTION) {
+                            // here we have a link to the documentDescription
+                            var documentDescriptionHref = $scope.registryEntry._links[rel].href;
+                            console.log("Found HREF " + documentDescriptionHref);
+                            (function () {
+                                $http({
+                                    method: 'GET',
+                                    url: documentDescriptionHref,
+                                    headers: {'Authorization': GetUserToken()}
+                                }).then(function successCallback(response) {
+                                    $scope.registryEntry.documentDescription = response.data.results;
+                                    //console.log("document description is " + JSON.stringify(response.data) );
+
+                                    // Now go through each rel and find the one linking to documentObject
+                                    response.data.results.forEach(function (documentdescription) {
+                                        for (var rel in documentdescription._links) {
+                                            var relation = documentdescription._links[rel].rel;
+                                            if (relation === REL_DOCUMENT_OBJECT) {
+                                                var documentObjectHref = documentdescription._links[rel].href;
+                                                (function () {
+                                                    // here we have a link to the documentObject
+                                                    // Fetch the documentObject
+                                                    $http({
+                                                        method: 'GET',
+                                                        url: documentObjectHref,
+                                                        headers: {'Authorization': GetUserToken()}
+                                                    }).then(function successCallback(response) {
+                                                        $scope.documentObjectETag = response.headers('eTag');
+                                                        // This foreach needs to be replaced with a mechanism to handle multiple
+                                                        // documentObjects on documentDescription. Currently it will just pick up the
+                                                        // last one
+                                                        response.data.results.forEach(function (documentObject) {
+                                                            $scope.documentObject = documentObject;
+                                                        });
+                                                    }, function errorCallback(response) {
+                                                        alert("Problem with call to url [" + documentObjectHref + "] response is "
+                                                            + response);
+                                                    });
+                                                })(documentObjectHref);
+                                            }
+                                        }
+                                    });
+                                }, function errorCallback(response) {
+                                    alert("Problem with call to url [" + documentDescriptionHref + "] response is " + response);
+                                });
+                            })(documentDescriptionHref);
+                        }
+                        if (relation === REL_CORRESPONDENCE_PART_PERSON) {
+                            // here we have a link to correpondencepartperson
+                            console.log("Found RED REL_CORRESPONDENCE_PART_PERSON " + REL_CORRESPONDENCE_PART_PERSON);
+                            var correspondencePartPersonHref = $scope.registryEntry._links[rel].href;
+                            console.log("Found HREF " + correspondencePartPersonHref);
+                            (function () {
+                                $http({
+                                    method: 'GET',
+                                    url: correspondencePartPersonHref,
+                                    headers: {'Authorization': GetUserToken()}
+                                }).then(function successCallback(response) {
+                                    $scope.registryEntry.korrespondansepartperson = response.data.results;
+                                    console.log("korrespondansepartperson is " + JSON.stringify(response.data));
+                                }, function errorCallback(response) {
+                                    alert("Problem with call to url [" + correspondencePartPersonHref + "] response is " + response);
+                                });
+                            })(correspondencePartPersonHref);
+                        }
+                    }
+                }, function errorCallback(response) {
+                    alert(JSON.stringify(response));
+                });
             }
         }
 
-        console.log(" registryEntry GET " + urlCurrentRegistryEntry);
-
-        // Get the registryEntry
-        $http({
-            method: 'GET',
-            url: urlCurrentRegistryEntry,
-            headers: {'Authorization': $scope.token}
-        }).then(function successCallback(response) {
-            // registryEntry is in $scope.registryEntry
-            $scope.registryEntry = response.data;
-            // update the current registryEntry object
-            SetCurrentRegistryEntry($scope.registryEntry);
-            console.log(" $scope.registryEntry  is " + JSON.stringify($scope.registryEntry));
-            $scope.documentDescriptionETag = response.headers('eTag');
-            // Now go through each rel and find the one linking to documentDescription
-            for (var rel in $scope.registryEntry._links) {
-                var relation = $scope.registryEntry._links[rel].rel;
-                if (relation === REL_DOCUMENT_DESCRIPTION) {
-                    // here we have a link to the documentDescription
-                    var documentDescriptionHref = $scope.registryEntry._links[rel].href;
-                    console.log("Found HREF " + documentDescriptionHref);
-                    (function() {
-                        $http({
-                            method: 'GET',
-                            url: documentDescriptionHref,
-                            headers: {'Authorization': GetUserToken()}
-                        }).then(function successCallback(response) {
-                            $scope.registryEntry.documentDescription = response.data.results;
-                            //console.log("document description is " + JSON.stringify(response.data) );
-
-                            // Now go through each rel and find the one linking to documentObject
-                            response.data.results.forEach(function (documentdescription) {
-                                for (var rel in documentdescription._links) {
-                                    var relation = documentdescription._links[rel].rel;
-                                    if (relation === REL_DOCUMENT_OBJECT) {
-                                        var documentObjectHref = documentdescription._links[rel].href;
-                                        (function () {
-                                            // here we have a link to the documentObject
-                                            // Fetch the documentObject
-                                            $http({
-                                                method: 'GET',
-                                                url: documentObjectHref,
-                                                headers: {'Authorization': GetUserToken()}
-                                            }).then(function successCallback(response) {
-                                                $scope.documentObjectETag = response.headers('eTag');
-                                                // This foreach needs to be replaced with a mechanism to handle multiple
-                                                // documentObjects on documentDescription. Currently it will just pick up the
-                                                // last one
-                                                response.data.results.forEach(function (documentObject) {
-                                                    $scope.documentObject = documentObject;
-                                                });
-                                            }, function errorCallback(response) {
-                                                alert("Problem with call to url [" + documentObjectHref + "] response is "
-                                                    + response);
-                                            });
-                                        }) (documentObjectHref);
-                                    }
-                                }
-                            });
-                        }, function errorCallback(response) {
-                            alert("Problem with call to url [" + documentDescriptionHref + "] response is " + response);
-                        });
-                    }) (documentDescriptionHref);
-                }
-                if (relation === REL_CORRESPONDENCE_PART_PERSON) {
-                    // here we have a link to correpondencepartperson
-                    console.log("Found RED REL_CORRESPONDENCE_PART_PERSON " + REL_CORRESPONDENCE_PART_PERSON);
-                    var correspondencePartPersonHref = $scope.registryEntry._links[rel].href;
-                    console.log("Found HREF " + correspondencePartPersonHref);
-                    (function () {
-                        $http({
-                            method: 'GET',
-                            url: correspondencePartPersonHref,
-                            headers: {'Authorization': GetUserToken()}
-                        }).then(function successCallback(response) {
-                            $scope.registryEntry.korrespondansepartperson = response.data.results;
-                            console.log("korrespondansepartperson is " + JSON.stringify(response.data));
-                        }, function errorCallback(response) {
-                            alert("Problem with call to url [" + correspondencePartPersonHref + "] response is " + response);
-                        });
-                    })(correspondencePartPersonHref);
-                }
+        // Next go and get any registryEntires associated with the registryEntry
+        for (var rel in $scope.registryEntry._links) {
+            var relation = $scope.registryEntry._links[rel].rel;
+            if (relation == REL_REGISTRY_ENTRY) {
+                SetLinkToGetRegistryEntry($scope.registryEntry._links[rel].href);
+                var urlAllRegistryEntries = $scope.registryEntry._links[rel].href;
+                $http({
+                    method: 'GET',
+                    url: urlAllRegistryEntries,
+                    headers: {'Authorization': $scope.token},
+                }).then(function successCallback(response) {
+                    $scope.registryEntry.records = response.data.results;
+                    console.log("urlAllRegistryEntries: " + urlAllRegistryEntries +
+                        " results " + JSON.stringify(response.data));
+                }, function errorCallback(response) {
+                    alert(JSON.stringify(response));
+                });
             }
-        }, function errorCallback(response) {
-            alert("Problem with call to url [" + urlVal + "] response is " + response);
-        });
-        console.log("$scope.createNewRegistryEntry = " + $scope.createNewRegistryEntry);
+        }
     }
 
     $scope.newDocumentSelected = function (registryEntry) {
@@ -234,7 +245,75 @@ app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService
     };
 
 
-    $scope.send_form = function () {
+    /**
+     * Copy the registryEntry values from the DOM and send them to the noark core. Checks to see if this should
+     * be an update or a create operation and acts accordingly.
+     */
+
+    $scope.post_or_put_registry_entry = function () {
+        var urlRegistryEntry = '';
+        // check that it's not null, create a popup here if it is
+        var method = '';
+
+        console.log("post_or_put_registry_entry using casefile " + $scope.caseFile);
+        // First find the REL/HREF pair of the current series so we have an address we can POST/PUT
+        // data to
+        if ($scope.createNewRegistryEntry) {
+            method = "POST";
+
+            for (var rel in $scope.caseFile._links) {
+                var relation = $scope.caseFile._links[rel].rel;
+                if (relation == REL_NEW_REGISTRY_ENTRY) {
+                    urlRegistryEntry = $scope.caseFile._links[rel].href;
+                    console.log("URL for POST operation on RegistryEntry is " + urlRegistryEntry);
+                }
+            }
+        } else {
+            method = "PUT";
+            // Find the url to self object
+            for (var rel in $scope.registryEntry._links) {
+                var relation = $scope.registryEntry._links[rel].rel;
+                if (relation == REL_SELF) {
+                    urlRegistryEntry = $scope.registryEntry._links[rel].href;
+                    console.log("URL for PUT operation on RegistryEntry is " + urlRegistryEntry);
+                }
+            }
+        }
+
+
+        $http({
+            url: urlRegistryEntry,
+            method: method,
+            headers: {
+                'Content-Type': 'application/vnd.noark5-v4+json',
+                'Authorization': GetUserToken(),
+                'ETAG': $scope.registryEntryETag
+            },
+            data: {
+                tittel: $.trim(document.getElementById("tittel").value),
+                beskrivelse: $.trim(document.getElementById("beskrivelse").value),
+                journalpostnummer: Number($.trim(document.getElementById("journalpostnummer").value)),
+                journalaar: Number($.trim(document.getElementById("journalaar").value)),
+                dokumentetsDato: $.trim(document.getElementById("dokumentetsDato").value),
+                journaldato: $.trim(document.getElementById("journaldato").value),
+                journalstatus: $.trim(document.getElementById("journalpoststatus").value),
+                journalsekvensnummer: Number($.trim(document.getElementById("journalsekvensnummer").value)),
+                journalposttype: $.trim(document.getElementById("journalposttype").value),
+            },
+        }).then(function successCallback(response) {
+            console.log(method + " RegistryEntry data returned=" + JSON.stringify(response.data));
+            $scope.createNewRegistryEntry = false;
+            $scope.registryEntry = response.data;
+            SetChosenRegistryEntryObject($scope.registryEntry);
+        }, function (data, status, headers, config) {
+            alert("Could not " + method + "RegistryEntry " + data.data);
+        });
+    };
+}]);
+
+/*
+
+$scope.send_form = function () {
         url = GetLinkToCreateRegistryEntry();
         formdata = {};
         for (var key of $scope.formfields) {
@@ -268,3 +347,4 @@ app.controller('RegistryEntryController', ['$scope', '$http', 'breadcrumbService
     };
 }]);
 
+*/

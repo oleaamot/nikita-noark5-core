@@ -194,6 +194,17 @@ var GetChosenCaseFile = function () {
     return localStorage.getItem("chosenCaseFile");
 };
 
+var SetChosenRegistryEntryObject = function (t) {
+    localStorage.setItem("chosenRegistryEntry", JSON.stringify(t));
+    console.log("Setting chosenRegistryEntry=" + JSON.stringify(t));
+};
+
+var GetChosenRegistryEntryObject = function () {
+    var chosenRegistryEntry = localStorage.getItem("chosenRegistryEntry");
+    console.log("Getting chosenRegistryEntry=" + chosenRegistryEntry);
+    return localStorage.getItem("chosenRegistryEntry");
+};
+
 var SetLinkToChosenRecord = function (t) {
     localStorage.setItem("linkToChosenRecord", t);
     console.log("Setting linkToChosenRecord=" + t);

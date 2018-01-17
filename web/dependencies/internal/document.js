@@ -2,9 +2,9 @@ var app = angular.module('nikita', ['ngFileUpload']);
 
 app.controller('DocumentController', ['$scope', '$http', function ($scope, $http) {
 
-    console.log("GET Current registry entry value is " + GetCurrentRegistryEntry());
-    $scope.registryEntry = JSON.parse(GetCurrentRegistryEntry());
-
+    console.log("GET Current registry entry value is " + GetChosenRegistryEntryObject());
+    $scope.registryEntry = JSON.parse(GetChosenRegistryEntryObject());
+    $scope.token = GetUserToken();
     // Make a breadcrumbs value appear
     $scope.printDocument = true;
     $scope.display_breadcrumb = display_breadcrumb;
@@ -86,47 +86,62 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
     else {
         $scope.createNewDocument = true;
         $scope.label_document = "Nytt dokument";
+
+        // Using the current registryentry object, go and find the
+        // REL_NEW_DOCUMENT_DESCRIPTION href and issue a GET to get any default
+        // values defined in the core
+        for (var rel in $scope.registryEntry._links) {
+            var relation = $scope.registryEntry._links[rel].rel;
+            if (relation == REL_NEW_DOCUMENT_DESCRIPTION) {
+                var urlGetNewDocumentDescription = $scope.registryEntry._links[rel].href;
+                console.log("Doing a GET on " + urlGetNewDocumentDescription);
+                $http({
+                    method: 'GET',
+                    url: urlGetNewDocumentDescription,
+                    headers: {'Authorization': $scope.token},
+                }).then(function successCallback(response) {
+                    $scope.documentDescription = response.data;
+                    $scope.selectedDocumentType = $scope.documentDescription.dokumenttype;
+                    $scope.selectedTilknyttetRegistreringSom = $scope.documentDescription.tilknyttetRegistreringSom;
+                    $scope.selectedDocumentStatus = $scope.documentDescription.dokumentstatus;
+                    console.log("urlGetNewDocumentDescription: " + urlGetNewDocumentDescription +
+                        " results " + JSON.stringify(response.data));
+                }, function errorCallback(response) {
+                    alert(JSON.stringify(response));
+                });
+            }
+        }
+
     }
-
-    var changeLocation = function ($scope, url, forceReload) {
-        $scope = $scope || angular.element(document).scope();
-        console.log("URL" + url);
-        if (forceReload || $scope.$$phase) {
-            window.location = url;
-        }
-        else {
-            //only use this if you want to replace the history stack
-            //$location.path(url).replace();
-
-            //this this if you want to change the URL and add it to the history stack
-            $location.path(url);
-            $scope.$apply();
-        }
-    };
 
     $scope.uploadFiles = function (file, errFiles) {
         $scope.f = file;
 
-        var url = GetLinkToDocumentFile();
-        var mimeType = $scope.selectedMimeType;
-        $scope.errFile = errFiles && errFiles[0];
-        if (file) {
-            var xhr = new XMLHttpRequest();
-            xhr.withCredentials = true;
-            xhr.addEventListener("readystatechange", function () {
-                if (this.readyState === 4) {
-                    if (this.responseText.message) {
-                        alert("Kunne ikke laste opp fil. Kjernen sier følgende: " + this.responseText.message);
-                    }
-                    else {
-                        alert ("Kunne ikke laste opp fil.");
-                    }
+        for (rel in $scope.documentObject._links) {
+            relation = $scope.documentObject._links[rel].rel;
+            if (relation == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/fil/') {
+                var url = $scope.documentObject._links[rel].href;
+                var mimeType = $scope.selectedMimeType;
+                $scope.errFile = errFiles && errFiles[0];
+                if (file) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.withCredentials = true;
+                    xhr.addEventListener("readystatechange", function () {
+                        if (this.readyState === 4) {
+                            if (this.responseText.message) {
+                                alert("Kunne ikke laste opp fil. Kjernen sier følgende: " + this.responseText.message);
+                            }
+                            else {
+                                alert("Kunne ikke laste opp fil.");
+                            }
+                        }
+                    });
+                    xhr.open("POST", url);
+                    var blob = new Blob([file], {type: mimeType});
+                    xhr.setRequestHeader('Authorization', GetUserToken());
+                    xhr.send(blob);
                 }
-            });
-            xhr.open("POST", url);
-            var blob = new Blob([file], {type: mimeType});
-            xhr.setRequestHeader('Authorization', GetUserToken());
-            xhr.send(blob);
+            }
         }
     };
 
@@ -188,7 +203,6 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
             data: {
                 tittel: $.trim(document.getElementById("document_description_title").value),
                 beskrivelse: $.trim(document.getElementById("document_description_description").value),
-                dokumentstatus: $.trim(document.getElementById("document_description_title").value),
                 tilknyttetRegistreringSom: $.trim($scope.selectedTilknyttetRegistreringSom),
                 dokumenttype: $.trim($scope.selectedDocumentType),
                 dokumentnummer: Number($.trim(document.getElementById("document_number").value)),
@@ -245,7 +259,7 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
                         SetLinkToDocumentObject(href);
                     }
                 }
-                changeLocation($scope, "./dokument.html", false);
+                $scope.createNewDocument = false;
             }, function (data, status, headers, config) {
                 alert("Could not " + method + " document object " + data.data);
             });

@@ -21,15 +21,15 @@ var app = angular.module('nikita', [])
         var urlCorrespondencePartPerson = GetLinkToCurrentCorrespondencePartPerson();
 
         // Display journalpostnr and tittel for UX
-        $scope.registryEntry = JSON.parse(GetCurrentRegistryEntry());
+        $scope.registryEntry = JSON.parse(GetChosenRegistryEntryObject());
         // Needed for the breadcrumbs to display Sak(mappeID)
-        $scope.casefile = JSON.parse(GetChosenCaseFile());
+        $scope.caseFile = JSON.parse(GetChosenCaseFile());
         // Make a breadcrumbs value appear
         $scope.printCorrespondencePart = true;
         $scope.display_breadcrumb = display_breadcrumb;
 
         if (urlCorrespondencePartPerson) {
-            console.log("Curent urlCorrespondencePartPerson is" + JSON.stringify(urlCorrespondencePartPerson));
+            console.log("Current urlCorrespondencePartPerson is" + JSON.stringify(urlCorrespondencePartPerson));
             $scope.createCorrespondencePartPerson = false;
             $scope.buttonLabel = "Oppdater korrespondansepartperson";
             $scope.label_correspondansepart = "Korrespondansepartperson";
