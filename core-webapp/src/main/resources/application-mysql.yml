@@ -33,7 +33,7 @@ spring:
           import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
           import_files: db/mysql/import.sql,db/noark5_metadata_values.sql
 #        show_sql: true # Slows things down if this is enabled.
-        hbm2ddl.auto: update
+        hbm2ddl.auto: create
     database: mysql
 jwt:
   header: Authorization
