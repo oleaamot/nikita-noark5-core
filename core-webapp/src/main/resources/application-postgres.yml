@@ -10,17 +10,21 @@ server:
   contextPath: /noark5v4
   port: 8092
 spring:
-  jpa:
-#        show_sql: true # Slows things down if this is enabled.
-    hibernate:
-      ddl-auto: create-drop
-    database: postgresql
   datasource:
-    platform: postgres
     url: jdbc:postgresql://localhost:5432/nikita_noark5_prod
     username: INSERT-USERNAME-HERE
     password: INSERT-PASSWORD-HERE
-    driverClassName: org.postgresql.Driver
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: postgresql
+    properties:
+      hibernate:
+        hbm2ddl:
+          import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+          import_files: db/postgres/import.sql,db/noark5_metadata_values.sql
+#        show_sql: true # Slows things down if this is enabled.
+        hbm2ddl.auto: create
+    database: postgresql
 jwt:
   header: Authorization
   secret: mySecret
