@@ -1,7 +1,5 @@
 package nikita.config;
 
-import java.text.SimpleDateFormat;
-
 import static nikita.config.N5ResourceMappings.*;
 
 /**
@@ -14,12 +12,8 @@ public final class Constants {
     public static final String SUB = "under";
 
     // Spring profile for development and production
-    public static final String SPRING_PROFILE_DEVELOPMENT = "dev";
-    public static final String SPRING_PROFILE_DEMO = "demo";
     public static final String SPRING_PROFILE_PRODUCTION = "prod";
-    // Spring profile used to disable swagger
-    public static final String SPRING_PROFILE_NO_SWAGGER = "no-swagger";
-    public static final String SYSTEM_ACCOUNT = "system";
+    public static final String SPRING_PROFILE_SWAGGER = "swagger";
 
     public static final String SPRING_ENDPOINT_DELIMITER  = "||";
 

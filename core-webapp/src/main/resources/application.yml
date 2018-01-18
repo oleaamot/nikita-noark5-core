@@ -1,0 +1,102 @@
+# ===================================================================
+# Spring Boot configuration for the "demo" profile.
+#
+# This configuration overrides the application.yml file.
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+logging.level.org.springframework.web: DEBUG
+
+server:
+  application:
+    name: OsloMet Noark 5 Core (Demo mode)
+  contextPath: /noark5v4
+  port: 8092
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:n5DemoDb
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        hbm2ddl:
+          import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+          import_files: db/h2/demo/import.sql,db/noark5_metadata_values.sql
+        show_sql: true
+        hbm2ddl.auto: create-drop
+    database: h2
+  h2:
+    console:
+      enabled: true
+      path: /console
+
+management:
+    context-path: /management
+info:
+    app.name: OsloMet Noark 5 Core (Demo mode)
+    build.version: ${project.version}
+hateoas:
+    publicAddress: http://localhost:8092/noark5v4
+
+jwt:
+  header: Authorization
+  secret: mySecret
+  expiration: 604800
+  route:
+    authentication:
+      path: auth
+      refresh: refresh
+
+nikita-noark5-core:
+    pagination:
+      _maxPageSize: 10
+    mail:
+        from: nikita@example.com
+    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
+        jmx.enabled: true
+        spark:
+            enabled: false
+            host: localhost
+            port: 9999
+        graphite:
+            enabled: false
+            host: localhost
+            port: 2003
+            prefix: nikitaNoark5Core
+        logs: # report metrics in the logs
+            enabled: false
+            reportFrequency: 60 # in seconds
+    logging:
+        level:
+            ROOT: DEBUG
+        logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
+            enabled: false
+            host: localhost
+            port: 5000
+            queueSize: 512
+    persistence:
+         jpa.generateDdl: true
+         # For Feide login
+    saml:
+         entityId: no:hioa:nikita:noark5
+
+         idPUrl: http://nikita.hioa.no
+         idPMetadata: https://idp-test.feide.no/simplesaml/saml2/idp/administration.php
+    server:
+         name: nikita.hioa.no
+    details:
+        conformity-levels:
+            official: arkivstruktur, casehandling, metadata
+            non-official: gui, import-api
+    storage:
+        location: /tmp/dokumenter
+    checksumAlgorithm: SHA-256

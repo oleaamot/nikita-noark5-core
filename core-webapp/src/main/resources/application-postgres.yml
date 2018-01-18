@@ -1,5 +1,5 @@
 # ===================================================================
-# Spring Boot configuration for the "demo" profile.
+# Spring Boot configuration for the "dev" profile.
 #
 # This configuration overrides the application.yml file.
 # ===================================================================
@@ -10,37 +10,41 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
-logging.level.org.springframework.web: DEBUG
-
-
-
 spring:
     application:
-        name: HiOA Noark 5 Core (Demo mode)
+        name: HiOA Noark 5 Core (Production mode)
     profiles:
-        active: demo
-    mvc:
-      dispatch-options-request: true
+        active: prod
     devtools:
         restart:
             enabled: true
         livereload:
-            enabled: true
+            enabled: false # we use gulp + BrowserSync for livereload
+    datasource:
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/nikita_noark5_prod
+        name: nikita_noark5_prod
+        username: nikita
+        password: nikitapass
+        validation-query: SELECT 1;
     jpa:
-        database-platform: org.hibernate.dialect.H2Dialect
-        database: H2
-        show_sql: true
+        database-platform: org.hibernate.dialect.MySQL5Dialect
+        #database: MYSQL
+        show_sql: false
         properties:
-            hibernate.cache.use_second_level_cache: false
-            hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: false
-            hibernate.dialect: org.hibernate.dialect.H2Dialect
-            hibernate.show_sql: true
-            hibernate.hbm2ddl.auto: create-drop
-            hibernate.hbm2ddl.import_files: classpath:/db/h2/demo/import.sql # Import some data into the demo
-            hibernate.search.default.indexmanager: elasticsearch
-            hibernate.search.default.elasticsearch.index_schema_management_strategy: RECREATE_DELETE
-            hibernate.search.default.elasticsearch.host: http://localhost:9200
+            #hibernate.cache.use_second_level_cache: false
+            #hibernate.cache.use_query_cache: false
+            #hibernate.generate_statistics: true
+            #hibernate.search.default.directory_provider: filesystem
+            #hibernate.search.default.indexBase: core-webapp/target/lucene/indexes # This will probably be a /var/??? in production
+            hibernate.hbm2ddl.import_files: classpath:/db/mysql/prod/import.sql # Import some data into the demo
+            hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+            hibernate.show_sql: false
+            hibernate.hbm2ddl.auto: create
+            # Enable these to support elasticsearch, but wait until out of beta!
+            #hibernate.search.default.indexmanager: elasticsearch
+            #hibernate.search.default.elasticsearch.index_schema_management_strategy: MERGE # on applicatoin startup, use existing index
+            #hibernate.search.default.elasticsearch.host: https://localhost:9876 # Only required if not using localhost
     mail:
         host: localhost
     messages:
@@ -65,7 +69,7 @@ server:
 management:
     context-path: /management
 info:
-    app.name: HiOA Noark 5 Core (Demo version)
+    app.name: OsloMet Noark 5 Core (Demo version)
     build.version: ${project.version}
 hateoas:
     publicAddress: http://localhost:8092/noark5v4

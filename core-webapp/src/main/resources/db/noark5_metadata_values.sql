@@ -1,21 +1,3 @@
-insert into nikita_user (id, username, email, password, account_non_locked, credentials_non_expired, account_non_expired, enabled, account_created_date) values (1, 'admin', 'admin@example.com', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', true, true, true, true, '2016-08-08 00:00:00');
-insert into nikita_user (id, username, email, password, account_non_locked, credentials_non_expired, account_non_expired, enabled, account_created_date) values (2, 'recordkeeper', 'rm@example.com', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', true, true, true, true, '2016-08-08 00:00:00');
-insert into nikita_user (id, username, email, password, account_non_locked, credentials_non_expired, account_non_expired, enabled, account_created_date) values (3, 'casehandler', 'case_handler@example.com', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', true, true, true, true, '2016-08-08 00:00:00');
-insert into nikita_user (id, username, email, password, account_non_locked, credentials_non_expired, account_non_expired, enabled, account_created_date) values (4, 'leader', 'leader@example.com', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', true, true, true, true, '2016-08-08 00:00:00');
-insert into nikita_user (id, username, email, password, account_non_locked, credentials_non_expired, account_non_expired, enabled, account_created_date) values (5, 'guest', 'guest@example.com', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', true, true, true, true, '2016-08-08 00:00:00');
-
-INSERT INTO nikita_authority (id, authority_name) VALUES (1, 'RECORDS_MANAGER');
-INSERT INTO nikita_authority (id, authority_name) VALUES (2, 'RECORDS_KEEPER');
-INSERT INTO nikita_authority (id, authority_name) VALUES (3, 'CASE_HANDLER');
-INSERT INTO nikita_authority (id, authority_name) VALUES (4, 'LEADER');
-INSERT INTO nikita_authority (id, authority_name) VALUES (5, 'GUEST');
-
-insert into nikita_user_authority(user_id, authority_id) values (1, 1);
-insert into nikita_user_authority(user_id, authority_id) values (2, 2);
-insert into nikita_user_authority(user_id, authority_id) values (3, 3);
-insert into nikita_user_authority(user_id, authority_id) values (4, 4);
-insert into nikita_user_authority(user_id, authority_id) values (5, 5);
-
 insert into document_medium (pk_document_medium_id, system_id, code, description, deleted, version) values (0, '48e067ae-d794-4216-8a9d-7cb0ef03472c', 'Fysisk medium', 'Bare fysiske dokumenter', false, 0);
 insert into document_medium (pk_document_medium_id, system_id, code, description, deleted, version) values (1, '1b617405-9dd6-4187-bee6-81ed4f4a0e1f', 'Elektronisk arkiv', 'Bare elektroniske dokumenter', false, 0);
 insert into document_medium (pk_document_medium_id, system_id, code, deleted, version) values (2, '00d21eea-c231-4542-8e3a-964f441fbbd3', 'Blandet fysisk og elektronisk arkiv', false, 0);
@@ -62,3 +44,45 @@ insert into format (pk_format_id, system_id, code, description, deleted, version
 insert into format (pk_format_id, system_id, code, description, deleted, version) values (5, 'd5063523-83a2-4e51-b8aa-925385849e33', 'RA-SOSI', 'SOSI', false, 0);
 insert into format (pk_format_id, system_id, code, description, deleted, version) values (6, '9ae48e86-3c9e-47fd-bbf2-4d9f67b7de85', 'RA-MPEG-2', 'MPEG-2', false, 0);
 insert into format (pk_format_id, system_id, code, description, deleted, version) values (7, '7412833e-ceaf-40fd-95b5-e634f4640f99', 'RA-MP3', 'MP3', false, 0);
+
+INSERT INTO correspondence_part_type (pk_correspondence_part_type_id, system_id, code, description, deleted, version)
+VALUES (0, '5b4588a3-7e4d-43ae-a3a8-4033e52944c0', 'EA', 'Avsender', FALSE, 0);
+INSERT INTO correspondence_part_type (pk_correspondence_part_type_id, system_id, code, description, deleted, version)
+VALUES (1, 'c4a2097c-8cd1-496f-9cf5-bd16de1d85fe', 'EM', 'Mottaker', FALSE, 0);
+INSERT INTO correspondence_part_type (pk_correspondence_part_type_id, system_id, code, description, deleted, version)
+VALUES (2, '6c2ace2f-05b5-45c0-96da-cff41cc5b2e7', 'EK', 'Kopimottaker', FALSE, 0);
+INSERT INTO correspondence_part_type (pk_correspondence_part_type_id, system_id, code, description, deleted, version)
+VALUES (3, 'dcb06157-c8d3-4b43-a065-5cc21e80fbf6', 'GM', 'Gruppemottaker', FALSE, 0);
+INSERT INTO correspondence_part_type (pk_correspondence_part_type_id, system_id, code, description, deleted, version)
+VALUES (4, '896d5f6c-2093-492d-a531-7dd845d45808', 'IA', 'Intern avsender', FALSE, 0);
+INSERT INTO correspondence_part_type (pk_correspondence_part_type_id, system_id, code, description, deleted, version)
+VALUES (5, '77e1fbc4-e480-4e41-a97e-f429b816629e', 'IM', 'Intern mottaker', FALSE, 0);
+INSERT INTO correspondence_part_type (pk_correspondence_part_type_id, system_id, code, description, deleted, version)
+VALUES (6, '78e59b26-819c-4cf7-abe1-69fb6e457bcb', 'IK', 'Intern kopimottaker', FALSE, 0);
+
+INSERT INTO registry_entry_status (pk_registry_entry_status_id, system_id, code, description, deleted, version)
+VALUES (0, '0b4cfcb9-e979-4cdd-94d3-1660172976a4', 'J', 'Journalført', FALSE, 0);
+INSERT INTO registry_entry_status (pk_registry_entry_status_id, system_id, code, description, deleted, version)
+VALUES (1, '2f140067-8239-4ea3-88a3-c42380ec3885', 'F', 'Ferdigstilt fra saksbehandler', FALSE, 0);
+INSERT INTO registry_entry_status (pk_registry_entry_status_id, system_id, code, description, deleted, version)
+VALUES (2, '218deb74-f9e0-48e2-a523-3f47a6a44aba', 'G', 'Godkjent av leder', FALSE, 0);
+INSERT INTO registry_entry_status (pk_registry_entry_status_id, system_id, code, description, deleted, version)
+VALUES (3, '35940d96-e531-4e5b-8f0a-63f8c7d08cb0', 'E', 'Ekspedert', FALSE, 0);
+INSERT INTO registry_entry_status (pk_registry_entry_status_id, system_id, code, description, deleted, version)
+VALUES (4, '74aef294-f3d1-4e77-a3c1-abcb45a7eeea', 'A', 'Arkivert', FALSE, 0);
+INSERT INTO registry_entry_status (pk_registry_entry_status_id, system_id, code, description, deleted, version)
+VALUES (5, '8bc27628-f722-41c5-9ce9-4f46fc54bf34', 'U', 'Utgår', FALSE, 0);
+INSERT INTO registry_entry_status (pk_registry_entry_status_id, system_id, code, description, deleted, version)
+VALUES (6, '395ff299-e60d-4550-979e-5b682d8e4f61', 'M', 'Midlertidig registrering av', FALSE, 0);
+
+
+INSERT INTO registry_entry_type (pk_registry_entry_type_id, system_id, code, description, deleted, version)
+VALUES (0, '4827e5e0-0fae-4b9e-a01d-88ce00e8c62e', 'I', 'Inngående dokument', FALSE, 0);
+INSERT INTO registry_entry_type (pk_registry_entry_type_id, system_id, code, description, deleted, version)
+VALUES (1, 'f87a8b7f-bb31-4dea-98c6-13e1ac17e24f', 'U', 'Utgående dokument', FALSE, 0);
+INSERT INTO registry_entry_type (pk_registry_entry_type_id, system_id, code, description, deleted, version)
+VALUES (2, '001f176e-d68a-42f4-95f8-555a72c1a748', 'N', 'Organinternt dokument for oppfølging', FALSE, 0);
+INSERT INTO registry_entry_type (pk_registry_entry_type_id, system_id, code, description, deleted, version)
+VALUES (3, '2014243a-5d33-4fd3-98af-eda7ddd4cdc8', 'X', 'Organinternt dokument uten oppfølging', FALSE, 0);
+INSERT INTO registry_entry_type (pk_registry_entry_type_id, system_id, code, description, deleted, version)
+VALUES (4, '07c06822-50e8-47fb-a760-eaff70eaa64e', 'S', 'Saksframlegg', FALSE, 0);
