@@ -1,26 +1,44 @@
 # ===================================================================
-# Spring Boot configuration for the "postgres" profile.
+# Spring Boot configuration for the "sqllite" profile.
 #
 # This configuration overrides the application.yml file.
 # ===================================================================
 
 server:
   application:
-    name: OsloMet Noark 5 Core (Running on postgres)
+    name: OsloMet Noark 5 Core (Demo mode)
   contextPath: /noark5v4
   port: 8092
+
 spring:
-  jpa:
-#        show_sql: true # Slows things down if this is enabled.
-    hibernate:
-      ddl-auto: create-drop
-    database: postgresql
   datasource:
-    platform: postgres
-    url: jdbc:postgresql://localhost:5432/nikita_noark5_prod
-    username: INSERT-USERNAME-HERE
-    password: INSERT-PASSWORD-HERE
-    driverClassName: org.postgresql.Driver
+    url: jdbc:h2:mem:n5DemoDb
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        hbm2ddl:
+          import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+          import_files: db/h2/demo/import.sql,db/noark5_metadata_values.sql
+        show_sql: true
+        hbm2ddl.auto: create-drop
+    database: h2
+  h2:
+    console:
+      enabled: true
+      path: /console
+
+management:
+    context-path: /management
+info:
+    app.name: OsloMet Noark 5 Core (Demo mode)
+    build.version: ${project.version}
+hateoas:
+    publicAddress: http://localhost:8092/noark5v4
+
 jwt:
   header: Authorization
   secret: mySecret
@@ -29,20 +47,6 @@ jwt:
     authentication:
       path: auth
       refresh: refresh
-server:
-    contextPath: /noark5v4
-    port: 8092
-management:
-    context-path: /management
-info:
-    app.name: OsloMet Noark 5 Core (Demo version)
-    build.version: ${project.version}
-hateoas:
-    publicAddress: http://localhost:8092/noark5v4
-
-# ===================================================================
-# nikita-noark5-core specific properties
-# ===================================================================
 
 nikita-noark5-core:
     pagination:
@@ -73,6 +77,12 @@ nikita-noark5-core:
             queueSize: 512
     persistence:
          jpa.generateDdl: true
+         # For Feide login
+    saml:
+         entityId: no:hioa:nikita:noark5
+
+         idPUrl: http://nikita.hioa.no
+         idPMetadata: https://idp-test.feide.no/simplesaml/saml2/idp/administration.php
     server:
          name: nikita.hioa.no
     details:
