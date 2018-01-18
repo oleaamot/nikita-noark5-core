@@ -1,13 +1,6 @@
 # ===================================================================
-# Spring Boot configuration for the "demo" profile.
+# Spring Boot configuration for the default profile.
 #
-# This configuration overrides the application.yml file.
-# ===================================================================
-
-# ===================================================================
-# Standard Spring Boot properties.
-# Full reference is available at:
-# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
 logging.level.org.springframework.web: DEBUG
@@ -30,9 +23,9 @@ spring:
       hibernate:
         hbm2ddl:
           import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
-          import_files: db/h2/demo/import.sql,db/noark5_metadata_values.sql
+          import_files: db/h2/import.sql,db/noark5_metadata_values.sql
         show_sql: true
-        hbm2ddl.auto: create-drop
+        hbm2ddl.auto: create
     database: h2
   h2:
     console:
@@ -86,11 +79,7 @@ nikita-noark5-core:
     persistence:
          jpa.generateDdl: true
          # For Feide login
-    saml:
-         entityId: no:hioa:nikita:noark5
 
-         idPUrl: http://nikita.hioa.no
-         idPMetadata: https://idp-test.feide.no/simplesaml/saml2/idp/administration.php
     server:
          name: nikita.hioa.no
     details:
