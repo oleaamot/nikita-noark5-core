@@ -1,60 +1,30 @@
 # ===================================================================
-# Spring Boot configuration for the "dev" profile.
+# Spring Boot configuration for the "mysql" profile.
 #
 # This configuration overrides the application.yml file.
 # ===================================================================
 
-# ===================================================================
-# Standard Spring Boot properties.
-# Full reference is available at:
-# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
-# ===================================================================
-
+server:
+  application:
+    name: OsloMet Noark 5 Core (Running on MySQL)
+  contextPath: /noark5v4
+  port: 8092
 spring:
-    application:
-        name: HiOA Noark 5 Core (Production mode)
-    profiles:
-        active: prod
-    devtools:
-        restart:
-            enabled: true
-        livereload:
-            enabled: false # we use gulp + BrowserSync for livereload
-    datasource:
-        driverClassName: com.mysql.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/nikita_noark5_prod
-        name: nikita_noark5_prod
-        username: nikita
-        password: nikitapass
-        validation-query: SELECT 1;
-    jpa:
-        database-platform: org.hibernate.dialect.MySQL5Dialect
-        #database: MYSQL
-        show_sql: false
-        properties:
-            #hibernate.cache.use_second_level_cache: false
-            #hibernate.cache.use_query_cache: false
-            #hibernate.generate_statistics: true
-            #hibernate.search.default.directory_provider: filesystem
-            #hibernate.search.default.indexBase: core-webapp/target/lucene/indexes # This will probably be a /var/??? in production
-            hibernate.hbm2ddl.import_files: classpath:/db/mysql/prod/import.sql # Import some data into the demo
-            hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
-            hibernate.show_sql: false
-            hibernate.hbm2ddl.auto: create
-            # Enable these to support elasticsearch, but wait until out of beta!
-            #hibernate.search.default.indexmanager: elasticsearch
-            #hibernate.search.default.elasticsearch.index_schema_management_strategy: MERGE # on applicatoin startup, use existing index
-            #hibernate.search.default.elasticsearch.host: https://localhost:9876 # Only required if not using localhost
-    mail:
-        host: localhost
-    messages:
-        basename: i18n/messages
-        cache-seconds: 1
-    thymeleaf:
-        cache: false
-    output:
-        ansi:
-          enabled: ALWAYS
+  datasource:
+    url: jdbc:mysql://localhost:3306/nikita_noark5_prod
+    username: INSERT-USERNAME-HERE
+    password: INSERT-PASSWORD-HERE
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    properties:
+      hibernate:
+        hbm2ddl:
+          import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+          import_files: db/mysql/demo/import.sql,db/noark5_metadata_values.sql
+        show_sql: true
+        hbm2ddl.auto: create-drop
+    database: mysql
 jwt:
   header: Authorization
   secret: mySecret
@@ -63,9 +33,8 @@ jwt:
     authentication:
       path: auth
       refresh: refresh
-server:
-    contextPath: /noark5v4
-    port: 8092
+
+
 management:
     context-path: /management
 info:
@@ -74,12 +43,6 @@ info:
 hateoas:
     publicAddress: http://localhost:8092/noark5v4
 
-    #ssl:
-    #    key-store: classpath:saml/nikitaKeystore.jks
-    #    key-store-password: **********
-    #    keyStoreType: JCEKS
-    #    #PKCS12
-    #    keyAlias: test-saml
 
 # ===================================================================
 # nikita-noark5-core specific properties
