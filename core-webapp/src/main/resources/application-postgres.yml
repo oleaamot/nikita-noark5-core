@@ -16,7 +16,7 @@ spring:
     password: INSERT-PASSWORD-HERE
     driver-class-name: org.postgresql.Driver
   jpa:
-    database-platform: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
         hbm2ddl:
@@ -33,9 +33,6 @@ jwt:
     authentication:
       path: auth
       refresh: refresh
-server:
-    contextPath: /noark5v4
-    port: 8092
 management:
     context-path: /management
 info:
