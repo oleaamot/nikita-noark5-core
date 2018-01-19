@@ -74,18 +74,29 @@
             <artifactId>h2</artifactId>
         </dependency>
 
-        <!-- Postgres database (for dev, prod profiles. Should work automatically based on application-????.yaml) -->
+        <!-- Postgres database -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-
         </dependency>
 
-        <!-- MySQL database (for dev, prod profiles. Should work automatically based on application-????.yaml) -->
+        <!-- MySQL database -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.20.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zsoltfabok</groupId>
+            <artifactId>sqlite-dialect</artifactId>
+            <version>1.0</version>
         </dependency>
 
         <!-- Used for things like ExceptionUtils -->
