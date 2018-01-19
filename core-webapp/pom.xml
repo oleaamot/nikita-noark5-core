@@ -87,12 +87,6 @@
             <version>${mysql.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.xerial</groupId>
-            <artifactId>sqlite-jdbc</artifactId>
-            <version>3.20.1</version>
-        </dependency>
-
         <!-- Used for things like ExceptionUtils -->
         <dependency>
             <groupId>org.apache.commons</groupId>
