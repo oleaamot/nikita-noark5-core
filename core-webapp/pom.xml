@@ -93,12 +93,6 @@
             <version>3.20.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.zsoltfabok</groupId>
-            <artifactId>sqlite-dialect</artifactId>
-            <version>1.0</version>
-        </dependency>
-
         <!-- Used for things like ExceptionUtils -->
         <dependency>
             <groupId>org.apache.commons</groupId>

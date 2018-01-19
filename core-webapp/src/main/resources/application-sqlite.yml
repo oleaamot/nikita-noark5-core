@@ -22,7 +22,7 @@ spring:
     properties:
       hibernate:
         ddl-auto: update
-        dialect: org.hibernate.dialect.SQLiteDialect
+        dialect: no.arkivlab.hioa.nikita.webapp.spring.database.SQLiteDialect
         integration:
           envers:
             enabled: false
