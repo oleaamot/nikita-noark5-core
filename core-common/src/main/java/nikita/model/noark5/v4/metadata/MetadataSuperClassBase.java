@@ -180,6 +180,9 @@ public class MetadataSuperClassBase implements INikitaEntity, Comparable<Metadat
         return new EqualsBuilder()
                 .appendSuper(super.equals(other))
                 .append(systemId, rhs.systemId)
+                .append(deleted, rhs.getDeleted())
+                .append(version, rhs.getVersion())
+                .append(ownedBy, rhs.getOwnedBy())
                 .isEquals();
     }
 
