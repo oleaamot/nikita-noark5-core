@@ -175,16 +175,24 @@ public class NoarkEntity implements INikitaEntity, Comparable<NoarkEntity>   {
 
     @Override
     public boolean equals(Object other) {
-        if (other == this)
-            return true;
-        if (!(other instanceof NoarkEntity))
+        if (other == null) {
             return false;
-        NoarkEntity noarkEntity = (NoarkEntity) other;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        NoarkGeneralEntity rhs = (NoarkGeneralEntity) other;
         return new EqualsBuilder()
-                .append(this.systemId, noarkEntity.systemId)
+                .appendSuper(super.equals(other))
+                .append(systemId, rhs.getSystemId())
+                .append(ownedBy, rhs.getOwnedBy())
+                .append(deleted, rhs.getDeleted())
+                .append(version, rhs.getVersion())
                 .isEquals();
     }
-
     @Override
     public String toString() {
         return "id=" + id +

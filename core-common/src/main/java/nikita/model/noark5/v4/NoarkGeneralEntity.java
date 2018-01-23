@@ -153,13 +153,24 @@ public class NoarkGeneralEntity extends NoarkEntity implements INoarkGeneralEnti
 
     @Override
     public boolean equals(Object other) {
-        if (other == this)
-            return true;
-        if (!(other instanceof NoarkGeneralEntity))
+        if (other == null) {
             return false;
-        NoarkGeneralEntity noarkGeneralEntity = (NoarkGeneralEntity)other;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        NoarkGeneralEntity rhs = (NoarkGeneralEntity) other;
         return new EqualsBuilder()
-                .append(this.createdDate, noarkGeneralEntity.createdDate)
+                .appendSuper(super.equals(other))
+                .append(title, rhs.title)
+                .append(description, rhs.description)
+                .append(createdDate, rhs.createdDate)
+                .append(createdBy, rhs.createdBy)
+                .append(finalisedDate, rhs.finalisedDate)
+                .append(finalisedBy, rhs.finalisedBy)
                 .isEquals();
     }
 
