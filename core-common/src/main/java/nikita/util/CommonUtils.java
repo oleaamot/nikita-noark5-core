@@ -703,8 +703,7 @@ public final class CommonUtils {
 
             public static Set<CaseParty> deserialiseCaseParties(ObjectNode objectNode, StringBuilder errors) {
                 TreeSet<CaseParty> caseParties = new TreeSet<>();
-                JsonNode jsonCorrespondenceParts = objectNode.get(CORRESPONDENCE_PART);
-
+                //JsonNode jsonCaseParty = objectNode.get(CASE_PARTY);
                 // TODO: I seem tobe missing my body of code ...
 /*                for (CorrespondencePart correspondencePart: caseParties) {
                     deserialiseCorrespondencePart(correspondencePart, objectNode);
