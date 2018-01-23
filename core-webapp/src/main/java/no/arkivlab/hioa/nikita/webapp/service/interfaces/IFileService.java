@@ -30,6 +30,9 @@ public interface IFileService {
 	// id
 	File findById(Long id);
 
+    // id
+    File findBySystemId(String systemId);
+
 	// ownedBy
 	List<File> findByOwnedBy(String ownedBy);
 	List<File> findByOwnedBy(String ownedBy, Sort sort);

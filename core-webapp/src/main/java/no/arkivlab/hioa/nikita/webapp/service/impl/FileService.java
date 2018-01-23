@@ -122,6 +122,14 @@ public class FileService implements IFileService {
     }
 
     // All READ operations
+
+
+    // systemId
+    @Override
+    public File findBySystemId(String systemId) {
+        return getFileOrThrow(systemId);
+    }
+
     @Override
     public List<File> findFileByOwnerPaginated(Integer top, Integer skip) {
 
