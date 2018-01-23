@@ -107,7 +107,7 @@ public class ClassHateoasController extends NoarkController {
                     value = "systemId of class to retrieve.",
                     required = true)
             @PathVariable("systemID") final String classSystemId) {
-        Class klass = classService.findBySystemIdOrderBySystemId(classSystemId);
+        Class klass = classService.findBySystemId(classSystemId);
         if (klass == null) {
             throw new NoarkEntityNotFoundException(classSystemId);
         }
@@ -166,7 +166,7 @@ public class ClassHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        Class klass = classService.findBySystemIdOrderBySystemId(systemID);
+        Class klass = classService.findBySystemId(systemID);
         NoarkEntity parentEntity = klass.chooseParent();
         classService.deleteEntity(systemID);
         HateoasNoarkObject hateoasNoarkObject;
