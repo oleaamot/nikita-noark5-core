@@ -167,13 +167,19 @@ public class MetadataSuperClassBase implements INikitaEntity, Comparable<Metadat
 
     @Override
     public boolean equals(Object other) {
-        if (other == this)
-            return true;
-        if (!(other instanceof MetadataSuperClassBase))
+        if (other == null) {
             return false;
-        MetadataSuperClassBase entity = (MetadataSuperClassBase) other;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        UniqueCodeMetadataSuperClass rhs = (UniqueCodeMetadataSuperClass) other;
         return new EqualsBuilder()
-                .append(this.systemId, entity.systemId)
+                .appendSuper(super.equals(other))
+                .append(systemId, rhs.systemId)
                 .isEquals();
     }
 
