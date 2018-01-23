@@ -138,7 +138,7 @@ public class Role extends NoarkEntity implements IRoleEntity {
 
     @Override
     public String toString() {
-        return "Role{" +
+        return "Role{" + super.toString() +
                 "role='" + role + '\'' +
                 ", referenceEntity='" + referenceEntity + '\'' +
                 ", read=" + read +
