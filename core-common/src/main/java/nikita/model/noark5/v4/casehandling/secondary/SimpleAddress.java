@@ -2,6 +2,7 @@ package nikita.model.noark5.v4.casehandling.secondary;
 
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.interfaces.entities.casehandling.ISimpleAddressEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -132,5 +133,29 @@ public class SimpleAddress extends NoarkEntity implements ISimpleAddressEntity {
                 ", postalTown='" + postalTown + '\'' +
                 ", countryCode='" + countryCode + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+
+        SimpleAddress rhs = (SimpleAddress) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(addressLine1, rhs.addressLine1)
+                .append(addressLine2, rhs.addressLine2)
+                .append(addressLine3, rhs.addressLine3)
+                .append(postalNumber, rhs.postalNumber)
+                .append(postalTown, rhs.postalTown)
+                .append(countryCode, rhs.countryCode)
+                .isEquals();
     }
 }
