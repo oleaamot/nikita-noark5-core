@@ -17,7 +17,9 @@ import nikita.model.noark5.v4.secondary.*;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
-import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.*;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentDescriptionHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IDocumentObjectHateoasHandler;
+import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IRecordHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IRecordService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
@@ -47,22 +49,20 @@ public class RecordHateoasController extends NoarkController {
     private IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler;
     private IDocumentObjectHateoasHandler documentObjectHateoasHandler;
     private IRecordHateoasHandler recordHateoasHandler;
-    private ISeriesHateoasHandler seriesHateoasHandler;
-    private IFileHateoasHandler fileHateoasHandler;
-    private IClassHateoasHandler classHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
 
     public RecordHateoasController(IRecordService recordService,
-                                   IDocumentDescriptionHateoasHandler documentDescriptionHateoasHandler,
-                                   IDocumentObjectHateoasHandler documentObjectHateoasHandler
-            , IRecordHateoasHandler recordHateoasHandler, ISeriesHateoasHandler seriesHateoasHandler, IFileHateoasHandler fileHateoasHandler, IClassHateoasHandler classHateoasHandler, ApplicationEventPublisher applicationEventPublisher) {
+                                   IDocumentDescriptionHateoasHandler
+                                           documentDescriptionHateoasHandler,
+                                   IDocumentObjectHateoasHandler
+                                           documentObjectHateoasHandler,
+                                   IRecordHateoasHandler recordHateoasHandler,
+                                   ApplicationEventPublisher
+                                           applicationEventPublisher) {
         this.recordService = recordService;
         this.documentDescriptionHateoasHandler = documentDescriptionHateoasHandler;
         this.documentObjectHateoasHandler = documentObjectHateoasHandler;
         this.recordHateoasHandler = recordHateoasHandler;
-        this.seriesHateoasHandler = seriesHateoasHandler;
-        this.fileHateoasHandler = fileHateoasHandler;
-        this.classHateoasHandler = classHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
@@ -647,5 +647,4 @@ public class RecordHateoasController extends NoarkController {
                 .eTag(updatedRecord.getVersion().toString())
                 .body(recordHateoas);
     }
-
 }
