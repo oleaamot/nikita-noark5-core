@@ -8,6 +8,7 @@ import nikita.model.noark5.v4.secondary.Conversion;
 import nikita.model.noark5.v4.secondary.ElectronicSignature;
 import nikita.util.deserialisers.DocumentObjectDeserializer;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -306,4 +307,34 @@ public class DocumentObject  extends NoarkEntity implements INoarkCreateEntity,
                 ", originalFilename=" + originalFilename +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        DocumentObject rhs = (DocumentObject) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(fileSize, rhs.fileSize)
+                .append(checksumAlgorithm, rhs.checksumAlgorithm)
+                .append(checksum, rhs.checksum)
+                .append(referenceDocumentFile, rhs.referenceDocumentFile)
+                .append(createdBy, rhs.createdBy)
+                .append(createdDate, rhs.createdDate)
+                .append(formatDetails, rhs.formatDetails)
+                .append(format, rhs.format)
+                .append(variantFormat, rhs.variantFormat)
+                .append(versionNumber, rhs.versionNumber)
+                .append(mimeType, rhs.mimeType)
+                .append(originalFilename, rhs.originalFilename)
+                .isEquals();
+    }
+
 }
