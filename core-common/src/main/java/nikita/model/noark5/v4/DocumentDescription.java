@@ -6,6 +6,7 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkCreateEntity;
 import nikita.model.noark5.v4.interfaces.entities.INoarkTitleDescriptionEntity;
 import nikita.model.noark5.v4.secondary.*;
 import nikita.util.deserialisers.DocumentDescriptionDeserializer;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -25,7 +26,6 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_DESCRIPTION;
 //@Indexed(index = "document_description")
 @JsonDeserialize(using = DocumentDescriptionDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_document_description_id"))
-//TODO: Important! Should DocumentDescription have links to Series???
 public class DocumentDescription extends NoarkEntity implements  INoarkTitleDescriptionEntity,
         INoarkCreateEntity, IDocumentMedium, ISingleStorageLocation, IDeletion, IScreening, IDisposal, IClassified,
         IDisposalUndertaken, IComment, IElectronicSignature, IAuthor {
@@ -401,5 +401,33 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
                 ", documentStatus='" + documentStatus + '\'' +
                 ", documentType='" + documentType + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        DocumentDescription rhs = (DocumentDescription) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(associatedBy, rhs.associatedBy)
+                .append(associationDate, rhs.associationDate)
+                .append(associatedWithRecordAs, rhs.associatedWithRecordAs)
+                .append(documentNumber, rhs.documentNumber)
+                .append(documentMedium, rhs.documentMedium)
+                .append(documentStatus, rhs.documentStatus)
+                .append(documentType, rhs.documentType)
+                .append(description, rhs.description)
+                .append(createdDate, rhs.createdDate)
+                .append(createdBy, rhs.createdBy)
+                .append(title, rhs.title)
+                .isEquals();
     }
 }
