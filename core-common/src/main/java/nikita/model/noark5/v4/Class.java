@@ -8,6 +8,7 @@ import nikita.model.noark5.v4.interfaces.IScreening;
 import nikita.model.noark5.v4.secondary.*;
 import nikita.util.deserialisers.ClassDeserializer;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -182,6 +183,7 @@ public class Class extends NoarkGeneralEntity implements IDisposal, IScreening, 
     public void setReferenceCrossReference(Set<CrossReference> referenceCrossReference) {
         this.referenceCrossReference = referenceCrossReference;
     }
+
     public NoarkEntity chooseParent() {
         if (null != referenceParentClass) {
             return referenceParentClass;
@@ -193,10 +195,29 @@ public class Class extends NoarkGeneralEntity implements IDisposal, IScreening, 
             throw new NoarkEntityNotFoundException("Could not find parent object for " + this.toString());
         }
     }
+
     @Override
     public String toString() {
         return "Class{" + super.toString() +
                 ", classId='" + classId + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Class rhs = (Class) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(classId, rhs.classId)
+                .isEquals();
     }
 }
