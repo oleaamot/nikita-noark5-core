@@ -1,5 +1,6 @@
 package nikita.model.noark5.v4;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -72,4 +73,21 @@ public class ClassificationSystem extends NoarkGeneralEntity {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        ClassificationSystem rhs = (ClassificationSystem) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(classificationType, rhs.classificationType)
+                .isEquals();
+    }
 }
