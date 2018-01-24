@@ -7,6 +7,7 @@ import nikita.model.noark5.v4.interfaces.IFondsCreator;
 import nikita.model.noark5.v4.interfaces.IStorageLocation;
 import nikita.model.noark5.v4.secondary.StorageLocation;
 import nikita.util.deserialisers.FondsDeserializer;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -137,4 +138,24 @@ public class Fonds extends NoarkGeneralEntity implements IStorageLocation, IDocu
                 ", documentMedium='" + documentMedium + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Fonds rhs = (Fonds) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(fondsStatus, rhs.fondsStatus)
+                .append(documentMedium, rhs.documentMedium)
+                .isEquals();
+    }
+
 }
