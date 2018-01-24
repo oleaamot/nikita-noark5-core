@@ -371,7 +371,7 @@ public class SeriesHateoasController extends NoarkController {
                     value = "systemID of the series to retrieve",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        Series series = seriesService.findBySystemIdOrderBySystemId(systemID);
+        Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
@@ -469,7 +469,7 @@ public class SeriesHateoasController extends NoarkController {
                     value = "systemId of the series to retrieve",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        /*Series series = seriesService.findBySystemIdOrderBySystemId(systemID);
+        /*Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
@@ -501,7 +501,7 @@ public class SeriesHateoasController extends NoarkController {
                     value = "systemId of the series to retrieve",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        /*Series series = seriesService.findBySystemIdOrderBySystemId(systemID);
+        /*Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
@@ -534,7 +534,7 @@ public class SeriesHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        /*Series series = seriesService.findBySystemIdOrderBySystemId(systemID);
+        /*Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
@@ -568,7 +568,7 @@ public class SeriesHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        /*Series series = seriesService.findBySystemIdOrderBySystemId(systemID);
+        /*Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
@@ -638,7 +638,7 @@ public class SeriesHateoasController extends NoarkController {
                     value = "systemID of the series to retrieve",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        Series series = seriesService.findBySystemIdOrderBySystemId(systemID);
+        Series series = seriesService.findBySystemId(systemID);
         RecordHateoas recordHateoas = new RecordHateoas(new ArrayList<>(series.getReferenceRecord()));
         recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
@@ -673,7 +673,7 @@ public class SeriesHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        Series series = seriesService.findBySystemIdOrderBySystemId(systemID);
+        Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
@@ -741,7 +741,7 @@ public class SeriesHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        Series series = seriesService.findBySystemIdOrderBySystemId(systemID);
+        Series series = seriesService.findBySystemId(systemID);
         Fonds fonds = series.getReferenceFonds();
         FondsHateoas fondsHateoas = new FondsHateoas(fonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
