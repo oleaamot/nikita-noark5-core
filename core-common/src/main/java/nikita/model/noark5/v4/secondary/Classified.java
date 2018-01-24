@@ -3,6 +3,7 @@ package nikita.model.noark5.v4.secondary;
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.interfaces.entities.IClassifiedEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -164,5 +165,27 @@ public class Classified extends NoarkEntity implements IClassifiedEntity {
                 ", classificationDowngradedDate=" + classificationDowngradedDate +
                 ", classificationDowngradedBy='" + classificationDowngradedBy + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Classified rhs = (Classified) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(classification, rhs.classification)
+                .append(classificationDate, rhs.classificationDate)
+                .append(classificationBy, rhs.classificationBy)
+                .append(classificationDowngradedDate, rhs.classificationDowngradedDate)
+                .append(classificationDowngradedBy, rhs.classificationDowngradedBy)
+                .isEquals();
     }
 }

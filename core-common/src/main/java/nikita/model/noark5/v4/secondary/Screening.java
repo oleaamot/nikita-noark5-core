@@ -3,6 +3,7 @@ package nikita.model.noark5.v4.secondary;
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.interfaces.entities.IScreeningEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -178,7 +179,7 @@ public class Screening extends NoarkEntity implements IScreeningEntity {
 
     @Override
     public String toString() {
-        return "SignOff{" + super.toString() + 
+        return "Screening {" + super.toString() +
                 "screeningDuration='" + screeningDuration + '\'' +
                 ", screeningExpiresDate=" + screeningExpiresDate +
                 ", screeningDocument='" + screeningDocument + '\'' +
@@ -186,5 +187,28 @@ public class Screening extends NoarkEntity implements IScreeningEntity {
                 ", screeningAuthority='" + screeningAuthority + '\'' +
                 ", accessRestriction='" + accessRestriction + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Screening rhs = (Screening) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(screeningDuration, rhs.screeningDuration)
+                .append(screeningExpiresDate, rhs.screeningExpiresDate)
+                .append(screeningDocument, rhs.screeningDocument)
+                .append(screeningMetadata, rhs.screeningMetadata)
+                .append(screeningAuthority, rhs.screeningAuthority)
+                .append(accessRestriction, rhs.accessRestriction)
+                .isEquals();
     }
 }

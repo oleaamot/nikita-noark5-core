@@ -3,6 +3,7 @@ package nikita.model.noark5.v4.secondary;
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.casehandling.RegistryEntry;
 import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePart;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -112,5 +113,25 @@ public class SignOff extends NoarkEntity {
                 ", signOffBy='" + signOffBy + '\'' +
                 ", signOffDate=" + signOffDate +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        SignOff rhs = (SignOff) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(signOffMethod, rhs.signOffMethod)
+                .append(signOffBy, rhs.signOffBy)
+                .append(signOffDate, rhs.signOffDate)
+                .isEquals();
     }
 }

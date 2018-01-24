@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nikita.model.noark5.v4.*;
 import nikita.util.serializers.noark5v4.StorageLocationSerializer;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -98,4 +99,23 @@ public class StorageLocation extends NoarkEntity {
                 ", storageLocation='" + storageLocation + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        StorageLocation rhs = (StorageLocation) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(storageLocation, rhs.storageLocation)
+                .isEquals();
+    }
+
 }

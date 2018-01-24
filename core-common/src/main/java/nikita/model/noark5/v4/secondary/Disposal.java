@@ -3,6 +3,7 @@ package nikita.model.noark5.v4.secondary;
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.interfaces.entities.IDisposalEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -150,5 +151,26 @@ public class Disposal extends NoarkEntity implements IDisposalEntity {
                 ", disposalAuthority='" + disposalAuthority + '\'' +
                 ", disposalDecision='" + disposalDecision + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Disposal rhs = (Disposal) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(disposalDate, rhs.disposalDate)
+                .append(preservationTime, rhs.preservationTime)
+                .append(disposalAuthority, rhs.disposalAuthority)
+                .append(disposalDecision, rhs.disposalDecision)
+                .isEquals();
     }
 }

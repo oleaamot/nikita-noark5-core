@@ -4,6 +4,7 @@ import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.interfaces.entities.IDeletionEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -98,5 +99,25 @@ public class Deletion extends NoarkEntity implements IDeletionEntity {
                 ", deletionBy='" + deletionBy + '\'' +
                 ", deletionType='" + deletionType + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Deletion rhs = (Deletion) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(deletionDate, rhs.deletionDate)
+                .append(deletionBy, rhs.deletionBy)
+                .append(deletionType, rhs.deletionType)
+                .isEquals();
     }
 }

@@ -5,6 +5,7 @@ import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.File;
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.interfaces.entities.ICommentEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -133,5 +134,26 @@ public class Comment extends NoarkEntity implements ICommentEntity {
                 ", commentDate=" + commentDate +
                 ", commentRegisteredBy='" + commentRegisteredBy + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Comment rhs = (Comment) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(commentText, rhs.commentText)
+                .append(commentType, rhs.commentType)
+                .append(commentDate, rhs.commentDate)
+                .append(commentRegisteredBy, rhs.commentRegisteredBy)
+                .isEquals();
     }
 }
