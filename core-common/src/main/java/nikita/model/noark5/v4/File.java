@@ -6,6 +6,7 @@ import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.secondary.*;
 import nikita.util.deserialisers.FileDeserializer;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -274,4 +275,25 @@ public class File extends NoarkGeneralEntity  implements IDocumentMedium, IStora
                 ", fileId='" + fileId + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        File rhs = (File) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(documentMedium, rhs.documentMedium)
+                .append(officialTitle, rhs.officialTitle)
+                .append(fileId, rhs.fileId)
+                .isEquals();
+    }
+
 }
