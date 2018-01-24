@@ -22,7 +22,6 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsHateoasH
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ISeriesHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.model.application.FondsStructureDetails;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
-import no.arkivlab.hioa.nikita.webapp.service.application.ApplicationService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
@@ -61,7 +60,6 @@ public class FondsHateoasController extends NoarkController {
     private IFondsCreatorHateoasHandler fondsCreatorHateoasHandler;
     private ISeriesHateoasHandler seriesHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
-    private ApplicationService applicationService;
 
     public FondsHateoasController(EntityManager entityManager,
                                   IFondsService fondsService,
@@ -69,8 +67,7 @@ public class FondsHateoasController extends NoarkController {
                                   IFondsHateoasHandler fondsHateoasHandler,
                                   IFondsCreatorHateoasHandler fondsCreatorHateoasHandler,
                                   ISeriesHateoasHandler seriesHateoasHandler,
-                                  ApplicationEventPublisher applicationEventPublisher,
-                                  ApplicationService applicationService) {
+                                  ApplicationEventPublisher applicationEventPublisher) {
         this.entityManager = entityManager;
         this.fondsService = fondsService;
         this.seriesService = seriesService;
@@ -78,7 +75,6 @@ public class FondsHateoasController extends NoarkController {
         this.fondsCreatorHateoasHandler = fondsCreatorHateoasHandler;
         this.seriesHateoasHandler = seriesHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
-        this.applicationService = applicationService;
     }
 
     // API - All POST Requests (CRUD - CREATE)
