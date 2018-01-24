@@ -3,14 +3,13 @@ package nikita.model.noark5.v4;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.entities.IFondsCreatorEntity;
 import nikita.util.deserialisers.FondsCreatorDeserializer;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.TreeSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static nikita.config.N5ResourceMappings.FONDS_CREATOR;
 
@@ -99,4 +98,25 @@ public class FondsCreator extends NoarkEntity implements IFondsCreatorEntity {
                 ", description='" + description + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        FondsCreator rhs = (FondsCreator) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(fondsCreatorId, rhs.fondsCreatorId)
+                .append(fondsCreatorName, rhs.fondsCreatorName)
+                .append(description, rhs.description)
+                .isEquals();
+    }
+
 }
