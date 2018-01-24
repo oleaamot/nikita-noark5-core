@@ -5,6 +5,7 @@ import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.interfaces.entities.INoarkTitleDescriptionEntity;
 import nikita.model.noark5.v4.secondary.*;
 import nikita.util.deserialisers.BasicRecordDeserializer;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -67,10 +68,12 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
     @Audited
     @Field
     protected String documentMedium;
+
     @Column(name = "owned_by")
     @Audited
     @Field
     protected String ownedBy;
+
     // Link to StorageLocation
     @ManyToMany (cascade=CascadeType.PERSIST)
     @JoinTable(name = "basic_record_storage_location", joinColumns = @JoinColumn(name = "f_pk_basic_record_id",
@@ -209,11 +212,35 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
     @Override
     public String toString() {
         return super.toString() + " BasicRecord{" +
-                "documentMedium='" + documentMedium + '\'' +
+                " documentMedium='" + documentMedium + '\'' +
                 ", description='" + description + '\'' +
                 ", officialTitle='" + officialTitle + '\'' +
                 ", title='" + title + '\'' +
                 ", recordId='" + recordId + '\'' +
+                ", ownedBy='" + ownedBy + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        BasicRecord rhs = (BasicRecord) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(recordId, rhs.recordId)
+                .append(title, rhs.title)
+                .append(officialTitle, rhs.officialTitle)
+                .append(description, rhs.description)
+                .append(documentMedium, rhs.documentMedium)
+                .append(ownedBy, rhs.ownedBy)
+                .isEquals();
     }
 }
