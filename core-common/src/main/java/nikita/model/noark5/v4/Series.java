@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.secondary.*;
 import nikita.util.deserialisers.SeriesDeserializer;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -280,5 +281,26 @@ public class Series extends NoarkGeneralEntity implements IStorageLocation, IDoc
                 ", documentMedium='" + documentMedium + '\'' +
                 ", seriesStatus='" + seriesStatus + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Series rhs = (Series) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(seriesEndDate, rhs.seriesEndDate)
+                .append(seriesStartDate, rhs.seriesStartDate)
+                .append(documentMedium, rhs.documentMedium)
+                .append(seriesStatus, rhs.seriesStatus)
+                .isEquals();
     }
 }
