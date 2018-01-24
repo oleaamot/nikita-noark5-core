@@ -10,6 +10,7 @@ import nikita.model.noark5.v4.secondary.Disposal;
 import nikita.model.noark5.v4.secondary.Screening;
 import nikita.util.deserialisers.RecordDeserializer;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -81,10 +82,6 @@ public class Record extends NoarkEntity implements INoarkCreateEntity, IClassifi
     private Class referenceClass;
 
     // Links to DocumentDescriptions
-/*    @OneToMany(mappedBy = "referenceDocumentObject", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RecordDocumentDescription> referenceRecordDocumentDescription = new ArrayList<>();
-*/
-
     @ManyToMany
     @JoinTable(name = "record_document_description", joinColumns = @JoinColumn(name = "f_pk_record_id",
             referencedColumnName = "pk_record_id"),
@@ -246,5 +243,26 @@ public class Record extends NoarkEntity implements INoarkCreateEntity, IClassifi
                 ", createdBy='" + createdBy + '\'' +
                 ", createdDate=" + createdDate +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Record rhs = (Record) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(archivedBy, rhs.archivedBy)
+                .append(archivedDate, rhs.archivedDate)
+                .append(createdBy, rhs.createdBy)
+                .append(createdDate, rhs.createdDate)
+                .isEquals();
     }
 }
