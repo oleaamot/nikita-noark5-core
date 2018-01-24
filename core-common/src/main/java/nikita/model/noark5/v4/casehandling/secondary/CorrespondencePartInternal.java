@@ -92,7 +92,7 @@ public class CorrespondencePartInternal extends CorrespondencePart implements IC
 
     @Override
     public String toString() {
-        return "CorrespondencePartInternal{" +
+        return "CorrespondencePartInternal{" + super.toString() +
                 "administrativeUnit='" + administrativeUnit + '\'' +
                 ", caseHandler='" + caseHandler + '\'' +
                 '}';

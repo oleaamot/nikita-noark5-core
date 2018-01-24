@@ -124,7 +124,7 @@ public class SimpleAddress extends NoarkEntity implements ISimpleAddressEntity {
 
     @Override
     public String toString() {
-        return "SimpleAddress{" +
+        return "SimpleAddress{" + super.toString() +
                 "addressLine1='" + addressLine1 + '\'' +
                 ", addressLine2='" + addressLine2 + '\'' +
                 ", addressLine3='" + addressLine3 + '\'' +
