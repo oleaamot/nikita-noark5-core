@@ -19,7 +19,6 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsCreatorH
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsCreatorService;
-import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
@@ -43,18 +42,15 @@ import static org.springframework.http.HttpHeaders.ETAG;
 public class FondsCreatorHateoasController extends NoarkController {
 
     private IFondsCreatorService fondsCreatorService;
-    private IFondsService fondsService;
     private IFondsCreatorHateoasHandler fondsCreatorHateoasHandler;
     private IFondsHateoasHandler fondsHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
 
     public FondsCreatorHateoasController(IFondsCreatorService fondsCreatorService,
-                                         IFondsService fondsService,
                                          IFondsCreatorHateoasHandler fondsCreatorHateoasHandler,
                                          IFondsHateoasHandler fondsHateoasHandler,
                                          ApplicationEventPublisher applicationEventPublisher) {
         this.fondsCreatorService = fondsCreatorService;
-        this.fondsService = fondsService;
         this.fondsCreatorHateoasHandler = fondsCreatorHateoasHandler;
         this.fondsHateoasHandler = fondsHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
