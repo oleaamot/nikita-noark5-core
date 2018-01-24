@@ -23,7 +23,6 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.ISeriesHateoas
 import no.arkivlab.hioa.nikita.webapp.model.application.FondsStructureDetails;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
-import no.arkivlab.hioa.nikita.webapp.service.interfaces.ISeriesService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
 import org.hibernate.Session;
@@ -55,7 +54,6 @@ public class FondsHateoasController extends NoarkController {
 
     private EntityManager entityManager;
     private IFondsService fondsService;
-    private ISeriesService seriesService;
     private IFondsHateoasHandler fondsHateoasHandler;
     private IFondsCreatorHateoasHandler fondsCreatorHateoasHandler;
     private ISeriesHateoasHandler seriesHateoasHandler;
@@ -63,14 +61,12 @@ public class FondsHateoasController extends NoarkController {
 
     public FondsHateoasController(EntityManager entityManager,
                                   IFondsService fondsService,
-                                  ISeriesService seriesService,
                                   IFondsHateoasHandler fondsHateoasHandler,
                                   IFondsCreatorHateoasHandler fondsCreatorHateoasHandler,
                                   ISeriesHateoasHandler seriesHateoasHandler,
                                   ApplicationEventPublisher applicationEventPublisher) {
         this.entityManager = entityManager;
         this.fondsService = fondsService;
-        this.seriesService = seriesService;
         this.fondsHateoasHandler = fondsHateoasHandler;
         this.fondsCreatorHateoasHandler = fondsCreatorHateoasHandler;
         this.seriesHateoasHandler = seriesHateoasHandler;
