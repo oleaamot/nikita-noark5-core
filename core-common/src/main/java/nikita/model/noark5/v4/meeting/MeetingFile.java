@@ -1,6 +1,7 @@
 package nikita.model.noark5.v4.meeting;
 
 import nikita.model.noark5.v4.File;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -135,5 +136,26 @@ public class MeetingFile extends File {
                 ", meetingDate=" + meetingDate +
                 ", meetingPlace='" + meetingPlace + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        MeetingFile rhs = (MeetingFile) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(meetingNumber, rhs.meetingNumber)
+                .append(committee, rhs.committee)
+                .append(meetingDate, rhs.meetingDate)
+                .append(meetingPlace, rhs.meetingPlace)
+                .isEquals();
     }
 }
