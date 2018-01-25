@@ -528,7 +528,6 @@ public class FondsHateoasController extends NoarkController {
                     value = "systemID of the series to delete",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        Fonds fonds = fondsService.findBySystemId(systemID);
         //TODO: When dealing with a fonds, if you have a parent fonds, then you must return the parent fonds
         // but if you don't have a parent fonds you must return an applicationdetails. The only way to handle
         // this is a little mesy, but probably just create the JSON manually here and return it as type string
