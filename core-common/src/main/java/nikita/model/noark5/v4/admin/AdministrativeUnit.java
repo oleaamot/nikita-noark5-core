@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.interfaces.entities.admin.IAdministrativeUnitEntity;
 import nikita.util.deserialisers.admin.AdministrativeUnitDeserializer;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -161,11 +162,38 @@ public class AdministrativeUnit extends NoarkEntity implements IAdministrativeUn
 
     @Override
     public String toString() {
-
-        return super.toString() +
-                ", createdDate=" + createdDate +
+        return "AdministrativeUnit{" + super.toString() +
+                "createdDate=" + createdDate +
                 ", createdBy='" + createdBy + '\'' +
                 ", finalisedDate=" + finalisedDate +
-                ", finalisedBy='" + finalisedBy + '\'';
+                ", finalisedBy='" + finalisedBy + '\'' +
+                ", shortName='" + shortName + '\'' +
+                ", administrativeUnitName='" + administrativeUnitName + '\'' +
+                ", administrativeUnitStatus='" + administrativeUnitStatus + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        AdministrativeUnit rhs = (AdministrativeUnit) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(createdDate, rhs.createdDate)
+                .append(createdBy, rhs.createdBy)
+                .append(finalisedDate, rhs.finalisedDate)
+                .append(finalisedBy, rhs.finalisedBy)
+                .append(shortName, rhs.shortName)
+                .append(administrativeUnitName, rhs.administrativeUnitName)
+                .append(administrativeUnitStatus, rhs.administrativeUnitStatus)
+                .isEquals();
     }
 }

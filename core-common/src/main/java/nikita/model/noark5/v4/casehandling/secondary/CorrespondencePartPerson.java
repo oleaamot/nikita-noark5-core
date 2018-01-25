@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.casehandling.RegistryEntry;
 import nikita.model.noark5.v4.interfaces.entities.casehandling.ICorrespondencePartPersonEntity;
 import nikita.util.deserialisers.casehandling.CorrespondencePartPersonDeserializer;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -126,10 +127,30 @@ public class CorrespondencePartPerson extends CorrespondencePart implements ICor
 
     @Override
     public String toString() {
-        return super.toString() +
-                ", socialSecurityNumber='" + socialSecurityNumber + '\'' +
+        return "CorrespondencePartPerson{" +
+                "socialSecurityNumber='" + socialSecurityNumber + '\'' +
                 ", dNumber='" + dNumber + '\'' +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        CorrespondencePartPerson rhs = (CorrespondencePartPerson) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(socialSecurityNumber, rhs.socialSecurityNumber)
+                .append(dNumber, rhs.dNumber)
+                .append(name, rhs.name)
+                .isEquals();
     }
 }

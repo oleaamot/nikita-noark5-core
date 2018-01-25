@@ -2,6 +2,7 @@ package nikita.model.noark5.v4.admin;
 
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.interfaces.entities.admin.IRoleEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -146,5 +147,27 @@ public class Role extends NoarkEntity implements IRoleEntity {
                 ", update=" + update +
                 ", delete=" + delete +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Role rhs = (Role) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(referenceEntity, rhs.referenceEntity)
+                .append(read, rhs.read)
+                .append(create, rhs.create)
+                .append(update, rhs.update)
+                .append(delete, rhs.delete)
+                .isEquals();
     }
 }

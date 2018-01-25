@@ -6,6 +6,7 @@ import nikita.model.noark5.v4.interfaces.ICaseParty;
 import nikita.model.noark5.v4.interfaces.IPrecedence;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.deserialisers.casehandling.CaseFileDeserializer;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -263,5 +264,32 @@ public class CaseFile extends File implements Serializable, INikitaEntity, IPrec
                 ", caseSequenceNumber=" + caseSequenceNumber +
                 ", caseYear=" + caseYear +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        CaseFile rhs = (CaseFile) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(loanedDate, rhs.loanedDate)
+                .append(caseSequenceNumber, rhs.caseSequenceNumber)
+                .append(caseYear, rhs.caseYear)
+                .append(caseDate, rhs.caseDate)
+                .append(caseResponsible, rhs.caseResponsible)
+                .append(caseStatus, rhs.caseStatus)
+                .append(recordsManagementUnit, rhs.recordsManagementUnit)
+                .append(administrativeUnit, rhs.administrativeUnit)
+                .append(loanedDate, rhs.loanedDate)
+                .append(loanedTo, rhs.loanedTo)
+                .isEquals();
     }
 }

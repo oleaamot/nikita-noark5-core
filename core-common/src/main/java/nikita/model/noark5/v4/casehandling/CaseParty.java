@@ -2,6 +2,7 @@ package nikita.model.noark5.v4.casehandling;
 
 import nikita.model.noark5.v4.NoarkGeneralEntity;
 import nikita.model.noark5.v4.interfaces.entities.ICasePartyEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -210,5 +211,32 @@ public class CaseParty extends NoarkGeneralEntity implements ICasePartyEntity {
                 ", telephoneNumber='" + telephoneNumber + '\'' +
                 ", contactPerson='" + contactPerson + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        CaseParty rhs = (CaseParty) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(casePartyId, rhs.casePartyId)
+                .append(casePartyName, rhs.casePartyName)
+                .append(casePartyRole, rhs.casePartyRole)
+                .append(postalAddress, rhs.postalAddress)
+                .append(postCode, rhs.postCode)
+                .append(postalTown, rhs.postalTown)
+                .append(foreignAddress, rhs.foreignAddress)
+                .append(emailAddress, rhs.emailAddress)
+                .append(telephoneNumber, rhs.telephoneNumber)
+                .append(contactPerson, rhs.contactPerson)
+                .isEquals();
     }
 }

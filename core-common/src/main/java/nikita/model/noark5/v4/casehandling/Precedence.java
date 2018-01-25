@@ -2,6 +2,7 @@ package nikita.model.noark5.v4.casehandling;
 
 import nikita.model.noark5.v4.NoarkGeneralEntity;
 import nikita.model.noark5.v4.interfaces.entities.IPrecedenceEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -154,5 +155,28 @@ public class Precedence extends NoarkGeneralEntity implements IPrecedenceEntity{
                 ", precedenceAuthority='" + precedenceAuthority + '\'' +
                 ", precedenceDate='" + precedenceDate + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Precedence rhs = (Precedence) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(precedenceStatus, rhs.precedenceStatus)
+                .append(precedenceApprovedBy, rhs.precedenceApprovedBy)
+                .append(precedenceApprovedDate, rhs.precedenceApprovedDate)
+                .append(sourceOfLaw, rhs.sourceOfLaw)
+                .append(precedenceAuthority, rhs.precedenceAuthority)
+                .append(precedenceDate, rhs.precedenceDate)
+                .isEquals();
     }
 }

@@ -9,6 +9,7 @@ import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.secondary.ElectronicSignature;
 import nikita.model.noark5.v4.secondary.SignOff;
 import nikita.util.deserialisers.casehandling.RegistryEntryDeserializer;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -424,5 +425,36 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
                 ", recordSequenceNumber=" + recordSequenceNumber +
                 ", recordYear=" + recordYear +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        RegistryEntry rhs = (RegistryEntry) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(recordsManagementUnit, rhs.recordsManagementUnit)
+                .append(loanedTo, rhs.loanedTo)
+                .append(loanedDate, rhs.loanedDate)
+                .append(numberOfAttachments, rhs.numberOfAttachments)
+                .append(freedomAssessmentDate, rhs.freedomAssessmentDate)
+                .append(dueDate, rhs.dueDate)
+                .append(sentDate, rhs.sentDate)
+                .append(receivedDate, rhs.receivedDate)
+                .append(documentDate, rhs.documentDate)
+                .append(recordDate, rhs.recordDate)
+                .append(registryEntryType, rhs.registryEntryType)
+                .append(registryEntryNumber, rhs.registryEntryNumber)
+                .append(recordSequenceNumber, rhs.recordSequenceNumber)
+                .append(recordYear, rhs.recordYear)
+                .isEquals();
     }
 }

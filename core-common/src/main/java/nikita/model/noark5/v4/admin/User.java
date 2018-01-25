@@ -2,6 +2,7 @@ package nikita.model.noark5.v4.admin;
 
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.interfaces.entities.admin.IUserEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -235,5 +236,58 @@ public class User extends NoarkEntity implements IUserEntity {
 
     public void setLastPasswordResetDate(Date lastPasswordResetDate) {
         this.lastPasswordResetDate = lastPasswordResetDate;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + super.toString() +
+                "id=" + id +
+                ", createdDate=" + createdDate +
+                ", createdBy='" + createdBy + '\'' +
+                ", finalisedDate=" + finalisedDate +
+                ", finalisedBy='" + finalisedBy + '\'' +
+                ", accountNonExpired=" + accountNonExpired +
+                ", credentialsNonExpired=" + credentialsNonExpired +
+                ", accountNonLocked=" + accountNonLocked +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", enabled=" + enabled +
+                ", lastPasswordResetDate=" + lastPasswordResetDate +
+                ", langKey='" + langKey + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        User rhs = (User) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(createdDate, rhs.createdDate)
+                .append(createdBy, rhs.createdBy)
+                .append(finalisedBy, rhs.finalisedBy)
+                .append(finalisedDate, rhs.finalisedDate)
+                .append(accountNonExpired, rhs.accountNonExpired)
+                .append(accountNonLocked, rhs.accountNonLocked)
+                .append(username, rhs.username)
+                .append(password, rhs.password)
+                .append(firstname, rhs.firstname)
+                .append(lastname, rhs.lastname)
+                .append(email, rhs.email)
+                .append(enabled, rhs.enabled)
+                .append(lastPasswordResetDate, rhs.lastPasswordResetDate)
+                .append(langKey, rhs.langKey)
+                .isEquals();
     }
 }
