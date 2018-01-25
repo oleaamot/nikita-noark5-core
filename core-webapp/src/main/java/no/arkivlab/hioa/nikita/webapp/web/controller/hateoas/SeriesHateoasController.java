@@ -220,7 +220,8 @@ public class SeriesHateoasController extends NoarkController {
                     required = true)
             @RequestParam StringBuffer id) throws NikitaException {
 
-        String systemID_1 = handleResolutionOfIncomingURLInternalGetSystemId(id);
+        //String systemID_1 = handleResolutionOfIncomingURLInternalGetSystemId
+        //      (id);
 //        SeriesHateoas seriesHateoas = new
 //                SeriesHateoas(seriesService.associateSeriesWithSeriesSuccessor(seriesPrecursorSys temId, urlToSeriesSuccessor));
 //        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
