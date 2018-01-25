@@ -6,6 +6,7 @@ import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.Record;
 import nikita.model.noark5.v4.interfaces.entities.ICrossReferenceEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 
@@ -137,5 +138,15 @@ public class CrossReference extends NoarkEntity implements ICrossReferenceEntity
                 .append(referenceToFile, rhs.referenceToFile)
                 .append(referenceToRecord, rhs.referenceToRecord)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(referenceToClass)
+                .append(referenceToFile)
+                .append(referenceToRecord)
+                .toHashCode();
     }
 }

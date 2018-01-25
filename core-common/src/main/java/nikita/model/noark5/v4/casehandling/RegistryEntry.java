@@ -10,6 +10,7 @@ import nikita.model.noark5.v4.secondary.ElectronicSignature;
 import nikita.model.noark5.v4.secondary.SignOff;
 import nikita.util.deserialisers.casehandling.RegistryEntryDeserializer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -456,5 +457,26 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
                 .append(recordSequenceNumber, rhs.recordSequenceNumber)
                 .append(recordYear, rhs.recordYear)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(recordsManagementUnit)
+                .append(loanedTo)
+                .append(loanedDate)
+                .append(numberOfAttachments)
+                .append(freedomAssessmentDate)
+                .append(dueDate)
+                .append(sentDate)
+                .append(receivedDate)
+                .append(documentDate)
+                .append(recordDate)
+                .append(registryEntryType)
+                .append(registryEntryNumber)
+                .append(recordSequenceNumber)
+                .append(recordYear)
+                .toHashCode();
     }
 }

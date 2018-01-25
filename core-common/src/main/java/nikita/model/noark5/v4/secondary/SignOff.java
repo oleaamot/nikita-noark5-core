@@ -4,6 +4,7 @@ import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.casehandling.RegistryEntry;
 import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePart;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -133,5 +134,15 @@ public class SignOff extends NoarkEntity {
                 .append(signOffBy, rhs.signOffBy)
                 .append(signOffDate, rhs.signOffDate)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(signOffMethod)
+                .append(signOffBy)
+                .append(signOffDate)
+                .toHashCode();
     }
 }

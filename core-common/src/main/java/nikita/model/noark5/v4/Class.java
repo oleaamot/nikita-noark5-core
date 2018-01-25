@@ -9,6 +9,7 @@ import nikita.model.noark5.v4.secondary.*;
 import nikita.util.deserialisers.ClassDeserializer;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -219,5 +220,13 @@ public class Class extends NoarkGeneralEntity implements IDisposal, IScreening, 
                 .appendSuper(super.equals(other))
                 .append(classId, rhs.classId)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(classId)
+                .toHashCode();
     }
 }

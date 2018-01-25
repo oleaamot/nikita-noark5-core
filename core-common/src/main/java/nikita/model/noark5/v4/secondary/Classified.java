@@ -4,6 +4,7 @@ import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.interfaces.entities.IClassifiedEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -187,5 +188,17 @@ public class Classified extends NoarkEntity implements IClassifiedEntity {
                 .append(classificationDowngradedDate, rhs.classificationDowngradedDate)
                 .append(classificationDowngradedBy, rhs.classificationDowngradedBy)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(classification)
+                .append(classificationDate)
+                .append(classificationBy)
+                .append(classificationDowngradedDate)
+                .append(classificationDowngradedBy)
+                .toHashCode();
     }
 }

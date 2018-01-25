@@ -1,9 +1,9 @@
 package no.arkivlab.hioa.nikita.webapp.model.application;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
 
 
 public class APIDetail implements Comparable <APIDetail>{
@@ -45,7 +45,11 @@ public class APIDetail implements Comparable <APIDetail>{
 
     @Override
     public int hashCode() {
-        return Objects.hash(href, rel, templated);
+        return new HashCodeBuilder()
+                .append(href)
+                .append(rel)
+                .append(templated)
+                .toHashCode();
     }
 
     @Override

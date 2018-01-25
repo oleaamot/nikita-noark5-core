@@ -8,6 +8,7 @@ import nikita.model.noark5.v4.interfaces.IStorageLocation;
 import nikita.model.noark5.v4.secondary.StorageLocation;
 import nikita.util.deserialisers.FondsDeserializer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -158,4 +159,12 @@ public class Fonds extends NoarkGeneralEntity implements IStorageLocation, IDocu
                 .isEquals();
     }
 
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(fondsStatus)
+                .append(documentMedium)
+                .toHashCode();
+    }
 }

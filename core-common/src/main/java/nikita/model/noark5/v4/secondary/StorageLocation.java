@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nikita.model.noark5.v4.*;
 import nikita.util.serializers.noark5v4.StorageLocationSerializer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -118,4 +119,11 @@ public class StorageLocation extends NoarkEntity {
                 .isEquals();
     }
 
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(storageLocation)
+                .toHashCode();
+    }
 }

@@ -5,6 +5,7 @@ import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.File;
 import nikita.model.noark5.v4.NoarkEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -100,5 +101,13 @@ public class Keyword extends NoarkEntity {
                 .appendSuper(super.equals(other))
                 .append(keyword, rhs.keyword)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(keyword)
+                .toHashCode();
     }
 }

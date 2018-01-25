@@ -148,12 +148,6 @@ public class MetadataSuperClassBase implements INikitaEntity, Comparable<Metadat
         return NOARK_METADATA_PATH;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder()
-                .append(systemId)
-                .toHashCode();
-    }
 
     @Override
     public int compareTo(MetadataSuperClassBase otherEntity) {
@@ -184,6 +178,16 @@ public class MetadataSuperClassBase implements INikitaEntity, Comparable<Metadat
                 .append(version, rhs.getVersion())
                 .append(ownedBy, rhs.getOwnedBy())
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(systemId)
+                .append(deleted)
+                .append(version)
+                .append(ownedBy)
+                .toHashCode();
     }
 
     @Override

@@ -4,6 +4,7 @@ import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.interfaces.entities.IDisposalEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -172,5 +173,16 @@ public class Disposal extends NoarkEntity implements IDisposalEntity {
                 .append(disposalAuthority, rhs.disposalAuthority)
                 .append(disposalDecision, rhs.disposalDecision)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(disposalDate)
+                .append(preservationTime)
+                .append(disposalAuthority)
+                .append(disposalDecision)
+                .toHashCode();
     }
 }

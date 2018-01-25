@@ -3,6 +3,7 @@ package nikita.model.noark5.v4.secondary;
 import nikita.model.noark5.v4.DocumentObject;
 import nikita.model.noark5.v4.NoarkEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -153,4 +154,16 @@ public class Conversion extends NoarkEntity {
                 .isEquals();
     }
 
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(convertedDate)
+                .append(convertedBy)
+                .append(convertedFromFormat)
+                .append(convertedToFormat)
+                .append(conversionTool)
+                .append(conversionComment)
+                .toHashCode();
+    }
 }

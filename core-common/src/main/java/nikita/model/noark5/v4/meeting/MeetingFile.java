@@ -2,6 +2,7 @@ package nikita.model.noark5.v4.meeting;
 
 import nikita.model.noark5.v4.File;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -152,10 +153,21 @@ public class MeetingFile extends File {
         MeetingFile rhs = (MeetingFile) other;
         return new EqualsBuilder()
                 .appendSuper(super.equals(other))
-                .append(meetingNumber, rhs.meetingNumber)
                 .append(committee, rhs.committee)
+                .append(meetingNumber, rhs.meetingNumber)
                 .append(meetingDate, rhs.meetingDate)
                 .append(meetingPlace, rhs.meetingPlace)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(meetingPlace)
+                .append(meetingNumber)
+                .append(meetingDate)
+                .append(committee)
+                .toHashCode();
     }
 }

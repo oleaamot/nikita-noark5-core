@@ -1,6 +1,7 @@
 package nikita.model.noark5.v4;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -89,5 +90,13 @@ public class ClassificationSystem extends NoarkGeneralEntity {
                 .appendSuper(super.equals(other))
                 .append(classificationType, rhs.classificationType)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(classificationType)
+                .toHashCode();
     }
 }

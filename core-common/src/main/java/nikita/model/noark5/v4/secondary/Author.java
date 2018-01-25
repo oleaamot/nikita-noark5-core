@@ -4,6 +4,7 @@ import nikita.model.noark5.v4.BasicRecord;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.NoarkEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -89,4 +90,11 @@ public class Author extends NoarkEntity {
                 .isEquals();
     }
 
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(author)
+                .toHashCode();
+    }
 }

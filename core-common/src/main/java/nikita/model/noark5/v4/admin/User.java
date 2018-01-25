@@ -3,6 +3,7 @@ package nikita.model.noark5.v4.admin;
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.interfaces.entities.admin.IUserEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -289,5 +290,26 @@ public class User extends NoarkEntity implements IUserEntity {
                 .append(lastPasswordResetDate, rhs.lastPasswordResetDate)
                 .append(langKey, rhs.langKey)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(createdDate)
+                .append(createdBy)
+                .append(finalisedBy)
+                .append(finalisedDate)
+                .append(accountNonExpired)
+                .append(accountNonLocked)
+                .append(username)
+                .append(password)
+                .append(firstname)
+                .append(lastname)
+                .append(email)
+                .append(enabled)
+                .append(lastPasswordResetDate)
+                .append(langKey)
+                .toHashCode();
     }
 }

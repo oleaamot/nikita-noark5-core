@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.entities.IFondsCreatorEntity;
 import nikita.util.deserialisers.FondsCreatorDeserializer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -119,4 +120,13 @@ public class FondsCreator extends NoarkEntity implements IFondsCreatorEntity {
                 .isEquals();
     }
 
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(fondsCreatorId)
+                .append(fondsCreatorName)
+                .append(description)
+                .toHashCode();
+    }
 }

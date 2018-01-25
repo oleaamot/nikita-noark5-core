@@ -134,13 +134,6 @@ public class NoarkGeneralEntity extends NoarkEntity implements INoarkGeneralEnti
     }
 
     @Override
-    public int hashCode() {
-        return new HashCodeBuilder()
-                .append(createdDate)
-                .toHashCode();
-    }
-
-    @Override
     public int compareTo(NoarkEntity otherEntity) {
         if (null == otherEntity) {
             return -1;
@@ -149,6 +142,18 @@ public class NoarkGeneralEntity extends NoarkEntity implements INoarkGeneralEnti
                 .append(this.createdDate,
                         ((NoarkGeneralEntity)otherEntity).createdDate)
                 .toComparison();
+    }
+
+    @Override
+    public String toString() {
+
+        return super.toString() +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", createdDate=" + createdDate +
+                ", createdBy='" + createdBy + '\'' +
+                ", finalisedDate=" + finalisedDate +
+                ", finalisedBy='" + finalisedBy + '\'';
     }
 
     @Override
@@ -174,16 +179,16 @@ public class NoarkGeneralEntity extends NoarkEntity implements INoarkGeneralEnti
                 .isEquals();
     }
 
-
     @Override
-    public String toString() {
-
-        return super.toString() +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", createdDate=" + createdDate +
-                ", createdBy='" + createdBy + '\'' +
-                ", finalisedDate=" + finalisedDate +
-                ", finalisedBy='" + finalisedBy + '\'';
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(title)
+                .append(description)
+                .append(createdDate)
+                .append(createdBy)
+                .append(finalisedDate)
+                .append(finalisedBy)
+                .toHashCode();
     }
 }

@@ -4,6 +4,7 @@ import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.interfaces.entities.IScreeningEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -210,5 +211,18 @@ public class Screening extends NoarkEntity implements IScreeningEntity {
                 .append(screeningAuthority, rhs.screeningAuthority)
                 .append(accessRestriction, rhs.accessRestriction)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(screeningDuration)
+                .append(screeningExpiresDate)
+                .append(screeningDocument)
+                .append(screeningMetadata)
+                .append(screeningAuthority)
+                .append(accessRestriction)
+                .toHashCode();
     }
 }

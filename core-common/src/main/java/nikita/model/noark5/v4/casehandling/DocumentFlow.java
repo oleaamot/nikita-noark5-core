@@ -2,6 +2,7 @@ package nikita.model.noark5.v4.casehandling;
 
 import nikita.model.noark5.v4.NoarkEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -164,5 +165,18 @@ public class DocumentFlow extends NoarkEntity {
                 .append(flowFrom, rhs.flowFrom)
                 .append(flowTo, rhs.flowTo)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(flowComment)
+                .append(flowStatus)
+                .append(flowSentDate)
+                .append(flowReceivedDate)
+                .append(flowFrom)
+                .append(flowTo)
+                .toHashCode();
     }
 }

@@ -5,6 +5,7 @@ import nikita.model.noark5.v4.DocumentObject;
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.casehandling.RegistryEntry;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -149,5 +150,14 @@ public class ElectronicSignature extends NoarkEntity {
                 .append(electronicSignatureSecurityLevel, rhs.electronicSignatureSecurityLevel)
                 .append(electronicSignatureVerified, rhs.electronicSignatureVerified)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(electronicSignatureSecurityLevel)
+                .append(electronicSignatureVerified)
+                .toHashCode();
     }
 }

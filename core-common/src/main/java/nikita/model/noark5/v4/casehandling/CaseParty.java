@@ -3,6 +3,7 @@ package nikita.model.noark5.v4.casehandling;
 import nikita.model.noark5.v4.NoarkGeneralEntity;
 import nikita.model.noark5.v4.interfaces.entities.ICasePartyEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -238,5 +239,22 @@ public class CaseParty extends NoarkGeneralEntity implements ICasePartyEntity {
                 .append(telephoneNumber, rhs.telephoneNumber)
                 .append(contactPerson, rhs.contactPerson)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(casePartyId)
+                .append(casePartyName)
+                .append(casePartyRole)
+                .append(postalAddress)
+                .append(postCode)
+                .append(postalTown)
+                .append(foreignAddress)
+                .append(emailAddress)
+                .append(telephoneNumber)
+                .append(contactPerson)
+                .toHashCode();
     }
 }

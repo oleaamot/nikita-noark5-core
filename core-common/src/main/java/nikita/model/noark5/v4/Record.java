@@ -11,6 +11,7 @@ import nikita.model.noark5.v4.secondary.Screening;
 import nikita.util.deserialisers.RecordDeserializer;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -264,5 +265,16 @@ public class Record extends NoarkEntity implements INoarkCreateEntity, IClassifi
                 .append(createdBy, rhs.createdBy)
                 .append(createdDate, rhs.createdDate)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(archivedBy)
+                .append(archivedDate)
+                .append(createdBy)
+                .append(createdDate)
+                .toHashCode();
     }
 }

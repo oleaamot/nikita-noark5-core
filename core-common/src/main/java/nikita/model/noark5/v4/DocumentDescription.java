@@ -7,6 +7,7 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkTitleDescriptionEntity;
 import nikita.model.noark5.v4.secondary.*;
 import nikita.util.deserialisers.DocumentDescriptionDeserializer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -429,5 +430,23 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
                 .append(createdBy, rhs.createdBy)
                 .append(title, rhs.title)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(associatedBy)
+                .append(associationDate)
+                .append(associatedWithRecordAs)
+                .append(documentNumber)
+                .append(documentMedium)
+                .append(documentStatus)
+                .append(documentType)
+                .append(description)
+                .append(createdDate)
+                .append(createdBy)
+                .append(title)
+                .toHashCode();
     }
 }

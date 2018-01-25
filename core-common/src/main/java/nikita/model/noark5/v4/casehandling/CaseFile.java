@@ -7,6 +7,7 @@ import nikita.model.noark5.v4.interfaces.IPrecedence;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.deserialisers.casehandling.CaseFileDeserializer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -280,7 +281,6 @@ public class CaseFile extends File implements Serializable, INikitaEntity, IPrec
         CaseFile rhs = (CaseFile) other;
         return new EqualsBuilder()
                 .appendSuper(super.equals(other))
-                .append(loanedDate, rhs.loanedDate)
                 .append(caseSequenceNumber, rhs.caseSequenceNumber)
                 .append(caseYear, rhs.caseYear)
                 .append(caseDate, rhs.caseDate)
@@ -291,5 +291,21 @@ public class CaseFile extends File implements Serializable, INikitaEntity, IPrec
                 .append(loanedDate, rhs.loanedDate)
                 .append(loanedTo, rhs.loanedTo)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(caseSequenceNumber)
+                .append(caseYear)
+                .append(caseDate)
+                .append(caseResponsible)
+                .append(caseStatus)
+                .append(recordsManagementUnit)
+                .append(administrativeUnit)
+                .append(loanedDate)
+                .append(loanedTo)
+                .toHashCode();
     }
 }

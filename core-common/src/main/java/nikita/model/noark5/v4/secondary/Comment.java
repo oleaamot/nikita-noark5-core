@@ -6,6 +6,7 @@ import nikita.model.noark5.v4.File;
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.interfaces.entities.ICommentEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -155,5 +156,16 @@ public class Comment extends NoarkEntity implements ICommentEntity {
                 .append(commentDate, rhs.commentDate)
                 .append(commentRegisteredBy, rhs.commentRegisteredBy)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(commentText)
+                .append(commentType)
+                .append(commentDate)
+                .append(commentRegisteredBy)
+                .toHashCode();
     }
 }

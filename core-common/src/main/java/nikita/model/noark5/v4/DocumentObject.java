@@ -9,6 +9,7 @@ import nikita.model.noark5.v4.secondary.ElectronicSignature;
 import nikita.util.deserialisers.DocumentObjectDeserializer;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -337,4 +338,22 @@ public class DocumentObject  extends NoarkEntity implements INoarkCreateEntity,
                 .isEquals();
     }
 
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(fileSize)
+                .append(checksumAlgorithm)
+                .append(checksum)
+                .append(referenceDocumentFile)
+                .append(createdBy)
+                .append(createdDate)
+                .append(formatDetails)
+                .append(format)
+                .append(variantFormat)
+                .append(versionNumber)
+                .append(mimeType)
+                .append(originalFilename)
+                .toHashCode();
+    }
 }

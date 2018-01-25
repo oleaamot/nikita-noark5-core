@@ -156,10 +156,15 @@ public class NoarkEntity implements INikitaEntity, Comparable<NoarkEntity>   {
         return false;
     }
 
+
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
                 .append(systemId)
+                .append(deleted)
+                .append(ownedBy)
+                .append(version)
                 .toHashCode();
     }
 
@@ -170,6 +175,9 @@ public class NoarkEntity implements INikitaEntity, Comparable<NoarkEntity>   {
         }
         return new CompareToBuilder()
                 .append(this.systemId, otherEntity.systemId)
+                .append(ownedBy, otherEntity.getOwnedBy())
+                .append(deleted, otherEntity.getDeleted())
+                .append(version, otherEntity.getVersion())
                 .toComparison();
     }
 
@@ -193,6 +201,7 @@ public class NoarkEntity implements INikitaEntity, Comparable<NoarkEntity>   {
                 .append(version, rhs.getVersion())
                 .isEquals();
     }
+
     @Override
     public String toString() {
         return "id=" + id +

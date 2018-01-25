@@ -5,6 +5,7 @@ import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.interfaces.entities.IDeletionEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -119,5 +120,15 @@ public class Deletion extends NoarkEntity implements IDeletionEntity {
                 .append(deletionBy, rhs.deletionBy)
                 .append(deletionType, rhs.deletionType)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(deletionDate)
+                .append(deletionBy)
+                .append(deletionType)
+                .toHashCode();
     }
 }

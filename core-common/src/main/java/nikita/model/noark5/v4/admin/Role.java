@@ -3,6 +3,7 @@ package nikita.model.noark5.v4.admin;
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.interfaces.entities.admin.IRoleEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -169,5 +170,17 @@ public class Role extends NoarkEntity implements IRoleEntity {
                 .append(update, rhs.update)
                 .append(delete, rhs.delete)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(referenceEntity)
+                .append(read)
+                .append(create)
+                .append(update)
+                .append(delete)
+                .toHashCode();
     }
 }

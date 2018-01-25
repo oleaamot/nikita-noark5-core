@@ -2,6 +2,7 @@ package nikita.model.noark5.v4.meeting;
 
 import nikita.model.noark5.v4.BasicRecord;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -159,5 +160,17 @@ public class MeetingRecord extends BasicRecord {
                 .append(meetingCaseType, rhs.meetingCaseType)
                 .append(meetingRecordType, rhs.meetingRecordType)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(caseHandler)
+                .append(administrativeUnit)
+                .append(meetingRecordStatus)
+                .append(meetingCaseType)
+                .append(meetingRecordType)
+                .toHashCode();
     }
 }

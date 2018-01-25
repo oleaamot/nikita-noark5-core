@@ -6,6 +6,7 @@ import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.secondary.*;
 import nikita.util.deserialisers.SeriesDeserializer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -302,5 +303,16 @@ public class Series extends NoarkGeneralEntity implements IStorageLocation, IDoc
                 .append(documentMedium, rhs.documentMedium)
                 .append(seriesStatus, rhs.seriesStatus)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(seriesEndDate)
+                .append(seriesStartDate)
+                .append(documentMedium)
+                .append(seriesStatus)
+                .toHashCode();
     }
 }

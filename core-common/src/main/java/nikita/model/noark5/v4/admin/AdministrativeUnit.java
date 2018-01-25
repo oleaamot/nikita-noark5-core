@@ -5,6 +5,7 @@ import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.interfaces.entities.admin.IAdministrativeUnitEntity;
 import nikita.util.deserialisers.admin.AdministrativeUnitDeserializer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -195,5 +196,19 @@ public class AdministrativeUnit extends NoarkEntity implements IAdministrativeUn
                 .append(administrativeUnitName, rhs.administrativeUnitName)
                 .append(administrativeUnitStatus, rhs.administrativeUnitStatus)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(createdDate)
+                .append(createdBy)
+                .append(finalisedDate)
+                .append(finalisedBy)
+                .append(shortName)
+                .append(administrativeUnitName)
+                .append(administrativeUnitStatus)
+                .toHashCode();
     }
 }

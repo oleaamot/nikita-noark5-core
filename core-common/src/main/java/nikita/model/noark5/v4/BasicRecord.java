@@ -6,6 +6,7 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkTitleDescriptionEntity;
 import nikita.model.noark5.v4.secondary.*;
 import nikita.util.deserialisers.BasicRecordDeserializer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
@@ -242,5 +243,18 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
                 .append(documentMedium, rhs.documentMedium)
                 .append(ownedBy, rhs.ownedBy)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(recordId)
+                .append(title)
+                .append(officialTitle)
+                .append(description)
+                .append(documentMedium)
+                .append(ownedBy)
+                .toHashCode();
     }
 }

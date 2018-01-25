@@ -5,6 +5,7 @@ import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.interfaces.entities.IDisposalUndertakenEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -104,5 +105,14 @@ public class DisposalUndertaken extends NoarkEntity implements IDisposalUndertak
                 .append(disposalBy, rhs.disposalBy)
                 .append(disposalDate, rhs.disposalDate)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(disposalBy)
+                .append(disposalDate)
+                .toHashCode();
     }
 }
