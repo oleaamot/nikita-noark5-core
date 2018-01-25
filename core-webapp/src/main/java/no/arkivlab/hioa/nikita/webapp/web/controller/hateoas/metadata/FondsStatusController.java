@@ -165,7 +165,7 @@ public class FondsStatusController {
     public ResponseEntity<MetadataHateoas> updateFondsStatus(@RequestBody FondsStatus fondsStatus,
                                                              HttpServletRequest request)
             throws NikitaException {
-        FondsStatus newFondsStatus = fondsStatusService.update(fondsStatus);
+        fondsStatusService.update(fondsStatus);
         MetadataHateoas metadataHateoas = new MetadataHateoas(fondsStatus);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
