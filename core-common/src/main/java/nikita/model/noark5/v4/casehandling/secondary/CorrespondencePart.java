@@ -44,4 +44,19 @@ public class CorrespondencePart extends NoarkEntity implements ICorrespondencePa
     public String getFunctionalTypeName() {
         return NOARK_CASE_HANDLING_PATH;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return super.equals(other);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
