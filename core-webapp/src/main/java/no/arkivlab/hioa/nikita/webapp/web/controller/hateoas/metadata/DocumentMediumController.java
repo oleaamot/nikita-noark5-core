@@ -164,7 +164,7 @@ public class DocumentMediumController {
     public ResponseEntity<MetadataHateoas> updateDocumentMedium(@RequestBody DocumentMedium documentMedium,
                                                                 HttpServletRequest request)
             throws NikitaException {
-        DocumentMedium newDocumentMedium = documentMediumService.update(documentMedium);
+        documentMediumService.update(documentMedium);
         MetadataHateoas metadataHateoas = new MetadataHateoas(documentMedium);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
