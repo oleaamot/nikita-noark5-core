@@ -96,7 +96,7 @@ public class FondsCreatorService implements IFondsCreatorService {
         criteriaQuery.where(criteriaBuilder.equal(from.get("ownedBy"), loggedInUser));
         TypedQuery<FondsCreator> typedQuery = entityManager.createQuery(select);
         typedQuery.setFirstResult(skip);
-        typedQuery.setMaxResults(maxPageSize);
+        typedQuery.setMaxResults(top);
 
         return typedQuery.getResultList();
     }

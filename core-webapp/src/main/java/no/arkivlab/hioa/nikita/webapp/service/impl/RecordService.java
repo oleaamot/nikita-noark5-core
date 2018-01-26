@@ -321,7 +321,7 @@ public class RecordService implements IRecordService {
         criteriaQuery.where(criteriaBuilder.equal(from.get("ownedBy"), loggedInUser));
         TypedQuery<Record> typedQuery = entityManager.createQuery(select);
         typedQuery.setFirstResult(skip);
-        typedQuery.setMaxResults(maxPageSize);
+        typedQuery.setMaxResults(top);
         return typedQuery.getResultList();
     }
 

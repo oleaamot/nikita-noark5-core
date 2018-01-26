@@ -382,7 +382,7 @@ public class ClassificationSystemService implements IClassificationSystemService
         criteriaQuery.where(criteriaBuilder.equal(from.get("ownedBy"), loggedInUser));
         TypedQuery<ClassificationSystem> typedQuery = entityManager.createQuery(select);
         typedQuery.setFirstResult(skip);
-        typedQuery.setMaxResults(maxPageSize);
+        typedQuery.setMaxResults(top);
         return typedQuery.getResultList();
     }
 

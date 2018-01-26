@@ -138,7 +138,7 @@ public class DocumentDescriptionService implements IDocumentDescriptionService {
         criteriaQuery.where(criteriaBuilder.equal(from.get("ownedBy"), loggedInUser));
         TypedQuery<DocumentDescription> typedQuery = entityManager.createQuery(select);
         typedQuery.setFirstResult(skip);
-        typedQuery.setMaxResults(maxPageSize);
+        typedQuery.setMaxResults(top);
         return typedQuery.getResultList();
     }
 

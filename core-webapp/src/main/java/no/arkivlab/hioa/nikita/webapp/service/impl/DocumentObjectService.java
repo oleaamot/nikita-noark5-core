@@ -416,7 +416,7 @@ public class DocumentObjectService implements IDocumentObjectService {
         criteriaQuery.where(criteriaBuilder.equal(from.get("ownedBy"), loggedInUser));
         TypedQuery<DocumentObject> typedQuery = entityManager.createQuery(select);
         typedQuery.setFirstResult(skip);
-        typedQuery.setMaxResults(maxPageSize);
+        typedQuery.setMaxResults(top);
         return typedQuery.getResultList();
     }
 

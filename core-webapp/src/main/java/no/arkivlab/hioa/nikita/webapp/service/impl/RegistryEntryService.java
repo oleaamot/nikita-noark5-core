@@ -215,7 +215,7 @@ public class RegistryEntryService implements IRegistryEntryService {
         criteriaQuery.where(criteriaBuilder.equal(from.get("ownedBy"), loggedInUser));
         TypedQuery<RegistryEntry> typedQuery = entityManager.createQuery(select);
         typedQuery.setFirstResult(skip);
-        typedQuery.setMaxResults(maxPageSize);
+        typedQuery.setMaxResults(top);
         return typedQuery.getResultList();
     }
 
