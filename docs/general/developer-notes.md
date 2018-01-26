@@ -1,5 +1,50 @@
 # Nikita developer notes
 
+## 2018-01-26
+
+ - Coverity issues
+ - Clean codebase
+ - Project management
+
+### Coverity issues
+We have started dealing with the backlog of coverity issues. A lot of these 
+are minor issues, that I have never really reflected over. While I find some of
+them as not being a problem within the codebase, others might reuse parts of
+the codebase and then they could be an issue
+  
+### Clean codebase
+We did some minor work on continuing cleaning the codebase, but mostly 
+through dealing with Coverity issues  
+ 
+### Project management 
+We spent some time looking at travisCI and trying to figure out how this is 
+setup. Also looking to see if we can get the Coverity scans to be included as 
+part of travisCI. Need to dig a little more. We have completed a mdl course 
+on udemy and expect to start improving the GUI   
+ 
+### Going forward 
+Focus should be on wrapping up Coverity issues. We should start looking at 
+upgrading the project to the latest Spring version. With this JWT will have 
+in-built support and we can remove JWT from the code-base. I'd also like to
+start on [SAML](https://www.jasha.eu/blogposts/2015/10/saml-authentication-angularjs-spring-security.html) 
+integration. SAML was something we tried early on in the project but I was not
+able to get SAML/Feide to work with nikita. Hopefully with a little more 
+digging and better understanding of spring we will figure it out.
+
+The project also has a lot of warnings reported in Idea. Once the coverity 
+issues are dealt with, we should work at removing warnings and perhaps run Ideas
+ own bug testing. 
+ 
+An important [issue](https://github.com/HiOA-ABI/nikita-noark5-core/issues/105) 
+added this week is to do a rework of the hateoas handler. I think there is an
+extra comma appearing in output at the end that makes the JSON not valid and
+there may be a mismatch between collection types so that we are copying data 
+to new objects when wrapping database results in Hateoas.
+ 
+Long term, we need to get the testing framework moving. Even if it's just a 
+single running test.
+ 
+
 ## 2018-01-19
  - Clean code
  - Better approach to profiles
