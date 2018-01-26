@@ -35,7 +35,7 @@ public class RecordService implements IRecordService {
     private EntityManager entityManager;
 
     //@Value("${nikita-noark5-core.pagination.maxPageSize}")
-    private Integer maxPageSize = new Integer(10);
+    private Integer maxPageSize = 10;
 
     public RecordService(DocumentDescriptionService documentDescriptionService,
                          IRecordRepository recordRepository,
@@ -62,7 +62,7 @@ public class RecordService implements IRecordService {
     @Override
     public DocumentDescription createDocumentDescriptionAssociatedWithRecord(String systemID, DocumentDescription documentDescription) {
         DocumentDescription persistedDocumentDescription = null;
-        Record record = recordRepository.findBySystemIdOrderBySystemId(systemID);
+        Record record = recordRepository.findBySystemId(systemID);
         if (record == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Record, using systemID " + systemID;
             logger.info(info) ;
@@ -102,169 +102,10 @@ public class RecordService implements IRecordService {
     }
 
     // systemId
-    public Record findBySystemIdOrderBySystemId(String systemId) {
+    public Record findBySystemId(String systemId) {
         return getRecordOrThrow(systemId);
     }
 
-    // createdDate
-    public List<Record> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByCreatedDateAndOwnedBy(createdDate, ownedBy);
-    }
-
-    public List<Record> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByCreatedDateAndOwnedBy(createdDate, ownedBy, sort);
-    }
-
-    public List<Record> findByCreatedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByCreatedDateBetweenAndOwnedBy(start, end, ownedBy);
-    }
-
-    public Page<Record> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByCreatedDateAndOwnedBy(createdDate, ownedBy, pageable);
-    }
-
-    public Page<Record> findByCreatedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByCreatedDateBetweenAndOwnedBy(start, end, ownedBy, pageable);
-    }
-
-    // createdBy
-    public List<Record> findByCreatedByAndOwnedBy(String createdBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByCreatedByAndOwnedBy(createdBy, ownedBy);
-    }
-
-    public List<Record> findByCreatedByContainingAndOwnedBy(String createdBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByCreatedByContainingAndOwnedBy(createdBy, ownedBy);
-    }
-
-    public List<Record> findByCreatedByIgnoreCaseContainingAndOwnedBy(String createdBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByCreatedByIgnoreCaseContainingAndOwnedBy(createdBy, ownedBy);
-    }
-
-    public List<Record> findByCreatedByAndOwnedBy(String createdBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByCreatedByAndOwnedBy(createdBy, ownedBy, sort);
-    }
-
-    public List<Record> findByCreatedByContainingAndOwnedBy(String createdBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByCreatedByContainingAndOwnedBy(createdBy, ownedBy, sort);
-    }
-
-    public List<Record> findByCreatedByIgnoreCaseContainingAndOwnedBy(String createdBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByCreatedByIgnoreCaseContainingAndOwnedBy(createdBy, ownedBy, sort);
-    }
-
-    public Page<Record> findByCreatedByAndOwnedBy(String createdBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByCreatedByAndOwnedBy(createdBy, ownedBy, pageable);
-    }
-
-    public Page<Record> findByCreatedByContainingAndOwnedBy(String createdBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByCreatedByContainingAndOwnedBy(createdBy, ownedBy, pageable);
-    }
-
-    public Page<Record> findByCreatedByIgnoreCaseContainingAndOwnedBy(String createdBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByCreatedByIgnoreCaseContainingAndOwnedBy(createdBy, ownedBy, pageable);
-    }
-
-    // finalisedDate
-    public List<Record> findByArchivedDateAndOwnedBy(Date finalisedDate, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByArchivedDateAndOwnedBy(finalisedDate, ownedBy);
-    }
-
-    public List<Record> findByArchivedDateAndOwnedBy(Date finalisedDate, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByArchivedDateAndOwnedBy(finalisedDate, ownedBy);
-    }
-
-    public List<Record> findByArchivedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByArchivedDateBetweenAndOwnedBy(start, end, ownedBy);
-    }
-
-    public Page<Record> findByArchivedDateAndOwnedBy(Date finalisedDate, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByArchivedDateAndOwnedBy(finalisedDate, ownedBy, pageable);
-    }
-
-    public Page<Record> findByArchivedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByArchivedDateBetweenAndOwnedBy(start, end, ownedBy, pageable);
-    }
-
-    // finalisedBy
-    public List<Record> findByArchivedByAndOwnedBy(String finalisedBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByArchivedByAndOwnedBy(finalisedBy, ownedBy);
-    }
-
-    public List<Record> findByArchivedByContainingAndOwnedBy(String finalisedBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByArchivedByContainingAndOwnedBy(finalisedBy, ownedBy);
-    }
-
-    public List<Record> findByArchivedByIgnoreCaseContainingAndOwnedBy(String finalisedBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByArchivedByIgnoreCaseContainingAndOwnedBy(finalisedBy, ownedBy);
-    }
-
-    public List<Record> findByArchivedByAndOwnedBy(String finalisedBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByArchivedByAndOwnedBy(finalisedBy, ownedBy, sort);
-    }
-
-    public List<Record> findByArchivedByContainingAndOwnedBy(String finalisedBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByArchivedByContainingAndOwnedBy(finalisedBy, ownedBy, sort);
-    }
-
-    public List<Record> findByArchivedByIgnoreCaseContainingAndOwnedBy(String finalisedBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByArchivedByIgnoreCaseContainingAndOwnedBy(finalisedBy, ownedBy, sort);
-    }
-
-    public Page<Record> findByArchivedByAndOwnedBy(String finalisedBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByArchivedByAndOwnedBy(finalisedBy, ownedBy, pageable);
-    }
-
-    public Page<Record> findByArchivedByContainingAndOwnedBy(String finalisedBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByArchivedByContainingAndOwnedBy(finalisedBy, ownedBy, pageable);
-    }
-
-    public Page<Record> findByArchivedByIgnoreCaseContainingAndOwnedBy(String finalisedBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByArchivedByIgnoreCaseContainingAndOwnedBy(finalisedBy, ownedBy, pageable);
-    }
-
-    // deleted
-    public List<Record> findByDeletedAndOwnedBy(String deleted, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByDeletedAndOwnedBy(deleted, ownedBy);
-    }
-
-    public List<Record> findByDeletedAndOwnedBy(String deleted, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByDeletedAndOwnedBy(deleted, ownedBy, sort);
-    }
-
-    public Page<Record> findByDeletedAndOwnedBy(String deleted, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return recordRepository.findByDeletedAndOwnedBy(deleted, ownedBy, pageable);
-    }
 
     // ownedBy
     public List<Record> findByOwnedBy(String ownedBy) {
@@ -278,25 +119,6 @@ public class RecordService implements IRecordService {
 
     // All UPDATE operations
     public Record update(Record record){
-        return recordRepository.save(record);
-    }
-
-    public Record updateRecordSetFinalized(Long id){
-        Record record = recordRepository.findById(id);
-
-        if (record == null) {
-            // TODO throw Object not find
-        }
-
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        return recordRepository.save(record);
-    }
-
-    public Record updateRecordSetTitle(Long id, String newTitle){
-
-        Record record = recordRepository.findById(id);
-
         return recordRepository.save(record);
     }
 
@@ -362,7 +184,7 @@ public class RecordService implements IRecordService {
      * @return
      */
     protected Record getRecordOrThrow(@NotNull String systemID) {
-        Record record = recordRepository.findBySystemIdOrderBySystemId(systemID);
+        Record record = recordRepository.findBySystemId(systemID);
         if (record == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Record, using systemId " + systemID;
             logger.info(info);
