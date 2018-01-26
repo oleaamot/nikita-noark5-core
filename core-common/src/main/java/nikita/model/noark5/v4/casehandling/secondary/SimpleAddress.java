@@ -3,6 +3,7 @@ package nikita.model.noark5.v4.casehandling.secondary;
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.interfaces.entities.casehandling.ISimpleAddressEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -157,5 +158,18 @@ public class SimpleAddress extends NoarkEntity implements ISimpleAddressEntity {
                 .append(postalTown, rhs.postalTown)
                 .append(countryCode, rhs.countryCode)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(addressLine1)
+                .append(addressLine2)
+                .append(addressLine3)
+                .append(postalNumber)
+                .append(postalTown)
+                .append(countryCode)
+                .toHashCode();
     }
 }

@@ -1,6 +1,7 @@
 package nikita.model.noark5.v4.casehandling.secondary;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -55,5 +56,13 @@ public class PostalNumber {
                 .appendSuper(super.equals(other))
                 .append(postalNumber, rhs.postalNumber)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(postalNumber)
+                .toHashCode();
     }
 }

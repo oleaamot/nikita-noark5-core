@@ -5,6 +5,7 @@ import nikita.model.noark5.v4.casehandling.RegistryEntry;
 import nikita.model.noark5.v4.interfaces.entities.casehandling.ICorrespondencePartPersonEntity;
 import nikita.util.deserialisers.casehandling.CorrespondencePartPersonDeserializer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -127,7 +128,7 @@ public class CorrespondencePartPerson extends CorrespondencePart implements ICor
 
     @Override
     public String toString() {
-        return "CorrespondencePartPerson{" +
+        return "CorrespondencePartPerson{" + super.toString() +
                 "socialSecurityNumber='" + socialSecurityNumber + '\'' +
                 ", dNumber='" + dNumber + '\'' +
                 ", name='" + name + '\'' +
@@ -152,5 +153,15 @@ public class CorrespondencePartPerson extends CorrespondencePart implements ICor
                 .append(dNumber, rhs.dNumber)
                 .append(name, rhs.name)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(socialSecurityNumber)
+                .append(dNumber)
+                .append(name)
+                .toHashCode();
     }
 }
