@@ -303,7 +303,8 @@ public class SeriesHateoasController extends NoarkController {
                     value = "Address of the ClassificationSystem to associate",
                     required = true)
             @RequestParam StringBuffer id) throws NikitaException {
-        String classificationSystemPrecursorSystemId = handleResolutionOfIncomingURLInternalGetSystemId(id);
+        //String classificationSystemPrecursorSystemId =
+        //      handleResolutionOfIncomingURLInternalGetSystemId(id);
 //        ClassificationSystemHateoas classificationSystemHateoas = new
 //                ClassificationSystemHateoas(classificationSystemService.associateClassificationSystemWithClassificationSystemSuccessor(classificationSystemSystemId, caseFile));
 //        classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, request, new Authorisation());
