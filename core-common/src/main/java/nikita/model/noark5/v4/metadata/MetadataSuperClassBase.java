@@ -11,7 +11,6 @@ import org.hibernate.search.annotations.Field;
 import javax.persistence.*;
 
 import static nikita.config.Constants.NOARK_METADATA_PATH;
-import static nikita.config.Constants.ONLY_WHITESPACE;
 
 /**
  * Created by tsodring on 3/23/17.
@@ -108,29 +107,6 @@ public class MetadataSuperClassBase implements INikitaEntity, Comparable<Metadat
     @Override
     public void setVersion(Long version) {
         this.version = version;
-    }
-
-    //@Override
-    public boolean validateForUpdate(String description) {
-        // Gonna be the same validation for both create and delte
-        return validateForCreate(description);
-    }
-
-    //@Override
-    public boolean validateForCreate(String errorDescription) {
-        if (description == null) {
-            errorDescription += "beskrivelse field is empty. ";
-            return false;
-        }
-        if (description.contains(ONLY_WHITESPACE)) {
-            errorDescription += "beskrivelse field contains only whitespace. ";
-            return false;
-        }
-        if (description.contains(ONLY_WHITESPACE)) {
-            errorDescription += "kode field contains only whitespace. ";
-            return false;
-        }
-        return true;
     }
 
     @Override
