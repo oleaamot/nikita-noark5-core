@@ -56,7 +56,7 @@ public class RecordImportService implements IRecordImportService {
     @Override
     public DocumentDescription createDocumentDescriptionAssociatedWithRecord(String systemID, DocumentDescription documentDescription) {
         DocumentDescription persistedDocumentDescription = null;
-        Record record = recordRepository.findBySystemIdOrderBySystemId(systemID);
+        Record record = recordRepository.findBySystemId(systemID);
         if (record == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Record, using systemID " + systemID;
             logger.info(info) ;

@@ -269,7 +269,7 @@ public class DocumentObjectService implements IDocumentObjectService {
     }
 
     // systemId
-    public DocumentObject findBySystemIdOrderBySystemId(String systemId) {
+    public DocumentObject findBySystemId(String systemId) {
         return getDocumentObjectOrThrow(systemId);
     }
 
@@ -463,7 +463,7 @@ public class DocumentObjectService implements IDocumentObjectService {
      * @return
      */
     protected DocumentObject getDocumentObjectOrThrow(@NotNull String documentObjectSystemId) {
-        DocumentObject documentObject = documentObjectRepository.findBySystemIdOrderBySystemId(documentObjectSystemId);
+        DocumentObject documentObject = documentObjectRepository.findBySystemId(documentObjectSystemId);
         if (documentObject == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " DocumentObject, using systemId " + documentObjectSystemId;
             logger.info(info);

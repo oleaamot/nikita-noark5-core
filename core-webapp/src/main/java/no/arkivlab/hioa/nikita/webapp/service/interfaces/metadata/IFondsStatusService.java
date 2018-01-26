@@ -15,7 +15,7 @@ public interface IFondsStatusService {
 
     List<FondsStatus> findAllAsList();
 
-    FondsStatus findBySystemIdOrderBySystemId(String systemId);
+    FondsStatus findBySystemId(String systemId);
 
     FondsStatus update(FondsStatus fondsStatus);
 

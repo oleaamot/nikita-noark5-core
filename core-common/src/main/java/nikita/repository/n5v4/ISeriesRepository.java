@@ -34,7 +34,7 @@ public interface ISeriesRepository extends PagingAndSortingRepository<Series, Lo
 
 
     // systemId
-    Series findBySystemIdOrderBySystemId(String systemId);
+    Series findBySystemId(String systemId);
 
     // title
     List<Series> findByTitleAndOwnedBy(String title, String ownedBy);

@@ -97,9 +97,9 @@ public class UserController extends NoarkController {
     @Timed
     @RequestMapping(value = ADMINISTRATIVE_UNIT + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH,
             method = RequestMethod.GET)
-    public ResponseEntity<UserHateoas> findBySystemIdOrderBySystemId(@PathVariable("systemID") final String systemId,
+    public ResponseEntity<UserHateoas> findBySystemId(@PathVariable("systemID") final String systemId,
                                                                                    HttpServletRequest request) {
-        User user = userService.findBySystemIdOrderBySystemId(systemId);
+        User user = userService.findBySystemId(systemId);
         UserHateoas userHateoas = new UserHateoas(user);
         userHateoasHandler.addLinks(userHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

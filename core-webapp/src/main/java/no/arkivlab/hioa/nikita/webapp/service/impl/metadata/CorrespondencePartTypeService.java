@@ -63,8 +63,8 @@ public class CorrespondencePartTypeService implements ICorrespondencePartTypeSer
      * @return
      */
     @Override
-    public CorrespondencePartType findBySystemIdOrderBySystemId(String systemId) {
-        return correspondencePartTypeRepository.findBySystemIdOrderBySystemId(systemId);
+    public CorrespondencePartType findBySystemId(String systemId) {
+        return correspondencePartTypeRepository.findBySystemId(systemId);
     }
 
     /**

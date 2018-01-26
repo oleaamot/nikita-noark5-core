@@ -62,7 +62,7 @@ public class BasicRecordService implements IBasicRecordService {
     }
 
     // systemId
-    public BasicRecord findBySystemIdOrderBySystemId(String systemId) {
+    public BasicRecord findBySystemId(String systemId) {
         return getBasicRecordOrThrow(systemId);
     }
 
@@ -102,7 +102,7 @@ public class BasicRecordService implements IBasicRecordService {
      * @return
      */
     protected BasicRecord getBasicRecordOrThrow(@NotNull String basicRecordSystemId) {
-        BasicRecord basicRecord = basicRecordRepository.findBySystemIdOrderBySystemId(basicRecordSystemId);
+        BasicRecord basicRecord = basicRecordRepository.findBySystemId(basicRecordSystemId);
         if (basicRecord == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " BasicRecord, using systemId " + basicRecordSystemId;
             logger.info(info);

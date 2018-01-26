@@ -60,7 +60,7 @@ public class RegistryEntryImportService implements IRegistryEntryImportService {
             String systemID, DocumentDescription documentDescription) {
 
         DocumentDescription persistedDocumentDescription = null;
-        RegistryEntry registryEntry = registryEntryRepository.findBySystemIdOrderBySystemId(systemID);
+        RegistryEntry registryEntry = registryEntryRepository.findBySystemId(systemID);
         if (registryEntry == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " RegistryEntry, using registryEntrySystemId " + systemID;
             logger.info(info) ;

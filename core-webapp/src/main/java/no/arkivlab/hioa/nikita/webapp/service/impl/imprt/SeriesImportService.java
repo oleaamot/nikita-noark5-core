@@ -43,7 +43,7 @@ public class SeriesImportService implements ISeriesImportService {
     @Override
     public CaseFile createCaseFileAssociatedWithSeries(String seriesSystemId, CaseFile caseFile) {
         CaseFile persistedFile = null;
-        Series series = seriesRepository.findBySystemIdOrderBySystemId(seriesSystemId);
+        Series series = seriesRepository.findBySystemId(seriesSystemId);
         if (series == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Series, using seriesSystemId " + seriesSystemId;
             logger.info(info);
@@ -63,7 +63,7 @@ public class SeriesImportService implements ISeriesImportService {
     @Override
     public File createFileAssociatedWithSeries(String seriesSystemId, File file) {
         File persistedFile = null;
-        Series series = seriesRepository.findBySystemIdOrderBySystemId(seriesSystemId);
+        Series series = seriesRepository.findBySystemId(seriesSystemId);
         if (series == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Series, using seriesSystemId " + seriesSystemId;
             logger.info(info) ;

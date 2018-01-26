@@ -30,7 +30,7 @@ public interface IClassificationSystemService {
 	ClassificationSystem findById(Long id);
 
 	// systemId
-    ClassificationSystem findBySystemIdOrderBySystemId(String systemId);
+    ClassificationSystem findBySystemId(String systemId);
 
 	// title
 	List<ClassificationSystem> findByTitleAndOwnedBy(String title, String ownedBy);

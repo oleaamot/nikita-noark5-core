@@ -33,7 +33,7 @@ public interface IFondsRepository extends PagingAndSortingRepository<Fonds, Long
 
 
     // systemId
-    Fonds findBySystemIdOrderBySystemId(String systemId);
+    Fonds findBySystemId(String systemId);
 
     // title
     List<Fonds> findByTitleAndOwnedBy(String title, String ownedBy);

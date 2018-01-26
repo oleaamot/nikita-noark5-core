@@ -32,7 +32,7 @@ public interface IBasicRecordRepository extends PagingAndSortingRepository<Basic
     BasicRecord findById(Long id);
 
     // systemId
-    BasicRecord findBySystemIdOrderBySystemId(String systemId);
+    BasicRecord findBySystemId(String systemId);
 
     // createdDate
     List<BasicRecord> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy);

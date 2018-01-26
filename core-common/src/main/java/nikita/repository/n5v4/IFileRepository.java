@@ -33,7 +33,7 @@ public interface IFileRepository extends PagingAndSortingRepository<File, Long> 
 
 
     // systemId
-    File findBySystemIdOrderBySystemId(String systemId);
+    File findBySystemId(String systemId);
 
     // title
     List<File> findByTitleAndOwnedBy(String title, String ownedBy);

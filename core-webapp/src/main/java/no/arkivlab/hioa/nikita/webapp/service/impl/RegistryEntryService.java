@@ -220,7 +220,7 @@ public class RegistryEntryService implements IRegistryEntryService {
     }
 
     // systemId
-    public RegistryEntry findBySystemIdOrderBySystemId(String systemId) {
+    public RegistryEntry findBySystemId(String systemId) {
         return getRegistryEntryOrThrow(systemId);
     }
 
@@ -289,7 +289,7 @@ public class RegistryEntryService implements IRegistryEntryService {
      * @return
      */
     protected RegistryEntry getRegistryEntryOrThrow(@NotNull String registryEntrySystemId) {
-        RegistryEntry registryEntry = registryEntryRepository.findBySystemIdOrderBySystemId(registryEntrySystemId);
+        RegistryEntry registryEntry = registryEntryRepository.findBySystemId(registryEntrySystemId);
         if (registryEntry == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " RegistryEntry, using systemId " + registryEntrySystemId;
             logger.info(info);

@@ -33,7 +33,7 @@ public interface IDocumentDescriptionRepository extends PagingAndSortingReposito
 
 
     // systemId
-    DocumentDescription findBySystemIdOrderBySystemId(String systemId);
+    DocumentDescription findBySystemId(String systemId);
 
     // title
     List<DocumentDescription> findByTitleAndOwnedBy(String title, String ownedBy);

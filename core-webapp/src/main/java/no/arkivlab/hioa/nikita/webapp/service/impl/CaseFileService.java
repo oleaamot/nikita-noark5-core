@@ -50,7 +50,7 @@ public class CaseFileService implements ICaseFileService {
     }
 
     // systemId
-    public CaseFile findBySystemIdOrderBySystemId(String systemId) {
+    public CaseFile findBySystemId(String systemId) {
         return getCaseFileOrThrow(systemId);
     }
 
@@ -136,7 +136,7 @@ public class CaseFileService implements ICaseFileService {
      * @return
      */
     protected CaseFile getCaseFileOrThrow(@NotNull String caseFileSystemId) {
-        CaseFile caseFile = caseFileRepository.findBySystemIdOrderBySystemId(caseFileSystemId);
+        CaseFile caseFile = caseFileRepository.findBySystemId(caseFileSystemId);
         if (caseFile == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " CaseFile, using systemId " + caseFileSystemId;
             logger.info(info);

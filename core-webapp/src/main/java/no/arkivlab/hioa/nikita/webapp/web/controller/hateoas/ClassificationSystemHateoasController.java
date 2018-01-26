@@ -148,7 +148,7 @@ public class ClassificationSystemHateoasController extends NoarkController {
                     value = "systemId of classificationSystem to retrieve.",
                     required = true)
             @PathVariable("systemID") final String classificationSystemId) {
-        ClassificationSystem classificationSystem = classificationSystemService.findBySystemIdOrderBySystemId(classificationSystemId);
+        ClassificationSystem classificationSystem = classificationSystemService.findBySystemId(classificationSystemId);
         if (classificationSystem == null) {
             throw new NoarkEntityNotFoundException(classificationSystemId);
         }
@@ -206,7 +206,7 @@ public class ClassificationSystemHateoasController extends NoarkController {
                     value = "systemID of the ClassificationSystem to delete",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        ClassificationSystem classificationSystem = classificationSystemService.findBySystemIdOrderBySystemId(systemID);
+        ClassificationSystem classificationSystem = classificationSystemService.findBySystemId(systemID);
 
         classificationSystemService.deleteEntity(systemID);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, classificationSystem));

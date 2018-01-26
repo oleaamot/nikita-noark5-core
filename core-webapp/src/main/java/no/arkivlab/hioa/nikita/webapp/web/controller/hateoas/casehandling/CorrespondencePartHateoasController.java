@@ -76,7 +76,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String correspondencePartPersonSystemId) {
         CorrespondencePartPerson correspondencePartPerson =
-                (CorrespondencePartPerson) correspondencePartService.findBySystemIdOrderBySystemId(correspondencePartPersonSystemId);
+                (CorrespondencePartPerson) correspondencePartService.findBySystemId(correspondencePartPersonSystemId);
         CorrespondencePartPersonHateoas correspondencePartPersonHateoas =
                 new CorrespondencePartPersonHateoas(correspondencePartPerson);
         correspondencePartHateoasHandler.addLinks(correspondencePartPersonHateoas, request, new Authorisation());
@@ -107,7 +107,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String correspondencePartInternalSystemId) {
         CorrespondencePartInternal correspondencePartInternal =
-                (CorrespondencePartInternal) correspondencePartService.findBySystemIdOrderBySystemId(correspondencePartInternalSystemId);
+                (CorrespondencePartInternal) correspondencePartService.findBySystemId(correspondencePartInternalSystemId);
         CorrespondencePartInternalHateoas correspondencePartInternalHateoas =
                 new CorrespondencePartInternalHateoas(correspondencePartInternal);
         correspondencePartHateoasHandler.addLinks(correspondencePartInternalHateoas, request, new Authorisation());
@@ -138,7 +138,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String correspondencePartUnitSystemId) {
         CorrespondencePartUnit correspondencePartUnit =
-                (CorrespondencePartUnit) correspondencePartService.findBySystemIdOrderBySystemId(correspondencePartUnitSystemId);
+                (CorrespondencePartUnit) correspondencePartService.findBySystemId(correspondencePartUnitSystemId);
         CorrespondencePartUnitHateoas correspondencePartUnitHateoas = new CorrespondencePartUnitHateoas(correspondencePartUnit);
         correspondencePartHateoasHandler.addLinks(correspondencePartUnitHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

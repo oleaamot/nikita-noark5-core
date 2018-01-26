@@ -90,7 +90,7 @@ public class FondsService implements IFondsService {
     @Override
     public Fonds createFondsAssociatedWithFonds(String parentFondsSystemId, Fonds childFonds) {
         Fonds persistedChildFonds = null;
-        Fonds parentFonds = fondsRepository.findBySystemIdOrderBySystemId(parentFondsSystemId);
+        Fonds parentFonds = fondsRepository.findBySystemId(parentFondsSystemId);
 
         if (parentFonds == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Fonds, using fondsSystemId " + parentFondsSystemId + " when " +
@@ -127,7 +127,7 @@ public class FondsService implements IFondsService {
     @Override
     public Series createSeriesAssociatedWithFonds(String fondsSystemId, Series series) {
         Series persistedSeries = null;
-        Fonds fonds = fondsRepository.findBySystemIdOrderBySystemId(fondsSystemId);
+        Fonds fonds = fondsRepository.findBySystemId(fondsSystemId);
 
         if (fonds == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Fonds, using fondsSystemId " + fondsSystemId;
@@ -154,7 +154,7 @@ public class FondsService implements IFondsService {
     }
 
     public FondsCreator createFondsCreatorAssociatedWithFonds(String fondsSystemId, FondsCreator fondsCreator) {
-        Fonds fonds = fondsRepository.findBySystemIdOrderBySystemId(fondsSystemId);
+        Fonds fonds = fondsRepository.findBySystemId(fondsSystemId);
 
         if (fonds == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Fonds, using fondsSystemId " + fondsSystemId;
@@ -285,7 +285,7 @@ public class FondsService implements IFondsService {
      * @return
      */
     protected Fonds getFondsOrThrow(@NotNull String fondsSystemId) {
-        Fonds fonds = fondsRepository.findBySystemIdOrderBySystemId(fondsSystemId);
+        Fonds fonds = fondsRepository.findBySystemId(fondsSystemId);
         if (fonds == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Fonds, using systemId " + fondsSystemId;
             logger.info(info);

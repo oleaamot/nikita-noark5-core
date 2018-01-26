@@ -16,7 +16,7 @@ public interface ICorrespondencePartTypeService {
 
     List<CorrespondencePartType> findAllAsList();
 
-    CorrespondencePartType findBySystemIdOrderBySystemId(String systemId);
+    CorrespondencePartType findBySystemId(String systemId);
 
     CorrespondencePartType update(CorrespondencePartType correspondencePartType);
 

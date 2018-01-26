@@ -112,9 +112,9 @@ public class FondsStatusController {
     @Counted
     @Timed
     @RequestMapping(value = FONDS_STATUS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH, method = RequestMethod.GET)
-    public ResponseEntity<MetadataHateoas> findBySystemIdOrderBySystemId(@PathVariable("systemID") final String systemId,
-                                                                         HttpServletRequest request) {
-        FondsStatus fondsStatus = fondsStatusService.findBySystemIdOrderBySystemId(systemId);
+    public ResponseEntity<MetadataHateoas> findBySystemId(@PathVariable("systemID") final String systemId,
+                                                          HttpServletRequest request) {
+        FondsStatus fondsStatus = fondsStatusService.findBySystemId(systemId);
         MetadataHateoas metadataHateoas = new MetadataHateoas(fondsStatus);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

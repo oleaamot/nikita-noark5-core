@@ -25,7 +25,7 @@ public interface ICorrespondencePartService {
 
     CorrespondencePartPerson createNewCorrespondencePartPerson(CorrespondencePartPerson correspondencePartPerson);
 
-    CorrespondencePart findBySystemIdOrderBySystemId(String correspondencePartSystemId);
+    CorrespondencePart findBySystemId(String correspondencePartSystemId);
 
     void deleteCorrespondencePartUnit(@NotNull String code);
 

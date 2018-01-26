@@ -12,5 +12,5 @@ public interface INoarkService {
     INikitaEntity updateNoarkEntity(String systemId, Long version, INikitaEntity updatedEntity);
     INikitaEntity createNewNoarkEntity(INikitaEntity entity);
 
-    INikitaEntity findBySystemIdOrderBySystemId(String systemId);
+    INikitaEntity findBySystemId(String systemId);
 }

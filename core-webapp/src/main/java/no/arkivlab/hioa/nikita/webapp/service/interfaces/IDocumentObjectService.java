@@ -46,7 +46,7 @@ public interface IDocumentObjectService {
 	DocumentObject findById(Long id);
 
 	// systemId
-    DocumentObject findBySystemIdOrderBySystemId(String systemId);
+    DocumentObject findBySystemId(String systemId);
 
 	// createdDate
 	List<DocumentObject> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy);

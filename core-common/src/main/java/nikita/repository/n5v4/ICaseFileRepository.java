@@ -15,7 +15,7 @@ public interface ICaseFileRepository extends PagingAndSortingRepository<CaseFile
 
     // -- All READ operations
     // systemId
-    CaseFile findBySystemIdOrderBySystemId(String systemId);
+    CaseFile findBySystemId(String systemId);
 
     List <CaseFile> findByReferenceSeries(Series series);
 }

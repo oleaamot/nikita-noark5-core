@@ -31,7 +31,7 @@ public interface IRegistryEntryService {
     Precedence createPrecedenceAssociatedWithRecord(String registryEntrysystemID, Precedence precedence);
 
     // All find methods
-    RegistryEntry findBySystemIdOrderBySystemId(String systemId);
+    RegistryEntry findBySystemId(String systemId);
     List<RegistryEntry> findRegistryEntryByOwnerPaginated(Integer top, Integer skip);
 
     Set<CorrespondencePartPerson> getCorrespondencePartPersonAssociatedWithRegistryEntry(String systemID);
