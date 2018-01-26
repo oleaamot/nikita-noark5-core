@@ -179,7 +179,7 @@ public class AdministrativeUnitController extends NoarkController {
                                                                                       required = true)
                                                                               @RequestBody AdministrativeUnit administrativeUnit)
             throws NikitaException {
-        AdministrativeUnit newAdministrativeUnit = administrativeUnitService.update(systemID,
+        administrativeUnitService.update(systemID,
                 parseETAG(request.getHeader(ETAG)), administrativeUnit);
         AdministrativeUnitHateoas adminHateoas = new AdministrativeUnitHateoas(administrativeUnit);
         administrativeUnitHateoasHandler.addLinks(adminHateoas, request, new Authorisation());
