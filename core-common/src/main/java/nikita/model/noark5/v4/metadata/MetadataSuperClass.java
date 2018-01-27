@@ -49,7 +49,7 @@ public class MetadataSuperClass extends MetadataSuperClassBase implements IMetad
         if (other.getClass() != getClass()) {
             return false;
         }
-        UniqueCodeMetadataSuperClass rhs = (UniqueCodeMetadataSuperClass) other;
+        MetadataSuperClass rhs = (MetadataSuperClass) other;
         return new EqualsBuilder()
                 .appendSuper(super.equals(other))
                 .append(code, rhs.code)
