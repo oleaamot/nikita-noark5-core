@@ -5,12 +5,15 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 /**
  * Created by tsodring on 5/14/17.
  */
 @Embeddable
-public class PostalNumber {
+public class PostalNumber implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * M407 - postnummer (xs:string)
