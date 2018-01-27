@@ -572,7 +572,7 @@ public class WebappProperties {
         }
     }
 
-    public class StorageProperties {
+    public static class StorageProperties {
         private String location = "/tmp/upload-dir";
 
         public String getLocation() {
@@ -584,7 +584,7 @@ public class WebappProperties {
         }
     }
 
-    public class ChecksumProperties {
+    public static class ChecksumProperties {
         private String checksumAlgorithm = "SHA-256";
 
         public String getChecksumAlgorithm() {
