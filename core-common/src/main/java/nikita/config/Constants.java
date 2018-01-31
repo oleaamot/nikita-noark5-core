@@ -104,12 +104,17 @@ public final class Constants {
     public static final String NEW_PRECEDENCE = NEW + DASH + PRECEDENCE;
     public static final String NEW_CASE_PARTY = NEW + DASH + CASE_PARTY;
     public static final String NEW_CASE_STATUS = NEW + DASH + CASE_STATUS;
-    public static final String NEW_SECONDARY_CLASSIFICATION = NEW + DASH + "sekundaerklassifikasjon";
+    public static final String NEW_SECONDARY_CLASSIFICATION = NEW + DASH +
+            "sekundaerklassifikasjon";
 
     // Create for new metadata objects
-    public static final String NEW_DOCUMENT_MEDIUM = NEW + DASH + DOCUMENT_MEDIUM;
+    public static final String NEW_DOCUMENT_MEDIUM = NEW + DASH +
+            DOCUMENT_MEDIUM;
     public static final String NEW_FONDS_STATUS = NEW + DASH + FONDS_STATUS;
-    public static final String NEW_CORRESPONDENCE_PART_TYPE = NEW + DASH + CORRESPONDENCE_PART_TYPE;
+    public static final String NEW_DOCUMENT_STATUS = NEW + DASH +
+            DOCUMENT_STATUS;
+    public static final String NEW_CORRESPONDENCE_PART_TYPE = NEW + DASH +
+            CORRESPONDENCE_PART_TYPE;
 
     public static final String SERIES_ASSOCIATE_AS_SUCCESSOR = "referanseArvtager";
     public static final String SERIES_ASSOCIATE_AS_PRECURSOR = "referanseForloeper";
@@ -173,6 +178,9 @@ public final class Constants {
     public static final String TEMPLATE_FONDS_STATUS_DESCRIPTION = "Arkivet er opprettet og i aktiv bruk";
     public static final String TEMPLATE_DOCUMENT_MEDIUM_CODE = "Elektronisk arkiv";
     public static final String TEMPLATE_DOCUMENT_MEDIUM_DESCRIPTION = "Bare elektroniske dokumenter";
+    public static final String TEMPLATE_DOCUMENT_STATUS_CODE = "B";
+    public static final String TEMPLATE_DOCUMENT_STATUS_DESCRIPTION =
+            "Dokumentet er under redigering";
 
     public static final String TEMPLATE_REGISTRY_ENTRY_STATUS = "Journalført";
     public static final String TEMPLATE_REGISTRY_ENTRY_TYPE = "Journalført";
