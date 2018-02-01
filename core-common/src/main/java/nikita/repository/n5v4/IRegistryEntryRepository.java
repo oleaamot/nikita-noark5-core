@@ -7,11 +7,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IRegistryEntryRepository extends PagingAndSortingRepository<RegistryEntry, Long> {
 
-
     // -- All SAVE operations
     @Override
     RegistryEntry save(RegistryEntry registryEntry);
 
     RegistryEntry findBySystemId(String systemId);
-
 }

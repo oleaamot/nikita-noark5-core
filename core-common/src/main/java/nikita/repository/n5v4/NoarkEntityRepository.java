@@ -19,5 +19,4 @@ public interface NoarkEntityRepository<INikitaEntity, ID extends Serializable> e
     List<INikitaEntity> findAll();
 
     INikitaEntity findBySystemId(String systemId);
-
 }

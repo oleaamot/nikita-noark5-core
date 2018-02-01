@@ -9,7 +9,6 @@ import java.util.List;
 @Repository
 public interface IFondsCreatorRepository extends PagingAndSortingRepository<FondsCreator, Long> {
 
-
     // -- All SAVE operations
     @Override
     FondsCreator save(FondsCreator fondsCreator);
@@ -20,7 +19,6 @@ public interface IFondsCreatorRepository extends PagingAndSortingRepository<Fond
 
     // id
     FondsCreator findById(Long id);
-
 
     // systemId
     FondsCreator findBySystemId(String systemId);
