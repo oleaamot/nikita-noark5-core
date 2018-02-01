@@ -40,6 +40,20 @@ public class MetadataDetails extends APIDetails {
                 true
         ));
 
+        // Add support for DocumentStatus
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH + DOCUMENT_STATUS,
+                REL_METADATA_DOCUMENT_STATUS,
+                true
+        ));
+
+        // Add support for new DocumentStatus
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH + NEW_DOCUMENT_STATUS,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH + NEW_DOCUMENT_STATUS + SLASH,
+                true
+        ));
+
         // Add support for CorrespondencePart
         aPIDetails.add(new APIDetail(
                 publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH + CORRESPONDENCE_PART_TYPE,
