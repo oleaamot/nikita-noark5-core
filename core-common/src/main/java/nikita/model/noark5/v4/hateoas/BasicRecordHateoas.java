@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.serializers.noark5v4.hateoas.BasicRecordHateoasSerializer;
 
-import java.util.List;
+import java.util.AbstractCollection;
 
 import static nikita.config.N5ResourceMappings.BASIC_RECORD;
 
@@ -19,7 +19,7 @@ public class BasicRecordHateoas extends HateoasNoarkObject implements IHateoasNo
         super(entity);
     }
 
-    public BasicRecordHateoas(List<INikitaEntity> entityList) {
+    public BasicRecordHateoas(AbstractCollection<INikitaEntity> entityList) {
         super(entityList, BASIC_RECORD);
     }
 }

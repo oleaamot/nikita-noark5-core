@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.AbstractCollection;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT;
@@ -134,7 +134,7 @@ public class DocumentObjectHateoasController extends NoarkController {
             if (pieces.length == 3 && pieces[1].equalsIgnoreCase("eq")) {
                 pieces[2] = pieces[2].replace("\'", "");
                 documentObjectHateoas = new
-                        DocumentObjectHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                        DocumentObjectHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection)
                         documentObjectService.findDocumentObjectByAnyColumn(pieces[0], pieces[2]));
 
             }
@@ -142,7 +142,7 @@ public class DocumentObjectHateoasController extends NoarkController {
 
         if (null == documentObjectHateoas) {
             documentObjectHateoas = new
-                    DocumentObjectHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                    DocumentObjectHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection)
                     documentObjectService.findDocumentObjectByOwnerPaginated(top, skip));
         }
         documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());

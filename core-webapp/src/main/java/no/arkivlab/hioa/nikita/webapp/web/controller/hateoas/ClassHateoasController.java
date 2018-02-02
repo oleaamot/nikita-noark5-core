@@ -32,7 +32,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.util.AbstractCollection;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.CLASS;
@@ -139,7 +139,7 @@ public class ClassHateoasController extends NoarkController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         ClassHateoas classHateoas = new
-                ClassHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                ClassHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection)
                 classService.findClassByOwnerPaginated(top, skip));
         classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

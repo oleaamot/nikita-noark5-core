@@ -34,7 +34,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.util.AbstractCollection;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
@@ -442,7 +442,7 @@ public class RecordHateoasController extends NoarkController {
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
 
-        RecordHateoas recordHateoas = new RecordHateoas((ArrayList<INikitaEntity>) (ArrayList)
+        RecordHateoas recordHateoas = new RecordHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection)
                 recordService.findRecordByOwnerPaginated(top, skip));
         recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
@@ -555,7 +555,7 @@ public class RecordHateoasController extends NoarkController {
             throw new NoarkEntityNotFoundException("Could not find File object with systemID " + systemID);
         }
         DocumentDescriptionHateoas documentDescriptionHateoas = new
-                DocumentDescriptionHateoas(new ArrayList<>(record.getReferenceDocumentDescription()));
+                DocumentDescriptionHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection) record.getReferenceDocumentDescription());
         documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))

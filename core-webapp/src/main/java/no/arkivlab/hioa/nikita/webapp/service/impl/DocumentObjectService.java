@@ -40,7 +40,6 @@ import java.nio.file.Paths;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -273,94 +272,6 @@ public class DocumentObjectService implements IDocumentObjectService {
         return getDocumentObjectOrThrow(systemId);
     }
 
-    // createdDate
-    public List<DocumentObject> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return documentObjectRepository.findByCreatedDateAndOwnedBy(createdDate, ownedBy);
-    }
-
-    public List<DocumentObject> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return documentObjectRepository.findByCreatedDateAndOwnedBy(createdDate, ownedBy, sort);
-    }
-
-    public List<DocumentObject> findByCreatedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return documentObjectRepository.findByCreatedDateBetweenAndOwnedBy(start, end, ownedBy);
-    }
-
-    public Page<DocumentObject> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return documentObjectRepository.findByCreatedDateAndOwnedBy(createdDate, ownedBy, pageable);
-    }
-
-    public Page<DocumentObject> findByCreatedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return documentObjectRepository.findByCreatedDateBetweenAndOwnedBy(start, end, ownedBy, pageable);
-    }
-
-    // createdBy
-    public List<DocumentObject> findByCreatedByAndOwnedBy(String createdBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return documentObjectRepository.findByCreatedByAndOwnedBy(createdBy, ownedBy);
-    }
-
-    public List<DocumentObject> findByCreatedByContainingAndOwnedBy(String createdBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return documentObjectRepository.findByCreatedByContainingAndOwnedBy(createdBy, ownedBy);
-    }
-
-    public List<DocumentObject> findByCreatedByIgnoreCaseContainingAndOwnedBy(String createdBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return documentObjectRepository.findByCreatedByIgnoreCaseContainingAndOwnedBy(createdBy, ownedBy);
-    }
-
-    public List<DocumentObject> findByCreatedByAndOwnedBy(String createdBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return documentObjectRepository.findByCreatedByAndOwnedBy(createdBy, ownedBy, sort);
-    }
-
-    public List<DocumentObject> findByCreatedByContainingAndOwnedBy(String createdBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return documentObjectRepository.findByCreatedByContainingAndOwnedBy(createdBy, ownedBy, sort);
-    }
-
-    public List<DocumentObject> findByCreatedByIgnoreCaseContainingAndOwnedBy(String createdBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return documentObjectRepository.findByCreatedByIgnoreCaseContainingAndOwnedBy(createdBy, ownedBy, sort);
-    }
-
-    public Page<DocumentObject> findByCreatedByAndOwnedBy(String createdBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return documentObjectRepository.findByCreatedByAndOwnedBy(createdBy, ownedBy, pageable);
-    }
-
-    public Page<DocumentObject> findByCreatedByContainingAndOwnedBy(String createdBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return documentObjectRepository.findByCreatedByContainingAndOwnedBy(createdBy, ownedBy, pageable);
-    }
-
-    public Page<DocumentObject> findByCreatedByIgnoreCaseContainingAndOwnedBy(String createdBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return documentObjectRepository.findByCreatedByIgnoreCaseContainingAndOwnedBy(createdBy, ownedBy, pageable);
-    }
-
-    // deleted
-    public List<DocumentObject> findByDeletedAndOwnedBy(String deleted, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return documentObjectRepository.findByDeletedAndOwnedBy(deleted, ownedBy);
-    }
-
-    public List<DocumentObject> findByDeletedAndOwnedBy(String deleted, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return documentObjectRepository.findByDeletedAndOwnedBy(deleted, ownedBy, sort);
-    }
-
-    public Page<DocumentObject> findByDeletedAndOwnedBy(String deleted, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return documentObjectRepository.findByDeletedAndOwnedBy(deleted, ownedBy, pageable);
-    }
-
     // ownedBy
     public List<DocumentObject> findByOwnedBy(String ownedBy) {
         ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
@@ -377,8 +288,6 @@ public class DocumentObjectService implements IDocumentObjectService {
     }
 
     // All READ operations
-
-
     @Override
     public List<DocumentObject> findDocumentObjectByAnyColumn(String column, String value) {
         String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();

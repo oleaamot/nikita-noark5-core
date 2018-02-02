@@ -70,7 +70,7 @@ public class UserController extends NoarkController {
     @RequestMapping(method = RequestMethod.GET, value = ADMINISTRATIVE_UNIT)
     public ResponseEntity<UserHateoas> findAll(HttpServletRequest request) {
         UserHateoas userHateoas = new UserHateoas(
-                (ArrayList<INikitaEntity>) (ArrayList) userService.findAll());
+                (AbstractCollection<INikitaEntity>) (AbstractCollection) userService.findAll());
         userHateoasHandler.addLinks(userHateoas, request, new Authorisation());
 
         return ResponseEntity.status(HttpStatus.OK)

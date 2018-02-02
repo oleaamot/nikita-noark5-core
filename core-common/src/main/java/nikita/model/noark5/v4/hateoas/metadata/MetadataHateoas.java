@@ -6,7 +6,7 @@ import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.serializers.noark5v4.hateoas.metadata.MetadataHateoasSerializer;
 
-import java.util.List;
+import java.util.AbstractCollection;
 
 /**
  * Created by tsodring on 4/3/17.
@@ -18,7 +18,7 @@ public class MetadataHateoas extends HateoasNoarkObject implements IHateoasNoark
         super(entity);
     }
 
-    public MetadataHateoas(List<INikitaEntity> entityList, String entityType) {
+    public MetadataHateoas(AbstractCollection<INikitaEntity> entityList, String entityType) {
         super(entityList, entityType);
     }
 }

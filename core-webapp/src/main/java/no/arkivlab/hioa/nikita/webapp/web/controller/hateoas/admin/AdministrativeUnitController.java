@@ -21,7 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
+import java.util.AbstractCollection;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
@@ -90,7 +90,7 @@ public class AdministrativeUnitController extends NoarkController {
     @RequestMapping(method = RequestMethod.GET, value = ADMINISTRATIVE_UNIT)
     public ResponseEntity<AdministrativeUnitHateoas> findAll(HttpServletRequest request) {
         AdministrativeUnitHateoas adminHateoas = new AdministrativeUnitHateoas(
-                (ArrayList<INikitaEntity>) (ArrayList) administrativeUnitService.findAll());
+                (AbstractCollection<INikitaEntity>) (AbstractCollection) administrativeUnitService.findAll());
         administrativeUnitHateoasHandler.addLinks(adminHateoas, request, new Authorisation());
 
         return ResponseEntity.status(HttpStatus.OK)

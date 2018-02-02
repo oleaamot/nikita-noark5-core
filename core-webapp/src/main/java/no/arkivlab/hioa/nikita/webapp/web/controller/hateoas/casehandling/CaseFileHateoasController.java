@@ -39,7 +39,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.AbstractCollection;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import static nikita.config.Constants.*;
@@ -141,7 +143,7 @@ public class CaseFileHateoasController extends NoarkController {
         defaultRegistryEntry.setDocumentDate(now);
         defaultRegistryEntry.setRecordStatus(TEST_RECORD_STATUS);
         defaultRegistryEntry.setRegistryEntryType(TEST_REGISTRY_ENTRY_TYPE);
-        defaultRegistryEntry.setRecordYear(now.getYear() + 1900);
+        defaultRegistryEntry.setRecordYear(Calendar.getInstance().get(Calendar.YEAR));
         // TODO generate these
         //defaultRegistryEntry.setRecordSequenceNumber(201701011);
         //defaultRegistryEntry.setRegistryEntryNumber(201701);
@@ -235,7 +237,7 @@ public class CaseFileHateoasController extends NoarkController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         CaseFileHateoas caseFileHateoas = new
-                CaseFileHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                CaseFileHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection)
                 caseFileService.findCaseFileByOwnerPaginated(top, skip));
 
         caseFileHateoasHandler.addLinks(caseFileHateoas, request, new Authorisation());

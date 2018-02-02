@@ -39,7 +39,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.util.AbstractCollection;
 import java.util.List;
 
 import static nikita.config.Constants.*;
@@ -270,7 +270,7 @@ public class FondsHateoasController extends NoarkController {
                 .body(fondsHateoas);
     }
 
-    // Create a Series object with default values
+    // Return a Series object with default values
     //GET [contextPath][api]/arkivstruktur/arkiv/{systemId}/ny-arkivdel
     @ApiOperation(value = "Create a Series with default values", response = Series.class)
     @ApiResponses(value = {
@@ -322,7 +322,8 @@ public class FondsHateoasController extends NoarkController {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
         FondsCreatorHateoas fondsCreatorHateoas = new
-                FondsCreatorHateoas(new ArrayList<>(fonds.getReferenceFondsCreator()));
+                FondsCreatorHateoas((AbstractCollection<INikitaEntity>)
+                (AbstractCollection) fonds.getReferenceFondsCreator());
 
         fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
@@ -354,9 +355,11 @@ public class FondsHateoasController extends NoarkController {
         if (fonds == null) {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
-        SeriesHateoas seriesHateoas = new
-                SeriesHateoas(new ArrayList<>(fonds.getReferenceSeries()));
-        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
+        SeriesHateoas seriesHateoas = new SeriesHateoas(
+                (AbstractCollection<INikitaEntity>)
+                        (AbstractCollection) fonds.getReferenceSeries());
+        seriesHateoasHandler.addLinks(seriesHateoas, request,
+                new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(seriesHateoas);
@@ -408,8 +411,8 @@ public class FondsHateoasController extends NoarkController {
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
         FondsHateoas fondsHateoas = new
-                FondsHateoas((ArrayList<INikitaEntity>) (ArrayList)
-                fondsService.findFondsByOwnerPaginated(top, skip));
+                FondsHateoas((AbstractCollection) fondsService.findFondsByOwnerPaginated(top,
+                skip));
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -431,7 +434,7 @@ public class FondsHateoasController extends NoarkController {
         List<Fonds> result = fullTextSession.createFullTextQuery(query, Fonds.class).list();
 
         FondsHateoas fondsHateoas = new
-                FondsHateoas((ArrayList<INikitaEntity>) (ArrayList) result);
+                FondsHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection) result);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))

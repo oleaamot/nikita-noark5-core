@@ -35,4 +35,6 @@ public interface IDocumentDescriptionRepository extends PagingAndSortingReposito
     // ownedBy
     List<DocumentDescription> findByOwnedBy(String ownedBy);
     List<DocumentDescription> findByOwnedBy(String ownedBy, Sort sort);
+
+    List<DocumentDescription> findByOwnedBy(String ownedBy, Pageable pageable);
 }

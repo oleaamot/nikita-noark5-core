@@ -35,7 +35,8 @@ public interface IDocumentDescriptionService {
 	// ownedBy
 	List<DocumentDescription> findByOwnedBy(String ownedBy);
 	List<DocumentDescription> findByOwnedBy(String ownedBy, Sort sort);
-	Page<DocumentDescription> findByOwnedBy(String ownedBy, Pageable pageable);
+
+    List<DocumentDescription> findByOwnedBy(String ownedBy, Pageable pageable);
 	
 	// All UPDATE operations
 	DocumentDescription handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull DocumentDescription documentDescription);

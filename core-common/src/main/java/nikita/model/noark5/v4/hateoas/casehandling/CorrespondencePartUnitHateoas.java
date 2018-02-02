@@ -6,7 +6,7 @@ import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.serializers.noark5v4.hateoas.casehandling.CorrespondencePartUnitHateoasSerializer;
 
-import java.util.List;
+import java.util.AbstractCollection;
 
 import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART_UNIT;
 
@@ -21,7 +21,7 @@ public class CorrespondencePartUnitHateoas extends HateoasNoarkObject implements
         super(entity);
     }
 
-    public CorrespondencePartUnitHateoas(List<INikitaEntity> entityList) {
+    public CorrespondencePartUnitHateoas(AbstractCollection<INikitaEntity> entityList) {
         super(entityList, CORRESPONDENCE_PART_UNIT);
     }
 }

@@ -1,5 +1,6 @@
 package no.arkivlab.hioa.nikita.webapp.service.impl.metadata;
 
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.model.noark5.v4.metadata.FondsStatus;
 import nikita.repository.n5v4.metadata.IFondsStatusRepository;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.metadata.IFondsStatusService;
@@ -9,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.AbstractCollection;
 import java.util.List;
 
 
@@ -46,8 +48,10 @@ public class FondsStatusService implements IFondsStatusService {
      * @return
      */
     @Override
-    public Iterable<FondsStatus> findAll() {
-        return fondsStatusRepository.findAll();
+    public AbstractCollection<INikitaEntity> findAll() {
+        return (AbstractCollection<INikitaEntity>)
+                (AbstractCollection) fondsStatusRepository
+                        .findAll();
     }
 
     // find by systemId
@@ -97,10 +101,4 @@ public class FondsStatusService implements IFondsStatusService {
     public FondsStatus update(FondsStatus fondsStatus) {
         return fondsStatusRepository.save(fondsStatus);
     }
-
-    @Override
-    public List<FondsStatus> findAllAsList() {
-        return fondsStatusRepository.findAll();
-    }
-
 }

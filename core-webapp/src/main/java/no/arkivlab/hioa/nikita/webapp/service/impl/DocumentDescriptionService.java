@@ -110,7 +110,10 @@ public class DocumentDescriptionService implements IDocumentDescriptionService {
 
     public List<DocumentDescription> findByOwnedBy(String ownedBy, Sort sort) {return documentDescriptionRepository.findByOwnedBy(ownedBy, sort);}
 
-    public Page<DocumentDescription> findByOwnedBy(String ownedBy, Pageable pageable) {return documentDescriptionRepository.findByOwnedBy(ownedBy, pageable);}
+    public List<DocumentDescription> findByOwnedBy(String ownedBy, Pageable
+            pageable) {
+        return documentDescriptionRepository.findByOwnedBy(ownedBy, pageable);
+    }
 
     // All UPDATE operations
     public DocumentDescription update(DocumentDescription documentDescription){

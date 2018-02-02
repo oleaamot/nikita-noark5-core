@@ -30,7 +30,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.util.AbstractCollection;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
@@ -183,7 +183,7 @@ public class FondsCreatorHateoasController extends NoarkController {
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
         FondsCreatorHateoas fondsCreatorHateoas = new
-                FondsCreatorHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                FondsCreatorHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection)
                 fondsCreatorService.findFondsCreatorByOwnerPaginated(top, skip));
         fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

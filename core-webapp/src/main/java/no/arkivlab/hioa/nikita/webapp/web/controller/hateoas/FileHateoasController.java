@@ -31,6 +31,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -557,7 +558,7 @@ public class FileHateoasController extends NoarkController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         FileHateoas fileHateoas = new
-                FileHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                FileHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection)
                 fileService.findFileByOwnerPaginated(top, skip));
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)

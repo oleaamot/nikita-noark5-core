@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -607,7 +608,7 @@ public class SeriesHateoasController extends NoarkController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         SeriesHateoas seriesHateoas = new
-                SeriesHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                SeriesHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection)
                 seriesService.findSeriesByOwnerPaginated(top, skip));
         seriesHateoasHandler.addLinksOnRead(seriesHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
@@ -642,7 +643,7 @@ public class SeriesHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
         Series series = seriesService.findBySystemId(systemID);
-        RecordHateoas recordHateoas = new RecordHateoas(new ArrayList<>(series.getReferenceRecord()));
+        RecordHateoas recordHateoas = new RecordHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection) series.getReferenceRecord());
         recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -715,7 +716,7 @@ public class SeriesHateoasController extends NoarkController {
         seriesService.findAllCaseFileBySeries(systemID);
 
         CaseFileHateoas caseFileHateoas = new
-                CaseFileHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                CaseFileHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection)
                 seriesService.findAllCaseFileBySeries(systemID));
         caseFileHateoasHandler.addLinksOnRead(caseFileHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

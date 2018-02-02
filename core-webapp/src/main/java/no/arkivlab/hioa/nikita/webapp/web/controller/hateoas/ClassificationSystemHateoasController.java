@@ -31,7 +31,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.util.AbstractCollection;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.CLASSIFICATION_SYSTEM;
@@ -180,7 +180,7 @@ public class ClassificationSystemHateoasController extends NoarkController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         ClassificationSystemHateoas classificationSystemHateoas = new
-                ClassificationSystemHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                ClassificationSystemHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection)
                 classificationSystemService.findClassificationSystemByOwnerPaginated(top, skip));
         classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

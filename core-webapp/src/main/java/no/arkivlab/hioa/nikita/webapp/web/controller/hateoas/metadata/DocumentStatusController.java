@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
 import nikita.model.noark5.v4.hateoas.metadata.MetadataHateoas;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.model.noark5.v4.metadata.DocumentStatus;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
@@ -18,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
+import java.util.AbstractCollection;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.DOCUMENT_STATUS;
@@ -89,7 +90,9 @@ public class DocumentStatusController {
     @Timed
     @RequestMapping(method = RequestMethod.GET, value = DOCUMENT_STATUS)
     public ResponseEntity<MetadataHateoas> findAll(HttpServletRequest request) {
-        MetadataHateoas metadataHateoas = new MetadataHateoas(new ArrayList<>(documentStatusService.findAllAsList()),
+        MetadataHateoas metadataHateoas = new MetadataHateoas(
+                (AbstractCollection<INikitaEntity>)
+                        (AbstractCollection) documentStatusService.findAll(),
                 DOCUMENT_STATUS);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
 
@@ -100,12 +103,15 @@ public class DocumentStatusController {
 
     // Retrieves a given documentStatus identified by a systemId
     // GET [contextPath][api]/metadata/dokumentstatus/{systemId}/
-    @ApiOperation(value = "Gets documentStatus identified by its systemId", notes = "Returns the requested " +
+    @ApiOperation(value = "Gets documentStatus identified by its systemId",
+            notes = "Returns the requested " +
             " documentStatus object", response = DocumentStatus.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "DocumentStatus " + API_MESSAGE_OBJECT_ALREADY_PERSISTED,
+            @ApiResponse(code = 200, message = "DocumentStatus " +
+                    API_MESSAGE_OBJECT_ALREADY_PERSISTED,
                     response = DocumentStatus.class),
-            @ApiResponse(code = 201, message = "DocumentStatus " + API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
+            @ApiResponse(code = 201, message = "DocumentStatus " +
+                    API_MESSAGE_OBJECT_SUCCESSFULLY_CREATED,
                     response = DocumentStatus.class),
             @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
