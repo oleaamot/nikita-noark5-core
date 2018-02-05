@@ -1,5 +1,26 @@
 # Nikita developer notes
 
+
+## 2018-02-02
+
+ - Coverity issues
+ - Clean codebase
+
+### Coverity issues
+We wrapped up nearly all issues in Coverity. The remaining issues should fall
+away when we update the latest version of spring. Coverity is reporting
+CSRF issues, but I need to think a little more about that. We won't spend more 
+time on Coverity now, but try to deal with issues as soon as they are reported.
+The codebase has shrunk a little as a result of this work.
+  
+### Clean codebase
+Hateaos handling was looked at and there were a number of approaches that were
+attempted. This work is described in [issue](https://github
+.com/HiOA-ABI/nikita-noark5-core/issues/105) and consumed most of the time. As
+a result nikita should be a little faster and use less memory. 
+
+
+
 ## 2018-01-26
 
  - Coverity issues
