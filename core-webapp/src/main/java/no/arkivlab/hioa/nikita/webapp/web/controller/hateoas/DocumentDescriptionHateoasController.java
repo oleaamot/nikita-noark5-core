@@ -34,8 +34,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.AbstractCollection;
 import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
@@ -157,7 +157,7 @@ public class DocumentDescriptionHateoasController extends NoarkController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         DocumentDescriptionHateoas documentDescriptionHateoas = new
-                DocumentDescriptionHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection)
+                DocumentDescriptionHateoas((List<INikitaEntity>) (List)
                 documentDescriptionService.findDocumentDescriptionByOwnerPaginated(top, skip));
         documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
@@ -221,8 +221,8 @@ public class DocumentDescriptionHateoasController extends NoarkController {
                     systemID);
         }
         DocumentObjectHateoas documentObjectHateoas = new
-                DocumentObjectHateoas((AbstractCollection<INikitaEntity>)
-                (AbstractCollection) documentDescription
+                DocumentObjectHateoas((List<INikitaEntity>)
+                (List) documentDescription
                         .getReferenceDocumentObject());
         documentObjectHateoasHandler.addLinks(documentObjectHateoas, request,
                 new Authorisation());
@@ -253,14 +253,14 @@ public class DocumentDescriptionHateoasController extends NoarkController {
 
         DocumentDescription documentDescription = documentDescriptionService.findBySystemId
                 (systemID);
-        ArrayList<Record> record = new ArrayList<>();
+        List<Record> record = new ArrayList<>();
         record.addAll(documentDescription.getReferenceRecord());
         documentDescriptionService.deleteEntity(systemID);
-        RecordHateoas recordHateoas = new RecordHateoas((AbstractCollection)
+        RecordHateoas recordHateoas = new RecordHateoas((List)
                 record);
         /*RecordHateoas recordHateoas = new RecordHateoas(
-                (AbstractCollection<INikitaEntity>)
-                        (ArrayList)record); */
+                (List<INikitaEntity>)
+                        (List)record); */
         //RecordHateoas recordHateoas = new RecordHateoas(
         //(List<INikitaEntity>) (List)record);
         recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());

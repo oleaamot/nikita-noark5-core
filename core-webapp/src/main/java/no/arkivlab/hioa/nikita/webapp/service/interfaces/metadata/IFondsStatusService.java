@@ -3,7 +3,7 @@ package no.arkivlab.hioa.nikita.webapp.service.interfaces.metadata;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.model.noark5.v4.metadata.FondsStatus;
 
-import java.util.AbstractCollection;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,7 +13,7 @@ public interface IFondsStatusService {
 
     FondsStatus createNewFondsStatus(FondsStatus fondsStatus);
 
-    AbstractCollection<INikitaEntity> findAll();
+    ArrayList<INikitaEntity> findAll();
 
     FondsStatus findBySystemId(String systemId);
 

@@ -7,8 +7,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.Constants.NOARK_CASE_HANDLING_PATH;
 import static nikita.config.N5ResourceMappings.CASE_PARTY;
@@ -98,7 +98,7 @@ public class CaseParty extends NoarkGeneralEntity implements ICasePartyEntity {
 
     // Links to CaseFiles
     @ManyToMany(mappedBy = "referenceCaseParty")
-    private Set<CaseFile> referenceCaseFile = new TreeSet<>();
+    private List<CaseFile> referenceCaseFile = new ArrayList<>();
 
     public String getCasePartyId() {
         return casePartyId;
@@ -190,11 +190,11 @@ public class CaseParty extends NoarkGeneralEntity implements ICasePartyEntity {
         return NOARK_CASE_HANDLING_PATH;
     }
 
-    public Set<CaseFile> getReferenceCaseFile() {
+    public List<CaseFile> getReferenceCaseFile() {
         return referenceCaseFile;
     }
 
-    public void setReferenceCaseFile(Set<CaseFile> referenceCaseFile) {
+    public void setReferenceCaseFile(List<CaseFile> referenceCaseFile) {
         this.referenceCaseFile = referenceCaseFile;
     }
 

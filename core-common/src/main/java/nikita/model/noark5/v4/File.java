@@ -12,8 +12,8 @@ import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.FILE;
 
@@ -26,8 +26,9 @@ import static nikita.config.N5ResourceMappings.FILE;
 //@Indexed(index = "file")
 @JsonDeserialize(using = FileDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_file_id"))
-public class File extends NoarkGeneralEntity  implements IDocumentMedium, IStorageLocation, IKeyword, IClassified,
-        IDisposal, IScreening, IComment, ICrossReference
+public class File extends NoarkGeneralEntity implements IDocumentMedium,
+        IStorageLocation, IKeyword, IClassified, IDisposal, IScreening,
+        IComment, ICrossReference
 {
     /**
      * M003 - mappeID (xs:string)
@@ -53,18 +54,18 @@ public class File extends NoarkGeneralEntity  implements IDocumentMedium, IStora
     private String documentMedium;
 
     // Link to StorageLocation
-    @ManyToMany (fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
+    @ManyToMany
     @JoinTable(name = "file_storage_location", joinColumns = @JoinColumn(name = "f_pk_file_id",
             referencedColumnName = "pk_file_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
             referencedColumnName = "pk_storage_location_id"))
-    private Set<StorageLocation> referenceStorageLocation = new TreeSet<>();
+    private List<StorageLocation> referenceStorageLocation = new ArrayList<>();
 
     // Links to Keywords
-    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
+    @ManyToMany
     @JoinTable(name = "file_keyword", joinColumns = @JoinColumn(name = "f_pk_file_id",
             referencedColumnName = "pk_file_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_keyword_id",
             referencedColumnName = "pk_keyword_id"))
-    private Set<Keyword> referenceKeyword = new TreeSet<>();
+    private List<Keyword> referenceKeyword = new ArrayList<>();
 
     // Link to parent File
     @ManyToOne(fetch = FetchType.LAZY)
@@ -72,7 +73,7 @@ public class File extends NoarkGeneralEntity  implements IDocumentMedium, IStora
 
     // Links to child Files
     @OneToMany(mappedBy = "referenceParentFile")
-    private Set<File> referenceChildFile = new TreeSet<>();
+    private List<File> referenceChildFile = new ArrayList<>();
 
     // Link to Series
     @ManyToOne(fetch = FetchType.LAZY)
@@ -86,14 +87,14 @@ public class File extends NoarkGeneralEntity  implements IDocumentMedium, IStora
 
     // Links to Records
     @OneToMany(mappedBy = "referenceFile")
-    private Set<Record> referenceRecord = new TreeSet<>();
+    private List<Record> referenceRecord = new ArrayList<>();
 
     // Links to Comments
     @ManyToMany (cascade=CascadeType.PERSIST)
     @JoinTable(name = "file_comment", joinColumns = @JoinColumn(name = "f_pk_file_id",
             referencedColumnName = "pk_file_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_comment_id",
             referencedColumnName = "pk_comment_id"))
-    private Set<Comment> referenceComment = new TreeSet<>();
+    private List<Comment> referenceComment = new ArrayList<>();
 
     // Links to Classified
     @ManyToOne (cascade=CascadeType.PERSIST)
@@ -112,7 +113,7 @@ public class File extends NoarkGeneralEntity  implements IDocumentMedium, IStora
     private Screening referenceScreening;
 
     @OneToMany(mappedBy = "referenceFile")
-    private Set<CrossReference> referenceCrossReference;
+    private List<CrossReference> referenceCrossReference;
 
     public String getFileId() {
         return fileId;
@@ -174,20 +175,20 @@ public class File extends NoarkGeneralEntity  implements IDocumentMedium, IStora
     }
 
     @Override
-    public Set<StorageLocation> getReferenceStorageLocation() {
+    public List<StorageLocation> getReferenceStorageLocation() {
         return referenceStorageLocation;
     }
 
     @Override
-    public void setReferenceStorageLocation(Set<StorageLocation> referenceStorageLocation) {
+    public void setReferenceStorageLocation(List<StorageLocation> referenceStorageLocation) {
         this.referenceStorageLocation = referenceStorageLocation;
     }
 
-    public Set<Keyword> getReferenceKeyword() {
+    public List<Keyword> getReferenceKeyword() {
         return referenceKeyword;
     }
 
-    public void setReferenceKeyword(Set<Keyword> referenceKeyword) {
+    public void setReferenceKeyword(List<Keyword> referenceKeyword) {
         this.referenceKeyword = referenceKeyword;
     }
 
@@ -199,11 +200,11 @@ public class File extends NoarkGeneralEntity  implements IDocumentMedium, IStora
         this.referenceParentFile = referenceParentFile;
     }
 
-    public Set<File> getReferenceChildFile() {
+    public List<File> getReferenceChildFile() {
         return referenceChildFile;
     }
 
-    public void setReferenceChildFile(Set<File> referenceChildFile) {
+    public void setReferenceChildFile(List<File> referenceChildFile) {
         this.referenceChildFile = referenceChildFile;
     }
 
@@ -223,30 +224,30 @@ public class File extends NoarkGeneralEntity  implements IDocumentMedium, IStora
         this.referenceClass = referenceClass;
     }
 
-    public Set<Record> getReferenceRecord() {
+    public List<Record> getReferenceRecord() {
         return referenceRecord;
     }
 
-    public void setReferenceRecord(Set<Record> referenceRecord) {
+    public void setReferenceRecord(List<Record> referenceRecord) {
         this.referenceRecord = referenceRecord;
     }
 
 
-    public Set<Comment> getReferenceComment() {
+    public List<Comment> getReferenceComment() {
         return referenceComment;
     }
 
-    public void setReferenceComment(Set<Comment> referenceComment) {
+    public void setReferenceComment(List<Comment> referenceComment) {
         this.referenceComment = referenceComment;
     }
 
     @Override
-    public Set<CrossReference> getReferenceCrossReference() {
+    public List<CrossReference> getReferenceCrossReference() {
         return referenceCrossReference;
     }
 
     @Override
-    public void setReferenceCrossReference(Set<CrossReference> referenceCrossReference) {
+    public void setReferenceCrossReference(List<CrossReference> referenceCrossReference) {
         this.referenceCrossReference = referenceCrossReference;
     }
 

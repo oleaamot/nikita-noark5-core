@@ -10,7 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.AbstractCollection;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,9 +48,9 @@ public class FondsStatusService implements IFondsStatusService {
      * @return
      */
     @Override
-    public AbstractCollection<INikitaEntity> findAll() {
-        return (AbstractCollection<INikitaEntity>)
-                (AbstractCollection) fondsStatusRepository
+    public ArrayList<INikitaEntity> findAll() {
+        return (ArrayList<INikitaEntity>)
+                (ArrayList) fondsStatusRepository
                         .findAll();
     }
 

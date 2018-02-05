@@ -8,9 +8,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.SCREENING;
 
@@ -67,23 +67,23 @@ public class Screening extends NoarkEntity implements IScreeningEntity {
 
     // Links to Series
     @ManyToMany(mappedBy = "referenceScreening")
-    private Set<Series> referenceSeries = new TreeSet<>();
+    private List<Series> referenceSeries = new ArrayList<>();
 
     // Links to Class
     @ManyToMany(mappedBy = "referenceScreening")
-    private Set<Class> referenceClass = new TreeSet<>();
+    private List<Class> referenceClass = new ArrayList<>();
 
     // Links to File
     @ManyToMany(mappedBy = "referenceScreening")
-    private Set<File> referenceFile = new TreeSet<>();
+    private List<File> referenceFile = new ArrayList<>();
 
     // Links to Record
     @ManyToMany(mappedBy = "referenceScreening")
-    private Set<Record> referenceRecord = new TreeSet<>();
+    private List<Record> referenceRecord = new ArrayList<>();
 
     // Links to DocumentDescription
     @ManyToMany(mappedBy = "referenceScreening")
-    private Set<DocumentDescription> referenceDocumentDescription = new TreeSet<>();
+    private List<DocumentDescription> referenceDocumentDescription = new ArrayList<>();
 
     public String getAccessRestriction() {
         return accessRestriction;
@@ -138,43 +138,43 @@ public class Screening extends NoarkEntity implements IScreeningEntity {
         return SCREENING;
     }
 
-    public Set<Series> getReferenceSeries() {
+    public List<Series> getReferenceSeries() {
         return referenceSeries;
     }
 
-    public void setReferenceSeries(Set<Series> referenceSeries) {
+    public void setReferenceSeries(List<Series> referenceSeries) {
         this.referenceSeries = referenceSeries;
     }
 
-    public Set<Class> getReferenceClass() {
+    public List<Class> getReferenceClass() {
         return referenceClass;
     }
 
-    public void setReferenceClass(Set<Class> referenceClass) {
+    public void setReferenceClass(List<Class> referenceClass) {
         this.referenceClass = referenceClass;
     }
 
-    public Set<File> getReferenceFile() {
+    public List<File> getReferenceFile() {
         return referenceFile;
     }
 
-    public void setReferenceFile(Set<File> referenceFile) {
+    public void setReferenceFile(List<File> referenceFile) {
         this.referenceFile = referenceFile;
     }
 
-    public Set<Record> getReferenceRecord() {
+    public List<Record> getReferenceRecord() {
         return referenceRecord;
     }
 
-    public void setReferenceRecord(Set<Record> referenceRecord) {
+    public void setReferenceRecord(List<Record> referenceRecord) {
         this.referenceRecord = referenceRecord;
     }
 
-    public Set<DocumentDescription> getReferenceDocumentDescription() {
+    public List<DocumentDescription> getReferenceDocumentDescription() {
         return referenceDocumentDescription;
     }
 
-    public void setReferenceDocumentDescription(Set<DocumentDescription> referenceDocumentDescription) {
+    public void setReferenceDocumentDescription(List<DocumentDescription> referenceDocumentDescription) {
         this.referenceDocumentDescription = referenceDocumentDescription;
     }
 

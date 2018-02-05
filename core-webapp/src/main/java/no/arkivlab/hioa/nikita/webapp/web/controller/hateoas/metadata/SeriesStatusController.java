@@ -86,7 +86,7 @@ public class SeriesStatusController {
     public ResponseEntity<MetadataHateoas> findAll(HttpServletRequest request) {
         return null;
         /*MetadataHateoas metadataHateoas = new MetadataHateoas(new
-                ArrayList<>(seriesStatusService.findAllAsList()),
+                List<>(seriesStatusService.findAllAsList()),
                 FONDS_STATUS);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
 

@@ -39,7 +39,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.AbstractCollection;
 import java.util.List;
 
 import static nikita.config.Constants.*;
@@ -322,8 +321,8 @@ public class FondsHateoasController extends NoarkController {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
         FondsCreatorHateoas fondsCreatorHateoas = new
-                FondsCreatorHateoas((AbstractCollection<INikitaEntity>)
-                (AbstractCollection) fonds.getReferenceFondsCreator());
+                FondsCreatorHateoas((List<INikitaEntity>)
+                (List) fonds.getReferenceFondsCreator());
 
         fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
@@ -356,8 +355,8 @@ public class FondsHateoasController extends NoarkController {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
         SeriesHateoas seriesHateoas = new SeriesHateoas(
-                (AbstractCollection<INikitaEntity>)
-                        (AbstractCollection) fonds.getReferenceSeries());
+                (List<INikitaEntity>)
+                        (List) fonds.getReferenceSeries());
         seriesHateoasHandler.addLinks(seriesHateoas, request,
                 new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
@@ -411,7 +410,8 @@ public class FondsHateoasController extends NoarkController {
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
         FondsHateoas fondsHateoas = new
-                FondsHateoas((AbstractCollection) fondsService.findFondsByOwnerPaginated(top,
+                FondsHateoas((List<INikitaEntity>)
+                (List) fondsService.findFondsByOwnerPaginated(top,
                 skip));
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
@@ -434,7 +434,7 @@ public class FondsHateoasController extends NoarkController {
         List<Fonds> result = fullTextSession.createFullTextQuery(query, Fonds.class).list();
 
         FondsHateoas fondsHateoas = new
-                FondsHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection) result);
+                FondsHateoas((List<INikitaEntity>) (List) result);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))

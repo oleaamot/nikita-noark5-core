@@ -24,9 +24,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.AbstractCollection;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
@@ -608,7 +607,7 @@ public class SeriesHateoasController extends NoarkController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         SeriesHateoas seriesHateoas = new
-                SeriesHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection)
+                SeriesHateoas((List<INikitaEntity>) (List)
                 seriesService.findSeriesByOwnerPaginated(top, skip));
         seriesHateoasHandler.addLinksOnRead(seriesHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
@@ -643,7 +642,7 @@ public class SeriesHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
         Series series = seriesService.findBySystemId(systemID);
-        RecordHateoas recordHateoas = new RecordHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection) series.getReferenceRecord());
+        RecordHateoas recordHateoas = new RecordHateoas((List<INikitaEntity>) (List) series.getReferenceRecord());
         recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -681,7 +680,8 @@ public class SeriesHateoasController extends NoarkController {
         if (series == null) {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
-        FileHateoas fileHateoas = new FileHateoas(new ArrayList<> (series.getReferenceFile()));
+        FileHateoas fileHateoas = new FileHateoas((List<INikitaEntity>)
+                (List) series.getReferenceFile());
         fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -716,7 +716,7 @@ public class SeriesHateoasController extends NoarkController {
         seriesService.findAllCaseFileBySeries(systemID);
 
         CaseFileHateoas caseFileHateoas = new
-                CaseFileHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection)
+                CaseFileHateoas((List<INikitaEntity>) (List)
                 seriesService.findAllCaseFileBySeries(systemID));
         caseFileHateoasHandler.addLinksOnRead(caseFileHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

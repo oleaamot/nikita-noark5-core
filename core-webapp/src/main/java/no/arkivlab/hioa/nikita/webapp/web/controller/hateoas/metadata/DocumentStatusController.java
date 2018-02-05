@@ -19,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.AbstractCollection;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.DOCUMENT_STATUS;
@@ -91,8 +91,8 @@ public class DocumentStatusController {
     @RequestMapping(method = RequestMethod.GET, value = DOCUMENT_STATUS)
     public ResponseEntity<MetadataHateoas> findAll(HttpServletRequest request) {
         MetadataHateoas metadataHateoas = new MetadataHateoas(
-                (AbstractCollection<INikitaEntity>)
-                        (AbstractCollection) documentStatusService.findAll(),
+                (List<INikitaEntity>)
+                        (List) documentStatusService.findAll(),
                 DOCUMENT_STATUS);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
 

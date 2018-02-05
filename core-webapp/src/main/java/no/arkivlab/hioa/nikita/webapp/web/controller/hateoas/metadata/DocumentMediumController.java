@@ -19,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.AbstractCollection;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.DOCUMENT_MEDIUM;
@@ -88,8 +88,8 @@ public class DocumentMediumController {
     public ResponseEntity<MetadataHateoas> findAll(HttpServletRequest request) {
         //ArrayList <DocumentMedium> documentMediumList = (ArrayList<DocumentMedium>) documentMediumService.findAll2();
         MetadataHateoas metadataHateoas = new MetadataHateoas(
-                (AbstractCollection<INikitaEntity>)
-                        (AbstractCollection) documentMediumService.findAll(),
+                (List<INikitaEntity>)
+                        (List) documentMediumService.findAll(),
                 DOCUMENT_MEDIUM);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

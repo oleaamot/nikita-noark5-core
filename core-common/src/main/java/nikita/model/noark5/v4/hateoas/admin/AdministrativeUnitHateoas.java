@@ -6,7 +6,7 @@ import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.serializers.noark5v4.hateoas.admin.AdministrativeUnitHateoasSerializer;
 
-import java.util.AbstractCollection;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.ADMINISTRATIVE_UNIT;
 
@@ -20,7 +20,7 @@ public class AdministrativeUnitHateoas extends HateoasNoarkObject implements IHa
         super(entity);
     }
 
-    public AdministrativeUnitHateoas(AbstractCollection<INikitaEntity> entityList) {
+    public AdministrativeUnitHateoas(List<INikitaEntity> entityList) {
         super(entityList, ADMINISTRATIVE_UNIT);
     }
 }

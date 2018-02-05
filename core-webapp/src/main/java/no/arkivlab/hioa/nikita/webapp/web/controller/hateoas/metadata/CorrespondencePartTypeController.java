@@ -21,7 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.AbstractCollection;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
@@ -87,8 +87,8 @@ public class CorrespondencePartTypeController extends NoarkController {
     @RequestMapping(method = RequestMethod.GET, value = CORRESPONDENCE_PART_TYPE)
     public ResponseEntity<MetadataHateoas> findAll(HttpServletRequest request) {
         MetadataHateoas metadataHateoas = new MetadataHateoas(
-                (AbstractCollection<INikitaEntity>)
-                        (AbstractCollection) correspondencePartTypeService.findAll(),
+                (List<INikitaEntity>)
+                        (List) correspondencePartTypeService.findAll(),
                 CORRESPONDENCE_PART_TYPE);
         metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

@@ -9,8 +9,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART_UNIT;
 
@@ -43,7 +43,7 @@ public class CorrespondencePartInternal extends CorrespondencePart implements IC
 
     // Links to RegistryEntry
     @ManyToMany(mappedBy = "referenceCorrespondencePartInternal")
-    private Set<RegistryEntry> referenceRegistryEntry = new TreeSet<>();
+    private List<RegistryEntry> referenceRegistryEntry = new ArrayList<>();
 
     public String getAdministrativeUnit() {
         return administrativeUnit;
@@ -83,12 +83,12 @@ public class CorrespondencePartInternal extends CorrespondencePart implements IC
     }
 
     @Override
-    public Set<RegistryEntry> getReferenceRegistryEntry() {
+    public List<RegistryEntry> getReferenceRegistryEntry() {
         return referenceRegistryEntry;
     }
 
     @Override
-    public void setReferenceRegistryEntry(Set<RegistryEntry> referenceRegistryEntry) {
+    public void setReferenceRegistryEntry(List<RegistryEntry> referenceRegistryEntry) {
         this.referenceRegistryEntry = referenceRegistryEntry;
     }
 

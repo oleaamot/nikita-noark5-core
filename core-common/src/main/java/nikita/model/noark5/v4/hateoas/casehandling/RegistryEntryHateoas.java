@@ -6,7 +6,7 @@ import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.serializers.noark5v4.hateoas.casehandling.RegistryEntryHateoasSerializer;
 
-import java.util.AbstractCollection;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
 
@@ -24,7 +24,7 @@ public class RegistryEntryHateoas extends HateoasNoarkObject implements IHateoas
         super(entity);
     }
 
-    public RegistryEntryHateoas(AbstractCollection<INikitaEntity> entityList) {
+    public RegistryEntryHateoas(List<INikitaEntity> entityList) {
         super(entityList, REGISTRY_ENTRY);
     }
 

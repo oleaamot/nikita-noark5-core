@@ -9,8 +9,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.Constants.NOARK_CASE_HANDLING_PATH;
 import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART_PERSON;
@@ -57,7 +57,7 @@ public class CorrespondencePartPerson extends CorrespondencePart implements ICor
 
     // Links to RegistryEntry
     @ManyToMany(mappedBy = "referenceCorrespondencePartPerson")
-    private Set<RegistryEntry> referenceRegistryEntry = new TreeSet<>();
+    private List<RegistryEntry> referenceRegistryEntry = new ArrayList<>();
 
     public String getSocialSecurityNumber() {
         return socialSecurityNumber;
@@ -118,11 +118,11 @@ public class CorrespondencePartPerson extends CorrespondencePart implements ICor
         return NOARK_CASE_HANDLING_PATH;
     }
 
-    public Set<RegistryEntry> getReferenceRegistryEntry() {
+    public List<RegistryEntry> getReferenceRegistryEntry() {
         return referenceRegistryEntry;
     }
 
-    public void setReferenceRegistryEntry(Set<RegistryEntry> referenceRegistryEntry) {
+    public void setReferenceRegistryEntry(List<RegistryEntry> referenceRegistryEntry) {
         this.referenceRegistryEntry = referenceRegistryEntry;
     }
 

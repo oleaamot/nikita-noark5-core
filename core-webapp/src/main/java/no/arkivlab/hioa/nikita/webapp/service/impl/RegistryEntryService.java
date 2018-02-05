@@ -25,9 +25,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 
@@ -85,19 +84,19 @@ public class RegistryEntryService implements IRegistryEntryService {
     }
 
     @Override
-    public Set<CorrespondencePartPerson> getCorrespondencePartPersonAssociatedWithRegistryEntry(String systemID) {
+    public List<CorrespondencePartPerson> getCorrespondencePartPersonAssociatedWithRegistryEntry(String systemID) {
         RegistryEntry registryEntry = getRegistryEntryOrThrow(systemID);
         return registryEntry.getReferenceCorrespondencePartPerson();
     }
 
     @Override
-    public Set<CorrespondencePartInternal> getCorrespondencePartInternalAssociatedWithRegistryEntry(String systemID) {
+    public List<CorrespondencePartInternal> getCorrespondencePartInternalAssociatedWithRegistryEntry(String systemID) {
         RegistryEntry registryEntry = getRegistryEntryOrThrow(systemID);
         return registryEntry.getReferenceCorrespondencePartInternal();
     }
 
     @Override
-    public Set<CorrespondencePartUnit> getCorrespondencePartUnitAssociatedWithRegistryEntry(String systemID) {
+    public List<CorrespondencePartUnit> getCorrespondencePartUnitAssociatedWithRegistryEntry(String systemID) {
         RegistryEntry registryEntry = getRegistryEntryOrThrow(systemID);
         return registryEntry.getReferenceCorrespondencePartUnit();
     }
@@ -185,11 +184,11 @@ public class RegistryEntryService implements IRegistryEntryService {
     public DocumentDescription createDocumentDescriptionAssociatedWithRegistryEntry(
             String systemID, DocumentDescription documentDescription) {
         RegistryEntry registryEntry = getRegistryEntryOrThrow(systemID);
-        TreeSet <Record> records = (TreeSet <Record>) documentDescription.getReferenceRecord();
+        ArrayList<Record> records = (ArrayList<Record>) documentDescription.getReferenceRecord();
 
         // It should always be instaniated ... check this ...
         if (records == null) {
-            records = new TreeSet<>();
+            records = new ArrayList<>();
             documentDescription.setReferenceRecord(records);
         }
         records.add(registryEntry);

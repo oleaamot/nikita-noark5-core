@@ -9,8 +9,8 @@ import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.FONDS_CREATOR;
 
@@ -48,7 +48,7 @@ public class FondsCreator extends NoarkEntity implements IFondsCreatorEntity {
 
     // Links to Fonds
     @ManyToMany(mappedBy = "referenceFondsCreator")
-    private Set<Fonds> referenceFonds = new TreeSet<>();
+    private List<Fonds> referenceFonds = new ArrayList<>();
 
     public String getFondsCreatorId() {
         return fondsCreatorId;
@@ -79,11 +79,11 @@ public class FondsCreator extends NoarkEntity implements IFondsCreatorEntity {
         return FONDS_CREATOR;
     }
 
-    public Set<Fonds> getReferenceFonds() {
+    public List<Fonds> getReferenceFonds() {
         return referenceFonds;
     }
 
-    public void setReferenceFonds(Set<Fonds> referenceFonds) {
+    public void setReferenceFonds(List<Fonds> referenceFonds) {
         this.referenceFonds = referenceFonds;
     }
 

@@ -6,9 +6,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.MEETING_FILE;
 
@@ -66,7 +66,7 @@ public class MeetingFile extends File {
 
     // Links to MeetingParticipant
     @OneToMany(mappedBy = "referenceMeetingFile")
-    private Set<MeetingParticipant> referenceMeetingParticipant = new TreeSet<>();
+    private List<MeetingParticipant> referenceMeetingParticipant = new ArrayList<>();
 
     public String getMeetingNumber() {
         return meetingNumber;
@@ -121,11 +121,11 @@ public class MeetingFile extends File {
         this.referencePreviousMeeting = referencePreviousMeeting;
     }
 
-    public Set<MeetingParticipant> getReferenceMeetingParticipant() {
+    public List<MeetingParticipant> getReferenceMeetingParticipant() {
         return referenceMeetingParticipant;
     }
 
-    public void setReferenceMeetingParticipant(Set<MeetingParticipant> referenceMeetingParticipant) {
+    public void setReferenceMeetingParticipant(List<MeetingParticipant> referenceMeetingParticipant) {
         this.referenceMeetingParticipant = referenceMeetingParticipant;
     }
 

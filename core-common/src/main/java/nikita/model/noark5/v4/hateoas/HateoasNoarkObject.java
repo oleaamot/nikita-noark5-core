@@ -2,7 +2,10 @@ package nikita.model.noark5.v4.hateoas;
 
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -25,9 +28,9 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
 
     /**
      * A list of noark entities comprising a result set from a query. Using a
-     * AbstractCollection to get implements Iterator and Collection.
+     * List to get implements Iterator and Collection.
      */
-    private AbstractCollection<INikitaEntity> entityList = new ArrayList<>();
+    private List<INikitaEntity> entityList = new ArrayList<>();
 
     /**
      * When a List<INikitaEntity> is in use, we make a note of the entityType
@@ -38,13 +41,13 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
     /**
      * A Map of noark entities -> Hateoas links e.g fonds with Hateoas links
      */
-    private Map<INikitaEntity, TreeSet<Link>> hateoasMap = new HashMap<>();
+    private Map<INikitaEntity, ArrayList<Link>> hateoasMap = new HashMap<>();
 
     /**
      * If the Hateoas object is a list of results, then the list needs its own
      * Hateoas Link to self because currently we're only adding self link
      */
-    private Set <Link> selfLinks = new TreeSet<>();
+    private List<Link> selfLinks = new ArrayList<>();
 
     /**
      * Whether or not the Hateoas object contains a single entity or a list of
@@ -57,7 +60,7 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
         entityList.add(entity);
     }
 
-    public HateoasNoarkObject(AbstractCollection<INikitaEntity> entityList,
+    public HateoasNoarkObject(List<INikitaEntity> entityList,
                               String entityType) {
         this.entityList.addAll(entityList);
         this.entityType = entityType;
@@ -65,18 +68,18 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
     }
 
     @Override
-    public Set<Link> getLinks(INikitaEntity entity) {
+    public List<Link> getLinks(INikitaEntity entity) {
         return hateoasMap.get(entity);
     }
 
     @Override
-    public AbstractCollection<INikitaEntity> getList() {
+    public List<INikitaEntity> getList() {
         return entityList;
     }
 
     @Override
     public void addLink(INikitaEntity entity, Link link) {
-        hateoasMap.computeIfAbsent(entity, k -> new TreeSet<>()).add(link);
+        hateoasMap.computeIfAbsent(entity, k -> new ArrayList<>()).add(link);
     }
 
     @Override
@@ -90,7 +93,7 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
     }
 
     @Override
-    public Set <Link> getSelfLinks() {
+    public List<Link> getSelfLinks() {
         return selfLinks;
     }
 

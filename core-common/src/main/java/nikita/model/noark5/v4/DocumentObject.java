@@ -15,9 +15,9 @@ import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT;
 
@@ -138,7 +138,7 @@ public class DocumentObject  extends NoarkEntity implements INoarkCreateEntity,
 
     // Links to Conversion
     @OneToMany(mappedBy = "referenceDocumentObject")
-    private Set<Conversion> referenceConversion = new TreeSet<>();
+    private List<Conversion> referenceConversion = new ArrayList<>();
 
     // Link to ElectronicSignature
     @OneToOne
@@ -263,11 +263,11 @@ public class DocumentObject  extends NoarkEntity implements INoarkCreateEntity,
         this.referenceRecord = referenceRecord;
     }
 
-    public Set<Conversion> getReferenceConversion() {
+    public List<Conversion> getReferenceConversion() {
         return referenceConversion;
     }
 
-    public void setReferenceConversion(Set<Conversion> referenceConversion) {
+    public void setReferenceConversion(List<Conversion> referenceConversion) {
         this.referenceConversion = referenceConversion;
     }
 

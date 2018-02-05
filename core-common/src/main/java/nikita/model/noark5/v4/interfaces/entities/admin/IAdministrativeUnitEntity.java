@@ -6,7 +6,7 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkCreateEntity;
 import nikita.model.noark5.v4.interfaces.entities.INoarkFinaliseEntity;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by tsodring on 1/16/17.
@@ -29,7 +29,7 @@ public interface IAdministrativeUnitEntity extends INikitaEntity, INoarkCreateEn
 
     void setParentAdministrativeUnit(AdministrativeUnit referenceParentAdministrativeUnit);
 
-    Set<AdministrativeUnit> getReferenceChildAdministrativeUnit();
+    List<AdministrativeUnit> getReferenceChildAdministrativeUnit();
 
-    void setReferenceChildAdministrativeUnit(Set<AdministrativeUnit> referenceChildAdministrativeUnit);
+    void setReferenceChildAdministrativeUnit(List<AdministrativeUnit> referenceChildAdministrativeUnit);
 }

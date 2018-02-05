@@ -27,7 +27,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Set;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.STATUS_CLOSED;
@@ -170,7 +169,7 @@ public class FondsService implements IFondsService {
 
     // All READ operations
     @Override
-    public Set<FondsCreator> findFondsCreatorAssociatedWithFonds(String systemId) {
+    public List<FondsCreator> findFondsCreatorAssociatedWithFonds(String systemId) {
         Fonds fonds = getFondsOrThrow(systemId);
         return fonds.getReferenceFondsCreator();
     }

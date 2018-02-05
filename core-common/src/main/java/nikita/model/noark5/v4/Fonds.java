@@ -12,8 +12,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.FONDS;
 
@@ -46,28 +46,28 @@ public class Fonds extends NoarkGeneralEntity implements IStorageLocation, IDocu
     // Links to Series
     @OneToMany(mappedBy = "referenceFonds")
     @JsonIgnore
-    private Set<Series> referenceSeries = new TreeSet<>();
+    private List<Series> referenceSeries = new ArrayList<>();
     // Link to parent Fonds
     @ManyToOne(fetch = FetchType.LAZY)
     private Fonds referenceParentFonds;
 
     // Links to child Fonds
     @OneToMany(mappedBy = "referenceParentFonds", fetch = FetchType.LAZY)
-    private Set<Fonds> referenceChildFonds = new TreeSet<>();
+    private List<Fonds> referenceChildFonds = new ArrayList<>();
 
     // Links to StorageLocations
     @ManyToMany (cascade=CascadeType.PERSIST)
     @JoinTable(name = "fonds_storage_location", joinColumns = @JoinColumn(name = "f_pk_fonds_id",
             referencedColumnName = "pk_fonds_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
             referencedColumnName = "pk_storage_location_id"))
-    private Set<StorageLocation> referenceStorageLocation = new TreeSet<>();
+    private List<StorageLocation> referenceStorageLocation = new ArrayList<>();
 
     // Links to FondsCreators
     @ManyToMany
     @JoinTable(name = "fonds_fonds_creator", joinColumns = @JoinColumn(name = "f_pk_fonds_id",
             referencedColumnName = "pk_fonds_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_fonds_creator_id",
             referencedColumnName = "pk_fonds_creator_id"))
-    private Set<FondsCreator> referenceFondsCreator = new TreeSet<>();
+    private List<FondsCreator> referenceFondsCreator = new ArrayList<>();
 
 
     public String getFondsStatus() {
@@ -91,11 +91,11 @@ public class Fonds extends NoarkGeneralEntity implements IStorageLocation, IDocu
         return FONDS;
     }
 
-    public Set<Series> getReferenceSeries() {
+    public List<Series> getReferenceSeries() {
         return referenceSeries;
     }
 
-    public void setReferenceSeries(Set<Series> referenceSeries) {
+    public void setReferenceSeries(List<Series> referenceSeries) {
         this.referenceSeries = referenceSeries;
     }
 
@@ -107,28 +107,28 @@ public class Fonds extends NoarkGeneralEntity implements IStorageLocation, IDocu
         this.referenceParentFonds = referenceParentFonds;
     }
 
-    public Set<Fonds> getReferenceChildFonds() {
+    public List<Fonds> getReferenceChildFonds() {
         return referenceChildFonds;
     }
 
-    public void setReferenceChildFonds(Set<Fonds> referenceChildFonds) {
+    public void setReferenceChildFonds(List<Fonds> referenceChildFonds) {
         this.referenceChildFonds = referenceChildFonds;
     }
 
-    public Set<StorageLocation> getReferenceStorageLocation() {
+    public List<StorageLocation> getReferenceStorageLocation() {
         return referenceStorageLocation;
     }
 
     public void setReferenceStorageLocation(
-            Set<StorageLocation> referenceStorageLocation) {
+            List<StorageLocation> referenceStorageLocation) {
         this.referenceStorageLocation = referenceStorageLocation;
     }
 
-    public Set<FondsCreator> getReferenceFondsCreator() {
+    public List<FondsCreator> getReferenceFondsCreator() {
         return referenceFondsCreator;
     }
 
-    public void setReferenceFondsCreator(Set<FondsCreator> referenceFondsCreator) {
+    public void setReferenceFondsCreator(List<FondsCreator> referenceFondsCreator) {
         this.referenceFondsCreator = referenceFondsCreator;
     }
 

@@ -30,7 +30,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.AbstractCollection;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
@@ -183,7 +183,7 @@ public class FondsCreatorHateoasController extends NoarkController {
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
         FondsCreatorHateoas fondsCreatorHateoas = new
-                FondsCreatorHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection)
+                FondsCreatorHateoas((List<INikitaEntity>) (List)
                 fondsCreatorService.findFondsCreatorByOwnerPaginated(top, skip));
         fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
@@ -279,7 +279,7 @@ public class FondsCreatorHateoasController extends NoarkController {
         FondsCreator fondsCreator = fondsCreatorService.findBySystemId(seriesSystemId);
         fondsCreatorService.deleteEntity(seriesSystemId);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, fondsCreator));
-/*        List<Fonds> fonds = new ArrayList<>();
+/*        List<Fonds> fonds = new List<>();
         fonds.addAll(fondsCreator.getReferenceFonds());
         FondsHateoas fondsHateoas = new FondsHateoas((List<INikitaEntity>) (List)fonds);
         fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());

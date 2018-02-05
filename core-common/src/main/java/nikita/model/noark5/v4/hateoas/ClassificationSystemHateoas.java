@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.serializers.noark5v4.hateoas.ClassificationSystemHateoasSerializer;
 
-import java.util.AbstractCollection;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.CLASSIFICATION_SYSTEM;
 
@@ -15,7 +15,7 @@ public class ClassificationSystemHateoas extends HateoasNoarkObject implements I
         super(entity);
     }
 
-    public ClassificationSystemHateoas(AbstractCollection<INikitaEntity> entityList) {
+    public ClassificationSystemHateoas(List<INikitaEntity> entityList) {
         super(entityList, CLASSIFICATION_SYSTEM);
     }
 }

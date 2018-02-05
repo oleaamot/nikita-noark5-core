@@ -14,9 +14,9 @@ import org.hibernate.search.annotations.Field;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import static nikita.config.Constants.NOARK_CASE_HANDLING_PATH;
 import static nikita.config.N5ResourceMappings.CASE_FILE;
@@ -32,7 +32,8 @@ import static nikita.config.N5ResourceMappings.CASE_FILE;
 // @Where(clause="deleted <> true")
 //@Indexed(index = "case_file")
 @JsonDeserialize(using = CaseFileDeserializer.class)
-public class CaseFile extends File implements Serializable, INikitaEntity, IPrecedence, ICaseParty {
+public class CaseFile extends File implements Serializable, INikitaEntity,
+        IPrecedence, ICaseParty {
 
     private static final long serialVersionUID = 1L;
 
@@ -122,7 +123,7 @@ public class CaseFile extends File implements Serializable, INikitaEntity, IPrec
             inverseJoinColumns = @JoinColumn(name = "f_pk_case_party_id",
                     referencedColumnName = "pk_case_party_id"))
 
-    protected Set<CaseParty> referenceCaseParty = new TreeSet<CaseParty>();
+    protected List<CaseParty> referenceCaseParty = new ArrayList<CaseParty>();
     // Links to Precedence
     @ManyToMany
     @JoinTable(name = "case_file_precedence",
@@ -131,7 +132,7 @@ public class CaseFile extends File implements Serializable, INikitaEntity, IPrec
             inverseJoinColumns = @JoinColumn(name = "f_pk_precedence_id",
                     referencedColumnName = "pk_precedence_id"))
 
-    protected Set<Precedence> referencePrecedence = new TreeSet<Precedence>();
+    protected List<Precedence> referencePrecedence = new ArrayList<Precedence>();
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
@@ -236,19 +237,19 @@ public class CaseFile extends File implements Serializable, INikitaEntity, IPrec
         return NOARK_CASE_HANDLING_PATH;
     }
 
-    public Set<CaseParty> getReferenceCaseParty() {
+    public List<CaseParty> getReferenceCaseParty() {
         return referenceCaseParty;
     }
 
-    public void setReferenceCaseParty(Set<CaseParty> referenceCaseParty) {
+    public void setReferenceCaseParty(List<CaseParty> referenceCaseParty) {
         this.referenceCaseParty = referenceCaseParty;
     }
 
-    public Set<Precedence> getReferencePrecedence() {
+    public List<Precedence> getReferencePrecedence() {
         return referencePrecedence;
     }
 
-    public void setReferencePrecedence(Set<Precedence> referencePrecedence) {
+    public void setReferencePrecedence(List<Precedence> referencePrecedence) {
         this.referencePrecedence = referencePrecedence;
     }
 

@@ -49,7 +49,6 @@ public class CaseFileHateoasHandler extends FileHateoasHandler implements ICaseF
         addReferenceSecondaryClassification(entity, hateoasNoarkObject);
         addNewReferenceSecondaryClassification(entity, hateoasNoarkObject);
         // Methods from this class
-        addNewClass(entity, hateoasNoarkObject);
         //addClass(entity, hateoasNoarkObject);
         addNewPrecedence(entity, hateoasNoarkObject);
         //addPrecedence(entity, hateoasNoarkObject);
@@ -57,7 +56,6 @@ public class CaseFileHateoasHandler extends FileHateoasHandler implements ICaseF
         //addCaseParty(entity, hateoasNoarkObject);
         addNewCaseStatus(entity, hateoasNoarkObject);
         //addCaseStatus(entity, hateoasNoarkObject);
-        addNewSecondaryClassification(entity, hateoasNoarkObject);
         addNewRegistryEntry(entity, hateoasNoarkObject);
         addRegistryEntry(entity, hateoasNoarkObject);
         //addSecondaryClassification(entity, hateoasNoarkObject);

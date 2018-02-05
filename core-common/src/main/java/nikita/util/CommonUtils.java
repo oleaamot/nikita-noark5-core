@@ -269,7 +269,7 @@ public final class CommonUtils {
                 JsonNode currentNode = objectNode.get(KEYWORD);
 
                 if (null != currentNode) {
-                    TreeSet<Keyword> keywords = new TreeSet<>();
+                    ArrayList<Keyword> keywords = new ArrayList<>();
                     if (currentNode.isArray()) {
                         currentNode.iterator();
                         for (JsonNode node : currentNode) {
@@ -305,7 +305,7 @@ public final class CommonUtils {
                 // Deserialize author
                 JsonNode currentNode = objectNode.get(AUTHOR);
                 if (null != currentNode) {
-                    TreeSet<Author> authors = new TreeSet<>();
+                    ArrayList<Author> authors = new ArrayList<>();
                     if (currentNode.isArray()) {
                         currentNode.iterator();
                         for (JsonNode node : currentNode) {
@@ -327,7 +327,7 @@ public final class CommonUtils {
                 JsonNode currentNode = objectNode.get(STORAGE_LOCATION);
 
                 if (null != currentNode) {
-                    TreeSet<StorageLocation> storageLocations = new TreeSet<>();
+                    ArrayList<StorageLocation> storageLocations = new ArrayList<>();
                     if (currentNode.isArray()) {
                         currentNode.iterator();
                         for (JsonNode node : currentNode) {
@@ -411,8 +411,8 @@ public final class CommonUtils {
             }
 
             // TODO: FIX THIS!!!!
-            public static Set<CrossReference> deserialiseCrossReferences(ObjectNode objectNode, StringBuilder errors) {
-                Set<CrossReference> crossReferences = new TreeSet<>();
+            public static List<CrossReference> deserialiseCrossReferences(ObjectNode objectNode, StringBuilder errors) {
+                List<CrossReference> crossReferences = new ArrayList<>();
 
                 //deserialiseCrossReference(crossReference, objectNode);
                 return crossReferences;
@@ -445,7 +445,7 @@ public final class CommonUtils {
             }
 
             public static void deserialiseComments(IComment commentObject, ObjectNode objectNode, StringBuilder errors) {
-                Set<Comment> comments = commentObject.getReferenceComment();
+                List<Comment> comments = commentObject.getReferenceComment();
                 for (Comment comment : comments) {
                     deserialiseCommentEntity(comment, objectNode, errors);
                 }
@@ -478,18 +478,18 @@ public final class CommonUtils {
             }
 
 
-            public static Set<Series> deserialiseReferenceMultipleSeries(ObjectNode objectNode, StringBuilder errors) {
-                Set<Series> referenceSeries = null;
+            public static List<Series> deserialiseReferenceMultipleSeries(ObjectNode objectNode, StringBuilder errors) {
+                List<Series> referenceSeries = null;
                 JsonNode node = objectNode.get(REFERENCE_SERIES);
                 if (node != null) {
-                    referenceSeries = new TreeSet<>();
+                    referenceSeries = new ArrayList<>();
                     deserialiseReferenceSeries(referenceSeries, objectNode.deepCopy(), errors);
                 }
                 objectNode.remove(REFERENCE_SERIES);
                 return referenceSeries;
             }
 
-            public static void deserialiseReferenceSeries(Set<Series> referenceSeries, ObjectNode objectNode, StringBuilder errors) {
+            public static void deserialiseReferenceSeries(List<Series> referenceSeries, ObjectNode objectNode, StringBuilder errors) {
 
             }
 
@@ -585,7 +585,7 @@ public final class CommonUtils {
             }
 
             public static void deserialiseCaseParties(ICaseParty casePartyObject, ObjectNode objectNode, StringBuilder errors) {
-                Set<CaseParty> caseParties = casePartyObject.getReferenceCaseParty();
+                List<CaseParty> caseParties = casePartyObject.getReferenceCaseParty();
                 if (caseParties != null && caseParties.size() > 0) {
                     for (CaseParty caseParty : caseParties) {
                         deserialiseCaseParty(caseParty, objectNode, errors);
@@ -658,7 +658,7 @@ public final class CommonUtils {
                 }
             }
 
-            public static Set<Precedence> deserialisePrecedences(ObjectNode objectNode, StringBuilder errors) {
+            public static List<Precedence> deserialisePrecedences(ObjectNode objectNode, StringBuilder errors) {
 //                objectNode.remove(PRECEDENCE);
                 // TODO : Looks like I'm missing!!!
                 return null;
@@ -701,8 +701,8 @@ public final class CommonUtils {
                 precedenceEntity.setPrecedenceApprovedDate(deserializeDate(PRECEDENCE_APPROVED_DATE, objectNode, errors));
             }
 
-            public static Set<CaseParty> deserialiseCaseParties(ObjectNode objectNode, StringBuilder errors) {
-                TreeSet<CaseParty> caseParties = new TreeSet<>();
+            public static List<CaseParty> deserialiseCaseParties(ObjectNode objectNode, StringBuilder errors) {
+                ArrayList<CaseParty> caseParties = new ArrayList<>();
                 //JsonNode jsonCaseParty = objectNode.get(CASE_PARTY);
                 // TODO: I seem tobe missing my body of code ...
 /*                for (CorrespondencePart correspondencePart: caseParties) {
@@ -987,7 +987,7 @@ public final class CommonUtils {
             // TODO: Double check how the JSON of this looks if multiple fondsCreators are embedded within a fonds
             // object There might be some 'root' node in the JSON to remove
             // This might be implemented as an array???
-            public static Set<FondsCreator> deserialiseFondsCreators(ObjectNode objectNode, StringBuilder errors) {
+            public static List<FondsCreator> deserialiseFondsCreators(ObjectNode objectNode, StringBuilder errors) {
                 return null;
             }
 
@@ -1181,7 +1181,7 @@ public final class CommonUtils {
             public static void printCaseParty(JsonGenerator jgen, ICaseParty casePartyObject)
                     throws IOException {
                 if (casePartyObject != null) {
-                    Set<CaseParty> caseParties = casePartyObject.getReferenceCaseParty();
+                    List<CaseParty> caseParties = casePartyObject.getReferenceCaseParty();
                     if (caseParties != null && caseParties.size() > 0) {
                         jgen.writeArrayFieldStart(CASE_PARTY);
                         for (CaseParty caseParty : caseParties) {
@@ -1227,7 +1227,7 @@ public final class CommonUtils {
             }
 
             // Note: This method assumes that the startObject has already been written
-            public static void printHateoasLinks(JsonGenerator jgen, Set<Link> links) throws IOException {
+            public static void printHateoasLinks(JsonGenerator jgen, List<Link> links) throws IOException {
 
                 if (links != null && links.size() > 0) {
                     jgen.writeArrayFieldStart(LINKS);
@@ -1408,7 +1408,7 @@ public final class CommonUtils {
             listing correspondenceparts via the parent entity CorrespondencePart
             public static void printCorrespondenceParts(JsonGenerator jgen, ICorrespondencePart correspondencePartObject)
                     throws IOException {
-                Set<CorrespondencePart> correspondenceParts = correspondencePartObject.getReferenceCorrespondencePart();
+                List<CorrespondencePart> correspondenceParts = correspondencePartObject.getReferenceCorrespondencePart();
                 if (correspondenceParts != null && correspondenceParts.size() > 0) {
                     jgen.writeArrayFieldStart(CORRESPONDENCE_PART);
                     for (CorrespondencePart correspondencePart : correspondenceParts) {
@@ -1423,7 +1423,7 @@ public final class CommonUtils {
 
             public static void printCorrespondencePartInternals(JsonGenerator jgen, ICorrespondencePart correspondencePartObject)
                     throws IOException {
-                Set<CorrespondencePartInternal> correspondencePartInternals = correspondencePartObject.getReferenceCorrespondencePartInternal();
+                List<CorrespondencePartInternal> correspondencePartInternals = correspondencePartObject.getReferenceCorrespondencePartInternal();
                 if (correspondencePartInternals != null && correspondencePartInternals.size() > 0) {
                     jgen.writeArrayFieldStart(CORRESPONDENCE_PART_INTERNAL);
                     for (ICorrespondencePartInternalEntity correspondencePart : correspondencePartInternals) {
@@ -1437,7 +1437,7 @@ public final class CommonUtils {
 
             public static void printCorrespondencePartUnits(JsonGenerator jgen, ICorrespondencePart correspondencePartObject)
                     throws IOException {
-                Set<CorrespondencePartUnit> correspondencePartUnits = correspondencePartObject.getReferenceCorrespondencePartUnit();
+                List<CorrespondencePartUnit> correspondencePartUnits = correspondencePartObject.getReferenceCorrespondencePartUnit();
                 if (correspondencePartUnits != null && correspondencePartUnits.size() > 0) {
                     jgen.writeArrayFieldStart(CORRESPONDENCE_PART_UNIT);
                     for (ICorrespondencePartUnitEntity correspondencePart : correspondencePartUnits) {
@@ -1451,7 +1451,7 @@ public final class CommonUtils {
 
             public static void printCorrespondencePartPersons(JsonGenerator jgen, ICorrespondencePart correspondencePartObject)
                     throws IOException {
-                Set<CorrespondencePartPerson> correspondencePartPersons = correspondencePartObject.getReferenceCorrespondencePartPerson();
+                List<CorrespondencePartPerson> correspondencePartPersons = correspondencePartObject.getReferenceCorrespondencePartPerson();
                 if (correspondencePartPersons != null && correspondencePartPersons.size() > 0) {
                     jgen.writeArrayFieldStart(CORRESPONDENCE_PART_PERSON);
                     for (ICorrespondencePartPersonEntity correspondencePart : correspondencePartPersons) {
@@ -1465,7 +1465,7 @@ public final class CommonUtils {
 
             public static void printSignOff(JsonGenerator jgen, ISignOff signOffEntity)
                     throws IOException {
-                Set<SignOff> signOffs = signOffEntity.getReferenceSignOff();
+                List<SignOff> signOffs = signOffEntity.getReferenceSignOff();
                 if (signOffs != null && signOffs.size() > 0) {
                     jgen.writeArrayFieldStart(SIGN_OFF);
                     for (SignOff signOff : signOffs) {
@@ -1493,7 +1493,7 @@ public final class CommonUtils {
 
             public static void printDocumentFlow(JsonGenerator jgen, IDocumentFlow documentFlowEntity)
                     throws IOException {
-                Set<DocumentFlow> documentFlows = documentFlowEntity.getReferenceDocumentFlow();
+                List<DocumentFlow> documentFlows = documentFlowEntity.getReferenceDocumentFlow();
                 if (documentFlows != null && documentFlows.size() > 0) {
                     jgen.writeArrayFieldStart(DOCUMENT_FLOW);
                     for (DocumentFlow documentFlow : documentFlows) {
@@ -1574,7 +1574,7 @@ public final class CommonUtils {
 
             public static void printPrecedences(JsonGenerator jgen, IPrecedence precedenceObject)
                     throws IOException {
-                Set<Precedence> precedences = precedenceObject.getReferencePrecedence();
+                List<Precedence> precedences = precedenceObject.getReferencePrecedence();
                 if (precedences != null && precedences.size() > 0) {
                     jgen.writeArrayFieldStart(PRECEDENCE);
                     for (Precedence precedence : precedences) {
@@ -1588,7 +1588,7 @@ public final class CommonUtils {
 
             public static void printAuthor(JsonGenerator jgen, IAuthor authorEntity)
                     throws IOException {
-                Set<Author> author = authorEntity.getReferenceAuthor();
+                List<Author> author = authorEntity.getReferenceAuthor();
                 if (author != null && author.size() > 0) {
                     jgen.writeArrayFieldStart(AUTHOR);
                     for (Author location : author) {
@@ -1602,7 +1602,7 @@ public final class CommonUtils {
 
             public static void printStorageLocation(JsonGenerator jgen, IStorageLocation storageLocationEntity)
                     throws IOException {
-                Set<StorageLocation> storageLocation = storageLocationEntity.getReferenceStorageLocation();
+                List<StorageLocation> storageLocation = storageLocationEntity.getReferenceStorageLocation();
                 if (storageLocation != null && storageLocation.size() > 0) {
                     jgen.writeArrayFieldStart(STORAGE_LOCATION);
                     for (StorageLocation location : storageLocation) {
@@ -1617,7 +1617,7 @@ public final class CommonUtils {
             public static void printConversion(JsonGenerator jgen,
                                                IConversion conversionEntity)
                     throws IOException {
-                Set<Conversion> conversions = conversionEntity.getReferenceConversion();
+                List<Conversion> conversions = conversionEntity.getReferenceConversion();
                 if (conversions != null && conversions.size() > 0) {
                     for (Conversion conversion : conversions) {
 
@@ -1656,7 +1656,7 @@ public final class CommonUtils {
             public static void printFondsCreators(JsonGenerator jgen, IFondsCreator fondsCreatorObject)
                     throws IOException {
 
-                Set<FondsCreator> fondsCreators = fondsCreatorObject.getReferenceFondsCreator();
+                List<FondsCreator> fondsCreators = fondsCreatorObject.getReferenceFondsCreator();
                 if (fondsCreators != null) {
                     for (FondsCreator fondsCreator : fondsCreators) {
                         if (fondsCreator != null) {
@@ -1845,7 +1845,7 @@ public final class CommonUtils {
 
             public static void printComment(JsonGenerator jgen, IComment commentEntity)
                     throws IOException {
-                Set<Comment> comments = commentEntity.getReferenceComment();
+                List<Comment> comments = commentEntity.getReferenceComment();
                 if (comments != null && comments.size() > 0) {
                     jgen.writeArrayFieldStart(COMMENT);
                     for (Comment comment : comments) {
@@ -1887,7 +1887,7 @@ public final class CommonUtils {
 
             public static void printKeyword(JsonGenerator jgen, IKeyword keywordEntity)
                     throws IOException {
-                Set<Keyword> keywords = keywordEntity.getReferenceKeyword();
+                List<Keyword> keywords = keywordEntity.getReferenceKeyword();
                 if (keywords != null && keywords.size() > 0) {
                     jgen.writeArrayFieldStart(KEYWORD);
                     for (Keyword keyword : keywords) {

@@ -11,7 +11,7 @@ import nikita.util.CommonUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.AbstractCollection;
+import java.util.List;
 
 import static nikita.config.Constants.ENTITY_ROOT_NAME_LIST;
 
@@ -35,7 +35,7 @@ public class HateoasSerializer extends StdSerializer<HateoasNoarkObject> {
         // An entity should produce
         // { "field" : "value", "_links": [] }
         // No such thing as an empty entity
-        AbstractCollection<INikitaEntity> list = hateoasObject.getList();
+        List<INikitaEntity> list = hateoasObject.getList();
         if (list.size() > 0) {
             if (!hateoasObject.isSingleEntity()) {
                 jgen.writeStartObject();

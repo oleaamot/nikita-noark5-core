@@ -29,7 +29,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.AbstractCollection;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.BASIC_RECORD;
@@ -109,7 +109,7 @@ public class BasicRecordHateoasController extends NoarkController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         BasicRecordHateoas basicRecordHateoas = new
-                BasicRecordHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection)
+                BasicRecordHateoas((List<INikitaEntity>) (List)
                 basicRecordService.findBasicRecordByOwnerPaginated(top, skip));
         basicRecordHateoasHandler.addLinks(basicRecordHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)

@@ -9,9 +9,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.DISPOSAL_UNDERTAKEN;
 
@@ -37,11 +37,11 @@ public class DisposalUndertaken extends NoarkEntity implements IDisposalUndertak
 
     // Links to Series
     @ManyToMany(mappedBy = "referenceDisposalUndertaken")
-    private Set<Series> referenceSeries = new TreeSet<>();
+    private List<Series> referenceSeries = new ArrayList<>();
 
     // Links to DocumentDescription
     @ManyToMany(mappedBy = "referenceDisposalUndertaken")
-    private Set<DocumentDescription> referenceDocumentDescription = new TreeSet<>();
+    private List<DocumentDescription> referenceDocumentDescription = new ArrayList<>();
 
     public String getDisposalBy() {
         return disposalBy;
@@ -64,19 +64,19 @@ public class DisposalUndertaken extends NoarkEntity implements IDisposalUndertak
         return DISPOSAL_UNDERTAKEN;
     }
 
-    public Set<Series> getReferenceSeries() {
+    public List<Series> getReferenceSeries() {
         return referenceSeries;
     }
 
-    public void setReferenceSeries(Set<Series> referenceSeries) {
+    public void setReferenceSeries(List<Series> referenceSeries) {
         this.referenceSeries = referenceSeries;
     }
 
-    public Set<DocumentDescription> getReferenceDocumentDescription() {
+    public List<DocumentDescription> getReferenceDocumentDescription() {
         return referenceDocumentDescription;
     }
 
-    public void setReferenceDocumentDescription(Set<DocumentDescription> referenceDocumentDescription) {
+    public void setReferenceDocumentDescription(List<DocumentDescription> referenceDocumentDescription) {
         this.referenceDocumentDescription = referenceDocumentDescription;
     }
 

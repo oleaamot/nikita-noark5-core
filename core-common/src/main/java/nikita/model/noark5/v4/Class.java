@@ -14,8 +14,8 @@ import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.CLASS;
 
@@ -42,7 +42,7 @@ public class Class extends NoarkGeneralEntity implements IDisposal, IScreening, 
     @JoinTable(name = "class_keyword", joinColumns = @JoinColumn(name = "f_pk_class_id",
             referencedColumnName = "pk_class_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_keyword_id",
             referencedColumnName = "pk_keyword_id"))
-    private Set<Keyword> referenceKeyword = new TreeSet<>();
+    private List<Keyword> referenceKeyword = new ArrayList<>();
 
     // Link to ClassificationSystem
     @ManyToOne(fetch = FetchType.LAZY)
@@ -55,15 +55,15 @@ public class Class extends NoarkGeneralEntity implements IDisposal, IScreening, 
 
     // Links to child Classes
     @OneToMany(mappedBy = "referenceParentClass")
-    private Set<Class> referenceChildClass = new TreeSet<>();
+    private List<Class> referenceChildClass = new ArrayList<>();
 
     // Links to Files
     @OneToMany(mappedBy = "referenceClass")
-    private Set<File> referenceFile = new TreeSet<>();
+    private List<File> referenceFile = new ArrayList<>();
 
     // Links to Records
     @OneToMany(mappedBy = "referenceClass")
-    private Set<Record> referenceRecord = new TreeSet<>();
+    private List<Record> referenceRecord = new ArrayList<>();
 
     // Links to Classified
     @ManyToOne(cascade = CascadeType.ALL)
@@ -81,7 +81,7 @@ public class Class extends NoarkGeneralEntity implements IDisposal, IScreening, 
     private Screening referenceScreening;
 
     @OneToMany(mappedBy = "referenceClass")
-    private Set<CrossReference> referenceCrossReference;
+    private List<CrossReference> referenceCrossReference;
 
     public String getClassId() {
         return classId;
@@ -96,11 +96,11 @@ public class Class extends NoarkGeneralEntity implements IDisposal, IScreening, 
         return CLASS;
     }
 
-    public Set<Keyword> getReferenceKeyword() {
+    public List<Keyword> getReferenceKeyword() {
         return referenceKeyword;
     }
 
-    public void setReferenceKeyword(Set<Keyword> referenceKeyword) {
+    public void setReferenceKeyword(List<Keyword> referenceKeyword) {
         this.referenceKeyword = referenceKeyword;
     }
 
@@ -121,27 +121,27 @@ public class Class extends NoarkGeneralEntity implements IDisposal, IScreening, 
         this.referenceParentClass = referenceParentClass;
     }
 
-    public Set<Class> getReferenceChildClass() {
+    public List<Class> getReferenceChildClass() {
         return referenceChildClass;
     }
 
-    public void setReferenceChildClass(Set<Class> referenceChildClass) {
+    public void setReferenceChildClass(List<Class> referenceChildClass) {
         this.referenceChildClass = referenceChildClass;
     }
 
-    public Set<File> getReferenceFile() {
+    public List<File> getReferenceFile() {
         return referenceFile;
     }
 
-    public void setReferenceFile(Set<File> referenceFile) {
+    public void setReferenceFile(List<File> referenceFile) {
         this.referenceFile = referenceFile;
     }
 
-    public Set<Record> getReferenceRecord() {
+    public List<Record> getReferenceRecord() {
         return referenceRecord;
     }
 
-    public void setReferenceRecord(Set<Record> referenceRecord) {
+    public void setReferenceRecord(List<Record> referenceRecord) {
         this.referenceRecord = referenceRecord;
     }
 
@@ -176,12 +176,12 @@ public class Class extends NoarkGeneralEntity implements IDisposal, IScreening, 
     }
 
     @Override
-    public Set<CrossReference> getReferenceCrossReference() {
+    public List<CrossReference> getReferenceCrossReference() {
         return referenceCrossReference;
     }
 
     @Override
-    public void setReferenceCrossReference(Set<CrossReference> referenceCrossReference) {
+    public void setReferenceCrossReference(List<CrossReference> referenceCrossReference) {
         this.referenceCrossReference = referenceCrossReference;
     }
 

@@ -13,9 +13,9 @@ import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.DOCUMENT_DESCRIPTION;
 
@@ -135,25 +135,25 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
 
     // Links to Records
     @ManyToMany(mappedBy = "referenceDocumentDescription")
-    private Set<Record> referenceRecord = new TreeSet<>();
+    private List<Record> referenceRecord = new ArrayList<>();
 
     // Links to DocumentObjects
     @OneToMany(mappedBy = "referenceDocumentDescription")
-    private Set<DocumentObject> referenceDocumentObject = new TreeSet<>();
+    private List<DocumentObject> referenceDocumentObject = new ArrayList<>();
 
     // Links to Comments
     @ManyToMany
     @JoinTable(name = "document_description_comment", joinColumns = @JoinColumn(name = "f_pk_document_description_id",
             referencedColumnName = "pk_document_description_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_comment_id", referencedColumnName = "pk_comment_id"))
-    private Set<Comment> referenceComment = new TreeSet<>();
+    private List<Comment> referenceComment = new ArrayList<>();
 
     // Links to Authors
     @ManyToMany
     @JoinTable(name = "document_description_author", joinColumns = @JoinColumn(name = "f_pk_document_description_id",
             referencedColumnName = "pk_document_description_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_author_id", referencedColumnName = "pk_author_id"))
-    private Set<Author> referenceAuthor = new TreeSet<>();
+    private List<Author> referenceAuthor = new ArrayList<>();
 
     // Link to Classified
     @ManyToOne (cascade=CascadeType.PERSIST)
@@ -279,11 +279,11 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
         this.associatedBy = associatedBy;
     }
 
-    public Set<Record> getReferenceRecord() {
+    public List<Record> getReferenceRecord() {
         return referenceRecord;
     }
 
-    public void setReferenceRecord(Set<Record> referenceRecord) {
+    public void setReferenceRecord(List<Record> referenceRecord) {
         this.referenceRecord = referenceRecord;
     }
 
@@ -291,12 +291,12 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
         this.referenceRecord.add(record);
     }
 
-    public Set<DocumentObject> getReferenceDocumentObject() {
+    public List<DocumentObject> getReferenceDocumentObject() {
         return referenceDocumentObject;
     }
 
     public void setReferenceDocumentObject(
-            Set<DocumentObject> referenceDocumentObject) {
+            List<DocumentObject> referenceDocumentObject) {
         this.referenceDocumentObject = referenceDocumentObject;
     }
 
@@ -310,21 +310,21 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
         this.storageLocation = storageLocation;
     }
 
-    public Set<Comment> getReferenceComment() {
+    public List<Comment> getReferenceComment() {
         return referenceComment;
     }
 
-    public void setReferenceComment(Set<Comment> referenceComment) {
+    public void setReferenceComment(List<Comment> referenceComment) {
         this.referenceComment = referenceComment;
     }
 
     @Override
-    public Set<Author> getReferenceAuthor() {
+    public List<Author> getReferenceAuthor() {
         return referenceAuthor;
     }
 
     @Override
-    public void setReferenceAuthor(Set<Author> referenceAuthor) {
+    public void setReferenceAuthor(List<Author> referenceAuthor) {
         this.referenceAuthor = referenceAuthor;
     }
 

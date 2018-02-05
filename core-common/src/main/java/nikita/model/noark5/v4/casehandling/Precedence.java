@@ -7,9 +7,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import static nikita.config.Constants.NOARK_CASE_HANDLING_PATH;
 import static nikita.config.N5ResourceMappings.PRECEDENCE;
@@ -66,11 +66,11 @@ public class Precedence extends NoarkGeneralEntity implements IPrecedenceEntity{
 
     // Link to RegistryEntry
     @ManyToMany(mappedBy = "referencePrecedence")
-    private Set<RegistryEntry> referenceRegistryEntry = new TreeSet< >();
+    private List<RegistryEntry> referenceRegistryEntry = new ArrayList<>();
 
     // Links to CaseFiles
     @ManyToMany(mappedBy = "referencePrecedence")
-    private Set<CaseFile> referenceCaseFile = new TreeSet<>();
+    private List<CaseFile> referenceCaseFile = new ArrayList<>();
 
 
     public Date getPrecedenceDate() {
@@ -130,19 +130,19 @@ public class Precedence extends NoarkGeneralEntity implements IPrecedenceEntity{
         return NOARK_CASE_HANDLING_PATH;
     }
 
-    public Set<RegistryEntry> getReferenceRegistryEntry() {
+    public List<RegistryEntry> getReferenceRegistryEntry() {
         return referenceRegistryEntry;
     }
 
-    public void setReferenceRegistryEntry(Set<RegistryEntry> referenceRegistryEntry) {
+    public void setReferenceRegistryEntry(List<RegistryEntry> referenceRegistryEntry) {
         this.referenceRegistryEntry = referenceRegistryEntry;
     }
 
-    public Set<CaseFile> getReferenceCaseFile() {
+    public List<CaseFile> getReferenceCaseFile() {
         return referenceCaseFile;
     }
 
-    public void setReferenceCaseFile(Set<CaseFile> referenceCaseFile) {
+    public void setReferenceCaseFile(List<CaseFile> referenceCaseFile) {
         this.referenceCaseFile = referenceCaseFile;
     }
 

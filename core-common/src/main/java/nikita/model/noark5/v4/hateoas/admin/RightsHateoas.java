@@ -6,7 +6,7 @@ import nikita.model.noark5.v4.hateoas.IHateoasNoarkObject;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.serializers.noark5v4.hateoas.admin.AdministrativeUnitHateoasSerializer;
 
-import java.util.AbstractCollection;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.RIGHT;
 
@@ -20,7 +20,7 @@ public class RightsHateoas extends HateoasNoarkObject implements IHateoasNoarkOb
         super(entity);
     }
 
-    public RightsHateoas(AbstractCollection<INikitaEntity> entityList) {
+    public RightsHateoas(List<INikitaEntity> entityList) {
         super(entityList, RIGHT);
     }
 }

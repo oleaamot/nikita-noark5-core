@@ -23,7 +23,6 @@ import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
@@ -60,7 +59,8 @@ public class DocumentDescriptionService implements IDocumentDescriptionService {
         }
         else {
             documentObject.setReferenceDocumentDescription(documentDescription);
-            Set <DocumentObject> documentObjects = documentDescription.getReferenceDocumentObject();
+            List<DocumentObject> documentObjects = documentDescription
+                    .getReferenceDocumentObject();
             documentObjects.add(documentObject);
             persistedDocumentObject = documentObjectService.save(documentObject);
         }

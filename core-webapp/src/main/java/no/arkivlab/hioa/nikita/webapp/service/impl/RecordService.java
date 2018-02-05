@@ -20,7 +20,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 import static nikita.config.Constants.INFO_CANNOT_FIND_OBJECT;
 
@@ -69,14 +72,14 @@ public class RecordService implements IRecordService {
             throw new NoarkEntityNotFoundException(info);
         }
         else {
-            TreeSet <Record> records = (TreeSet <Record>) documentDescription.getReferenceRecord();
+            ArrayList<Record> records = (ArrayList<Record>) documentDescription.getReferenceRecord();
 
             if (records == null) {
-                records = new TreeSet<>();
+                records = new ArrayList<>();
                 documentDescription.setReferenceRecord(records);
             }
             records.add(record);
-            Set<DocumentDescription> documentDescriptions = record.getReferenceDocumentDescription();
+            List<DocumentDescription> documentDescriptions = record.getReferenceDocumentDescription();
             documentDescriptions.add(documentDescription);
             persistedDocumentDescription = documentDescriptionService.save(documentDescription);
         }

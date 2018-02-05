@@ -2,13 +2,12 @@ package nikita.model.noark5.v4.hateoas;
 
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 
-import java.util.AbstractCollection;
-import java.util.Set;
+import java.util.List;
 
 public interface IHateoasNoarkObject {
-    Set<Link> getLinks(INikitaEntity entity);
+    List<Link> getLinks(INikitaEntity entity);
 
-    AbstractCollection<INikitaEntity> getList();
+    List<INikitaEntity> getList();
 
     void addLink(INikitaEntity entity, Link link);
 
@@ -16,7 +15,7 @@ public interface IHateoasNoarkObject {
 
     void addLink(Link selfLink);
 
-    Set<Link> getSelfLinks();
+    List<Link> getSelfLinks();
 
     boolean isSingleEntity();
 }

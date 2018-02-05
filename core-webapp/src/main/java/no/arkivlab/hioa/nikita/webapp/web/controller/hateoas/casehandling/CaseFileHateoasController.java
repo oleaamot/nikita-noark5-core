@@ -39,10 +39,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.AbstractCollection;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
@@ -210,7 +209,8 @@ public class CaseFileHateoasController extends NoarkController {
             throw new NoarkEntityNotFoundException(caseFileSystemId);
         }
         RegistryEntryHateoas registryEntryHateoas = new
-                RegistryEntryHateoas(new ArrayList<> (caseFile.getReferenceRecord()));
+                RegistryEntryHateoas((List<INikitaEntity>)
+                (List) (caseFile.getReferenceRecord()));
         registryEntryHateoasHandler.addLinks(registryEntryHateoas, request, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -237,7 +237,7 @@ public class CaseFileHateoasController extends NoarkController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         CaseFileHateoas caseFileHateoas = new
-                CaseFileHateoas((AbstractCollection<INikitaEntity>) (AbstractCollection)
+                CaseFileHateoas((List<INikitaEntity>) (List)
                 caseFileService.findCaseFileByOwnerPaginated(top, skip));
 
         caseFileHateoasHandler.addLinks(caseFileHateoas, request, new Authorisation());

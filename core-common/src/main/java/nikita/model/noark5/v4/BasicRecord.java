@@ -12,8 +12,8 @@ import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.BASIC_RECORD;
 
@@ -80,29 +80,29 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
     @JoinTable(name = "basic_record_storage_location", joinColumns = @JoinColumn(name = "f_pk_basic_record_id",
             referencedColumnName = "pk_record_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
             referencedColumnName = "pk_storage_location_id"))
-    protected Set<StorageLocation> referenceStorageLocation = new TreeSet<>();
+    protected List<StorageLocation> referenceStorageLocation = new ArrayList<>();
 
     // Links to Keywords
     @ManyToMany
     @JoinTable(name = "basic_record_keyword", joinColumns = @JoinColumn(name = "f_pk_record_id",
             referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_keyword_id", referencedColumnName = "pk_keyword_id"))
-    protected Set<Keyword> referenceKeyword = new TreeSet<>();
+    protected List<Keyword> referenceKeyword = new ArrayList<>();
     // Links to Authors
     @ManyToMany
     @JoinTable(name = "basic_record_author", joinColumns = @JoinColumn(name = "f_pk_record_id",
             referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_author_id", referencedColumnName = "pk_author_id"))
-    protected Set<Author> referenceAuthor = new TreeSet<>();
+    protected List<Author> referenceAuthor = new ArrayList<>();
     // Links to Comments
     @ManyToMany
     @JoinTable(name = "basic_record_comment", joinColumns = @JoinColumn(name = "f_pk_record_id",
             referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_comment_id", referencedColumnName = "pk_comment_id"))
-    protected Set<Comment> referenceComment = new TreeSet<>();
+    protected List<Comment> referenceComment = new ArrayList<>();
     // Links to CrossReference
     @OneToMany(mappedBy = "referenceBasicRecord")
-    protected Set<CrossReference> referenceCrossReference;
+    protected List<CrossReference> referenceCrossReference;
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
@@ -171,42 +171,44 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
     }
 
     @Override
-    public Set<StorageLocation> getReferenceStorageLocation() {return referenceStorageLocation;}
+    public List<StorageLocation> getReferenceStorageLocation() {
+        return referenceStorageLocation;
+    }
 
-    public void setReferenceStorageLocation(Set<StorageLocation> referenceStorageLocation) {
+    public void setReferenceStorageLocation(List<StorageLocation> referenceStorageLocation) {
         this.referenceStorageLocation = referenceStorageLocation;
     }
 
-    public Set<Keyword> getReferenceKeyword() {
+    public List<Keyword> getReferenceKeyword() {
         return referenceKeyword;
     }
 
-    public void setReferenceKeyword(Set<Keyword> referenceKeyword) {
+    public void setReferenceKeyword(List<Keyword> referenceKeyword) {
         this.referenceKeyword = referenceKeyword;
     }
 
-    public Set<Author> getReferenceAuthor() {
+    public List<Author> getReferenceAuthor() {
         return referenceAuthor;
     }
 
-    public void setReferenceAuthor(Set<Author> referenceAuthor) {
+    public void setReferenceAuthor(List<Author> referenceAuthor) {
         this.referenceAuthor = referenceAuthor;
     }
 
-    public Set<Comment> getReferenceComment() {
+    public List<Comment> getReferenceComment() {
         return referenceComment;
     }
 
-    public void setReferenceComment(Set<Comment> referenceComment) {
+    public void setReferenceComment(List<Comment> referenceComment) {
         this.referenceComment = referenceComment;
     }
 
     @Override
-    public Set<CrossReference> getReferenceCrossReference() {
+    public List<CrossReference> getReferenceCrossReference() {
         return referenceCrossReference;
     }
 
-    public void setReferenceCrossReference(Set<CrossReference> referenceCrossReference) {
+    public void setReferenceCrossReference(List<CrossReference> referenceCrossReference) {
         this.referenceCrossReference = referenceCrossReference;
     }
 

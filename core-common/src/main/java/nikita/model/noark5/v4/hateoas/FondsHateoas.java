@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.serializers.noark5v4.hateoas.FondsHateoasSerializer;
 
-import java.util.AbstractCollection;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.FONDS;
 
@@ -18,7 +18,7 @@ public class FondsHateoas extends HateoasNoarkObject implements IHateoasNoarkObj
         super(entity);
     }
 
-    public FondsHateoas(AbstractCollection<INikitaEntity> entityList) {
+    public FondsHateoas(List<INikitaEntity> entityList) {
         super(entityList, FONDS);
     }
 }

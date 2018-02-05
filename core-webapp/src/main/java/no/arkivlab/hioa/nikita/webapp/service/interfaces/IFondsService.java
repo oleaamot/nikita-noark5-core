@@ -10,7 +10,6 @@ import org.springframework.data.domain.Sort;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Set;
 
 public interface IFondsService  {
 
@@ -22,7 +21,7 @@ public interface IFondsService  {
     FondsCreator createFondsCreatorAssociatedWithFonds(String fondsSystemId, FondsCreator fondsCreator);
 
     // -- All READ operations
-    Set<FondsCreator> findFondsCreatorAssociatedWithFonds(String systemId);
+    List<FondsCreator> findFondsCreatorAssociatedWithFonds(String systemId);
     List<Fonds> findFondsByOwnerPaginated(Integer top, Integer skip);
 
 
