@@ -193,7 +193,7 @@ public class FondsService implements IFondsService {
 
         // create the hateoas object with links
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas
-                (fonds);
+                (fondsCreator);
         fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, new
                 Authorisation());
 
