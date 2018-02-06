@@ -47,7 +47,7 @@ public class UserController extends NoarkController {
             throws NikitaException {
         userService.createNewUser(user);
         UserHateoas userHateoas = new UserHateoas(user);
-        userHateoasHandler.addLinks(userHateoas, request, new Authorisation());
+        userHateoasHandler.addLinks(userHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(user.getVersion().toString())
@@ -71,7 +71,7 @@ public class UserController extends NoarkController {
     public ResponseEntity<UserHateoas> findAll(HttpServletRequest request) {
         UserHateoas userHateoas = new UserHateoas(
                 (List<INikitaEntity>) (List) userService.findAll());
-        userHateoasHandler.addLinks(userHateoas, request, new Authorisation());
+        userHateoasHandler.addLinks(userHateoas, new Authorisation());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -101,7 +101,7 @@ public class UserController extends NoarkController {
                                                                                    HttpServletRequest request) {
         User user = userService.findBySystemId(systemId);
         UserHateoas userHateoas = new UserHateoas(user);
-        userHateoasHandler.addLinks(userHateoas, request, new Authorisation());
+        userHateoasHandler.addLinks(userHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(user.getVersion().toString())
@@ -162,7 +162,7 @@ public class UserController extends NoarkController {
         User newUser = userService.update(systemID,
                 parseETAG(request.getHeader(ETAG)), user);
         UserHateoas userHateoas = new UserHateoas(user);
-        userHateoasHandler.addLinks(userHateoas, request, new Authorisation());
+        userHateoasHandler.addLinks(userHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(userHateoas);

@@ -49,16 +49,19 @@ info:
     app.name: HiOA Noark 5 Core (Demo version)
     build.version: ${project.version}
 hateoas:
-    publicAddress: http://localhost:8092/noark5v4
+    publicAddress: http://localhost:8092/noark5v4/
 
 
 # ===================================================================
 # nikita-noark5-core specific properties
 # ===================================================================
 
+# Application properties
+application:
+  pagination:
+    max-page-size: 10
+
 nikita-noark5-core:
-    pagination:
-      _maxPageSize: 10
     mail:
         from: nikita@example.com
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration

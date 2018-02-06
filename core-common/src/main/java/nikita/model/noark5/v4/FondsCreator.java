@@ -12,15 +12,17 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import static nikita.config.Constants.PRIMARY_KEY_FONDS_CREATOR;
+import static nikita.config.Constants.TABLE_FONDS_CREATOR;
 import static nikita.config.N5ResourceMappings.FONDS_CREATOR;
 
 @Entity
-@Table(name = "fonds_creator")
+@Table(name = TABLE_FONDS_CREATOR)
 // Enable soft delete of Fonds
 // @SQLDelete(sql = "UPDATE fonds_creator SET deleted = true WHERE pk_fonds_creator_id = ? and version = ?")
 // @Where(clause = "deleted <> true")
 @JsonDeserialize(using = FondsCreatorDeserializer.class)
-@AttributeOverride(name = "id", column = @Column(name = "pk_fonds_creator_id"))
+@AttributeOverride(name = "id", column = @Column(name = PRIMARY_KEY_FONDS_CREATOR))
 public class FondsCreator extends NoarkEntity implements IFondsCreatorEntity {
 
     /**

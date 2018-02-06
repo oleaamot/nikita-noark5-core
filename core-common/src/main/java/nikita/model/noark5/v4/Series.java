@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static nikita.config.Constants.PRIMARY_KEY_FONDS;
 import static nikita.config.N5ResourceMappings.SERIES;
 
 @Entity
@@ -69,7 +70,8 @@ public class Series extends NoarkGeneralEntity implements IStorageLocation, IDoc
 
     // Link to Fonds
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "series_fonds_id", referencedColumnName = "pk_fonds_id")
+    @JoinColumn(name = "series_fonds_id",
+            referencedColumnName = PRIMARY_KEY_FONDS)
     @JsonIgnore
     private Fonds referenceFonds;
 

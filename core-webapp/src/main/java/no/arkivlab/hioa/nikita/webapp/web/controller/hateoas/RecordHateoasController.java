@@ -105,7 +105,7 @@ public class RecordHateoasController extends NoarkController {
                 recordService.createDocumentDescriptionAssociatedWithRecord(systemID, documentDescription);
         DocumentDescriptionHateoas documentDescriptionHateoas =
                 new DocumentDescriptionHateoas(createdDocumentDescription);
-        documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
+        documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdDocumentDescription));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(createdDocumentDescription.getVersion().toString())
@@ -149,7 +149,7 @@ public class RecordHateoasController extends NoarkController {
                 new DocumentObjectHateoas(
                         recordService.createDocumentObjectAssociatedWithRecord(systemID,
                                 documentObject));
-        documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
+        documentObjectHateoasHandler.addLinks(documentObjectHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
            return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(createdDocumentObject.getVersion().toString())
@@ -413,7 +413,7 @@ public class RecordHateoasController extends NoarkController {
             @PathVariable("systemID") final String systemID) {
         Record record = recordService.findBySystemId(systemID);
         RecordHateoas recordHateoas = new RecordHateoas(record);
-        recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
+        recordHateoasHandler.addLinks(recordHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(record.getVersion().toString())
@@ -444,7 +444,7 @@ public class RecordHateoasController extends NoarkController {
 
         RecordHateoas recordHateoas = new RecordHateoas((List<INikitaEntity>) (List)
                 recordService.findRecordByOwnerPaginated(top, skip));
-        recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
+        recordHateoasHandler.addLinks(recordHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(recordHateoas);
@@ -496,7 +496,7 @@ public class RecordHateoasController extends NoarkController {
 
         DocumentDescriptionHateoas documentDescriptionHateoas = new
                 DocumentDescriptionHateoas(defaultDocumentDescription);
-        documentDescriptionHateoasHandler.addLinksOnNew(documentDescriptionHateoas, request, new Authorisation());
+        documentDescriptionHateoasHandler.addLinksOnNew(documentDescriptionHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(documentDescriptionHateoas);
@@ -525,7 +525,7 @@ public class RecordHateoasController extends NoarkController {
 
         DocumentObjectHateoas documentObjectHateoas = new
                 DocumentObjectHateoas(defaultDocumentObject);
-        documentObjectHateoasHandler.addLinksOnNew(documentObjectHateoas, request, new Authorisation());
+        documentObjectHateoasHandler.addLinksOnNew(documentObjectHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(documentObjectHateoas);
@@ -556,7 +556,7 @@ public class RecordHateoasController extends NoarkController {
         }
         DocumentDescriptionHateoas documentDescriptionHateoas = new
                 DocumentDescriptionHateoas((List<INikitaEntity>) (List) record.getReferenceDocumentDescription());
-        documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
+        documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(documentDescriptionHateoas);
@@ -586,15 +586,15 @@ public class RecordHateoasController extends NoarkController {
         HateoasNoarkObject hateoasNoarkObject;
         if (parentEntity instanceof Series) {
             hateoasNoarkObject = new SeriesHateoas(parentEntity);
-            seriesHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+            seriesHateoasHandler.addLinks(hateoasNoarkObject, new Authorisation());
         }
         else if (parentEntity instanceof File) {
             hateoasNoarkObject = new FileHateoas(parentEntity);
-            fileHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+            fileHateoasHandler.addLinks(hateoasNoarkObject, new Authorisation());
         }
         else if (parentEntity instanceof Class) {
             hateoasNoarkObject = new ClassHateoas(parentEntity);
-            classHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+            classHateoasHandler.addLinks(hateoasNoarkObject, new Authorisation());
         }
         else {
             throw new no.arkivlab.hioa.nikita.webapp.util.exceptions.NikitaException("Internal error. Could not process"
@@ -640,7 +640,7 @@ public class RecordHateoasController extends NoarkController {
 
         Record updatedRecord = recordService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)), record);
         RecordHateoas recordHateoas = new RecordHateoas(updatedRecord);
-        recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
+        recordHateoasHandler.addLinks(recordHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedRecord));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))

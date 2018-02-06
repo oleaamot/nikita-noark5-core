@@ -18,4 +18,6 @@ public interface IHateoasNoarkObject {
     List<Link> getSelfLinks();
 
     boolean isSingleEntity();
+
+    Long getEntityVersion();
 }

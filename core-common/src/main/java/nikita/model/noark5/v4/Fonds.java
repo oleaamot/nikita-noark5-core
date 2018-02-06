@@ -15,17 +15,16 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.FONDS;
 
 @Entity
-@Table(name = "fonds")
-// Enable soft delete of Fonds
-// @SQLDelete(sql="UPDATE fonds SET deleted = true WHERE pk_fonds_id = ? and version = ?")
-// @Where(clause="deleted <> true")
+@Table(name = TABLE_FONDS)
 //@Indexed(index = "fonds")
 @JsonDeserialize(using = FondsDeserializer.class)
-@AttributeOverride(name = "id", column = @Column(name = "pk_fonds_id"))
-public class Fonds extends NoarkGeneralEntity implements IStorageLocation, IDocumentMedium, IFondsCreator {
+@AttributeOverride(name = "id", column = @Column(name = PRIMARY_KEY_FONDS))
+public class Fonds extends NoarkGeneralEntity implements IStorageLocation,
+        IDocumentMedium, IFondsCreator {
 
     private static final long serialVersionUID = 1L;
 
@@ -47,6 +46,7 @@ public class Fonds extends NoarkGeneralEntity implements IStorageLocation, IDocu
     @OneToMany(mappedBy = "referenceFonds")
     @JsonIgnore
     private List<Series> referenceSeries = new ArrayList<>();
+
     // Link to parent Fonds
     @ManyToOne(fetch = FetchType.LAZY)
     private Fonds referenceParentFonds;
@@ -57,18 +57,27 @@ public class Fonds extends NoarkGeneralEntity implements IStorageLocation, IDocu
 
     // Links to StorageLocations
     @ManyToMany (cascade=CascadeType.PERSIST)
-    @JoinTable(name = "fonds_storage_location", joinColumns = @JoinColumn(name = "f_pk_fonds_id",
-            referencedColumnName = "pk_fonds_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
-            referencedColumnName = "pk_storage_location_id"))
+    @JoinTable(name = TABLE_FONDS_STORAGE_LOCATION,
+            joinColumns = @JoinColumn(
+                    name = FOREIGN_KEY_FONDS_PK,
+                    referencedColumnName = PRIMARY_KEY_FONDS),
+            inverseJoinColumns = @JoinColumn(
+                    name = "f_pk_storage_location_id",
+                    referencedColumnName = "pk_storage_location_id")
+    )
     private List<StorageLocation> referenceStorageLocation = new ArrayList<>();
 
     // Links to FondsCreators
     @ManyToMany
-    @JoinTable(name = "fonds_fonds_creator", joinColumns = @JoinColumn(name = "f_pk_fonds_id",
-            referencedColumnName = "pk_fonds_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_fonds_creator_id",
-            referencedColumnName = "pk_fonds_creator_id"))
+    @JoinTable(name = TABLE_FONDS_FONDS_CREATOR,
+            joinColumns = @JoinColumn(
+                    name = FOREIGN_KEY_FONDS_PK,
+                    referencedColumnName = PRIMARY_KEY_FONDS),
+            inverseJoinColumns = @JoinColumn(
+                    name = FOREIGN_KEY_FONDS_CREATOR_PK,
+                    referencedColumnName = PRIMARY_KEY_FONDS_CREATOR)
+    )
     private List<FondsCreator> referenceFondsCreator = new ArrayList<>();
-
 
     public String getFondsStatus() {
         return fondsStatus;

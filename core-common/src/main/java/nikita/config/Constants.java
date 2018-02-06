@@ -390,6 +390,33 @@ public final class Constants {
 
     public static final String REL_ADMIN_ADMINISTRATIVE_UNIT = REL_ADMINISTRATION + NEW_ADMINISTRATIVE_UNIT + SLASH;
 
+
+    // Database Constants
+
+    // Table Constants
+    public static final String TABLE_FONDS = "fonds";
+    public static final String TABLE_FONDS_CREATOR = "fonds_creator";
+    public static final String TABLE_STORAGE_LOCATION = "storage_location";
+
+
+    // Join table names
+    public static final String TABLE_FONDS_FONDS_CREATOR =
+            "fonds_fonds_creator";
+    public static final String TABLE_FONDS_STORAGE_LOCATION =
+            "fonds_storage_location";
+
+    // Column Constants
+    // Foreign key names
+    public static final String FOREIGN_KEY_FONDS_PK = "f_pk_fonds_id";
+    public static final String FOREIGN_KEY_FONDS_CREATOR_PK =
+            "f_pk_fonds_creator_id";
+    public static final String FOREIGN_KEY_STORAGE_LOCATION_PK = "f_pk_fonds_id";
+
+    // Primary key names
+    public static final String PRIMARY_KEY_FONDS = "pk_fonds_id";
+    public static final String PRIMARY_KEY_FONDS_CREATOR =
+            "pk_fonds_creator_id";
+
     private Constants() {
     }
 }

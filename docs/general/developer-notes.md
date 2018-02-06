@@ -1,6 +1,40 @@
 # Nikita developer notes
 
 
+## 2018-02-09
+
+ - Architectural issues
+
+### Architectural issues
+We continued work on[issue](https://github
+.com/HiOA-ABI/nikita-noark5-core/issues/105) and met some design issues. 
+Should HTTPRequest be forward to the Service layer* Ideally it should not, but
+the way we are dealing with Hateaos links (being generated on a per user, 
+per authorities basis) meant that we had to consider it. Previously we were 
+basing the outgoing Hateoas links on the incoming HTTP request. This was to 
+easily migrate nikita to various hosts. As long as you had the correct 
+starting off address, the client could tell you what you should be creating 
+as the address and contextPath. However, you **NEVER TRUST THE CLIENT!**. You
+really don't! We are also using JWT without any connection to the IP address,
+so we were left wondering if there was a possible attack vector here where 
+someone could hijack a token in someway and cause some trouble. Initially I 
+don't think so, but we were left with the thought of why bother opening for a
+potential issue. Just lock the outgoing hateaos link addresses down to what 
+the server wants them to be. 
+
+The downside is that this limits nikita to 1 instance per hostname. Currently
+nikita is behind a virtual hostname in apache along with the actual hostname,
+but outgoing Hateaos links are set to nikita.hioa.no. 
+ 
+So we are making the decision that nikita is limited to 1 instance per 
+hostname so we can move forward with one given architecture. However, it 
+probably is not very difficult to make multiple hostname supported by a single 
+nikita instance. But we are not going to code something, adding complexity, 
+breaking a clear line behind controller and service layer for something that 
+may be required in the future.
+    
+
+
 ## 2018-02-02
 
  - Coverity issues

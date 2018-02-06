@@ -38,7 +38,7 @@ info:
     app.name: OsloMet Noark 5 Core (Demo mode)
     build.version: ${project.version}
 hateoas:
-    publicAddress: http://localhost:8092/noark5v4
+    publicAddress: http://localhost:8092/noark5v4/
 
 jwt:
   header: Authorization
@@ -49,9 +49,12 @@ jwt:
       path: auth
       refresh: refresh
 
+# Application properties
+application:
+  pagination:
+    max-page-size: 10
+
 nikita-noark5-core:
-    pagination:
-      _maxPageSize: 10
     mail:
         from: nikita@example.com
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration

@@ -83,7 +83,7 @@ public class FondsCreatorHateoasController extends NoarkController {
             @RequestBody FondsCreator fondsCreator) throws NikitaException {
         fondsCreatorService.createNewFondsCreator(fondsCreator);
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(fondsCreator);
-        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, fondsCreator));
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -122,7 +122,7 @@ public class FondsCreatorHateoasController extends NoarkController {
             @RequestBody Fonds fonds) throws NikitaException {
         fondsCreatorService.createFondsAssociatedWithFondsCreator(systemID, fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(fonds);
-        fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
+        fondsHateoasHandler.addLinks(fondsHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, fonds));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -155,7 +155,7 @@ public class FondsCreatorHateoasController extends NoarkController {
                     fondsCreatorSystemId);
         }
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(fondsCreator);
-        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(fondsCreator.getVersion().toString())
@@ -185,7 +185,7 @@ public class FondsCreatorHateoasController extends NoarkController {
         FondsCreatorHateoas fondsCreatorHateoas = new
                 FondsCreatorHateoas((List<INikitaEntity>) (List)
                 fondsCreatorService.findFondsCreatorByOwnerPaginated(top, skip));
-        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(fondsCreatorHateoas);
@@ -219,7 +219,7 @@ public class FondsCreatorHateoasController extends NoarkController {
                 fondsCreator);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, createdFonds));
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(createdFonds);
-        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, new Authorisation());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -252,7 +252,7 @@ public class FondsCreatorHateoasController extends NoarkController {
         suggestedFondsCreator.setFondsCreatorName("Eksempel kommune");
         suggestedFondsCreator.setDescription("Eksempel kommune ligger i eksempel fylke nord for nord");
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(suggestedFondsCreator);
-        fondsHateoasHandler.addLinksOnNew(fondsCreatorHateoas, request, new Authorisation());
+        fondsHateoasHandler.addLinksOnNew(fondsCreatorHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(fondsCreatorHateoas);
@@ -282,7 +282,7 @@ public class FondsCreatorHateoasController extends NoarkController {
 /*        List<Fonds> fonds = new List<>();
         fonds.addAll(fondsCreator.getReferenceFonds());
         FondsHateoas fondsHateoas = new FondsHateoas((List<INikitaEntity>) (List)fonds);
-        fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
+        fondsHateoasHandler.addLinks(fondsHateoas, new Authorisation());
   */
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))

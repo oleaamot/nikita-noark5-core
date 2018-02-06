@@ -4,45 +4,45 @@ package no.arkivlab.hioa.nikita.webapp.service.interfaces;
 import nikita.model.noark5.v4.Fonds;
 import nikita.model.noark5.v4.FondsCreator;
 import nikita.model.noark5.v4.Series;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import nikita.model.noark5.v4.hateoas.FondsCreatorHateoas;
+import nikita.model.noark5.v4.hateoas.FondsHateoas;
+import nikita.model.noark5.v4.hateoas.SeriesHateoas;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 public interface IFondsService  {
 
     // -- All CREATE operations
-    Fonds createNewFonds(Fonds fonds);
-    Series createSeriesAssociatedWithFonds(String fondsSystemId, Series series);
-    Fonds createFondsAssociatedWithFonds(String parentFondsSystemId, Fonds childFonds);
+    FondsHateoas createNewFonds(Fonds fonds);
 
-    FondsCreator createFondsCreatorAssociatedWithFonds(String fondsSystemId, FondsCreator fondsCreator);
+    SeriesHateoas createSeriesAssociatedWithFonds(String fondsSystemId, Series
+            series);
+
+    FondsHateoas createFondsAssociatedWithFonds(String parentFondsSystemId,
+                                                Fonds childFonds);
+
+    FondsCreatorHateoas createFondsCreatorAssociatedWithFonds(String fondsSystemId,
+                                                              FondsCreator fondsCreator);
 
     // -- All READ operations
-    List<FondsCreator> findFondsCreatorAssociatedWithFonds(String systemId);
-    List<Fonds> findFondsByOwnerPaginated(Integer top, Integer skip);
+    FondsCreatorHateoas findFondsCreatorAssociatedWithFonds(String systemId);
 
+    // TODO: Finish implementing this. I think StorageLocation is not an own
+    // but rather an embedded object
+    //StorageLocationHateoas findStorageLocationAssociatedWithFonds(String systemId);
+    FondsHateoas findSingleFonds(String fondsSystemId);
 
-    List<Fonds> findAll();
-    List<Fonds> findAll(Sort sort);
-    Page<Fonds> findAll(Pageable pageable);
+    FondsHateoas findFondsByOwnerPaginated(Integer top, Integer skip);
 
-    // id
-    Fonds findById(Long id);
+    SeriesHateoas findSeriesAssociatedWithFonds(String fondsSystemId);
 
-    // systemId
-    Fonds findBySystemId(String systemId);
+    SeriesHateoas generateDefaultSeries(String fondsSystemId);
 
-    // ownedBy
-    List<Fonds> findByOwnedBy(String ownedBy);
-    List<Fonds> findByOwnedBy(String ownedBy, Sort sort);
-    Page<Fonds> findByOwnedBy(String ownedBy, Pageable pageable);
-
+    FondsHateoas generateDefaultFonds(String fondsSystemId);
 
     // All UPDATE operations
-    Fonds handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull Fonds incomingFonds);
+    FondsHateoas handleUpdate(@NotNull String systemId, @NotNull Long version,
+                              @NotNull Fonds incomingFonds);
 
     // All DELETE operations
     void deleteEntity(@NotNull String systemId);

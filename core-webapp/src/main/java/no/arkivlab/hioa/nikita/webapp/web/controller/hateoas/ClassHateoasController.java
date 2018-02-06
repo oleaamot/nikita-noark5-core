@@ -90,7 +90,7 @@ public class ClassHateoasController extends NoarkController {
             @RequestBody Class klass) throws NikitaException {
         Class createdClass = classService.createClassAssociatedWithClass(classSystemId, klass);
         ClassHateoas classHateoas = new ClassHateoas(createdClass);
-        classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
+        classHateoasHandler.addLinks(classHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdClass));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -112,7 +112,7 @@ public class ClassHateoasController extends NoarkController {
             throw new NoarkEntityNotFoundException(classSystemId);
         }
         ClassHateoas classHateoas = new ClassHateoas(klass);
-        classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
+        classHateoasHandler.addLinks(classHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .eTag(klass.getVersion().toString())
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -141,7 +141,7 @@ public class ClassHateoasController extends NoarkController {
         ClassHateoas classHateoas = new
                 ClassHateoas((List<INikitaEntity>) (List)
                 classService.findClassByOwnerPaginated(top, skip));
-        classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
+        classHateoasHandler.addLinks(classHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(classHateoas);
@@ -172,11 +172,11 @@ public class ClassHateoasController extends NoarkController {
         HateoasNoarkObject hateoasNoarkObject;
         if (parentEntity instanceof Class) {
             hateoasNoarkObject = new ClassHateoas(parentEntity);
-            classHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+            classHateoasHandler.addLinks(hateoasNoarkObject, new Authorisation());
         }
         else if (parentEntity instanceof ClassificationSystem) {
             hateoasNoarkObject = new ClassificationSystemHateoas(parentEntity);
-            classificationSystemHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+            classificationSystemHateoasHandler.addLinks(hateoasNoarkObject, new Authorisation());
         }
         else {
             throw new NikitaException("Internal error. Could process" + request.getRequestURI());
@@ -220,7 +220,7 @@ public class ClassHateoasController extends NoarkController {
 
         Class updatedClass = classService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)), klass);
         ClassHateoas classHateoas = new ClassHateoas(updatedClass);
-        classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
+        classHateoasHandler.addLinks(classHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedClass));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))

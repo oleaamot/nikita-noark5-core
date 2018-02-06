@@ -62,7 +62,7 @@ public class SeriesStatusController {
             throws NikitaException {
         seriesStatusService.createNewSeriesStatus(seriesStatus);
         MetadataHateoas metadataHateoas = new MetadataHateoas(seriesStatus);
-        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(seriesStatus.getVersion().toString())
@@ -88,7 +88,7 @@ public class SeriesStatusController {
         /*MetadataHateoas metadataHateoas = new MetadataHateoas(new
                 List<>(seriesStatusService.findAllAsList()),
                 FONDS_STATUS);
-        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -117,7 +117,7 @@ public class SeriesStatusController {
                                                           HttpServletRequest request) {
         SeriesStatus seriesStatus = seriesStatusService.findBySystemId(systemId);
         MetadataHateoas metadataHateoas = new MetadataHateoas(seriesStatus);
-        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(seriesStatus.getVersion().toString())
@@ -168,7 +168,7 @@ public class SeriesStatusController {
             throws NikitaException {
         seriesStatusService.update(seriesStatus);
         MetadataHateoas metadataHateoas = new MetadataHateoas(seriesStatus);
-        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(metadataHateoas);

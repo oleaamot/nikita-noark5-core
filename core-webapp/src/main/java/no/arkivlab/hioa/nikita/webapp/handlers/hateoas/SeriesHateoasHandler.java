@@ -25,10 +25,12 @@ import static nikita.config.N5ResourceMappings.*;
  *
  */
 @Component("seriesHateoasHandler")
-public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateoasHandler {
+public class SeriesHateoasHandler extends HateoasHandler
+        implements ISeriesHateoasHandler {
 
     @Override
-    public void addEntityLinks(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addEntityLinks(INikitaEntity entity,
+                               IHateoasNoarkObject hateoasNoarkObject) {
         addDocumentMedium(entity, hateoasNoarkObject);
         addNewRegistration(entity, hateoasNoarkObject);
         addNewFile(entity, hateoasNoarkObject);
@@ -349,5 +351,4 @@ public class SeriesHateoasHandler extends HateoasHandler implements ISeriesHateo
                 NOARK_FONDS_STRUCTURE_PATH + SLASH + SERIES + SLASH + entity.getSystemId() + SLASH +
                 NEW_STORAGE_LOCATIONS + SLASH, REL_FONDS_STRUCTURE_NEW_STORAGE_LOCATION_LIST, false));
     }
-
 }

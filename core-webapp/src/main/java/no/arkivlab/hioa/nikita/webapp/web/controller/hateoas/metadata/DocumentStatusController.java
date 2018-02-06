@@ -68,7 +68,7 @@ public class DocumentStatusController {
             throws NikitaException {
         documentStatusService.createNewDocumentStatus(documentStatus);
         MetadataHateoas metadataHateoas = new MetadataHateoas(documentStatus);
-        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(documentStatus.getVersion().toString())
@@ -94,7 +94,7 @@ public class DocumentStatusController {
                 (List<INikitaEntity>)
                         (List) documentStatusService.findAll(),
                 DOCUMENT_STATUS);
-        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -126,7 +126,7 @@ public class DocumentStatusController {
                                                           HttpServletRequest request) {
         DocumentStatus documentStatus = documentStatusService.findBySystemId(systemId);
         MetadataHateoas metadataHateoas = new MetadataHateoas(documentStatus);
-        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(documentStatus.getVersion().toString())
@@ -177,7 +177,7 @@ public class DocumentStatusController {
             throws NikitaException {
         documentStatusService.update(documentStatus);
         MetadataHateoas metadataHateoas = new MetadataHateoas(documentStatus);
-        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(metadataHateoas);

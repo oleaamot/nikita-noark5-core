@@ -95,7 +95,7 @@ public class DocumentObjectHateoasController extends NoarkController {
         }
         DocumentObjectHateoas documentObjectHateoas = new
                 DocumentObjectHateoas(createdDocumentObject);
-        documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
+        documentObjectHateoasHandler.addLinks(documentObjectHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdDocumentObject.getVersion().toString())
@@ -145,7 +145,7 @@ public class DocumentObjectHateoasController extends NoarkController {
                     DocumentObjectHateoas((List<INikitaEntity>) (List)
                     documentObjectService.findDocumentObjectByOwnerPaginated(top, skip));
         }
-        documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
+        documentObjectHateoasHandler.addLinks(documentObjectHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(documentObjectHateoas);
@@ -285,7 +285,7 @@ public class DocumentObjectHateoasController extends NoarkController {
             documentObjectService.update(documentObject);
             DocumentObjectHateoas documentObjectHateoas = new
                     DocumentObjectHateoas(documentObject);
-            documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
+            documentObjectHateoasHandler.addLinks(documentObjectHateoas, new Authorisation());
             return new ResponseEntity<>(documentObjectHateoas, HttpStatus.OK);
         } catch (IOException e) {
             throw new StorageException(e.toString());
@@ -317,11 +317,11 @@ public class DocumentObjectHateoasController extends NoarkController {
         HateoasNoarkObject hateoasNoarkObject;
         if (parentEntity instanceof DocumentDescription) {
             hateoasNoarkObject = new DocumentDescriptionHateoas(parentEntity);
-            documentDescriptionHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+            documentDescriptionHateoasHandler.addLinks(hateoasNoarkObject, new Authorisation());
         }
         else if (parentEntity instanceof Record) {
             hateoasNoarkObject = new RecordHateoas(parentEntity);
-            recordHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+            recordHateoasHandler.addLinks(hateoasNoarkObject, new Authorisation());
         }
         else {
             throw new NikitaException("Internal error. Could process" + request.getRequestURI());
@@ -365,7 +365,7 @@ public class DocumentObjectHateoasController extends NoarkController {
 
         DocumentObject updatedDocumentObject = documentObjectService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)), documentObject);
         DocumentObjectHateoas documentObjectHateoas = new DocumentObjectHateoas(updatedDocumentObject);
-        documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
+        documentObjectHateoasHandler.addLinks(documentObjectHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedDocumentObject));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))

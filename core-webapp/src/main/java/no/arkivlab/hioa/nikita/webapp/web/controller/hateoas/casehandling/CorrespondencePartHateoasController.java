@@ -79,7 +79,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
                 (CorrespondencePartPerson) correspondencePartService.findBySystemId(correspondencePartPersonSystemId);
         CorrespondencePartPersonHateoas correspondencePartPersonHateoas =
                 new CorrespondencePartPersonHateoas(correspondencePartPerson);
-        correspondencePartHateoasHandler.addLinks(correspondencePartPersonHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinks(correspondencePartPersonHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(correspondencePartPerson.getVersion().toString())
@@ -110,7 +110,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
                 (CorrespondencePartInternal) correspondencePartService.findBySystemId(correspondencePartInternalSystemId);
         CorrespondencePartInternalHateoas correspondencePartInternalHateoas =
                 new CorrespondencePartInternalHateoas(correspondencePartInternal);
-        correspondencePartHateoasHandler.addLinks(correspondencePartInternalHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinks(correspondencePartInternalHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(correspondencePartInternal.getVersion().toString())
@@ -140,7 +140,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
         CorrespondencePartUnit correspondencePartUnit =
                 (CorrespondencePartUnit) correspondencePartService.findBySystemId(correspondencePartUnitSystemId);
         CorrespondencePartUnitHateoas correspondencePartUnitHateoas = new CorrespondencePartUnitHateoas(correspondencePartUnit);
-        correspondencePartHateoasHandler.addLinks(correspondencePartUnitHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinks(correspondencePartUnitHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(correspondencePartUnit.getVersion().toString())
@@ -183,7 +183,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
                         correspondencePartUnit);
         CorrespondencePartUnitHateoas correspondencePartUnitHateoas = new
                 CorrespondencePartUnitHateoas(updatedCorrespondencePartUnit);
-        correspondencePartHateoasHandler.addLinks(correspondencePartUnitHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinks(correspondencePartUnitHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedCorrespondencePartUnit));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -227,7 +227,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
                         parseETAG(request.getHeader(ETAG)), correspondencePartPerson);
         CorrespondencePartPersonHateoas correspondencePartPersonHateoas =
                 new CorrespondencePartPersonHateoas(updatedCorrespondencePartPerson);
-        correspondencePartHateoasHandler.addLinks(correspondencePartPersonHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinks(correspondencePartPersonHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedCorrespondencePartPerson));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -271,7 +271,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
                         parseETAG(request.getHeader(ETAG)), correspondencePartInternal);
         CorrespondencePartInternalHateoas correspondencePartInternalHateoas =
                 new CorrespondencePartInternalHateoas(updatedCorrespondencePartInternal);
-        correspondencePartHateoasHandler.addLinks(correspondencePartInternalHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinks(correspondencePartInternalHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedCorrespondencePartInternal));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))

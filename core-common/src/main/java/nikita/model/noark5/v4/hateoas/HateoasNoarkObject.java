@@ -105,4 +105,12 @@ public class HateoasNoarkObject implements IHateoasNoarkObject {
     public String getEntityType() {
         return entityType;
     }
+
+    @Override
+    public Long getEntityVersion() {
+        if (isSingleEntity() && entityList.get(0) != null)
+            return entityList.get(0).getVersion();
+        else
+            return new Long(-1);
+    }
 }
