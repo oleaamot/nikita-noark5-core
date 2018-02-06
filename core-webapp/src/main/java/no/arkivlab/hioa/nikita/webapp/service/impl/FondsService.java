@@ -526,7 +526,7 @@ public class FondsService implements IFondsService {
      */
     private void checkFondsNotClosed(@NotNull Fonds fonds) {
         if (fonds.getFondsStatus() != null &&
-                !fonds.getFondsStatus().equals(STATUS_CLOSED)) {
+                fonds.getFondsStatus().equals(STATUS_CLOSED)) {
             String info = INFO_CANNOT_ASSOCIATE_WITH_CLOSED_OBJECT +
                     ". Fonds with fondsSystemId " + fonds.getSystemId() +
                     " has status " + STATUS_CLOSED;
