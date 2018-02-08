@@ -21,6 +21,7 @@ import nikita.model.noark5.v4.interfaces.entities.casehandling.*;
 import nikita.model.noark5.v4.metadata.CorrespondencePartType;
 import nikita.model.noark5.v4.secondary.*;
 import nikita.util.exceptions.NikitaException;
+import nikita.util.exceptions.NikitaMalformedHeaderException;
 import org.springframework.http.HttpMethod;
 
 import javax.validation.constraints.NotNull;
@@ -80,6 +81,22 @@ public final class CommonUtils {
             return true;
         }
 
+        public static Long parseETAG(String quotedETAG) {
+            Long etagVal = new Long(-1L);
+            if (quotedETAG != null) {
+                try {
+                    etagVal = Long.parseLong(quotedETAG.replaceAll("^\"|\"$", ""));
+                } catch (NumberFormatException nfe) {
+                    throw new NikitaMalformedHeaderException("eTag value is not numeric. Nikita  uses numeric ETAG " +
+                            "values >= 0.");
+                }
+            }
+            if (etagVal < 0) {
+                throw new NikitaMalformedHeaderException("eTag value is less than 0. This is illegal" +
+                        "as ETAG values show version of an entity in the database and start at 0");
+            }
+            return etagVal;
+        }
     }
 
     public static final class WebUtils {

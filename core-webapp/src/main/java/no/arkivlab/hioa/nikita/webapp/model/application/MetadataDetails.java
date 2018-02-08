@@ -47,6 +47,14 @@ public class MetadataDetails extends APIDetails {
                 true
         ));
 
+        // Add support for DocumentType
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + DOCUMENT_TYPE,
+                REL_METADATA_DOCUMENT_TYPE,
+                true
+        ));
+
         // Add support for new DocumentStatus
         aPIDetails.add(new APIDetail(
                 publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH + NEW_DOCUMENT_STATUS,

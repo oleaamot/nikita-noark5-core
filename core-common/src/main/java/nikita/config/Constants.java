@@ -113,6 +113,10 @@ public final class Constants {
     public static final String NEW_FONDS_STATUS = NEW + DASH + FONDS_STATUS;
     public static final String NEW_DOCUMENT_STATUS = NEW + DASH +
             DOCUMENT_STATUS;
+
+    public static final String NEW_DOCUMENT_TYPE = NEW + DASH +
+            DOCUMENT_TYPE;
+
     public static final String NEW_CORRESPONDENCE_PART_TYPE = NEW + DASH +
             CORRESPONDENCE_PART_TYPE;
 
@@ -181,6 +185,9 @@ public final class Constants {
     public static final String TEMPLATE_DOCUMENT_STATUS_CODE = "B";
     public static final String TEMPLATE_DOCUMENT_STATUS_DESCRIPTION =
             "Dokumentet er under redigering";
+    public static final String TEMPLATE_DOCUMENT_TYPE_CODE = "B";
+    public static final String TEMPLATE_DOCUMENT_TYPE_DESCRIPTION =
+            "Brev";
 
     public static final String TEMPLATE_REGISTRY_ENTRY_STATUS = "Journalført";
     public static final String TEMPLATE_REGISTRY_ENTRY_TYPE = "Journalført";

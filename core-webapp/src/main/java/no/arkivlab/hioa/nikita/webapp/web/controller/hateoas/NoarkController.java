@@ -4,15 +4,14 @@ package no.arkivlab.hioa.nikita.webapp.web.controller.hateoas;
 import nikita.model.noark5.v4.FondsCreator;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.model.noark5.v4.interfaces.entities.INoarkGeneralEntity;
+import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
-import nikita.util.exceptions.NikitaMalformedHeaderException;
 import nikita.util.exceptions.NikitaMalformedInputDataException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URL;
 import java.util.List;
 
-import static nikita.config.Constants.ONLY_WHITESPACE;
 import static nikita.config.Constants.SLASH;
 
 /**
@@ -117,21 +116,7 @@ public class NoarkController {
     }
 
     public Long parseETAG(String quotedETAG) {
-        Long etagVal = new Long(-1L);
-        if (quotedETAG != null) {
-            try {
-                etagVal = Long.parseLong(quotedETAG.replaceAll("^\"|\"$", ""));
-            }
-            catch (NumberFormatException nfe) {
-                throw new NikitaMalformedHeaderException("eTag value is not numeric. Nikita  uses numeric ETAG " +
-                        "values >= 0.");
-            }
-        }
-        if (etagVal < 0) {
-            throw new NikitaMalformedHeaderException("eTag value is less than 0. This is illegal" +
-                    "as ETAG values show version of an entity in the database and start at 0");
-        }
-        return etagVal;
+        return CommonUtils.Validation.parseETAG(quotedETAG);
     }
 
 }
