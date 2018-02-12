@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static nikita.config.Constants.*;
-import static nikita.config.N5ResourceMappings.DOCUMENT_TYPE;
+import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY_STATUS;
 
 /**
  * Created by tsodring on 12/02/18.
@@ -82,7 +82,7 @@ public class RegistryEntryStatusService
     public MetadataHateoas findAll() {
         MetadataHateoas metadataHateoas = new MetadataHateoas(
                 (List<INikitaEntity>) (List)
-                        RegistryEntryStatusRepository.findAll(), DOCUMENT_TYPE);
+                        RegistryEntryStatusRepository.findAll(), REGISTRY_ENTRY_STATUS);
         metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return metadataHateoas;
     }
@@ -118,7 +118,7 @@ public class RegistryEntryStatusService
         MetadataHateoas metadataHateoas = new MetadataHateoas(
                 (List<INikitaEntity>) (List)
                         RegistryEntryStatusRepository.findByDescription(description),
-                DOCUMENT_TYPE);
+                REGISTRY_ENTRY_STATUS);
         metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return metadataHateoas;
     }
@@ -137,7 +137,7 @@ public class RegistryEntryStatusService
         MetadataHateoas metadataHateoas = new MetadataHateoas(
                 (List<INikitaEntity>) (List)
                         RegistryEntryStatusRepository.findByCode(code),
-                DOCUMENT_TYPE);
+                REGISTRY_ENTRY_STATUS);
         metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return metadataHateoas;
     }
@@ -151,8 +151,8 @@ public class RegistryEntryStatusService
     public RegistryEntryStatus generateDefaultRegistryEntryStatus() {
 
         RegistryEntryStatus RegistryEntryStatus = new RegistryEntryStatus();
-        RegistryEntryStatus.setCode(TEMPLATE_DOCUMENT_TYPE_CODE);
-        RegistryEntryStatus.setDescription(TEMPLATE_DOCUMENT_TYPE_DESCRIPTION);
+        RegistryEntryStatus.setCode(TEMPLATE_REGISTRY_ENTRY_STATUS_CODE);
+        RegistryEntryStatus.setDescription(TEMPLATE_REGISTRY_ENTRY_STATUS_DESCRIPTION);
 
         return RegistryEntryStatus;
     }
