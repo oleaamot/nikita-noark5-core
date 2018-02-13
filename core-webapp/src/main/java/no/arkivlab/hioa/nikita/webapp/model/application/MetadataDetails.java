@@ -105,5 +105,22 @@ public class MetadataDetails extends APIDetails {
                         NEW_CORRESPONDENCE_PART_TYPE + SLASH,
                 true
         ));
+
+        // Add support for SignOffMethod
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + SIGN_OFF_METHOD,
+                REL_METADATA_SIGN_OFF_METHOD,
+                true
+        ));
+
+        // Add support for new SignOffMethod
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + NEW_SIGN_OFF_METHOD,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH +
+                        NEW_SIGN_OFF_METHOD + SLASH,
+                true
+        ));
     }
 }

@@ -116,6 +116,10 @@ public final class Constants {
 
     public static final String NEW_REGISTRY_ENTRY_STATUS = NEW + DASH +
             REGISTRY_ENTRY_STATUS;
+
+    public static final String NEW_SIGN_OFF_METHOD = NEW + DASH +
+            SIGN_OFF_METHOD;
+
     public static final String NEW_DOCUMENT_TYPE = NEW + DASH +
             DOCUMENT_TYPE;
 
@@ -194,6 +198,10 @@ public final class Constants {
     public static final String TEMPLATE_REGISTRY_ENTRY_STATUS_CODE = "I";
     public static final String TEMPLATE_REGISTRY_ENTRY_STATUS_DESCRIPTION =
             "Inngående dokument";
+
+    public static final String TEMPLATE_SIGN_OFF_METHOD_CODE = "BE";
+    public static final String TEMPLATE_SIGN_OFF_METHOD_DESCRIPTION =
+            "Besvart med e-post";
 
 
     public static final String TEMPLATE_REGISTRY_ENTRY_STATUS = "Journalført";
@@ -390,17 +398,33 @@ public final class Constants {
     public static final String REL_FONDS_STRUCTURE_NEW_SECONDARY_CLASSIFICATION = NIKITA_CONFORMANCE_REL + NEW_SECONDARY_CLASSIFICATION + SLASH;
 
     // Metadata RELS
-    public static final String REL_METADATA_DOCUMENT_MEDIUM = REL_METADATA + DOCUMENT_MEDIUM + SLASH;
-    public static final String REL_METADATA_CORRESPONDENCE_PART = REL_METADATA + CORRESPONDENCE_PART + SLASH;
-    public static final String REL_METADATA_CORRESPONDENCE_PART_TYPE = REL_METADATA + CORRESPONDENCE_PART_TYPE + SLASH;
+    public static final String REL_METADATA_DOCUMENT_MEDIUM =
+            REL_METADATA + DOCUMENT_MEDIUM + SLASH;
 
-    public static final String REL_METADATA_VARIANT_FORMAT = REL_METADATA + VARIANT_FORMAT + SLASH;
-    public static final String REL_METADATA_FORMAT = REL_METADATA + FORMAT + SLASH;
-    public static final String REL_METADATA_DOCUMENT_STATUS = REL_METADATA + DOCUMENT_STATUS + SLASH;
+    public static final String REL_METADATA_CORRESPONDENCE_PART =
+            REL_METADATA + CORRESPONDENCE_PART + SLASH;
+
+    public static final String REL_METADATA_CORRESPONDENCE_PART_TYPE =
+            REL_METADATA + CORRESPONDENCE_PART_TYPE + SLASH;
+
+    public static final String REL_METADATA_VARIANT_FORMAT = REL_METADATA +
+            VARIANT_FORMAT + SLASH;
+
+    public static final String REL_METADATA_FORMAT = REL_METADATA + FORMAT +
+            SLASH;
+
+    public static final String REL_METADATA_DOCUMENT_STATUS = REL_METADATA +
+            DOCUMENT_STATUS + SLASH;
+
     public static final String REL_METADATA_DOCUMENT_TYPE = REL_METADATA +
             DOCUMENT_TYPE + SLASH;
+
+    public static final String REL_METADATA_SIGN_OFF_METHOD = REL_METADATA +
+            SIGN_OFF_METHOD + SLASH;
+
     public static final String REL_METADATA_REGISTRY_ENTRY_STATUS =
             REL_METADATA + REGISTRY_ENTRY_STATUS + SLASH;
+
     // M086 dokumenttype
     public static final String REL_METADATA_CLASSIFICATION_SYSTEM_TYPE = REL_METADATA + CLASSIFICATION_SYSTEM_TYPE + SLASH;
     //public static final String REL_METADATA_CLASSIFICATION_SYSTEM_TYPE = REL_METADATA + CLASSIFICATION_SYSTEM + SLASH;
