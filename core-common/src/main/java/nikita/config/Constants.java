@@ -120,6 +120,10 @@ public final class Constants {
     public static final String NEW_SIGN_OFF_METHOD = NEW + DASH +
             SIGN_OFF_METHOD;
 
+    public static final String NEW_ELECTRONIC_SIGNATURE_SECURITY_LEVEL = NEW +
+            DASH + ELECTRONIC_SIGNATURE_SECURITY_LEVEL;
+
+
     public static final String NEW_DOCUMENT_TYPE = NEW + DASH +
             DOCUMENT_TYPE;
 
@@ -202,6 +206,12 @@ public final class Constants {
     public static final String TEMPLATE_SIGN_OFF_METHOD_CODE = "BE";
     public static final String TEMPLATE_SIGN_OFF_METHOD_DESCRIPTION =
             "Besvart med e-post";
+
+    public static final String
+            TEMPLATE_ELECTRONIC_SIGNATURE_SECURITY_LEVEL_CODE = "SK";
+    public static final String
+            TEMPLATE_ELECTRONIC_SIGNATURE_SECURITY_LEVEL_DESCRIPTION =
+            "Symmetrisk kryptert";
 
 
     public static final String TEMPLATE_REGISTRY_ENTRY_STATUS = "Journalført";
@@ -421,6 +431,9 @@ public final class Constants {
 
     public static final String REL_METADATA_SIGN_OFF_METHOD = REL_METADATA +
             SIGN_OFF_METHOD + SLASH;
+
+    public static final String REL_METADATA_ELECTRONIC_SIGNATURE_SECURITY_LEVEL
+            = REL_METADATA + ELECTRONIC_SIGNATURE_SECURITY_LEVEL + SLASH;
 
     public static final String REL_METADATA_REGISTRY_ENTRY_STATUS =
             REL_METADATA + REGISTRY_ENTRY_STATUS + SLASH;

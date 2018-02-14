@@ -122,5 +122,25 @@ public class MetadataDetails extends APIDetails {
                         NEW_SIGN_OFF_METHOD + SLASH,
                 true
         ));
+
+        // Add support for ElectronicSignatureSecurityLevel
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH +
+                        ELECTRONIC_SIGNATURE_SECURITY_LEVEL,
+                REL_METADATA_ELECTRONIC_SIGNATURE_SECURITY_LEVEL,
+                true
+        ));
+
+        // Add support for new ElectronicSignatureSecurityLevel
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH +
+                        NEW_ELECTRONIC_SIGNATURE_SECURITY_LEVEL,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH +
+                        NEW_ELECTRONIC_SIGNATURE_SECURITY_LEVEL + SLASH,
+                true
+        ));
+
     }
 }
