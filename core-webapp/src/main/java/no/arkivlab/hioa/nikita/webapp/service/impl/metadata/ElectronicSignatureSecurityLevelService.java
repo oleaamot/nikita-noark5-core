@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static nikita.config.Constants.*;
-import static nikita.config.N5ResourceMappings.SIGN_OFF_METHOD;
+import static nikita.config.N5ResourceMappings.ELECTRONIC_SIGNATURE_SECURITY_LEVEL;
 
 /**
  * Created by tsodring on 13/02/18.
@@ -92,7 +92,7 @@ public class ElectronicSignatureSecurityLevelService
         MetadataHateoas metadataHateoas = new MetadataHateoas(
                 (List<INikitaEntity>) (List)
                         electronicSignatureSecurityLevelRepository.findAll()
-                , SIGN_OFF_METHOD);
+                , ELECTRONIC_SIGNATURE_SECURITY_LEVEL);
         metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return metadataHateoas;
     }
@@ -135,7 +135,7 @@ public class ElectronicSignatureSecurityLevelService
                 (List<INikitaEntity>) (List)
                         electronicSignatureSecurityLevelRepository
                                 .findByDescription(description),
-                SIGN_OFF_METHOD);
+                ELECTRONIC_SIGNATURE_SECURITY_LEVEL);
         metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return metadataHateoas;
     }
@@ -155,7 +155,7 @@ public class ElectronicSignatureSecurityLevelService
                 (List<INikitaEntity>) (List)
                         electronicSignatureSecurityLevelRepository.findByCode
                                 (code),
-                SIGN_OFF_METHOD);
+                ELECTRONIC_SIGNATURE_SECURITY_LEVEL);
         metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return metadataHateoas;
     }
