@@ -142,5 +142,22 @@ public class MetadataDetails extends APIDetails {
                 true
         ));
 
+        // Add support for Format
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + FORMAT,
+                REL_METADATA_FORMAT,
+                true
+        ));
+
+        // Add support for new Format
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + NEW_FORMAT,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH +
+                        NEW_FORMAT + SLASH,
+                true
+        ));
+
     }
 }

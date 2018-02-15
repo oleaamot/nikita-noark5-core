@@ -123,6 +123,8 @@ public final class Constants {
     public static final String NEW_ELECTRONIC_SIGNATURE_SECURITY_LEVEL = NEW +
             DASH + ELECTRONIC_SIGNATURE_SECURITY_LEVEL;
 
+    public static final String NEW_FORMAT = NEW + DASH + FORMAT;
+
 
     public static final String NEW_DOCUMENT_TYPE = NEW + DASH +
             DOCUMENT_TYPE;
@@ -212,6 +214,10 @@ public final class Constants {
     public static final String
             TEMPLATE_ELECTRONIC_SIGNATURE_SECURITY_LEVEL_DESCRIPTION =
             "Symmetrisk kryptert";
+
+    public static final String TEMPLATE_FORMAT_CODE = "RA-PDF";
+    public static final String TEMPLATE_FORMAT_DESCRIPTION = "PDF/A - ISO " +
+            "19005-1:2005";
 
 
     public static final String TEMPLATE_REGISTRY_ENTRY_STATUS = "Journalført";
