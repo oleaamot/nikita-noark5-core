@@ -58,23 +58,23 @@ public class ElectronicSignatureSecurityLevelService
     /**
      * Persists a new ElectronicSignatureSecurityLevel object to the database.
      *
-     * @param ElectronicSignatureSecurityLevel ElectronicSignatureSecurityLevel
+     * @param electronicSignatureSecurityLevel ElectronicSignatureSecurityLevel
      *                                         object with values set
      * @return the newly persisted ElectronicSignatureSecurityLevel object
      * wrapped as a MetadataHateoas object
      */
     @Override
     public MetadataHateoas createNewElectronicSignatureSecurityLevel(
-            ElectronicSignatureSecurityLevel ElectronicSignatureSecurityLevel) {
+            ElectronicSignatureSecurityLevel electronicSignatureSecurityLevel) {
 
-        ElectronicSignatureSecurityLevel.setDeleted(false);
-        ElectronicSignatureSecurityLevel.setOwnedBy(
+        electronicSignatureSecurityLevel.setDeleted(false);
+        electronicSignatureSecurityLevel.setOwnedBy(
                 SecurityContextHolder.getContext().
                         getAuthentication().getName());
 
         MetadataHateoas metadataHateoas = new MetadataHateoas(
                 electronicSignatureSecurityLevelRepository.save
-                        (ElectronicSignatureSecurityLevel));
+                        (electronicSignatureSecurityLevel));
         metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return metadataHateoas;
     }
