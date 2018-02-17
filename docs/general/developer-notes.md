@@ -1,5 +1,39 @@
 # Nikita developer notes
 
+## 2018-02-16
+
+ - OData support
+ - Minor additions
+ 
+### OData support
+We finally started looking at OData and it might not be as bad as initially 
+feared.  I've been playing with antlr4 trying to figure it out, watched some 
+tutorials, downloaded resources etc. I managed to get a parser that can 
+handle some of the OData syntax working.
+
+Surprisingly I [found](https://tools.oasis-open.org/version-control/browse/wsvn/odata/trunk/spec/grammar/ANTLR/ODataParser.g4)  
+an antlr4 (.g4) file hosted by OASIS that can't be parsed by antlr. Apparently
+this file has some problems and I believe a SO flow post said it likely had 
+automatically been translated from another format.  It's worrying if an 
+organisation like oasis open publishes incorrect standards. Unfortunately I 
+do not have time to follow up on this issue.
+
+So that parser hasn't been introduced to the code base yet. I need to see how
+I dig into the event based listener and start to do some work on translating
+the OData syntax to HQL/SQL. I think it might be a good idea to convert to HQL
+as hibernate has support for elastic search and then we could hopefully also 
+use elastic search without too many coding additions.
+
+If we do manage to get a decent OData2SQL/HQL/Elastic Search notation, we 
+should consider releasing it as an own library. I am seeing some people asking
+for this on SO so it's obvious I am not alone in looking for this 
+functionality. 
+ 
+### Minor additions
+To keep the commit rate up, that we constantly are developing even in slow 
+weeks, I've added a few metadata entities. There are about 40 metadata 
+entities that need to be introduced and it's very much a boring boiler plate 
+job.  
 
 ## 2018-02-09
 
@@ -32,8 +66,6 @@ probably is not very difficult to make multiple hostname supported by a single
 nikita instance. But we are not going to code something, adding complexity, 
 breaking a clear line behind controller and service layer for something that 
 may be required in the future.
-    
-
 
 ## 2018-02-02
 
