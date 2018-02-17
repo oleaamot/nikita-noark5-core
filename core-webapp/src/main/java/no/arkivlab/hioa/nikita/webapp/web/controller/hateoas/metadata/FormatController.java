@@ -83,8 +83,7 @@ public class FormatController {
     @Timed
     @RequestMapping(
             method = RequestMethod.POST,
-            value = FORMAT + SLASH +
-                    NEW_FORMAT
+            value = FORMAT + SLASH + NEW_FORMAT
     )
     public ResponseEntity<MetadataHateoas>
     createFormat(
