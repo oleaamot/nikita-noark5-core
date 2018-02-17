@@ -159,5 +159,21 @@ public class MetadataDetails extends APIDetails {
                 true
         ));
 
+        // Add support for FlowStatus
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + FLOW_STATUS,
+                REL_METADATA_FLOW_STATUS,
+                true
+        ));
+
+        // Add support for new FlowStatus
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + NEW_FLOW_STATUS,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH +
+                        NEW_FLOW_STATUS + SLASH,
+                true
+        ));
     }
 }

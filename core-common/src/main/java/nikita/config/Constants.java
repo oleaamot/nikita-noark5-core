@@ -125,6 +125,7 @@ public final class Constants {
 
     public static final String NEW_FORMAT = NEW + DASH + FORMAT;
 
+    public static final String NEW_FLOW_STATUS = NEW + DASH + FLOW_STATUS;
 
     public static final String NEW_DOCUMENT_TYPE = NEW + DASH +
             DOCUMENT_TYPE;
@@ -219,6 +220,8 @@ public final class Constants {
     public static final String TEMPLATE_FORMAT_DESCRIPTION = "PDF/A - ISO " +
             "19005-1:2005";
 
+    public static final String TEMPLATE_FLOW_STATUS_CODE = "G";
+    public static final String TEMPLATE_FLOW_STATUS_DESCRIPTION = "Godkjent";
 
     public static final String TEMPLATE_REGISTRY_ENTRY_STATUS = "Journalført";
     public static final String TEMPLATE_REGISTRY_ENTRY_TYPE = "Journalført";
@@ -428,6 +431,9 @@ public final class Constants {
 
     public static final String REL_METADATA_FORMAT = REL_METADATA + FORMAT +
             SLASH;
+
+    public static final String REL_METADATA_FLOW_STATUS = REL_METADATA +
+            FLOW_STATUS + SLASH;
 
     public static final String REL_METADATA_DOCUMENT_STATUS = REL_METADATA +
             DOCUMENT_STATUS + SLASH;
