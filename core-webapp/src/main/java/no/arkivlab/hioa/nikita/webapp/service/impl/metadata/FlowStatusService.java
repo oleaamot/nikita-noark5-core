@@ -56,7 +56,7 @@ public class FlowStatusService
     /**
      * Persists a new FlowStatus object to the database.
      *
-     * @param format FlowStatus object with values set
+     * @param flowStatus FlowStatus object with values set
      * @return the newly persisted FlowStatus object wrapped as a MetadataHateoas
      * object
      */
