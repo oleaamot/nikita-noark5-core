@@ -127,6 +127,9 @@ public final class Constants {
 
     public static final String NEW_FLOW_STATUS = NEW + DASH + FLOW_STATUS;
 
+    public static final String NEW_REGISTRY_ENTRY_TYPE = NEW + DASH +
+            REGISTRY_ENTRY_TYPE;
+
     public static final String NEW_DOCUMENT_TYPE = NEW + DASH +
             DOCUMENT_TYPE;
 
@@ -202,9 +205,9 @@ public final class Constants {
     public static final String TEMPLATE_DOCUMENT_TYPE_DESCRIPTION =
             "Brev";
 
-    public static final String TEMPLATE_REGISTRY_ENTRY_STATUS_CODE = "I";
+    public static final String TEMPLATE_REGISTRY_ENTRY_STATUS_CODE = "J";
     public static final String TEMPLATE_REGISTRY_ENTRY_STATUS_DESCRIPTION =
-            "Inngående dokument";
+            "Journalført";
 
     public static final String TEMPLATE_SIGN_OFF_METHOD_CODE = "BE";
     public static final String TEMPLATE_SIGN_OFF_METHOD_DESCRIPTION =
@@ -222,6 +225,10 @@ public final class Constants {
 
     public static final String TEMPLATE_FLOW_STATUS_CODE = "G";
     public static final String TEMPLATE_FLOW_STATUS_DESCRIPTION = "Godkjent";
+
+    public static final String TEMPLATE_REGISTRY_ENTRY_TYPE_CODE = "I";
+    public static final String TEMPLATE_REGISTRY_ENTRY_TYPE_DESCRIPTION =
+            "Inngående dokument";
 
     public static final String TEMPLATE_REGISTRY_ENTRY_STATUS = "Journalført";
     public static final String TEMPLATE_REGISTRY_ENTRY_TYPE = "Journalført";
@@ -434,6 +441,9 @@ public final class Constants {
 
     public static final String REL_METADATA_FLOW_STATUS = REL_METADATA +
             FLOW_STATUS + SLASH;
+
+    public static final String REL_METADATA_REGISTRY_ENTRY_TYPE = REL_METADATA +
+            REGISTRY_ENTRY_TYPE + SLASH;
 
     public static final String REL_METADATA_DOCUMENT_STATUS = REL_METADATA +
             DOCUMENT_STATUS + SLASH;

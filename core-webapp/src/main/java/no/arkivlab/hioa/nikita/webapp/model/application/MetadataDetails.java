@@ -175,5 +175,22 @@ public class MetadataDetails extends APIDetails {
                         NEW_FLOW_STATUS + SLASH,
                 true
         ));
+
+        // Add support for RegistryEntryType
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + REGISTRY_ENTRY_TYPE,
+                REL_METADATA_REGISTRY_ENTRY_TYPE,
+                true
+        ));
+
+        // Add support for new RegistryEntryType
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + NEW_REGISTRY_ENTRY_TYPE,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH +
+                        NEW_REGISTRY_ENTRY_TYPE + SLASH,
+                true
+        ));
     }
 }
