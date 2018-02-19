@@ -123,6 +123,9 @@ public final class Constants {
     public static final String NEW_ELECTRONIC_SIGNATURE_SECURITY_LEVEL = NEW +
             DASH + ELECTRONIC_SIGNATURE_SECURITY_LEVEL;
 
+    public static final String NEW_ELECTRONIC_SIGNATURE_VERIFIED = NEW +
+            DASH + ELECTRONIC_SIGNATURE_VERIFIED;
+
     public static final String NEW_FORMAT = NEW + DASH + FORMAT;
 
     public static final String NEW_FLOW_STATUS = NEW + DASH + FLOW_STATUS;
@@ -218,6 +221,12 @@ public final class Constants {
     public static final String
             TEMPLATE_ELECTRONIC_SIGNATURE_SECURITY_LEVEL_DESCRIPTION =
             "Symmetrisk kryptert";
+
+    public static final String
+            TEMPLATE_ELECTRONIC_SIGNATURE_VERIFIED_CODE = "I";
+    public static final String
+            TEMPLATE_ELECTRONIC_SIGNATURE_VERIFIED_DESCRIPTION =
+            "Signatur påført, ikke verifisert";
 
     public static final String TEMPLATE_FORMAT_CODE = "RA-PDF";
     public static final String TEMPLATE_FORMAT_DESCRIPTION = "PDF/A - ISO " +
@@ -456,6 +465,9 @@ public final class Constants {
 
     public static final String REL_METADATA_ELECTRONIC_SIGNATURE_SECURITY_LEVEL
             = REL_METADATA + ELECTRONIC_SIGNATURE_SECURITY_LEVEL + SLASH;
+
+    public static final String REL_METADATA_ELECTRONIC_SIGNATURE_VERIFIED
+            = REL_METADATA + ELECTRONIC_SIGNATURE_VERIFIED + SLASH;
 
     public static final String REL_METADATA_REGISTRY_ENTRY_STATUS =
             REL_METADATA + REGISTRY_ENTRY_STATUS + SLASH;

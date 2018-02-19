@@ -142,6 +142,25 @@ public class MetadataDetails extends APIDetails {
                 true
         ));
 
+        // Add support for ElectronicSignatureVerified
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH +
+                        ELECTRONIC_SIGNATURE_VERIFIED,
+                REL_METADATA_ELECTRONIC_SIGNATURE_VERIFIED,
+                true
+        ));
+
+        // Add support for new ElectronicSignatureVerified
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH +
+                        NEW_ELECTRONIC_SIGNATURE_VERIFIED,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH +
+                        NEW_ELECTRONIC_SIGNATURE_VERIFIED + SLASH,
+                true
+        ));
+
         // Add support for Format
         aPIDetails.add(new APIDetail(
                 publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
