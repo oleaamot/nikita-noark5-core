@@ -185,7 +185,7 @@ public final class N5ResourceMappings {
     public static final String PRECEDENCE_SOURCE_OF_LAW = "rettskildefaktor";
     public static final String PRECEDENCE_APPROVED_DATE = "presedensGodkjentDato";
     public static final String PRECEDENCE_APPROVED_BY = "presedensGodkjentAv";
-    public static final String PRECEDENCE_STATUS = "presedensStatus";
+    public static final String PRECEDENCE_STATUS = "presedensstatus";
 
     // Disposal
     public static final String DISPOSAL = "kassasjon";

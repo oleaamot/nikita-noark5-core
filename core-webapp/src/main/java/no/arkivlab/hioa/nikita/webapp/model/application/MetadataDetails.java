@@ -72,7 +72,7 @@ public class MetadataDetails extends APIDetails {
                 true
         ));
 
-        // Add support for DocumentType
+        // Add support for RegistryEntryStatus
         aPIDetails.add(new APIDetail(
                 publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
                         NOARK_METADATA_PATH + SLASH + REGISTRY_ENTRY_STATUS,
@@ -86,6 +86,23 @@ public class MetadataDetails extends APIDetails {
                         NOARK_METADATA_PATH + SLASH + NEW_REGISTRY_ENTRY_STATUS,
                 NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH +
                         NEW_REGISTRY_ENTRY_STATUS + SLASH,
+                true
+        ));
+
+        // Add support for precedenceStatus
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + PRECEDENCE_STATUS,
+                REL_METADATA_PRECEDENCE_STATUS,
+                true
+        ));
+
+        // Add support for new precedenceStatus
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + NEW_PRECEDENCE_STATUS,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH +
+                        NEW_PRECEDENCE_STATUS + SLASH,
                 true
         ));
 

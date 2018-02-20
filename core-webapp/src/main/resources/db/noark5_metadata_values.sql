@@ -1,3 +1,4 @@
+/* document_medium / dokumentmedium  */
 INSERT INTO document_medium (pk_document_medium_id, system_id, code,
                              description, deleted, version)
 VALUES (1, '48e067ae-d794-4216-8a9d-7cb0ef03472c', 'Fysisk medium',
@@ -12,6 +13,7 @@ VALUES (3, '00d21eea-c231-4542-8e3a-964f441fbbd3',
         'Blandet fysisk og elektronisk arkiv',
         'Blanding av fysiske og elektroniske dokumenter ', FALSE, 0);
 
+/* fonds_status / arkivstatus */
 INSERT INTO fonds_status (pk_fonds_status_id, system_id, code,
                           description, deleted, version)
 VALUES (1, '9ed3f5d3-9934-446d-85b8-b2ada9498aa7', 'Opprettet',
@@ -21,7 +23,7 @@ INSERT INTO fonds_status (pk_fonds_status_id, system_id, code,
 VALUES (2, 'b94eb9cf-e71f-4d68-964b-b68c7f9962b6', 'Avsluttet',
         NULL, FALSE, 0);
 
-
+/* series_status / arkivdelstatus*/
 INSERT INTO series_status (pk_series_status_id, system_id, code,
                            description, deleted, version)
 VALUES (1, '21dca458-5715-455b-baef-6c81c6e1e73a', 'A',
@@ -39,6 +41,7 @@ INSERT INTO series_status (pk_series_status_id, system_id, code,
 VALUES (4, '30bec9da-7299-4f50-9233-8a556cc5708c', 'U',
         'Uaktuelle mapper', FALSE, 0);
 
+/* sign_off_method / avskrivningsmaate */
 INSERT INTO sign_off_method (pk_sign_off_method_id, system_id, code,
                              description, deleted, version)
 VALUES (1, '5ccea231-c2cc-4507-8a72-709c9c54bcd5', 'BU',
@@ -60,6 +63,7 @@ INSERT INTO sign_off_method (pk_sign_off_method_id, system_id, code,
 VALUES (5, 'c62c80d9-7700-4243-b2e1-fd14af9a9559', 'TO',
         'Tatt til orientering', FALSE, 0);
 
+/* document_status / dokumentstatus */
 INSERT INTO document_status (pk_document_status_id, system_id, code,
                              description, deleted, version)
 VALUES (1, '553287bc-4592-4107-8567-0402458fdc4e', 'B',
@@ -86,6 +90,7 @@ INSERT INTO document_type (pk_document_type_id, system_id, code,
 VALUES (3, '99281649-0d0c-402f-9494-7df99b7d73f1', 'O',
         'Ordrebekreftelse', FALSE, 0);
 
+/* electronic_signature_security_level / elektronsiksignatursikkerhetsnivaa */
 INSERT INTO electronic_signature_security_level (
   pk_electronic_signature_security_level_id, system_id, code,
   description, deleted, version)
@@ -107,6 +112,7 @@ INSERT INTO electronic_signature_security_level (
 VALUES (4, '558401c6-b99e-4adf-9576-811da4c7e461', 'PH',
         'Sendt med PKI/"person høy"-sertifikat', FALSE, 0);
 
+/* electronic_signature_verified / elektronsiksignaturverifisert */
 INSERT INTO electronic_signature_verified (
   pk_electronic_signature_verified_id, system_id, code,
   description, deleted, version)
@@ -119,6 +125,7 @@ INSERT INTO electronic_signature_verified (
 VALUES (2, 'f2006c7b-44f4-4a84-8c62-bbcc7f9ee608', 'V',
         'Signatur påført og verifisert', FALSE, 0);
 
+/* flow_Status flytstatus */
 INSERT INTO flow_status (pk_flow_status_id, system_id, code,
                          description, deleted, version)
 VALUES (1, 'd854743a-8c5a-4791-b56c-a10fd240e768', 'G',
@@ -132,6 +139,7 @@ INSERT INTO flow_status (pk_flow_status_id, system_id, code,
 VALUES (3, '8a802fc2-7d9c-43ae-babd-72cc19d47a46', 'S',
         'Sendt tilbake til saksbehandler med kommentarer', FALSE, 0);
 
+/* format / format */
 INSERT INTO format (pk_format_id, system_id, code,
                     description, deleted, version)
 VALUES (1, '93ac2b0f-1729-4c78-a917-a0f494a035ca', 'RA-TEKST',
@@ -165,6 +173,7 @@ INSERT INTO format (pk_format_id, system_id, code,
 VALUES (8, '7412833e-ceaf-40fd-95b5-e634f4640f99', 'RA-MP3',
         'MP3', FALSE, 0);
 
+/* correspondence_part_type korrespondanseparttype */
 INSERT INTO correspondence_part_type (
   pk_correspondence_part_type_id, system_id, code,
   description, deleted, version)
@@ -201,6 +210,7 @@ INSERT INTO correspondence_part_type (
 VALUES (7, '78e59b26-819c-4cf7-abe1-69fb6e457bcb', 'IK',
         'Intern kopimottaker', FALSE, 0);
 
+/* registry_entry_status journalpoststatus */
 INSERT INTO registry_entry_status (
   pk_registry_entry_status_id, system_id, code,
   description, deleted, version)
@@ -237,7 +247,7 @@ INSERT INTO registry_entry_status (
 VALUES (7, '395ff299-e60d-4550-979e-5b682d8e4f61', 'M',
         'Midlertidig registrering av', FALSE, 0);
 
-
+/* registry_entry_type journalposttype */
 INSERT INTO registry_entry_type (
   pk_registry_entry_type_id, system_id, code,
   description, deleted, version)
@@ -263,3 +273,16 @@ INSERT INTO registry_entry_type (
   description, deleted, version)
 VALUES (5, '07c06822-50e8-47fb-a760-eaff70eaa64e', 'S',
         'Saksframlegg', FALSE, 0);
+
+/* precedence_status / presedensstatus */
+INSERT INTO precedence_status (
+  pk_precedence_status_id, system_id, code,
+  description, deleted, version)
+VALUES (1, 'f2c39e2e-8353-49ca-91a1-6ae48c658cd1', 'G',
+        'Gjeldende', FALSE, 0);
+
+INSERT INTO precedence_status (
+  pk_precedence_status_id, system_id, code,
+  description, deleted, version)
+VALUES (2, 'cacc4170-6149-4d65-8811-7ca5855e089b', 'F',
+        'Foreldet', FALSE, 0);
