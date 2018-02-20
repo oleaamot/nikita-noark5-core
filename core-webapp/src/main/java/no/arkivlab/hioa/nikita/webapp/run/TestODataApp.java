@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import java.io.File;
 import java.io.InputStream;
 
 public class TestODataApp {
@@ -25,7 +26,8 @@ public class TestODataApp {
 
             ODataLexer lexer = new ODataLexer(
                     CharStreams.fromStream(app.getInputStreamForParseFile(
-                            "odata_samples.txt")));
+                            "odata" + File.separator +
+                                    "odata_samples.txt")));
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             ODataParser parser = new ODataParser(tokens);
             ParseTree tree = parser.odataURL();
@@ -41,6 +43,12 @@ public class TestODataApp {
     }
 
 
+    /**
+     * Get an input stream from a file on the classpath (resources folder)
+     *
+     * @param fileName the name of the file you wish to retrieve
+     * @return the inputstream to the file
+     */
     private InputStream getInputStreamForParseFile(String fileName) {
 
         InputStream in = this.getClass().getClassLoader()
