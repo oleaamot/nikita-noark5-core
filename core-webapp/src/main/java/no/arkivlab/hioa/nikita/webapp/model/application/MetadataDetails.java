@@ -228,5 +228,22 @@ public class MetadataDetails extends APIDetails {
                         NEW_REGISTRY_ENTRY_TYPE + SLASH,
                 true
         ));
+
+        // Add support for CasePartyRole
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + CASE_PARTY_ROLE,
+                REL_METADATA_CASE_PARTY_ROLE,
+                true
+        ));
+
+        // Add support for new CasePartyRole
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + NEW_CASE_PARTY_ROLE,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH +
+                        NEW_CASE_PARTY_ROLE + SLASH,
+                true
+        ));
     }
 }

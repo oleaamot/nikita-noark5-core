@@ -101,7 +101,7 @@ public final class N5ResourceMappings {
     public static final String CASE_PARTY = "sakspart";
     public static final String CASE_PARTY_ID = "saksPartID";
     public static final String CASE_PARTY_NAME = "sakspartNavn";
-    public static final String CASE_PARTY_ROLE = "sakspartRolle";
+    public static final String CASE_PARTY_ROLE = "sakspartrolle";
 
     // Record
     public static final String RECORD_ARCHIVED_BY = "arkivertAv";
