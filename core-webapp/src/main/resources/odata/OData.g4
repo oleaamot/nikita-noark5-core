@@ -12,7 +12,7 @@ declaration
 
 
 odataURL: scheme SEPERATOR host (COLON port)? contextPath api functionality
-resource odataCommand;
+'/' resource odataCommand;
 
 scheme          :  ('http' | 'https');
 
@@ -26,7 +26,7 @@ api             : '/' string;
 
 functionality   : '/' string;
 
-resource        : '/' string;
+resource        : string;
 
 port            : DIGITS;
 
@@ -38,13 +38,17 @@ search          : '$search=' searchCommand;
 
 searchCommand   : string;
 
-filterCommand   : (startsWith | contains | (attribute comparator
+filterCommand   : (command | (attribute comparator
  '\'' value '\'')) (operator filterCommand)? ;
 
 
-startsWith      : 'startsWith(' attribute ',' '\'' value '\'' ')';
+command        : (contains | startsWith) leftCurlyBracket attribute ',' '\''
+value '\''
+rightCurlyBracket;
 
-contains        : 'contains(' attribute ',' '\'' value '\'' ')';
+contains        : 'contains';
+
+startsWith      : 'startsWith';
 
 attribute       : string;
 
@@ -53,8 +57,10 @@ value           : string;
 comparator      : eq | gt | lt | ge | le;
 operator        : (and | or);
 
-WHITESPACE       : ' ' -> skip ;
+WHITESPACE       : [ \n\t\r]+ -> skip ;
 
+leftCurlyBracket        : '(';
+rightCurlyBracket       : ')';
 and             : AND;
 or              : OR;
 

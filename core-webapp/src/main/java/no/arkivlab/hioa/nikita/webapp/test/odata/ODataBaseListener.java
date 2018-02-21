@@ -269,7 +269,7 @@ public class ODataBaseListener implements ODataListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override
-    public void enterStartsWith(ODataParser.StartsWithContext ctx) {
+    public void enterCommand(ODataParser.CommandContext ctx) {
     }
 
     /**
@@ -278,7 +278,7 @@ public class ODataBaseListener implements ODataListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override
-    public void exitStartsWith(ODataParser.StartsWithContext ctx) {
+    public void exitCommand(ODataParser.CommandContext ctx) {
     }
 
     /**
@@ -297,6 +297,24 @@ public class ODataBaseListener implements ODataListener {
      */
     @Override
     public void exitContains(ODataParser.ContainsContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void enterStartsWith(ODataParser.StartsWithContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitStartsWith(ODataParser.StartsWithContext ctx) {
     }
 
     /**
@@ -369,6 +387,42 @@ public class ODataBaseListener implements ODataListener {
      */
     @Override
     public void exitOperator(ODataParser.OperatorContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void enterLeftCurlyBracket(ODataParser.LeftCurlyBracketContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitLeftCurlyBracket(ODataParser.LeftCurlyBracketContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void enterRightCurlyBracket(ODataParser.RightCurlyBracketContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitRightCurlyBracket(ODataParser.RightCurlyBracketContext ctx) {
     }
 
     /**

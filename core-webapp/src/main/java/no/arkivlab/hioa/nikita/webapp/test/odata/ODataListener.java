@@ -1,6 +1,5 @@
 // Generated from /home/tsodring/git/nikita-noark5-core/core-webapp/src/main/resources/odata/OData.g4 by ANTLR 4.7
 package no.arkivlab.hioa.nikita.webapp.test.odata;
-
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -205,18 +204,18 @@ public interface ODataListener extends ParseTreeListener {
     void exitFilterCommand(ODataParser.FilterCommandContext ctx);
 
     /**
-     * Enter a parse tree produced by {@link ODataParser#startsWith}.
+     * Enter a parse tree produced by {@link ODataParser#command}.
      *
      * @param ctx the parse tree
      */
-    void enterStartsWith(ODataParser.StartsWithContext ctx);
+    void enterCommand(ODataParser.CommandContext ctx);
 
     /**
-     * Exit a parse tree produced by {@link ODataParser#startsWith}.
+     * Exit a parse tree produced by {@link ODataParser#command}.
      *
      * @param ctx the parse tree
      */
-    void exitStartsWith(ODataParser.StartsWithContext ctx);
+    void exitCommand(ODataParser.CommandContext ctx);
 
     /**
      * Enter a parse tree produced by {@link ODataParser#contains}.
@@ -231,6 +230,20 @@ public interface ODataListener extends ParseTreeListener {
      * @param ctx the parse tree
      */
     void exitContains(ODataParser.ContainsContext ctx);
+
+    /**
+     * Enter a parse tree produced by {@link ODataParser#startsWith}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterStartsWith(ODataParser.StartsWithContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link ODataParser#startsWith}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitStartsWith(ODataParser.StartsWithContext ctx);
 
     /**
      * Enter a parse tree produced by {@link ODataParser#attribute}.
@@ -287,6 +300,34 @@ public interface ODataListener extends ParseTreeListener {
      * @param ctx the parse tree
      */
     void exitOperator(ODataParser.OperatorContext ctx);
+
+    /**
+     * Enter a parse tree produced by {@link ODataParser#leftCurlyBracket}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterLeftCurlyBracket(ODataParser.LeftCurlyBracketContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link ODataParser#leftCurlyBracket}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitLeftCurlyBracket(ODataParser.LeftCurlyBracketContext ctx);
+
+    /**
+     * Enter a parse tree produced by {@link ODataParser#rightCurlyBracket}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterRightCurlyBracket(ODataParser.RightCurlyBracketContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link ODataParser#rightCurlyBracket}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitRightCurlyBracket(ODataParser.RightCurlyBracketContext ctx);
 
     /**
      * Enter a parse tree produced by {@link ODataParser#and}.
