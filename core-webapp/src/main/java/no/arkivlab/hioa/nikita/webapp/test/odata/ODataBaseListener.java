@@ -359,6 +359,42 @@ public class ODataBaseListener implements ODataListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override
+    public void enterTop(ODataParser.TopContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitTop(ODataParser.TopContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void enterSkip(ODataParser.SkipContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitSkip(ODataParser.SkipContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
     public void enterComparator(ODataParser.ComparatorContext ctx) {
     }
 

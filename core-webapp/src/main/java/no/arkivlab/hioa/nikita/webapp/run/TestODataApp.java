@@ -1,6 +1,6 @@
 package no.arkivlab.hioa.nikita.webapp.run;
 
-import no.arkivlab.hioa.nikita.webapp.test.odata.NikitaODataParser;
+import no.arkivlab.hioa.nikita.webapp.test.odata.NikitaODataToSQLWalker;
 import no.arkivlab.hioa.nikita.webapp.test.odata.ODataLexer;
 import no.arkivlab.hioa.nikita.webapp.test.odata.ODataParser;
 import org.antlr.v4.runtime.CharStreams;
@@ -22,6 +22,9 @@ public class TestODataApp {
 
         try {
 
+            AfterApplicationStartup afterApplicationStartup =
+                    new AfterApplicationStartup(null);
+            afterApplicationStartup.populateTranslatedNames();
             TestODataApp app = new TestODataApp();
 
             ODataLexer lexer = new ODataLexer(
@@ -32,16 +35,15 @@ public class TestODataApp {
             ODataParser parser = new ODataParser(tokens);
             ParseTree tree = parser.odataURL();
             ParseTreeWalker walker = new ParseTreeWalker();
-            NikitaODataParser nparser = new NikitaODataParser();
+            NikitaODataToSQLWalker nparser = new NikitaODataToSQLWalker();
             walker.walk(nparser, tree);
 
-            System.out.println(nparser.getSqlStatment());
+            System.out.println(nparser.getSqlStatement());
 
         } catch (RecognitionException e) {
-            throw new IllegalStateException("Recognition exception is never thrown, only declared.");
+            throw new IllegalStateException("Recognition exception");
         }
     }
-
 
     /**
      * Get an input stream from a file on the classpath (resources folder)
@@ -55,5 +57,4 @@ public class TestODataApp {
                 .getResourceAsStream(fileName);
         return in;
     }
-
 }

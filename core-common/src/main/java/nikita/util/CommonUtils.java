@@ -44,6 +44,12 @@ public final class CommonUtils {
      */
     private static Map<String, Set<HttpMethod>> requestMethodMap = new HashMap<>();
 
+    /**
+     * Holds a mapping of Norwegian entity names to English entity names
+     * e.g mappe->file
+     */
+    private static Map<String, ModelNames> nor2engEntityMap = new HashMap<>();
+
     // You shall not instantiate me!
     private CommonUtils() {
     }
@@ -100,6 +106,22 @@ public final class CommonUtils {
     }
 
     public static final class WebUtils {
+
+        public static void addNorToEnglishNameMap(
+                @NotNull String norwegianName,
+                @NotNull String englishNameDatabase,
+                @NotNull String englishNameObject) {
+            nor2engEntityMap.put(norwegianName,
+                    new ModelNames(englishNameDatabase, englishNameObject));
+        }
+
+        public static String getEnglishNameObject(String norwegianName) {
+            return nor2engEntityMap.get(norwegianName).getEnglishNameObject();
+        }
+
+        public static String getEnglishNameDatabase(String norwegianName) {
+            return nor2engEntityMap.get(norwegianName).getEnglishNameDatabase();
+        }
 
         public final static String getSuccessStatusStringForDelete() {
             return "{\"status\" : \"Success\"}";

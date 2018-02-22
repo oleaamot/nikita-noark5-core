@@ -42,17 +42,21 @@ filterCommand   : (command | (attribute comparator
  '\'' value '\'')) (operator filterCommand)? ;
 
 
-command        : (contains | startsWith) leftCurlyBracket attribute ',' '\''
-value '\''
-rightCurlyBracket;
+command        : (contains | startsWith);
 
-contains        : 'contains';
+contains        : 'contains' leftCurlyBracket attribute ',' '\'' value '\''
+                             rightCurlyBracket;
 
-startsWith      : 'startsWith';
+startsWith      : 'startsWith' leftCurlyBracket attribute ',' '\'' value '\''
+                               rightCurlyBracket;
 
 attribute       : string;
 
 value           : string;
+
+top             : 'top';
+
+skip            : 'skip';
 
 comparator      : eq | gt | lt | ge | le;
 operator        : (and | or);

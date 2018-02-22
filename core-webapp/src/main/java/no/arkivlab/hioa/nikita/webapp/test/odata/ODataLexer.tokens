@@ -35,8 +35,8 @@ SEPERATOR=30
 '$filter='=5
 '$search='=6
 '\''=7
-','=8
-'contains'=9
+'contains'=8
+','=9
 'startsWith'=10
 '('=11
 ')'=12

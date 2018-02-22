@@ -548,6 +548,8 @@ public final class Constants {
     public static final String PRIMARY_KEY_FONDS_CREATOR =
             "pk_fonds_creator_id";
 
+    public static final String DM_OWNED_BY = "ownedBy";
+
     private Constants() {
     }
 }

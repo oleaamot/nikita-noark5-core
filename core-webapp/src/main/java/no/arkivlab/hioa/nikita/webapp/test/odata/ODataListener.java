@@ -274,6 +274,34 @@ public interface ODataListener extends ParseTreeListener {
     void exitValue(ODataParser.ValueContext ctx);
 
     /**
+     * Enter a parse tree produced by {@link ODataParser#top}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterTop(ODataParser.TopContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link ODataParser#top}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitTop(ODataParser.TopContext ctx);
+
+    /**
+     * Enter a parse tree produced by {@link ODataParser#skip}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterSkip(ODataParser.SkipContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link ODataParser#skip}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitSkip(ODataParser.SkipContext ctx);
+
+    /**
      * Enter a parse tree produced by {@link ODataParser#comparator}.
      *
      * @param ctx the parse tree

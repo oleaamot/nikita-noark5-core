@@ -286,3 +286,31 @@ INSERT INTO precedence_status (
   description, deleted, version)
 VALUES (2, 'cacc4170-6149-4d65-8811-7ca5855e089b', 'F',
         'Foreldet', FALSE, 0);
+
+/* case_party_role / sakspartrolle */
+INSERT INTO case_party_role (
+  pk_case_party_role_id, system_id, code,
+  description, deleted, version)
+VALUES (1, '391e6756-1885-4ef9-b2cb-226a7bbcd381', 'KLI',
+        'Klient', FALSE, 0);
+
+INSERT INTO case_party_role (
+  pk_case_party_role_id, system_id, code,
+  description, deleted, version)
+VALUES (2, '882ada83-04ca-4a24-81ba-5572d653804d', 'PÅ',
+        'Pårørende', FALSE, 0);
+
+INSERT INTO case_party_role (
+  pk_case_party_role_id, system_id, code,
+  description, deleted, version)
+VALUES (3, 'b49e85df-1512-4ad4-8ca9-5fe712bb16f7', 'FORM',
+        'Formynder', FALSE, 0);
+
+INSERT INTO case_party_role (
+  pk_case_party_role_id, system_id, code,
+  description, deleted, version)
+VALUES (4, 'cd0373f5-01c3-4586-b9b7-9280b3e579b9', 'ADV',
+        'Advokat', FALSE, 0);
+
+
+
