@@ -1,5 +1,52 @@
 # Nikita developer notes
 
+
+## 2018-02-23
+
+ - OData support
+
+### OData support
+We finally managed to get some OData support into the codebase. We are using
+antlr4 and are developing our own OData description in antlr4. This file can 
+be found in the odata directory under resources and this is where all future 
+OData handling will be derived from. 
+
+An example is to be able to take 
+
+     `startsWith(tittel,'hello')`
+
+and it gets turned into a 
+
+`select * from fonds where ownedBy ='admin' and title LIKE 'hello%'`
+
+We're seeing a mismatch between column names (owned_by) and variable names 
+(ownedBy). HQL/ES require object names, while SQL requires column names. We 
+started to deal with this but it's going to be a tedious job!
+
+I'm still not sure how to deal with HQL. HQL looks like it wants to use a 
+Query object as I guess SQL is not an issue then. But it also supports a SQL 
+like syntax that can be used. But using Query means taking the database 
+closer into the Parser requiring a CriteriaBuilder. It just seems messy! 
+
+We added a file called odata_samples.txt and a simple java application called
+TestODataApp under no.arkivlab.hioa.nikita.webapp.run. We also added our own 
+walker currently called NikitaODataWalker. There are subclasses of this class
+that take care of the actual conversion from OData filter syntax to SQL/HQL 
+as well as Elasticsearch query JSON. 
+
+I've decided to invest a little time on OData to HQL/SQL/ES as I think the 
+code is applicable for use by others. I've seen a good few requests for this 
+on the Internet but no solution other than Apache Olingo, but that requires 
+you to use their stack. We should also considering making this part of the 
+code available under a BSD-style license.  
+
+Once this code matures a little, it will be used at the service level in 
+order to filter the results of incoming requests. But we are not there yet. I
+think we need develop a solution and think about it. I see e.g that we are 
+parsing the [contextPath][api] portion of a OData URL, when we just really want
+to take the command part.
+
+
 ## 2018-02-16
 
  - OData support
