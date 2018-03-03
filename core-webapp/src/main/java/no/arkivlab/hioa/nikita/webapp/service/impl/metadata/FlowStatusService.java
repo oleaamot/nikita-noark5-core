@@ -35,18 +35,18 @@ public class FlowStatusService
     private static final Logger logger =
             LoggerFactory.getLogger(FlowStatusService.class);
 
-    private IFlowStatusRepository fileTypeRepository;
+    private IFlowStatusRepository flowStatusRepository;
     private IMetadataHateoasHandler metadataHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
 
     public FlowStatusService(
             IFlowStatusRepository
-                    fileTypeRepository,
+                    flowStatusRepository,
             IMetadataHateoasHandler metadataHateoasHandler,
             ApplicationEventPublisher applicationEventPublisher) {
 
-        this.fileTypeRepository =
-                fileTypeRepository;
+        this.flowStatusRepository =
+                flowStatusRepository;
         this.metadataHateoasHandler = metadataHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
     }
@@ -69,7 +69,7 @@ public class FlowStatusService
                 getAuthentication().getName());
 
         MetadataHateoas metadataHateoas = new MetadataHateoas(
-                fileTypeRepository.save(flowStatus));
+                flowStatusRepository.save(flowStatus));
         metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return metadataHateoas;
     }
@@ -86,7 +86,7 @@ public class FlowStatusService
     public MetadataHateoas findAll() {
         MetadataHateoas metadataHateoas = new MetadataHateoas(
                 (List<INikitaEntity>) (List)
-                        fileTypeRepository.findAll(), FLOW_STATUS);
+                        flowStatusRepository.findAll(), FLOW_STATUS);
         metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return metadataHateoas;
     }
@@ -102,15 +102,14 @@ public class FlowStatusService
     @Override
     public MetadataHateoas find(String systemId) {
         MetadataHateoas metadataHateoas = new MetadataHateoas(
-                fileTypeRepository
+                flowStatusRepository
                         .findBySystemId(systemId));
         metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return metadataHateoas;
     }
 
     /**
-     * Retrieve all FlowStatus that have a given
-     * description.
+     * Retrieve all FlowStatus that have a given description.
      * <br>
      * Note, this will be replaced by OData search.
      *
@@ -122,9 +121,8 @@ public class FlowStatusService
     public MetadataHateoas findByDescription(String description) {
         MetadataHateoas metadataHateoas = new MetadataHateoas(
                 (List<INikitaEntity>) (List)
-                        fileTypeRepository
-                                .findByDescription(description),
-                FLOW_STATUS);
+                        flowStatusRepository
+                                .findByDescription(description), FLOW_STATUS);
         metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return metadataHateoas;
     }
@@ -141,9 +139,7 @@ public class FlowStatusService
     public MetadataHateoas findByCode(String code) {
         MetadataHateoas metadataHateoas = new MetadataHateoas(
                 (List<INikitaEntity>) (List)
-                        fileTypeRepository.findByCode
-                                (code),
-                FLOW_STATUS);
+                        flowStatusRepository.findByCode(code), FLOW_STATUS);
         metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return metadataHateoas;
     }
@@ -156,11 +152,11 @@ public class FlowStatusService
     @Override
     public FlowStatus generateDefaultFlowStatus() {
 
-        FlowStatus fileType = new FlowStatus();
-        fileType.setCode(TEMPLATE_FLOW_STATUS_CODE);
-        fileType.setDescription(TEMPLATE_FLOW_STATUS_DESCRIPTION);
+        FlowStatus flowStatus = new FlowStatus();
+        flowStatus.setCode(TEMPLATE_FLOW_STATUS_CODE);
+        flowStatus.setDescription(TEMPLATE_FLOW_STATUS_DESCRIPTION);
 
-        return fileType;
+        return flowStatus;
     }
 
     /**
@@ -168,15 +164,15 @@ public class FlowStatusService
      * <p>
      * Copy the values you are allowed to change, code and description
      *
-     * @param systemId The systemId of the fileType object you wish to update
-     * @param fileType   The updated fileType object. Note the values you are
-     *                 allowed to change are copied from this object. This
-     *                 object is not persisted.
-     * @return the updated fileType
+     * @param systemId The systemId of the flowStatus object you wish to update
+     * @param flowStatus    The updated flowStatus object. Note the values you
+     *                      are allowed to change are copied from this object.
+     *                      This object is not persisted.
+     * @return the updated flowStatus
      */
     @Override
     public MetadataHateoas handleUpdate(String systemId, Long
-            version, FlowStatus fileType) {
+            version, FlowStatus flowStatus) {
 
         FlowStatus existingFlowStatus = getFlowStatusOrThrow(systemId);
 
@@ -185,40 +181,41 @@ public class FlowStatusService
             existingFlowStatus.setCode(existingFlowStatus.getCode());
         }
         if (null != existingFlowStatus.getDescription()) {
-            existingFlowStatus.setDescription(existingFlowStatus.getDescription());
+            existingFlowStatus.setDescription(
+                    existingFlowStatus.getDescription());
         }
         // Note this can potentially result in a NoarkConcurrencyException
         // exception
         existingFlowStatus.setVersion(version);
 
-        MetadataHateoas fileTypeHateoas = new MetadataHateoas(fileTypeRepository
-                .save(existingFlowStatus));
+        MetadataHateoas flowStatusHateoas = new MetadataHateoas(
+                flowStatusRepository.save(existingFlowStatus));
 
-        metadataHateoasHandler.addLinks(fileTypeHateoas, new Authorisation());
+        metadataHateoasHandler.addLinks(flowStatusHateoas, new Authorisation());
 
         applicationEventPublisher.publishEvent(new
                 AfterNoarkEntityUpdatedEvent(this, existingFlowStatus));
-        return fileTypeHateoas;
+        return flowStatusHateoas;
     }
 
     /**
      * Internal helper method. Rather than having a find and try catch in
      * multiple methods, we have it here once. If you call this, be aware
-     * that you will only ever get a valid FlowStatus object back. If there is no
-     * FlowStatus object, a NoarkEntityNotFoundException exception is thrown
+     * that you will only ever get a valid FlowStatus object back. If there is
+     * no FlowStatus object, a NoarkEntityNotFoundException exception is thrown
      *
      * @param systemId The systemId of the FlowStatus object to retrieve
      * @return the FlowStatus object
      */
     private FlowStatus
     getFlowStatusOrThrow(@NotNull String systemId) {
-        FlowStatus fileType = fileTypeRepository.findBySystemId(systemId);
-        if (fileType == null) {
+        FlowStatus flowStatus = flowStatusRepository.findBySystemId(systemId);
+        if (flowStatus == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " FlowStatus, using " +
                     "systemId " + systemId;
             logger.error(info);
             throw new NoarkEntityNotFoundException(info);
         }
-        return fileType;
+        return flowStatus;
     }
 }
