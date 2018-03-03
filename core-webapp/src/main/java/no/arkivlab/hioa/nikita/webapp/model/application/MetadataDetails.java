@@ -245,5 +245,22 @@ public class MetadataDetails extends APIDetails {
                         NEW_CASE_PARTY_ROLE + SLASH,
                 true
         ));
+
+        // Add support for FileType
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + FILE_TYPE,
+                REL_METADATA_FILE_TYPE,
+                true
+        ));
+
+        // Add support for new FileType
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + NEW_FILE_TYPE,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH +
+                        NEW_FILE_TYPE + SLASH,
+                true
+        ));
     }
 }

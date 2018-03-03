@@ -340,8 +340,8 @@ public final class N5ResourceMappings {
     // English version of above, sorted alphabetically. The following are the
     // table / column names within the Noark domain model
     // TODO: Do the actual translation job,
-    public static final String ACCESS_CATEGORY_ENG = "tilgangskategori";
-    public static final String ACCESS_RESTRICTION_ENG = "tilgangsrestriksjon";
+    public static final String ACCESS_CATEGORY_ENG = "access_category";
+    public static final String ACCESS_RESTRICTION_ENG = "access_restriction";
     public static final String ADDRESS_LINE_1_ENG = "adresselinje1";
     public static final String ADDRESS_LINE_2_ENG = "adresselinje2";
     public static final String ADDRESS_LINE_3_ENG = "adresselinje3";

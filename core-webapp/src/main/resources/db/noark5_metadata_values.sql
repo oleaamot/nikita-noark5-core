@@ -313,4 +313,31 @@ VALUES (4, 'cd0373f5-01c3-4586-b9b7-9280b3e579b9', 'ADV',
         'Advokat', FALSE, 0);
 
 
+/* file_type / mappetype
+ Note. This is an open code list in the standard. I have added the following
+ values based on common sense.
+*/
+INSERT INTO file_type (
+  pk_file_type_id, system_id, code,
+  description, deleted, version)
+VALUES (1, '2a14a47d-4bbc-4d0d-b3e7-267b105ec539', 'SKM',
+        'Saksmappe', FALSE, 0);
+
+INSERT INTO file_type (
+  pk_file_type_id, system_id, code,
+  description, deleted, version)
+VALUES (2, '84766390-8799-4e7d-96ab-1e5f26596804', 'PLM',
+        'Personalmappe', FALSE, 0);
+
+INSERT INTO file_type (
+  pk_file_type_id, system_id, code,
+  description, deleted, version)
+VALUES (3, 'b027b486-9b42-48a0-88e3-c2a6ddc91589', 'BYM',
+        'Byggemappe', FALSE, 0);
+
+INSERT INTO file_type (
+  pk_file_type_id, system_id, code,
+  description, deleted, version)
+VALUES (4, '1b8c9632-b5d1-49a1-a0ec-2ec2ee3e7483', 'MOM',
+        'Møtemappe', FALSE, 0);
 
