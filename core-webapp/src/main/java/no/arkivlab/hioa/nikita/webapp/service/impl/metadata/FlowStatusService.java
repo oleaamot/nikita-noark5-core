@@ -35,18 +35,18 @@ public class FlowStatusService
     private static final Logger logger =
             LoggerFactory.getLogger(FlowStatusService.class);
 
-    private IFlowStatusRepository formatRepository;
+    private IFlowStatusRepository fileTypeRepository;
     private IMetadataHateoasHandler metadataHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
 
     public FlowStatusService(
             IFlowStatusRepository
-                    formatRepository,
+                    fileTypeRepository,
             IMetadataHateoasHandler metadataHateoasHandler,
             ApplicationEventPublisher applicationEventPublisher) {
 
-        this.formatRepository =
-                formatRepository;
+        this.fileTypeRepository =
+                fileTypeRepository;
         this.metadataHateoasHandler = metadataHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
     }
@@ -69,7 +69,7 @@ public class FlowStatusService
                 getAuthentication().getName());
 
         MetadataHateoas metadataHateoas = new MetadataHateoas(
-                formatRepository.save(flowStatus));
+                fileTypeRepository.save(flowStatus));
         metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return metadataHateoas;
     }
@@ -86,7 +86,7 @@ public class FlowStatusService
     public MetadataHateoas findAll() {
         MetadataHateoas metadataHateoas = new MetadataHateoas(
                 (List<INikitaEntity>) (List)
-                        formatRepository.findAll(), FLOW_STATUS);
+                        fileTypeRepository.findAll(), FLOW_STATUS);
         metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return metadataHateoas;
     }
@@ -102,7 +102,7 @@ public class FlowStatusService
     @Override
     public MetadataHateoas find(String systemId) {
         MetadataHateoas metadataHateoas = new MetadataHateoas(
-                formatRepository
+                fileTypeRepository
                         .findBySystemId(systemId));
         metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return metadataHateoas;
@@ -122,7 +122,7 @@ public class FlowStatusService
     public MetadataHateoas findByDescription(String description) {
         MetadataHateoas metadataHateoas = new MetadataHateoas(
                 (List<INikitaEntity>) (List)
-                        formatRepository
+                        fileTypeRepository
                                 .findByDescription(description),
                 FLOW_STATUS);
         metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
@@ -141,7 +141,7 @@ public class FlowStatusService
     public MetadataHateoas findByCode(String code) {
         MetadataHateoas metadataHateoas = new MetadataHateoas(
                 (List<INikitaEntity>) (List)
-                        formatRepository.findByCode
+                        fileTypeRepository.findByCode
                                 (code),
                 FLOW_STATUS);
         metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
@@ -156,11 +156,11 @@ public class FlowStatusService
     @Override
     public FlowStatus generateDefaultFlowStatus() {
 
-        FlowStatus format = new FlowStatus();
-        format.setCode(TEMPLATE_FLOW_STATUS_CODE);
-        format.setDescription(TEMPLATE_FLOW_STATUS_DESCRIPTION);
+        FlowStatus fileType = new FlowStatus();
+        fileType.setCode(TEMPLATE_FLOW_STATUS_CODE);
+        fileType.setDescription(TEMPLATE_FLOW_STATUS_DESCRIPTION);
 
-        return format;
+        return fileType;
     }
 
     /**
@@ -168,15 +168,15 @@ public class FlowStatusService
      * <p>
      * Copy the values you are allowed to change, code and description
      *
-     * @param systemId The systemId of the format object you wish to update
-     * @param format   The updated format object. Note the values you are
+     * @param systemId The systemId of the fileType object you wish to update
+     * @param fileType   The updated fileType object. Note the values you are
      *                 allowed to change are copied from this object. This
      *                 object is not persisted.
-     * @return the updated format
+     * @return the updated fileType
      */
     @Override
     public MetadataHateoas handleUpdate(String systemId, Long
-            version, FlowStatus format) {
+            version, FlowStatus fileType) {
 
         FlowStatus existingFlowStatus = getFlowStatusOrThrow(systemId);
 
@@ -191,14 +191,14 @@ public class FlowStatusService
         // exception
         existingFlowStatus.setVersion(version);
 
-        MetadataHateoas formatHateoas = new MetadataHateoas(formatRepository
+        MetadataHateoas fileTypeHateoas = new MetadataHateoas(fileTypeRepository
                 .save(existingFlowStatus));
 
-        metadataHateoasHandler.addLinks(formatHateoas, new Authorisation());
+        metadataHateoasHandler.addLinks(fileTypeHateoas, new Authorisation());
 
         applicationEventPublisher.publishEvent(new
                 AfterNoarkEntityUpdatedEvent(this, existingFlowStatus));
-        return formatHateoas;
+        return fileTypeHateoas;
     }
 
     /**
@@ -212,13 +212,13 @@ public class FlowStatusService
      */
     private FlowStatus
     getFlowStatusOrThrow(@NotNull String systemId) {
-        FlowStatus format = formatRepository.findBySystemId(systemId);
-        if (format == null) {
+        FlowStatus fileType = fileTypeRepository.findBySystemId(systemId);
+        if (fileType == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " FlowStatus, using " +
                     "systemId " + systemId;
             logger.error(info);
             throw new NoarkEntityNotFoundException(info);
         }
-        return format;
+        return fileType;
     }
 }
