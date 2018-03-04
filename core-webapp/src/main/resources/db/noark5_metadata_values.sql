@@ -341,3 +341,24 @@ INSERT INTO file_type (
 VALUES (4, '1b8c9632-b5d1-49a1-a0ec-2ec2ee3e7483', 'MOM',
         'Møtemappe', FALSE, 0);
 
+/* file_type / mappetype
+ Note. This is an open code list in the standard. The following values are taken
+ from the Noark 4 standard
+*/
+INSERT INTO comment_type (
+  pk_comment_type_id, system_id, code,
+  description, deleted, version)
+VALUES (1, 'bf105de3-7eb7-4abc-b836-b89180df462c', 'MS',
+        'Merknad fra saksbehandler', FALSE, 0);
+
+INSERT INTO comment_type (
+  pk_comment_type_id, system_id, code,
+  description, deleted, version)
+VALUES (2, 'c7d484ab-fb3c-4da5-b475-f39c085086e0', 'ML',
+        'Merknad fra leder', FALSE, 0);
+
+INSERT INTO comment_type (
+  pk_comment_type_id, system_id, code,
+  description, deleted, version)
+VALUES (3, '7c1b04df-26b6-4a91-a949-3cb1717bd901', 'MA',
+        'Merknad fra arkivansvarlig', FALSE, 0);

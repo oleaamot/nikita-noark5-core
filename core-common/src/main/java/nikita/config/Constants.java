@@ -141,6 +141,8 @@ public final class Constants {
 
     public static final String NEW_FILE_TYPE = NEW + DASH + FILE_TYPE;
 
+    public static final String NEW_COMMENT_TYPE = NEW + DASH + COMMENT_TYPE;
+
     public static final String NEW_DOCUMENT_TYPE = NEW + DASH +
             DOCUMENT_TYPE;
 
@@ -252,6 +254,10 @@ public final class Constants {
 
     public static final String TEMPLATE_FILE_TYPE_CODE = "S";
     public static final String TEMPLATE_FILE_TYPE_DESCRIPTION = "Saksmappe";
+
+    public static final String TEMPLATE_COMMENT_TYPE_CODE = "MS";
+    public static final String TEMPLATE_COMMENT_TYPE_DESCRIPTION =
+            "Merknad fra saksbehandler";
 
     public static final String TEMPLATE_REGISTRY_ENTRY_TYPE_CODE = "I";
     public static final String TEMPLATE_REGISTRY_ENTRY_TYPE_DESCRIPTION =
@@ -521,6 +527,9 @@ public final class Constants {
 
     public static final String REL_METADATA_FILE_TYPE =
             REL_METADATA + FILE_TYPE + SLASH;
+
+    public static final String REL_METADATA_COMMENT_TYPE =
+            REL_METADATA + COMMENT_TYPE + SLASH;
 
     // M086 dokumenttype
     public static final String REL_METADATA_CLASSIFICATION_SYSTEM_TYPE =
