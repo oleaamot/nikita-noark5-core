@@ -47,7 +47,7 @@ public class N5CoreApp extends SpringBootServletInitializer {
             ServletConfig.class,
             //Pac4JConfig.class,
             AppWebMvcConfiguration.class,
-            //       SwaggerConfig.class
+            SwaggerConfig.class
     }; // @formatter:on
 
 
