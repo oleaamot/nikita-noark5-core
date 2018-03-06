@@ -3,7 +3,7 @@
 #
 # ===================================================================
 
-logging.level.org.springframework.web: DEBUG
+#logging.level.org.springframework.web: DEBUG
 
 server:
   application:

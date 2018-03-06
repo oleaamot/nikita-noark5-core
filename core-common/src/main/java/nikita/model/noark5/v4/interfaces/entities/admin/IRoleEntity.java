@@ -10,9 +10,9 @@ public interface IRoleEntity extends INikitaEntity {
 
     void setRole(String role);
 
-    String getAccesscategory();
+    String getAccessCategory();
 
-    void setAccesscategory(String accesscategory);
+    void setAccessCategory(String accessCategory);
 
     String getReferenceEntity();
 

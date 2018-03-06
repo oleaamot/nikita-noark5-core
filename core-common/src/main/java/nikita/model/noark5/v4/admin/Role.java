@@ -8,6 +8,8 @@ import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 
+import static nikita.config.N5ResourceMappings.ACCESS_CATEGORY_ENG;
+
 //@Entity
 //@Table(name = "nikita_role")
 public class Role extends NoarkEntity implements IRoleEntity {
@@ -28,9 +30,9 @@ public class Role extends NoarkEntity implements IRoleEntity {
     /**
      * M??? - tilgangskategori (xs:string)
      */
-    @Column(name = "access_category")
+    @Column(name = ACCESS_CATEGORY_ENG)
     @Audited
-    private String accesscategory;
+    private String accessCategory;
 
     /**
      * M??? - referanseArkivenhet (xs:string)
@@ -82,12 +84,12 @@ public class Role extends NoarkEntity implements IRoleEntity {
         this.role = role;
     }
 
-    public String getAccesscategory() {
-        return accesscategory;
+    public String getAccessCategory() {
+        return accessCategory;
     }
 
-    public void setAccesscategory(String accesscategory) {
-        this.accesscategory = accesscategory;
+    public void setAccessCategory(String accessCategory) {
+        this.accessCategory = accessCategory;
     }
 
     public String getReferenceEntity() {
