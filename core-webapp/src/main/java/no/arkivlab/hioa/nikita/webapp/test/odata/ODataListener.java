@@ -176,6 +176,48 @@ public interface ODataListener extends ParseTreeListener {
     void exitSearch(ODataParser.SearchContext ctx);
 
     /**
+     * Enter a parse tree produced by {@link ODataParser#top}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterTop(ODataParser.TopContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link ODataParser#top}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitTop(ODataParser.TopContext ctx);
+
+    /**
+     * Enter a parse tree produced by {@link ODataParser#skip}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterSkip(ODataParser.SkipContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link ODataParser#skip}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitSkip(ODataParser.SkipContext ctx);
+
+    /**
+     * Enter a parse tree produced by {@link ODataParser#orderby}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterOrderby(ODataParser.OrderbyContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link ODataParser#orderby}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitOrderby(ODataParser.OrderbyContext ctx);
+
+    /**
      * Enter a parse tree produced by {@link ODataParser#searchCommand}.
      *
      * @param ctx the parse tree
@@ -274,32 +316,18 @@ public interface ODataListener extends ParseTreeListener {
     void exitValue(ODataParser.ValueContext ctx);
 
     /**
-     * Enter a parse tree produced by {@link ODataParser#top}.
+     * Enter a parse tree produced by {@link ODataParser#sortOrder}.
      *
      * @param ctx the parse tree
      */
-    void enterTop(ODataParser.TopContext ctx);
+    void enterSortOrder(ODataParser.SortOrderContext ctx);
 
     /**
-     * Exit a parse tree produced by {@link ODataParser#top}.
+     * Exit a parse tree produced by {@link ODataParser#sortOrder}.
      *
      * @param ctx the parse tree
      */
-    void exitTop(ODataParser.TopContext ctx);
-
-    /**
-     * Enter a parse tree produced by {@link ODataParser#skip}.
-     *
-     * @param ctx the parse tree
-     */
-    void enterSkip(ODataParser.SkipContext ctx);
-
-    /**
-     * Exit a parse tree produced by {@link ODataParser#skip}.
-     *
-     * @param ctx the parse tree
-     */
-    void exitSkip(ODataParser.SkipContext ctx);
+    void exitSortOrder(ODataParser.SortOrderContext ctx);
 
     /**
      * Enter a parse tree produced by {@link ODataParser#comparator}.
@@ -468,4 +496,46 @@ public interface ODataListener extends ParseTreeListener {
      * @param ctx the parse tree
      */
     void exitString(ODataParser.StringContext ctx);
+
+    /**
+     * Enter a parse tree produced by {@link ODataParser#number}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterNumber(ODataParser.NumberContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link ODataParser#number}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitNumber(ODataParser.NumberContext ctx);
+
+    /**
+     * Enter a parse tree produced by {@link ODataParser#asc}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterAsc(ODataParser.AscContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link ODataParser#asc}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitAsc(ODataParser.AscContext ctx);
+
+    /**
+     * Enter a parse tree produced by {@link ODataParser#desc}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterDesc(ODataParser.DescContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link ODataParser#desc}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitDesc(ODataParser.DescContext ctx);
 }

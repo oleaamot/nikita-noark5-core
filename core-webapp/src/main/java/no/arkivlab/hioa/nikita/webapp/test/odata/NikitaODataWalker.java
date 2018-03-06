@@ -154,6 +154,73 @@ public class NikitaODataWalker
         processStartsWith(attribute, value);
     }
 
+
+    // attribute, comparator, value
+
+
+    @Override
+    public void enterFilterCommand(ODataParser.FilterCommandContext ctx) {
+        super.enterFilterCommand(ctx);
+
+        System.out.println("Entering enterStartsWith. Found [" +
+                ctx.getText() + "]");
+        String attribute = ctx.getChild(
+                ODataParser.AttributeContext.class, 0).getText();
+        String comparator = ctx.getChild(
+                ODataParser.ComparatorContext.class, 0).getText();
+        String value = ctx.getChild(
+                ODataParser.ValueContext.class, 0).getText();
+
+        processFilterCommand(attribute, comparator, value);
+    }
+
+
+    @Override
+    public void enterTop(ODataParser.TopContext ctx) {
+        super.enterTop(ctx);
+        System.out.println("Entering enterTop. Found [" +
+                ctx.getText() + "]");
+        String topAsString = ctx.getChild(
+                ODataParser.TopContext.class, 0).getText();
+
+        Integer top = Integer.parseInt(topAsString);
+        // TODO: Check it's a number, throw exception otherwise
+        processTopCommand(top);
+    }
+
+    @Override
+    public void enterSkip(ODataParser.SkipContext ctx) {
+        super.enterSkip(ctx);
+
+        String skipAsString = ctx.getChild(
+                ODataParser.SkipContext.class, 0).getText();
+
+        Integer skip = Integer.parseInt(skipAsString);
+        // TODO: Check it's a number, throw exception otherwise
+        processSkipCommand(skip);
+    }
+
+    @Override
+    public void enterOrderby(ODataParser.OrderbyContext ctx) {
+        super.enterOrderby(ctx);
+
+        String attribute = ctx.getChild(
+                ODataParser.AttributeContext.class, 0).getText();
+        String sortOrder = ctx.getChild(
+                ODataParser.SortOrderContext.class, 0).getText();
+
+        processOrderByCommand(attribute, sortOrder);
+    }
+
+
+    @Override
+    public void processFilterCommand(String attribute, String comparator,
+                                     String value) {
+        throw new NoarkODataSyntaxProcessException("Error when processing " +
+                "processFilterCommand in " + this.getClass().getName() +
+                ". This method should only be called by a sub-class");
+    }
+
     @Override
     public void processEnterAttribute(ODataParser.AttributeContext ctx) {
         throw new NoarkODataSyntaxProcessException("Error when processing [" +
@@ -190,6 +257,28 @@ public class NikitaODataWalker
                 "processStartsWith in " + this.getClass().getName() + ". " +
                 "This method should only be called by a sub-class");
     }
+
+    @Override
+    public void processSkipCommand(Integer skip) {
+        throw new NoarkODataSyntaxProcessException("Error when processing " +
+                "skip in " + this.getClass().getName() + ". " +
+                "This method should only be called by a sub-class");
+    }
+
+    @Override
+    public void processTopCommand(Integer top) {
+        throw new NoarkODataSyntaxProcessException("Error when processing " +
+                "top in " + this.getClass().getName() + ". " +
+                "This method should only be called by a sub-class");
+    }
+
+    @Override
+    public void processOrderByCommand(String attribute, String sortOrder) {
+        throw new NoarkODataSyntaxProcessException("Error when processing " +
+                "orderby in " + this.getClass().getName() + ". " +
+                "This method should only be called by a sub-class");
+    }
+
 
     /**
      * getNameDatabase

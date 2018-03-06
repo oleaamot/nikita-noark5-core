@@ -11,4 +11,13 @@ public interface IODataWalker {
     void processContains(String attribute, String value);
 
     void processStartsWith(String attribute, String value);
+
+    void processFilterCommand(String attribute, String comparator, String
+            value);
+
+    void processSkipCommand(Integer skip);
+
+    void processTopCommand(Integer top);
+
+    void processOrderByCommand(String attribute, String sortOrder);
 }

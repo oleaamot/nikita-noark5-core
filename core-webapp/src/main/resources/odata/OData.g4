@@ -30,11 +30,17 @@ resource        : string;
 
 port            : DIGITS;
 
-odataCommand    : '?' filter ;
+odataCommand    : '?' filter  top?  skip? orderby?;
 
 filter          : '$filter=' filterCommand;
 
 search          : '$search=' searchCommand;
+
+top             : '$top=' number;
+
+skip            : '$skip=' number;
+
+orderby         : '$orderby=' attribute sortOrder? (attribute sortOrder?)*;
 
 searchCommand   : string;
 
@@ -52,11 +58,11 @@ startsWith      : 'startsWith' leftCurlyBracket attribute ',' '\'' value '\''
 
 attribute       : string;
 
+
 value           : string;
 
-top             : 'top';
+sortOrder       : asc | desc;
 
-skip            : 'skip';
 
 comparator      : eq | gt | lt | ge | le;
 operator        : (and | or);
@@ -74,6 +80,10 @@ lt              : LT;
 ge              : GE;
 le              : LE;
 string          : STRING;
+number          : DIGITS;
+
+asc             : ASC;
+desc            : DESC;
 
 EQ              : 'eq';
 GT              : 'gt';
@@ -82,6 +92,8 @@ GE              : 'ge';
 LE              : 'le';
 AND             : 'and';
 OR              : 'or';
+ASC             : 'asc';
+DESC            : 'desc';
 TOP             : 'top';
 SKIP_            : 'skip';
 COUNT           : 'count';

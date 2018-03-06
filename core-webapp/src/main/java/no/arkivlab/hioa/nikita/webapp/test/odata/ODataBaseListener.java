@@ -233,6 +233,60 @@ public class ODataBaseListener implements ODataListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override
+    public void enterTop(ODataParser.TopContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitTop(ODataParser.TopContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void enterSkip(ODataParser.SkipContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitSkip(ODataParser.SkipContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void enterOrderby(ODataParser.OrderbyContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitOrderby(ODataParser.OrderbyContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
     public void enterSearchCommand(ODataParser.SearchCommandContext ctx) {
     }
 
@@ -359,7 +413,7 @@ public class ODataBaseListener implements ODataListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override
-    public void enterTop(ODataParser.TopContext ctx) {
+    public void enterSortOrder(ODataParser.SortOrderContext ctx) {
     }
 
     /**
@@ -368,25 +422,7 @@ public class ODataBaseListener implements ODataListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override
-    public void exitTop(ODataParser.TopContext ctx) {
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * <p>The default implementation does nothing.</p>
-     */
-    @Override
-    public void enterSkip(ODataParser.SkipContext ctx) {
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * <p>The default implementation does nothing.</p>
-     */
-    @Override
-    public void exitSkip(ODataParser.SkipContext ctx) {
+    public void exitSortOrder(ODataParser.SortOrderContext ctx) {
     }
 
     /**
@@ -603,6 +639,60 @@ public class ODataBaseListener implements ODataListener {
      */
     @Override
     public void exitString(ODataParser.StringContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void enterNumber(ODataParser.NumberContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitNumber(ODataParser.NumberContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void enterAsc(ODataParser.AscContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitAsc(ODataParser.AscContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void enterDesc(ODataParser.DescContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitDesc(ODataParser.DescContext ctx) {
     }
 
     /**

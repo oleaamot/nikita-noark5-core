@@ -1,5 +1,5 @@
-http://localhost/noark5v4/api/arkivstruktur/arkiv?$filter=startsWith(tittel,
-'hello')
+http://localhost/noark5v4/api/arkivstruktur/mappe?$filter=tittel lt 'hello'
+http://localhost/noark5v4/api/arkivstruktur/arkiv?$filter=startsWith(tittel, 'hello')
 http://localhost/noark5v4/api/arkivstruktur/arkiv?$filter=contains(beskrivelse, 'hello')
 http://localhost/noark5v4/api/arkivstruktur/mappe?$filter=tittel eq 'hello'
 
