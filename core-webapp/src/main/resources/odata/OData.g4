@@ -30,7 +30,7 @@ resource        : string;
 
 port            : DIGITS;
 
-odataCommand    : '?' filter  top?  skip? orderby?;
+odataCommand    : '?' (filter | top | skip | orderby)*;
 
 filter          : '$filter=' filterCommand;
 
@@ -44,11 +44,13 @@ orderby         : '$orderby=' attribute sortOrder? (attribute sortOrder?)*;
 
 searchCommand   : string;
 
-filterCommand   : (command | (attribute comparator
- '\'' value '\'')) (operator filterCommand)? ;
+filterCommand   : (command | comparatorCommand) (operator filterCommand)? ;
 
 
 command        : (contains | startsWith);
+
+comparatorCommand : (attribute comparator '\'' value '\'');
+
 
 contains        : 'contains' leftCurlyBracket attribute ',' '\'' value '\''
                              rightCurlyBracket;

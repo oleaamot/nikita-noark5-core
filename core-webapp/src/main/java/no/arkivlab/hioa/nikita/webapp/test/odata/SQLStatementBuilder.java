@@ -18,19 +18,19 @@ public class SQLStatementBuilder {
     private String select;
     private ArrayList<String> whereList;
     private ArrayList<String> orderByList;
-    private String limit;
+    private String limitHowMany;
+    private String limitOffset;
 
     public SQLStatementBuilder() {
         select = "";
         whereList = new ArrayList<>();
         orderByList = new ArrayList<>();
-        limit = "";
     }
 
     public void addSelect(String entity, String ownerColumn, String
             loggedInUser) {
         select = "select * from " + entity + " where " + ownerColumn + " ='" +
-                loggedInUser + "' and";
+                loggedInUser + "'";
     }
 
     public void addWhere(String where) {
@@ -42,13 +42,11 @@ public class SQLStatementBuilder {
     }
 
     public void addLimitby_skip(Integer skip) {
-        limit += skip.toString();
+        limitOffset = skip.toString();
     }
 
     public void addLimitby_top(Integer top) {
-        if (limit.length() > 0) {
-            limit += ", " + top.toString();
-        }
+        limitHowMany = top.toString();
     }
 
     public String buildSQLStatement() {
@@ -67,14 +65,17 @@ public class SQLStatementBuilder {
             sqlStatement += where;
         }
 
+
         sqlStatement += " ";
 
         // take care of the orderBy part
-        boolean firstOrderBy = false;
+        boolean firstOrderBy = true;
         for (String orderBy : orderByList) {
             if (!firstOrderBy) {
-                firstOrderBy = true;
+                firstOrderBy = false;
                 sqlStatement += ", ";
+            } else {
+                sqlStatement += " order by ";
             }
             sqlStatement += orderBy;
         }
@@ -82,8 +83,14 @@ public class SQLStatementBuilder {
         sqlStatement += " ";
 
         // take care of the limit part
-        sqlStatement += limit;
-
+        if (limitOffset != null) {
+            sqlStatement += " LIMIT " + limitOffset;
+            if (limitHowMany != null) {
+                sqlStatement += ", " + limitHowMany;
+            }
+        } else if (limitHowMany != null) {
+            sqlStatement += " LIMIT " + limitHowMany;
+        }
         return sqlStatement;
     }
 }

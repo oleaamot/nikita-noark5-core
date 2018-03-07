@@ -159,6 +159,48 @@ public class NikitaODataToESWalker
 
     }
 
+
+    /**
+     * processComparatorCommand
+     * <p>
+     * Convert a general Odata attribute comparator value command to ES JSON. In
+     * the following example:
+     * <p>
+     * [contextPath][api]/arkivstruktur/arkiv?$filter=tittel eq 'hello'
+     * <p>
+     * tittel eq 'hello' becomes the following ES JSON:
+     * <p>
+     * <p>
+     * This is achieved by looking at the children and picking out the
+     * attribute (in this case 'tittel'), the comparator (in this case eq) and
+     * value (in this case 'hello').
+     *
+     * @param attribute  The attribute/column you wish to filter on
+     * @param comparator The type of comparison you want to undertake e.g eq,
+     *                   lt etc
+     * @param value      The value you wish to filter on
+     */
+    @Override
+    public void processComparatorCommand(String attribute, String comparator,
+                                         String value) {
+
+    }
+
+    @Override
+    public void processSkipCommand(Integer skip) {
+
+    }
+
+    @Override
+    public void processTopCommand(Integer top) {
+
+    }
+
+    @Override
+    public void processOrderByCommand(String attribute, String sortOrder) {
+
+    }
+
     public JSONObject getQuery() {
         return query;
     }

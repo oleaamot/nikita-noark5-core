@@ -1,7 +1,6 @@
 package no.arkivlab.hioa.nikita.webapp.test.odata;
 
 import nikita.util.CommonUtils;
-import nikita.util.exceptions.NoarkODataSyntaxProcessException;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
@@ -32,7 +31,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * a production environment!
  */
 
-public class NikitaODataWalker
+public abstract class NikitaODataWalker
         extends ODataBaseListener
         implements IODataWalker {
 
@@ -154,15 +153,10 @@ public class NikitaODataWalker
         processStartsWith(attribute, value);
     }
 
-
-    // attribute, comparator, value
-
-
     @Override
-    public void enterFilterCommand(ODataParser.FilterCommandContext ctx) {
-        super.enterFilterCommand(ctx);
-
-        System.out.println("Entering enterStartsWith. Found [" +
+    public void enterComparatorCommand(
+            ODataParser.ComparatorCommandContext ctx) {
+        System.out.println("Entering filter. Found [" +
                 ctx.getText() + "]");
         String attribute = ctx.getChild(
                 ODataParser.AttributeContext.class, 0).getText();
@@ -171,9 +165,8 @@ public class NikitaODataWalker
         String value = ctx.getChild(
                 ODataParser.ValueContext.class, 0).getText();
 
-        processFilterCommand(attribute, comparator, value);
+        processComparatorCommand(attribute, comparator, value);
     }
-
 
     @Override
     public void enterTop(ODataParser.TopContext ctx) {
@@ -181,7 +174,7 @@ public class NikitaODataWalker
         System.out.println("Entering enterTop. Found [" +
                 ctx.getText() + "]");
         String topAsString = ctx.getChild(
-                ODataParser.TopContext.class, 0).getText();
+                ODataParser.NumberContext.class, 0).getText();
 
         Integer top = Integer.parseInt(topAsString);
         // TODO: Check it's a number, throw exception otherwise
@@ -193,7 +186,7 @@ public class NikitaODataWalker
         super.enterSkip(ctx);
 
         String skipAsString = ctx.getChild(
-                ODataParser.SkipContext.class, 0).getText();
+                ODataParser.NumberContext.class, 0).getText();
 
         Integer skip = Integer.parseInt(skipAsString);
         // TODO: Check it's a number, throw exception otherwise
@@ -210,73 +203,6 @@ public class NikitaODataWalker
                 ODataParser.SortOrderContext.class, 0).getText();
 
         processOrderByCommand(attribute, sortOrder);
-    }
-
-
-    @Override
-    public void processFilterCommand(String attribute, String comparator,
-                                     String value) {
-        throw new NoarkODataSyntaxProcessException("Error when processing " +
-                "processFilterCommand in " + this.getClass().getName() +
-                ". This method should only be called by a sub-class");
-    }
-
-    @Override
-    public void processEnterAttribute(ODataParser.AttributeContext ctx) {
-        throw new NoarkODataSyntaxProcessException("Error when processing [" +
-                ctx.getText() + "]. processEnterAttribute in " + this
-                .getClass().getName() + " was called. This method should only" +
-                " be called by a sub-class");
-    }
-
-    @Override
-    public void processResource(String entity, String loggedInUser) {
-        throw new NoarkODataSyntaxProcessException("Error when processing " +
-                "processResource in " + this.getClass().getName() + ". This " +
-                "method should only be called by a sub-class");
-    }
-
-    @Override
-    public void processEnterValue(ODataParser.ValueContext ctx) {
-        throw new NoarkODataSyntaxProcessException("Error when processing [" +
-                ctx.getText() + "]. processEnterValue in " + this
-                .getClass().getName() + " was called. This method should only" +
-                " be called by a sub-class");
-    }
-
-    @Override
-    public void processContains(String attribute, String value) {
-        throw new NoarkODataSyntaxProcessException("Error when processing " +
-                "processContains in " + this.getClass().getName() + "." +
-                "called. This method should only be called by a sub-class");
-    }
-
-    @Override
-    public void processStartsWith(String attribute, String value) {
-        throw new NoarkODataSyntaxProcessException("Error when processing " +
-                "processStartsWith in " + this.getClass().getName() + ". " +
-                "This method should only be called by a sub-class");
-    }
-
-    @Override
-    public void processSkipCommand(Integer skip) {
-        throw new NoarkODataSyntaxProcessException("Error when processing " +
-                "skip in " + this.getClass().getName() + ". " +
-                "This method should only be called by a sub-class");
-    }
-
-    @Override
-    public void processTopCommand(Integer top) {
-        throw new NoarkODataSyntaxProcessException("Error when processing " +
-                "top in " + this.getClass().getName() + ". " +
-                "This method should only be called by a sub-class");
-    }
-
-    @Override
-    public void processOrderByCommand(String attribute, String sortOrder) {
-        throw new NoarkODataSyntaxProcessException("Error when processing " +
-                "orderby in " + this.getClass().getName() + ". " +
-                "This method should only be called by a sub-class");
     }
 
 

@@ -24,6 +24,8 @@ public class NikitaODataToSQLWalker
         comparatorMap.put(ODATA_LT, SQL_LT);
         comparatorMap.put(ODATA_GE, SQL_GE);
         comparatorMap.put(ODATA_LE, SQL_LE);
+
+        sqlStatementBuilder = new SQLStatementBuilder();
     }
 
 
@@ -53,17 +55,6 @@ public class NikitaODataToSQLWalker
                 loggedInUser);
     }
 
-
-
-    @Override
-    public void processEnterAttribute(ODataParser.AttributeContext ctx) {
-        super.processEnterAttribute(ctx);
-    }
-
-    @Override
-    public void processEnterValue(ODataParser.ValueContext ctx) {
-        super.processEnterValue(ctx);
-    }
 
     /**
      * processContains
@@ -107,7 +98,7 @@ public class NikitaODataToSQLWalker
     }
 
     /**
-     * processFilterCommand
+     * processComparatorCommand
      * <p>
      * Convert a general Odata attribute comparator value command to SQL. In
      * the following example:
@@ -127,9 +118,9 @@ public class NikitaODataToSQLWalker
      * @param value      The value you wish to filter on
      */
     @Override
-    public void processFilterCommand(String attribute, String comparator,
-                                     String value) {
-        sqlStatementBuilder.addWhere(getNameDatabase(attribute) +
+    public void processComparatorCommand(String attribute, String comparator,
+                                         String value) {
+        sqlStatementBuilder.addWhere(getNameDatabase(attribute) + " " +
                 getSQLComparator(comparator) + " '" +
                 value + "'");
     }

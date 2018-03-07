@@ -341,6 +341,24 @@ public class ODataBaseListener implements ODataListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override
+    public void enterComparatorCommand(ODataParser.ComparatorCommandContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitComparatorCommand(ODataParser.ComparatorCommandContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
     public void enterContains(ODataParser.ContainsContext ctx) {
     }
 

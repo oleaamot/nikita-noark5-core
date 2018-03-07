@@ -260,6 +260,20 @@ public interface ODataListener extends ParseTreeListener {
     void exitCommand(ODataParser.CommandContext ctx);
 
     /**
+     * Enter a parse tree produced by {@link ODataParser#comparatorCommand}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterComparatorCommand(ODataParser.ComparatorCommandContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link ODataParser#comparatorCommand}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitComparatorCommand(ODataParser.ComparatorCommandContext ctx);
+
+    /**
      * Enter a parse tree produced by {@link ODataParser#contains}.
      *
      * @param ctx the parse tree
