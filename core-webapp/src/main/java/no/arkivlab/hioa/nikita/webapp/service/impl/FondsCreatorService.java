@@ -96,7 +96,7 @@ public class FondsCreatorService implements IFondsCreatorService {
         criteriaQuery.where(criteriaBuilder.equal(from.get("ownedBy"), loggedInUser));
         TypedQuery<FondsCreator> typedQuery = entityManager.createQuery(select);
         typedQuery.setFirstResult(skip);
-        typedQuery.setMaxResults(maxPageSize);
+        typedQuery.setMaxResults(top);
 
         return typedQuery.getResultList();
     }
@@ -113,7 +113,7 @@ public class FondsCreatorService implements IFondsCreatorService {
     }
 
     @Override
-    public FondsCreator findBySystemIdOrderBySystemId(String systemId) {
+    public FondsCreator findBySystemId(String systemId) {
         return getFondsCreatorOrThrow(systemId);
     }
 
@@ -161,7 +161,7 @@ public class FondsCreatorService implements IFondsCreatorService {
      * @return
      */
     protected FondsCreator getFondsCreatorOrThrow(@NotNull String fondsCreatorSystemId) {
-        FondsCreator fondsCreator = fondsCreatorRepository.findBySystemIdOrderBySystemId(fondsCreatorSystemId);
+        FondsCreator fondsCreator = fondsCreatorRepository.findBySystemId(fondsCreatorSystemId);
         if (fondsCreator == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " FondsCreator, using systemId " + fondsCreatorSystemId;
             logger.info(info);

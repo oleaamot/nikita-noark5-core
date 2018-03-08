@@ -15,7 +15,7 @@ public interface IDocumentMediumService {
 
     List<DocumentMedium> findAll2();
 
-    DocumentMedium findBySystemIdOrderBySystemId(String systemId);
+    DocumentMedium findBySystemId(String systemId);
 
     DocumentMedium update(DocumentMedium documentMedium);
 

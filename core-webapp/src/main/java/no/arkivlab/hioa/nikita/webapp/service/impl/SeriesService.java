@@ -25,7 +25,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 import java.util.List;
 
 import static nikita.config.Constants.INFO_CANNOT_ASSOCIATE_WITH_CLOSED_OBJECT;
@@ -60,7 +59,7 @@ public class SeriesService implements ISeriesService {
     @Override
     public CaseFile createCaseFileAssociatedWithSeries(String seriesSystemId, CaseFile caseFile) {
         CaseFile persistedFile = null;
-        Series series = seriesRepository.findBySystemIdOrderBySystemId(seriesSystemId);
+        Series series = seriesRepository.findBySystemId(seriesSystemId);
         if (series == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Series, using seriesSystemId " + seriesSystemId;
             logger.info(info);
@@ -80,7 +79,7 @@ public class SeriesService implements ISeriesService {
     @Override
     public File createFileAssociatedWithSeries(String seriesSystemId, File file) {
         File persistedFile = null;
-        Series series = seriesRepository.findBySystemIdOrderBySystemId(seriesSystemId);
+        Series series = seriesRepository.findBySystemId(seriesSystemId);
         if (series == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Series, using seriesSystemId " + seriesSystemId;
             logger.info(info) ;
@@ -125,7 +124,7 @@ public class SeriesService implements ISeriesService {
         criteriaQuery.where(criteriaBuilder.equal(from.get("ownedBy"), loggedInUser));
         TypedQuery<Series> typedQuery = entityManager.createQuery(select);
         typedQuery.setFirstResult(skip);
-        typedQuery.setMaxResults(maxPageSize);
+        typedQuery.setMaxResults(top);
         return typedQuery.getResultList();
     }
 
@@ -156,293 +155,10 @@ public class SeriesService implements ISeriesService {
     }
 
     // systemId
-    public Series findBySystemIdOrderBySystemId(String systemId) {
+    public Series findBySystemId(String systemId) {
         return getSeriesOrThrow(systemId);
     }
 
-    // title
-    public List<Series> findByTitleAndOwnedBy(String title, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByTitleAndOwnedBy(title,  ownedBy);
-    }
-
-    public List<Series> findByTitleContainingAndOwnedBy(String title, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByTitleContainingAndOwnedBy(title, ownedBy);
-    }
-
-    public List<Series> findByTitleIgnoreCaseContainingAndOwnedBy(String title, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByTitleIgnoreCaseContainingAndOwnedBy(title, ownedBy);
-    }
-
-    public List<Series> findByTitleAndOwnedBy(String title, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByTitleAndOwnedBy(title, ownedBy, sort);
-    }
-
-    public List<Series> findByTitleContainingAndOwnedBy(String title, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByTitleContainingAndOwnedBy(title, ownedBy, sort);
-    }
-
-    public List<Series> findByTitleIgnoreCaseContainingAndOwnedBy(String title, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByTitleIgnoreCaseContainingAndOwnedBy(title, ownedBy, sort);
-    }
-
-    public Page<Series> findByTitleAndOwnedBy(String title, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByTitleAndOwnedBy(title, ownedBy, pageable);
-    }
-
-    public Page<Series> findByTitleContainingAndOwnedBy(String title, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByTitleContainingAndOwnedBy(title, ownedBy, pageable);
-    }
-
-    public Page<Series> findByTitleIgnoreCaseContainingAndOwnedBy(String title, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByTitleIgnoreCaseContainingAndOwnedBy(title, ownedBy, pageable);
-    }
-
-    // description
-    public List<Series> findByDescriptionAndOwnedBy(String description, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByDescriptionAndOwnedBy(description, ownedBy);
-    }
-
-    public List<Series> findByDescriptionContainingAndOwnedBy(String description, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByDescriptionContainingAndOwnedBy(description, ownedBy);
-    }
-
-    public List<Series> findByDescriptionIgnoreCaseContainingAndOwnedBy(String description, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByDescriptionIgnoreCaseContainingAndOwnedBy(description, ownedBy);
-    }
-
-    public List<Series> findByDescriptionAndOwnedBy(String description, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByDescriptionAndOwnedBy(description, ownedBy, sort);
-    }
-
-    public List<Series> findByDescriptionContainingAndOwnedBy(String description, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByDescriptionContainingAndOwnedBy(description, ownedBy, sort);
-    }
-
-    public List<Series> findByDescriptionIgnoreCaseContainingAndOwnedBy(String description, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByDescriptionIgnoreCaseContainingAndOwnedBy(description, ownedBy, sort);
-    }
-
-    public Page<Series> findByDescriptionAndOwnedBy(String description, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByDescriptionAndOwnedBy(description, ownedBy, pageable);
-    }
-
-    public Page<Series> findByDescriptionContainingAndOwnedBy(String description, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByDescriptionContainingAndOwnedBy(description, ownedBy, pageable);
-    }
-
-    public Page<Series> findByDescriptionIgnoreCaseContainingAndOwnedBy(String description, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByDescriptionIgnoreCaseContainingAndOwnedBy(description, ownedBy, pageable);
-    }
-
-    // fondStatus
-    public List<Series> findBySeriesStatusAndOwnedBy(String seriesStatus, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findBySeriesStatusAndOwnedBy(seriesStatus, ownedBy);
-    }
-
-    public List<Series> findBySeriesStatusAndOwnedBy(String seriesStatus, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findBySeriesStatusAndOwnedBy(seriesStatus, ownedBy, sort);
-    }
-
-    public Page<Series> findBySeriesStatusAndOwnedBy(String seriesStatus, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findBySeriesStatusAndOwnedBy(seriesStatus, ownedBy, pageable);
-    }
-
-    // documentMedium
-    public List<Series> findByDocumentMediumAndOwnedBy(String documentMedium, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByDocumentMediumAndOwnedBy(documentMedium, ownedBy);
-    }
-
-    public List<Series> findByDocumentMediumAndOwnedBy(String documentMedium, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByDocumentMediumAndOwnedBy(documentMedium, ownedBy, sort);
-    }
-
-    public Page<Series> findByDocumentMediumAndOwnedBy(String documentMedium, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByDocumentMediumAndOwnedBy(documentMedium, ownedBy, pageable);
-    }
-
-    // createdDate
-    public List<Series> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByCreatedDateAndOwnedBy(createdDate, ownedBy);
-    }
-
-    public List<Series> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByCreatedDateAndOwnedBy(createdDate, ownedBy, sort);
-    }
-
-    public List<Series> findByCreatedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByCreatedDateBetweenAndOwnedBy(start, end, ownedBy);
-    }
-
-    public Page<Series> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByCreatedDateAndOwnedBy(createdDate, ownedBy, pageable);
-    }
-
-    public Page<Series> findByCreatedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByCreatedDateBetweenAndOwnedBy(start, end, ownedBy, pageable);
-    }
-
-    // createdBy
-    public List<Series> findByCreatedByAndOwnedBy(String createdBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByCreatedByAndOwnedBy(createdBy, ownedBy);
-    }
-
-    public List<Series> findByCreatedByContainingAndOwnedBy(String createdBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByCreatedByContainingAndOwnedBy(createdBy, ownedBy);
-    }
-
-    public List<Series> findByCreatedByIgnoreCaseContainingAndOwnedBy(String createdBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByCreatedByIgnoreCaseContainingAndOwnedBy(createdBy, ownedBy);
-    }
-
-    public List<Series> findByCreatedByAndOwnedBy(String createdBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByCreatedByAndOwnedBy(createdBy, ownedBy, sort);
-    }
-
-    public List<Series> findByCreatedByContainingAndOwnedBy(String createdBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByCreatedByContainingAndOwnedBy(createdBy, ownedBy, sort);
-    }
-
-    public List<Series> findByCreatedByIgnoreCaseContainingAndOwnedBy(String createdBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByCreatedByIgnoreCaseContainingAndOwnedBy(createdBy, ownedBy, sort);
-    }
-
-    public Page<Series> findByCreatedByAndOwnedBy(String createdBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByCreatedByAndOwnedBy(createdBy, ownedBy, pageable);
-    }
-
-    public Page<Series> findByCreatedByContainingAndOwnedBy(String createdBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByCreatedByContainingAndOwnedBy(createdBy, ownedBy, pageable);
-    }
-
-    public Page<Series> findByCreatedByIgnoreCaseContainingAndOwnedBy(String createdBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByCreatedByIgnoreCaseContainingAndOwnedBy(createdBy, ownedBy, pageable);
-    }
-
-    // finalisedDate
-    public List<Series> findByFinalisedDateAndOwnedBy(Date finalisedDate, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByFinalisedDateAndOwnedBy(finalisedDate, ownedBy);
-    }
-
-    public List<Series> findByFinalisedDateAndOwnedBy(Date finalisedDate, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByFinalisedDateAndOwnedBy(finalisedDate, ownedBy);
-    }
-
-    public List<Series> findByFinalisedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByFinalisedDateBetweenAndOwnedBy(start, end, ownedBy);
-    }
-
-    public Page<Series> findByFinalisedDateAndOwnedBy(Date finalisedDate, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByFinalisedDateAndOwnedBy(finalisedDate, ownedBy, pageable);
-    }
-
-    public Page<Series> findByFinalisedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByFinalisedDateBetweenAndOwnedBy(start, end, ownedBy, pageable);
-    }
-
-    // finalisedBy
-    public List<Series> findByFinalisedByAndOwnedBy(String finalisedBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByFinalisedByAndOwnedBy(finalisedBy, ownedBy);
-    }
-
-    public List<Series> findByFinalisedByContainingAndOwnedBy(String finalisedBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByFinalisedByContainingAndOwnedBy(finalisedBy, ownedBy);
-    }
-
-    public List<Series> findByFinalisedByIgnoreCaseContainingAndOwnedBy(String finalisedBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByFinalisedByIgnoreCaseContainingAndOwnedBy(finalisedBy, ownedBy);
-    }
-
-    public List<Series> findByFinalisedByAndOwnedBy(String finalisedBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByFinalisedByAndOwnedBy(finalisedBy, ownedBy, sort);
-    }
-
-    public List<Series> findByFinalisedByContainingAndOwnedBy(String finalisedBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByFinalisedByContainingAndOwnedBy(finalisedBy, ownedBy, sort);
-    }
-
-    public List<Series> findByFinalisedByIgnoreCaseContainingAndOwnedBy(String finalisedBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByFinalisedByIgnoreCaseContainingAndOwnedBy(finalisedBy, ownedBy, sort);
-    }
-
-    public Page<Series> findByFinalisedByAndOwnedBy(String finalisedBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByFinalisedByAndOwnedBy(finalisedBy, ownedBy, pageable);
-    }
-
-    public Page<Series> findByFinalisedByContainingAndOwnedBy(String finalisedBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByFinalisedByContainingAndOwnedBy(finalisedBy, ownedBy, pageable);
-    }
-
-    public Page<Series> findByFinalisedByIgnoreCaseContainingAndOwnedBy(String finalisedBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByFinalisedByIgnoreCaseContainingAndOwnedBy(finalisedBy, ownedBy, pageable);
-    }
-
-    // deleted
-    public List<Series> findByDeletedAndOwnedBy(String deleted, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByDeletedAndOwnedBy(deleted, ownedBy);
-    }
-
-    public List<Series> findByDeletedAndOwnedBy(String deleted, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByDeletedAndOwnedBy(deleted, ownedBy, sort);
-    }
-
-    public Page<Series> findByDeletedAndOwnedBy(String deleted, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return seriesRepository.findByDeletedAndOwnedBy(deleted, ownedBy, pageable);
-    }
 
     // ownedBy
     public List<Series> findByOwnedBy(String ownedBy) {
@@ -455,13 +171,6 @@ public class SeriesService implements ISeriesService {
     public Page<Series> findByOwnedBy(String ownedBy, Pageable pageable) {return seriesRepository.findByOwnedBy(ownedBy, pageable);}
 
     // All UPDATE operations
-    public Series update(Series series){
-        if (series.getSeriesStatus().equals(STATUS_CLOSED)) {
-            //throw an exception back
-        }
-        return seriesRepository.save(series);
-    }
-
     @Override
     public Series handleUpdate(@NotNull String systemId, @NotNull Long version, @NotNull Series incomingSeries) {
         Series existingSeries = getSeriesOrThrow(systemId);
@@ -479,36 +188,6 @@ public class SeriesService implements ISeriesService {
         seriesRepository.save(existingSeries);
         return existingSeries;
     }
-    
-    public Series updateSeriesSetFinalized(Long id){
-        Series series = seriesRepository.findById(id);
-
-        if (series == null) {
-            // TODO throw Object not find
-        }
-
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        series.setSeriesStatus(STATUS_CLOSED);
-        series.setFinalisedDate(new Date());
-        series.setFinalisedBy(username);
-
-        return seriesRepository.save(series);
-    }
-
-    public Series updateSeriesSetTitle(Long id, String newTitle){
-
-        Series series = seriesRepository.findById(id);
-
-        if (series == null) {
-            // TODO throw Object not find
-        } else if (series.getSeriesStatus().equals(STATUS_CLOSED)) {
-            // TODO throw Object finalises, cannot be edited
-        }
-        series.setTitle(newTitle);
-        return seriesRepository.save(series);
-    }
-
 
     // All DELETE operations
     @Override
@@ -527,7 +206,7 @@ public class SeriesService implements ISeriesService {
      * @return
      */
     protected Series getSeriesOrThrow(@NotNull String seriesSystemId) {
-        Series series = seriesRepository.findBySystemIdOrderBySystemId(seriesSystemId);
+        Series series = seriesRepository.findBySystemId(seriesSystemId);
         if (series == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Series, using systemId " + seriesSystemId;
             logger.info(info);

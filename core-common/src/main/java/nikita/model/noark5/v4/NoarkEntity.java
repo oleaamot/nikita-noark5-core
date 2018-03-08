@@ -1,6 +1,7 @@
 package nikita.model.noark5.v4;
 
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
+import nikita.util.exceptions.NoarkConcurrencyException;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -106,8 +107,9 @@ public class NoarkEntity implements INikitaEntity, Comparable<NoarkEntity>   {
     public void setVersion(Long version) {
 
         if (!this.version.equals(version)) {
-            throw new RuntimeException("Concurrency Exception. Old version [" + this.version + "], new version "
-                    + "[" + version + "]");
+            throw new NoarkConcurrencyException(
+                    "Concurrency Exception. Old version [" + this
+                            .version + "], new version [" + version + "]");
         }
         this.version = version;
     }
@@ -156,10 +158,15 @@ public class NoarkEntity implements INikitaEntity, Comparable<NoarkEntity>   {
         return false;
     }
 
+
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
                 .append(systemId)
+                .append(deleted)
+                .append(ownedBy)
+                .append(version)
                 .toHashCode();
     }
 
@@ -170,18 +177,30 @@ public class NoarkEntity implements INikitaEntity, Comparable<NoarkEntity>   {
         }
         return new CompareToBuilder()
                 .append(this.systemId, otherEntity.systemId)
+                .append(ownedBy, otherEntity.getOwnedBy())
+                .append(deleted, otherEntity.getDeleted())
+                .append(version, otherEntity.getVersion())
                 .toComparison();
     }
 
     @Override
     public boolean equals(Object other) {
-        if (other == this)
-            return true;
-        if (!(other instanceof NoarkEntity))
+        if (other == null) {
             return false;
-        NoarkEntity noarkEntity = (NoarkEntity) other;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        NoarkGeneralEntity rhs = (NoarkGeneralEntity) other;
         return new EqualsBuilder()
-                .append(this.systemId, noarkEntity.systemId)
+                .appendSuper(super.equals(other))
+                .append(systemId, rhs.getSystemId())
+                .append(ownedBy, rhs.getOwnedBy())
+                .append(deleted, rhs.getDeleted())
+                .append(version, rhs.getVersion())
                 .isEquals();
     }
 

@@ -18,7 +18,7 @@ public interface UniqueCodeMetadataRepository<INikitaEntity, ID extends Serializ
 
     List<INikitaEntity> findAll();
 
-    INikitaEntity findBySystemIdOrderBySystemId(String systemId);
+    INikitaEntity findBySystemId(String systemId);
 
     List<INikitaEntity> findByDescription(String description);
 

@@ -1,6 +1,8 @@
 package nikita.model.noark5.v4.meeting;
 
 import nikita.model.noark5.v4.BasicRecord;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -136,5 +138,39 @@ public class MeetingRecord extends BasicRecord {
                 ", meetingCaseType='" + meetingCaseType + '\'' +
                 ", meetingRecordType='" + meetingRecordType + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        MeetingRecord rhs = (MeetingRecord) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(caseHandler, rhs.caseHandler)
+                .append(administrativeUnit, rhs.administrativeUnit)
+                .append(meetingRecordStatus, rhs.meetingRecordStatus)
+                .append(meetingCaseType, rhs.meetingCaseType)
+                .append(meetingRecordType, rhs.meetingRecordType)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(caseHandler)
+                .append(administrativeUnit)
+                .append(meetingRecordStatus)
+                .append(meetingCaseType)
+                .append(meetingRecordType)
+                .toHashCode();
     }
 }

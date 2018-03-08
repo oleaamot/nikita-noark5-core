@@ -3,7 +3,6 @@ package no.arkivlab.hioa.nikita.webapp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nikita.model.noark5.v4.Fonds;
 import no.arkivlab.hioa.nikita.webapp.run.N5CoreApp;
-import no.arkivlab.hioa.nikita.webapp.spring.datasource.TestDataSource;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -48,26 +47,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 /**
- * AnnotationConfigWebContextLoader allows application to run configured with annotations, not xml
- * ConfigFileApplicationContextInitializer is required to load the application-test.yaml file
- * classes={TestDataSource.class} required to load persistence
- * Transactional: We will be using a database and need transaction support
- * WebAppConfiguration: This is a web application we are testing
- * ActiveProfiles("test"): Run application with test profile
  *
  * All tests extend this class
  **/
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes={AnnotationConfigWebContextLoader.class,
-        TestDataSource.class, N5CoreApp.class
+        N5CoreApp.class
 //        AppWebMvcConfiguration.class
 })
 
 
 @ContextConfiguration(/*loader=AnnotationConfigWebContextLoader.class,*/initializers = ConfigFileApplicationContextInitializer.class)
 
-   //                      classes={TestDataSource.class, ServiceConfig.class, AppWebMvcConfiguration.class})
+//                      classes={ServiceConfig.class, AppWebMvcConfiguration.class})
 @ComponentScan({"no.arkivlab.hioa.nikita.webapp.web.controller", "no.arkivlab.hioa.nikita.webapp.service.spring"})
 @WebAppConfiguration
 //@EnableWebMvc

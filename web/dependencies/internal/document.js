@@ -1,9 +1,18 @@
-var app = angular.module('nikita-document', ['ngFileUpload']);
+var app = angular.module('nikita', ['ngFileUpload']);
 
 app.controller('DocumentController', ['$scope', '$http', function ($scope, $http) {
 
+    console.log("GET Current registry entry value is " + GetChosenRegistryEntryObject());
+    $scope.registryEntry = JSON.parse(GetChosenRegistryEntryObject());
+    $scope.token = GetUserToken();
+    // Make a breadcrumbs value appear
+    $scope.printDocument = true;
+    $scope.display_breadcrumb = display_breadcrumb;
+    // Display journalpostnr and tittel for UX
+    console.log("DocumentController - start! ");
 
-//    dokumentstatus er der
+    // Needed for the breadcrumbs to display Sak(mappeID)
+    $scope.caseFile = JSON.parse(GetChosenCaseFile());
 
     $scope.mimeTypeList = mimeTypeList;
     $scope.variantFormatList = variantFormatList;
@@ -11,24 +20,18 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
     $scope.tilknyttetRegistreringSomList = tilknyttetRegistreringSomList;
     $scope.documentStatusList = documentStatusList;
 
-    var urlDocumentDescription = GetLinkToDocumentDescription();
-    var urlVal = GetLinkToChosenRecord();
+    // NB!!!!! Add in the selected one for lists
+    var documentDescription = JSON.parse(GetChosenDocumentDescription());
 
-    // Fetch the record to display journlpostnr and tittel
-    $http({
-        method: 'GET',
-        url: urlVal,
-        headers: {'Authorization': GetUserToken()}
-    }).then(function successCallback(response) {
-        $scope.registryEntry = response.data;
-    }, function errorCallback(response) {
-        alert("Could not find registryEntry using link=" + urlVal + " " + response);
-    });
-
+    console.log("Current documentDescription" + documentDescription);
     // check to see urlDocumentDescription exists, if it does, we are fetching real data
-    if (urlDocumentDescription) {
-        console.log("Curent urlDocumentDescription is" + JSON.stringify(urlDocumentDescription));
+    if (documentDescription != '') {
+
+        var urlDocumentDescription = GetLinkToDocumentDescription();
+
+        console.log("Current urlDocumentDescription is" + JSON.stringify(urlDocumentDescription));
         $scope.createNewDocument = false;
+        $scope.label_document = "Dokument";
         var token = GetUserToken();
 
         $http({
@@ -82,47 +85,63 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
     }
     else {
         $scope.createNewDocument = true;
+        $scope.label_document = "Nytt dokument";
+
+        // Using the current registryentry object, go and find the
+        // REL_NEW_DOCUMENT_DESCRIPTION href and issue a GET to get any default
+        // values defined in the core
+        for (var rel in $scope.registryEntry._links) {
+            var relation = $scope.registryEntry._links[rel].rel;
+            if (relation == REL_NEW_DOCUMENT_DESCRIPTION) {
+                var urlGetNewDocumentDescription = $scope.registryEntry._links[rel].href;
+                console.log("Doing a GET on " + urlGetNewDocumentDescription);
+                $http({
+                    method: 'GET',
+                    url: urlGetNewDocumentDescription,
+                    headers: {'Authorization': $scope.token},
+                }).then(function successCallback(response) {
+                    $scope.documentDescription = response.data;
+                    $scope.selectedDocumentType = $scope.documentDescription.dokumenttype;
+                    $scope.selectedTilknyttetRegistreringSom = $scope.documentDescription.tilknyttetRegistreringSom;
+                    $scope.selectedDocumentStatus = $scope.documentDescription.dokumentstatus;
+                    console.log("urlGetNewDocumentDescription: " + urlGetNewDocumentDescription +
+                        " results " + JSON.stringify(response.data));
+                }, function errorCallback(response) {
+                    alert(JSON.stringify(response));
+                });
+            }
+        }
+
     }
-
-    var changeLocation = function ($scope, url, forceReload) {
-        $scope = $scope || angular.element(document).scope();
-        console.log("URL" + url);
-        if (forceReload || $scope.$$phase) {
-            window.location = url;
-        }
-        else {
-            //only use this if you want to replace the history stack
-            //$location.path(url).replace();
-
-            //this this if you want to change the URL and add it to the history stack
-            $location.path(url);
-            $scope.$apply();
-        }
-    };
 
     $scope.uploadFiles = function (file, errFiles) {
         $scope.f = file;
 
-        var url = GetLinkToDocumentFile();
-        var mimeType = $scope.selectedMimeType;
-        $scope.errFile = errFiles && errFiles[0];
-        if (file) {
-            var xhr = new XMLHttpRequest();
-            xhr.withCredentials = true;
-            xhr.addEventListener("readystatechange", function () {
-                if (this.readyState === 4) {
-                    if (this.responseText.message) {
-                        alert("Kunne ikke laste opp fil. Kjernen sier følgende: " + this.responseText.message);
-                    }
-                    else {
-                        alert ("Kunne ikke laste opp fil.");
-                    }
+        for (rel in $scope.documentObject._links) {
+            relation = $scope.documentObject._links[rel].rel;
+            if (relation == 'http://rel.kxml.no/noark5/v4/api/arkivstruktur/fil/') {
+                var url = $scope.documentObject._links[rel].href;
+                var mimeType = $scope.selectedMimeType;
+                $scope.errFile = errFiles && errFiles[0];
+                if (file) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.withCredentials = true;
+                    xhr.addEventListener("readystatechange", function () {
+                        if (this.readyState === 4) {
+                            if (this.responseText.message) {
+                                alert("Kunne ikke laste opp fil. Kjernen sier følgende: " + this.responseText.message);
+                            }
+                            else {
+                                alert("Kunne ikke laste opp fil.");
+                            }
+                        }
+                    });
+                    xhr.open("POST", url);
+                    var blob = new Blob([file], {type: mimeType});
+                    xhr.setRequestHeader('Authorization', GetUserToken());
+                    xhr.send(blob);
                 }
-            });
-            xhr.open("POST", url);
-            var blob = new Blob([file], {type: mimeType});
-            xhr.setRequestHeader('Authorization', GetUserToken());
-            xhr.send(blob);
+            }
         }
     };
 
@@ -139,7 +158,7 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
                 'Accept': mimeType,
             }
         }).success(function (data, status) {
-            console.log("Success on retrievinf file to download. File link was " + url);
+            console.log("Success on retrieving file to download. File link was " + url);
             return $scope.downloadFile = data;
         }).error(function (data, status) {
             alert("Could not start download of " + url)
@@ -153,10 +172,24 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
         var method='';
         if($scope.createNewDocument) {
             method = "POST";
-            urlDocumentDescription  = GetLinkToCreateDocumentDescription();
+            // Check the current series for a link to create a new casefile
+            for (var rel in $scope.registryEntry._links) {
+                var relation = $scope.registryEntry._links[rel].rel;
+                if (relation == REL_NEW_DOCUMENT_DESCRIPTION) {
+                    urlDocumentDescription = $scope.registryEntry._links[rel].href;
+                    console.log("URL for POST operation on registryEntry is " + urlDocumentDescription);
+                }
+            }
         } else {
             method = "PUT";
-            urlDocumentDescription  = GetLinkToDocumentDescription();
+
+            for (var rel in $scope.documentDescription._links) {
+                var relation = $scope.documentDescription._links[rel].rel;
+                if (relation == REL_SELF) {
+                    urlDocumentDescription = $scope.documentDescription._links[rel].href;
+                    console.log("URL for PUT operation on registryEntry is " + urlDocumentDescription);
+                }
+            }
         }
         console.log("Attempting " + method + " on " + urlDocumentDescription);
         $http({
@@ -170,7 +203,6 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
             data: {
                 tittel: $.trim(document.getElementById("document_description_title").value),
                 beskrivelse: $.trim(document.getElementById("document_description_description").value),
-                dokumentstatus: $.trim(document.getElementById("document_description_title").value),
                 tilknyttetRegistreringSom: $.trim($scope.selectedTilknyttetRegistreringSom),
                 dokumenttype: $.trim($scope.selectedDocumentType),
                 dokumentnummer: Number($.trim(document.getElementById("document_number").value)),
@@ -186,13 +218,17 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
                 relation = documentDescription._links[rel].rel;
                 if (relation == 'self') {
                     href = documentDescription._links[rel].href;
-                    SetLinkToCurrentDocumentDescription(href);
+                    SetLinkToDocumentDescription(href);
                 }
-                if (relation === REL_NEW_DOCUMENT_OBJECT) {
-                    urlDocumentObject = documentDescription._links[rel].href;
+                if (method === "POST") {
+                    if (relation === REL_NEW_DOCUMENT_OBJECT) {
+                        urlDocumentObject = documentDescription._links[rel].href;
+                    }
                 }
-                if (relation === REL_DOCUMENT_OBJECT) {
-                    urlDocumentObject = documentDescription._links[rel].href;
+                else {
+                    if (relation === REL_DOCUMENT_OBJECT) {
+                        urlDocumentObject = documentDescription._links[rel].href;
+                    }
                 }
             }
             console.log("Attempting " + method + " on " + urlDocumentObject);
@@ -205,11 +241,11 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
                     'ETAG': $scope.documentDescriptionETag
                 },
                 data: {
-                    sjekksum: $.trim(document.getElementById("checksum").value),
+                    //sjekksum: $.trim(document.getElementById("checksum").value),
                     versjonsnummer: Number($.trim(document.getElementById("version_number").value)),
                     variantformat: $scope.selectedVariantFormat,
-                    sjekksumAlgoritme: $.trim(document.getElementById("checksum_algorithm").value),
-                    filstoerrelse: Number($.trim(document.getElementById("file_size").value)),
+                    //sjekksumAlgoritme: $.trim(document.getElementById("checksum_algorithm").value),
+                    //filstoerrelse: Number($.trim(document.getElementById("file_size").value)),
                     mimeType: $.trim($scope.selectedMimeType)
                 },
             }).then(function successCallback(response) {
@@ -220,10 +256,10 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
                     relation = documentObject._links[rel].rel;
                     if (relation == 'self') {
                         href = documentObject._links[rel].href;
-                        SetLinkToCurrentDocumentObject(href);
+                        SetLinkToDocumentObject(href);
                     }
                 }
-                changeLocation($scope, "./dokument.html", true);
+                $scope.createNewDocument = false;
             }, function (data, status, headers, config) {
                 alert("Could not " + method + " document object " + data.data);
             });
@@ -231,4 +267,14 @@ app.controller('DocumentController', ['$scope', '$http', function ($scope, $http
             alert("Could not " + method + "document description " + data.data);
         });
     };
+
+
+    $scope.getTitleFromRegistryEntry = function () {
+        $scope.documentDescription.tittel = $scope.registryEntry.tittel;
+    };
+
+    $scope.getDescriptionFromRegistryEntry = function () {
+        $scope.documentDescription.beskrivelse = $scope.registryEntry.beskrivelse;
+    }
+
 }]);

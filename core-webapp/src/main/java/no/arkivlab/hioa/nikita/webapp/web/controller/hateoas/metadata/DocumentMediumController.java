@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nikita.config.Constants;
 import nikita.model.noark5.v4.hateoas.metadata.MetadataHateoas;
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.model.noark5.v4.metadata.DocumentMedium;
 import nikita.util.CommonUtils;
 import nikita.util.exceptions.NikitaException;
@@ -18,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.DOCUMENT_MEDIUM;
@@ -63,7 +64,7 @@ public class DocumentMediumController {
             throws NikitaException {
         DocumentMedium newDocumentMedium = documentMediumService.createNewDocumentMedium(documentMedium);
         MetadataHateoas metadataHateoas = new MetadataHateoas(newDocumentMedium);
-        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(newDocumentMedium.getVersion().toString())
@@ -86,8 +87,11 @@ public class DocumentMediumController {
     @RequestMapping(method = RequestMethod.GET, value = DOCUMENT_MEDIUM)
     public ResponseEntity<MetadataHateoas> findAll(HttpServletRequest request) {
         //ArrayList <DocumentMedium> documentMediumList = (ArrayList<DocumentMedium>) documentMediumService.findAll2();
-        MetadataHateoas metadataHateoas = new MetadataHateoas(new ArrayList<>(documentMediumService.findAll2()), DOCUMENT_MEDIUM);
-        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        MetadataHateoas metadataHateoas = new MetadataHateoas(
+                (List<INikitaEntity>)
+                        (List) documentMediumService.findAll(),
+                DOCUMENT_MEDIUM);
+        metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(metadataHateoas);
@@ -111,11 +115,11 @@ public class DocumentMediumController {
     @Counted
     @Timed
     @RequestMapping(value = DOCUMENT_MEDIUM + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH, method = RequestMethod.GET)
-    public ResponseEntity<MetadataHateoas> findBySystemIdOrderBySystemId(@PathVariable("systemID") final String systemId,
-                                                                         HttpServletRequest request) {
-        DocumentMedium documentMedium = documentMediumService.findBySystemIdOrderBySystemId(systemId);
+    public ResponseEntity<MetadataHateoas> findBySystemId(@PathVariable("systemID") final String systemId,
+                                                          HttpServletRequest request) {
+        DocumentMedium documentMedium = documentMediumService.findBySystemId(systemId);
         MetadataHateoas metadataHateoas = new MetadataHateoas(documentMedium);
-        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(documentMedium.getVersion().toString())
@@ -164,9 +168,9 @@ public class DocumentMediumController {
     public ResponseEntity<MetadataHateoas> updateDocumentMedium(@RequestBody DocumentMedium documentMedium,
                                                                 HttpServletRequest request)
             throws NikitaException {
-        DocumentMedium newDocumentMedium = documentMediumService.update(documentMedium);
+        documentMediumService.update(documentMedium);
         MetadataHateoas metadataHateoas = new MetadataHateoas(documentMedium);
-        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(metadataHateoas);

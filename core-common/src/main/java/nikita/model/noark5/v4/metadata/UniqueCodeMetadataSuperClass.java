@@ -60,13 +60,19 @@ public class UniqueCodeMetadataSuperClass extends MetadataSuperClassBase impleme
 
     @Override
     public boolean equals(Object other) {
-        if (other == this)
-            return true;
-        if (!(other instanceof UniqueCodeMetadataSuperClass))
+        if (other == null) {
             return false;
-        UniqueCodeMetadataSuperClass entity = (UniqueCodeMetadataSuperClass) other;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        UniqueCodeMetadataSuperClass rhs = (UniqueCodeMetadataSuperClass) other;
         return new EqualsBuilder()
-                .append(this.code, entity.code)
+                .appendSuper(super.equals(other))
+                .append(code, rhs.code)
                 .isEquals();
     }
 }

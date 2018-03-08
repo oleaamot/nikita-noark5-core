@@ -25,10 +25,10 @@ public class ApplicationDetailsSerializer extends StdSerializer<ApplicationDetai
         jgen.writeStartObject();
         jgen.writeArrayFieldStart("_links");
 
-        ArrayList <ConformityLevel> conformityLevels = (ArrayList) applicationDetails.getConformityLevels();
+        ArrayList<ConformityLevel> conformityLevels = (ArrayList) applicationDetails.getConformityLevels();
         Iterator<ConformityLevel> iterator = conformityLevels.iterator();
 
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             ConformityLevel conformityLevel = iterator.next();
             jgen.writeStartObject();
             jgen.writeStringField("href", conformityLevel.getHref());

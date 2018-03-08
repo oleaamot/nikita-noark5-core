@@ -3,12 +3,14 @@ package nikita.model.noark5.v4.secondary;
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.*;
 import nikita.model.noark5.v4.interfaces.entities.IClassifiedEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.CLASSIFIED;
 
@@ -52,23 +54,23 @@ public class Classified extends NoarkEntity implements IClassifiedEntity {
     private String classificationDowngradedBy;
     // Links to Series
     @OneToMany(mappedBy = "referenceClassified")
-    private Set<Series> referenceSeries = new TreeSet<>();
+    private List<Series> referenceSeries = new ArrayList<>();
 
     // Links to Klass
     @OneToMany(mappedBy = "referenceClassified")
-    private Set<Class> referenceClass = new TreeSet<>();
+    private List<Class> referenceClass = new ArrayList<>();
 
     // Links to File
     @OneToMany(mappedBy = "referenceClassified")
-    private Set<File> referenceFile = new TreeSet<>();
+    private List<File> referenceFile = new ArrayList<>();
 
     // Links to Record
     @OneToMany(mappedBy = "referenceClassified")
-    private Set<Record> referenceRecord = new TreeSet<>();
+    private List<Record> referenceRecord = new ArrayList<>();
 
     // Links to DocumentDescription
     @OneToMany(mappedBy = "referenceClassified")
-    private Set<DocumentDescription> referenceDocumentDescription = new TreeSet<>();
+    private List<DocumentDescription> referenceDocumentDescription = new ArrayList<>();
 
     public String getClassification() {
         return classification;
@@ -115,43 +117,43 @@ public class Classified extends NoarkEntity implements IClassifiedEntity {
         return CLASSIFIED;
     }
 
-    public Set<Series> getReferenceSeries() {
+    public List<Series> getReferenceSeries() {
         return referenceSeries;
     }
 
-    public void setReferenceSeries(Set<Series> referenceSeries) {
+    public void setReferenceSeries(List<Series> referenceSeries) {
         this.referenceSeries = referenceSeries;
     }
 
-    public Set<Class> getReferenceClass() {
+    public List<Class> getReferenceClass() {
         return referenceClass;
     }
 
-    public void setReferenceClass(Set<Class> referenceClass) {
+    public void setReferenceClass(List<Class> referenceClass) {
         this.referenceClass = referenceClass;
     }
 
-    public Set<File> getReferenceFile() {
+    public List<File> getReferenceFile() {
         return referenceFile;
     }
 
-    public void setReferenceFile(Set<File> referenceFile) {
+    public void setReferenceFile(List<File> referenceFile) {
         this.referenceFile = referenceFile;
     }
 
-    public Set<Record> getReferenceRecord() {
+    public List<Record> getReferenceRecord() {
         return referenceRecord;
     }
 
-    public void setReferenceRecord(Set<Record> referenceRecord) {
+    public void setReferenceRecord(List<Record> referenceRecord) {
         this.referenceRecord = referenceRecord;
     }
 
-    public Set<DocumentDescription> getReferenceDocumentDescription() {
+    public List<DocumentDescription> getReferenceDocumentDescription() {
         return referenceDocumentDescription;
     }
 
-    public void setReferenceDocumentDescription(Set<DocumentDescription> referenceDocumentDescription) {
+    public void setReferenceDocumentDescription(List<DocumentDescription> referenceDocumentDescription) {
         this.referenceDocumentDescription = referenceDocumentDescription;
     }
 
@@ -164,5 +166,39 @@ public class Classified extends NoarkEntity implements IClassifiedEntity {
                 ", classificationDowngradedDate=" + classificationDowngradedDate +
                 ", classificationDowngradedBy='" + classificationDowngradedBy + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Classified rhs = (Classified) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(classification, rhs.classification)
+                .append(classificationDate, rhs.classificationDate)
+                .append(classificationBy, rhs.classificationBy)
+                .append(classificationDowngradedDate, rhs.classificationDowngradedDate)
+                .append(classificationDowngradedBy, rhs.classificationDowngradedBy)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(classification)
+                .append(classificationDate)
+                .append(classificationBy)
+                .append(classificationDowngradedDate)
+                .append(classificationDowngradedBy)
+                .toHashCode();
     }
 }

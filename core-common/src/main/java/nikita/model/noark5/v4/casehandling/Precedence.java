@@ -2,12 +2,14 @@ package nikita.model.noark5.v4.casehandling;
 
 import nikita.model.noark5.v4.NoarkGeneralEntity;
 import nikita.model.noark5.v4.interfaces.entities.IPrecedenceEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import static nikita.config.Constants.NOARK_CASE_HANDLING_PATH;
 import static nikita.config.N5ResourceMappings.PRECEDENCE;
@@ -64,11 +66,11 @@ public class Precedence extends NoarkGeneralEntity implements IPrecedenceEntity{
 
     // Link to RegistryEntry
     @ManyToMany(mappedBy = "referencePrecedence")
-    private Set<RegistryEntry> referenceRegistryEntry = new TreeSet< >();
+    private List<RegistryEntry> referenceRegistryEntry = new ArrayList<>();
 
     // Links to CaseFiles
     @ManyToMany(mappedBy = "referencePrecedence")
-    private Set<CaseFile> referenceCaseFile = new TreeSet<>();
+    private List<CaseFile> referenceCaseFile = new ArrayList<>();
 
 
     public Date getPrecedenceDate() {
@@ -128,19 +130,19 @@ public class Precedence extends NoarkGeneralEntity implements IPrecedenceEntity{
         return NOARK_CASE_HANDLING_PATH;
     }
 
-    public Set<RegistryEntry> getReferenceRegistryEntry() {
+    public List<RegistryEntry> getReferenceRegistryEntry() {
         return referenceRegistryEntry;
     }
 
-    public void setReferenceRegistryEntry(Set<RegistryEntry> referenceRegistryEntry) {
+    public void setReferenceRegistryEntry(List<RegistryEntry> referenceRegistryEntry) {
         this.referenceRegistryEntry = referenceRegistryEntry;
     }
 
-    public Set<CaseFile> getReferenceCaseFile() {
+    public List<CaseFile> getReferenceCaseFile() {
         return referenceCaseFile;
     }
 
-    public void setReferenceCaseFile(Set<CaseFile> referenceCaseFile) {
+    public void setReferenceCaseFile(List<CaseFile> referenceCaseFile) {
         this.referenceCaseFile = referenceCaseFile;
     }
 
@@ -154,5 +156,41 @@ public class Precedence extends NoarkGeneralEntity implements IPrecedenceEntity{
                 ", precedenceAuthority='" + precedenceAuthority + '\'' +
                 ", precedenceDate='" + precedenceDate + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Precedence rhs = (Precedence) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(precedenceStatus, rhs.precedenceStatus)
+                .append(precedenceApprovedBy, rhs.precedenceApprovedBy)
+                .append(precedenceApprovedDate, rhs.precedenceApprovedDate)
+                .append(sourceOfLaw, rhs.sourceOfLaw)
+                .append(precedenceAuthority, rhs.precedenceAuthority)
+                .append(precedenceDate, rhs.precedenceDate)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(precedenceStatus)
+                .append(precedenceApprovedBy)
+                .append(precedenceApprovedDate)
+                .append(sourceOfLaw)
+                .append(precedenceAuthority)
+                .append(precedenceDate)
+                .toHashCode();
     }
 }

@@ -31,8 +31,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
@@ -102,7 +102,7 @@ public class FileHateoasController extends NoarkController {
             @RequestBody Record record) throws NikitaException {
         Record createdRecord = fileService.createRecordAssociatedWithFile(systemID, record);
         RecordHateoas recordHateoas = new RecordHateoas(createdRecord);
-        recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
+        recordHateoasHandler.addLinks(recordHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdRecord));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -142,7 +142,7 @@ public class FileHateoasController extends NoarkController {
             @RequestBody BasicRecord basicRecord) throws NikitaException {
         BasicRecord createdBasicRecord = fileService.createBasicRecordAssociatedWithFile(systemID, basicRecord);
         BasicRecordHateoas basicRecordHateoas = new BasicRecordHateoas(createdBasicRecord);
-        basicRecordHateoasHandler.addLinks(basicRecordHateoas, request, new Authorisation());
+        basicRecordHateoasHandler.addLinks(basicRecordHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdBasicRecord));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -398,13 +398,14 @@ public class FileHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        File file = fileService.findBySystemIdOrderBySystemId(systemID);
+        File file = fileService.findBySystemId(systemID);
         if (file == null) {
             throw new NoarkEntityNotFoundException("Could not find File object with systemID " + systemID);
         }
         RecordHateoas recordHateoas = new
-                RecordHateoas(new ArrayList<> (file.getReferenceRecord()));
-        recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
+                RecordHateoas((List<INikitaEntity>)
+                (List) file.getReferenceRecord());
+        recordHateoasHandler.addLinks(recordHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(recordHateoas);
@@ -476,7 +477,7 @@ public class FileHateoasController extends NoarkController {
         defaultRecord.setArchivedDate(new Date());
         RecordHateoas recordHateoas = new
                 RecordHateoas(defaultRecord);
-        recordHateoasHandler.addLinksOnNew(recordHateoas, request, new Authorisation());
+        recordHateoasHandler.addLinksOnNew(recordHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(recordHateoas);
@@ -502,7 +503,7 @@ public class FileHateoasController extends NoarkController {
         defaultBasicRecord.setArchivedDate(new Date());
         BasicRecordHateoas basicRecordHateoas = new
                 BasicRecordHateoas(defaultBasicRecord);
-        basicRecordHateoasHandler.addLinksOnNew(basicRecordHateoas, request, new Authorisation());
+        basicRecordHateoasHandler.addLinksOnNew(basicRecordHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(basicRecordHateoas);
@@ -525,10 +526,10 @@ public class FileHateoasController extends NoarkController {
                     value = "systemID of the file to retrieve",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        File file = fileService.findBySystemIdOrderBySystemId(systemID);
+        File file = fileService.findBySystemId(systemID);
         // TODO: If null return not found exception
         FileHateoas fileHateoas = new FileHateoas(file);
-        fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
+        fileHateoasHandler.addLinks(fileHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(file.getVersion().toString())
@@ -557,9 +558,9 @@ public class FileHateoasController extends NoarkController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         FileHateoas fileHateoas = new
-                FileHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                FileHateoas((List<INikitaEntity>) (List)
                 fileService.findFileByOwnerPaginated(top, skip));
-        fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
+        fileHateoasHandler.addLinks(fileHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(fileHateoas);
@@ -743,7 +744,7 @@ public class FileHateoasController extends NoarkController {
 
         File updatedFile = fileService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)), file);
         FileHateoas fileHateoas = new FileHateoas(updatedFile);
-        fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
+        fileHateoasHandler.addLinks(fileHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedFile));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -780,7 +781,7 @@ public class FileHateoasController extends NoarkController {
         /*
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, ));
         FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(systemID, file));
-        fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
+        fileHateoasHandler.addLinks(fileHateoas, new Authorisation());
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(finalisedFile.getVersion().toString())
@@ -817,7 +818,7 @@ public class FileHateoasController extends NoarkController {
         /*
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, ));
         FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(systemID, file));
-        fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
+        fileHateoasHandler.addLinks(fileHateoas, new Authorisation());
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(expandedFile.getVersion().toString())
@@ -856,7 +857,7 @@ public class FileHateoasController extends NoarkController {
             @PathVariable("systemID") final String systemID) throws NikitaException {
         /* applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, ));
         FileHateoas fileHateoas = new FileHateoas(fileService.updateFile(systemID, file));
-        fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
+        fileHateoasHandler.addLinks(fileHateoas, new Authorisation());
         return new ResponseEntity<>(fileHateoas, HttpStatus.CREATED);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .eTag(expandedFile.getVersion().toString())
@@ -884,20 +885,20 @@ public class FileHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        File file = fileService.findBySystemIdOrderBySystemId(systemID);
+        File file = fileService.findBySystemId(systemID);
         NoarkEntity parentEntity = file.chooseParent();
         HateoasNoarkObject hateoasNoarkObject;
         if (parentEntity instanceof Series) {
             hateoasNoarkObject = new SeriesHateoas(parentEntity);
-            seriesHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+            seriesHateoasHandler.addLinks(hateoasNoarkObject, new Authorisation());
         }
         else if (parentEntity instanceof File) {
             hateoasNoarkObject = new FileHateoas(parentEntity);
-            fileHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+            fileHateoasHandler.addLinks(hateoasNoarkObject, new Authorisation());
         }
         else if (parentEntity instanceof Class) {
             hateoasNoarkObject = new ClassHateoas(parentEntity);
-            classHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+            classHateoasHandler.addLinks(hateoasNoarkObject, new Authorisation());
         }
         else {
             throw new NikitaException("Internal error. Could not process"

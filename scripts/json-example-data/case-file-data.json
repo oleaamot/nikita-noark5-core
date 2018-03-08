@@ -1,8 +1,8 @@
 {
   "mappeID": "2016/01",
   "offentligTittel": "Public title of the test file",
-  "tittel": "Title of the test file",
-  "beskrivelse": "Description of the test file",
+  "tittel": "Tittel til saksmappen",
+  "beskrivelse": "Beskrivelse av saksmappen",
   "oppbevaringssted" : [ "location 1", "location2", "location3" ],
   "dokumentmedium": "Elektronisk arkiv",
   "saksaar": "2017",

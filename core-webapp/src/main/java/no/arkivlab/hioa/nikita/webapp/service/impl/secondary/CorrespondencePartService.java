@@ -102,8 +102,8 @@ public class CorrespondencePartService implements ICorrespondencePartService {
     }
 
     @Override
-    public CorrespondencePart findBySystemIdOrderBySystemId(String correspondencePartSystemId) {
-        return correspondencePartRepository.findBySystemIdOrderBySystemId(correspondencePartSystemId);
+    public CorrespondencePart findBySystemId(String correspondencePartSystemId) {
+        return correspondencePartRepository.findBySystemId(correspondencePartSystemId);
     }
 
     /**
@@ -115,7 +115,7 @@ public class CorrespondencePartService implements ICorrespondencePartService {
      * @return
      */
     protected CorrespondencePart getCorrespondencePartOrThrow(@NotNull String correspondencePartSystemId) {
-        CorrespondencePart correspondencePart = correspondencePartRepository.findBySystemIdOrderBySystemId(correspondencePartSystemId);
+        CorrespondencePart correspondencePart = correspondencePartRepository.findBySystemId(correspondencePartSystemId);
         if (correspondencePart == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " CorrespondencePart, using systemId " + correspondencePartSystemId;
             logger.info(info);

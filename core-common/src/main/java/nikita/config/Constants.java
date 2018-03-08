@@ -1,7 +1,5 @@
 package nikita.config;
 
-import java.text.SimpleDateFormat;
-
 import static nikita.config.N5ResourceMappings.*;
 
 /**
@@ -14,12 +12,8 @@ public final class Constants {
     public static final String SUB = "under";
 
     // Spring profile for development and production
-    public static final String SPRING_PROFILE_DEVELOPMENT = "dev";
-    public static final String SPRING_PROFILE_DEMO = "demo";
     public static final String SPRING_PROFILE_PRODUCTION = "prod";
-    // Spring profile used to disable swagger
-    public static final String SPRING_PROFILE_NO_SWAGGER = "no-swagger";
-    public static final String SYSTEM_ACCOUNT = "system";
+    public static final String SPRING_PROFILE_SWAGGER = "swagger";
 
     public static final String SPRING_ENDPOINT_DELIMITER  = "||";
 
@@ -110,12 +104,50 @@ public final class Constants {
     public static final String NEW_PRECEDENCE = NEW + DASH + PRECEDENCE;
     public static final String NEW_CASE_PARTY = NEW + DASH + CASE_PARTY;
     public static final String NEW_CASE_STATUS = NEW + DASH + CASE_STATUS;
-    public static final String NEW_SECONDARY_CLASSIFICATION = NEW + DASH + "sekundaerklassifikasjon";
+    public static final String NEW_SECONDARY_CLASSIFICATION = NEW + DASH +
+            "sekundaerklassifikasjon";
 
     // Create for new metadata objects
-    public static final String NEW_DOCUMENT_MEDIUM = NEW + DASH + DOCUMENT_MEDIUM;
+    public static final String NEW_DOCUMENT_MEDIUM = NEW + DASH +
+            DOCUMENT_MEDIUM;
     public static final String NEW_FONDS_STATUS = NEW + DASH + FONDS_STATUS;
-    public static final String NEW_CORRESPONDENCE_PART_TYPE = NEW + DASH + CORRESPONDENCE_PART_TYPE;
+    public static final String NEW_DOCUMENT_STATUS = NEW + DASH +
+            DOCUMENT_STATUS;
+
+    public static final String NEW_REGISTRY_ENTRY_STATUS = NEW + DASH +
+            REGISTRY_ENTRY_STATUS;
+
+    public static final String NEW_PRECEDENCE_STATUS = NEW + DASH +
+            PRECEDENCE_STATUS;
+
+    public static final String NEW_SIGN_OFF_METHOD = NEW + DASH +
+            SIGN_OFF_METHOD;
+
+    public static final String NEW_ELECTRONIC_SIGNATURE_SECURITY_LEVEL = NEW +
+            DASH + ELECTRONIC_SIGNATURE_SECURITY_LEVEL;
+
+    public static final String NEW_ELECTRONIC_SIGNATURE_VERIFIED = NEW +
+            DASH + ELECTRONIC_SIGNATURE_VERIFIED;
+
+    public static final String NEW_FORMAT = NEW + DASH + FORMAT;
+
+    public static final String NEW_FLOW_STATUS = NEW + DASH + FLOW_STATUS;
+
+    public static final String NEW_REGISTRY_ENTRY_TYPE = NEW + DASH +
+            REGISTRY_ENTRY_TYPE;
+
+    public static final String NEW_CASE_PARTY_ROLE = NEW + DASH +
+            CASE_PARTY_ROLE;
+
+    public static final String NEW_FILE_TYPE = NEW + DASH + FILE_TYPE;
+
+    public static final String NEW_COMMENT_TYPE = NEW + DASH + COMMENT_TYPE;
+
+    public static final String NEW_DOCUMENT_TYPE = NEW + DASH +
+            DOCUMENT_TYPE;
+
+    public static final String NEW_CORRESPONDENCE_PART_TYPE = NEW + DASH +
+            CORRESPONDENCE_PART_TYPE;
 
     public static final String SERIES_ASSOCIATE_AS_SUCCESSOR = "referanseArvtager";
     public static final String SERIES_ASSOCIATE_AS_PRECURSOR = "referanseForloeper";
@@ -179,6 +211,57 @@ public final class Constants {
     public static final String TEMPLATE_FONDS_STATUS_DESCRIPTION = "Arkivet er opprettet og i aktiv bruk";
     public static final String TEMPLATE_DOCUMENT_MEDIUM_CODE = "Elektronisk arkiv";
     public static final String TEMPLATE_DOCUMENT_MEDIUM_DESCRIPTION = "Bare elektroniske dokumenter";
+    public static final String TEMPLATE_DOCUMENT_STATUS_CODE = "B";
+    public static final String TEMPLATE_DOCUMENT_STATUS_DESCRIPTION =
+            "Dokumentet er under redigering";
+    public static final String TEMPLATE_DOCUMENT_TYPE_CODE = "B";
+    public static final String TEMPLATE_DOCUMENT_TYPE_DESCRIPTION =
+            "Brev";
+
+    public static final String TEMPLATE_REGISTRY_ENTRY_STATUS_CODE = "J";
+    public static final String TEMPLATE_REGISTRY_ENTRY_STATUS_DESCRIPTION =
+            "Journalført";
+
+    public static final String TEMPLATE_PRECEDENCE_STATUS_CODE = "G";
+    public static final String TEMPLATE_PRECEDENCE_STATUS_DESCRIPTION =
+            "Gjeldende";
+
+    public static final String TEMPLATE_SIGN_OFF_METHOD_CODE = "BE";
+    public static final String TEMPLATE_SIGN_OFF_METHOD_DESCRIPTION =
+            "Besvart med e-post";
+
+    public static final String
+            TEMPLATE_ELECTRONIC_SIGNATURE_SECURITY_LEVEL_CODE = "SK";
+    public static final String
+            TEMPLATE_ELECTRONIC_SIGNATURE_SECURITY_LEVEL_DESCRIPTION =
+            "Symmetrisk kryptert";
+
+    public static final String
+            TEMPLATE_ELECTRONIC_SIGNATURE_VERIFIED_CODE = "I";
+    public static final String
+            TEMPLATE_ELECTRONIC_SIGNATURE_VERIFIED_DESCRIPTION =
+            "Signatur påført, ikke verifisert";
+
+    public static final String TEMPLATE_FORMAT_CODE = "RA-PDF";
+    public static final String TEMPLATE_FORMAT_DESCRIPTION = "PDF/A - ISO " +
+            "19005-1:2005";
+
+    public static final String TEMPLATE_FLOW_STATUS_CODE = "G";
+    public static final String TEMPLATE_FLOW_STATUS_DESCRIPTION = "Godkjent";
+
+    public static final String TEMPLATE_CASE_PARTY_ROLE_CODE = "KLI";
+    public static final String TEMPLATE_CASE_PARTY_ROLE_DESCRIPTION = "Klient";
+
+    public static final String TEMPLATE_FILE_TYPE_CODE = "S";
+    public static final String TEMPLATE_FILE_TYPE_DESCRIPTION = "Saksmappe";
+
+    public static final String TEMPLATE_COMMENT_TYPE_CODE = "MS";
+    public static final String TEMPLATE_COMMENT_TYPE_DESCRIPTION =
+            "Merknad fra saksbehandler";
+
+    public static final String TEMPLATE_REGISTRY_ENTRY_TYPE_CODE = "I";
+    public static final String TEMPLATE_REGISTRY_ENTRY_TYPE_DESCRIPTION =
+            "Inngående dokument";
 
     public static final String TEMPLATE_REGISTRY_ENTRY_STATUS = "Journalført";
     public static final String TEMPLATE_REGISTRY_ENTRY_TYPE = "Journalført";
@@ -327,66 +410,162 @@ public final class Constants {
     public static final String REL_FONDS_STRUCTURE_NEW_AUTHOR = NIKITA_CONFORMANCE_REL + NEW_AUTHOR + SLASH;
 
     // Conversion
-    public static final String REL_FONDS_STRUCTURE_CONVERSION = REL_FONDS_STRUCTURE + CONVERSION + SLASH;
-    public static final String REL_FONDS_STRUCTURE_NEW_CONVERSION = REL_FONDS_STRUCTURE + NEW_CONVERSION + SLASH;
+    public static final String REL_FONDS_STRUCTURE_CONVERSION =
+            REL_FONDS_STRUCTURE + CONVERSION + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_CONVERSION =
+            REL_FONDS_STRUCTURE + NEW_CONVERSION + SLASH;
 
     // ElectronicSignature
-    public static final String REL_FONDS_STRUCTURE_ELECTRONIC_SIGNATURE = REL_FONDS_STRUCTURE + ELECTRONIC_SIGNATURE + SLASH;
-    public static final String REL_FONDS_STRUCTURE_NEW_ELECTRONIC_SIGNATURE = REL_FONDS_STRUCTURE + NEW_ELECTRONIC_SIGNATURE + SLASH;
+    public static final String REL_FONDS_STRUCTURE_ELECTRONIC_SIGNATURE =
+            REL_FONDS_STRUCTURE + ELECTRONIC_SIGNATURE + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_ELECTRONIC_SIGNATURE =
+            REL_FONDS_STRUCTURE + NEW_ELECTRONIC_SIGNATURE + SLASH;
 
     // DocumentDescription
-    public static final String REL_FONDS_STRUCTURE_DOCUMENT_DESCRIPTION = REL_FONDS_STRUCTURE + DOCUMENT_DESCRIPTION + SLASH;
-    public static final String REL_FONDS_STRUCTURE_NEW_DOCUMENT_DESCRIPTION = REL_FONDS_STRUCTURE + NEW_DOCUMENT_DESCRIPTION + SLASH;
+    public static final String REL_FONDS_STRUCTURE_DOCUMENT_DESCRIPTION =
+            REL_FONDS_STRUCTURE + DOCUMENT_DESCRIPTION + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_DOCUMENT_DESCRIPTION =
+            REL_FONDS_STRUCTURE + NEW_DOCUMENT_DESCRIPTION + SLASH;
 
     // Keyword
-    public static final String REL_FONDS_STRUCTURE_KEYWORD = NIKITA_CONFORMANCE_REL + KEYWORD + SLASH;
-    public static final String REL_FONDS_STRUCTURE_NEW_KEYWORD = NIKITA_CONFORMANCE_REL + NEW_KEYWORD + SLASH;
+    public static final String REL_FONDS_STRUCTURE_KEYWORD =
+            NIKITA_CONFORMANCE_REL + KEYWORD + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_KEYWORD =
+            NIKITA_CONFORMANCE_REL + NEW_KEYWORD + SLASH;
 
     // Precedence
-    public static final String REL_FONDS_STRUCTURE_PRECEDENCE = REL_CASE_HANDLING + PRECEDENCE + SLASH;
-    public static final String REL_FONDS_STRUCTURE_NEW_PRECEDENCE = REL_CASE_HANDLING + NEW_PRECEDENCE + SLASH;
+    public static final String REL_FONDS_STRUCTURE_PRECEDENCE =
+            REL_CASE_HANDLING + PRECEDENCE + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_PRECEDENCE =
+            REL_CASE_HANDLING + NEW_PRECEDENCE + SLASH;
 
     // Keyword
-    public static final String REL_FONDS_STRUCTURE_SIGN_OFF = REL_CASE_HANDLING + SIGN_OFF + SLASH;
-    public static final String REL_FONDS_STRUCTURE_NEW_SIGN_OFF = REL_CASE_HANDLING + NEW_SIGN_OFF + SLASH;
+    public static final String REL_FONDS_STRUCTURE_SIGN_OFF =
+            REL_CASE_HANDLING + SIGN_OFF + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_SIGN_OFF =
+            REL_CASE_HANDLING + NEW_SIGN_OFF + SLASH;
 
     // DocumentFlow
-    public static final String REL_FONDS_STRUCTURE_DOCUMENT_FLOW = REL_CASE_HANDLING + DOCUMENT_FLOW + SLASH;
-    public static final String REL_FONDS_STRUCTURE_NEW_DOCUMENT_FLOW = REL_CASE_HANDLING + NEW_DOCUMENT_FLOW + SLASH;
+    public static final String REL_FONDS_STRUCTURE_DOCUMENT_FLOW =
+            REL_CASE_HANDLING + DOCUMENT_FLOW + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_DOCUMENT_FLOW =
+            REL_CASE_HANDLING + NEW_DOCUMENT_FLOW + SLASH;
 
     // CorrespondencePartPerson
-    public static final String REL_CASE_HANDLING_CORRESPONDENCE_PART_PERSON = REL_CASE_HANDLING + CORRESPONDENCE_PART_PERSON + SLASH;
-    public static final String REL_CASE_HANDLING_NEW_CORRESPONDENCE_PART_PERSON = REL_CASE_HANDLING + NEW_CORRESPONDENCE_PART_PERSON + SLASH;
+    public static final String REL_CASE_HANDLING_CORRESPONDENCE_PART_PERSON =
+            REL_CASE_HANDLING + CORRESPONDENCE_PART_PERSON + SLASH;
+    public static final String REL_CASE_HANDLING_NEW_CORRESPONDENCE_PART_PERSON =
+            REL_CASE_HANDLING + NEW_CORRESPONDENCE_PART_PERSON + SLASH;
 
     // CorrespondencePartUnit
-    public static final String REL_CASE_HANDLING_CORRESPONDENCE_PART_UNIT = REL_CASE_HANDLING + CORRESPONDENCE_PART_UNIT + SLASH;
-    public static final String REL_CASE_HANDLING_NEW_CORRESPONDENCE_PART_UNIT = REL_CASE_HANDLING + NEW_CORRESPONDENCE_PART_UNIT + SLASH;
+    public static final String REL_CASE_HANDLING_CORRESPONDENCE_PART_UNIT =
+            REL_CASE_HANDLING + CORRESPONDENCE_PART_UNIT + SLASH;
+    public static final String REL_CASE_HANDLING_NEW_CORRESPONDENCE_PART_UNIT =
+            REL_CASE_HANDLING + NEW_CORRESPONDENCE_PART_UNIT + SLASH;
 
     // CorrespondencePartInternal
-    public static final String REL_CASE_HANDLING_CORRESPONDENCE_PART_INTERNAL = REL_CASE_HANDLING + CORRESPONDENCE_PART_INTERNAL + SLASH;
-    public static final String REL_CASE_HANDLING_NEW_CORRESPONDENCE_PART_INTERNAL = REL_CASE_HANDLING + NEW_CORRESPONDENCE_PART_INTERNAL + SLASH;
+    public static final String REL_CASE_HANDLING_CORRESPONDENCE_PART_INTERNAL =
+            REL_CASE_HANDLING + CORRESPONDENCE_PART_INTERNAL + SLASH;
+    public static final String REL_CASE_HANDLING_NEW_CORRESPONDENCE_PART_INTERNAL =
+            REL_CASE_HANDLING + NEW_CORRESPONDENCE_PART_INTERNAL + SLASH;
 
     // Fil
-    public static final String REL_FONDS_STRUCTURE_DOCUMENT_FILE = REL_FONDS_STRUCTURE + DOCUMENT_FILE + SLASH;
+    public static final String REL_FONDS_STRUCTURE_DOCUMENT_FILE =
+            REL_FONDS_STRUCTURE + DOCUMENT_FILE + SLASH;
 
     // SecondaryClassification
-    public static final String REL_FONDS_STRUCTURE_SECONDARY_CLASSIFICATION = NIKITA_CONFORMANCE_REL + SECONDARY_CLASSIFICATION + SLASH;
-    public static final String REL_FONDS_STRUCTURE_NEW_SECONDARY_CLASSIFICATION = NIKITA_CONFORMANCE_REL + NEW_SECONDARY_CLASSIFICATION + SLASH;
+    public static final String REL_FONDS_STRUCTURE_SECONDARY_CLASSIFICATION =
+            NIKITA_CONFORMANCE_REL + SECONDARY_CLASSIFICATION + SLASH;
+    public static final String REL_FONDS_STRUCTURE_NEW_SECONDARY_CLASSIFICATION
+            = NIKITA_CONFORMANCE_REL + NEW_SECONDARY_CLASSIFICATION + SLASH;
 
     // Metadata RELS
-    public static final String REL_METADATA_DOCUMENT_MEDIUM = REL_METADATA + DOCUMENT_MEDIUM + SLASH;
-    public static final String REL_METADATA_CORRESPONDENCE_PART = REL_METADATA + CORRESPONDENCE_PART + SLASH;
-    public static final String REL_METADATA_CORRESPONDENCE_PART_TYPE = REL_METADATA + CORRESPONDENCE_PART_TYPE + SLASH;
+    public static final String REL_METADATA_DOCUMENT_MEDIUM =
+            REL_METADATA + DOCUMENT_MEDIUM + SLASH;
 
-    public static final String REL_METADATA_VARIANT_FORMAT = REL_METADATA + VARIANT_FORMAT + SLASH;
-    public static final String REL_METADATA_FORMAT = REL_METADATA + FORMAT + SLASH;
-    public static final String REL_METADATA_DOCUMENT_STATUS = REL_METADATA + DOCUMENT_STATUS + SLASH;
-    public static final String REL_METADATA_DOCUMENT_TYPE = REL_METADATA + FORMAT + SLASH;
+    public static final String REL_METADATA_CORRESPONDENCE_PART =
+            REL_METADATA + CORRESPONDENCE_PART + SLASH;
+
+    public static final String REL_METADATA_CORRESPONDENCE_PART_TYPE =
+            REL_METADATA + CORRESPONDENCE_PART_TYPE + SLASH;
+
+    public static final String REL_METADATA_VARIANT_FORMAT = REL_METADATA +
+            VARIANT_FORMAT + SLASH;
+
+    public static final String REL_METADATA_FORMAT = REL_METADATA + FORMAT +
+            SLASH;
+
+    public static final String REL_METADATA_FLOW_STATUS = REL_METADATA +
+            FLOW_STATUS + SLASH;
+
+    public static final String REL_METADATA_REGISTRY_ENTRY_TYPE = REL_METADATA +
+            REGISTRY_ENTRY_TYPE + SLASH;
+
+    public static final String REL_METADATA_DOCUMENT_STATUS = REL_METADATA +
+            DOCUMENT_STATUS + SLASH;
+
+    public static final String REL_METADATA_DOCUMENT_TYPE = REL_METADATA +
+            DOCUMENT_TYPE + SLASH;
+
+    public static final String REL_METADATA_SIGN_OFF_METHOD = REL_METADATA +
+            SIGN_OFF_METHOD + SLASH;
+
+    public static final String REL_METADATA_ELECTRONIC_SIGNATURE_SECURITY_LEVEL
+            = REL_METADATA + ELECTRONIC_SIGNATURE_SECURITY_LEVEL + SLASH;
+
+    public static final String REL_METADATA_ELECTRONIC_SIGNATURE_VERIFIED
+            = REL_METADATA + ELECTRONIC_SIGNATURE_VERIFIED + SLASH;
+
+    public static final String REL_METADATA_REGISTRY_ENTRY_STATUS =
+            REL_METADATA + REGISTRY_ENTRY_STATUS + SLASH;
+
+    public static final String REL_METADATA_PRECEDENCE_STATUS =
+            REL_METADATA + PRECEDENCE_STATUS + SLASH;
+
+    public static final String REL_METADATA_CASE_PARTY_ROLE =
+            REL_METADATA + CASE_PARTY_ROLE + SLASH;
+
+    public static final String REL_METADATA_FILE_TYPE =
+            REL_METADATA + FILE_TYPE + SLASH;
+
+    public static final String REL_METADATA_COMMENT_TYPE =
+            REL_METADATA + COMMENT_TYPE + SLASH;
+
     // M086 dokumenttype
-    public static final String REL_METADATA_CLASSIFICATION_SYSTEM_TYPE = REL_METADATA + CLASSIFICATION_SYSTEM_TYPE + SLASH;
-    //public static final String REL_METADATA_CLASSIFICATION_SYSTEM_TYPE = REL_METADATA + CLASSIFICATION_SYSTEM + SLASH;
+    public static final String REL_METADATA_CLASSIFICATION_SYSTEM_TYPE =
+            REL_METADATA + CLASSIFICATION_SYSTEM_TYPE + SLASH;
 
-    public static final String REL_ADMIN_ADMINISTRATIVE_UNIT = REL_ADMINISTRATION + NEW_ADMINISTRATIVE_UNIT + SLASH;
+    public static final String REL_ADMIN_ADMINISTRATIVE_UNIT =
+            REL_ADMINISTRATION + NEW_ADMINISTRATIVE_UNIT + SLASH;
+
+
+    // Database Constants
+
+    // Table Constants
+    public static final String TABLE_FONDS = "fonds";
+    public static final String TABLE_FONDS_CREATOR = "fonds_creator";
+    public static final String TABLE_STORAGE_LOCATION = "storage_location";
+
+
+    // Join table names
+    public static final String TABLE_FONDS_FONDS_CREATOR =
+            "fonds_fonds_creator";
+    public static final String TABLE_FONDS_STORAGE_LOCATION =
+            "fonds_storage_location";
+
+    // Column Constants
+    // Foreign key names
+    public static final String FOREIGN_KEY_FONDS_PK = "f_pk_fonds_id";
+    public static final String FOREIGN_KEY_FONDS_CREATOR_PK =
+            "f_pk_fonds_creator_id";
+    public static final String FOREIGN_KEY_STORAGE_LOCATION_PK = "f_pk_fonds_id";
+
+    // Primary key names
+    public static final String PRIMARY_KEY_FONDS = "pk_fonds_id";
+    public static final String PRIMARY_KEY_FONDS_CREATOR =
+            "pk_fonds_creator_id";
+
+    public static final String DM_OWNED_BY = "ownedBy";
 
     private Constants() {
     }

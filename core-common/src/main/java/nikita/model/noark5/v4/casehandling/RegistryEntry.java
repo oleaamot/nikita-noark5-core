@@ -9,14 +9,16 @@ import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.secondary.ElectronicSignature;
 import nikita.model.noark5.v4.secondary.SignOff;
 import nikita.util.deserialisers.casehandling.RegistryEntryDeserializer;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import static nikita.config.Constants.NOARK_CASE_HANDLING_PATH;
 import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
@@ -29,8 +31,8 @@ import static nikita.config.N5ResourceMappings.REGISTRY_ENTRY;
 // @Where(clause="deleted <> true")
 //@Indexed(index = "registry_entry")
 @JsonDeserialize(using = RegistryEntryDeserializer.class)
-public class RegistryEntry extends BasicRecord implements IElectronicSignature, IPrecedence, ICorrespondencePart,
-        ISignOff, IDocumentFlow {
+public class RegistryEntry extends BasicRecord implements IElectronicSignature,
+        IPrecedence, ICorrespondencePart, ISignOff, IDocumentFlow {
 
     /**
      * M013 - journalaar (xs:integer)
@@ -167,7 +169,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
                     referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_correspondence_part_person_id",
                     referencedColumnName = "pk_correspondence_part_id"))
-    private Set<CorrespondencePartPerson> referenceCorrespondencePartPerson = new TreeSet<>();
+    private List<CorrespondencePartPerson> referenceCorrespondencePartPerson = new ArrayList<>();
 
 
     // Links to CorrespondencePartUnit
@@ -177,7 +179,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
                     referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_correspondence_part_unit_id",
                     referencedColumnName = "pk_correspondence_part_id"))
-    private Set<CorrespondencePartUnit> referenceCorrespondencePartUnit = new TreeSet<>();
+    private List<CorrespondencePartUnit> referenceCorrespondencePartUnit = new ArrayList<>();
 
 
     // Links to CorrespondencePartInternal
@@ -187,12 +189,12 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
                     referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_correspondence_part_internal_id",
                     referencedColumnName = "pk_correspondence_part_id"))
-    private Set<CorrespondencePartInternal> referenceCorrespondencePartInternal = new TreeSet<>();
+    private List<CorrespondencePartInternal> referenceCorrespondencePartInternal = new ArrayList<>();
 
 
     // Links to DocumentFlow
     @OneToMany(mappedBy = "referenceRegistryEntry")
-    private Set<DocumentFlow> referenceDocumentFlow = new TreeSet<>();
+    private List<DocumentFlow> referenceDocumentFlow = new ArrayList<>();
     // Links to SignOff
     @ManyToMany
     @JoinTable(name = "registry_entry_sign_off",
@@ -201,7 +203,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
             inverseJoinColumns = @JoinColumn(name = "f_pk_sign_off_id",
                     referencedColumnName = "pk_sign_off_id"))
 
-    private Set<SignOff> referenceSignOff = new TreeSet<>();
+    private List<SignOff> referenceSignOff = new ArrayList<>();
 
     // Links to Precedence
     @ManyToMany
@@ -210,7 +212,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
                     referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_precedence_id",
                     referencedColumnName = "pk_precedence_id"))
-    private Set<Precedence> referencePrecedence = new TreeSet<>();
+    private List<Precedence> referencePrecedence = new ArrayList<>();
 
     // Link to ElectronicSignature
     @OneToOne
@@ -348,52 +350,52 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
     }
 
     @Override
-    public Set<DocumentFlow> getReferenceDocumentFlow() {
+    public List<DocumentFlow> getReferenceDocumentFlow() {
         return referenceDocumentFlow;
     }
 
     @Override
-    public void setReferenceDocumentFlow(Set<DocumentFlow> referenceDocumentFlow) {
+    public void setReferenceDocumentFlow(List<DocumentFlow> referenceDocumentFlow) {
         this.referenceDocumentFlow = referenceDocumentFlow;
     }
 
-    public Set<CorrespondencePartPerson> getReferenceCorrespondencePartPerson() {
+    public List<CorrespondencePartPerson> getReferenceCorrespondencePartPerson() {
         return referenceCorrespondencePartPerson;
     }
 
-    public void setReferenceCorrespondencePartPerson(Set<CorrespondencePartPerson> referenceCorrespondencePartPerson) {
+    public void setReferenceCorrespondencePartPerson(List<CorrespondencePartPerson> referenceCorrespondencePartPerson) {
         this.referenceCorrespondencePartPerson = referenceCorrespondencePartPerson;
     }
 
-    public Set<CorrespondencePartUnit> getReferenceCorrespondencePartUnit() {
+    public List<CorrespondencePartUnit> getReferenceCorrespondencePartUnit() {
         return referenceCorrespondencePartUnit;
     }
 
-    public void setReferenceCorrespondencePartUnit(Set<CorrespondencePartUnit> referenceCorrespondencePartUnit) {
+    public void setReferenceCorrespondencePartUnit(List<CorrespondencePartUnit> referenceCorrespondencePartUnit) {
         this.referenceCorrespondencePartUnit = referenceCorrespondencePartUnit;
     }
 
-    public Set<CorrespondencePartInternal> getReferenceCorrespondencePartInternal() {
+    public List<CorrespondencePartInternal> getReferenceCorrespondencePartInternal() {
         return referenceCorrespondencePartInternal;
     }
 
-    public void setReferenceCorrespondencePartInternal(Set<CorrespondencePartInternal> referenceCorrespondencePartInternal) {
+    public void setReferenceCorrespondencePartInternal(List<CorrespondencePartInternal> referenceCorrespondencePartInternal) {
         this.referenceCorrespondencePartInternal = referenceCorrespondencePartInternal;
     }
 
-    public Set<SignOff> getReferenceSignOff() {
+    public List<SignOff> getReferenceSignOff() {
         return referenceSignOff;
     }
 
-    public void setReferenceSignOff(Set<SignOff> referenceSignOff) {
+    public void setReferenceSignOff(List<SignOff> referenceSignOff) {
         this.referenceSignOff = referenceSignOff;
     }
 
-    public Set<Precedence> getReferencePrecedence() {
+    public List<Precedence> getReferencePrecedence() {
         return referencePrecedence;
     }
 
-    public void setReferencePrecedence(Set<Precedence> referencePrecedence) {
+    public void setReferencePrecedence(List<Precedence> referencePrecedence) {
         this.referencePrecedence = referencePrecedence;
     }
 
@@ -424,5 +426,57 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature, 
                 ", recordSequenceNumber=" + recordSequenceNumber +
                 ", recordYear=" + recordYear +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        RegistryEntry rhs = (RegistryEntry) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(recordsManagementUnit, rhs.recordsManagementUnit)
+                .append(loanedTo, rhs.loanedTo)
+                .append(loanedDate, rhs.loanedDate)
+                .append(numberOfAttachments, rhs.numberOfAttachments)
+                .append(freedomAssessmentDate, rhs.freedomAssessmentDate)
+                .append(dueDate, rhs.dueDate)
+                .append(sentDate, rhs.sentDate)
+                .append(receivedDate, rhs.receivedDate)
+                .append(documentDate, rhs.documentDate)
+                .append(recordDate, rhs.recordDate)
+                .append(registryEntryType, rhs.registryEntryType)
+                .append(registryEntryNumber, rhs.registryEntryNumber)
+                .append(recordSequenceNumber, rhs.recordSequenceNumber)
+                .append(recordYear, rhs.recordYear)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(recordsManagementUnit)
+                .append(loanedTo)
+                .append(loanedDate)
+                .append(numberOfAttachments)
+                .append(freedomAssessmentDate)
+                .append(dueDate)
+                .append(sentDate)
+                .append(receivedDate)
+                .append(documentDate)
+                .append(recordDate)
+                .append(registryEntryType)
+                .append(registryEntryNumber)
+                .append(recordSequenceNumber)
+                .append(recordYear)
+                .toHashCode();
     }
 }

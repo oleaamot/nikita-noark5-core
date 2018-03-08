@@ -2,6 +2,8 @@ package nikita.model.noark5.v4.interfaces.entities.admin;
 
 import nikita.model.noark5.v4.admin.Authority;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkCreateEntity;
+import nikita.model.noark5.v4.interfaces.entities.INoarkFinaliseEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -9,8 +11,7 @@ import java.util.List;
 /**
  * Created by tsodring on 5/23/17.
  */
-public interface IUserEntity extends INikitaEntity {
-
+public interface IUserEntity extends INikitaEntity, INoarkCreateEntity, INoarkFinaliseEntity {
 
     String getUsername();
 

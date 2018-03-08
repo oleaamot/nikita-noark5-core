@@ -10,5 +10,5 @@ public interface IPrecedenceService {
 
     Precedence createNewPrecedence(Precedence entity);
 
-    Precedence findBySystemIdOrderBySystemId(String precedenceSystemId);
+    Precedence findBySystemId(String precedenceSystemId);
 }

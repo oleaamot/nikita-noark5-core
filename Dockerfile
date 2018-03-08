@@ -1,12 +1,11 @@
 FROM maven:3-jdk-8
 VOLUME /tmp
 
-ENV REPO "https://github.com/HiOA-ABI/nikita-noark5-core"
 ENV SRC_DIR "/srv/nikita-noark5-core"
 ENV BRANCH "master"
 
 # Get the source
-RUN git clone $REPO  $SRC_DIR
+COPY . $SRC_DIR
 RUN git -C $SRC_DIR checkout $BRANCH
 
 # Build the application

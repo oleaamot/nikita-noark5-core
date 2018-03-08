@@ -3,11 +3,13 @@ package nikita.model.noark5.v4.secondary;
 import nikita.model.noark5.v4.BasicRecord;
 import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.NoarkEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.AUTHOR;
 
@@ -36,30 +38,30 @@ public class Author extends NoarkEntity {
 
     // Links to BasicRecords
     @ManyToMany(mappedBy = "referenceAuthor")
-    private Set<BasicRecord> referenceBasicRecord = new TreeSet<>();
+    private List<BasicRecord> referenceBasicRecord = new ArrayList<>();
 
     // Links to DocumentDescriptions
     @ManyToMany(mappedBy = "referenceAuthor")
-    private Set<DocumentDescription> referenceDocumentDescription = new TreeSet<>();
+    private List<DocumentDescription> referenceDocumentDescription = new ArrayList<>();
 
     @Override
     public String getBaseTypeName() {
         return AUTHOR;
     }
 
-    public Set<BasicRecord> getReferenceBasicRecord() {
+    public List<BasicRecord> getReferenceBasicRecord() {
         return referenceBasicRecord;
     }
 
-    public void setReferenceBasicRecord(Set<BasicRecord> referenceBasicRecord) {
+    public void setReferenceBasicRecord(List<BasicRecord> referenceBasicRecord) {
         this.referenceBasicRecord = referenceBasicRecord;
     }
 
-    public Set<DocumentDescription> getReferenceDocumentDescription() {
+    public List<DocumentDescription> getReferenceDocumentDescription() {
         return referenceDocumentDescription;
     }
 
-    public void setReferenceDocumentDescription(Set<DocumentDescription> referenceDocumentDescription) {
+    public void setReferenceDocumentDescription(List<DocumentDescription> referenceDocumentDescription) {
         this.referenceDocumentDescription = referenceDocumentDescription;
     }
 
@@ -68,5 +70,31 @@ public class Author extends NoarkEntity {
         return "Author{" + super.toString() +
                 "author='" + author + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Author rhs = (Author) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(author, rhs.author)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(author)
+                .toHashCode();
     }
 }

@@ -1,0 +1,18 @@
+http://localhost/noark5v4/api/arkivstruktur/arkiv?$filter=contains(tittel,'Oslo')$top=2$skip=4$orderby=tittel desc
+http://localhost/noark5v4/api/arkivstruktur/arkiv?$filter=tittel eq 'hello'$top=2$orderby=tittel desc
+http://localhost/noark5v4/api/arkivstruktur/arkiv?$top=2$skip=4$filter=tittel eq 'hello'$orderby=beskrivelse desc
+http://localhost/noark5v4/api/arkivstruktur/mappe?$filter=tittel lt 'hello'
+http://localhost/noark5v4/api/arkivstruktur/arkiv?$filter=startsWith(tittel, 'hello')
+http://localhost/noark5v4/api/arkivstruktur/arkiv?$filter=contains(beskrivelse, 'hello')
+http://localhost/noark5v4/api/arkivstruktur/mappe?$filter=tittel eq 'hello'
+
+http://localhost/noark5v4/api/arkivstruktur/mappe?$filter=tittel eq 'hello'
+http://localhost/noark5v4/api/arkivstruktur/mappe?$filter=systemID eq '12345'
+http://localhost/noark5v4/api/arkivstruktur/mappe?$filter=systemID eq 'hello' and tittel eq 'goodbye'
+
+http://localhost/noark5v4/api/arkivstruktur/mappe?$filter=systemID eq '12345'
+http://localhost/noark5v4/api/arkivstruktur/mappe?$filter==year(oppdatertDato) gt 2012
+http://localhost/noark5v4/api/arkivstruktur/mappe?$filter==year(oppdatertDato) lt 2012
+http://localhost/noark5v4/api/arkivstruktur/mappe?$filter==year(oppdatertDato) ge 2012
+http://localhost/noark5v4/api/arkivstruktur/mappe?$filter==year(oppdatertDato) le 2012
+http://localhost/noark5v4/odata/arkiv

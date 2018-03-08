@@ -1,7 +1,9 @@
 package no.arkivlab.hioa.nikita.webapp.service.interfaces.metadata;
 
+import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.model.noark5.v4.metadata.FondsStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,11 +13,9 @@ public interface IFondsStatusService {
 
     FondsStatus createNewFondsStatus(FondsStatus fondsStatus);
 
-    Iterable<FondsStatus> findAll();
+    ArrayList<INikitaEntity> findAll();
 
-    List<FondsStatus> findAllAsList();
-
-    FondsStatus findBySystemIdOrderBySystemId(String systemId);
+    FondsStatus findBySystemId(String systemId);
 
     FondsStatus update(FondsStatus fondsStatus);
 

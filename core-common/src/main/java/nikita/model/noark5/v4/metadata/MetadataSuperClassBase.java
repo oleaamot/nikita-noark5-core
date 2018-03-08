@@ -11,7 +11,6 @@ import org.hibernate.search.annotations.Field;
 import javax.persistence.*;
 
 import static nikita.config.Constants.NOARK_METADATA_PATH;
-import static nikita.config.Constants.ONLY_WHITESPACE;
 
 /**
  * Created by tsodring on 3/23/17.
@@ -110,29 +109,6 @@ public class MetadataSuperClassBase implements INikitaEntity, Comparable<Metadat
         this.version = version;
     }
 
-    //@Override
-    public boolean validateForUpdate(String description) {
-        // Gonna be the same validation for both create and delte
-        return validateForCreate(description);
-    }
-
-    //@Override
-    public boolean validateForCreate(String errorDescription) {
-        if (description == null) {
-            errorDescription += "beskrivelse field is empty. ";
-            return false;
-        }
-        if (description.contains(ONLY_WHITESPACE)) {
-            errorDescription += "beskrivelse field contains only whitespace. ";
-            return false;
-        }
-        if (description.contains(ONLY_WHITESPACE)) {
-            errorDescription += "kode field contains only whitespace. ";
-            return false;
-        }
-        return true;
-    }
-
     @Override
     // This method should never be called. This exception can only occur if you add a new
     // metadata entity and forget to override this method
@@ -148,12 +124,6 @@ public class MetadataSuperClassBase implements INikitaEntity, Comparable<Metadat
         return NOARK_METADATA_PATH;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder()
-                .append(systemId)
-                .toHashCode();
-    }
 
     @Override
     public int compareTo(MetadataSuperClassBase otherEntity) {
@@ -167,14 +137,33 @@ public class MetadataSuperClassBase implements INikitaEntity, Comparable<Metadat
 
     @Override
     public boolean equals(Object other) {
-        if (other == this)
-            return true;
-        if (!(other instanceof MetadataSuperClassBase))
+        if (other == null) {
             return false;
-        MetadataSuperClassBase entity = (MetadataSuperClassBase) other;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        UniqueCodeMetadataSuperClass rhs = (UniqueCodeMetadataSuperClass) other;
         return new EqualsBuilder()
-                .append(this.systemId, entity.systemId)
+                .appendSuper(super.equals(other))
+                .append(systemId, rhs.systemId)
+                .append(deleted, rhs.getDeleted())
+                .append(version, rhs.getVersion())
+                .append(ownedBy, rhs.getOwnedBy())
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(systemId)
+                .append(deleted)
+                .append(version)
+                .append(ownedBy)
+                .toHashCode();
     }
 
     @Override

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/dependencies/internal/config.js"></script>
+    <script src="/dependencies/external/jQuery-2.2.4/jquery-2.2.4.min.js"></script>
+    <script src="/dependencies/external/angular-1.6.4/angular.min.js"></script>
+    <script src="/dependencies/internal/common_functionality.js"></script>
+    <script src="/dependencies/external/material-design-lite/material.min.js"></script>
+    <script src="/dependencies/internal/breadcrumb.js"></script>
+    <script src="/dependencies/internal/korrespondansepartperson.js"></script>
+    <link rel="stylesheet" href="/dependencies/external/material-design-lite/material.min.css">
+</head>
+
+<!--
+ Note I am cheating to make the page render properly value="{{object}} " is set to value="{{object}} ".
+     What's happening is the the field is then updated and the label moves into proper position. Do not add a
+     update button as long as the hack value="{{object}} " is in use.
+
+     I need to get the following directive added, and to use ng-model. Until I figure out how to
+     add the directive, I'm left with this temporary hack.
+
+     https://stackoverflow.com/questions/31638890/mdl-textfield-not-taking-ngmodel-changes-into-account
+-->
+
+<body ng-app="nikita" ng-controller="CorrespondencePartPersonController">
+
+<div ng-show="display_breadcrumb" ng-include="'breadcrumb.html'"></div>
+<div>
+    <div class="mdl-grid-center">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="journalpostnummer" class="mdl-textfield__input" type="text"
+                   value="{{registryEntry.journalpostnummer}} " disabled/>
+            <label class="mdl-textfield__label" for="journalpostnummer">journalpostnummer</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="tittel" class="mdl-textfield__input" type="text"
+                   value="{{registryEntry.tittel}} " disabled/>
+            <label class="mdl-textfield__label" for="tittel">journalpost tittel</label>
+        </div>
+    </div>
+</div>
+<hr>
+<div>
+    <div class="mdl-grid-center">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="navn" class="mdl-textfield__input" type="text"
+                   value="{{correspondencepartPerson.navn}} "/>
+            <label class="mdl-textfield__label" for="navn"> navn</label>
+        </div>
+
+        <div id="correspondenceParttypeDiv" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select id="correspondence_part_type" class="mdl-textfield__input"
+                    ng-model="selectedCorrespondencePartType">
+                <option ng-selected="{{value.value == selectedCorrespondencePartType}}"
+                        ng-repeat="value in correspondencePartTypeList"
+                        value="{{value.value}}">{{value.value}}
+                </option>
+            </select>
+            <label class="mdl-textfield__label" for="correspondence_part_type">korrespondanseparttype</label>
+        </div>
+
+    </div>
+
+    <div class="mdl-grid-center">
+        <div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input id="foedselsnummer" class="mdl-textfield__input" type="text"
+                       value="{{correspondencepartPerson.foedselsnummer}} "/>
+                <label class="mdl-textfield__label" for="foedselsnummer">fødselsnummer</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input id="d_number" class="mdl-textfield__input" type="text"
+                       value="{{correspondencepartPerson.dnummer}} "/>
+                <label class="mdl-textfield__label" for="d_number">D-nummer</label>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <div>
+        <div>
+            <label>Postadresse</label>
+        </div>
+        <div class="mdl-grid-center">
+            <div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input id="pa_adresselinje1" class="mdl-textfield__input" type="text"
+                           value="{{correspondencepartPerson.postadresse.adresselinje3}} "/>
+                    <label class="mdl-textfield__label" for="pa_adresselinje1">adresselinje1</label>
+                </div>
+
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input id="pa_adresselinje2" class="mdl-textfield__input" type="text"
+                           value="{{ correspondencepartPerson.postadresse.adresselinje2 }} "/>
+                    <label class="mdl-textfield__label" for="pa_adresselinje3">adresselinje2</label>
+                </div>
+
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input id="pa_adresselinje3" class="mdl-textfield__input" type="text"
+                           value="{{ correspondencepartPerson.postadresse.adresselinje3 }} "/>
+                    <label class="mdl-textfield__label" for="pa_adresselinje3">adresselinje3</label>
+                </div>
+            </div>
+            <div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input id="pa_postnummer" class="mdl-textfield__input" type="text"
+                           value="{{ correspondencepartPerson.postadresse.postnummer }} "/>
+                    <label class="mdl-textfield__label" for="pa_postnummer">postnummer</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input id="pa_poststed" class="mdl-textfield__input" type="text"
+                           value="{{ correspondencepartPerson.postadresse.poststed }} "/>
+                    <label class="mdl-textfield__label" for="pa_poststed">poststed</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input id="pa_landkode" class="mdl-textfield__input" type="text"
+                           value="{{ correspondencepartPerson.postadresse.landkode }} "/>
+                    <label class="mdl-textfield__label" for="pa_landkode">landkode</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <div>
+        <label>Bostedsadresse</label>
+    </div>
+    <div class="mdl-grid-center">
+        <div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input id="bo_adresselinje1" class="mdl-textfield__input" type="text"
+                       value="{{ correspondencepartPerson.bostedsadresse.adresselinje1 }} "/>
+                <label class="mdl-textfield__label" for="bo_adresselinje1">adresselinje1</label>
+            </div>
+
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input id="bo_adresselinje2" class="mdl-textfield__input" type="text"
+                       value="{{ correspondencepartPerson.bostedsadresse.adresselinje2 }} "/>
+                <label class="mdl-textfield__label" for="bo_adresselinje2">adresselinje2</label>
+            </div>
+
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input id="bo_adresselinje3" class="mdl-textfield__input" type="text"
+                       value="{{ correspondencepartPerson.bostedsadresse.adresselinje3 }} "/>
+                <label class="mdl-textfield__label" for="bo_adresselinje3">adresselinje3</label>
+            </div>
+        </div>
+        <div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input id="bo_postnummer" class="mdl-textfield__input" type="text"
+                       value="{{ correspondencepartPerson.bostedsadresse.postnummer }} "/>
+                <label class="mdl-textfield__label" for="bo_postnummer">postnummer</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input id="bo_poststed" class="mdl-textfield__input" type="text"
+                       value="{{ correspondencepartPerson.bostedsadresse.poststed }} "/>
+                <label class="mdl-textfield__label" for="bo_poststed">poststed</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input id="bo_landkode" class="mdl-textfield__input" type="text"
+                       value="{{ correspondencepartPerson.bostedsadresse.landkode }} "/>
+                <label class="mdl-textfield__label" for="bo_landkode">landkode</label>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div>
+    <div>
+        <label>Kontaktinformasjon</label>
+    </div>
+    <div class="mdl-grid-center">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="epostadresse" class="mdl-textfield__input" type="text"
+                   value=" {{ correspondencepartPerson.kontaktinformasjon.epostadresse }} "/>
+            <label class="mdl-textfield__label" for="epostadresse">epostadresse</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="mobiltelefon" class="mdl-textfield__input" type="text"
+                   value="{{ correspondencepartPerson.kontaktinformasjon.mobiltelefon }} "/>
+            <label class="mdl-textfield__label" for="mobiltelefon">mobiltelefon</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input id="telefonnummer" class="mdl-textfield__input" type="text"
+                   value="{{ correspondencepartPerson.kontaktinformasjon.telefonnummer}} "/>
+            <label class="mdl-textfield__label" for="telefonnummer">telefonnummer</label>
+        </div>
+    </div>
+
+</div>
+<div>
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+            ng-click="send_form()"> {{buttonLabel}}
+    </button>
+</div>
+<hr>
+<div ng-show="display_footer_note" footer></div>
+</body>
+</html>
+
+

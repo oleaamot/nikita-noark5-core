@@ -19,7 +19,6 @@ import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsCreatorH
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IFondsHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.Authorisation;
 import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsCreatorService;
-import no.arkivlab.hioa.nikita.webapp.service.interfaces.IFondsService;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
 import no.arkivlab.hioa.nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
@@ -31,7 +30,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
@@ -43,18 +42,15 @@ import static org.springframework.http.HttpHeaders.ETAG;
 public class FondsCreatorHateoasController extends NoarkController {
 
     private IFondsCreatorService fondsCreatorService;
-    private IFondsService fondsService;
     private IFondsCreatorHateoasHandler fondsCreatorHateoasHandler;
     private IFondsHateoasHandler fondsHateoasHandler;
     private ApplicationEventPublisher applicationEventPublisher;
 
     public FondsCreatorHateoasController(IFondsCreatorService fondsCreatorService,
-                                         IFondsService fondsService,
                                          IFondsCreatorHateoasHandler fondsCreatorHateoasHandler,
                                          IFondsHateoasHandler fondsHateoasHandler,
                                          ApplicationEventPublisher applicationEventPublisher) {
         this.fondsCreatorService = fondsCreatorService;
-        this.fondsService = fondsService;
         this.fondsCreatorHateoasHandler = fondsCreatorHateoasHandler;
         this.fondsHateoasHandler = fondsHateoasHandler;
         this.applicationEventPublisher = applicationEventPublisher;
@@ -87,7 +83,7 @@ public class FondsCreatorHateoasController extends NoarkController {
             @RequestBody FondsCreator fondsCreator) throws NikitaException {
         fondsCreatorService.createNewFondsCreator(fondsCreator);
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(fondsCreator);
-        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, fondsCreator));
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -126,7 +122,7 @@ public class FondsCreatorHateoasController extends NoarkController {
             @RequestBody Fonds fonds) throws NikitaException {
         fondsCreatorService.createFondsAssociatedWithFondsCreator(systemID, fonds);
         FondsHateoas fondsHateoas = new FondsHateoas(fonds);
-        fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
+        fondsHateoasHandler.addLinks(fondsHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, fonds));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -153,13 +149,13 @@ public class FondsCreatorHateoasController extends NoarkController {
                                                                value = "systemId of FondsCreator to retrieve.",
                                                                required = true)
                                                        @PathVariable("systemID") final String fondsCreatorSystemId) {
-        FondsCreator fondsCreator = fondsCreatorService.findBySystemIdOrderBySystemId(fondsCreatorSystemId);
+        FondsCreator fondsCreator = fondsCreatorService.findBySystemId(fondsCreatorSystemId);
         if (fondsCreator == null) {
             throw new NoarkEntityNotFoundException("Could not find FondsCreator object with systemID " +
                     fondsCreatorSystemId);
         }
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(fondsCreator);
-        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(fondsCreator.getVersion().toString())
@@ -187,9 +183,9 @@ public class FondsCreatorHateoasController extends NoarkController {
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
         FondsCreatorHateoas fondsCreatorHateoas = new
-                FondsCreatorHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                FondsCreatorHateoas((List<INikitaEntity>) (List)
                 fondsCreatorService.findFondsCreatorByOwnerPaginated(top, skip));
-        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(fondsCreatorHateoas);
@@ -223,7 +219,7 @@ public class FondsCreatorHateoasController extends NoarkController {
                 fondsCreator);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, createdFonds));
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(createdFonds);
-        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, request, new Authorisation());
+        fondsCreatorHateoasHandler.addLinks(fondsCreatorHateoas, new Authorisation());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -256,7 +252,7 @@ public class FondsCreatorHateoasController extends NoarkController {
         suggestedFondsCreator.setFondsCreatorName("Eksempel kommune");
         suggestedFondsCreator.setDescription("Eksempel kommune ligger i eksempel fylke nord for nord");
         FondsCreatorHateoas fondsCreatorHateoas = new FondsCreatorHateoas(suggestedFondsCreator);
-        fondsHateoasHandler.addLinksOnNew(fondsCreatorHateoas, request, new Authorisation());
+        fondsHateoasHandler.addLinksOnNew(fondsCreatorHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(fondsCreatorHateoas);
@@ -280,13 +276,13 @@ public class FondsCreatorHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String seriesSystemId) {
 
-        FondsCreator fondsCreator = fondsCreatorService.findBySystemIdOrderBySystemId(seriesSystemId);
+        FondsCreator fondsCreator = fondsCreatorService.findBySystemId(seriesSystemId);
         fondsCreatorService.deleteEntity(seriesSystemId);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, fondsCreator));
-/*        List<Fonds> fonds = new ArrayList<>();
+/*        List<Fonds> fonds = new List<>();
         fonds.addAll(fondsCreator.getReferenceFonds());
         FondsHateoas fondsHateoas = new FondsHateoas((List<INikitaEntity>) (List)fonds);
-        fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
+        fondsHateoasHandler.addLinks(fondsHateoas, new Authorisation());
   */
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))

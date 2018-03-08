@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.FONDS_STATUS;
@@ -63,7 +62,7 @@ public class FondsStatusController {
             throws NikitaException {
         fondsStatusService.createNewFondsStatus(fondsStatus);
         MetadataHateoas metadataHateoas = new MetadataHateoas(fondsStatus);
-        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(fondsStatus.getVersion().toString())
@@ -85,9 +84,10 @@ public class FondsStatusController {
     @Timed
     @RequestMapping(method = RequestMethod.GET, value = FONDS_STATUS)
     public ResponseEntity<MetadataHateoas> findAll(HttpServletRequest request) {
-        MetadataHateoas metadataHateoas = new MetadataHateoas(new ArrayList<>(fondsStatusService.findAllAsList()),
+        MetadataHateoas metadataHateoas = new MetadataHateoas(
+                fondsStatusService.findAll(),
                 FONDS_STATUS);
-        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -112,11 +112,11 @@ public class FondsStatusController {
     @Counted
     @Timed
     @RequestMapping(value = FONDS_STATUS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH, method = RequestMethod.GET)
-    public ResponseEntity<MetadataHateoas> findBySystemIdOrderBySystemId(@PathVariable("systemID") final String systemId,
-                                                                         HttpServletRequest request) {
-        FondsStatus fondsStatus = fondsStatusService.findBySystemIdOrderBySystemId(systemId);
+    public ResponseEntity<MetadataHateoas> findBySystemId(@PathVariable("systemID") final String systemId,
+                                                          HttpServletRequest request) {
+        FondsStatus fondsStatus = fondsStatusService.findBySystemId(systemId);
         MetadataHateoas metadataHateoas = new MetadataHateoas(fondsStatus);
-        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(fondsStatus.getVersion().toString())
@@ -165,9 +165,9 @@ public class FondsStatusController {
     public ResponseEntity<MetadataHateoas> updateFondsStatus(@RequestBody FondsStatus fondsStatus,
                                                              HttpServletRequest request)
             throws NikitaException {
-        FondsStatus newFondsStatus = fondsStatusService.update(fondsStatus);
+        fondsStatusService.update(fondsStatus);
         MetadataHateoas metadataHateoas = new MetadataHateoas(fondsStatus);
-        metadataHateoasHandler.addLinks(metadataHateoas, request, new Authorisation());
+        metadataHateoasHandler.addLinks(metadataHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(metadataHateoas);

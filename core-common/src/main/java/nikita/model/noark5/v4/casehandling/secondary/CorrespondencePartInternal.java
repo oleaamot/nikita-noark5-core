@@ -4,11 +4,13 @@ import nikita.model.noark5.v4.admin.AdministrativeUnit;
 import nikita.model.noark5.v4.admin.User;
 import nikita.model.noark5.v4.casehandling.RegistryEntry;
 import nikita.model.noark5.v4.interfaces.entities.casehandling.ICorrespondencePartInternalEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART_UNIT;
 
@@ -41,7 +43,7 @@ public class CorrespondencePartInternal extends CorrespondencePart implements IC
 
     // Links to RegistryEntry
     @ManyToMany(mappedBy = "referenceCorrespondencePartInternal")
-    private Set<RegistryEntry> referenceRegistryEntry = new TreeSet<>();
+    private List<RegistryEntry> referenceRegistryEntry = new ArrayList<>();
 
     public String getAdministrativeUnit() {
         return administrativeUnit;
@@ -81,21 +83,48 @@ public class CorrespondencePartInternal extends CorrespondencePart implements IC
     }
 
     @Override
-    public Set<RegistryEntry> getReferenceRegistryEntry() {
+    public List<RegistryEntry> getReferenceRegistryEntry() {
         return referenceRegistryEntry;
     }
 
     @Override
-    public void setReferenceRegistryEntry(Set<RegistryEntry> referenceRegistryEntry) {
+    public void setReferenceRegistryEntry(List<RegistryEntry> referenceRegistryEntry) {
         this.referenceRegistryEntry = referenceRegistryEntry;
     }
 
     @Override
     public String toString() {
-        return "CorrespondencePartInternal{" +
+        return "CorrespondencePartInternal{" + super.toString() +
                 "administrativeUnit='" + administrativeUnit + '\'' +
                 ", caseHandler='" + caseHandler + '\'' +
                 '}';
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        CorrespondencePartInternal rhs = (CorrespondencePartInternal) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(administrativeUnit, rhs.administrativeUnit)
+                .append(caseHandler, rhs.caseHandler)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(administrativeUnit)
+                .append(caseHandler)
+                .toHashCode();
+    }
 }

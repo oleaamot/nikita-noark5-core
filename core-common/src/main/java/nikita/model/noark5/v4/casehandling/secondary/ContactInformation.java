@@ -2,6 +2,8 @@ package nikita.model.noark5.v4.casehandling.secondary;
 
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.interfaces.entities.casehandling.IContactInformationEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -88,5 +90,35 @@ public class ContactInformation extends NoarkEntity implements IContactInformati
                 ", mobileTelephoneNumber='" + mobileTelephoneNumber + '\'' +
                 ", telephoneNumber='" + telephoneNumber + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        ContactInformation rhs = (ContactInformation) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(emailAddress, rhs.emailAddress)
+                .append(mobileTelephoneNumber, rhs.mobileTelephoneNumber)
+                .append(telephoneNumber, rhs.telephoneNumber)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(emailAddress)
+                .append(mobileTelephoneNumber)
+                .append(telephoneNumber)
+                .toHashCode();
     }
 }

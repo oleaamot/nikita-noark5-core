@@ -36,8 +36,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Set;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.MetadataConstants.CORRESPONDENCE_PART_CODE_EA;
@@ -105,7 +104,7 @@ public class RegistryEntryHateoasController extends NoarkController {
                 registryEntryService.createCorrespondencePartPersonAssociatedWithRegistryEntry(systemID, CorrespondencePartPerson);
         CorrespondencePartPersonHateoas correspondencePartPersonHateoas =
                 new CorrespondencePartPersonHateoas(createdCorrespondencePartPerson);
-        correspondencePartHateoasHandler.addLinks(correspondencePartPersonHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinks(correspondencePartPersonHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdCorrespondencePartPerson));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -149,7 +148,7 @@ public class RegistryEntryHateoasController extends NoarkController {
                 registryEntryService.createCorrespondencePartInternalAssociatedWithRegistryEntry(systemID, CorrespondencePartInternal);
         CorrespondencePartInternalHateoas correspondencePartInternalHateoas =
                 new CorrespondencePartInternalHateoas(createdCorrespondencePartInternal);
-        correspondencePartHateoasHandler.addLinks(correspondencePartInternalHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinks(correspondencePartInternalHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdCorrespondencePartInternal));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -193,7 +192,7 @@ public class RegistryEntryHateoasController extends NoarkController {
                 registryEntryService.createCorrespondencePartUnitAssociatedWithRegistryEntry(systemID, CorrespondencePartUnit);
         CorrespondencePartUnitHateoas correspondencePartUnitHateoas =
                 new CorrespondencePartUnitHateoas(createdCorrespondencePartUnit);
-        correspondencePartHateoasHandler.addLinks(correspondencePartUnitHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinks(correspondencePartUnitHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdCorrespondencePartUnit));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -238,7 +237,7 @@ public class RegistryEntryHateoasController extends NoarkController {
                 registryEntryService.createPrecedenceAssociatedWithRecord(systemID, Precedence);
         PrecedenceHateoas precedenceHateoas =
                 new PrecedenceHateoas(createdPrecedence);
-        precedenceHateoasHandler.addLinks(PrecedenceHateoas, request, new Authorisation());
+        precedenceHateoasHandler.addLinks(PrecedenceHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdPrecedence));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -284,7 +283,7 @@ public class RegistryEntryHateoasController extends NoarkController {
                 recordService.createSignOffAssociatedWithRecord(systemID, signOff);
         SignOffHateoas signOffHateoas =
                 new SignOffHateoas(createdSignOff);
-        signOffHateoasHandler.addLinks(signOffHateoas, request, new Authorisation());
+        signOffHateoasHandler.addLinks(signOffHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdSignOff));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -330,7 +329,7 @@ public class RegistryEntryHateoasController extends NoarkController {
                 new DocumentObjectHateoas(
                         recordService.createDocumentObjectAssociatedWithRecord(systemID,
                                 documentObject));
-        documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
+        documentObjectHateoasHandler.addLinks(documentObjectHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
            return ResponseEntity.status(HttpStatus.CREATED)
                 .header(ETAG, .getVersion().toString())
@@ -361,11 +360,11 @@ public class RegistryEntryHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        Set<CorrespondencePartPerson> correspondencePartPerson =
+        List<CorrespondencePartPerson> correspondencePartPerson =
                 registryEntryService.getCorrespondencePartPersonAssociatedWithRegistryEntry(systemID);
         CorrespondencePartPersonHateoas correspondencePartHateoas =
-                new CorrespondencePartPersonHateoas(new ArrayList<>(correspondencePartPerson));
-        correspondencePartHateoasHandler.addLinksOnTemplate(correspondencePartHateoas, request, new Authorisation());
+                new CorrespondencePartPersonHateoas((List<INikitaEntity>) (List) correspondencePartPerson);
+        correspondencePartHateoasHandler.addLinks(correspondencePartHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(correspondencePartHateoas);
@@ -393,11 +392,11 @@ public class RegistryEntryHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        Set<CorrespondencePartUnit> correspondencePartUnit =
+        List<CorrespondencePartUnit> correspondencePartUnit =
                 registryEntryService.getCorrespondencePartUnitAssociatedWithRegistryEntry(systemID);
         CorrespondencePartUnitHateoas correspondencePartHateoas =
-                new CorrespondencePartUnitHateoas(new ArrayList<>(correspondencePartUnit));
-        correspondencePartHateoasHandler.addLinksOnTemplate(correspondencePartHateoas, request, new Authorisation());
+                new CorrespondencePartUnitHateoas((List<INikitaEntity>) (List) correspondencePartUnit);
+        correspondencePartHateoasHandler.addLinksOnTemplate(correspondencePartHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(correspondencePartHateoas);
@@ -425,11 +424,11 @@ public class RegistryEntryHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        Set<CorrespondencePartInternal> correspondencePartInternal =
+        List<CorrespondencePartInternal> correspondencePartInternal =
                 registryEntryService.getCorrespondencePartInternalAssociatedWithRegistryEntry(systemID);
         CorrespondencePartInternalHateoas correspondencePartHateoas =
-                new CorrespondencePartInternalHateoas(new ArrayList<>(correspondencePartInternal));
-        correspondencePartHateoasHandler.addLinksOnTemplate(correspondencePartHateoas, request, new Authorisation());
+                new CorrespondencePartInternalHateoas((List<INikitaEntity>) (List) correspondencePartInternal);
+        correspondencePartHateoasHandler.addLinksOnTemplate(correspondencePartHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(correspondencePartHateoas);
@@ -497,7 +496,7 @@ public class RegistryEntryHateoasController extends NoarkController {
 
         CorrespondencePartPersonHateoas correspondencePartHateoas =
                 new CorrespondencePartPersonHateoas(suggestedCorrespondencePart);
-        correspondencePartHateoasHandler.addLinksOnTemplate(correspondencePartHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinksOnTemplate(correspondencePartHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(correspondencePartHateoas);
@@ -563,7 +562,7 @@ public class RegistryEntryHateoasController extends NoarkController {
 
         CorrespondencePartUnitHateoas correspondencePartHateoas =
                 new CorrespondencePartUnitHateoas(suggestedCorrespondencePart);
-        correspondencePartHateoasHandler.addLinksOnTemplate(correspondencePartHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinksOnTemplate(correspondencePartHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(correspondencePartHateoas);
@@ -600,7 +599,7 @@ public class RegistryEntryHateoasController extends NoarkController {
         // The reason this is not implemented is that we are missing AdministrativeUnit and multiple users
         CorrespondencePartInternalHateoas correspondencePartHateoas =
                 new CorrespondencePartInternalHateoas(suggestedCorrespondencePart);
-        correspondencePartHateoasHandler.addLinksOnTemplate(correspondencePartHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinksOnTemplate(correspondencePartHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body("");
@@ -626,13 +625,13 @@ public class RegistryEntryHateoasController extends NoarkController {
                     value = "systemID of the file to retrieve associated Record",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        /*  Record record = recordService.findBySystemIdOrderBySystemId(systemID);
+        /*  Record record = recordService.findBySystemId(systemID);
             if (record == null) {
             throw new NoarkEntityNotFoundException("Could not find File object with systemID " + systemID);
         }
         SignOffHateoas documentDescriptionHateoas = new
-                SignOffHateoas(new ArrayList<>(record.getReferenceSignOff()));
-        documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
+                SignOffHateoas((List<INikitaEntity>) (List)record.getReferenceSignOff()));
+        documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(documentDescriptionHateoas);
@@ -660,13 +659,13 @@ public class RegistryEntryHateoasController extends NoarkController {
                     value = "systemID of the registryEntry to retrieve associated Precedence",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        /*   Record record = recordService.findBySystemIdOrderBySystemId(systemID);
+        /*   Record record = recordService.findBySystemId(systemID);
         if (record == null) {
             throw new NoarkEntityNotFoundException("Could not find File object with systemID " + systemID);
         }
         PrecedenceHateoas documentDescriptionHateoas = new
-                PrecedenceHateoas(new ArrayList<>(record.getReferencePrecedence()));
-        documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
+                PrecedenceHateoas((List<INikitaEntity>) (List)record.getReferencePrecedence()));
+        documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(documentDescriptionHateoas);
@@ -694,13 +693,13 @@ public class RegistryEntryHateoasController extends NoarkController {
                     value = "systemID of the file to retrieve associated Record",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        /*  Record record = recordService.findBySystemIdOrderBySystemId(systemID);
+        /*  Record record = recordService.findBySystemId(systemID);
             if (record == null) {
             throw new NoarkEntityNotFoundException("Could not find File object with systemID " + systemID);
         }
         DocumentFlowHateoas documentDescriptionHateoas = new
-                DocumentFlowHateoas(new ArrayList<>(record.getReferenceDocumentFlow()));
-        documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, request, new Authorisation());
+                DocumentFlowHateoas((List<INikitaEntity>) (List)record.getReferenceDocumentFlow()));
+        documentDescriptionHateoasHandler.addLinks(documentDescriptionHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(documentDescriptionHateoas);
@@ -726,11 +725,11 @@ public class RegistryEntryHateoasController extends NoarkController {
                     value = "systemID of the registryEntry to retrieve",
                     required = true)
             @PathVariable("systemID") final String registryEntrySystemId) {
-        RegistryEntry registryEntry = registryEntryService.findBySystemIdOrderBySystemId(registryEntrySystemId);
+        RegistryEntry registryEntry = registryEntryService.findBySystemId(registryEntrySystemId);
 
         RegistryEntryHateoas registryEntryHateoas = new
                 RegistryEntryHateoas(registryEntry);
-        registryEntryHateoasHandler.addLinks(registryEntryHateoas, request, new Authorisation());
+        registryEntryHateoasHandler.addLinks(registryEntryHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(registryEntry.getVersion().toString())
@@ -759,9 +758,9 @@ public class RegistryEntryHateoasController extends NoarkController {
             @RequestParam(name = "top", required = false) Integer top,
             @RequestParam(name = "skip", required = false) Integer skip) {
         RegistryEntryHateoas registryEntryHateoas = new
-                RegistryEntryHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                RegistryEntryHateoas((List<INikitaEntity>) (List)
                 registryEntryService.findRegistryEntryByOwnerPaginated(top, skip));
-        registryEntryHateoasHandler.addLinks(registryEntryHateoas, request, new Authorisation());
+        registryEntryHateoasHandler.addLinks(registryEntryHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(registryEntryHateoas);
@@ -785,7 +784,7 @@ public class RegistryEntryHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        RegistryEntry registryEntry = registryEntryService.findBySystemIdOrderBySystemId(systemID);
+        RegistryEntry registryEntry = registryEntryService.findBySystemId(systemID);
         registryEntryService.deleteEntity(systemID);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, registryEntry));
         return ResponseEntity.status(HttpStatus.OK)
@@ -825,7 +824,7 @@ public class RegistryEntryHateoasController extends NoarkController {
 
         RegistryEntry updatedRegistryEntry = registryEntryService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)), registryEntry);
         RegistryEntryHateoas registryEntryHateoas = new RegistryEntryHateoas(updatedRegistryEntry);
-        registryEntryHateoasHandler.addLinks(registryEntryHateoas, request, new Authorisation());
+        registryEntryHateoasHandler.addLinks(registryEntryHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedRegistryEntry));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))

@@ -2,12 +2,13 @@ package nikita.model.noark5.v4.interfaces;
 
 import nikita.model.noark5.v4.secondary.Author;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by tsodring on 12/7/16.
  */
 public interface IAuthor {
-    Set<Author> getReferenceAuthor();
-    void setReferenceAuthor(Set<Author> authors);
+    List<Author> getReferenceAuthor();
+
+    void setReferenceAuthor(List<Author> authors);
 }

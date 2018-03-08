@@ -21,7 +21,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 import java.util.List;
 
 import static nikita.config.Constants.INFO_CANNOT_ASSOCIATE_WITH_CLOSED_OBJECT;
@@ -35,7 +34,7 @@ public class ClassService implements IClassService {
     private IClassRepository classRepository;
     private EntityManager entityManager;
     //@Value("${nikita-noark5-core.pagination.maxPageSize}")
-    private Integer maxPageSize = new Integer(10);
+    private Integer maxPageSize = 10;
 
     public ClassService(IClassRepository classRepository, EntityManager entityManager) {
         this.classRepository = classRepository;
@@ -51,7 +50,7 @@ public class ClassService implements IClassService {
 
     public  Class createClassAssociatedWithClass(String classSystemId, Class klass) {
         Class persistedClass = null;
-        Class parentKlass = classRepository.findBySystemIdOrderBySystemId(classSystemId);
+        Class parentKlass = classRepository.findBySystemId(classSystemId);
         if (parentKlass == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Class, using classSystemId " + classSystemId;
             logger.info(info);
@@ -87,262 +86,9 @@ public class ClassService implements IClassService {
     }
 
     // systemId
-    public Class findBySystemIdOrderBySystemId(String systemId) {
+    public Class findBySystemId(String systemId) {
         return getClassOrThrow(systemId);
     }
-
-    // title
-    public List<Class> findByTitleAndOwnedBy(String title, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByTitleAndOwnedBy(title,  ownedBy);
-    }
-
-    public List<Class> findByTitleContainingAndOwnedBy(String title, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByTitleContainingAndOwnedBy(title, ownedBy);
-    }
-
-    public List<Class> findByTitleIgnoreCaseContainingAndOwnedBy(String title, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByTitleIgnoreCaseContainingAndOwnedBy(title, ownedBy);
-    }
-
-    public List<Class> findByTitleAndOwnedBy(String title, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByTitleAndOwnedBy(title, ownedBy, sort);
-    }
-
-    public List<Class> findByTitleContainingAndOwnedBy(String title, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByTitleContainingAndOwnedBy(title, ownedBy, sort);
-    }
-
-    public List<Class> findByTitleIgnoreCaseContainingAndOwnedBy(String title, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByTitleIgnoreCaseContainingAndOwnedBy(title, ownedBy, sort);
-    }
-
-    public Page<Class> findByTitleAndOwnedBy(String title, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByTitleAndOwnedBy(title, ownedBy, pageable);
-    }
-
-    public Page<Class> findByTitleContainingAndOwnedBy(String title, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByTitleContainingAndOwnedBy(title, ownedBy, pageable);
-    }
-
-    public Page<Class> findByTitleIgnoreCaseContainingAndOwnedBy(String title, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByTitleIgnoreCaseContainingAndOwnedBy(title, ownedBy, pageable);
-    }
-
-    // description
-    public List<Class> findByDescriptionAndOwnedBy(String description, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByDescriptionAndOwnedBy(description, ownedBy);
-    }
-
-    public List<Class> findByDescriptionContainingAndOwnedBy(String description, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByDescriptionContainingAndOwnedBy(description, ownedBy);
-    }
-
-    public List<Class> findByDescriptionIgnoreCaseContainingAndOwnedBy(String description, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByDescriptionIgnoreCaseContainingAndOwnedBy(description, ownedBy);
-    }
-
-    public List<Class> findByDescriptionAndOwnedBy(String description, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByDescriptionAndOwnedBy(description, ownedBy, sort);
-    }
-
-    public List<Class> findByDescriptionContainingAndOwnedBy(String description, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByDescriptionContainingAndOwnedBy(description, ownedBy, sort);
-    }
-
-    public List<Class> findByDescriptionIgnoreCaseContainingAndOwnedBy(String description, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByDescriptionIgnoreCaseContainingAndOwnedBy(description, ownedBy, sort);
-    }
-
-    public Page<Class> findByDescriptionAndOwnedBy(String description, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByDescriptionAndOwnedBy(description, ownedBy, pageable);
-    }
-
-    public Page<Class> findByDescriptionContainingAndOwnedBy(String description, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByDescriptionContainingAndOwnedBy(description, ownedBy, pageable);
-    }
-
-    public Page<Class> findByDescriptionIgnoreCaseContainingAndOwnedBy(String description, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByDescriptionIgnoreCaseContainingAndOwnedBy(description, ownedBy, pageable);
-    }
-
-    // createdDate
-    public List<Class> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByCreatedDateAndOwnedBy(createdDate, ownedBy);
-    }
-
-    public List<Class> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByCreatedDateAndOwnedBy(createdDate, ownedBy, sort);
-    }
-
-    public List<Class> findByCreatedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByCreatedDateBetweenAndOwnedBy(start, end, ownedBy);
-    }
-
-    public Page<Class> findByCreatedDateAndOwnedBy(Date createdDate, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByCreatedDateAndOwnedBy(createdDate, ownedBy, pageable);
-    }
-
-    public Page<Class> findByCreatedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByCreatedDateBetweenAndOwnedBy(start, end, ownedBy, pageable);
-    }
-
-    // createdBy
-    public List<Class> findByCreatedByAndOwnedBy(String createdBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByCreatedByAndOwnedBy(createdBy, ownedBy);
-    }
-
-    public List<Class> findByCreatedByContainingAndOwnedBy(String createdBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByCreatedByContainingAndOwnedBy(createdBy, ownedBy);
-    }
-
-    public List<Class> findByCreatedByIgnoreCaseContainingAndOwnedBy(String createdBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByCreatedByIgnoreCaseContainingAndOwnedBy(createdBy, ownedBy);
-    }
-
-    public List<Class> findByCreatedByAndOwnedBy(String createdBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByCreatedByAndOwnedBy(createdBy, ownedBy, sort);
-    }
-
-    public List<Class> findByCreatedByContainingAndOwnedBy(String createdBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByCreatedByContainingAndOwnedBy(createdBy, ownedBy, sort);
-    }
-
-    public List<Class> findByCreatedByIgnoreCaseContainingAndOwnedBy(String createdBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByCreatedByIgnoreCaseContainingAndOwnedBy(createdBy, ownedBy, sort);
-    }
-
-    public Page<Class> findByCreatedByAndOwnedBy(String createdBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByCreatedByAndOwnedBy(createdBy, ownedBy, pageable);
-    }
-
-    public Page<Class> findByCreatedByContainingAndOwnedBy(String createdBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByCreatedByContainingAndOwnedBy(createdBy, ownedBy, pageable);
-    }
-
-    public Page<Class> findByCreatedByIgnoreCaseContainingAndOwnedBy(String createdBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByCreatedByIgnoreCaseContainingAndOwnedBy(createdBy, ownedBy, pageable);
-    }
-
-    // finalisedDate
-    public List<Class> findByFinalisedDateAndOwnedBy(Date finalisedDate, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByFinalisedDateAndOwnedBy(finalisedDate, ownedBy);
-    }
-
-    public List<Class> findByFinalisedDateAndOwnedBy(Date finalisedDate, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByFinalisedDateAndOwnedBy(finalisedDate, ownedBy);
-    }
-
-    public List<Class> findByFinalisedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByFinalisedDateBetweenAndOwnedBy(start, end, ownedBy);
-    }
-
-    public Page<Class> findByFinalisedDateAndOwnedBy(Date finalisedDate, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByFinalisedDateAndOwnedBy(finalisedDate, ownedBy, pageable);
-    }
-
-    public Page<Class> findByFinalisedDateBetweenAndOwnedBy(Date start, Date end, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByFinalisedDateBetweenAndOwnedBy(start, end, ownedBy, pageable);
-    }
-
-    // finalisedBy
-    public List<Class> findByFinalisedByAndOwnedBy(String finalisedBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByFinalisedByAndOwnedBy(finalisedBy, ownedBy);
-    }
-
-    public List<Class> findByFinalisedByContainingAndOwnedBy(String finalisedBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByFinalisedByContainingAndOwnedBy(finalisedBy, ownedBy);
-    }
-
-    public List<Class> findByFinalisedByIgnoreCaseContainingAndOwnedBy(String finalisedBy, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByFinalisedByIgnoreCaseContainingAndOwnedBy(finalisedBy, ownedBy);
-    }
-
-    public List<Class> findByFinalisedByAndOwnedBy(String finalisedBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByFinalisedByAndOwnedBy(finalisedBy, ownedBy, sort);
-    }
-
-    public List<Class> findByFinalisedByContainingAndOwnedBy(String finalisedBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByFinalisedByContainingAndOwnedBy(finalisedBy, ownedBy, sort);
-    }
-
-    public List<Class> findByFinalisedByIgnoreCaseContainingAndOwnedBy(String finalisedBy, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByFinalisedByIgnoreCaseContainingAndOwnedBy(finalisedBy, ownedBy, sort);
-    }
-
-    public Page<Class> findByFinalisedByAndOwnedBy(String finalisedBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByFinalisedByAndOwnedBy(finalisedBy, ownedBy, pageable);
-    }
-
-    public Page<Class> findByFinalisedByContainingAndOwnedBy(String finalisedBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByFinalisedByContainingAndOwnedBy(finalisedBy, ownedBy, pageable);
-    }
-
-    public Page<Class> findByFinalisedByIgnoreCaseContainingAndOwnedBy(String finalisedBy, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByFinalisedByIgnoreCaseContainingAndOwnedBy(finalisedBy, ownedBy, pageable);
-    }
-
-    // deleted
-    public List<Class> findByDeletedAndOwnedBy(String deleted, String ownedBy) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByDeletedAndOwnedBy(deleted, ownedBy);
-    }
-
-    public List<Class> findByDeletedAndOwnedBy(String deleted, String ownedBy, Sort sort) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByDeletedAndOwnedBy(deleted, ownedBy, sort);
-    }
-
-    public Page<Class> findByDeletedAndOwnedBy(String deleted, String ownedBy, Pageable pageable) {
-        ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
-        return classRepository.findByDeletedAndOwnedBy(deleted, ownedBy, pageable);
-    }
-
     // ownedBy
     public List<Class> findByOwnedBy(String ownedBy) {
         ownedBy = (ownedBy == null) ? SecurityContextHolder.getContext().getAuthentication().getName():ownedBy;
@@ -356,27 +102,6 @@ public class ClassService implements IClassService {
     // All UPDATE operations
     public Class update(Class klass){
 
-        return classRepository.save(klass);
-    }
-
-    public Class updateClassSetFinalized(Long id){
-        Class klass = classRepository.findById(id);
-
-        if (klass == null) {
-            // TODO throw Object not find
-        }
-
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        klass.setFinalisedDate(new Date());
-        klass.setFinalisedBy(username);
-
-        return classRepository.save(klass);
-    }
-
-    public Class updateClassSetTitle(Long id, String newTitle){
-
-        Class klass = classRepository.findById(id);
         return classRepository.save(klass);
     }
 
@@ -399,7 +124,7 @@ public class ClassService implements IClassService {
         criteriaQuery.where(criteriaBuilder.equal(from.get("ownedBy"), loggedInUser));
         TypedQuery<Class> typedQuery = entityManager.createQuery(select);
         typedQuery.setFirstResult(skip);
-        typedQuery.setMaxResults(maxPageSize);
+        typedQuery.setMaxResults(top);
         return typedQuery.getResultList();
     }
 
@@ -431,11 +156,11 @@ public class ClassService implements IClassService {
      * If you call this, be aware that you will only ever get a valid Class back. If there is no valid
      * Class, an exception is thrown
      *
-     * @param classSystemId
-     * @return
+     * @param classSystemId systemId of the class object you are looking for
+     * @return the newly found class object or null if it does not exist
      */
     protected Class getClassOrThrow(@NotNull String classSystemId) {
-        Class klass = classRepository.findBySystemIdOrderBySystemId(classSystemId);
+        Class klass = classRepository.findBySystemId(classSystemId);
         if (null == klass) {
             String info = INFO_CANNOT_FIND_OBJECT + " Class, using systemId " + classSystemId;
             logger.info(info);

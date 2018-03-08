@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nikita.model.noark5.v4.*;
 import nikita.util.serializers.noark5v4.StorageLocationSerializer;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.STORAGE_LOCATION;
 
@@ -31,20 +33,20 @@ public class StorageLocation extends NoarkEntity {
     // Links to Fonds
     @ManyToMany(mappedBy = "referenceStorageLocation")
     @JsonIgnore
-    private Set<Fonds> referenceFonds = new TreeSet<>();
+    private List<Fonds> referenceFonds = new ArrayList<>();
 
     // Links to Series
     @ManyToMany(mappedBy = "referenceStorageLocation")
-    private Set<Series> referenceSeries = new TreeSet<>();
+    private List<Series> referenceSeries = new ArrayList<>();
 
     // Links to Files
     @OneToMany(mappedBy = "referenceStorageLocation")
-    private Set<File> referenceFile = new TreeSet<>();
+    private List<File> referenceFile = new ArrayList<>();
 
     // Links to BasicRecords
     @ManyToMany(mappedBy = "referenceStorageLocation")
     @JsonIgnore
-    private Set<BasicRecord> referenceBasicRecord = new TreeSet<>();
+    private List<BasicRecord> referenceBasicRecord = new ArrayList<>();
 
 
     public String getStorageLocation() {
@@ -55,11 +57,11 @@ public class StorageLocation extends NoarkEntity {
         this.storageLocation = storageLocation;
     }
 
-    public Set<Fonds> getReferenceFonds() {
+    public List<Fonds> getReferenceFonds() {
         return referenceFonds;
     }
 
-    public void setReferenceFonds(Set<Fonds> referenceFonds) {
+    public void setReferenceFonds(List<Fonds> referenceFonds) {
         this.referenceFonds = referenceFonds;
     }
 
@@ -68,27 +70,27 @@ public class StorageLocation extends NoarkEntity {
         return STORAGE_LOCATION;
     }
 
-    public Set<Series> getReferenceSeries() {
+    public List<Series> getReferenceSeries() {
         return referenceSeries;
     }
 
-    public void setReferenceSeries(Set<Series> referenceSeries) {
+    public void setReferenceSeries(List<Series> referenceSeries) {
         this.referenceSeries = referenceSeries;
     }
 
-    public Set<File> getReferenceFile() {
+    public List<File> getReferenceFile() {
         return referenceFile;
     }
 
-    public void setReferenceFile(Set<File> referenceFile) {
+    public void setReferenceFile(List<File> referenceFile) {
         this.referenceFile = referenceFile;
     }
 
-    public Set<BasicRecord> getReferenceBasicRecord() {
+    public List<BasicRecord> getReferenceBasicRecord() {
         return referenceBasicRecord;
     }
 
-    public void setReferenceBasicRecord(Set<BasicRecord> referenceBasicRecord) {
+    public void setReferenceBasicRecord(List<BasicRecord> referenceBasicRecord) {
         this.referenceBasicRecord = referenceBasicRecord;
     }
 
@@ -97,5 +99,31 @@ public class StorageLocation extends NoarkEntity {
         return "StorageLocation{" + super.toString() + 
                 ", storageLocation='" + storageLocation + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        StorageLocation rhs = (StorageLocation) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(storageLocation, rhs.storageLocation)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(storageLocation)
+                .toHashCode();
     }
 }

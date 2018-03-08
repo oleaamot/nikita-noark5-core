@@ -5,6 +5,8 @@ import nikita.model.noark5.v4.File;
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.Record;
 import nikita.model.noark5.v4.interfaces.entities.ICrossReferenceEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 
@@ -116,5 +118,35 @@ public class CrossReference extends NoarkEntity implements ICrossReferenceEntity
                 ", referenceToFile='" + referenceToFile + '\'' +
                 ", referenceToRecord='" + referenceToRecord + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        CrossReference rhs = (CrossReference) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(referenceToClass, rhs.referenceToClass)
+                .append(referenceToFile, rhs.referenceToFile)
+                .append(referenceToRecord, rhs.referenceToRecord)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(referenceToClass)
+                .append(referenceToFile)
+                .append(referenceToRecord)
+                .toHashCode();
     }
 }

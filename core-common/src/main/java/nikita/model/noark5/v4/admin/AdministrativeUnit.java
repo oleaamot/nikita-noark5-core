@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.interfaces.entities.admin.IAdministrativeUnitEntity;
 import nikita.util.deserialisers.admin.AdministrativeUnitDeserializer;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 @Entity
 @Table(name = "nikita_administrative_unit")
@@ -77,7 +79,7 @@ public class AdministrativeUnit extends NoarkEntity implements IAdministrativeUn
 
     // Links to child AdministrativeUnit
     @OneToMany(mappedBy = "referenceParentAdministrativeUnit", fetch = FetchType.LAZY)
-    private Set<AdministrativeUnit> referenceChildAdministrativeUnit = new TreeSet<>();
+    private List<AdministrativeUnit> referenceChildAdministrativeUnit = new ArrayList<>();
 
     @Override
     public Date getCreatedDate() {
@@ -151,21 +153,62 @@ public class AdministrativeUnit extends NoarkEntity implements IAdministrativeUn
         this.referenceParentAdministrativeUnit = referenceParentAdministrativeUnit;
     }
 
-    public Set<AdministrativeUnit> getReferenceChildAdministrativeUnit() {
+    public List<AdministrativeUnit> getReferenceChildAdministrativeUnit() {
         return referenceChildAdministrativeUnit;
     }
 
-    public void setReferenceChildAdministrativeUnit(Set<AdministrativeUnit> referenceChildAdministrativeUnit) {
+    public void setReferenceChildAdministrativeUnit(List<AdministrativeUnit> referenceChildAdministrativeUnit) {
         this.referenceChildAdministrativeUnit = referenceChildAdministrativeUnit;
     }
 
     @Override
     public String toString() {
-
-        return super.toString() +
-                ", createdDate=" + createdDate +
+        return "AdministrativeUnit{" + super.toString() +
+                "createdDate=" + createdDate +
                 ", createdBy='" + createdBy + '\'' +
                 ", finalisedDate=" + finalisedDate +
-                ", finalisedBy='" + finalisedBy + '\'';
+                ", finalisedBy='" + finalisedBy + '\'' +
+                ", shortName='" + shortName + '\'' +
+                ", administrativeUnitName='" + administrativeUnitName + '\'' +
+                ", administrativeUnitStatus='" + administrativeUnitStatus + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        AdministrativeUnit rhs = (AdministrativeUnit) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(createdDate, rhs.createdDate)
+                .append(createdBy, rhs.createdBy)
+                .append(finalisedDate, rhs.finalisedDate)
+                .append(finalisedBy, rhs.finalisedBy)
+                .append(shortName, rhs.shortName)
+                .append(administrativeUnitName, rhs.administrativeUnitName)
+                .append(administrativeUnitStatus, rhs.administrativeUnitStatus)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(createdDate)
+                .append(createdBy)
+                .append(finalisedDate)
+                .append(finalisedBy)
+                .append(shortName)
+                .append(administrativeUnitName)
+                .append(administrativeUnitStatus)
+                .toHashCode();
     }
 }

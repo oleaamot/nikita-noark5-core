@@ -2,11 +2,13 @@ package nikita.model.noark5.v4.casehandling;
 
 import nikita.model.noark5.v4.NoarkGeneralEntity;
 import nikita.model.noark5.v4.interfaces.entities.ICasePartyEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.Constants.NOARK_CASE_HANDLING_PATH;
 import static nikita.config.N5ResourceMappings.CASE_PARTY;
@@ -96,7 +98,7 @@ public class CaseParty extends NoarkGeneralEntity implements ICasePartyEntity {
 
     // Links to CaseFiles
     @ManyToMany(mappedBy = "referenceCaseParty")
-    private Set<CaseFile> referenceCaseFile = new TreeSet<>();
+    private List<CaseFile> referenceCaseFile = new ArrayList<>();
 
     public String getCasePartyId() {
         return casePartyId;
@@ -188,11 +190,11 @@ public class CaseParty extends NoarkGeneralEntity implements ICasePartyEntity {
         return NOARK_CASE_HANDLING_PATH;
     }
 
-    public Set<CaseFile> getReferenceCaseFile() {
+    public List<CaseFile> getReferenceCaseFile() {
         return referenceCaseFile;
     }
 
-    public void setReferenceCaseFile(Set<CaseFile> referenceCaseFile) {
+    public void setReferenceCaseFile(List<CaseFile> referenceCaseFile) {
         this.referenceCaseFile = referenceCaseFile;
     }
 
@@ -210,5 +212,49 @@ public class CaseParty extends NoarkGeneralEntity implements ICasePartyEntity {
                 ", telephoneNumber='" + telephoneNumber + '\'' +
                 ", contactPerson='" + contactPerson + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        CaseParty rhs = (CaseParty) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(casePartyId, rhs.casePartyId)
+                .append(casePartyName, rhs.casePartyName)
+                .append(casePartyRole, rhs.casePartyRole)
+                .append(postalAddress, rhs.postalAddress)
+                .append(postCode, rhs.postCode)
+                .append(postalTown, rhs.postalTown)
+                .append(foreignAddress, rhs.foreignAddress)
+                .append(emailAddress, rhs.emailAddress)
+                .append(telephoneNumber, rhs.telephoneNumber)
+                .append(contactPerson, rhs.contactPerson)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(casePartyId)
+                .append(casePartyName)
+                .append(casePartyRole)
+                .append(postalAddress)
+                .append(postCode)
+                .append(postalTown)
+                .append(foreignAddress)
+                .append(emailAddress)
+                .append(telephoneNumber)
+                .append(contactPerson)
+                .toHashCode();
     }
 }

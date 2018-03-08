@@ -1,11 +1,13 @@
 package nikita.model.noark5.v4;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.CLASSIFICATION_SYSTEM;
 
@@ -30,11 +32,11 @@ public class ClassificationSystem extends NoarkGeneralEntity {
 
     // Links to Series
     @OneToMany(mappedBy = "referenceClassificationSystem")
-    private Set<Series> referenceSeries = new TreeSet<>();
+    private List<Series> referenceSeries = new ArrayList<>();
 
     // Links to child Classes
     @OneToMany(mappedBy = "referenceClassificationSystem")
-    private Set<Class> referenceClass = new TreeSet<>();
+    private List<Class> referenceClass = new ArrayList<>();
 
     public String getClassificationType() {
         return classificationType;
@@ -49,19 +51,19 @@ public class ClassificationSystem extends NoarkGeneralEntity {
         return CLASSIFICATION_SYSTEM;
     }
 
-    public Set<Series> getReferenceSeries() {
+    public List<Series> getReferenceSeries() {
         return referenceSeries;
     }
 
-    public void setReferenceSeries(Set<Series> referenceSeries) {
+    public void setReferenceSeries(List<Series> referenceSeries) {
         this.referenceSeries = referenceSeries;
     }
 
-    public Set<Class> getReferenceClass() {
+    public List<Class> getReferenceClass() {
         return referenceClass;
     }
 
-    public void setReferenceClass(Set<Class> referenceClass) {
+    public void setReferenceClass(List<Class> referenceClass) {
         this.referenceClass = referenceClass;
     }
 
@@ -72,4 +74,29 @@ public class ClassificationSystem extends NoarkGeneralEntity {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        ClassificationSystem rhs = (ClassificationSystem) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(classificationType, rhs.classificationType)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(classificationType)
+                .toHashCode();
+    }
 }

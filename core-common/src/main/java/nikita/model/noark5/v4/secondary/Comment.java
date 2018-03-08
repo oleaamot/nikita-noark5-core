@@ -5,12 +5,14 @@ import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.File;
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.interfaces.entities.ICommentEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.COMMENT;
 
@@ -54,15 +56,15 @@ public class Comment extends NoarkEntity implements ICommentEntity {
 
     // Link to File
     @ManyToMany(mappedBy = "referenceComment")
-    private Set<File> referenceFile = new TreeSet<>();
+    private List<File> referenceFile = new ArrayList<>();
 
     // Links to BasicRecord
     @ManyToMany(mappedBy = "referenceComment")
-    private Set<BasicRecord> referenceRecord = new TreeSet<>();
+    private List<BasicRecord> referenceRecord = new ArrayList<>();
 
     // Link to DocumentDescription
     @ManyToMany(mappedBy = "referenceComment")
-    private Set<DocumentDescription> referenceDocumentDescription = new TreeSet<>();
+    private List<DocumentDescription> referenceDocumentDescription = new ArrayList<>();
 
     public String getCommentText() {
         return commentText;
@@ -101,27 +103,27 @@ public class Comment extends NoarkEntity implements ICommentEntity {
         return COMMENT;
     }
 
-    public Set<File> getReferenceFile() {
+    public List<File> getReferenceFile() {
         return referenceFile;
     }
 
-    public void setReferenceFile(Set<File> referenceFile) {
+    public void setReferenceFile(List<File> referenceFile) {
         this.referenceFile = referenceFile;
     }
 
-    public Set<BasicRecord> getReferenceRecord() {
+    public List<BasicRecord> getReferenceRecord() {
         return referenceRecord;
     }
 
-    public void setReferenceRecord(Set<BasicRecord> referenceRecord) {
+    public void setReferenceRecord(List<BasicRecord> referenceRecord) {
         this.referenceRecord = referenceRecord;
     }
 
-    public Set<DocumentDescription> getReferenceDocumentDescription() {
+    public List<DocumentDescription> getReferenceDocumentDescription() {
         return referenceDocumentDescription;
     }
 
-    public void setReferenceDocumentDescription(Set<DocumentDescription> referenceDocumentDescription) {
+    public void setReferenceDocumentDescription(List<DocumentDescription> referenceDocumentDescription) {
         this.referenceDocumentDescription = referenceDocumentDescription;
     }
 
@@ -133,5 +135,37 @@ public class Comment extends NoarkEntity implements ICommentEntity {
                 ", commentDate=" + commentDate +
                 ", commentRegisteredBy='" + commentRegisteredBy + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Comment rhs = (Comment) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(commentText, rhs.commentText)
+                .append(commentType, rhs.commentType)
+                .append(commentDate, rhs.commentDate)
+                .append(commentRegisteredBy, rhs.commentRegisteredBy)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(commentText)
+                .append(commentType)
+                .append(commentDate)
+                .append(commentRegisteredBy)
+                .toHashCode();
     }
 }

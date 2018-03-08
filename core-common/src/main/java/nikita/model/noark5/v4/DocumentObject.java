@@ -8,14 +8,16 @@ import nikita.model.noark5.v4.secondary.Conversion;
 import nikita.model.noark5.v4.secondary.ElectronicSignature;
 import nikita.util.deserialisers.DocumentObjectDeserializer;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT;
 
@@ -136,7 +138,7 @@ public class DocumentObject  extends NoarkEntity implements INoarkCreateEntity,
 
     // Links to Conversion
     @OneToMany(mappedBy = "referenceDocumentObject")
-    private Set<Conversion> referenceConversion = new TreeSet<>();
+    private List<Conversion> referenceConversion = new ArrayList<>();
 
     // Link to ElectronicSignature
     @OneToOne
@@ -261,11 +263,11 @@ public class DocumentObject  extends NoarkEntity implements INoarkCreateEntity,
         this.referenceRecord = referenceRecord;
     }
 
-    public Set<Conversion> getReferenceConversion() {
+    public List<Conversion> getReferenceConversion() {
         return referenceConversion;
     }
 
-    public void setReferenceConversion(Set<Conversion> referenceConversion) {
+    public void setReferenceConversion(List<Conversion> referenceConversion) {
         this.referenceConversion = referenceConversion;
     }
 
@@ -305,5 +307,53 @@ public class DocumentObject  extends NoarkEntity implements INoarkCreateEntity,
                 ", mimeType=" + mimeType +
                 ", originalFilename=" + originalFilename +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        DocumentObject rhs = (DocumentObject) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(fileSize, rhs.fileSize)
+                .append(checksumAlgorithm, rhs.checksumAlgorithm)
+                .append(checksum, rhs.checksum)
+                .append(referenceDocumentFile, rhs.referenceDocumentFile)
+                .append(createdBy, rhs.createdBy)
+                .append(createdDate, rhs.createdDate)
+                .append(formatDetails, rhs.formatDetails)
+                .append(format, rhs.format)
+                .append(variantFormat, rhs.variantFormat)
+                .append(versionNumber, rhs.versionNumber)
+                .append(mimeType, rhs.mimeType)
+                .append(originalFilename, rhs.originalFilename)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(fileSize)
+                .append(checksumAlgorithm)
+                .append(checksum)
+                .append(referenceDocumentFile)
+                .append(createdBy)
+                .append(createdDate)
+                .append(formatDetails)
+                .append(format)
+                .append(variantFormat)
+                .append(versionNumber)
+                .append(mimeType)
+                .append(originalFilename)
+                .toHashCode();
     }
 }

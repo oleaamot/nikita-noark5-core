@@ -134,13 +134,6 @@ public class NoarkGeneralEntity extends NoarkEntity implements INoarkGeneralEnti
     }
 
     @Override
-    public int hashCode() {
-        return new HashCodeBuilder()
-                .append(createdDate)
-                .toHashCode();
-    }
-
-    @Override
     public int compareTo(NoarkEntity otherEntity) {
         if (null == otherEntity) {
             return -1;
@@ -152,19 +145,6 @@ public class NoarkGeneralEntity extends NoarkEntity implements INoarkGeneralEnti
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (other == this)
-            return true;
-        if (!(other instanceof NoarkGeneralEntity))
-            return false;
-        NoarkGeneralEntity noarkGeneralEntity = (NoarkGeneralEntity)other;
-        return new EqualsBuilder()
-                .append(this.createdDate, noarkGeneralEntity.createdDate)
-                .isEquals();
-    }
-
-
-    @Override
     public String toString() {
 
         return super.toString() +
@@ -174,5 +154,41 @@ public class NoarkGeneralEntity extends NoarkEntity implements INoarkGeneralEnti
                 ", createdBy='" + createdBy + '\'' +
                 ", finalisedDate=" + finalisedDate +
                 ", finalisedBy='" + finalisedBy + '\'';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        NoarkGeneralEntity rhs = (NoarkGeneralEntity) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(title, rhs.title)
+                .append(description, rhs.description)
+                .append(createdDate, rhs.createdDate)
+                .append(createdBy, rhs.createdBy)
+                .append(finalisedDate, rhs.finalisedDate)
+                .append(finalisedBy, rhs.finalisedBy)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(title)
+                .append(description)
+                .append(createdDate)
+                .append(createdBy)
+                .append(finalisedDate)
+                .append(finalisedBy)
+                .toHashCode();
     }
 }

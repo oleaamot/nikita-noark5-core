@@ -3,12 +3,14 @@ package nikita.model.noark5.v4.secondary;
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.casehandling.RegistryEntry;
 import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePart;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.SIGN_OFF;
 
@@ -50,7 +52,7 @@ public class SignOff extends NoarkEntity {
 
     // Links to RegistryEnty
     @ManyToMany(mappedBy = "referenceSignOff")
-    private Set<RegistryEntry> referenceRecord = new TreeSet<>();
+    private List<RegistryEntry> referenceRecord = new ArrayList<>();
 
     public Date getSignOffDate() {
         return signOffDate;
@@ -97,11 +99,11 @@ public class SignOff extends NoarkEntity {
         this.referenceSignedOffCorrespondencePart = referenceSignedOffCorrespondencePart;
     }
 
-    public Set<RegistryEntry> getReferenceRecord() {
+    public List<RegistryEntry> getReferenceRecord() {
         return referenceRecord;
     }
 
-    public void setReferenceRecord(Set<RegistryEntry> referenceRecord) {
+    public void setReferenceRecord(List<RegistryEntry> referenceRecord) {
         this.referenceRecord = referenceRecord;
     }
 
@@ -112,5 +114,35 @@ public class SignOff extends NoarkEntity {
                 ", signOffBy='" + signOffBy + '\'' +
                 ", signOffDate=" + signOffDate +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        SignOff rhs = (SignOff) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(signOffMethod, rhs.signOffMethod)
+                .append(signOffBy, rhs.signOffBy)
+                .append(signOffDate, rhs.signOffDate)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(signOffMethod)
+                .append(signOffBy)
+                .append(signOffDate)
+                .toHashCode();
     }
 }

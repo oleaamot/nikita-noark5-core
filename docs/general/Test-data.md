@@ -67,26 +67,25 @@ Next you can query the core for the various Noark entities. e.g.
 
 Quick note on profiles.
 
-The core supports a number of different profiles. If no profile is set it will
-default to the demo profile. The core has the following profiles:
+The core supports different profiles for database access. If no 
+profile is set it will use the default profile, which is used 
+as a demo profile and use the H2 in-memory database. The core 
+has the following profiles:
 
-        demo: demo mode
-        dev: developer mode
-        test: test mode
-        prod: production mode
-        nosecurity: Switch off security, REST service is usable without logging in
+    mysql
+    postgres
+
+These can be configured by editing the resources/application-*.yml.
 
 To run using a different profile, use e.g.
 
-    mvn spring-boot:run -Drun.jvmArguments="-Dspring.profiles.active=dev,nosecurity"
+    mvn spring-boot:run -Drun.jvmArguments="-Dspring.profiles.active=mysql"
 
-This will start the core in developer mode without a need to login.
+This will start the core in mysql mode.
 
-When starting in dev/demo mode you should see a message like the following:
+When starting in  mode you should see a message like the following:
 
     Dev/demo mode: In-memory database (H2) in use. See http://localhost:8082 .
-    Use following JDBC-string: jdbc:h2:mem:n5DemoDb/jdbc:h2:mem:n5DevDb
+    Use following JDBC-string: jdbc:h2:mem:n5DemoDb
 
-In these modes the core uses a in-memory database (H2) instead of a standalone
-DBMS. It should be possible to use both postgres and mysql 'out-of-the-box' in
-production mode.
+

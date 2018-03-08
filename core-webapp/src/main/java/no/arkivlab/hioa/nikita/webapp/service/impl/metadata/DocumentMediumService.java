@@ -63,8 +63,8 @@ public class DocumentMediumService implements IDocumentMediumService {
      * @return
      */
     @Override
-    public DocumentMedium findBySystemIdOrderBySystemId(String systemId) {
-        return documentMediumRepository.findBySystemIdOrderBySystemId(systemId);
+    public DocumentMedium findBySystemId(String systemId) {
+        return documentMediumRepository.findBySystemId(systemId);
     }
 
     /**

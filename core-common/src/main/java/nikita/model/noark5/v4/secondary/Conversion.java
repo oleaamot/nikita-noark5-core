@@ -2,6 +2,8 @@ package nikita.model.noark5.v4.secondary;
 
 import nikita.model.noark5.v4.DocumentObject;
 import nikita.model.noark5.v4.NoarkEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -127,5 +129,41 @@ public class Conversion extends NoarkEntity {
                 ", conversionTool='" + conversionTool + '\'' +
                 ", conversionComment='" + conversionComment + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Conversion rhs = (Conversion) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(convertedDate, rhs.convertedDate)
+                .append(convertedBy, rhs.convertedBy)
+                .append(convertedFromFormat, rhs.convertedFromFormat)
+                .append(convertedToFormat, rhs.convertedToFormat)
+                .append(conversionTool, rhs.conversionTool)
+                .append(conversionComment, rhs.conversionComment)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(convertedDate)
+                .append(convertedBy)
+                .append(convertedFromFormat)
+                .append(convertedToFormat)
+                .append(conversionTool)
+                .append(conversionComment)
+                .toHashCode();
     }
 }

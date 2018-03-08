@@ -24,10 +24,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Date;
 
+import static nikita.config.Constants.SPRING_PROFILE_SWAGGER;
+
 
 @Configuration
 @EnableSwagger2
-@Profile({ Constants.SPRING_PROFILE_DEVELOPMENT, Constants.SPRING_PROFILE_DEMO})
+@Profile(SPRING_PROFILE_SWAGGER)
 @EnableConfigurationProperties(WebappProperties.class)
 public class SwaggerConfig {
 

@@ -5,14 +5,17 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.interfaces.*;
 import nikita.model.noark5.v4.secondary.*;
 import nikita.util.deserialisers.SeriesDeserializer;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
+import static nikita.config.Constants.PRIMARY_KEY_FONDS;
 import static nikita.config.N5ResourceMappings.SERIES;
 
 @Entity
@@ -63,11 +66,12 @@ public class Series extends NoarkGeneralEntity implements IStorageLocation, IDoc
     @JoinTable(name = "series_storage_location", joinColumns = @JoinColumn(name = "f_pk_series_id",
             referencedColumnName = "pk_series_id"), inverseJoinColumns = @JoinColumn(name = "f_pk_storage_location_id",
             referencedColumnName = "pk_storage_location_id"))
-    private Set<StorageLocation> referenceStorageLocation = new TreeSet<>();
+    private List<StorageLocation> referenceStorageLocation = new ArrayList<>();
 
     // Link to Fonds
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "series_fonds_id", referencedColumnName = "pk_fonds_id")
+    @JoinColumn(name = "series_fonds_id",
+            referencedColumnName = PRIMARY_KEY_FONDS)
     @JsonIgnore
     private Fonds referenceFonds;
 
@@ -87,12 +91,12 @@ public class Series extends NoarkGeneralEntity implements IStorageLocation, IDoc
     // Links to Files
     @JsonIgnore
     @OneToMany(mappedBy = "referenceSeries")
-    private Set<File> referenceFile = new TreeSet<>();
+    private List<File> referenceFile = new ArrayList<>();
 
     // Links to Records
     @OneToMany(mappedBy = "referenceSeries")
     @JsonIgnore
-    private Set<Record> referenceRecord = new TreeSet<>();
+    private List<Record> referenceRecord = new ArrayList<>();
 
     // Links to Classified
     @ManyToOne(cascade = CascadeType.PERSIST)
@@ -164,13 +168,13 @@ public class Series extends NoarkGeneralEntity implements IStorageLocation, IDoc
     }
 
     @Override
-    public Set<StorageLocation> getReferenceStorageLocation() {
+    public List<StorageLocation> getReferenceStorageLocation() {
         return referenceStorageLocation;
     }
 
     @Override
     public void setReferenceStorageLocation(
-            Set<StorageLocation> referenceStorageLocation) {
+            List<StorageLocation> referenceStorageLocation) {
         this.referenceStorageLocation = referenceStorageLocation;
     }
 
@@ -207,19 +211,19 @@ public class Series extends NoarkGeneralEntity implements IStorageLocation, IDoc
         this.referenceClassificationSystem = referenceClassificationSystem;
     }
 
-    public Set<File> getReferenceFile() {
+    public List<File> getReferenceFile() {
         return referenceFile;
     }
 
-    public void setReferenceFile(Set<File> referenceFile) {
+    public void setReferenceFile(List<File> referenceFile) {
         this.referenceFile = referenceFile;
     }
 
-    public Set<Record> getReferenceRecord() {
+    public List<Record> getReferenceRecord() {
         return referenceRecord;
     }
 
-    public void setReferenceRecord(Set<Record> referenceRecord) {
+    public void setReferenceRecord(List<Record> referenceRecord) {
         this.referenceRecord = referenceRecord;
     }
 
@@ -280,5 +284,37 @@ public class Series extends NoarkGeneralEntity implements IStorageLocation, IDoc
                 ", documentMedium='" + documentMedium + '\'' +
                 ", seriesStatus='" + seriesStatus + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Series rhs = (Series) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(seriesEndDate, rhs.seriesEndDate)
+                .append(seriesStartDate, rhs.seriesStartDate)
+                .append(documentMedium, rhs.documentMedium)
+                .append(seriesStatus, rhs.seriesStatus)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(seriesEndDate)
+                .append(seriesStartDate)
+                .append(documentMedium)
+                .append(seriesStatus)
+                .toHashCode();
     }
 }

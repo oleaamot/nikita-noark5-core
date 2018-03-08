@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.DOCUMENT_OBJECT;
@@ -89,13 +89,13 @@ public class DocumentObjectHateoasController extends NoarkController {
                     value = "systemID of the documentObject to retrieve",
                     required = true)
             @PathVariable("systemID") final String documentObjectSystemId) {
-        DocumentObject createdDocumentObject = documentObjectService.findBySystemIdOrderBySystemId(documentObjectSystemId);
+        DocumentObject createdDocumentObject = documentObjectService.findBySystemId(documentObjectSystemId);
         if (createdDocumentObject == null) {
             throw new NoarkEntityNotFoundException(documentObjectSystemId);
         }
         DocumentObjectHateoas documentObjectHateoas = new
                 DocumentObjectHateoas(createdDocumentObject);
-        documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
+        documentObjectHateoasHandler.addLinks(documentObjectHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdDocumentObject.getVersion().toString())
@@ -134,7 +134,7 @@ public class DocumentObjectHateoasController extends NoarkController {
             if (pieces.length == 3 && pieces[1].equalsIgnoreCase("eq")) {
                 pieces[2] = pieces[2].replace("\'", "");
                 documentObjectHateoas = new
-                        DocumentObjectHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                        DocumentObjectHateoas((List<INikitaEntity>) (List)
                         documentObjectService.findDocumentObjectByAnyColumn(pieces[0], pieces[2]));
 
             }
@@ -142,10 +142,10 @@ public class DocumentObjectHateoasController extends NoarkController {
 
         if (null == documentObjectHateoas) {
             documentObjectHateoas = new
-                    DocumentObjectHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                    DocumentObjectHateoas((List<INikitaEntity>) (List)
                     documentObjectService.findDocumentObjectByOwnerPaginated(top, skip));
         }
-        documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
+        documentObjectHateoasHandler.addLinks(documentObjectHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(documentObjectHateoas);
@@ -170,7 +170,7 @@ public class DocumentObjectHateoasController extends NoarkController {
                     value = "systemID of the documentObject that has a file associated with it",
                     required = true)
             @PathVariable("systemID") final String documentObjectSystemId) throws IOException {
-        DocumentObject documentObject = documentObjectService.findBySystemIdOrderBySystemId(documentObjectSystemId);
+        DocumentObject documentObject = documentObjectService.findBySystemId(documentObjectSystemId);
         if (documentObject == null) {
             throw new NoarkEntityNotFoundException(documentObjectSystemId);
         }
@@ -230,7 +230,7 @@ public class DocumentObjectHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String documentObjectSystemId) {
         try {
-            DocumentObject documentObject = documentObjectService.findBySystemIdOrderBySystemId(documentObjectSystemId);
+            DocumentObject documentObject = documentObjectService.findBySystemId(documentObjectSystemId);
             if (documentObject == null) {
                 throw new NoarkEntityNotFoundException(documentObjectSystemId);
             }
@@ -285,7 +285,7 @@ public class DocumentObjectHateoasController extends NoarkController {
             documentObjectService.update(documentObject);
             DocumentObjectHateoas documentObjectHateoas = new
                     DocumentObjectHateoas(documentObject);
-            documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
+            documentObjectHateoasHandler.addLinks(documentObjectHateoas, new Authorisation());
             return new ResponseEntity<>(documentObjectHateoas, HttpStatus.OK);
         } catch (IOException e) {
             throw new StorageException(e.toString());
@@ -311,17 +311,17 @@ public class DocumentObjectHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        DocumentObject documentObject = documentObjectService.findBySystemIdOrderBySystemId(systemID);
+        DocumentObject documentObject = documentObjectService.findBySystemId(systemID);
         NoarkEntity parentEntity = documentObject.chooseParent();
         documentObjectService.deleteEntity(systemID);
         HateoasNoarkObject hateoasNoarkObject;
         if (parentEntity instanceof DocumentDescription) {
             hateoasNoarkObject = new DocumentDescriptionHateoas(parentEntity);
-            documentDescriptionHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+            documentDescriptionHateoasHandler.addLinks(hateoasNoarkObject, new Authorisation());
         }
         else if (parentEntity instanceof Record) {
             hateoasNoarkObject = new RecordHateoas(parentEntity);
-            recordHateoasHandler.addLinks(hateoasNoarkObject, request, new Authorisation());
+            recordHateoasHandler.addLinks(hateoasNoarkObject, new Authorisation());
         }
         else {
             throw new NikitaException("Internal error. Could process" + request.getRequestURI());
@@ -365,7 +365,7 @@ public class DocumentObjectHateoasController extends NoarkController {
 
         DocumentObject updatedDocumentObject = documentObjectService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)), documentObject);
         DocumentObjectHateoas documentObjectHateoas = new DocumentObjectHateoas(updatedDocumentObject);
-        documentObjectHateoasHandler.addLinks(documentObjectHateoas, request, new Authorisation());
+        documentObjectHateoasHandler.addLinks(documentObjectHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedDocumentObject));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))

@@ -4,11 +4,13 @@ import nikita.model.noark5.v4.BasicRecord;
 import nikita.model.noark5.v4.Class;
 import nikita.model.noark5.v4.File;
 import nikita.model.noark5.v4.NoarkEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.KEYWORD;
 
@@ -29,15 +31,15 @@ public class Keyword extends NoarkEntity {
 
     // Links to Class
     @ManyToMany(mappedBy = "referenceKeyword")
-    private Set<Class> referenceClass = new TreeSet<>();
+    private List<Class> referenceClass = new ArrayList<>();
 
     // Links to File
     @ManyToMany(mappedBy = "referenceKeyword")
-    private Set<File> referenceFile = new TreeSet<>();
+    private List<File> referenceFile = new ArrayList<>();
 
     // Links to BasicRecord
     @ManyToMany(mappedBy = "referenceKeyword")
-    private Set<BasicRecord> referenceBasicRecord = new TreeSet<>();
+    private List<BasicRecord> referenceBasicRecord = new ArrayList<>();
 
     public String getKeyword() {
         return keyword;
@@ -52,27 +54,27 @@ public class Keyword extends NoarkEntity {
         return KEYWORD;
     }
 
-    public Set<Class> getReferenceClass() {
+    public List<Class> getReferenceClass() {
         return referenceClass;
     }
 
-    public void setReferenceClass(Set<Class> referenceClass) {
+    public void setReferenceClass(List<Class> referenceClass) {
         this.referenceClass = referenceClass;
     }
 
-    public Set<File> getReferenceFile() {
+    public List<File> getReferenceFile() {
         return referenceFile;
     }
 
-    public void setReferenceFile(Set<File> referenceFile) {
+    public void setReferenceFile(List<File> referenceFile) {
         this.referenceFile = referenceFile;
     }
 
-    public Set<BasicRecord> getReferenceBasicRecord() {
+    public List<BasicRecord> getReferenceBasicRecord() {
         return referenceBasicRecord;
     }
 
-    public void setReferenceBasicRecord(Set<BasicRecord> referenceBasicRecord) {
+    public void setReferenceBasicRecord(List<BasicRecord> referenceBasicRecord) {
         this.referenceBasicRecord = referenceBasicRecord;
     }
 
@@ -81,5 +83,31 @@ public class Keyword extends NoarkEntity {
         return "Keyword{" + super.toString() +
                 "keyword='" + keyword + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Keyword rhs = (Keyword) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(keyword, rhs.keyword)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(keyword)
+                .toHashCode();
     }
 }

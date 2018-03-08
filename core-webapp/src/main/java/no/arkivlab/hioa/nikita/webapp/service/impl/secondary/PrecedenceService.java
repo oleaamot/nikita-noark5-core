@@ -48,8 +48,8 @@ public class PrecedenceService implements IPrecedenceService {
     }
 
     @Override
-    public Precedence findBySystemIdOrderBySystemId(String precedenceSystemId) {
-        return precedenceRepository.findBySystemIdOrderBySystemId(precedenceSystemId);
+    public Precedence findBySystemId(String precedenceSystemId) {
+        return precedenceRepository.findBySystemId(precedenceSystemId);
     }
 
 
@@ -62,7 +62,7 @@ public class PrecedenceService implements IPrecedenceService {
      * @return
      */
     protected Precedence getPrecedenceOrThrow(@NotNull String precedenceSystemId) {
-        Precedence precedence = precedenceRepository.findBySystemIdOrderBySystemId(precedenceSystemId);
+        Precedence precedence = precedenceRepository.findBySystemId(precedenceSystemId);
         if (precedence == null) {
             String info = INFO_CANNOT_FIND_OBJECT + " Precedence, using systemId " + precedenceSystemId;
             logger.info(info);

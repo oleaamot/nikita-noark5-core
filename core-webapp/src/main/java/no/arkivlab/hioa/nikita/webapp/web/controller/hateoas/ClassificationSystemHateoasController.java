@@ -31,7 +31,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.CLASSIFICATION_SYSTEM;
@@ -91,7 +91,7 @@ public class ClassificationSystemHateoasController extends NoarkController {
                 classificationSystemService.createNewClassificationSystem(classificationSystem);
         ClassificationSystemHateoas classificationSystemHateoas = new
                 ClassificationSystemHateoas(createdClassificationSystem);
-        classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, request, new Authorisation());
+        classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdClassificationSystem));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -131,7 +131,7 @@ public class ClassificationSystemHateoasController extends NoarkController {
                 classificationSystemService.createClassAssociatedWithClassificationSystem(classificationSystemSystemId,
                         klass);
         ClassHateoas classHateoas = new ClassHateoas(createdClass);
-        classHateoasHandler.addLinks(classHateoas, request, new Authorisation());
+        classHateoasHandler.addLinks(classHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdClass));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -148,12 +148,12 @@ public class ClassificationSystemHateoasController extends NoarkController {
                     value = "systemId of classificationSystem to retrieve.",
                     required = true)
             @PathVariable("systemID") final String classificationSystemId) {
-        ClassificationSystem classificationSystem = classificationSystemService.findBySystemIdOrderBySystemId(classificationSystemId);
+        ClassificationSystem classificationSystem = classificationSystemService.findBySystemId(classificationSystemId);
         if (classificationSystem == null) {
             throw new NoarkEntityNotFoundException(classificationSystemId);
         }
         ClassificationSystemHateoas classificationSystemHateoas = new ClassificationSystemHateoas(classificationSystem);
-        classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, request, new Authorisation());
+        classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(classificationSystem.getVersion().toString())
@@ -180,9 +180,9 @@ public class ClassificationSystemHateoasController extends NoarkController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         ClassificationSystemHateoas classificationSystemHateoas = new
-                ClassificationSystemHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                ClassificationSystemHateoas((List<INikitaEntity>) (List)
                 classificationSystemService.findClassificationSystemByOwnerPaginated(top, skip));
-        classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, request, new Authorisation());
+        classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(classificationSystemHateoas);
@@ -206,7 +206,7 @@ public class ClassificationSystemHateoasController extends NoarkController {
                     value = "systemID of the ClassificationSystem to delete",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        ClassificationSystem classificationSystem = classificationSystemService.findBySystemIdOrderBySystemId(systemID);
+        ClassificationSystem classificationSystem = classificationSystemService.findBySystemId(systemID);
 
         classificationSystemService.deleteEntity(systemID);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, classificationSystem));
@@ -248,7 +248,7 @@ public class ClassificationSystemHateoasController extends NoarkController {
 
         ClassificationSystem updatedClassificationSystem = classificationSystemService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)), classificationSystem);
         ClassificationSystemHateoas classificationSystemHateoas = new ClassificationSystemHateoas(updatedClassificationSystem);
-        classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, request, new Authorisation());
+        classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedClassificationSystem));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))

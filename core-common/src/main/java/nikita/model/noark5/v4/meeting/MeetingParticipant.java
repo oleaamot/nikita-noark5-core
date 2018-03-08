@@ -1,6 +1,8 @@
 package nikita.model.noark5.v4.meeting;
 
 import nikita.model.noark5.v4.NoarkEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -69,5 +71,33 @@ public class MeetingParticipant extends NoarkEntity {
                 "meetingParticipantFunction='" + meetingParticipantFunction + '\'' +
                 ", meetingParticipantName='" + meetingParticipantName + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        MeetingParticipant rhs = (MeetingParticipant) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(meetingParticipantFunction, rhs.meetingParticipantFunction)
+                .append(meetingParticipantName, rhs.meetingParticipantName)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(meetingParticipantFunction)
+                .append(meetingParticipantName)
+                .toHashCode();
     }
 }

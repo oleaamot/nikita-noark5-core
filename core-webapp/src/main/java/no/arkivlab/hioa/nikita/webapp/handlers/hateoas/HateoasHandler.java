@@ -5,10 +5,8 @@ import nikita.model.noark5.v4.hateoas.Link;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import no.arkivlab.hioa.nikita.webapp.handlers.hateoas.interfaces.IHateoasHandler;
 import no.arkivlab.hioa.nikita.webapp.security.IAuthorisation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import javax.servlet.http.HttpServletRequest;
 
 import static nikita.config.Constants.*;
 import static nikita.config.HATEOASConstants.SELF;
@@ -18,21 +16,19 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_MEDIUM;
  * Created by tsodring on 2/6/17.
  * <p>
  * Used to add Hateoas links with information
- * <p>
- * Note that the contextServletPath is set when addLinks is called
+ *
  */
-@Component("hateoasHandler")
+@Component
 public class HateoasHandler implements IHateoasHandler {
 
-    protected String contextServletPath = "";
-    protected String servletPath = "";
-    protected String contextPath = "";
     protected IAuthorisation authorisation;
 
+    @Value("${hateoas.publicAddress}")
+    protected String contextPath;
+
     @Override
-    public void addLinks(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+    public void addLinks(IHateoasNoarkObject hateoasNoarkObject,
                          IAuthorisation authorisation) {
-        setParameters(request);
         this.authorisation = authorisation;
 
         Iterable<INikitaEntity> entities = hateoasNoarkObject.getList();
@@ -43,22 +39,21 @@ public class HateoasHandler implements IHateoasHandler {
         // If hateoasNoarkObject is a list add a self link.
         // { "entity": [], "_links": [] }
         if (!hateoasNoarkObject.isSingleEntity()) {
-            StringBuffer url = request.getRequestURL();
-            Link selfLink = new Link(url.toString(), getRelSelfLink(), false);
+            String url = this.contextPath;
+            Link selfLink = new Link(url, getRelSelfLink(), false);
             hateoasNoarkObject.addSelfLink(selfLink);
         }
     }
 
     @Override
-    public void addLinksOnCreate(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+    public void addLinksOnCreate(IHateoasNoarkObject hateoasNoarkObject,
                                  IAuthorisation authorisation) {
-        addLinks(hateoasNoarkObject, request, authorisation);
+        addLinks(hateoasNoarkObject, authorisation);
     }
 
     @Override
-    public void addLinksOnNew(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+    public void addLinksOnNew(IHateoasNoarkObject hateoasNoarkObject,
                               IAuthorisation authorisation) {
-        setParameters(request);
         this.authorisation = authorisation;
 
         Iterable<INikitaEntity> entities = hateoasNoarkObject.getList();
@@ -68,27 +63,26 @@ public class HateoasHandler implements IHateoasHandler {
     }
 
     @Override
-    public void addLinksOnRead(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+    public void addLinksOnRead(IHateoasNoarkObject hateoasNoarkObject,
                                IAuthorisation authorisation) {
-        addLinks(hateoasNoarkObject, request, authorisation);
+        addLinks(hateoasNoarkObject, authorisation);
     }
 
     @Override
-    public void addLinksOnUpdate(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+    public void addLinksOnUpdate(IHateoasNoarkObject hateoasNoarkObject,
                                  IAuthorisation authorisation) {
-        addLinks(hateoasNoarkObject, request, authorisation);
+        addLinks(hateoasNoarkObject, authorisation);
     }
 
     @Override
-    public void addLinksOnDelete(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+    public void addLinksOnDelete(IHateoasNoarkObject hateoasNoarkObject,
                                  IAuthorisation authorisation) {
-        addLinks(hateoasNoarkObject, request, authorisation);
+        addLinks(hateoasNoarkObject, authorisation);
     }
 
     @Override
-    public void addLinksOnTemplate(IHateoasNoarkObject hateoasNoarkObject, HttpServletRequest request,
+    public void addLinksOnTemplate(IHateoasNoarkObject hateoasNoarkObject,
                                    IAuthorisation authorisation) {
-        setParameters(request);
         this.authorisation = authorisation;
 
         Iterable<INikitaEntity> entities = hateoasNoarkObject.getList();
@@ -96,44 +90,54 @@ public class HateoasHandler implements IHateoasHandler {
             addEntityLinksOnTemplate(entity, hateoasNoarkObject);
         }
     }
-    
+
     @Override
-    public void addSelfLink(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addSelfLink(INikitaEntity entity,
+                            IHateoasNoarkObject hateoasNoarkObject) {
         String systemId = entity.getSystemId();
-        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH +
-                entity.getFunctionalTypeName() + SLASH + entity.getBaseTypeName() + SLASH + systemId + SLASH,
-                    getRelSelfLink(), false));
+        hateoasNoarkObject.addLink(entity, new Link(contextPath +
+                HATEOAS_API_PATH + SLASH + entity.getFunctionalTypeName() +
+                SLASH + entity.getBaseTypeName() + SLASH + systemId + SLASH,
+                getRelSelfLink(), false));
     }
 
     @Override
-    public void addDocumentMedium(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
-        hateoasNoarkObject.addLink(entity, new Link(contextPath + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH
-                + SLASH + DOCUMENT_MEDIUM, REL_METADATA_DOCUMENT_MEDIUM, false));
+    public void addDocumentMedium(INikitaEntity entity,
+                                  IHateoasNoarkObject hateoasNoarkObject) {
+        hateoasNoarkObject.addLink(entity, new Link(contextPath +
+                HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH + SLASH +
+                DOCUMENT_MEDIUM, REL_METADATA_DOCUMENT_MEDIUM, false));
     }
 
     // Sub class should handle this, empty links otherwise!
     @Override
-    public void addEntityLinks(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addEntityLinks(INikitaEntity entity,
+                               IHateoasNoarkObject hateoasNoarkObject) {
     }
 
     // Sub class should handle this, empty links otherwise!
     @Override
-    public void addEntityLinksOnCreate(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addEntityLinksOnCreate(INikitaEntity entity,
+                                       IHateoasNoarkObject hateoasNoarkObject) {
         addEntityLinks(entity, hateoasNoarkObject);
     }
 
+    // Sub class should handle this, empty links otherwise!
     @Override
-    public void addEntityLinksOnTemplate(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addEntityLinksOnTemplate(INikitaEntity entity,
+                                         IHateoasNoarkObject hateoasNoarkObject) {
     }
 
     // Sub class should handle this, empty links otherwise!
     @Override
-    public void addEntityLinksOnNew(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addEntityLinksOnNew(INikitaEntity entity,
+                                    IHateoasNoarkObject hateoasNoarkObject) {
     }
 
     // Sub class should handle this, empty links otherwise!
     @Override
-    public void addEntityLinksOnRead(INikitaEntity entity, IHateoasNoarkObject hateoasNoarkObject) {
+    public void addEntityLinksOnRead(INikitaEntity entity,
+                                     IHateoasNoarkObject hateoasNoarkObject) {
         addEntityLinks(entity, hateoasNoarkObject);
     }
 
@@ -141,12 +145,5 @@ public class HateoasHandler implements IHateoasHandler {
         return SELF;
     }
 
-    protected void setParameters(HttpServletRequest request) {
-        this.servletPath = request.getServletPath();
-        this.contextPath = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
-        this.contextServletPath = contextPath + servletPath + SLASH;
-        this.servletPath += SLASH;
-        this.contextPath += SLASH;
-    }
 }
 

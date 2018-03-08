@@ -76,10 +76,10 @@ public class CorrespondencePartHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String correspondencePartPersonSystemId) {
         CorrespondencePartPerson correspondencePartPerson =
-                (CorrespondencePartPerson) correspondencePartService.findBySystemIdOrderBySystemId(correspondencePartPersonSystemId);
+                (CorrespondencePartPerson) correspondencePartService.findBySystemId(correspondencePartPersonSystemId);
         CorrespondencePartPersonHateoas correspondencePartPersonHateoas =
                 new CorrespondencePartPersonHateoas(correspondencePartPerson);
-        correspondencePartHateoasHandler.addLinks(correspondencePartPersonHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinks(correspondencePartPersonHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(correspondencePartPerson.getVersion().toString())
@@ -107,10 +107,10 @@ public class CorrespondencePartHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String correspondencePartInternalSystemId) {
         CorrespondencePartInternal correspondencePartInternal =
-                (CorrespondencePartInternal) correspondencePartService.findBySystemIdOrderBySystemId(correspondencePartInternalSystemId);
+                (CorrespondencePartInternal) correspondencePartService.findBySystemId(correspondencePartInternalSystemId);
         CorrespondencePartInternalHateoas correspondencePartInternalHateoas =
                 new CorrespondencePartInternalHateoas(correspondencePartInternal);
-        correspondencePartHateoasHandler.addLinks(correspondencePartInternalHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinks(correspondencePartInternalHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(correspondencePartInternal.getVersion().toString())
@@ -138,9 +138,9 @@ public class CorrespondencePartHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String correspondencePartUnitSystemId) {
         CorrespondencePartUnit correspondencePartUnit =
-                (CorrespondencePartUnit) correspondencePartService.findBySystemIdOrderBySystemId(correspondencePartUnitSystemId);
+                (CorrespondencePartUnit) correspondencePartService.findBySystemId(correspondencePartUnitSystemId);
         CorrespondencePartUnitHateoas correspondencePartUnitHateoas = new CorrespondencePartUnitHateoas(correspondencePartUnit);
-        correspondencePartHateoasHandler.addLinks(correspondencePartUnitHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinks(correspondencePartUnitHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(correspondencePartUnit.getVersion().toString())
@@ -183,7 +183,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
                         correspondencePartUnit);
         CorrespondencePartUnitHateoas correspondencePartUnitHateoas = new
                 CorrespondencePartUnitHateoas(updatedCorrespondencePartUnit);
-        correspondencePartHateoasHandler.addLinks(correspondencePartUnitHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinks(correspondencePartUnitHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedCorrespondencePartUnit));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -227,7 +227,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
                         parseETAG(request.getHeader(ETAG)), correspondencePartPerson);
         CorrespondencePartPersonHateoas correspondencePartPersonHateoas =
                 new CorrespondencePartPersonHateoas(updatedCorrespondencePartPerson);
-        correspondencePartHateoasHandler.addLinks(correspondencePartPersonHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinks(correspondencePartPersonHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedCorrespondencePartPerson));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -271,11 +271,78 @@ public class CorrespondencePartHateoasController extends NoarkController {
                         parseETAG(request.getHeader(ETAG)), correspondencePartInternal);
         CorrespondencePartInternalHateoas correspondencePartInternalHateoas =
                 new CorrespondencePartInternalHateoas(updatedCorrespondencePartInternal);
-        correspondencePartHateoasHandler.addLinks(correspondencePartInternalHateoas, request, new Authorisation());
+        correspondencePartHateoasHandler.addLinks(correspondencePartInternalHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedCorrespondencePartInternal));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(updatedCorrespondencePartInternal.getVersion().toString())
                 .body(correspondencePartInternalHateoas);
     }
+
+    // Delete a correspondencePartUnit identified by kode
+    // DELETE [contextPath][api]/sakarkiv/korrespondansepartenhet/{kode}/
+    @ApiOperation(value = "Deletes a single CorrespondencePartUnit entity identified by kode")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "CorrespondencePartUnit deleted"),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = CORRESPONDENCE_PART_UNIT + SLASH + LEFT_PARENTHESIS + CODE + RIGHT_PARENTHESIS,
+            method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteCorrespondencePartUnit(
+            @ApiParam(name = "kode",
+                    value = "kode of the correspondencePartUnit to delete",
+                    required = true)
+            @PathVariable("kode") final String kode) {
+        correspondencePartService.deleteCorrespondencePartUnit(kode);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("{\"status\" : \"Success\"}");
+    }
+
+    // Delete a correspondencePartPerson identified by kode
+    // DELETE [contextPath][api]/sakarkiv/korrespondansepartperson/{kode}/
+    @ApiOperation(value = "Deletes a single CorrespondencePartPerson entity identified by kode")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "CorrespondencePartPerson deleted"),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = CORRESPONDENCE_PART_PERSON + SLASH + LEFT_PARENTHESIS + CODE + RIGHT_PARENTHESIS,
+            method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteCorrespondencePartPerson(
+            @ApiParam(name = "kode",
+                    value = "kode of the correspondencePartPerson to delete",
+                    required = true)
+            @PathVariable("kode") final String kode) {
+        correspondencePartService.deleteCorrespondencePartPerson(kode);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("{\"status\" : \"Success\"}");
+    }
+
+    // Delete a correspondencePartInternal identified by kode
+    // DELETE [contextPath][api]/sakarkiv/korrespondansepartintern/{kode}/
+    @ApiOperation(value = "Deletes a single CorrespondencePartInternal entity identified by kode")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "CorrespondencePartInternal deleted"),
+            @ApiResponse(code = 401, message = API_MESSAGE_UNAUTHENTICATED_USER),
+            @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
+            @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
+    @Counted
+    @Timed
+    @RequestMapping(value = CORRESPONDENCE_PART_INTERNAL + SLASH + LEFT_PARENTHESIS + CODE + RIGHT_PARENTHESIS,
+            method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteCorrespondencePartInternal(
+            @ApiParam(name = "kode",
+                    value = "kode of the correspondencePartInternal to delete",
+                    required = true)
+            @PathVariable("kode") final String kode) {
+        correspondencePartService.deleteCorrespondencePartInternal(kode);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("{\"status\" : \"Success\"}");
+    }
+
 }

@@ -1,0 +1,99 @@
+# ===================================================================
+# Spring Boot configuration for the "mysql" profile.
+#
+# This configuration overrides the application.yml file.
+# ===================================================================
+
+# ===================================================================
+#
+# To get the database working right, be administrator in mysql and
+#
+#    GRANT ALL ON nikita_noark5_prod.* to  'INSERT-USERNAME-HERE'@'%' identified by 'INSERT-PASSWORD-HERE';
+#    flush privileges;
+#    create database nikita_noark5_prod;
+#
+# Or whatever variation you use to create a user
+# ===================================================================
+server:
+  application:
+    name: OsloMet Noark 5 Core (Running on MySQL)
+  contextPath: /noark5v4
+  port: 8092
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/nikita_noark5_prod
+    username: INSERT-USERNAME-HERE
+    password: INSERT-PASSWORD-HERE
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    properties:
+      hibernate:
+        hbm2ddl:
+          import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+          import_files: db/mysql/import.sql,db/noark5_metadata_values.sql
+#        show_sql: true # Slows things down if this is enabled.
+        hbm2ddl.auto: create
+    database: mysql
+jwt:
+  header: Authorization
+  secret: mySecret
+  expiration: 604800
+  route:
+    authentication:
+      path: auth
+      refresh: refresh
+management:
+    context-path: /management
+info:
+    app.name: HiOA Noark 5 Core (Demo version)
+    build.version: ${project.version}
+hateoas:
+    publicAddress: http://localhost:8092/noark5v4/
+
+
+# ===================================================================
+# nikita-noark5-core specific properties
+# ===================================================================
+
+# Application properties
+application:
+  pagination:
+    max-page-size: 10
+
+nikita-noark5-core:
+    mail:
+        from: nikita@example.com
+    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
+        jmx.enabled: true
+        spark:
+            enabled: false
+            host: localhost
+            port: 9999
+        graphite:
+            enabled: false
+            host: localhost
+            port: 2003
+            prefix: nikitaNoark5Core
+        logs: # report metrics in the logs
+            enabled: false
+            reportFrequency: 60 # in seconds
+    logging:
+        level:
+            ROOT: DEBUG
+        logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
+            enabled: false
+            host: localhost
+            port: 5000
+            queueSize: 512
+    persistence:
+         jpa.generateDdl: true
+    server:
+         name: nikita.hioa.no
+    details:
+        conformity-levels:
+            official: arkivstruktur, casehandling, metadata
+            non-official: gui, import-api
+    storage:
+        location: /tmp/dokumenter
+    checksumAlgorithm: SHA-256

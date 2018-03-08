@@ -6,6 +6,12 @@ services:
      - "9200:9200"
   nikita-noark5-core:
     image: "hioaabi/nikita-noark5-core"
+    container_name: nikita-noark5
     ports:
      - "8092:8092"
      - "8082:8082"
+    networks:
+     - n5
+networks:
+  n5:
+    external: true

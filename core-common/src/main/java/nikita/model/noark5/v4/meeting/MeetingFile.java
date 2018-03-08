@@ -1,12 +1,14 @@
 package nikita.model.noark5.v4.meeting;
 
 import nikita.model.noark5.v4.File;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.MEETING_FILE;
 
@@ -64,7 +66,7 @@ public class MeetingFile extends File {
 
     // Links to MeetingParticipant
     @OneToMany(mappedBy = "referenceMeetingFile")
-    private Set<MeetingParticipant> referenceMeetingParticipant = new TreeSet<>();
+    private List<MeetingParticipant> referenceMeetingParticipant = new ArrayList<>();
 
     public String getMeetingNumber() {
         return meetingNumber;
@@ -119,11 +121,11 @@ public class MeetingFile extends File {
         this.referencePreviousMeeting = referencePreviousMeeting;
     }
 
-    public Set<MeetingParticipant> getReferenceMeetingParticipant() {
+    public List<MeetingParticipant> getReferenceMeetingParticipant() {
         return referenceMeetingParticipant;
     }
 
-    public void setReferenceMeetingParticipant(Set<MeetingParticipant> referenceMeetingParticipant) {
+    public void setReferenceMeetingParticipant(List<MeetingParticipant> referenceMeetingParticipant) {
         this.referenceMeetingParticipant = referenceMeetingParticipant;
     }
 
@@ -135,5 +137,37 @@ public class MeetingFile extends File {
                 ", meetingDate=" + meetingDate +
                 ", meetingPlace='" + meetingPlace + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        MeetingFile rhs = (MeetingFile) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(committee, rhs.committee)
+                .append(meetingNumber, rhs.meetingNumber)
+                .append(meetingDate, rhs.meetingDate)
+                .append(meetingPlace, rhs.meetingPlace)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(meetingPlace)
+                .append(meetingNumber)
+                .append(meetingDate)
+                .append(committee)
+                .toHashCode();
     }
 }

@@ -6,14 +6,16 @@ import nikita.model.noark5.v4.interfaces.entities.INoarkCreateEntity;
 import nikita.model.noark5.v4.interfaces.entities.INoarkTitleDescriptionEntity;
 import nikita.model.noark5.v4.secondary.*;
 import nikita.util.deserialisers.DocumentDescriptionDeserializer;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.DOCUMENT_DESCRIPTION;
 
@@ -25,7 +27,6 @@ import static nikita.config.N5ResourceMappings.DOCUMENT_DESCRIPTION;
 //@Indexed(index = "document_description")
 @JsonDeserialize(using = DocumentDescriptionDeserializer.class)
 @AttributeOverride(name = "id", column = @Column(name = "pk_document_description_id"))
-//TODO: Important! Should DocumentDescription have links to Series???
 public class DocumentDescription extends NoarkEntity implements  INoarkTitleDescriptionEntity,
         INoarkCreateEntity, IDocumentMedium, ISingleStorageLocation, IDeletion, IScreening, IDisposal, IClassified,
         IDisposalUndertaken, IComment, IElectronicSignature, IAuthor {
@@ -134,25 +135,25 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
 
     // Links to Records
     @ManyToMany(mappedBy = "referenceDocumentDescription")
-    private Set<Record> referenceRecord = new TreeSet<>();
+    private List<Record> referenceRecord = new ArrayList<>();
 
     // Links to DocumentObjects
     @OneToMany(mappedBy = "referenceDocumentDescription")
-    private Set<DocumentObject> referenceDocumentObject = new TreeSet<>();
+    private List<DocumentObject> referenceDocumentObject = new ArrayList<>();
 
     // Links to Comments
     @ManyToMany
     @JoinTable(name = "document_description_comment", joinColumns = @JoinColumn(name = "f_pk_document_description_id",
             referencedColumnName = "pk_document_description_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_comment_id", referencedColumnName = "pk_comment_id"))
-    private Set<Comment> referenceComment = new TreeSet<>();
+    private List<Comment> referenceComment = new ArrayList<>();
 
     // Links to Authors
     @ManyToMany
     @JoinTable(name = "document_description_author", joinColumns = @JoinColumn(name = "f_pk_document_description_id",
             referencedColumnName = "pk_document_description_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_author_id", referencedColumnName = "pk_author_id"))
-    private Set<Author> referenceAuthor = new TreeSet<>();
+    private List<Author> referenceAuthor = new ArrayList<>();
 
     // Link to Classified
     @ManyToOne (cascade=CascadeType.PERSIST)
@@ -278,11 +279,11 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
         this.associatedBy = associatedBy;
     }
 
-    public Set<Record> getReferenceRecord() {
+    public List<Record> getReferenceRecord() {
         return referenceRecord;
     }
 
-    public void setReferenceRecord(Set<Record> referenceRecord) {
+    public void setReferenceRecord(List<Record> referenceRecord) {
         this.referenceRecord = referenceRecord;
     }
 
@@ -290,12 +291,12 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
         this.referenceRecord.add(record);
     }
 
-    public Set<DocumentObject> getReferenceDocumentObject() {
+    public List<DocumentObject> getReferenceDocumentObject() {
         return referenceDocumentObject;
     }
 
     public void setReferenceDocumentObject(
-            Set<DocumentObject> referenceDocumentObject) {
+            List<DocumentObject> referenceDocumentObject) {
         this.referenceDocumentObject = referenceDocumentObject;
     }
 
@@ -309,21 +310,21 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
         this.storageLocation = storageLocation;
     }
 
-    public Set<Comment> getReferenceComment() {
+    public List<Comment> getReferenceComment() {
         return referenceComment;
     }
 
-    public void setReferenceComment(Set<Comment> referenceComment) {
+    public void setReferenceComment(List<Comment> referenceComment) {
         this.referenceComment = referenceComment;
     }
 
     @Override
-    public Set<Author> getReferenceAuthor() {
+    public List<Author> getReferenceAuthor() {
         return referenceAuthor;
     }
 
     @Override
-    public void setReferenceAuthor(Set<Author> referenceAuthor) {
+    public void setReferenceAuthor(List<Author> referenceAuthor) {
         this.referenceAuthor = referenceAuthor;
     }
 
@@ -401,5 +402,51 @@ public class DocumentDescription extends NoarkEntity implements  INoarkTitleDesc
                 ", documentStatus='" + documentStatus + '\'' +
                 ", documentType='" + documentType + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        DocumentDescription rhs = (DocumentDescription) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(associatedBy, rhs.associatedBy)
+                .append(associationDate, rhs.associationDate)
+                .append(associatedWithRecordAs, rhs.associatedWithRecordAs)
+                .append(documentNumber, rhs.documentNumber)
+                .append(documentMedium, rhs.documentMedium)
+                .append(documentStatus, rhs.documentStatus)
+                .append(documentType, rhs.documentType)
+                .append(description, rhs.description)
+                .append(createdDate, rhs.createdDate)
+                .append(createdBy, rhs.createdBy)
+                .append(title, rhs.title)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(associatedBy)
+                .append(associationDate)
+                .append(associatedWithRecordAs)
+                .append(documentNumber)
+                .append(documentMedium)
+                .append(documentStatus)
+                .append(documentType)
+                .append(description)
+                .append(createdDate)
+                .append(createdBy)
+                .append(title)
+                .toHashCode();
     }
 }

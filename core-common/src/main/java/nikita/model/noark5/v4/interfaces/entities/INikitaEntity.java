@@ -16,7 +16,7 @@ public interface INikitaEntity extends Serializable {
 
     /**
      * Tell nikita what you are. A Fonds returns "arkiv", a File "mappe" and
-     * CaseFile "saksmappe". Required when building endpoint URI in Hateaos links.
+     * CaseFile "saksmappe". Required when building endpoint URI in Hateoas links.
      *
      * @return The name of the base type of the entity
      */
@@ -25,7 +25,7 @@ public interface INikitaEntity extends Serializable {
     /**
      * Tell nikita what kind of endpoint you belong to. A Fonds returns "arkivstruktur", as does
      * a File, while a CaseFile returns "sakarkiv". DocumentStatus returns "metaadata".Required when
-     * building endpoint URI in Hateaos links.
+     * building endpoint URI in Hateoas links.
      *
      * @return The name of the functional area the entity belongs to
      */

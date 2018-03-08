@@ -1,7 +1,7 @@
 package nikita.util.serializers.noark5v4.hateoas.admin;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import nikita.model.noark5.v4.Fonds;
+import nikita.model.noark5.v4.admin.User;
 import nikita.model.noark5.v4.hateoas.HateoasNoarkObject;
 import nikita.model.noark5.v4.interfaces.entities.INikitaEntity;
 import nikita.util.CommonUtils;
@@ -10,7 +10,7 @@ import nikita.util.serializers.noark5v4.hateoas.interfaces.IHateoasSerializer;
 
 import java.io.IOException;
 
-import static nikita.config.N5ResourceMappings.FONDS_STATUS;
+import static nikita.config.N5ResourceMappings.USER_NAME;
 
 /**
  * Serialise an outgoing Fonds object as JSON.
@@ -29,21 +29,17 @@ public class UserHateoasSerializer extends HateoasSerializer implements IHateoas
 
     @Override
     public void serializeNoarkEntity(INikitaEntity noarkSystemIdEntity,
-                                     HateoasNoarkObject fondsHateoas, JsonGenerator jgen) throws IOException {
-        Fonds fonds = (Fonds) noarkSystemIdEntity;
+                                     HateoasNoarkObject userHateoas, JsonGenerator jgen) throws IOException {
+        User user = (User) noarkSystemIdEntity;
 
         jgen.writeStartObject();
-        CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, fonds);
-        CommonUtils.Hateoas.Serialize.printTitleAndDescription(jgen, fonds);
-        if (fonds.getFondsStatus() != null) {
-            jgen.writeStringField(FONDS_STATUS, fonds.getFondsStatus());
+        CommonUtils.Hateoas.Serialize.printSystemIdEntity(jgen, user);
+        if (user.getUsername() != null) {
+            jgen.writeStringField(USER_NAME, user.getUsername());
         }
-        CommonUtils.Hateoas.Serialize.printDocumentMedium(jgen, fonds);
-        CommonUtils.Hateoas.Serialize.printStorageLocation(jgen, fonds);
-        CommonUtils.Hateoas.Serialize.printCreateEntity(jgen, fonds);
-        CommonUtils.Hateoas.Serialize.printFinaliseEntity(jgen, fonds);
-        CommonUtils.Hateoas.Serialize.printFondsCreators(jgen, fonds);
-        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, fondsHateoas.getLinks(fonds));
+        CommonUtils.Hateoas.Serialize.printCreateEntity(jgen, user);
+        CommonUtils.Hateoas.Serialize.printFinaliseEntity(jgen, user);
+        CommonUtils.Hateoas.Serialize.printHateoasLinks(jgen, userHateoas.getLinks(user));
         jgen.writeEndObject();
     }
 }

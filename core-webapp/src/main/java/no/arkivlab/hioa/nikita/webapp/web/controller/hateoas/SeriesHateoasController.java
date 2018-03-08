@@ -24,8 +24,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
@@ -99,7 +99,7 @@ public class SeriesHateoasController extends NoarkController {
         validateForCreate(file);
         File createdFile = seriesService.createFileAssociatedWithSeries(systemID, file);
         FileHateoas fileHateoas = new FileHateoas(createdFile);
-        fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
+        fileHateoasHandler.addLinks(fileHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdFile));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -140,7 +140,7 @@ public class SeriesHateoasController extends NoarkController {
         validateForCreate(caseFile);
         CaseFile createdCaseFile = seriesService.createCaseFileAssociatedWithSeries(systemID, caseFile);
         CaseFileHateoas caseFileHateoas = new CaseFileHateoas(createdCaseFile);
-        caseFileHateoasHandler.addLinks(caseFileHateoas, request, new Authorisation());
+        caseFileHateoasHandler.addLinks(caseFileHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, createdCaseFile));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -179,7 +179,7 @@ public class SeriesHateoasController extends NoarkController {
             @RequestBody Record record) throws NikitaException {
         //  validateForCreate(record);
         //RecordHateoas recordHateoas = new RecordHateoas(seriesService.createRecordAssociatedWithSeries(systemID, record));
-        //recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
+        //recordHateoasHandler.addLinks(recordHateoas, new Authorisation());
         // applicationEventPublisher.publishEvent(new AfterNoarkEntityCreatedEvent(this, ));
         //  return ResponseEntity.status(HttpStatus.CREATED)
         //.eTag(createdRecord.getVersion().toString())
@@ -220,10 +220,11 @@ public class SeriesHateoasController extends NoarkController {
                     required = true)
             @RequestParam StringBuffer id) throws NikitaException {
 
-        String systemID_1 = handleResolutionOfIncomingURLInternalGetSystemId(id);
+        //String systemID_1 = handleResolutionOfIncomingURLInternalGetSystemId
+        //      (id);
 //        SeriesHateoas seriesHateoas = new
 //                SeriesHateoas(seriesService.associateSeriesWithSeriesSuccessor(seriesPrecursorSys temId, urlToSeriesSuccessor));
-//        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
+//        seriesHateoasHandler.addLinks(seriesHateoas, new Authorisation());
         //applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdtedEvent(this, ));
 //   return ResponseEntity.status(HttpStatus.CREATED)
 //                .eTag(series.getVersion().toString())
@@ -261,10 +262,11 @@ public class SeriesHateoasController extends NoarkController {
                     value = "Address of the Series identified as a precursor",
                     required = true)
             @RequestParam StringBuffer id) throws NikitaException {
-        String systemID_2 = handleResolutionOfIncomingURLInternalGetSystemId(id);
+        //String systemID_2 = handleResolutionOfIncomingURLInternalGetSystemId
+        //            (id);
 //        SeriesHateoas seriesHateoas = new
 //                SeriesHateoas(seriesService.associateSeriesWithSeriesSuccessor(systemID, caseFile));
-//        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
+//        seriesHateoasHandler.addLinks(seriesHateoas, new Authorisation());
 //        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, ));
 //   return ResponseEntity.status(HttpStatus.CREATED)
 //                .eTag(series.getVersion().toString())
@@ -301,10 +303,11 @@ public class SeriesHateoasController extends NoarkController {
                     value = "Address of the ClassificationSystem to associate",
                     required = true)
             @RequestParam StringBuffer id) throws NikitaException {
-        String classificationSystemPrecursorSystemId = handleResolutionOfIncomingURLInternalGetSystemId(id);
+        //String classificationSystemPrecursorSystemId =
+        //      handleResolutionOfIncomingURLInternalGetSystemId(id);
 //        ClassificationSystemHateoas classificationSystemHateoas = new
 //                ClassificationSystemHateoas(classificationSystemService.associateClassificationSystemWithClassificationSystemSuccessor(classificationSystemSystemId, caseFile));
-//        classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, request, new Authorisation());
+//        classificationSystemHateoasHandler.addLinks(classificationSystemHateoas, new Authorisation());
 //        applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, ));
 //   return ResponseEntity.status(HttpStatus.CREATED)
 //                .eTag(classificationSystem.getVersion().toString())
@@ -344,7 +347,7 @@ public class SeriesHateoasController extends NoarkController {
         validateForUpdate(series);
         Series updatedSeries = seriesService.handleUpdate(systemID, parseETAG(request.getHeader(ETAG)), series);
         SeriesHateoas seriesHateoas = new SeriesHateoas(updatedSeries);
-        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
+        seriesHateoasHandler.addLinks(seriesHateoas, new Authorisation());
         applicationEventPublisher.publishEvent(new AfterNoarkEntityUpdatedEvent(this, updatedSeries));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -371,13 +374,13 @@ public class SeriesHateoasController extends NoarkController {
                     value = "systemID of the series to retrieve",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        Series series = seriesService.findBySystemIdOrderBySystemId(systemID);
+        Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
         SeriesHateoas seriesHateoas = new
                 SeriesHateoas(series);
-        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
+        seriesHateoasHandler.addLinks(seriesHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(series.getVersion().toString())
@@ -419,7 +422,7 @@ public class SeriesHateoasController extends NoarkController {
         defaultFile = setFileDefaults(defaultFile);
         FileHateoas fileHateoas = new
                 FileHateoas(defaultFile);
-        fileHateoasHandler.addLinksOnNew(fileHateoas, request, new Authorisation());
+        fileHateoasHandler.addLinksOnNew(fileHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(fileHateoas);
@@ -444,7 +447,7 @@ public class SeriesHateoasController extends NoarkController {
         defaultCaseFile = setCaseFileDefaults(defaultCaseFile);
         CaseFileHateoas caseFileHateoas = new
                 CaseFileHateoas(defaultCaseFile);
-        caseFileHateoasHandler.addLinksOnNew(caseFileHateoas, request, new Authorisation());
+        caseFileHateoasHandler.addLinksOnNew(caseFileHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(caseFileHateoas);
@@ -469,13 +472,13 @@ public class SeriesHateoasController extends NoarkController {
                     value = "systemId of the series to retrieve",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        /*Series series = seriesService.findBySystemIdOrderBySystemId(systemID);
+        /*Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
         SeriesHateoas seriesHateoas = new
                 SeriesHateoas(series);
-        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());*/
+        seriesHateoasHandler.addLinks(seriesHateoas, new Authorisation());*/
 //        return ResponseEntity.status(HttpStatus.CREATED)
 //                .eTag(series.getVersion().toString())
 //                .body(seriesHateoas);
@@ -501,13 +504,13 @@ public class SeriesHateoasController extends NoarkController {
                     value = "systemId of the series to retrieve",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        /*Series series = seriesService.findBySystemIdOrderBySystemId(systemID);
+        /*Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
         SeriesHateoas seriesHateoas = new
                 SeriesHateoas(series);
-        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());*/
+        seriesHateoasHandler.addLinks(seriesHateoas, new Authorisation());*/
 //        return ResponseEntity.status(HttpStatus.CREATED)
 //                .eTag(series.getVersion().toString())
 //                .body(seriesHateoas);
@@ -534,13 +537,13 @@ public class SeriesHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        /*Series series = seriesService.findBySystemIdOrderBySystemId(systemID);
+        /*Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
         SeriesHateoas seriesHateoas = new
                 SeriesHateoas(series);
-        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
+        seriesHateoasHandler.addLinks(seriesHateoas, new Authorisation());
         */
 //        return ResponseEntity.status(HttpStatus.CREATED)
 //                .eTag(series.getVersion().toString())
@@ -568,13 +571,13 @@ public class SeriesHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        /*Series series = seriesService.findBySystemIdOrderBySystemId(systemID);
+        /*Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
         SeriesHateoas seriesHateoas = new
                 SeriesHateoas(series);
-        seriesHateoasHandler.addLinks(seriesHateoas, request, new Authorisation());
+        seriesHateoasHandler.addLinks(seriesHateoas, new Authorisation());
         */
 //   return ResponseEntity.status(HttpStatus.CREATED)
 //                .eTag(classificationSystem.getVersion().toString())
@@ -604,9 +607,9 @@ public class SeriesHateoasController extends NoarkController {
             @RequestParam(name = "skip", required = false) Integer skip) {
 
         SeriesHateoas seriesHateoas = new
-                SeriesHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                SeriesHateoas((List<INikitaEntity>) (List)
                 seriesService.findSeriesByOwnerPaginated(top, skip));
-        seriesHateoasHandler.addLinksOnRead(seriesHateoas, request, new Authorisation());
+        seriesHateoasHandler.addLinksOnRead(seriesHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(seriesHateoas);
@@ -638,9 +641,9 @@ public class SeriesHateoasController extends NoarkController {
                     value = "systemID of the series to retrieve",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-        Series series = seriesService.findBySystemIdOrderBySystemId(systemID);
-        RecordHateoas recordHateoas = new RecordHateoas(new ArrayList<>(series.getReferenceRecord()));
-        recordHateoasHandler.addLinks(recordHateoas, request, new Authorisation());
+        Series series = seriesService.findBySystemId(systemID);
+        RecordHateoas recordHateoas = new RecordHateoas((List<INikitaEntity>) (List) series.getReferenceRecord());
+        recordHateoasHandler.addLinks(recordHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(recordHateoas);
@@ -673,12 +676,13 @@ public class SeriesHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        Series series = seriesService.findBySystemIdOrderBySystemId(systemID);
+        Series series = seriesService.findBySystemId(systemID);
         if (series == null) {
             throw new NoarkEntityNotFoundException("Could not find series object with systemID " + systemID);
         }
-        FileHateoas fileHateoas = new FileHateoas(new ArrayList<> (series.getReferenceFile()));
-        fileHateoasHandler.addLinks(fileHateoas, request, new Authorisation());
+        FileHateoas fileHateoas = new FileHateoas((List<INikitaEntity>)
+                (List) series.getReferenceFile());
+        fileHateoasHandler.addLinks(fileHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(fileHateoas);
@@ -712,9 +716,9 @@ public class SeriesHateoasController extends NoarkController {
         seriesService.findAllCaseFileBySeries(systemID);
 
         CaseFileHateoas caseFileHateoas = new
-                CaseFileHateoas((ArrayList<INikitaEntity>) (ArrayList)
+                CaseFileHateoas((List<INikitaEntity>) (List)
                 seriesService.findAllCaseFileBySeries(systemID));
-        caseFileHateoasHandler.addLinksOnRead(caseFileHateoas, request, new Authorisation());
+        caseFileHateoasHandler.addLinksOnRead(caseFileHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(caseFileHateoas);
@@ -741,10 +745,10 @@ public class SeriesHateoasController extends NoarkController {
                     required = true)
             @PathVariable("systemID") final String systemID) {
 
-        Series series = seriesService.findBySystemIdOrderBySystemId(systemID);
+        Series series = seriesService.findBySystemId(systemID);
         Fonds fonds = series.getReferenceFonds();
         FondsHateoas fondsHateoas = new FondsHateoas(fonds);
-        fondsHateoasHandler.addLinks(fondsHateoas, request, new Authorisation());
+        fondsHateoasHandler.addLinks(fondsHateoas, new Authorisation());
         seriesService.deleteEntity(systemID);
         applicationEventPublisher.publishEvent(new AfterNoarkEntityDeletedEvent(this, fonds));
         return ResponseEntity.status(HttpStatus.OK)

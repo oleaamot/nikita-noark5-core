@@ -4,12 +4,14 @@ import nikita.model.noark5.v4.DocumentDescription;
 import nikita.model.noark5.v4.NoarkEntity;
 import nikita.model.noark5.v4.Series;
 import nikita.model.noark5.v4.interfaces.entities.IDeletionEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.DELETION;
 
@@ -40,11 +42,11 @@ public class Deletion extends NoarkEntity implements IDeletionEntity {
 
     // Links to Series
     @OneToMany(mappedBy = "referenceDeletion")
-    private Set<Series> referenceSeries = new TreeSet<>();
+    private List<Series> referenceSeries = new ArrayList<>();
 
     // Links to DocumentDescription
     @OneToMany(mappedBy = "referenceDeletion")
-    private Set<DocumentDescription> referenceDocumentDescription = new TreeSet<>();
+    private List<DocumentDescription> referenceDocumentDescription = new ArrayList<>();
 
     public String getDeletionType() {
         return deletionType;
@@ -75,19 +77,19 @@ public class Deletion extends NoarkEntity implements IDeletionEntity {
         return DELETION;
     }
 
-    public Set<Series> getReferenceSeries() {
+    public List<Series> getReferenceSeries() {
         return referenceSeries;
     }
 
-    public void setReferenceSeries(Set<Series> referenceSeries) {
+    public void setReferenceSeries(List<Series> referenceSeries) {
         this.referenceSeries = referenceSeries;
     }
 
-    public Set<DocumentDescription> getReferenceDocumentDescription() {
+    public List<DocumentDescription> getReferenceDocumentDescription() {
         return referenceDocumentDescription;
     }
 
-    public void setReferenceDocumentDescription(Set<DocumentDescription> referenceDocumentDescription) {
+    public void setReferenceDocumentDescription(List<DocumentDescription> referenceDocumentDescription) {
         this.referenceDocumentDescription = referenceDocumentDescription;
     }
 
@@ -98,5 +100,35 @@ public class Deletion extends NoarkEntity implements IDeletionEntity {
                 ", deletionBy='" + deletionBy + '\'' +
                 ", deletionType='" + deletionType + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Deletion rhs = (Deletion) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(deletionDate, rhs.deletionDate)
+                .append(deletionBy, rhs.deletionBy)
+                .append(deletionType, rhs.deletionType)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(deletionDate)
+                .append(deletionBy)
+                .append(deletionType)
+                .toHashCode();
     }
 }

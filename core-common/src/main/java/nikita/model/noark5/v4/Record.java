@@ -10,13 +10,15 @@ import nikita.model.noark5.v4.secondary.Disposal;
 import nikita.model.noark5.v4.secondary.Screening;
 import nikita.util.deserialisers.RecordDeserializer;
 import nikita.util.exceptions.NoarkEntityNotFoundException;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.REGISTRATION;
 
@@ -81,20 +83,16 @@ public class Record extends NoarkEntity implements INoarkCreateEntity, IClassifi
     private Class referenceClass;
 
     // Links to DocumentDescriptions
-/*    @OneToMany(mappedBy = "referenceDocumentObject", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RecordDocumentDescription> referenceRecordDocumentDescription = new ArrayList<>();
-*/
-
     @ManyToMany
     @JoinTable(name = "record_document_description", joinColumns = @JoinColumn(name = "f_pk_record_id",
             referencedColumnName = "pk_record_id"),
             inverseJoinColumns = @JoinColumn(name = "f_pk_document_description_id",
                     referencedColumnName = "pk_document_description_id"))
-    private Set<DocumentDescription> referenceDocumentDescription = new TreeSet<>();
+    private List<DocumentDescription> referenceDocumentDescription = new ArrayList<>();
 
     // Links to DocumentObjects
     @OneToMany(mappedBy = "referenceRecord", fetch = FetchType.LAZY)
-    private Set<DocumentObject> referenceDocumentObject = new TreeSet<>();
+    private List<DocumentObject> referenceDocumentObject = new ArrayList<>();
 
     // Links to Classified
     @ManyToOne(cascade = CascadeType.ALL)
@@ -172,21 +170,21 @@ public class Record extends NoarkEntity implements INoarkCreateEntity, IClassifi
         this.referenceClass = referenceClass;
     }
 
-    public Set<DocumentDescription> getReferenceDocumentDescription() {
+    public List<DocumentDescription> getReferenceDocumentDescription() {
         return referenceDocumentDescription;
     }
 
     public void setReferenceDocumentDescription(
-            Set<DocumentDescription> referenceDocumentDescription) {
+            List<DocumentDescription> referenceDocumentDescription) {
         this.referenceDocumentDescription = referenceDocumentDescription;
     }
 
-    public Set<DocumentObject> getReferenceDocumentObject() {
+    public List<DocumentObject> getReferenceDocumentObject() {
         return referenceDocumentObject;
     }
 
     public void setReferenceDocumentObject(
-            Set<DocumentObject> referenceDocumentObject) {
+            List<DocumentObject> referenceDocumentObject) {
         this.referenceDocumentObject = referenceDocumentObject;
     }
 
@@ -246,5 +244,37 @@ public class Record extends NoarkEntity implements INoarkCreateEntity, IClassifi
                 ", createdBy='" + createdBy + '\'' +
                 ", createdDate=" + createdDate +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        Record rhs = (Record) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(archivedBy, rhs.archivedBy)
+                .append(archivedDate, rhs.archivedDate)
+                .append(createdBy, rhs.createdBy)
+                .append(createdDate, rhs.createdDate)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(archivedBy)
+                .append(archivedDate)
+                .append(createdBy)
+                .append(createdDate)
+                .toHashCode();
     }
 }

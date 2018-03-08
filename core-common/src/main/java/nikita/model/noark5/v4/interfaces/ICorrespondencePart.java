@@ -4,7 +4,7 @@ import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePartInternal;
 import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePartPerson;
 import nikita.model.noark5.v4.casehandling.secondary.CorrespondencePartUnit;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  *Created by tsodring on 12/7/16.
@@ -12,16 +12,16 @@ import java.util.Set;
 
 public interface ICorrespondencePart {
 
-    Set<CorrespondencePartPerson> getReferenceCorrespondencePartPerson();
+    List<CorrespondencePartPerson> getReferenceCorrespondencePartPerson();
 
-    void setReferenceCorrespondencePartPerson(Set<CorrespondencePartPerson> referenceCorrespondencePartPerson);
+    void setReferenceCorrespondencePartPerson(List<CorrespondencePartPerson> referenceCorrespondencePartPerson);
 
-    Set<CorrespondencePartUnit> getReferenceCorrespondencePartUnit();
+    List<CorrespondencePartUnit> getReferenceCorrespondencePartUnit();
 
-    void setReferenceCorrespondencePartUnit(Set<CorrespondencePartUnit> referenceCorrespondencePartUnit);
+    void setReferenceCorrespondencePartUnit(List<CorrespondencePartUnit> referenceCorrespondencePartUnit);
 
-    Set<CorrespondencePartInternal> getReferenceCorrespondencePartInternal();
+    List<CorrespondencePartInternal> getReferenceCorrespondencePartInternal();
 
-    void setReferenceCorrespondencePartInternal(Set<CorrespondencePartInternal> referenceCorrespondencePartInternal);
+    void setReferenceCorrespondencePartInternal(List<CorrespondencePartInternal> referenceCorrespondencePartInternal);
 
 }

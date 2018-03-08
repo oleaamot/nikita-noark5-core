@@ -21,7 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.Constants.*;
 import static nikita.config.N5ResourceMappings.*;
@@ -67,7 +67,7 @@ public class AdministrativeUnitController extends NoarkController {
             throws NikitaException {
         administrativeUnitService.createNewAdministrativeUnit(administrativeUnit);
         AdministrativeUnitHateoas adminHateoas = new AdministrativeUnitHateoas(administrativeUnit);
-        administrativeUnitHateoasHandler.addLinks(adminHateoas, request, new Authorisation());
+        administrativeUnitHateoasHandler.addLinks(adminHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(administrativeUnit.getVersion().toString())
@@ -90,8 +90,8 @@ public class AdministrativeUnitController extends NoarkController {
     @RequestMapping(method = RequestMethod.GET, value = ADMINISTRATIVE_UNIT)
     public ResponseEntity<AdministrativeUnitHateoas> findAll(HttpServletRequest request) {
         AdministrativeUnitHateoas adminHateoas = new AdministrativeUnitHateoas(
-                (ArrayList<INikitaEntity>) (ArrayList) administrativeUnitService.findAll());
-        administrativeUnitHateoasHandler.addLinks(adminHateoas, request, new Authorisation());
+                (List<INikitaEntity>) (List) administrativeUnitService.findAll());
+        administrativeUnitHateoasHandler.addLinks(adminHateoas, new Authorisation());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
@@ -117,11 +117,11 @@ public class AdministrativeUnitController extends NoarkController {
     @Timed
     @RequestMapping(value = ADMINISTRATIVE_UNIT + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH,
             method = RequestMethod.GET)
-    public ResponseEntity<AdministrativeUnitHateoas> findBySystemIdOrderBySystemId(@PathVariable("systemID") final String systemId,
-                                                                                   HttpServletRequest request) {
-        AdministrativeUnit administrativeUnit = administrativeUnitService.findBySystemIdOrderBySystemId(systemId);
+    public ResponseEntity<AdministrativeUnitHateoas> findBySystemId(@PathVariable("systemID") final String systemId,
+                                                                    HttpServletRequest request) {
+        AdministrativeUnit administrativeUnit = administrativeUnitService.findBySystemId(systemId);
         AdministrativeUnitHateoas adminHateoas = new AdministrativeUnitHateoas(administrativeUnit);
-        administrativeUnitHateoasHandler.addLinks(adminHateoas, request, new Authorisation());
+        administrativeUnitHateoasHandler.addLinks(adminHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(administrativeUnit.getVersion().toString())
@@ -179,10 +179,10 @@ public class AdministrativeUnitController extends NoarkController {
                                                                                       required = true)
                                                                               @RequestBody AdministrativeUnit administrativeUnit)
             throws NikitaException {
-        AdministrativeUnit newAdministrativeUnit = administrativeUnitService.update(systemID,
+        administrativeUnitService.update(systemID,
                 parseETAG(request.getHeader(ETAG)), administrativeUnit);
         AdministrativeUnitHateoas adminHateoas = new AdministrativeUnitHateoas(administrativeUnit);
-        administrativeUnitHateoasHandler.addLinks(adminHateoas, request, new Authorisation());
+        administrativeUnitHateoasHandler.addLinks(adminHateoas, new Authorisation());
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(adminHateoas);

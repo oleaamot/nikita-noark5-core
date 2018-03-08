@@ -1,6 +1,8 @@
 package nikita.model.noark5.v4.casehandling;
 
 import nikita.model.noark5.v4.NoarkEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -140,5 +142,41 @@ public class DocumentFlow extends NoarkEntity {
                 ", flowFrom='" + flowFrom + '\'' +
                 ", flowTo='" + flowTo + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        DocumentFlow rhs = (DocumentFlow) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(flowComment, rhs.flowComment)
+                .append(flowStatus, rhs.flowStatus)
+                .append(flowSentDate, rhs.flowSentDate)
+                .append(flowReceivedDate, rhs.flowReceivedDate)
+                .append(flowFrom, rhs.flowFrom)
+                .append(flowTo, rhs.flowTo)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(flowComment)
+                .append(flowStatus)
+                .append(flowSentDate)
+                .append(flowReceivedDate)
+                .append(flowFrom)
+                .append(flowTo)
+                .toHashCode();
     }
 }

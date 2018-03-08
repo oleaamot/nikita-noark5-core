@@ -1,111 +1,124 @@
 var app = angular.module('nikita-series', []);
 
-var SetLinkToSeriesAllFile = function (t) {
-    localStorage.setItem("linkToSeriesAllFile", t);
-    console.log("Setting linkToSeriesAllFile=" + t);
-};
+var seriesController = app.controller('SeriesController', ['$scope', '$http',
+    function ($scope, $http) {
 
-var GetFondsSystemID = function(t) {
-    console.log("Getting chosen fondsSystemId="+localStorage.getItem("chosenfonds"));
-    return localStorage.getItem("chosenfonds");
-};
+    // Used by GUI to show breadcrumbs
+    $scope.series_show_list = true;
 
-var GetUserToken = function(t) {
-    return localStorage.getItem("token");
-};
+    // Used to show or hide a text message
+    $scope.createSeries = false;
 
-var GetLinkToChosenSeries = function(t) {
-    return localStorage.getItem("linkToChosenSeries");
-};
+    $scope.documentMediumList = documentMediumList;
+    $scope.seriesStatusList = seriesStatusList;
+    $scope.oppbevaringsStedDisabled = false;
 
-var SetChosenSeries = function(seriesSystemId) {
-    localStorage.setItem("currentSeriesSystemId", seriesSystemId);
-    console.log("Setting seriesSystemId="+seriesSystemId);
-};
+    // Used to show systemID and title of fonds adding the series to
+    $scope.fonds = GetChosenFonds();
 
-var seriesController = app.controller('SeriesController', ['$scope', '$http', function ($scope, $http) {
-    $scope.token = GetUserToken();
-    console.log("token="+$scope.token);
-    $scope.fonds = GetFondsSystemID();
+    // Get the current series (if one exists)
+    $scope.series = GetChosenSeries();
 
-    var urlVal = GetLinkToChosenSeries();
-    $http({
-        method: 'GET',
-        url: urlVal,
-        headers: {'Authorization': $scope.token },
-    }).then(function successCallback(response) {
-        $scope.seriess = response.data.results;
-        console.log("series data is : " + JSON.stringify(response.data));
-    }, function errorCallback(response) {
-        // TODO: what should we do when it fails?
-    });
+    // If the series exists set the contents of some drop down lists
+    if ($scope.series != null) {
+        $scope.selectedDocumentMedium = $scope.series.dokumentmedium;
+        $scope.selectedSeriesStatus = $scope.series.arkivdelstatus;
+        console.log("scope.selectedSeriesStatus is set to [" + $scope.selectedSeriesStatus + "]");
 
-    url = app_url + '/arkivstruktur/arkiv/' +  $scope.fonds + '/ny-arkivdel';
-    $scope.formfields = ['tittel', 'beskrivelse'];
-    $http({
-        method: 'GET',
-        url: url,
-        headers: {'Authorization': $scope.token },
-    }).then(function successCallback(response) {
-	for (var key of Object.keys(response.data)) {
-	    if ("_links" === key) {
-	    } else {
-		//console.log(key,response.data[key]);
-		$scope[key] = response.data[key];
-		$scope.formfields.push(key);
-	    }
-	}
-        //console.log("ny-arkivdel data is : " + JSON.stringify(response.data));
-    }, function errorCallback(response) {
-        // TODO: what should we do when it fails?
-    });
+        // Retrieve the latest copy of the data and pull out the ETAG
+        // Find the self link of the current series and issue a GET
+        for (var rel in $scope.series._links) {
+            var relation = $scope.series._links[rel].rel;
+            if (relation == REL_SELF) {
+                var urlToFonds = $scope.series._links[rel].href;
+                var token = GetUserToken();
+                $http({
+                    method: 'GET',
+                    url: urlToFonds,
+                    headers: {'Authorization': token}
+                }).then(function successCallback(response) {
+                    // This returns a list and later we will handle a list properly in GUI, but right now I just
+                    // need to fetch the first one. I also need an ETAG in case it is to be edited, so I have to
+                    // retrieve (again) the object I am actually out after
+                    $scope.series = response.data;
+                    $scope.seriesETag = response.headers('eTag');
+                    console.log("Retrieved the following series " + JSON.stringify($scope.series));
+                    console.log("The ETAG header for the series is " + $scope.seriesETag);
+                });
+            }
+        }
 
-    // TODO : Add the href to local storage indicating what was clicked
-    //
-    $scope.fileSelected = function(href, seriesSystemId){
-        console.log('series selected link clicked ' + href);
-        token = GetUserToken();
-        SetLinkToSeriesAllFile(href);
-        SetChosenSeries(seriesSystemId);
-        window.location = gui_base_url + "/mappe.html";
-    };
+    }
+    else {
+        $scope.createSeries = true;
+    }
 
-    $scope.send_form = function() {
-        token = GetUserToken();
-        systemID = GetFondsSystemID();
-        url = app_url + '/arkivstruktur/arkiv/' + systemID + '/ny-arkivdel';
-	formdata = {};
-	for (var key of $scope.formfields) {
-	    formdata[key] = $scope[key];
-	}
+    $scope.post_or_put_series = function () {
+        var urlSeries = '';
+
+        // check that it's not null, create a popup here if it is
+        var method = '';
+        if ($scope.createSeries) {
+            method = "POST";
+            var currentFonds = GetChosenFonds();
+            if (currentFonds != null) {
+                // Check that currentFonds._links exists??
+                // Find the self link
+                for (var rel in currentFonds._links) {
+                    var relation = currentFonds._links[rel].rel;
+                    if (relation === REL_NEW_SERIES) {
+                        urlSeries = currentFonds._links[rel].href;
+                        console.log(method + " Attempting to create series with following address = " + urlSeries);
+                    }
+                }
+            }
+        } else {
+            method = "PUT";
+            var currentSeries = GetChosenSeries();
+            if (currentSeries != null) {
+                // Check that currentSeries._links exists??
+                // Find the self link
+                for (var rel in currentSeries._links) {
+                    var relation = currentSeries._links[rel].rel;
+                    if (relation === REL_SELF) {
+                        urlSeries = currentSeries._links[rel].href;
+                        console.log(method + " Attempting to update series with following address = " + urlSeries);
+                    }
+                }
+            }
+            else {
+                alert("Something went wrong. Attempt to update a fonds object that is not registered as existing yet!");
+            }
+        }
+
+        console.log("document.getElementById(arkivperiodeStartDato)" + document.getElementById("arkivperiodeStartDato").value);
+        console.log("document.getElementById(arkivperiodeStartDato)" + document.getElementById("arkivperiodeStartDato").value);
+
+
         $http({
-            url: url,
-            method: "POST",
+            url: urlSeries,
+            method: method,
             headers: {
                 'Content-Type': 'application/vnd.noark5-v4+json',
-                'Authorization': token,
+                'Authorization': GetUserToken(),
+                'ETAG': $scope.seriesETag
             },
-            data: formdata,
-        }).then(function(data, status, headers, config) {
-            changeLocation($scope, "./arkivdel.html", true);
-        }, function(data, status, headers, config) {
-            alert(data.data);
+            data: {
+                tittel: $.trim(document.getElementById("tittel").value),
+                beskrivelse: $.trim(document.getElementById("beskrivelse").value),
+                dokumentmedium: $.trim($scope.selectedDocumentMedium),
+                arkivdelstatus: $.trim($scope.selectedSeriesStatus),
+                arkivperiodeStartDato: $.trim(document.getElementById("arkivperiodeStartDato").value),
+                arkivperiodeSluttDato: $.trim(document.getElementById("arkivperiodeSluttDato").value),
+            },
+        }).then(function successCallback(response) {
+            console.log(method + " put/post on series. data returned= " + JSON.stringify(response.data));
+            // Update the fonds object so fields in GUI are changed
+            $scope.series = response.data;
+            // Pick up and make a note of the ETAG so we can update the object
+            $scope.seriesETag = response.headers('eTag');
+            // Now we can edit the fonds object, add fondsCreator
+            $scope.createSeries = false;
         });
     };
-    var changeLocation = function ($scope, url, forceReload) {
-        $scope = $scope || angular.element(document).scope();
-        console.log("URL" + url);
-        if (forceReload || $scope.$$phase) {
-            window.location = url;
-        }
-        else {
-            //only use this if you want to replace the history stack
-            //$location.path(url).replace();
-
-            //this this if you want to change the URL and add it to the history stack
-            $location.path(url);
-            $scope.$apply();
-        }
-    };
-
 }]);

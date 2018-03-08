@@ -20,4 +20,19 @@ public class BusinessAddress extends SimpleAddress {
     public void setCorrespondencePartUnit(CorrespondencePartUnit correspondencePartUnit) {
         this.correspondencePartUnit = correspondencePartUnit;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return super.equals(other);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

@@ -2,11 +2,13 @@ package nikita.model.noark5.v4.casehandling.secondary;
 
 import nikita.model.noark5.v4.casehandling.RegistryEntry;
 import nikita.model.noark5.v4.interfaces.entities.casehandling.ICorrespondencePartUnitEntity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART_UNIT;
 
@@ -47,7 +49,7 @@ public class CorrespondencePartUnit extends CorrespondencePart implements ICorre
 
     // Links to RegistryEntry
     @ManyToMany(mappedBy = "referenceCorrespondencePartUnit")
-    private Set<RegistryEntry> referenceRegistryEntry = new TreeSet<>();
+    private List<RegistryEntry> referenceRegistryEntry = new ArrayList<>();
 
 
     public String getOrganisationNumber() {
@@ -104,12 +106,12 @@ public class CorrespondencePartUnit extends CorrespondencePart implements ICorre
     }
 
     @Override
-    public Set<RegistryEntry> getReferenceRegistryEntry() {
+    public List<RegistryEntry> getReferenceRegistryEntry() {
         return referenceRegistryEntry;
     }
 
     @Override
-    public void setReferenceRegistryEntry(Set<RegistryEntry> referenceRegistryEntry) {
+    public void setReferenceRegistryEntry(List<RegistryEntry> referenceRegistryEntry) {
         this.referenceRegistryEntry = referenceRegistryEntry;
     }
 
@@ -120,5 +122,35 @@ public class CorrespondencePartUnit extends CorrespondencePart implements ICorre
                 ", name='" + name + '\'' +
                 ", contactPerson='" + contactPerson + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        CorrespondencePartUnit rhs = (CorrespondencePartUnit) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(organisationNumber, rhs.organisationNumber)
+                .append(name, rhs.name)
+                .append(contactPerson, rhs.contactPerson)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(organisationNumber)
+                .append(name)
+                .append(contactPerson)
+                .toHashCode();
     }
 }

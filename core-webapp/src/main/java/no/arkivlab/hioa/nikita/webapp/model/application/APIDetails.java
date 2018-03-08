@@ -1,22 +1,22 @@
 package no.arkivlab.hioa.nikita.webapp.model.application;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by tsodring on 2/2/17.
  */
 public class APIDetails {
-    protected Set<APIDetail> aPIDetails = new TreeSet<>();
+    protected List<APIDetail> aPIDetails = new ArrayList<>();
 
     public APIDetails() {
     }
 
-    public Set<APIDetail> getApiDetails() {
+    public List<APIDetail> getApiDetails() {
         return aPIDetails;
     }
 
-    public void setApiDetails(Set<APIDetail> aPIDetails) {
+    public void setApiDetails(List<APIDetail> aPIDetails) {
         this.aPIDetails = aPIDetails;
     }
 }

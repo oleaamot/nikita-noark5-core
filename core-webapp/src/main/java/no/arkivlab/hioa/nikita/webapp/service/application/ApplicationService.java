@@ -3,10 +3,10 @@ package no.arkivlab.hioa.nikita.webapp.service.application;
 import no.arkivlab.hioa.nikita.webapp.model.application.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,8 @@ public class ApplicationService {
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationService.class);
 
+    @Value("${hateoas.publicAddress}")
+    private String publicUrlPath;
     /**
      * Creates a list of the supported supported login methods.
      * These are: JWT
@@ -27,9 +29,8 @@ public class ApplicationService {
      */
 
     public void addLoginInformation(List<ConformityLevel> conformityLevels) {
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
         ConformityLevel loginJWT = new ConformityLevel();
-        loginJWT.setHref(uri + SLASH + LOGIN_PATH);
+        loginJWT.setHref(publicUrlPath + SLASH + LOGIN_PATH);
         loginJWT.setRel(NIKITA_CONFORMANCE_REL + LOGIN_REL_PATH + SLASH + LOGIN_JWT + SLASH);
         conformityLevels.add(loginJWT);
     }
@@ -42,24 +43,21 @@ public class ApplicationService {
      */
 
     public void addConformityLevels(List<ConformityLevel> conformityLevels) {
-
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
-
         // ConformityLevel : arkivstruktur
         ConformityLevel conformityLevelFondsStructure = new ConformityLevel();
-        conformityLevelFondsStructure.setHref(uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH);
+        conformityLevelFondsStructure.setHref(publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH + NOARK_FONDS_STRUCTURE_PATH);
         conformityLevelFondsStructure.setRel(NOARK_CONFORMANCE_REL + NOARK_FONDS_STRUCTURE_PATH + SLASH);
         conformityLevels.add(conformityLevelFondsStructure);
 
         // ConformityLevel : casehandling
         ConformityLevel conformityLevelCaseHandling = new ConformityLevel();
-        conformityLevelCaseHandling.setHref(uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH);
+        conformityLevelCaseHandling.setHref(publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH + NOARK_CASE_HANDLING_PATH);
         conformityLevelCaseHandling.setRel(NOARK_CONFORMANCE_REL + NOARK_CASE_HANDLING_PATH + SLASH);
         conformityLevels.add(conformityLevelCaseHandling);
 
         // ConformityLevel : metadata
         ConformityLevel conformityLevelMetadata = new ConformityLevel();
-        conformityLevelMetadata.setHref(uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH);
+        conformityLevelMetadata.setHref(publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH + NOARK_METADATA_PATH);
         conformityLevelMetadata.setRel(NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH);
         conformityLevels.add(conformityLevelMetadata);
 
@@ -68,13 +66,13 @@ public class ApplicationService {
         // They are not really specified properly in the interface standard.
         // ConformityLevel : administrasjon
         ConformityLevel conformityLevelAdministration = new ConformityLevel();
-        conformityLevelAdministration.setHref(uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_ADMINISTRATION_PATH);
+        conformityLevelAdministration.setHref(publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH + NOARK_ADMINISTRATION_PATH);
         conformityLevelAdministration.setRel(NOARK_CONFORMANCE_REL + NOARK_ADMINISTRATION_PATH + SLASH);
         conformityLevels.add(conformityLevelAdministration);
 
         // ConformityLevel : loggingogsporing
         ConformityLevel conformityLevelLogging = new ConformityLevel();
-        conformityLevelLogging.setHref(uri + SLASH + HATEOAS_API_PATH + SLASH + NOARK_LOGGING_PATH);
+        conformityLevelLogging.setHref(publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH + NOARK_LOGGING_PATH);
         conformityLevelLogging.setRel(NOARK_CONFORMANCE_REL + NOARK_LOGGING_PATH + SLASH);
         conformityLevels.add(conformityLevelLogging);
         */
@@ -99,18 +97,18 @@ public class ApplicationService {
     }
 
     public FondsStructureDetails getFondsStructureDetails() {
-        return new FondsStructureDetails();
+        return new FondsStructureDetails(publicUrlPath);
     }
 
     public AdministrationDetails getAdministrationDetails() {
-        return new AdministrationDetails();
+        return new AdministrationDetails(publicUrlPath);
     }
 
     public MetadataDetails getMetadataDetails() {
-        return new MetadataDetails();
+        return new MetadataDetails(publicUrlPath);
     }
 
     public CaseHandlingDetails getCaseHandlingDetails() {
-        return new CaseHandlingDetails();
+        return new CaseHandlingDetails(publicUrlPath);
     }
 }

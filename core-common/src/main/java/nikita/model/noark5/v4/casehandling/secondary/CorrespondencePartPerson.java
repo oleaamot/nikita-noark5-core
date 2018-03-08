@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.model.noark5.v4.casehandling.RegistryEntry;
 import nikita.model.noark5.v4.interfaces.entities.casehandling.ICorrespondencePartPersonEntity;
 import nikita.util.deserialisers.casehandling.CorrespondencePartPersonDeserializer;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nikita.config.Constants.NOARK_CASE_HANDLING_PATH;
 import static nikita.config.N5ResourceMappings.CORRESPONDENCE_PART_PERSON;
@@ -55,7 +57,7 @@ public class CorrespondencePartPerson extends CorrespondencePart implements ICor
 
     // Links to RegistryEntry
     @ManyToMany(mappedBy = "referenceCorrespondencePartPerson")
-    private Set<RegistryEntry> referenceRegistryEntry = new TreeSet<>();
+    private List<RegistryEntry> referenceRegistryEntry = new ArrayList<>();
 
     public String getSocialSecurityNumber() {
         return socialSecurityNumber;
@@ -116,20 +118,50 @@ public class CorrespondencePartPerson extends CorrespondencePart implements ICor
         return NOARK_CASE_HANDLING_PATH;
     }
 
-    public Set<RegistryEntry> getReferenceRegistryEntry() {
+    public List<RegistryEntry> getReferenceRegistryEntry() {
         return referenceRegistryEntry;
     }
 
-    public void setReferenceRegistryEntry(Set<RegistryEntry> referenceRegistryEntry) {
+    public void setReferenceRegistryEntry(List<RegistryEntry> referenceRegistryEntry) {
         this.referenceRegistryEntry = referenceRegistryEntry;
     }
 
     @Override
     public String toString() {
-        return super.toString() +
-                ", socialSecurityNumber='" + socialSecurityNumber + '\'' +
+        return "CorrespondencePartPerson{" + super.toString() +
+                "socialSecurityNumber='" + socialSecurityNumber + '\'' +
                 ", dNumber='" + dNumber + '\'' +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        CorrespondencePartPerson rhs = (CorrespondencePartPerson) other;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(other))
+                .append(socialSecurityNumber, rhs.socialSecurityNumber)
+                .append(dNumber, rhs.dNumber)
+                .append(name, rhs.name)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(socialSecurityNumber)
+                .append(dNumber)
+                .append(name)
+                .toHashCode();
     }
 }

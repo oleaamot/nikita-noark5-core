@@ -1,0 +1,20 @@
+<div id="breadcrumb" class="container">
+    <div class="mdl-layout__header-row mdl-layout--fixed-drawer mdl-layout--fixed-header">
+        <div>
+            <a href="arkivliste.html"><label>Start</label></a>
+        </div>
+        <div ng-if="fonds.systemID">
+            <label>&gt;</label>
+            <a href="arkiv.html"><label>Arkiv ({{ fonds.tittel }})</label></a>
+        </div>
+        <div ng-if="series_show_list">
+            <label>&gt;</label>
+            <label><a href="arkivdeliste.html">Arkivdeler</a></label>
+        </div>
+        <div ng-if="series.systemID">
+            <label>&gt;</label>
+            <label><a href="arkivdel.html">Arkivdel ({{ series.tittel }})</a></label>
+        </div>
+    </div>
+
+</div>

@@ -1,6 +1,10 @@
 package no.arkivlab.hioa.nikita.webapp.model.application;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.validation.constraints.NotNull;
+
 
 public class APIDetail implements Comparable <APIDetail>{
 
@@ -40,6 +44,34 @@ public class APIDetail implements Comparable <APIDetail>{
     }
 
     @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(href)
+                .append(rel)
+                .append(templated)
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (other.getClass() != getClass()) {
+            return false;
+        }
+        APIDetail rhs = (APIDetail) other;
+        return new EqualsBuilder()
+                .append(href, rhs.href)
+                .append(rel, rhs.rel)
+                .append(templated, rhs.templated)
+                .isEquals();
+    }
+
+    @Override
     public int compareTo(APIDetail otherDetail) {
         if (otherDetail != null) {
             return rel.compareTo(otherDetail.getRel());
@@ -49,7 +81,7 @@ public class APIDetail implements Comparable <APIDetail>{
 
     @Override
     public String toString() {
-        return "FondsStructureDetail{" +
+        return "APIDetail{" +
                 "href='" + href + '\'' +
                 ", rel='" + rel + '\'' +
                 ", templated=" + templated +

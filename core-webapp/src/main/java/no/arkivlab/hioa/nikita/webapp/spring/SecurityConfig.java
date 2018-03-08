@@ -56,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception { // @formatter:off
+
         httpSecurity
                 .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
@@ -101,9 +102,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js"
                 ).permitAll()
+                .antMatchers(
+                        "/console/**"
+                ).permitAll()
                 .antMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
         ;
+
+        // For h2-console
+        httpSecurity.headers().frameOptions().sameOrigin();
 
         // Custom JWT based security filter
         httpSecurity
