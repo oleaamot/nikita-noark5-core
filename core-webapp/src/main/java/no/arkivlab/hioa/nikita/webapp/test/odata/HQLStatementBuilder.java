@@ -1,38 +1,44 @@
 package no.arkivlab.hioa.nikita.webapp.test.odata;
 
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.lang.System.out;
 
 /**
- * SQLStatementBuilder
+ * HQLStatementBuilder
  * <p>
- * Handle the process of building an SQL statement. The potential statement
+ * Handle the process of building an HQL statement. The potential statement
  * is derived for a number of parts. The select part is straight forward. The
  * where part is an ArrayList of various clauses that are currently joined
  * together with an 'and'. We need a better way to handle this. But this is
  * experimental, prototyping the solution as we go along.
- *
+ * <p>
  * Note. When implementing paging, make sure there is a sort order. Remember
  * the fetch order is unpredictable.
  */
 
-public class SQLStatementBuilder {
+public class HQLStatementBuilder {
 
-    // private ArrayList <String> selectList;
     private String select;
     private ArrayList<String> whereList;
-    private ArrayList<String> orderByList;
-    private String limitHowMany;
-    private String limitOffset;
+    private Map<String, String> orderByMap;
+    private Integer limitHowMany;
+    private Integer limitOffset;
 
-    public SQLStatementBuilder() {
+    public HQLStatementBuilder() {
         select = "";
         whereList = new ArrayList<>();
-        orderByList = new ArrayList<>();
+        orderByMap = new HashMap<>();
     }
 
     public void addSelect(String entity, String ownerColumn, String
             loggedInUser) {
-        select = "select * from " + entity + " where " + ownerColumn + " ='" +
+        select = "FROM " + entity + " where " + ownerColumn + " ='" +
                 loggedInUser + "'";
     }
 
@@ -41,21 +47,22 @@ public class SQLStatementBuilder {
     }
 
     public void addOrderby(String attribute, String sortOrder) {
-        orderByList.add(attribute + " " + sortOrder);
+        orderByMap.put(attribute, sortOrder);
     }
 
     public void addLimitby_skip(Integer skip) {
-        limitOffset = skip.toString();
+        limitOffset = skip;
     }
 
     public void addLimitby_top(Integer top) {
-        limitHowMany = top.toString();
+        limitHowMany = top;
     }
 
-    public String buildSQLStatement() {
+    public Query buildHQLStatement(Session session) {
+
 
         // take care of the select part
-        String sqlStatement = select;
+        String hqlStatement = select;
 
         boolean firstWhere = false;
         // take care of the where part
@@ -63,37 +70,32 @@ public class SQLStatementBuilder {
         for (String where : whereList) {
             if (!firstWhere) {
                 firstWhere = true;
-                sqlStatement += " and ";
+                hqlStatement += " and ";
             }
-            sqlStatement += where;
+            hqlStatement += where;
         }
 
+        hqlStatement += " ";
 
-        sqlStatement += " ";
+        Query query = session.createQuery(hqlStatement);
 
         // take care of the orderBy part
         boolean firstOrderBy = true;
-        for (String orderBy : orderByList) {
+        for (Map.Entry entry : orderByMap.entrySet()) {
             if (!firstOrderBy) {
                 firstOrderBy = false;
-                sqlStatement += ", ";
+                hqlStatement += ", ";
             } else {
-                sqlStatement += " order by ";
+                hqlStatement += " order by ";
             }
-            sqlStatement += orderBy;
+            hqlStatement += entry.getKey() + " " + entry.getValue();
         }
 
-        sqlStatement += " ";
+        query.setFirstResult(limitOffset);
+        query.setMaxResults(limitHowMany);
 
-        // take care of the limit part
-        if (limitOffset != null) {
-            sqlStatement += " LIMIT " + limitOffset;
-            if (limitHowMany != null) {
-                sqlStatement += ", " + limitHowMany;
-            }
-        } else if (limitHowMany != null) {
-            sqlStatement += " LIMIT " + limitHowMany;
-        }
-        return sqlStatement;
+        String queryString = query.getQueryString();
+        out.println("HQL Query string is " + queryString);
+        return query;
     }
 }

@@ -179,6 +179,24 @@ public class ODataBaseListener implements ODataListener {
      * <p>The default implementation does nothing.</p>
      */
     @Override
+    public void enterFromContextPath(ODataParser.FromContextPathContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitFromContextPath(ODataParser.FromContextPathContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
     public void enterOdataCommand(ODataParser.OdataCommandContext ctx) {
     }
 

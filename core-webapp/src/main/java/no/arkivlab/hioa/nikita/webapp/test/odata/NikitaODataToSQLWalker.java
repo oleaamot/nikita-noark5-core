@@ -28,7 +28,6 @@ public class NikitaODataToSQLWalker
         sqlStatementBuilder = new SQLStatementBuilder();
     }
 
-
     /**
      * processResource
      * <p>

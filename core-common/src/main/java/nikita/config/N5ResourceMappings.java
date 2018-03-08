@@ -681,7 +681,7 @@ public final class N5ResourceMappings {
     public static final String FONDS_CREATOR_ENG_OBJECT = "arkivskaper";
     public static final String FONDS_CREATOR_ID_ENG_OBJECT = "fondsCreatorId";
     public static final String FONDS_CREATOR_NAME_ENG_OBJECT = "fondsCreatorName";
-    public static final String FONDS_ENG_OBJECT = "fonds";
+    public static final String FONDS_ENG_OBJECT = "Fonds";
     public static final String FONDS_STATUS_ENG_OBJECT = "arkivstatus";
     public static final String FOREIGN_ADDRESS_ENG_OBJECT = "utenlandsadresse";
     public static final String FORMAT_ENG_OBJECT = "format";

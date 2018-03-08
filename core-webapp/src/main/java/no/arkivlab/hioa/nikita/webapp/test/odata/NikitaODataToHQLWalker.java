@@ -1,5 +1,7 @@
 package no.arkivlab.hioa.nikita.webapp.test.odata;
 
+
+import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import static nikita.config.Constants.DM_OWNED_BY;
@@ -13,15 +15,10 @@ public class NikitaODataToHQLWalker
         extends NikitaODataWalker
         implements IODataWalker {
 
-    private Query query;
-    private String hqlStatement;
+    HQLStatementBuilder hqlStatement;
 
-    public void processTop() {
-        query.setFirstResult(10);
-    }
-
-    public void processSkip() {
-        query.setMaxResults(10);
+    public NikitaODataToHQLWalker() {
+        this.hqlStatement = new HQLStatementBuilder();
     }
 
     /**
@@ -47,11 +44,9 @@ public class NikitaODataToHQLWalker
 
     @Override
     public void processResource(String entity, String loggedInUser) {
-        hqlStatement = "HQL Statement :";
-        hqlStatement += "select from " + getNameObject(entity) + " where ";
-        hqlStatement += DM_OWNED_BY + " equals " + loggedInUser + " and ";
+        hqlStatement.addSelect(getNameObject(entity),
+                DM_OWNED_BY, loggedInUser);
     }
-
 
     /**
      * processComparatorCommand
@@ -81,6 +76,8 @@ public class NikitaODataToHQLWalker
 
     @Override
     public void processContains(String attribute, String value) {
+        hqlStatement.addWhere(getNameDatabase(attribute) +
+                " LIKE '%" + value + "%'");
 
     }
 
@@ -91,12 +88,12 @@ public class NikitaODataToHQLWalker
 
     @Override
     public void processSkipCommand(Integer skip) {
-
+        hqlStatement.addLimitby_skip(skip);
     }
 
     @Override
     public void processTopCommand(Integer top) {
-
+        hqlStatement.addLimitby_top(top);
     }
 
     @Override
@@ -104,7 +101,7 @@ public class NikitaODataToHQLWalker
 
     }
 
-    public String getHqlStatment() {
-        return hqlStatement;
+    public Query getHqlStatment(Session session) {
+        return hqlStatement.buildHQLStatement(session);
     }
 }

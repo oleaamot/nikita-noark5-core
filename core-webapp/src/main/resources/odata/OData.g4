@@ -11,8 +11,10 @@ declaration
 */
 
 
-odataURL: scheme SEPERATOR host (COLON port)? contextPath api functionality
-'/' resource odataCommand;
+odataURL: scheme SEPERATOR host (COLON port)? fromContextPath;
+
+//contextPath api functionality
+//'/' resource '?' odataCommand;
 
 scheme          :  ('http' | 'https');
 
@@ -30,7 +32,9 @@ resource        : string;
 
 port            : DIGITS;
 
-odataCommand    : '?' (filter | top | skip | orderby)*;
+fromContextPath: contextPath api functionality '/' resource '?' odataCommand;
+
+odataCommand    : (filter | top | skip | orderby)*;
 
 filter          : '$filter=' filterCommand;
 

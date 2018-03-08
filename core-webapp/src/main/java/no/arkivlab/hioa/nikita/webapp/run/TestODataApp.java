@@ -11,15 +11,14 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import java.io.File;
 import java.io.InputStream;
-
 public class TestODataApp {
+
 
     public static void main(String[] args) throws Exception {
 
         System.out.println("Starting OData parser test");
         System.out.println("Picks first line from odata_samples.txt in " +
                 "resources folder.");
-
         try {
 
             AfterApplicationStartup afterApplicationStartup =
@@ -35,10 +34,11 @@ public class TestODataApp {
             ODataParser parser = new ODataParser(tokens);
             ParseTree tree = parser.odataURL();
             ParseTreeWalker walker = new ParseTreeWalker();
-            NikitaODataToSQLWalker nparser = new NikitaODataToSQLWalker();
-            walker.walk(nparser, tree);
 
-            System.out.println(nparser.getSqlStatement());
+            // Make the SQL Statement
+            NikitaODataToSQLWalker sqlWalker = new NikitaODataToSQLWalker();
+            walker.walk(sqlWalker, tree);
+            System.out.println(sqlWalker.getSqlStatement());
 
         } catch (RecognitionException e) {
             throw new IllegalStateException("Recognition exception");

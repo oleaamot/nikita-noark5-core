@@ -33,9 +33,9 @@ HEX=32
 STRING=33
 COLON=34
 SEPERATOR=35
-'/'=1
-'http'=2
-'https'=3
+'http'=1
+'https'=2
+'/'=3
 '?'=4
 '$filter='=5
 '$search='=6

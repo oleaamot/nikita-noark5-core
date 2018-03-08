@@ -134,6 +134,20 @@ public interface ODataListener extends ParseTreeListener {
     void exitPort(ODataParser.PortContext ctx);
 
     /**
+     * Enter a parse tree produced by {@link ODataParser#fromContextPath}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterFromContextPath(ODataParser.FromContextPathContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link ODataParser#fromContextPath}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitFromContextPath(ODataParser.FromContextPathContext ctx);
+
+    /**
      * Enter a parse tree produced by {@link ODataParser#odataCommand}.
      *
      * @param ctx the parse tree

@@ -15,3 +15,4 @@ http://localhost/noark5v4/api/arkivstruktur/mappe?$filter==year(oppdatertDato) g
 http://localhost/noark5v4/api/arkivstruktur/mappe?$filter==year(oppdatertDato) lt 2012
 http://localhost/noark5v4/api/arkivstruktur/mappe?$filter==year(oppdatertDato) ge 2012
 http://localhost/noark5v4/api/arkivstruktur/mappe?$filter==year(oppdatertDato) le 2012
+http://localhost/noark5v4/odata/arkiv
