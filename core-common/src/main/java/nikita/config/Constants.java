@@ -140,6 +140,8 @@ public final class Constants {
             CASE_PARTY_ROLE;
 
     public static final String NEW_FILE_TYPE = NEW + DASH + FILE_TYPE;
+    public static final String NEW_CLASSIFICATION_TYPE =
+            NEW + DASH + CLASSIFICATION_TYPE;
 
     public static final String NEW_COMMENT_TYPE = NEW + DASH + COMMENT_TYPE;
 
@@ -254,6 +256,10 @@ public final class Constants {
 
     public static final String TEMPLATE_FILE_TYPE_CODE = "S";
     public static final String TEMPLATE_FILE_TYPE_DESCRIPTION = "Saksmappe";
+
+    public static final String TEMPLATE_CLASSIFICATION_TYPE_CODE = "FH";
+    public static final String TEMPLATE_CLASSIFICATION_TYPE_DESCRIPTION =
+            "Funksjonsbasert, hierarkisk";
 
     public static final String TEMPLATE_COMMENT_TYPE_CODE = "MS";
     public static final String TEMPLATE_COMMENT_TYPE_DESCRIPTION =
@@ -527,6 +533,9 @@ public final class Constants {
 
     public static final String REL_METADATA_FILE_TYPE =
             REL_METADATA + FILE_TYPE + SLASH;
+
+    public static final String REL_METADATA_CLASSIFICATION_TYPE =
+            REL_METADATA + CLASSIFICATION_TYPE + SLASH;
 
     public static final String REL_METADATA_COMMENT_TYPE =
             REL_METADATA + COMMENT_TYPE + SLASH;

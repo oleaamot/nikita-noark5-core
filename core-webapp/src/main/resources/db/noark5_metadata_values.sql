@@ -341,7 +341,7 @@ INSERT INTO file_type (
 VALUES (4, '1b8c9632-b5d1-49a1-a0ec-2ec2ee3e7483', 'MOM',
         'Møtemappe', FALSE, 0);
 
-/* file_type / mappetype
+/* comment / merknad
  Note. This is an open code list in the standard. The following values are taken
  from the Noark 4 standard
 */
@@ -362,3 +362,54 @@ INSERT INTO comment_type (
   description, deleted, version)
 VALUES (3, '7c1b04df-26b6-4a91-a949-3cb1717bd901', 'MA',
         'Merknad fra arkivansvarlig', FALSE, 0);
+
+/* classification_type / klassifikasjonstype
+*/
+
+INSERT INTO classification_type (
+  pk_classification_type_id, system_id, code,
+  description, deleted, version)
+VALUES (1, 'd10dddcd-74c0-430a-8b03-32b489fb6900', 'GBN',
+        'Gårds- og bruksnummer Valgfri', FALSE, 0);
+
+INSERT INTO classification_type (
+  pk_classification_type_id, system_id, code,
+  description, deleted, version)
+VALUES (2, '0a101af4-ce12-47b2-9c48-6c7d9b72a260', 'FH',
+        'Funksjonsbasert, hierarkisk Valgfri', FALSE, 0);
+
+INSERT INTO classification_type (
+  pk_classification_type_id, system_id, code,
+  description, deleted, version)
+VALUES (3, 'cf999e08-d4ee-4afe-9d85-604c56fb4e0c', 'EH',
+        'Emnebasert, hierarkisk arkivnøkkel', FALSE, 0);
+
+INSERT INTO classification_type (
+  pk_classification_type_id, system_id, code,
+  description, deleted, version)
+VALUES (4, '50efdb25-bc8d-4ed8-abfc-3e12f6d314a1', 'E1',
+        'Emnebasert, ett nivå', FALSE, 0);
+
+INSERT INTO classification_type (
+  pk_classification_type_id, system_id, code,
+  description, deleted, version)
+VALUES (5, '2577e645-0207-4f12-8a58-8bc4dda2e7f6', 'KK',
+        'K-koder', FALSE, 0);
+
+INSERT INTO classification_type (
+  pk_classification_type_id, system_id, code,
+  description, deleted, version)
+VALUES (6, 'f32705c8-6572-4fd8-b9f0-96adc69202e2', 'MF',
+        'Mangefasettert, ikke hierarki', FALSE, 0);
+
+INSERT INTO classification_type (
+  pk_classification_type_id, system_id, code,
+  description, deleted, version)
+VALUES (7, 'b8b8982f-4464-4d9a-9103-e0682f353722', 'UO',
+        'Objektbasert', FALSE, 0);
+
+INSERT INTO classification_type (
+  pk_classification_type_id, system_id, code,
+  description, deleted, version)
+VALUES (8, '9f8b839e-35c5-4382-a774-3f42f00e75a4', 'PNR',
+        'Fødselsnummer', FALSE, 0);

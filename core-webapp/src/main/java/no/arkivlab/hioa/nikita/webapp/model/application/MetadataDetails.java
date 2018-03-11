@@ -246,6 +246,23 @@ public class MetadataDetails extends APIDetails {
                 true
         ));
 
+        // Add support for ClassificationType
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + CLASSIFICATION_TYPE,
+                REL_METADATA_CLASSIFICATION_TYPE,
+                true
+        ));
+
+        // Add support for new ClassificationType
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + NEW_CLASSIFICATION_TYPE,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH +
+                        NEW_CLASSIFICATION_TYPE + SLASH,
+                true
+        ));
+
         // Add support for FileType
         aPIDetails.add(new APIDetail(
                 publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
