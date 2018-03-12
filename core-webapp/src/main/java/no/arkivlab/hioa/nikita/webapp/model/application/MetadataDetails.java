@@ -280,7 +280,7 @@ public class MetadataDetails extends APIDetails {
                 true
         ));
 
-        // Add support for FileType
+        // Add support for VariantFormat
         aPIDetails.add(new APIDetail(
                 publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
                         NOARK_METADATA_PATH + SLASH + VARIANT_FORMAT,
@@ -288,7 +288,7 @@ public class MetadataDetails extends APIDetails {
                 true
         ));
 
-        // Add support for new FileType
+        // Add support for new VariantFormat
         aPIDetails.add(new APIDetail(
                 publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
                         NOARK_METADATA_PATH + SLASH + NEW_VARIANT_FORMAT,
@@ -311,6 +311,23 @@ public class MetadataDetails extends APIDetails {
                         NOARK_METADATA_PATH + SLASH + NEW_COMMENT_TYPE,
                 NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH +
                         NEW_COMMENT_TYPE + SLASH,
+                true
+        ));
+
+        // Add support for CaseStatus
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + CASE_STATUS,
+                REL_METADATA_CASE_STATUS,
+                true
+        ));
+
+        // Add support for new CaseStatus
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + NEW_CASE_STATUS,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH +
+                        NEW_CASE_STATUS + SLASH,
                 true
         ));
     }

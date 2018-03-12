@@ -434,4 +434,46 @@ INSERT INTO variant_format (
 VALUES (3, '3a89bb13-e796-4f44-a2ee-509fbbbef0aa', 'O',
         'Dokument hvor deler av innholdet er skjermet', FALSE, 0);
 
+/* case_status / saksstatus*/
+INSERT INTO case_status (
+  pk_case_status_id, system_id, code,
+  description, deleted, version)
+VALUES (1, '33f1e0f1-ba44-4c9b-9493-28998c4f9fe4', 'B',
+        'Under behandling', FALSE, 0);
+
+INSERT INTO case_status (
+  pk_case_status_id, system_id, code,
+  description, deleted, version)
+VALUES (2, '985a4607-0a24-4427-91e0-95438d6a2529', 'A',
+        'Avsluttet', FALSE, 0);
+
+INSERT INTO case_status (
+  pk_case_status_id, system_id, code,
+  description, deleted, version)
+VALUES (3, '51f2d7c2-8146-4735-94c2-543d3cc17263', 'U',
+        'Utgår', FALSE, 0);
+
+INSERT INTO case_status (
+  pk_case_status_id, system_id, code,
+  description, deleted, version)
+VALUES (4, 'a23b0a12-5e02-4edf-b75b-896a7744d7ca', 'R',
+        'Opprettet av saksbehandler', FALSE, 0);
+
+INSERT INTO case_status (
+  pk_case_status_id, system_id, code,
+  description, deleted, version)
+VALUES (5, '0c9e8e57-1a5a-4c11-9f1b-5d646b6a683f', 'S',
+        'Avsluttet av saksbehandler', FALSE, 0);
+
+INSERT INTO case_status (
+  pk_case_status_id, system_id, code,
+  description, deleted, version)
+VALUES (6, 'd26041b1-50cd-4a8b-9431-0833dfaa45d3', 'P',
+        'Unntatt prosesstyring', FALSE, 0);
+
+INSERT INTO case_status (
+  pk_case_status_id, system_id, code,
+  description, deleted, version)
+VALUES (7, '6cc5cca6-8ae5-4a6d-a7d6-9383067a38a1', 'F',
+        'Ferdig fra saksbehandler', FALSE, 0);
 

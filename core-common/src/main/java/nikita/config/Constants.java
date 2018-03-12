@@ -264,6 +264,10 @@ public final class Constants {
     public static final String TEMPLATE_VARIANT_FORMAT_DESCRIPTION =
             "Produksjonsformat";
 
+    public static final String TEMPLATE_CASE_STATUS_CODE = "R";
+    public static final String TEMPLATE_CASE_STATUS_DESCRIPTION =
+            "Opprettet av saksbehandler";
+
     public static final String TEMPLATE_CLASSIFICATION_TYPE_CODE = "FH";
     public static final String TEMPLATE_CLASSIFICATION_TYPE_DESCRIPTION =
             "Funksjonsbasert, hierarkisk";
