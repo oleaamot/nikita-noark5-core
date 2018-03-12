@@ -140,6 +140,9 @@ public final class Constants {
             CASE_PARTY_ROLE;
 
     public static final String NEW_FILE_TYPE = NEW + DASH + FILE_TYPE;
+
+    public static final String NEW_VARIANT_FORMAT = NEW + DASH + VARIANT_FORMAT;
+    
     public static final String NEW_CLASSIFICATION_TYPE =
             NEW + DASH + CLASSIFICATION_TYPE;
 
@@ -256,6 +259,10 @@ public final class Constants {
 
     public static final String TEMPLATE_FILE_TYPE_CODE = "S";
     public static final String TEMPLATE_FILE_TYPE_DESCRIPTION = "Saksmappe";
+
+    public static final String TEMPLATE_VARIANT_FORMAT_CODE = "P";
+    public static final String TEMPLATE_VARIANT_FORMAT_DESCRIPTION =
+            "Produksjonsformat";
 
     public static final String TEMPLATE_CLASSIFICATION_TYPE_CODE = "FH";
     public static final String TEMPLATE_CLASSIFICATION_TYPE_DESCRIPTION =

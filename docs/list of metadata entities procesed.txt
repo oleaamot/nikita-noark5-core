@@ -3,10 +3,9 @@ The following need to be completed:
 Graderingskode  174
 Hendelsetype  175
 Kassasjonsvedtak  177
-Klassifikasjonstype  178
+
 Land  179
-Mappetype  180
-Merknadstype  180
+
 MøtedeltakerFunksjon  181
 Møteregistreringsstatus  182
 Møteregistreringstype  183
@@ -20,7 +19,7 @@ SystemID  190
 Tilgangskategori 191
 Tilgangsrestriksjon  192
 TilknyttetRegistreringSom  193
-Variantformat  193
+
 
 
 The following are finished:
@@ -39,3 +38,7 @@ Journalstatus  176
 Presedensstatus  185
 SakspartRolle  186
 Korrespondanseparttype  179
+Mappetype  180
+Merknadstype  180
+Klassifikasjonstype  178
+Variantformat  193

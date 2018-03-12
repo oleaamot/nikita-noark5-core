@@ -413,3 +413,25 @@ INSERT INTO classification_type (
   description, deleted, version)
 VALUES (8, '9f8b839e-35c5-4382-a774-3f42f00e75a4', 'PNR',
         'Fødselsnummer', FALSE, 0);
+
+
+/* variant_format / variantformat */
+INSERT INTO variant_format (
+  pk_variant_format_id, system_id, code,
+  description, deleted, version)
+VALUES (1, '04c49db4-5a6f-47a9-a763-d7d3d6fee2a2', 'P',
+        'Produksjonsformat', FALSE, 0);
+
+INSERT INTO variant_format (
+  pk_variant_format_id, system_id, code,
+  description, deleted, version)
+VALUES (2, '0998cf74-d352-4aca-b8d7-ce6deba18ea4', 'A',
+        'Arkivformat', FALSE, 0);
+
+INSERT INTO variant_format (
+  pk_variant_format_id, system_id, code,
+  description, deleted, version)
+VALUES (3, '3a89bb13-e796-4f44-a2ee-509fbbbef0aa', 'O',
+        'Dokument hvor deler av innholdet er skjermet', FALSE, 0);
+
+
