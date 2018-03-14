@@ -3,7 +3,6 @@ The following need to be completed:
 Graderingskode  174
 Hendelsetype  175
 Kassasjonsvedtak  177
-Land  179
 MøtedeltakerFunksjon  181
 Møteregistreringsstatus  182
 Møteregistreringstype  183
@@ -39,3 +38,4 @@ Merknadstype  180
 Klassifikasjonstype  178
 Variantformat  193
 Saksstatus  186
+Land  179

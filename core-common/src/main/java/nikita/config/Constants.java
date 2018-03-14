@@ -268,6 +268,10 @@ public final class Constants {
     public static final String TEMPLATE_CASE_STATUS_DESCRIPTION =
             "Opprettet av saksbehandler";
 
+    public static final String TEMPLATE_COUNTRY_CODE = "NO";
+    public static final String TEMPLATE_COUNTRY_DESCRIPTION =
+            "Norge";
+
     public static final String TEMPLATE_CLASSIFICATION_TYPE_CODE = "FH";
     public static final String TEMPLATE_CLASSIFICATION_TYPE_DESCRIPTION =
             "Funksjonsbasert, hierarkisk";
@@ -356,6 +360,8 @@ public final class Constants {
     public static final String REL_CASE_HANDLING_SECONDARY_CLASSIFICATION = NIKITA_CONFORMANCE_REL + SECONDARY_CLASSIFICATION + SLASH;
     public static final String REL_CASE_HANDLING_NEW_SECONDARY_CLASSIFICATION = NIKITA_CONFORMANCE_REL + NEW_SECONDARY_CLASSIFICATION + SLASH;
     public static final String REL_METADATA_CASE_STATUS = REL_METADATA + CASE_STATUS + SLASH;
+
+    public static final String REL_METADATA_COUNTRY = REL_METADATA + COUNTRY + SLASH;
 
     public static final String REL_CASE_HANDLING_NEW_REGISTRY_ENTRY = NIKITA_CONFORMANCE_REL + NEW_REGISTRY_ENTRY + SLASH;
     public static final String REL_CASE_HANDLING_REGISTRY_ENTRY = REL_CASE_HANDLING + REGISTRY_ENTRY + SLASH;

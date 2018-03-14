@@ -330,5 +330,22 @@ public class MetadataDetails extends APIDetails {
                         NEW_CASE_STATUS + SLASH,
                 true
         ));
+
+        // Add support for Country
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + COUNTRY,
+                REL_METADATA_COUNTRY,
+                true
+        ));
+
+        // Add support for new Country
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + NEW_COUNTRY,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH +
+                        NEW_COUNTRY + SLASH,
+                true
+        ));
     }
 }

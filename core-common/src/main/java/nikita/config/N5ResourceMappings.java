@@ -36,6 +36,8 @@ public final class N5ResourceMappings {
     public static final String EVENT_TYPE = "hendelsetype";
     // Might be confusion if it's land or lankode
     public static final String COUNTRY = "land";
+    public static final String NEW_COUNTRY = NEW + DASH + COUNTRY;
+
     public static final String COUNTRY_CODE = "landkode";
     public static final String CLASSIFIED_CODE = "graderingskode";
     public static final String CLASSIFICATION_TYPE = "klassifikasjonstype";
