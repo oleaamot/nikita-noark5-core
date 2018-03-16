@@ -1,6 +1,6 @@
 # The use of licensed resources with AGPL
 
-Note, we have included to sets of resources that have licenses associated with
+Note, we have included two sets of resources that have licenses associated with
 them. These are a list of post codes and a list of countries in ISO 3166 format.
 
 The content has been separated so it is easy to identify it. They are in the 
@@ -9,7 +9,7 @@ following:
      resources/db/countrycode.sql
      resources/db/postcode.sql
 
-The original resources are alos included here.     
+The original resources are also included here.     
 
 ## Postcodes
 The list of postcode / town used in nikita is taken from [here](https://data.norge.no/data/posten-norge/postnummer-i-norge)
