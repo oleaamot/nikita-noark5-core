@@ -1,11 +1,7 @@
 # nikita-noark5-core
 
 [![Build Status](https://travis-ci.org/HiOA-ABI/nikita-noark5-core.svg?branch=master)](https://travis-ci.org/HiOA-ABI/nikita-noark5-core)
-<a href="https://scan.coverity.com/projects/hioa-abi-nikita-noark5-core">
-  <img alt="Coverity Scan Build Status"
-       src="https://scan.coverity.com/projects/12784/badge.svg"/>
-</a>
-This is an open source Noark 5v4 core.  This implement a REST based web API for storing av retrieving documents and metadata based on the Norwegian archive standard NOARK 5.
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7a6f03be877e45f48448af68554b9413)](https://www.codacy.com/app/tsodring/nikita-noark5-core?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HiOA-ABI/nikita-noark5-core&amp;utm_campaign=Badge_Grade)This is an open source Noark 5v4 core.  This implement a REST based web API for storing av retrieving documents and metadata based on the Norwegian archive standard NOARK 5.
 
 The core is very much under development and should be seen as a alpha product until releases closer to 0.6. The current version is 0.1 and has implemented the arkivstruktur interface of Noark 5v4.  
 
