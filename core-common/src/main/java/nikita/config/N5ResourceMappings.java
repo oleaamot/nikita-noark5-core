@@ -135,6 +135,7 @@ public final class N5ResourceMappings {
     public static final String CORRESPONDENCE_PART_TYPE = "korrespondanseparttype";
     public static final String CORRESPONDENCE_PART_NAME = "navn";
     public static final String POST_CODE = "postnummer";
+    public static final String NEW_POST_CODE = NEW + DASH + POST_CODE;
 
     public static final String SOCIAL_SECURITY_NUMBER = "foedselsnummer";
     public static final String D_NUMBER = "dnummer";

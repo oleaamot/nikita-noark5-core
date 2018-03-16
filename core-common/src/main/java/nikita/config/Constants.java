@@ -272,6 +272,10 @@ public final class Constants {
     public static final String TEMPLATE_COUNTRY_DESCRIPTION =
             "Norge";
 
+    public static final String TEMPLATE_POST_CODE_CODE = "0001";
+    public static final String TEMPLATE_POST_CODE_DESCRIPTION =
+            "OSLO";
+
     public static final String TEMPLATE_CLASSIFICATION_TYPE_CODE = "FH";
     public static final String TEMPLATE_CLASSIFICATION_TYPE_DESCRIPTION =
             "Funksjonsbasert, hierarkisk";
@@ -362,6 +366,7 @@ public final class Constants {
     public static final String REL_METADATA_CASE_STATUS = REL_METADATA + CASE_STATUS + SLASH;
 
     public static final String REL_METADATA_COUNTRY = REL_METADATA + COUNTRY + SLASH;
+    public static final String REL_METADATA_POST_CODE = REL_METADATA + POST_CODE + SLASH;
 
     public static final String REL_CASE_HANDLING_NEW_REGISTRY_ENTRY = NIKITA_CONFORMANCE_REL + NEW_REGISTRY_ENTRY + SLASH;
     public static final String REL_CASE_HANDLING_REGISTRY_ENTRY = REL_CASE_HANDLING + REGISTRY_ENTRY + SLASH;

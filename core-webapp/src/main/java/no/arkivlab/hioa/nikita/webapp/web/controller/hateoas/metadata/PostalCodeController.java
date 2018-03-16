@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 import static nikita.config.Constants.*;
-import static nikita.config.N5ResourceMappings.SYSTEM_ID;
+import static nikita.config.N5ResourceMappings.*;
 import static org.springframework.http.HttpHeaders.ETAG;
 
 /**
- * Created by tsodring on 14/03/18.
+ * Created by tsodring on 16/03/18.
  */
 
 @RestController
@@ -33,15 +33,15 @@ import static org.springframework.http.HttpHeaders.ETAG;
 @SuppressWarnings("unchecked")
 public class PostalCodeController {
 
-    private IPostalCodeService PostalCodeService;
+    private IPostalCodeService postalCodeService;
 
-    public PostalCodeController(IPostalCodeService PostalCodeService) {
-        this.PostalCodeService = PostalCodeService;
+    public PostalCodeController(IPostalCodeService postalCodeService) {
+        this.postalCodeService = postalCodeService;
     }
 
     // API - All POST Requests (CRUD - CREATE)
-    // Creates a new land
-    // POST [contextPath][api]/metadata/land/ny-land
+    // Creates a new postnummer
+    // POST [contextPath][api]/metadata/postnummer/ny-postnummer
     @ApiOperation(
             value = "Persists a new PostalCode object",
             notes = "Returns the newly created PostalCode object after it " +
@@ -76,15 +76,15 @@ public class PostalCodeController {
     @Timed
     @RequestMapping(
             method = RequestMethod.POST,
-            value = PostalCode + SLASH + NEW_PostalCode
+            value = POST_CODE + SLASH + NEW_POST_CODE
     )
     public ResponseEntity<MetadataHateoas> createPostalCode(
             HttpServletRequest request,
-            @RequestBody PostalCode PostalCode)
+            @RequestBody PostalCode postalCode)
             throws NikitaException {
 
         MetadataHateoas metadataHateoas =
-                PostalCodeService.createNewPostalCode(PostalCode);
+                postalCodeService.createNewPostalCode(postalCode);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .allow(CommonUtils.WebUtils.
@@ -94,8 +94,8 @@ public class PostalCodeController {
     }
 
     // API - All GET Requests (CRUD - READ)
-    // Retrieves all PostalCode
-    // GET [contextPath][api]/metadata/land/
+    // Retrieves all postalCode
+    // GET [contextPath][api]/metadata/postnummer/
     @ApiOperation(
             value = "Retrieves all PostalCode ",
             response = PostalCode.class)
@@ -120,20 +120,20 @@ public class PostalCodeController {
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,
-            value = PostalCode
+            value = POST_CODE
     )
     public ResponseEntity<MetadataHateoas> findAll(HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.
                         getMethodsForRequestOrThrow(request.getServletPath()))
-                .body(PostalCodeService.findAll());
+                .body(postalCodeService.findAll());
     }
 
-    // Retrieves a given PostalCode identified by a systemId
-    // GET [contextPath][api]/metadata/land/{systemId}/
+    // Retrieves a given postalCode identified by a systemId
+    // GET [contextPath][api]/metadata/postnummer/{systemId}/
     @ApiOperation(
-            value = "Gets PostalCode identified by its systemId",
-            notes = "Returns the requested PostalCode object",
+            value = "Gets postalCode identified by its systemId",
+            notes = "Returns the requested postalCode object",
             response = PostalCode.class)
     @ApiResponses(value = {
             @ApiResponse(
@@ -164,7 +164,7 @@ public class PostalCodeController {
     @Counted
     @Timed
     @RequestMapping(
-            value = PostalCode + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
+            value = POST_CODE + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
                     RIGHT_PARENTHESIS + SLASH,
             method = RequestMethod.GET
     )
@@ -172,7 +172,7 @@ public class PostalCodeController {
             @PathVariable("systemID") final String systemId,
             HttpServletRequest request) {
 
-        MetadataHateoas metadataHateoas = PostalCodeService.find(systemId);
+        MetadataHateoas metadataHateoas = postalCodeService.find(systemId);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.
@@ -181,9 +181,9 @@ public class PostalCodeController {
                 .body(metadataHateoas);
     }
 
-    // Create a suggested PostalCode(like a template) with default values
+    // Create a suggested postalCode(like a template) with default values
     // (nothing persisted)
-    // GET [contextPath][api]/metadata/ny-land
+    // GET [contextPath][api]/metadata/ny-postnummer
     @ApiOperation(
             value = "Creates a suggested PostalCode",
             response = PostalCode.class)
@@ -208,13 +208,13 @@ public class PostalCodeController {
     @Timed
     @RequestMapping(
             method = RequestMethod.GET,
-            value = NEW_PostalCode
+            value = NEW_POST_CODE
     )
     public ResponseEntity<MetadataHateoas>
     generateDefaultPostalCode(HttpServletRequest request) {
 
         MetadataHateoas metadataHateoas = new MetadataHateoas
-                (PostalCodeService.generateDefaultPostalCode());
+                (postalCodeService.generateDefaultPostalCode());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.
@@ -223,8 +223,8 @@ public class PostalCodeController {
     }
 
     // API - All PUT Requests (CRUD - UPDATE)
-    // Update a land
-    // PUT [contextPath][api]/metatdata/land/
+    // Update a postnummer
+    // PUT [contextPath][api]/metatdata/postnummer/
     @ApiOperation(
             value = "Updates a PostalCode object",
             notes = "Returns the newly updated PostalCode object after it " +
@@ -255,21 +255,21 @@ public class PostalCodeController {
     @Timed
     @RequestMapping(
             method = RequestMethod.PUT,
-            value = PostalCode + SLASH + PostalCode
+            value = POST_CODE + SLASH + POST_CODE
     )
     public ResponseEntity<MetadataHateoas> updatePostalCode(
             @ApiParam(name = "systemID",
                     value = "systemId of fonds to update.",
                     required = true)
             @PathVariable("systemID") String systemID,
-            @RequestBody PostalCode PostalCode,
+            @RequestBody PostalCode postalCode,
             HttpServletRequest request) {
 
-        MetadataHateoas metadataHateoas = PostalCodeService.handleUpdate
+        MetadataHateoas metadataHateoas = postalCodeService.handleUpdate
                 (systemID,
                         CommonUtils.Validation.parseETAG(
                                 request.getHeader(ETAG)),
-                        PostalCode);
+                        postalCode);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.

@@ -347,5 +347,22 @@ public class MetadataDetails extends APIDetails {
                         NEW_COUNTRY + SLASH,
                 true
         ));
+
+        // Add support for PostCode
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + POST_CODE,
+                REL_METADATA_POST_CODE,
+                true
+        ));
+
+        // Add support for new PostCode
+        aPIDetails.add(new APIDetail(
+                publicUrlPath + SLASH + HATEOAS_API_PATH + SLASH +
+                        NOARK_METADATA_PATH + SLASH + NEW_POST_CODE,
+                NIKITA_CONFORMANCE_REL + NOARK_METADATA_PATH + SLASH +
+                        NEW_POST_CODE + SLASH,
+                true
+        ));
     }
 }
