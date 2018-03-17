@@ -1,4 +1,4 @@
-package nikita.webapp.model.application;
+package nikita.webapp.application;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

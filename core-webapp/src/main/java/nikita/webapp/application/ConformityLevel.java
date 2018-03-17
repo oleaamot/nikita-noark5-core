@@ -1,4 +1,4 @@
-package nikita.webapp.model.application;
+package nikita.webapp.application;
 
 import javax.validation.constraints.NotNull;
 

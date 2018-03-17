@@ -1,4 +1,4 @@
-package nikita.webapp.model.application;
+package nikita.webapp.application;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nikita.webapp.util.serialisers.ApplicationDetailsSerializer;
