@@ -14,7 +14,7 @@ import nikita.common.model.noark5.v4.hateoas.FondsHateoas;
 import nikita.common.model.noark5.v4.hateoas.SeriesHateoas;
 import nikita.common.util.CommonUtils;
 import nikita.common.util.exceptions.NikitaException;
-import nikita.webapp.model.application.FondsStructureDetails;
+import nikita.webapp.application.FondsStructureDetails;
 import nikita.webapp.service.interfaces.IFondsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

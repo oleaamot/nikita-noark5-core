@@ -1,6 +1,6 @@
 package nikita.webapp.service.application;
 
-import nikita.webapp.model.application.*;
+import nikita.webapp.application.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

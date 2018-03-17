@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import nikita.webapp.model.application.ApplicationDetails;
-import nikita.webapp.model.application.ConformityLevel;
+import nikita.webapp.application.ApplicationDetails;
+import nikita.webapp.application.ConformityLevel;
 
 import java.io.IOException;
 import java.lang.reflect.Type;

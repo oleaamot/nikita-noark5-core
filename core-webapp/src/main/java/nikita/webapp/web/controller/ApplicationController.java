@@ -3,7 +3,7 @@ package nikita.webapp.web.controller;
 import com.codahale.metrics.annotation.Counted;
 import io.swagger.annotations.Api;
 import nikita.common.util.CommonUtils;
-import nikita.webapp.model.application.*;
+import nikita.webapp.application.*;
 import nikita.webapp.service.application.ApplicationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
