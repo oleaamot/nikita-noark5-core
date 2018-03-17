@@ -29,7 +29,7 @@ like syntax that can be used. But using Query means taking the database
 closer into the Parser requiring a CriteriaBuilder. It just seems messy! 
 
 We added a file called odata_samples.txt and a simple java application called
-TestODataApp under no.arkivlab.hioa.nikita.webapp.run. We also added our own 
+TestODataApp under nikita.webapp.run. We also added our own 
 walker currently called NikitaODataWalker. There are subclasses of this class
 that take care of the actual conversion from OData filter syntax to SQL/HQL 
 as well as Elasticsearch query JSON. 

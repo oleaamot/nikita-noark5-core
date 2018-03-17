@@ -2,33 +2,101 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>nikita-noark5</artifactId>
-        <groupId>no.arkivlab.hioa.nikita</groupId>
-        <version>0.1.0</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
 
-    <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
+
+    <groupId>nikita.webapp</groupId>
     <artifactId>core-webapp</artifactId>
+    <packaging>jar</packaging>
     <version>0.1.0</version>
 
+    <parent>
+        <groupId>nikita</groupId>
+        <artifactId>nikita-noark5</artifactId>
+        <version>0.1.0</version>
+        <relativePath/>
+    </parent>
+
     <properties>
+        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
     </properties>
 
     <dependencies>
 
-        <!-- Internal project dependencies -->
+        <!-- Start nikita.common dependencies -->
         <dependency>
-            <groupId>no.arkivlab.hioa.nikita</groupId>
-            <artifactId>core-common</artifactId>
-            <version>0.1.0</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
+        <!-- Used for CompareToBuilder etc -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
 
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-elasticsearch</artifactId>
+            <version>${hibernate-search.version}</version>
+        </dependency>
+
+        <!-- Hateoas dependencies -->
+        <dependency>
+            <groupId>org.springframework.hateoas</groupId>
+            <artifactId>spring-hateoas</artifactId>
+            <version>${spring-hateoas.version}</version>
+        </dependency>
+
+        <!-- Used for the @Audited annotation-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-envers</artifactId>
+        </dependency>
+
+        <!-- Used for the @JsonIgnore annotation-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <version>2.8.3</version>
+        </dependency>
+
+        <!-- Used for the @Email annotation Currently not used. -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
+        <!-- antlr dependency for parsing OData syntax -->
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>4.7.1</version>
+        </dependency>
+
+        <!-- End nikita.common dependencies -->
+
+        <!-- Start nikita.webapp dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -40,12 +108,7 @@
                       </exclusions>
                       -->
         </dependency>
-        <!--
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-jetty</artifactId>
-                </dependency>
-        -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
@@ -99,14 +162,6 @@
             <version>${mysql.version}</version>
         </dependency>
 
-        <!-- Used for things like ExceptionUtils -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
-        </dependency>
-
-
         <!-- Needed for @Inject -->
         <dependency>
             <groupId>javax.inject</groupId>
@@ -115,6 +170,17 @@
         </dependency>
 
         <!-- swagger dependency -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
@@ -221,6 +287,7 @@
             <version>${jjwt.version}</version>
         </dependency>
 
+        <!-- End nikita.webappdependencies -->
     </dependencies>
 
 
@@ -249,7 +316,7 @@
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>1.4.1.RELEASE</version>
                     <configuration>
-                        <mainClass>no.arkivlab.hioa.nikita.webapp.run.N5CoreApp</mainClass>
+                        <mainClass>nikita.N5CoreApp</mainClass>
                     </configuration>
                     <executions>
                         <execution>
@@ -266,41 +333,4 @@
         </pluginManagement>
 
     </build>
-
-
-<!--
-    <profiles>
-        <profile>
-            <id>integration</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>integration-test</phase>
-                                <goals>
-                                    <goal>test</goal>
-                                </goals>
-                                <configuration>
-                                    <excludes>
-                                        <exclude>none</exclude>
-                                    </excludes>
-                                    <includes>
-                                        <include>**/*IntegrationTest.java</include>
-                                    </includes>
-                                    <systemPropertyVariables>
-                                        <persistenceTarget>test</persistenceTarget>
-                                    </systemPropertyVariables>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
-    -->
 </project>

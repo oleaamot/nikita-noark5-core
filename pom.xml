@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>no.arkivlab.hioa.nikita</groupId>
+    <groupId>nikita</groupId>
     <artifactId>nikita-noark5</artifactId>
     <packaging>pom</packaging>
     <version>0.1.0</version>
@@ -51,54 +51,55 @@
         </developer>
     </developers>
 
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler-plugin.version}</version>
-                    <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                        <compilerArgument>-proc:none</compilerArgument>
-                    </configuration>
-                </plugin>
 
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>${maven-resources-plugin.version}</version>
-                </plugin>
+    <!--
+        <build>
+            <pluginManagement>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>${maven-compiler-plugin.version}</version>
+                        <configuration>
+                            <source>1.8</source>
+                            <target>1.8</target>
+                            <compilerArgument>-proc:none</compilerArgument>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>${maven-resources-plugin.version}</version>
+                    </plugin>
 
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>1.4.1.RELEASE</version>
-                    <configuration>
-                      <classifier>spring-boot</classifier>
-                        <mainClass>no.arkivlab.hioa.nikita.webapp.run.N5CoreApp</mainClass>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>repackage</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <version>1.4.1.RELEASE</version>
+                        <configuration>
+                          <classifier>spring-boot</classifier>
+                            <mainClass>nikita.webapp.run.N5CoreApp</mainClass>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>repackage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
 
-            </plugins>
+                </plugins>
 
 
-        </pluginManagement>
+            </pluginManagement>
 
-    </build>
-
+        </build>
+    -->
     <properties>
-
+        <java.version>1.8</java.version>
         <!-- The main class to start by executing java -jar -->
-        <start-class>no.arkivlab.hioa.nikita.webapp.run.N5CoreApp</start-class>
+        <start-class>nikita.webapp.run.N5CoreApp</start-class>
 
         <!-- non-dependencies -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -171,9 +172,8 @@
         <validation-api.version>1.1.0.Final</validation-api.version>
 
 
-
-        <springfox-swagger2.version>2.4.0</springfox-swagger2.version>
-        <springfox-swagger-ui.version>2.4.0</springfox-swagger-ui.version>
+        <springfox-swagger2.version>2.7.0</springfox-swagger2.version>
+        <springfox-swagger-ui.version>2.7.0</springfox-swagger-ui.version>
         <javax-inject.version>1</javax-inject.version>
 
         <!-- ops related -->
