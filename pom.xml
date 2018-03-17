@@ -10,7 +10,6 @@
     <version>0.1.0</version>
 
     <modules>
-        <module>core-common</module>
         <module>core-webapp</module>
     </modules>
 
