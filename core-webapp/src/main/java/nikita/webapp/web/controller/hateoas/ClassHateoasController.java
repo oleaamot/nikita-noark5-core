@@ -1,7 +1,6 @@
 package nikita.webapp.web.controller.hateoas;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -75,7 +74,7 @@ public class ClassHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + "classificationSystemSystemId" +
             RIGHT_PARENTHESIS + SLASH + NEW_SUB_CLASS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<ClassHateoas> createClassAssociatedWithClassificationSystem(
@@ -131,7 +130,7 @@ public class ClassHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<ClassHateoas> findAllClass(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -156,7 +155,7 @@ public class ClassHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
     public ResponseEntity<HateoasNoarkObject> deleteClassBySystemId(
@@ -203,7 +202,7 @@ public class ClassHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
             RIGHT_PARENTHESIS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<ClassHateoas> updateClass(

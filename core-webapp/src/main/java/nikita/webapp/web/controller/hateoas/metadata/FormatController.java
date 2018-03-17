@@ -1,7 +1,6 @@
 package nikita.webapp.web.controller.hateoas.metadata;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -80,7 +79,7 @@ public class FormatController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.POST,
             value = FORMAT + SLASH + NEW_FORMAT
@@ -128,7 +127,7 @@ public class FormatController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.GET,
             value = FORMAT
@@ -175,7 +174,7 @@ public class FormatController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             value = FORMAT + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
                     RIGHT_PARENTHESIS + SLASH,
@@ -219,7 +218,7 @@ public class FormatController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.GET,
             value = NEW_FORMAT
@@ -267,7 +266,7 @@ public class FormatController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.PUT,
             value = FORMAT + SLASH +

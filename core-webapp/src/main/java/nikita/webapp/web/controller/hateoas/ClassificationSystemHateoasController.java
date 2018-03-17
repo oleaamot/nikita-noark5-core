@@ -1,7 +1,6 @@
 package nikita.webapp.web.controller.hateoas;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -78,7 +77,7 @@ public class ClassificationSystemHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = NEW_CLASSIFICATION_SYSTEM,
             consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<ClassificationSystemHateoas> createClassificationSystemAssociatedWithFile(
@@ -113,7 +112,7 @@ public class ClassificationSystemHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = CLASSIFICATION_SYSTEM + SLASH + LEFT_PARENTHESIS +
             "classificationSystemSystemId" + RIGHT_PARENTHESIS + SLASH + NEW_RECORD,
             consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
@@ -172,7 +171,7 @@ public class ClassificationSystemHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = CLASSIFICATION_SYSTEM, method = RequestMethod.GET)
     public ResponseEntity<ClassificationSystemHateoas> findAllClassificationSystem(
             HttpServletRequest request, final HttpServletResponse response,
@@ -197,7 +196,7 @@ public class ClassificationSystemHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + CLASSIFICATION_SYSTEM + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
     public ResponseEntity<FondsStructureDetails> deleteClassificationSystemBySystemId(
@@ -231,7 +230,7 @@ public class ClassificationSystemHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.PUT, value = CLASSIFICATION_SYSTEM + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
             RIGHT_PARENTHESIS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<ClassificationSystemHateoas> updateClassificationSystem(

@@ -24,7 +24,7 @@ spring:
         hbm2ddl:
           import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
 #          import_files: db/h2/import.sql,db/noark5_metadata_values.sql,db/postcode.sql,db/countrycode.sql
-#          import_files: db/h2/import.sql
+          import_files: db/h2/import.sql
         show_sql: true
         hbm2ddl.auto: create
     database: h2
@@ -71,7 +71,7 @@ nikita-noark5-core:
             prefix: nikitaNoark5Core
         logs: # report metrics in the logs
             enabled: false
-            reportFrequency: 60 # in seconds
+            reportFrequency: 600 # in seconds
     logging:
         level:
             ROOT: DEBUG

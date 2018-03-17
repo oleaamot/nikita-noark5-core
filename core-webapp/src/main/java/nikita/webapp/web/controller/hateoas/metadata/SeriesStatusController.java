@@ -1,7 +1,6 @@
 package no.arkivdellab.hioa.nikita.webapp.web.controller.hateoas.metadata;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -54,7 +53,7 @@ public class SeriesStatusController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
             @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = FONDS_STATUS + SLASH + NEW_FONDS_STATUS)
     public ResponseEntity<MetadataHateoas> createSeriesStatus(
             HttpServletRequest request,
@@ -81,7 +80,7 @@ public class SeriesStatusController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET, value = FONDS_STATUS)
     public ResponseEntity<MetadataHateoas> findAll(HttpServletRequest request) {
         return null;
@@ -111,7 +110,7 @@ public class SeriesStatusController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
             @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
-    @Timed
+
     @RequestMapping(value = FONDS_STATUS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH, method = RequestMethod.GET)
     public ResponseEntity<MetadataHateoas> findBySystemId(@PathVariable("systemID") final String systemId,
                                                           HttpServletRequest request) {
@@ -135,7 +134,7 @@ public class SeriesStatusController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET, value = NEW_FONDS_STATUS)
     public ResponseEntity<MetadataHateoas> getSeriesStatusTemplate(HttpServletRequest request) {
         SeriesStatus seriesStatus = new SeriesStatus();
@@ -161,7 +160,7 @@ public class SeriesStatusController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.PUT, value = FONDS_STATUS + SLASH + FONDS_STATUS)
     public ResponseEntity<MetadataHateoas> updateSeriesStatus(@RequestBody SeriesStatus seriesStatus,
                                                               HttpServletRequest request)

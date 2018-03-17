@@ -39,7 +39,7 @@ public class RightsController extends NoarkController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
             @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = NEW_ADMINISTRATIVE_UNIT)
     public ResponseEntity<UserHateoas> createUser(
             HttpServletRequest request,
@@ -66,7 +66,7 @@ public class RightsController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET, value = ADMINISTRATIVE_UNIT)
     public ResponseEntity<UserHateoas> findAll(HttpServletRequest request) {
         UserHateoas adminHateoas = new UserHateoas(
@@ -94,7 +94,7 @@ public class RightsController extends NoarkController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
             @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
-    @Timed
+
     @RequestMapping(value = ADMINISTRATIVE_UNIT + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH,
             method = RequestMethod.GET)
     public ResponseEntity<UserHateoas> findBySystemId(@PathVariable("systemID") final String systemId,
@@ -119,7 +119,7 @@ public class RightsController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET, value = NEW_ADMINISTRATIVE_UNIT)
     public ResponseEntity<UserHateoas> getUserTemplate(HttpServletRequest request) {
         User administrativeUnit = new User();
@@ -146,7 +146,7 @@ public class RightsController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.PUT, value = ADMINISTRATIVE_UNIT + SLASH + LEFT_PARENTHESIS +
             SYSTEM_ID + RIGHT_PARENTHESIS)
     public ResponseEntity<UserHateoas> updateUser(HttpServletRequest request,

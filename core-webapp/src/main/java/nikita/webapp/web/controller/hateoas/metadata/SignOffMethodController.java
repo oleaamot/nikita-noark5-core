@@ -1,7 +1,6 @@
 package nikita.webapp.web.controller.hateoas.metadata;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -75,7 +74,7 @@ public class SignOffMethodController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.POST,
             value = SIGN_OFF_METHOD + SLASH + NEW_SIGN_OFF_METHOD
@@ -120,7 +119,7 @@ public class SignOffMethodController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.GET,
             value = SIGN_OFF_METHOD
@@ -165,7 +164,7 @@ public class SignOffMethodController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             value = SIGN_OFF_METHOD + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
                     RIGHT_PARENTHESIS + SLASH,
@@ -209,7 +208,7 @@ public class SignOffMethodController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.GET,
             value = NEW_SIGN_OFF_METHOD
@@ -257,7 +256,7 @@ public class SignOffMethodController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.PUT,
             value = SIGN_OFF_METHOD + SLASH + SIGN_OFF_METHOD

@@ -1,7 +1,6 @@
 package nikita.webapp.web.controller.hateoas;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -80,7 +79,7 @@ public class DocumentObjectHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET,
             produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
     public ResponseEntity<DocumentObjectHateoas> findOneDocumentObjectBySystemId(
@@ -116,7 +115,7 @@ public class DocumentObjectHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET, produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
     public ResponseEntity<DocumentObjectHateoas> findAllDocumentObject(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -161,7 +160,7 @@ public class DocumentObjectHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + REFERENCE_FILE,
             method = RequestMethod.GET)
     public void handleFileDownload(
@@ -220,7 +219,7 @@ public class DocumentObjectHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + REFERENCE_FILE,
             method = RequestMethod.POST, headers = "Accept=*/*", produces = {NOARK5_V4_CONTENT_TYPE_JSON, NOARK5_V4_CONTENT_TYPE_JSON_XML})
     public ResponseEntity<DocumentObjectHateoas> handleFileUpload(
@@ -301,7 +300,7 @@ public class DocumentObjectHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
     public ResponseEntity<HateoasNoarkObject> deleteDocumentObjectBySystemId(
@@ -348,7 +347,7 @@ public class DocumentObjectHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
             RIGHT_PARENTHESIS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<DocumentObjectHateoas> updateDocumentObject(

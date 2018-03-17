@@ -1,7 +1,6 @@
 package nikita.webapp.web.controller.hateoas.casehandling;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -91,7 +90,7 @@ public class CaseFileHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_REGISTRY_ENTRY, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<RegistryEntryHateoas> createRegistryEntryAssociatedWithFile(
@@ -126,7 +125,7 @@ public class CaseFileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             NEW_REGISTRY_ENTRY, method = RequestMethod.GET)
     public ResponseEntity<RegistryEntryHateoas> createDefaultRegistryEntry(
@@ -164,7 +163,7 @@ public class CaseFileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<CaseFileHateoas> findOneCaseFilebySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -195,7 +194,7 @@ public class CaseFileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + REGISTRY_ENTRY,
             method = RequestMethod.GET)
     public ResponseEntity<RegistryEntryHateoas> findRegistryEntryAssociatedWithCaseFileBySystemId(
@@ -229,7 +228,7 @@ public class CaseFileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<CaseFileHateoas> findAllCaseFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -255,7 +254,7 @@ public class CaseFileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
     public ResponseEntity<HateoasNoarkObject> deleteCaseFileBySystemId(
@@ -302,7 +301,7 @@ public class CaseFileHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.PUT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<CaseFileHateoas> updateCaseFile(

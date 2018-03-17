@@ -1,7 +1,6 @@
 package nikita.webapp.web.controller.hateoas;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -85,7 +84,7 @@ public class RecordHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_DOCUMENT_DESCRIPTION, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<DocumentDescriptionHateoas>
@@ -130,7 +129,7 @@ public class RecordHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_DOCUMENT_OBJECT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> createDocumentObjectAssociatedWithRecord(
@@ -176,7 +175,7 @@ public class RecordHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_REFERENCE_SERIES, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addReferenceSeriesToRecord(
@@ -215,7 +214,7 @@ public class RecordHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_CLASSIFIED, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addNewClassifiedToRecord(
@@ -253,7 +252,7 @@ public class RecordHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_DISPOSAL, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addNewDisposalToRecord(
@@ -292,7 +291,7 @@ public class RecordHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_SCREENING, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addNewScreeningToRecord(
@@ -331,7 +330,7 @@ public class RecordHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_DISPOSAL_UNDERTAKEN, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addNewDisposalUndertakenToRecord(
@@ -370,7 +369,7 @@ public class RecordHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_DELETION, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addNewDeletionToRecord(
@@ -403,7 +402,7 @@ public class RecordHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<RecordHateoas> findOneRecordbySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -435,7 +434,7 @@ public class RecordHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<RecordHateoas> findAllRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -461,7 +460,7 @@ public class RecordHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + REFERENCE_SERIES,
             method = RequestMethod.GET)
     public ResponseEntity<String> findSecondarySeriesAssociatedWithRecord(
@@ -482,7 +481,7 @@ public class RecordHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             NEW_DOCUMENT_DESCRIPTION, method = RequestMethod.GET)
     public ResponseEntity<DocumentDescriptionHateoas> createDefaultDocumentDescription(
@@ -511,7 +510,7 @@ public class RecordHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             NEW_DOCUMENT_OBJECT, method = RequestMethod.GET)
     public ResponseEntity<DocumentObjectHateoas> createDefaultDocumentObject(
@@ -541,7 +540,7 @@ public class RecordHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             DOCUMENT_DESCRIPTION, method = RequestMethod.GET)
     public ResponseEntity<DocumentDescriptionHateoas> findAllDocumentDescriptionAssociatedWithRecord(
@@ -571,7 +570,7 @@ public class RecordHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteRecordBySystemId(
@@ -624,7 +623,7 @@ public class RecordHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.PUT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<RecordHateoas> updateRecord(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,

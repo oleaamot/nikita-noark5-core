@@ -1,7 +1,6 @@
 package nikita.webapp.web.controller.hateoas.casehandling;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -66,7 +65,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = CORRESPONDENCE_PART_PERSON + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.GET)
     public ResponseEntity<CorrespondencePartPersonHateoas> findOneCorrespondencePartPersonBySystemId(
@@ -97,7 +96,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = CORRESPONDENCE_PART_INTERNAL + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.GET)
     public ResponseEntity<CorrespondencePartInternalHateoas> findOneCorrespondencePartInternalBySystemId(
@@ -128,7 +127,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = CORRESPONDENCE_PART_UNIT + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.GET)
     public ResponseEntity<CorrespondencePartUnitHateoas> findOneCorrespondencePartUnitBySystemId(
@@ -163,7 +162,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = CORRESPONDENCE_PART_UNIT + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.PUT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<CorrespondencePartUnitHateoas> updateCorrespondencePartUnit(
@@ -207,7 +206,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = CORRESPONDENCE_PART_PERSON + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.PUT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<CorrespondencePartPersonHateoas> updateCorrespondencePartPerson(
@@ -251,7 +250,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = CORRESPONDENCE_PART_INTERNAL + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.PUT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<CorrespondencePartInternalHateoas> updateCorrespondencePartInternal(
@@ -288,7 +287,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = CORRESPONDENCE_PART_UNIT + SLASH + LEFT_PARENTHESIS + CODE + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteCorrespondencePartUnit(
@@ -310,7 +309,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = CORRESPONDENCE_PART_PERSON + SLASH + LEFT_PARENTHESIS + CODE + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteCorrespondencePartPerson(
@@ -332,7 +331,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = CORRESPONDENCE_PART_INTERNAL + SLASH + LEFT_PARENTHESIS + CODE + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteCorrespondencePartInternal(

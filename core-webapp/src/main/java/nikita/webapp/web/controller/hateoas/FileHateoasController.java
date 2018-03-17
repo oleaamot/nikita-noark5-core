@@ -1,7 +1,6 @@
 package nikita.webapp.web.controller.hateoas;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -87,7 +86,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<RecordHateoas> createRecordAssociatedWithFile(
@@ -127,7 +126,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_BASIC_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<BasicRecordHateoas> createBasicRecordAssociatedWithFile(
@@ -167,7 +166,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_CROSS_REFERENCE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> createCrossReferenceAssociatedWithFile(
@@ -207,7 +206,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_SUB_FILE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> createSubFileAssociatedWithFile(
@@ -243,7 +242,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_COMMENT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addCommentToFile(
@@ -280,7 +279,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_CLASS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addClassToFile(
@@ -318,7 +317,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_REFERENCE_SERIES, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addReferenceSeriesToFile(
@@ -358,7 +357,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_SECONDARY_CLASSIFICATION, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> addReferenceToSecondaryClassToFile(
@@ -388,7 +387,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + REGISTRATION,
             method = RequestMethod.GET)
     public ResponseEntity<RecordHateoas> findAllRecordsAssociatedWithFile(
@@ -422,7 +421,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + BASIC_RECORD,
             method = RequestMethod.GET)
     public ResponseEntity<String> findAllBasicRecordsAssociatedWithFile(
@@ -445,7 +444,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SUB_FILE,
             method = RequestMethod.GET)
     public ResponseEntity<String> findAllSubFileAssociatedWithFile(
@@ -466,7 +465,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             NEW_RECORD, method = RequestMethod.GET)
     public ResponseEntity<RecordHateoas> createDefaultRecord(
@@ -492,7 +491,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             NEW_BASIC_RECORD, method = RequestMethod.GET)
     public ResponseEntity<BasicRecordHateoas> createDefaultBasicRecord(
@@ -518,7 +517,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<FileHateoas> findOneFileBySystemId(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -550,7 +549,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<FileHateoas> findAllFiles(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -577,7 +576,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + COMMENT,
             method = RequestMethod.GET)
     public ResponseEntity<String> findAllCommentsAssociatedWithFile(
@@ -601,7 +600,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + CROSS_REFERENCE,
             method = RequestMethod.GET)
     public ResponseEntity<String> findAllCrossReferenceAssociatedWithFile(
@@ -624,7 +623,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + CLASS,
             method = RequestMethod.GET)
     public ResponseEntity<String> findClassAssociatedWithFile(
@@ -647,7 +646,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SERIES,
             method = RequestMethod.GET)
     public ResponseEntity<String> findSeriesAssociatedWithFile(
@@ -673,7 +672,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SECONDARY_CLASSIFICATION,
             method = RequestMethod.GET)
     public ResponseEntity<String> findSecondaryClassAssociatedWithFile(
@@ -699,7 +698,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + REFERENCE_SERIES,
             method = RequestMethod.GET)
     public ResponseEntity<String> findSecondarySeriesAssociatedWithFile(
@@ -728,7 +727,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.PUT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<FileHateoas> updateFile(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -768,7 +767,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + FILE_END)
     public ResponseEntity<String> finaliseFile(
@@ -806,7 +805,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + FILE_EXPAND_TO_CASE_FILE)
     public ResponseEntity<String> expandFileToCaseFile(
@@ -846,7 +845,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + FILE_EXPAND_TO_MEETING_FILE)
     public ResponseEntity<String> expandFileToMeetingFile(
@@ -875,7 +874,7 @@ public class FileHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
     public ResponseEntity<HateoasNoarkObject> deleteFileBySystemId(

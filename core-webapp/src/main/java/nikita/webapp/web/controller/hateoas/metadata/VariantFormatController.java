@@ -1,7 +1,6 @@
 package nikita.webapp.web.controller.hateoas.metadata;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -74,7 +73,7 @@ public class VariantFormatController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.POST,
             value = VARIANT_FORMAT + SLASH + NEW_VARIANT_FORMAT
@@ -118,7 +117,7 @@ public class VariantFormatController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.GET,
             value = VARIANT_FORMAT
@@ -163,7 +162,7 @@ public class VariantFormatController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             value = VARIANT_FORMAT + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
                     RIGHT_PARENTHESIS + SLASH,
@@ -206,7 +205,7 @@ public class VariantFormatController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.GET,
             value = NEW_VARIANT_FORMAT
@@ -253,7 +252,7 @@ public class VariantFormatController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.PUT,
             value = VARIANT_FORMAT + SLASH + VARIANT_FORMAT

@@ -1,7 +1,6 @@
 package nikita.webapp.web.controller.hateoas.metadata;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -56,7 +55,7 @@ public class DocumentMediumController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
             @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = DOCUMENT_MEDIUM + SLASH + NEW_DOCUMENT_MEDIUM)
     public ResponseEntity<MetadataHateoas> createDocumentMedium(
             HttpServletRequest request,
@@ -83,7 +82,7 @@ public class DocumentMediumController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET, value = DOCUMENT_MEDIUM)
     public ResponseEntity<MetadataHateoas> findAll(HttpServletRequest request) {
         //ArrayList <DocumentMedium> documentMediumList = (ArrayList<DocumentMedium>) documentMediumService.findAll2();
@@ -113,7 +112,7 @@ public class DocumentMediumController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
             @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
-    @Timed
+
     @RequestMapping(value = DOCUMENT_MEDIUM + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH, method = RequestMethod.GET)
     public ResponseEntity<MetadataHateoas> findBySystemId(@PathVariable("systemID") final String systemId,
                                                           HttpServletRequest request) {
@@ -137,7 +136,7 @@ public class DocumentMediumController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET, value = NEW_DOCUMENT_MEDIUM)
     public ResponseEntity<MetadataHateoas> getDocumentMediumTemplate(HttpServletRequest request) {
         DocumentMedium documentMedium = new DocumentMedium();
@@ -163,7 +162,7 @@ public class DocumentMediumController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.PUT, value = DOCUMENT_MEDIUM + SLASH + DOCUMENT_MEDIUM)
     public ResponseEntity<MetadataHateoas> updateDocumentMedium(@RequestBody DocumentMedium documentMedium,
                                                                 HttpServletRequest request)

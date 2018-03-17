@@ -1,7 +1,6 @@
 package nikita.webapp.web.controller.hateoas.metadata;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -57,7 +56,7 @@ public class CorrespondencePartTypeController extends NoarkController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
             @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = CORRESPONDENCE_PART_TYPE + SLASH + NEW_CORRESPONDENCE_PART_TYPE)
     public ResponseEntity<MetadataHateoas> createCorrespondencePartType(
             HttpServletRequest request,
@@ -83,7 +82,7 @@ public class CorrespondencePartTypeController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET, value = CORRESPONDENCE_PART_TYPE)
     public ResponseEntity<MetadataHateoas> findAll(HttpServletRequest request) {
         MetadataHateoas metadataHateoas = new MetadataHateoas(
@@ -112,7 +111,7 @@ public class CorrespondencePartTypeController extends NoarkController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
             @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
-    @Timed
+
     @RequestMapping(value = CORRESPONDENCE_PART_TYPE + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.GET)
     public ResponseEntity<MetadataHateoas> findBySystemId(@PathVariable("systemID") final String systemId,
@@ -137,7 +136,7 @@ public class CorrespondencePartTypeController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET, value = NEW_CORRESPONDENCE_PART_TYPE)
     public ResponseEntity<MetadataHateoas> getCorrespondencePartTypeTemplate(HttpServletRequest request) {
         CorrespondencePartType correspondencePartType = new CorrespondencePartType();
@@ -163,7 +162,7 @@ public class CorrespondencePartTypeController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.PUT, value = CORRESPONDENCE_PART_TYPE + UNIT + SLASH + LEFT_PARENTHESIS +
             SYSTEM_ID + RIGHT_PARENTHESIS)
     public ResponseEntity<MetadataHateoas> updateCorrespondencePartTypeUnit(
@@ -188,7 +187,7 @@ public class CorrespondencePartTypeController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + CODE + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
     public ResponseEntity<String> deletecorrespondencePartTypeByCode(

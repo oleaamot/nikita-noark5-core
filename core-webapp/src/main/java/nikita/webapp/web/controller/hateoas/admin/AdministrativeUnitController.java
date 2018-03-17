@@ -1,7 +1,6 @@
 package nikita.webapp.web.controller.hateoas.admin;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -59,7 +58,7 @@ public class AdministrativeUnitController extends NoarkController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
             @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = NEW_ADMINISTRATIVE_UNIT)
     public ResponseEntity<AdministrativeUnitHateoas> createAdministrativeUnit(
             HttpServletRequest request,
@@ -86,7 +85,7 @@ public class AdministrativeUnitController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET, value = ADMINISTRATIVE_UNIT)
     public ResponseEntity<AdministrativeUnitHateoas> findAll(HttpServletRequest request) {
         AdministrativeUnitHateoas adminHateoas = new AdministrativeUnitHateoas(
@@ -114,7 +113,7 @@ public class AdministrativeUnitController extends NoarkController {
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR),
             @ApiResponse(code = 501, message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
-    @Timed
+
     @RequestMapping(value = ADMINISTRATIVE_UNIT + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH,
             method = RequestMethod.GET)
     public ResponseEntity<AdministrativeUnitHateoas> findBySystemId(@PathVariable("systemID") final String systemId,
@@ -139,7 +138,7 @@ public class AdministrativeUnitController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET, value = NEW_ADMINISTRATIVE_UNIT)
     public ResponseEntity<AdministrativeUnitHateoas> getAdministrativeUnitTemplate(HttpServletRequest request) {
         AdministrativeUnit administrativeUnit = new AdministrativeUnit();
@@ -166,7 +165,7 @@ public class AdministrativeUnitController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.PUT, value = ADMINISTRATIVE_UNIT + SLASH + LEFT_PARENTHESIS +
             SYSTEM_ID + RIGHT_PARENTHESIS)
     public ResponseEntity<AdministrativeUnitHateoas> updateAdministrativeUnit(HttpServletRequest request,

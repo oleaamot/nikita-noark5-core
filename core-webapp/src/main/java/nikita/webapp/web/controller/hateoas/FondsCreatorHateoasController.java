@@ -1,7 +1,6 @@
 package nikita.webapp.web.controller.hateoas;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -73,7 +72,7 @@ public class FondsCreatorHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = {RequestMethod.POST}, value = NEW_FONDS_CREATOR, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<FondsCreatorHateoas> createFondsCreator(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -107,7 +106,7 @@ public class FondsCreatorHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = FONDS_CREATOR + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
             RIGHT_PARENTHESIS + SLASH + NEW_FONDS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<FondsHateoas> createFondsAssociatedWithFondsCreator(
@@ -141,7 +140,7 @@ public class FondsCreatorHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = FONDS_CREATOR + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.GET)
     public ResponseEntity<FondsCreatorHateoas> findOne(HttpServletRequest request,
@@ -176,7 +175,7 @@ public class FondsCreatorHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET, value = FONDS_CREATOR)
     public ResponseEntity<FondsCreatorHateoas> findAllFondsCreator(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
@@ -203,7 +202,7 @@ public class FondsCreatorHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = FONDS_CREATOR + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.PUT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<FondsCreatorHateoas> updateFondsCreator(HttpServletRequest request,
@@ -239,7 +238,7 @@ public class FondsCreatorHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET, value = {NEW_FONDS_CREATOR, FONDS + SLASH + LEFT_PARENTHESIS +
             SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_FONDS_CREATOR})
     public ResponseEntity<FondsCreatorHateoas> getFondsCreatorTemplate(
@@ -266,7 +265,7 @@ public class FondsCreatorHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + FONDS_CREATOR + SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteSeriesBySystemId(

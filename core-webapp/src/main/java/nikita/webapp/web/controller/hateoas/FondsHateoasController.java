@@ -1,7 +1,6 @@
 package nikita.webapp.web.controller.hateoas;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -88,7 +87,7 @@ public class FondsHateoasController extends NoarkController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.POST,
             value = NEW_FONDS,
@@ -137,7 +136,7 @@ public class FondsHateoasController extends NoarkController {
             @ApiResponse(code = 501,
                     message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.POST,
             value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
@@ -205,7 +204,7 @@ public class FondsHateoasController extends NoarkController {
                     code = 501,
                     message = API_MESSAGE_NOT_IMPLEMENTED)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.POST,
             value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
@@ -273,7 +272,7 @@ public class FondsHateoasController extends NoarkController {
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)
     })
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.POST,
             value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
@@ -323,7 +322,7 @@ public class FondsHateoasController extends NoarkController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.GET,
             value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
@@ -364,7 +363,7 @@ public class FondsHateoasController extends NoarkController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.GET,
             value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
@@ -402,7 +401,7 @@ public class FondsHateoasController extends NoarkController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.GET,
             value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
@@ -446,7 +445,7 @@ public class FondsHateoasController extends NoarkController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.GET,
             value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
@@ -491,7 +490,7 @@ public class FondsHateoasController extends NoarkController {
                     message = API_MESSAGE_NOT_IMPLEMENTED)
     })
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.GET,
             value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
@@ -536,7 +535,7 @@ public class FondsHateoasController extends NoarkController {
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)
     })
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET, value = FONDS)
     public ResponseEntity<FondsHateoas> findAllFonds(
             HttpServletRequest request,
@@ -575,7 +574,7 @@ public class FondsHateoasController extends NoarkController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.GET,
             value = FONDS_CREATOR + SLASH + LEFT_PARENTHESIS +
@@ -617,7 +616,7 @@ public class FondsHateoasController extends NoarkController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.GET,
             value = NEW_FONDS
@@ -665,7 +664,7 @@ public class FondsHateoasController extends NoarkController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.PUT,
             value = FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
@@ -715,7 +714,7 @@ public class FondsHateoasController extends NoarkController {
                     code = 500,
                     message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(
             method = RequestMethod.DELETE,
             value = SLASH + FONDS + SLASH + LEFT_PARENTHESIS + SYSTEM_ID +

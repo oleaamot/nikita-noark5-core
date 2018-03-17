@@ -1,7 +1,6 @@
 package nikita.webapp.web.controller.hateoas;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import nikita.common.model.noark5.v4.*;
 import nikita.common.model.noark5.v4.casehandling.CaseFile;
@@ -83,7 +82,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_FILE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<FileHateoas> createFileAssociatedWithSeries(
@@ -124,7 +123,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH
             + NEW_CASE_FILE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<CaseFileHateoas> createCaseFileAssociatedWithSeries(
@@ -164,7 +163,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_RECORD, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> createRecordAssociatedWithSeries(
@@ -206,7 +205,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
             RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_SUCCESSOR, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> associateSeriesWithSeriesPrecursor(
@@ -249,7 +248,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
             RIGHT_PARENTHESIS + SLASH + SERIES_ASSOCIATE_AS_PRECURSOR, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> associateSeriesWithSeriesSuccessor(
@@ -290,7 +289,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
             RIGHT_PARENTHESIS + SLASH + NEW_CLASSIFICATION_SYSTEM, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> associateSeriesWithClassificationSystem(
@@ -331,7 +330,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.PUT, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID +
             RIGHT_PARENTHESIS, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<SeriesHateoas> updateSeries(
@@ -365,7 +364,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.GET)
     public ResponseEntity<SeriesHateoas> findOneSeriesbySystemId(
@@ -412,7 +411,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_FILE,
             method = RequestMethod.GET)
     public ResponseEntity<FileHateoas> createDefaultFile(
@@ -437,7 +436,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_CASE_FILE,
             method = RequestMethod.GET)
     public ResponseEntity<CaseFileHateoas> createDefaultCaseFile(
@@ -463,7 +462,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SERIES_PRECURSOR,
             method = RequestMethod.GET)
     public ResponseEntity<String> findPrecursorToSeriesBySystemId(
@@ -495,7 +494,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + SERIES_SUCCESSOR,
             method = RequestMethod.GET)
     public ResponseEntity<String> findSuccessorToSeriesBySystemId(
@@ -527,7 +526,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + FONDS,
             method = RequestMethod.GET)
     public ResponseEntity<String> findFondsAssociatedWithSeriesBySystemId(
@@ -561,7 +560,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + CLASSIFICATION_SYSTEM
             , method = RequestMethod.GET)
     public ResponseEntity<String> findClassificationSystemAssociatedWithSeriesBySystemId(
@@ -599,7 +598,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<SeriesHateoas> findAllSeries(
             HttpServletRequest request,
@@ -630,7 +629,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + REGISTRATION,
             method = RequestMethod.GET)
     public ResponseEntity<RecordHateoas> findAllRecordAssociatedWithSeries(
@@ -664,7 +663,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + FILE,
             method = RequestMethod.GET)
     public ResponseEntity<FileHateoas> findAllFileAssociatedWithSeries(
@@ -703,7 +702,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + CASE_FILE,
             method = RequestMethod.GET)
     public ResponseEntity<CaseFileHateoas> findAllCaseFileAssociatedWithCaseFile(
@@ -735,7 +734,7 @@ public class SeriesHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
     public ResponseEntity<FondsHateoas> deleteSeriesBySystemId(

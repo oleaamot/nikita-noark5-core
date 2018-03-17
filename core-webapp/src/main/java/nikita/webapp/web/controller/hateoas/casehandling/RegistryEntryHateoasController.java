@@ -1,7 +1,6 @@
 package nikita.webapp.web.controller.hateoas.casehandling;
 
 import com.codahale.metrics.annotation.Counted;
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -85,7 +84,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_CORRESPONDENCE_PART_PERSON, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<CorrespondencePartPersonHateoas> createCorrespondencePartPersonAssociatedWithRecord(
@@ -129,7 +128,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_CORRESPONDENCE_PART_INTERNAL, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<CorrespondencePartInternalHateoas> createCorrespondencePartInternalAssociatedWithRecord(
@@ -173,7 +172,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_CORRESPONDENCE_PART_UNIT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<CorrespondencePartUnitHateoas> createCorrespondencePartUnitAssociatedWithRecord(
@@ -218,7 +217,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_PRECEDENCE, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<PrecedenceHateoas> createPrecedenceAssociatedWithRecord(
@@ -263,7 +262,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS +
             SLASH + NEW_DOCUMENT_DESCRIPTION, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<SignOffHateoas>
@@ -310,7 +309,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.POST, value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS
             + SLASH + NEW_DOCUMENT_OBJECT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<String> createDocumentObjectAssociatedWithRecord(
@@ -350,7 +349,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             CORRESPONDENCE_PART_PERSON, method = RequestMethod.GET)
     public ResponseEntity<CorrespondencePartPersonHateoas> findAllCorrespondencePartPersonAssociatedWithRecord(
@@ -382,7 +381,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             CORRESPONDENCE_PART_UNIT, method = RequestMethod.GET)
     public ResponseEntity<CorrespondencePartUnitHateoas> findAllCorrespondencePartUnitAssociatedWithRecord(
@@ -414,7 +413,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             CORRESPONDENCE_PART_INTERNAL, method = RequestMethod.GET)
     public ResponseEntity<CorrespondencePartInternalHateoas> findAllCorrespondencePartInternalAssociatedWithRecord(
@@ -447,7 +446,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET, value = {SLASH + LEFT_PARENTHESIS +
             SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_CORRESPONDENCE_PART_PERSON})
     public ResponseEntity<CorrespondencePartPersonHateoas> getCorrespondencePartPersonTemplate(
@@ -514,7 +513,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET, value = {SLASH + LEFT_PARENTHESIS +
             SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_CORRESPONDENCE_PART_UNIT})
     public ResponseEntity<CorrespondencePartUnitHateoas> getCorrespondencePartUnitTemplate(
@@ -580,7 +579,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET, value = {SLASH + LEFT_PARENTHESIS +
             SYSTEM_ID + RIGHT_PARENTHESIS + SLASH + NEW_CORRESPONDENCE_PART_INTERNAL})
     public ResponseEntity<String> getCorrespondencePartInternalTemplate(
@@ -616,7 +615,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             SIGN_OFF, method = RequestMethod.GET)
     public ResponseEntity<String> findAllSignOffAssociatedWithRecord(
@@ -650,7 +649,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             PRECEDENCE, method = RequestMethod.GET)
     public ResponseEntity<String> findAllPrecedenceAssociatedWithRecord(
@@ -684,7 +683,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS + SLASH +
             DOCUMENT_FLOW, method = RequestMethod.GET)
     public ResponseEntity<String> findAllDocumentFlowAssociatedWithRecord(
@@ -717,7 +716,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.GET)
     public ResponseEntity<RegistryEntryHateoas> findOneRegistryEntrybySystemId(
             HttpServletRequest request,
@@ -751,7 +750,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<RegistryEntryHateoas> findAllRegistryEntry(
             HttpServletRequest request,
@@ -775,7 +774,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 403, message = API_MESSAGE_UNAUTHORISED_FOR_USER),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS,
             method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteRecordBySystemId(HttpServletRequest request,
@@ -808,7 +807,7 @@ public class RegistryEntryHateoasController extends NoarkController {
             @ApiResponse(code = 409, message = API_MESSAGE_CONFLICT),
             @ApiResponse(code = 500, message = API_MESSAGE_INTERNAL_SERVER_ERROR)})
     @Counted
-    @Timed
+
     @RequestMapping(value = SLASH + LEFT_PARENTHESIS + SYSTEM_ID + RIGHT_PARENTHESIS, method = RequestMethod.PUT, consumes = {NOARK5_V4_CONTENT_TYPE_JSON})
     public ResponseEntity<RegistryEntryHateoas> updateRegistryEntry(
             final UriComponentsBuilder uriBuilder, HttpServletRequest request, final HttpServletResponse response,
