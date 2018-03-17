@@ -294,23 +294,43 @@
     <build>
         <pluginManagement>
             <plugins>
-<!--                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler-plugin.version}</version>
-                    <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                        <compilerArgument>-proc:none</compilerArgument>
-                    </configuration>
-                </plugin>
-
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>${maven-resources-plugin.version}</version>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.13</version>
+                    <executions>
+                        <execution>
+                            <id>integration-test</id>
+                            <goals>
+                                <goal>integration-test</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>verify</id>
+                            <goals>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
--->
+
+                <!--                <plugin>
+                                    <groupId>org.apache.maven.plugins</groupId>
+                                    <artifactId>maven-compiler-plugin</artifactId>
+                                    <version>${maven-compiler-plugin.version}</version>
+                                    <configuration>
+                                        <source>1.8</source>
+                                        <target>1.8</target>
+                                        <compilerArgument>-proc:none</compilerArgument>
+                                    </configuration>
+                                </plugin>
+
+                                <plugin>
+                                    <groupId>org.apache.maven.plugins</groupId>
+                                    <artifactId>maven-resources-plugin</artifactId>
+                                    <version>${maven-resources-plugin.version}</version>
+                                </plugin>
+                -->
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>

@@ -14,6 +14,7 @@ public final class Constants {
     // Spring profile for development and production
     public static final String SPRING_PROFILE_PRODUCTION = "prod";
     public static final String SPRING_PROFILE_SWAGGER = "swagger";
+    public static final String SPRING_PROFILE_METRICS = "metrics";
 
     public static final String SPRING_ENDPOINT_DELIMITER = "||";
 
