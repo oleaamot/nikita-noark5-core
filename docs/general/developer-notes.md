@@ -1,5 +1,31 @@
 # Nikita developer notes
 
+## 2018-03-17
+
+ - Project structure
+ - Continued OData
+ - Testing framework
+
+###Project structure
+###Continued OData
+
+
+### Testing framework 
+
+The Testing framework has definitely been one of this project achilles heel. 
+I was never able to get a testing framework to work, partly because I have no
+experience with testing, our project structure was such that I could not get 
+started and I did not really see the difference between unit tests and 
+integration tests.
+
+This has also resulted in our approach to CI being worthless as up to now 
+everything passes travisCI. So hopefully now we can latch the test framework 
+properly into travisCI so future development is  
+
+
+[principles](https://blog.parasoft
+.com/start-to-love-spring-testing-with-unit-test-assistant-for-java)
+
 
 ## 2018-02-23
 
