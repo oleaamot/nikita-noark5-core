@@ -2,7 +2,6 @@ package nikita.common.model.noark5.v4.metadata;
 
 import nikita.common.config.N5ResourceMappings;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Field;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
@@ -22,7 +21,7 @@ public class PostalCode extends MetadataSuperClass {
      */
     @Column(name = "municipality_number")
     @Audited
-    @Field
+
     protected String municipalitynumber;
 
     /**
@@ -30,7 +29,7 @@ public class PostalCode extends MetadataSuperClass {
      */
     @Column(name = "municipality_name")
     @Audited
-    @Field
+
     protected String municipalityname;
 
     /**
@@ -38,7 +37,7 @@ public class PostalCode extends MetadataSuperClass {
      */
     @Column(name = "category")
     @Audited
-    @Field
+
     protected String category;
 
     @Override

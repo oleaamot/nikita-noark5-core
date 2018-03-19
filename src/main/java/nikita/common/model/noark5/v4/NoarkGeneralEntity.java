@@ -6,7 +6,6 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Field;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -27,7 +26,7 @@ public class NoarkGeneralEntity extends NoarkEntity implements INoarkGeneralEnti
     @NotNull
     @Column(name = "title", nullable = false)
     @Audited
-    @Field
+
     @JsonProperty("tittel")
     private String title;
 
@@ -36,7 +35,7 @@ public class NoarkGeneralEntity extends NoarkEntity implements INoarkGeneralEnti
      */
     @Column(name = "description")
     @Audited
-    @Field
+
     private String description;
 
 

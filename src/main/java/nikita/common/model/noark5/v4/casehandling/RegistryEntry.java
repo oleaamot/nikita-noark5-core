@@ -11,7 +11,6 @@ import nikita.common.util.deserialisers.casehandling.RegistryEntryDeserializer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -35,7 +34,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature,
      */
     @Column(name = "record_year")
     @Audited
-    @Field
+
     private Integer recordYear;
 
     /**
@@ -43,7 +42,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature,
      */
     @Column(name = "record_sequence_number")
     @Audited
-    @Field
+
     private Integer recordSequenceNumber;
 
     /**
@@ -51,7 +50,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature,
      */
     @Column(name = "registry_entry_number")
     @Audited
-    @Field
+
     private Integer registryEntryNumber;
 
     /**
@@ -60,7 +59,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature,
     @NotNull
     @Column(name = "registry_entry_type", nullable = false)
     @Audited
-    @Field
+
     private String registryEntryType;
 
     /**
@@ -69,7 +68,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature,
     @NotNull
     @Column(name = "record_status")
     @Audited
-    @Field
+
     private String recordStatus;
 
     /**
@@ -79,7 +78,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature,
     @Column(name = "record_date", nullable = false)
     @Temporal(TemporalType.DATE)
     @Audited
-    @Field
+
     private Date recordDate;
 
     /**
@@ -88,7 +87,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature,
     @Column(name = "document_date")
     @Temporal(TemporalType.DATE)
     @Audited
-    @Field
+
     private Date documentDate;
 
     /**
@@ -97,7 +96,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature,
     @Column(name = "received_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
-    @Field
+
     private Date receivedDate;
 
     /**
@@ -106,7 +105,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature,
     @Column(name = "sent_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
-    @Field
+
     private Date sentDate;
 
     /**
@@ -115,7 +114,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature,
     @Column(name = "due_date")
     @Temporal(TemporalType.DATE)
     @Audited
-    @Field
+
     private Date dueDate;
 
     /**
@@ -124,7 +123,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature,
     @Column(name = "freedom_assessment_date")
     @Temporal(TemporalType.DATE)
     @Audited
-    @Field
+
     private Date freedomAssessmentDate;
 
     /**
@@ -132,7 +131,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature,
      */
     @Column(name = "number_of_attachments")
     @Audited
-    @Field
+
     private Integer numberOfAttachments;
 
     /**
@@ -155,7 +154,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature,
      */
     @Column(name = "records_management_unit")
     @Audited
-    @Field
+
     private String recordsManagementUnit;
 
     // Links to CorrespondencePartPerson

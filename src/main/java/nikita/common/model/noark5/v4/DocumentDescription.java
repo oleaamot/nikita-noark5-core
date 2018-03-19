@@ -10,7 +10,6 @@ import nikita.common.util.deserialisers.DocumentDescriptionDeserializer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -38,7 +37,7 @@ public class DocumentDescription extends NoarkEntity implements INoarkTitleDescr
     @NotNull
     @Column(name = "document_type", nullable = false)
     @Audited
-    @Field
+
     private String documentType;
 
     /**
@@ -47,7 +46,7 @@ public class DocumentDescription extends NoarkEntity implements INoarkTitleDescr
     @NotNull
     @Column(name = "document_status", nullable = false)
     @Audited
-    @Field
+
     private String documentStatus;
 
     /**
@@ -56,7 +55,7 @@ public class DocumentDescription extends NoarkEntity implements INoarkTitleDescr
     @NotNull
     @Column(name = "title", nullable = false)
     @Audited
-    @Field
+
     private String title;
 
     /**
@@ -64,7 +63,7 @@ public class DocumentDescription extends NoarkEntity implements INoarkTitleDescr
      */
     @Column(name = "description")
     @Audited
-    @Field
+
     private String description;
 
     /**
@@ -73,7 +72,7 @@ public class DocumentDescription extends NoarkEntity implements INoarkTitleDescr
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
-    @Field
+
     private Date createdDate;
 
     /**
@@ -81,7 +80,7 @@ public class DocumentDescription extends NoarkEntity implements INoarkTitleDescr
      */
     @Column(name = "created_by")
     @Audited
-    @Field
+
     private String createdBy;
 
     /**
@@ -89,7 +88,7 @@ public class DocumentDescription extends NoarkEntity implements INoarkTitleDescr
      */
     @Column(name = "document_medium")
     @Audited
-    @Field
+
     private String documentMedium;
 
     /**
@@ -98,7 +97,7 @@ public class DocumentDescription extends NoarkEntity implements INoarkTitleDescr
     @NotNull
     @Column(name = "associated_with_record_as", nullable = false)
     @Audited
-    @Field
+
     private String associatedWithRecordAs;
 
     /**
@@ -107,7 +106,7 @@ public class DocumentDescription extends NoarkEntity implements INoarkTitleDescr
     @NotNull
     @Column(name = "document_number", nullable = false)
     @Audited
-    @Field
+
     private Integer documentNumber;
 
     /**
@@ -117,7 +116,7 @@ public class DocumentDescription extends NoarkEntity implements INoarkTitleDescr
     @Column(name = "association_date", nullable = false)
     @Temporal(TemporalType.DATE)
     @Audited
-    @Field
+
     private Date associationDate;
 
     /**
@@ -125,7 +124,7 @@ public class DocumentDescription extends NoarkEntity implements INoarkTitleDescr
      */
     @Column(name = "associated_by")
     @Audited
-    @Field
+
     private String associatedBy;
 
     @Column(name = "storage_location")

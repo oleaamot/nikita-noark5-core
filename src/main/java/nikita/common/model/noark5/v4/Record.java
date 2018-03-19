@@ -14,7 +14,6 @@ import nikita.common.util.exceptions.NoarkEntityNotFoundException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class Record extends NoarkEntity implements INoarkCreateEntity, IClassifi
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
-    @Field
+
     private Date createdDate;
 
     /**
@@ -46,7 +45,7 @@ public class Record extends NoarkEntity implements INoarkCreateEntity, IClassifi
      */
     @Column(name = "created_by")
     @Audited
-    @Field
+
     private String createdBy;
 
     /**
@@ -55,7 +54,7 @@ public class Record extends NoarkEntity implements INoarkCreateEntity, IClassifi
     @Column(name = "archived_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
-    @Field
+
     private Date archivedDate;
 
     /**
@@ -63,7 +62,7 @@ public class Record extends NoarkEntity implements INoarkCreateEntity, IClassifi
      */
     @Column(name = "archived_by")
     @Audited
-    @Field
+
     private String archivedBy;
 
     // Link to File

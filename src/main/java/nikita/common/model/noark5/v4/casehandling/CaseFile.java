@@ -11,7 +11,6 @@ import nikita.common.util.deserialisers.casehandling.CaseFileDeserializer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -41,7 +40,7 @@ public class CaseFile extends File implements Serializable, INikitaEntity,
      */
     @Column(name = "case_year")
     @Audited
-    @Field
+
     protected Integer caseYear;
 
     /**
@@ -49,7 +48,7 @@ public class CaseFile extends File implements Serializable, INikitaEntity,
      */
     @Column(name = "case_sequence_number")
     @Audited
-    @Field
+
     protected Integer caseSequenceNumber;
 
     /**
@@ -59,7 +58,7 @@ public class CaseFile extends File implements Serializable, INikitaEntity,
     @Column(name = "case_date", nullable = false)
     @Temporal(TemporalType.DATE)
     @Audited
-    @Field
+
     protected Date caseDate;
 
     /**
@@ -67,7 +66,7 @@ public class CaseFile extends File implements Serializable, INikitaEntity,
      */
     @Column(name = "administrative_unit")
     @Audited
-    @Field
+
     protected String administrativeUnit;
 
     /**
@@ -76,7 +75,7 @@ public class CaseFile extends File implements Serializable, INikitaEntity,
     @NotNull
     @Column(name = "case_responsible", nullable = false)
     @Audited
-    @Field
+
     protected String caseResponsible;
 
     /**
@@ -84,7 +83,7 @@ public class CaseFile extends File implements Serializable, INikitaEntity,
      */
     @Column(name = "records_management_unit")
     @Audited
-    @Field
+
     protected String recordsManagementUnit;
 
     /**
@@ -93,7 +92,7 @@ public class CaseFile extends File implements Serializable, INikitaEntity,
     @NotNull
     @Column(name = "case_status", nullable = false)
     @Audited
-    @Field
+
     protected String caseStatus;
 
     /**
@@ -112,7 +111,7 @@ public class CaseFile extends File implements Serializable, INikitaEntity,
     protected String loanedTo;
     @Column(name = "owned_by")
     @Audited
-    @Field
+
     protected String ownedBy;
     // Links to CaseParty
     @ManyToMany
@@ -135,7 +134,7 @@ public class CaseFile extends File implements Serializable, INikitaEntity,
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
-    @Field
+
     private Boolean deleted;
 
     public Integer getCaseYear() {

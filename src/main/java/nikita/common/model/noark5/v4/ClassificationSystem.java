@@ -4,7 +4,6 @@ import nikita.common.config.N5ResourceMappings;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class ClassificationSystem extends NoarkGeneralEntity {
      */
     @Column(name = "classification_type")
     @Audited
-    @Field
+
     private String classificationType;
 
     // Links to Series

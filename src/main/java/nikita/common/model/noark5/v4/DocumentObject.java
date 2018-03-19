@@ -12,7 +12,6 @@ import nikita.common.util.exceptions.NoarkEntityNotFoundException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -37,7 +36,7 @@ public class DocumentObject extends NoarkEntity implements INoarkCreateEntity,
     @NotNull
     @Column(name = "version_number", nullable = false)
     @Audited
-    @Field
+
     private Integer versionNumber;
 
     /**
@@ -46,7 +45,7 @@ public class DocumentObject extends NoarkEntity implements INoarkCreateEntity,
     @NotNull
     @Column(name = "variant_format", nullable = false)
     @Audited
-    @Field
+
     private String variantFormat;
 
     /**
@@ -54,7 +53,7 @@ public class DocumentObject extends NoarkEntity implements INoarkCreateEntity,
      */
     @Column(name = "format")
     @Audited
-    @Field
+
     private String format;
 
     /**
@@ -62,7 +61,7 @@ public class DocumentObject extends NoarkEntity implements INoarkCreateEntity,
      */
     @Column(name = "format_details")
     @Audited
-    @Field
+
     private String formatDetails;
 
     /**
@@ -71,7 +70,7 @@ public class DocumentObject extends NoarkEntity implements INoarkCreateEntity,
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Audited
-    @Field
+
     private Date createdDate;
 
     /**
@@ -79,7 +78,7 @@ public class DocumentObject extends NoarkEntity implements INoarkCreateEntity,
      */
     @Column(name = "created_by")
     @Audited
-    @Field
+
     private String createdBy;
 
     /**
@@ -87,7 +86,7 @@ public class DocumentObject extends NoarkEntity implements INoarkCreateEntity,
      */
     @Column(name = "reference_document_file")
     @Audited
-    @Field
+
     private String referenceDocumentFile;
 
     /**
@@ -95,7 +94,7 @@ public class DocumentObject extends NoarkEntity implements INoarkCreateEntity,
      */
     @Column(name = "checksum")
     @Audited
-    @Field
+
     private String checksum;
 
     /**
@@ -103,7 +102,7 @@ public class DocumentObject extends NoarkEntity implements INoarkCreateEntity,
      */
     @Column(name = "checksum_algorithm")
     @Audited
-    @Field
+
     private String checksumAlgorithm;
 
     /**
@@ -111,17 +110,17 @@ public class DocumentObject extends NoarkEntity implements INoarkCreateEntity,
      */
     @Column(name = "file_size")
     @Audited
-    @Field
+
     private Long fileSize;
 
     @Column(name = "original_filename")
     @Audited
-    @Field
+
     private String originalFilename;
 
     @Column(name = "mime_type")
     @Audited
-    @Field
+
     private String mimeType;
 
     // Link to DocumentDescription

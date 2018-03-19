@@ -12,7 +12,6 @@ import nikita.common.util.exceptions.NoarkEntityNotFoundException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ public class Class extends NoarkGeneralEntity implements IDisposal, IScreening, 
      */
     @Column(name = "class_id")
     @Audited
-    @Field
+
     private String classId;
 
     // Links to Keywords

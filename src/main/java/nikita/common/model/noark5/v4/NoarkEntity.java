@@ -7,7 +7,6 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 
@@ -29,7 +28,6 @@ public class NoarkEntity implements INikitaEntity, Comparable<NoarkEntity> {
      */
     @Column(name = "system_id", unique = true)
     @Audited
-    @Field
     private String systemId;
 
     @Column(name = "owned_by")

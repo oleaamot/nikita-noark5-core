@@ -7,7 +7,6 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 
@@ -27,7 +26,7 @@ public class MetadataSuperClassBase implements INikitaEntity, Comparable<Metadat
      */
     @Column(name = "system_id", unique = true)
     @Audited
-    @Field
+
     protected String systemId;
 
     /**

@@ -9,7 +9,6 @@ import nikita.common.util.deserialisers.BasicRecordDeserializer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -34,7 +33,7 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
      */
     @Column(name = "record_id")
     @Audited
-    @Field
+
     protected String recordId;
 
     /**
@@ -43,7 +42,7 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
     @NotNull
     @Column(name = "title", nullable = false)
     @Audited
-    @Field
+
     protected String title;
 
     /**
@@ -58,7 +57,7 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
      */
     @Column(name = "description")
     @Audited
-    @Field
+
     protected String description;
 
     /**
@@ -66,12 +65,12 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
      */
     @Column(name = "document_medium")
     @Audited
-    @Field
+
     protected String documentMedium;
 
     @Column(name = "owned_by")
     @Audited
-    @Field
+
     protected String ownedBy;
 
     // Link to StorageLocation
@@ -105,7 +104,7 @@ public class BasicRecord extends Record implements IDocumentMedium, INoarkTitleD
     // Used for soft delete.
     @Column(name = "deleted")
     @Audited
-    @Field
+
     private Boolean deleted;
 
     public String getRecordId() {

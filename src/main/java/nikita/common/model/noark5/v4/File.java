@@ -10,7 +10,6 @@ import nikita.common.util.exceptions.NoarkEntityNotFoundException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ public class File extends NoarkGeneralEntity implements IDocumentMedium,
      */
     @Column(name = "file_id")
     @Audited
-    @Field
+
     private String fileId;
 
     /**
@@ -41,7 +40,7 @@ public class File extends NoarkGeneralEntity implements IDocumentMedium,
      */
     @Column(name = "official_title")
     @Audited
-    @Field
+
     private String officialTitle;
 
     /**
