@@ -24,7 +24,6 @@ import nikita.webapp.security.Authorisation;
 import nikita.webapp.service.interfaces.IRegistryEntryService;
 import nikita.webapp.service.interfaces.metadata.ICorrespondencePartTypeService;
 import nikita.webapp.web.controller.hateoas.NoarkController;
-import nikita.webapp.web.events.AfterNoarkEntityCreatedEvent;
 import nikita.webapp.web.events.AfterNoarkEntityDeletedEvent;
 import nikita.webapp.web.events.AfterNoarkEntityUpdatedEvent;
 import org.springframework.context.ApplicationEventPublisher;
@@ -99,6 +98,9 @@ public class RegistryEntryHateoasController extends NoarkController {
             @RequestBody CorrespondencePartPerson CorrespondencePartPerson)
             throws NikitaException {
 
+        /*
+
+        TODO: Temp disabled!
         CorrespondencePartPerson createdCorrespondencePartPerson =
                 registryEntryService.createCorrespondencePartPersonAssociatedWithRegistryEntry(systemID, CorrespondencePartPerson);
         CorrespondencePartPersonHateoas correspondencePartPersonHateoas =
@@ -109,6 +111,9 @@ public class RegistryEntryHateoasController extends NoarkController {
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdCorrespondencePartPerson.getVersion().toString())
                 .body(correspondencePartPersonHateoas);
+
+                */
+        return null;
     }
 
     // Create a new CorrespondencePartInternal and associate it with the given journalpost
@@ -143,6 +148,10 @@ public class RegistryEntryHateoasController extends NoarkController {
             @RequestBody CorrespondencePartInternal CorrespondencePartInternal)
             throws NikitaException {
 
+        /*
+
+        TODO: Temp disabled!
+
         CorrespondencePartInternal createdCorrespondencePartInternal =
                 registryEntryService.createCorrespondencePartInternalAssociatedWithRegistryEntry(systemID, CorrespondencePartInternal);
         CorrespondencePartInternalHateoas correspondencePartInternalHateoas =
@@ -153,6 +162,8 @@ public class RegistryEntryHateoasController extends NoarkController {
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdCorrespondencePartInternal.getVersion().toString())
                 .body(correspondencePartInternalHateoas);
+                */
+        return null;
     }
 
     // Create a new CorrespondencePartUnit and associate it with the given journalpost
@@ -186,7 +197,9 @@ public class RegistryEntryHateoasController extends NoarkController {
                     required = true)
             @RequestBody CorrespondencePartUnit CorrespondencePartUnit)
             throws NikitaException {
+/*
 
+  TODO: Temp disabled!
         CorrespondencePartUnit createdCorrespondencePartUnit =
                 registryEntryService.createCorrespondencePartUnitAssociatedWithRegistryEntry(systemID, CorrespondencePartUnit);
         CorrespondencePartUnitHateoas correspondencePartUnitHateoas =
@@ -197,6 +210,8 @@ public class RegistryEntryHateoasController extends NoarkController {
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(createdCorrespondencePartUnit.getVersion().toString())
                 .body(correspondencePartUnitHateoas);
+                */
+        return null;
     }
 
     /*
@@ -358,6 +373,8 @@ public class RegistryEntryHateoasController extends NoarkController {
                     value = "systemID of the file to retrieve associated Record",
                     required = true)
             @PathVariable("systemID") final String systemID) {
+/*
+TODO: Temp disabled!
 
         List<CorrespondencePartPerson> correspondencePartPerson =
                 registryEntryService.getCorrespondencePartPersonAssociatedWithRegistryEntry(systemID);
@@ -367,6 +384,9 @@ public class RegistryEntryHateoasController extends NoarkController {
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(correspondencePartHateoas);
+
+                */
+        return null;
     }
 
     // Retrieve all CorrespondencePartUnit associated with a RegistryEntry identified by systemId
@@ -390,7 +410,9 @@ public class RegistryEntryHateoasController extends NoarkController {
                     value = "systemID of the file to retrieve associated Record",
                     required = true)
             @PathVariable("systemID") final String systemID) {
+/*
 
+  TODO: Temp disabled!
         List<CorrespondencePartUnit> correspondencePartUnit =
                 registryEntryService.getCorrespondencePartUnitAssociatedWithRegistryEntry(systemID);
         CorrespondencePartUnitHateoas correspondencePartHateoas =
@@ -399,6 +421,9 @@ public class RegistryEntryHateoasController extends NoarkController {
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(correspondencePartHateoas);
+
+                */
+        return null;
     }
 
     // Retrieve all CorrespondencePartInternal associated with a RegistryEntry identified by systemId
@@ -422,7 +447,8 @@ public class RegistryEntryHateoasController extends NoarkController {
                     value = "systemID of the file to retrieve associated Record",
                     required = true)
             @PathVariable("systemID") final String systemID) {
-
+/*
+TODO: Temp disabled!
         List<CorrespondencePartInternal> correspondencePartInternal =
                 registryEntryService.getCorrespondencePartInternalAssociatedWithRegistryEntry(systemID);
         CorrespondencePartInternalHateoas correspondencePartHateoas =
@@ -431,6 +457,8 @@ public class RegistryEntryHateoasController extends NoarkController {
         return ResponseEntity.status(HttpStatus.OK)
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .body(correspondencePartHateoas);
+   */
+        return null;
     }
 
 

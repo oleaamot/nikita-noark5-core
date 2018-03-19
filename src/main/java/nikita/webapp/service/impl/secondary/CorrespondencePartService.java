@@ -35,6 +35,8 @@ public class CorrespondencePartService implements ICorrespondencePartService {
     @Override
     public CorrespondencePartPerson updateCorrespondencePartPerson(String systemId, Long version,
                                                                    CorrespondencePartPerson incomingCorrespondencePart) {
+        /*
+        TODO: Temp disabled!
         CorrespondencePartPerson existingCorrespondencePart =
                 (CorrespondencePartPerson) getCorrespondencePartOrThrow(systemId);
 
@@ -47,7 +49,9 @@ public class CorrespondencePartService implements ICorrespondencePartService {
         existingCorrespondencePart.setResidingAddress(incomingCorrespondencePart.getResidingAddress());
         existingCorrespondencePart.setVersion(version);
         correspondencePartRepository.save(existingCorrespondencePart);
-        return existingCorrespondencePart;
+        return existingCorrespondencePart;*/
+        return null;
+
     }
 
     @Override
@@ -87,7 +91,15 @@ public class CorrespondencePartService implements ICorrespondencePartService {
     @Override
     public CorrespondencePartPerson createNewCorrespondencePartPerson(CorrespondencePartPerson
                                                                               correspondencePartPerson) {
+/*
+        TODO: Temp disabled!
+
         return correspondencePartRepository.save(correspondencePartPerson);
+
+        TODO: Temp disabled!
+
+        */
+        return null;
     }
 
     @Override
@@ -132,8 +144,11 @@ public class CorrespondencePartService implements ICorrespondencePartService {
 
     @Override
     public void deleteCorrespondencePartPerson(@NotNull String code) {
+        /*
+        TODO: Temp disabled!
         CorrespondencePartPerson correspondencePartPerson = (CorrespondencePartPerson) getCorrespondencePartOrThrow(code);
         correspondencePartRepository.delete(correspondencePartPerson);
+        */
     }
 
     @Override

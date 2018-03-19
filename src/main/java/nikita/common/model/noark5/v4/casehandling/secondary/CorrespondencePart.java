@@ -14,10 +14,13 @@ import javax.persistence.*;
 @Table(name = "correspondence_part")
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonDeserialize(using = CorrespondencePartUnitDeserializer.class)
-@AttributeOverride(name = "id", column = @Column(name = "pk_correspondence_part_id"))
+@AttributeOverride(name = "id",
+        column = @Column(name = "pk_correspondence_part_id"))
 // Adding @Audited as the it's required as the base class requires it
 @Audited
-public class CorrespondencePart extends NoarkEntity implements ICorrespondencePartEntity {
+public class CorrespondencePart
+        extends NoarkEntity
+        implements ICorrespondencePartEntity {
 
     /**
      * M087 - korrespondanseparttype (xs:string)

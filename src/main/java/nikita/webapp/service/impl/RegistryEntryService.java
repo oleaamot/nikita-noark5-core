@@ -4,8 +4,6 @@ import nikita.common.model.noark5.v4.DocumentDescription;
 import nikita.common.model.noark5.v4.Record;
 import nikita.common.model.noark5.v4.casehandling.Precedence;
 import nikita.common.model.noark5.v4.casehandling.RegistryEntry;
-import nikita.common.model.noark5.v4.casehandling.secondary.*;
-import nikita.common.model.noark5.v4.metadata.CorrespondencePartType;
 import nikita.common.repository.n5v4.IRegistryEntryRepository;
 import nikita.common.repository.n5v4.metadata.ICorrespondencePartTypeRepository;
 import nikita.common.util.exceptions.NoarkEntityNotFoundException;
@@ -67,7 +65,8 @@ public class RegistryEntryService implements IRegistryEntryService {
         registryEntryRepository.save(registryEntry);
         return registryEntry;
     }
-
+/*
+TODO: Temp disabled!
     private void associateCorrespondencePartTypeWithCorrespondencePart(@NotNull CorrespondencePart correspondencePart) {
         CorrespondencePartType incomingCorrespondencePartType = correspondencePart.getCorrespondencePartType();
         // It should never get this far with a null value
@@ -83,6 +82,8 @@ public class RegistryEntryService implements IRegistryEntryService {
         }
     }
 
+
+    TODO: Temp disabled!
     @Override
     public List<CorrespondencePartPerson> getCorrespondencePartPersonAssociatedWithRegistryEntry(String systemID) {
         RegistryEntry registryEntry = getRegistryEntryOrThrow(systemID);
@@ -100,40 +101,46 @@ public class RegistryEntryService implements IRegistryEntryService {
         RegistryEntry registryEntry = getRegistryEntryOrThrow(systemID);
         return registryEntry.getReferenceCorrespondencePartUnit();
     }
-    
-    @Override
-    public CorrespondencePartPerson createCorrespondencePartPersonAssociatedWithRegistryEntry(
-            String systemID, CorrespondencePartPerson correspondencePart) {
-        RegistryEntry registryEntry = getRegistryEntryOrThrow(systemID);
+    */
 
-        associateCorrespondencePartTypeWithCorrespondencePart(correspondencePart);
+    /* @Override
+     public CorrespondencePartPerson createCorrespondencePartPersonAssociatedWithRegistryEntry(
+             String systemID, CorrespondencePartPerson correspondencePart) {
+         RegistryEntry registryEntry = getRegistryEntryOrThrow(systemID);
 
-        ContactInformation contactInformation = correspondencePart.getContactInformation();
-        if (null != contactInformation) {
-            NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(contactInformation);
-            NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(contactInformation);
-        }
+ TODO: Temp disabled!
+         associateCorrespondencePartTypeWithCorrespondencePart(correspondencePart);
 
-        SimpleAddress postalAddress = correspondencePart.getPostalAddress();
-        if (null != postalAddress) {
-            NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(postalAddress);
-            NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(postalAddress);
-        }
+         ContactInformation contactInformation = correspondencePart.getContactInformation();
+         if (null != contactInformation) {
+             NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(contactInformation);
+             NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(contactInformation);
+         }
 
-        SimpleAddress residingAddress = correspondencePart.getResidingAddress();
-        if (null != residingAddress) {
-            NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(residingAddress);
-            NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(residingAddress);
-        }
+         SimpleAddress postalAddress = correspondencePart.getPostalAddress();
+         if (null != postalAddress) {
+             NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(postalAddress);
+             NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(postalAddress);
+         }
 
-        NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(correspondencePart);
-        NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(correspondencePart);
-        // bidirectional relationship @ManyToMany, set both sides of relationship
-        registryEntry.getReferenceCorrespondencePartPerson().add(correspondencePart);
-        correspondencePart.getReferenceRegistryEntry().add(registryEntry);
-        return correspondencePartService.createNewCorrespondencePartPerson(correspondencePart);
-    }
+         SimpleAddress residingAddress = correspondencePart.getResidingAddress();
+         if (null != residingAddress) {
+             NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(residingAddress);
+             NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(residingAddress);
+         }
 
+         NoarkUtils.NoarkEntity.Create.setNikitaEntityValues(correspondencePart);
+         NoarkUtils.NoarkEntity.Create.setSystemIdEntityValues(correspondencePart);
+         // bidirectional relationship @ManyToMany, set both sides of relationship
+         registryEntry.getReferenceCorrespondencePartPerson().add(correspondencePart);
+         correspondencePart.getReferenceRegistryEntry().add(registryEntry);
+         return correspondencePartService.createNewCorrespondencePartPerson(correspondencePart);
+
+         return null;
+     }
+ */
+    /*
+  TODO: Temp disabled!
     @Override
     public CorrespondencePartInternal createCorrespondencePartInternalAssociatedWithRegistryEntry(
             String systemID, CorrespondencePartInternal correspondencePart) {
@@ -180,6 +187,7 @@ public class RegistryEntryService implements IRegistryEntryService {
         return correspondencePartService.createNewCorrespondencePartUnit(correspondencePart);
     }
 
+*/
     @Override
     public DocumentDescription createDocumentDescriptionAssociatedWithRegistryEntry(
             String systemID, DocumentDescription documentDescription) {

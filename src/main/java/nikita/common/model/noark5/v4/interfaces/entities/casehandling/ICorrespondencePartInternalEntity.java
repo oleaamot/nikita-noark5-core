@@ -2,9 +2,6 @@ package nikita.common.model.noark5.v4.interfaces.entities.casehandling;
 
 import nikita.common.model.noark5.v4.admin.AdministrativeUnit;
 import nikita.common.model.noark5.v4.admin.User;
-import nikita.common.model.noark5.v4.casehandling.RegistryEntry;
-
-import java.util.List;
 
 /**
  * Created by tsodring on 5/22/17.
@@ -26,9 +23,10 @@ public interface ICorrespondencePartInternalEntity extends ICorrespondencePartEn
     User getReferenceCaseHandler();
 
     void setReferenceCaseHandler(User referenceCaseHandler);
-
+/*
+  TODO: Temp disabled!
     List<RegistryEntry> getReferenceRegistryEntry();
 
     void setReferenceRegistryEntry(List<RegistryEntry> referenceRegistryEntry);
-
+*/
 }

@@ -1,11 +1,8 @@
 package nikita.common.model.noark5.v4.interfaces.entities.casehandling;
 
-import nikita.common.model.noark5.v4.casehandling.RegistryEntry;
 import nikita.common.model.noark5.v4.casehandling.secondary.ContactInformation;
 import nikita.common.model.noark5.v4.casehandling.secondary.PostalAddress;
 import nikita.common.model.noark5.v4.casehandling.secondary.ResidingAddress;
-
-import java.util.List;
 
 /**
  * Created by tsodring on 5/22/17.
@@ -35,9 +32,11 @@ public interface ICorrespondencePartPersonEntity extends ICorrespondencePartEnti
     ContactInformation getContactInformation();
 
     void setContactInformation(ContactInformation contactInformation);
+/*
+  TODO: Temp disabled!
 
     List<RegistryEntry> getReferenceRegistryEntry();
 
     void setReferenceRegistryEntry(List<RegistryEntry> referenceRegistryEntry);
-
+*/
 }

@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.common.config.Constants;
 import nikita.common.config.N5ResourceMappings;
 import nikita.common.model.noark5.v4.BasicRecord;
-import nikita.common.model.noark5.v4.interfaces.*;
+import nikita.common.model.noark5.v4.interfaces.IDocumentFlow;
+import nikita.common.model.noark5.v4.interfaces.IElectronicSignature;
+import nikita.common.model.noark5.v4.interfaces.IPrecedence;
+import nikita.common.model.noark5.v4.interfaces.ISignOff;
 import nikita.common.model.noark5.v4.secondary.ElectronicSignature;
 import nikita.common.model.noark5.v4.secondary.SignOff;
 import nikita.common.util.deserialisers.casehandling.RegistryEntryDeserializer;
@@ -27,7 +30,7 @@ import java.util.List;
 //@Indexed(index = "registry_entry")
 @JsonDeserialize(using = RegistryEntryDeserializer.class)
 public class RegistryEntry extends BasicRecord implements IElectronicSignature,
-        IPrecedence, ICorrespondencePart, ISignOff, IDocumentFlow {
+        IPrecedence, /*ICorrespondencePart,*/ ISignOff, IDocumentFlow {
 
     /**
      * M013 - journalaar (xs:integer)
@@ -157,6 +160,8 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature,
 
     private String recordsManagementUnit;
 
+    /*
+    TODO: Temp disabled!
     // Links to CorrespondencePartPerson
     @ManyToMany
     @JoinTable(name = "registry_entry_correspondence_part_person",
@@ -185,7 +190,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature,
             inverseJoinColumns = @JoinColumn(name = "f_pk_correspondence_part_internal_id",
                     referencedColumnName = "pk_correspondence_part_id"))
     private List<nikita.common.model.noark5.v4.casehandling.secondary.CorrespondencePartInternal> referenceCorrespondencePartInternal = new ArrayList<>();
-
+*/
 
     // Links to DocumentFlow
     @OneToMany(mappedBy = "referenceRegistryEntry")
@@ -354,6 +359,10 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature,
         this.referenceDocumentFlow = referenceDocumentFlow;
     }
 
+    /*
+
+    TODO: Temp disabled!
+
     public List<nikita.common.model.noark5.v4.casehandling.secondary.CorrespondencePartPerson> getReferenceCorrespondencePartPerson() {
         return referenceCorrespondencePartPerson;
     }
@@ -378,6 +387,7 @@ public class RegistryEntry extends BasicRecord implements IElectronicSignature,
         this.referenceCorrespondencePartInternal = referenceCorrespondencePartInternal;
     }
 
+*/
     public List<SignOff> getReferenceSignOff() {
         return referenceSignOff;
     }

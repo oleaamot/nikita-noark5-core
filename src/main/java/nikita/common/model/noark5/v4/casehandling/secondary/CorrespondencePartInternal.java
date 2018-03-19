@@ -3,21 +3,21 @@ package nikita.common.model.noark5.v4.casehandling.secondary;
 import nikita.common.config.N5ResourceMappings;
 import nikita.common.model.noark5.v4.admin.AdministrativeUnit;
 import nikita.common.model.noark5.v4.admin.User;
-import nikita.common.model.noark5.v4.casehandling.RegistryEntry;
 import nikita.common.model.noark5.v4.interfaces.entities.casehandling.ICorrespondencePartInternalEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "correspondence_part_internal")
 //@JsonDeserialize(using = CorrespondencePartPersonInternal.class)
-@AttributeOverride(name = "id", column = @Column(name = "pk_correspondence_part_person_id"))
-public class CorrespondencePartInternal extends CorrespondencePart implements ICorrespondencePartInternalEntity {
+@AttributeOverride(name = "id",
+        column = @Column(name = "pk_correspondence_part_internal_id"))
+public class CorrespondencePartInternal
+        extends CorrespondencePart
+        implements ICorrespondencePartInternalEntity {
 
 
     /**
@@ -40,10 +40,12 @@ public class CorrespondencePartInternal extends CorrespondencePart implements IC
     @ManyToOne
     private User referenceCaseHandler;
 
+    /*
+  TODO: Temp disabled!
     // Links to RegistryEntry
     @ManyToMany(mappedBy = "referenceCorrespondencePartInternal")
     private List<RegistryEntry> referenceRegistryEntry = new ArrayList<>();
-
+*/
     public String getAdministrativeUnit() {
         return administrativeUnit;
     }
@@ -81,16 +83,18 @@ public class CorrespondencePartInternal extends CorrespondencePart implements IC
         return N5ResourceMappings.CORRESPONDENCE_PART_UNIT;
     }
 
-    @Override
-    public List<RegistryEntry> getReferenceRegistryEntry() {
-        return referenceRegistryEntry;
-    }
+    /*
+      TODO: Temp disabled!
+        @Override
+        public List<RegistryEntry> getReferenceRegistryEntry() {
+            return referenceRegistryEntry;
+        }
 
-    @Override
-    public void setReferenceRegistryEntry(List<RegistryEntry> referenceRegistryEntry) {
-        this.referenceRegistryEntry = referenceRegistryEntry;
-    }
-
+        @Override
+        public void setReferenceRegistryEntry(List<RegistryEntry> referenceRegistryEntry) {
+            this.referenceRegistryEntry = referenceRegistryEntry;
+        }
+    */
     @Override
     public String toString() {
         return "CorrespondencePartInternal{" + super.toString() +

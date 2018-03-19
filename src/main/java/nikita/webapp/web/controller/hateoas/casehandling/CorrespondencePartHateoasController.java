@@ -74,7 +74,7 @@ public class CorrespondencePartHateoasController extends NoarkController {
                     value = "systemID of the correspondencePartPerson to retrieve",
                     required = true)
             @PathVariable("systemID") final String correspondencePartPersonSystemId) {
-        CorrespondencePartPerson correspondencePartPerson =
+        /*CorrespondencePartPerson correspondencePartPerson =
                 (CorrespondencePartPerson) correspondencePartService.findBySystemId(correspondencePartPersonSystemId);
         CorrespondencePartPersonHateoas correspondencePartPersonHateoas =
                 new CorrespondencePartPersonHateoas(correspondencePartPerson);
@@ -83,6 +83,8 @@ public class CorrespondencePartHateoasController extends NoarkController {
                 .allow(CommonUtils.WebUtils.getMethodsForRequestOrThrow(request.getServletPath()))
                 .eTag(correspondencePartPerson.getVersion().toString())
                 .body(correspondencePartPersonHateoas);
+                */
+        return null;
     }
 
     // Get a CorrespondencePartInternal identified by systemID

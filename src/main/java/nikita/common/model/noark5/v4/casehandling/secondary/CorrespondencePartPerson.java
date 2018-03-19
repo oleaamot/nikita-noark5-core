@@ -3,22 +3,35 @@ package nikita.common.model.noark5.v4.casehandling.secondary;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import nikita.common.config.Constants;
 import nikita.common.config.N5ResourceMappings;
-import nikita.common.model.noark5.v4.casehandling.RegistryEntry;
+import nikita.common.model.noark5.v4.NoarkEntity;
 import nikita.common.model.noark5.v4.interfaces.entities.casehandling.ICorrespondencePartPersonEntity;
+import nikita.common.model.noark5.v4.metadata.CorrespondencePartType;
 import nikita.common.util.deserialisers.casehandling.CorrespondencePartPersonDeserializer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "correspondence_part_person")
 @JsonDeserialize(using = CorrespondencePartPersonDeserializer.class)
-@AttributeOverride(name = "id", column = @Column(name = "pk_correspondence_part_person_id"))
-public class CorrespondencePartPerson extends CorrespondencePart implements ICorrespondencePartPersonEntity {
+@AttributeOverride(name = "id",
+        column = @Column(name = "pk_correspondence_part_person_id"))
+public class CorrespondencePartPerson
+        extends NoarkEntity
+        implements ICorrespondencePartPersonEntity {
+
+
+    @Override
+    public CorrespondencePartType getCorrespondencePartType() {
+        return null;
+    }
+
+    @Override
+    public void setCorrespondencePartType(CorrespondencePartType correspondencePartType) {
+
+    }
 
     /**
      * M??? - fødselsnummer (xs:string)
@@ -54,10 +67,12 @@ public class CorrespondencePartPerson extends CorrespondencePart implements ICor
     @JoinColumn(name = "fk_postal_address_id")
     private PostalAddress postalAddress;
 
+    /*
+    TODO: Temp disabled!
     // Links to RegistryEntry
     @ManyToMany(mappedBy = "referenceCorrespondencePartPerson")
     private List<RegistryEntry> referenceRegistryEntry = new ArrayList<>();
-
+*/
     public String getSocialSecurityNumber() {
         return socialSecurityNumber;
     }
@@ -82,7 +97,7 @@ public class CorrespondencePartPerson extends CorrespondencePart implements ICor
         this.name = name;
     }
 
-    @Override
+    //@Override
     public PostalAddress getPostalAddress() {
         return postalAddress;
     }
@@ -117,14 +132,17 @@ public class CorrespondencePartPerson extends CorrespondencePart implements ICor
         return Constants.NOARK_CASE_HANDLING_PATH;
     }
 
-    public List<RegistryEntry> getReferenceRegistryEntry() {
-        return referenceRegistryEntry;
-    }
+    /*
 
-    public void setReferenceRegistryEntry(List<RegistryEntry> referenceRegistryEntry) {
-        this.referenceRegistryEntry = referenceRegistryEntry;
-    }
+    TODO: Temp disabled!
+        public List<RegistryEntry> getReferenceRegistryEntry() {
+            return referenceRegistryEntry;
+        }
 
+        public void setReferenceRegistryEntry(List<RegistryEntry> referenceRegistryEntry) {
+            this.referenceRegistryEntry = referenceRegistryEntry;
+        }
+    */
     @Override
     public String toString() {
         return "CorrespondencePartPerson{" + super.toString() +
