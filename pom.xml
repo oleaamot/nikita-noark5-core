@@ -45,128 +45,19 @@
         </developer>
     </developers>
 
-
-    <!--
-        <build>
-            <pluginManagement>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <version>${maven-compiler-plugin.version}</version>
-                        <configuration>
-                            <source>1.8</source>
-                            <target>1.8</target>
-                            <compilerArgument>-proc:none</compilerArgument>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <version>${maven-resources-plugin.version}</version>
-                    </plugin>
-
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <version>2.0.0.RELEASE</version>
-                        <configuration>
-                          <classifier>spring-boot</classifier>
-                            <mainClass>nikita.N5CoreApp</mainClass>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>repackage</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                </plugins>
-
-
-            </pluginManagement>
-
-        </build>
-    -->
     <properties>
-        <failOnMissingWebXml>false</failOnMissingWebXml>
-        <target.deploy>localhost</target.deploy>
         <start-class>nikita.N5CoreApp</start-class>
 
         <!-- dependency versions -->
-        <commons-collections.version>3.2.1</commons-collections.version>
-
-        <hibernate.version>5.2.15.Final</hibernate.version>
-        <hibernate-envers.version>5.3.0.CR1</hibernate-envers.version>
-        <hibernate-search.version>5.9.0.Final</hibernate-search.version>
-        <hibernate-jpamodelgen.version>5.3.0.CR1</hibernate-jpamodelgen.version>
-
-
-        <httpclient.version>4.5.1</httpclient.version>
-        <jackson.version>2.9.4</jackson.version>
-        <jackson-databind.version>2.9.4</jackson-databind.version>
-        <jackson-core>2.9.4</jackson-core>
-        <javassist.version>3.20.0-GA</javassist.version>
-
-        <slf4j.version>1.7.13</slf4j.version>
-        <jquery.version>3.0.0</jquery.version>
-
-        <commons-lang3.version>3.4</commons-lang3.version>
-
-        <jackson-dataformat-xml.version>2.7.5</jackson-dataformat-xml.version>
-        <jackson-datatype-jdk8.version>2.7.5</jackson-datatype-jdk8.version>
-        <woodstox-core-asl.version>4.4.1</woodstox-core-asl.version>
-        <jcl-over-slf4j.version>1.7.19</jcl-over-slf4j.version>
-        <log4j-over-slf4j.version>1.7.19</log4j-over-slf4j.version>
-
-        <!-- Spring related -->
-
-        <aspectjweaver.version>1.8.9</aspectjweaver.version>
-
-        <maven-processor-plugin.version>3.1.0</maven-processor-plugin.version>
         <spring-security.version>5.0.3.RELEASE</spring-security.version>
-
-
-        <jjwt.version>0.7.0</jjwt.version>
-        <odata.version>4.3.0</odata.version>
-
-        <!-- web -->
-        <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
-        <httpclient.version>4.5.2</httpclient.version>
-        <!-- marshalling -->
-        <jaxb-api.version>2.2.12</jaxb-api.version>
-
-        <!-- commons and utils -->
+        <spring-security-oauth2.version>2.3.0.RELEASE
+        </spring-security-oauth2.version>
+        <spring-security-jwt.version>1.0.9.RELEASE</spring-security-jwt.version>
         <commons-lang3.version>3.4</commons-lang3.version>
-        <guava.version>18.0</guava.version>
-
-        <!-- UNSORTED -->
-        <commons-codec.version>1.10</commons-codec.version>
-
-
-        <!-- persistence related -->
-        <metrics-spark-reporter.version>1.2</metrics-spark-reporter.version>
-        <metrics-spring.version>3.1.3</metrics-spring.version>
-        <dropwizard-metrics.version>3.1.2</dropwizard-metrics.version>
-        <querydsl.version>4.0.7</querydsl.version>
-        <h2.version>1.4.190</h2.version>
-        <postgresql.version>9.4.1208</postgresql.version>
-        <mysql.version>5.1.38</mysql.version>
-
-
         <springfox-swagger2.version>2.7.0</springfox-swagger2.version>
         <springfox-swagger-ui.version>2.7.0</springfox-swagger-ui.version>
-        <javax-inject.version>1</javax-inject.version>
-
-
-        <slf4j-api.version>1.7.19</slf4j-api.version>
-
-        <!-- maven plugins -->
+        <antlr.version>4.7.1</antlr.version>
         <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
-        <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
-        <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
     </properties>
 
     <dependencies>
@@ -176,42 +67,32 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- IMPORTANT REMOVE THIS DEPENDENCY BEFORE FINISHING UPGRADE TO
-         SPRING 2.0.0 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-properties-migrator</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <!-- Start nikita.common dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth2</artifactId>
-            <version>2.3.0.RELEASE</version>
+            <version>${spring-security-oauth2.version}</version>
         </dependency>
-
 
         <!-- spring security 5  -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
         </dependency>
-
 
         <!-- Used for CompareToBuilder etc -->
         <dependency>
@@ -220,54 +101,24 @@
             <version>${commons-lang3.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-jpamodelgen</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-search-elasticsearch</artifactId>
-            <version>${hibernate-search.version}</version>
-        </dependency>
-
         <!-- Used for the @Audited annotation-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-envers</artifactId>
         </dependency>
 
-        <!-- Used for the @JsonIgnore annotation-->
-        <dependency>
-            <groupId>com.fasterxml.jackson.jaxrs</groupId>
-            <artifactId>jackson-jaxrs-json-provider</artifactId>
-            <version>2.8.3</version>
-        </dependency>
-
-
         <!-- antlr dependency for parsing OData syntax -->
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
-            <version>4.7.1</version>
+            <version>${antlr.version}</version>
         </dependency>
-
-        <!-- End nikita.common dependencies -->
-
-        <!-- Start nikita.webapp dependencies -->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!-- test dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -288,9 +139,8 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-jwt</artifactId>
-            <version>1.0.9.RELEASE</version>
+            <version>${spring-security-jwt.version}</version>
         </dependency>
-
 
         <!-- In memory database, used for demo mode only -->
         <dependency>
@@ -298,24 +148,16 @@
             <artifactId>h2</artifactId>
         </dependency>
 
-        <!-- Postgres database -->
+        <!-- Postgres database. Toggled using profiles. -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
 
-        <!-- MySQL database -->
+        <!-- MySQL database. Toggled using profiles. -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
-        </dependency>
-
-        <!-- Needed for @Inject -->
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>${javax-inject.version}</version>
         </dependency>
 
         <!-- swagger dependency -->
@@ -331,70 +173,10 @@
             <version>${springfox-swagger2.version}</version>
         </dependency>
 
-        <!-- Required for ObjectMapper during testing-->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
-        <!-- marshalling -->
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
-
-        <!-- Used to allow responses to be encoded as either JSON or XML  -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jdk8</artifactId>
-            <version>${jackson-datatype-jdk8.version}</version>
-        </dependency>
-
-        <!-- overrides the JDK StAX implementation, faster. -->
-        <dependency>
-            <groupId>org.codehaus.woodstox</groupId>
-            <artifactId>woodstox-core-asl</artifactId>
-            <version>${woodstox-core-asl.version}</version>
-        </dependency>
-
-
-        <!-- logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.ryantenney.metrics</groupId>
             <artifactId>metrics-spring</artifactId>
             <version>3.1.3</version>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.mobile</groupId>
-            <artifactId>spring-mobile-device</artifactId>
-            <version>1.1.5.RELEASE</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>${jjwt.version}</version>
         </dependency>
 
         <dependency>
@@ -403,14 +185,12 @@
             <optional>true</optional>
         </dependency>
 
-
-        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <!-- Used for OData, Elasticsearch query generation and in tests -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20180130</version>
         </dependency>
-
 
         <!--
         We are experiencing this issue
@@ -422,8 +202,6 @@
             <artifactId>javax.interceptor-api</artifactId>
             <version>1.2</version>
         </dependency>
-
-        <!-- End nikita.webappdependencies -->
     </dependencies>
 
 
@@ -464,23 +242,8 @@
                     <configuration>
                         <mainClass>nikita.N5CoreApp</mainClass>
                     </configuration>
-                    <!--
-                                        <executions>
-                                            <execution>
-                                                <goals>
-                                                    <goal>repackage</goal>
-                                                </goals>
-                                            </execution>
-                                        </executions>
-                                        -->
                 </plugin>
-
             </plugins>
-
-
         </pluginManagement>
-
     </build>
-
-
 </project>
