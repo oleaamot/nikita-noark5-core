@@ -50,9 +50,6 @@
 
         <!-- dependency versions -->
         <spring-security.version>5.0.3.RELEASE</spring-security.version>
-        <spring-security-oauth2.version>2.3.0.RELEASE
-        </spring-security-oauth2.version>
-        <spring-security-jwt.version>1.0.9.RELEASE</spring-security-jwt.version>
         <commons-lang3.version>3.4</commons-lang3.version>
         <springfox-swagger2.version>2.7.0</springfox-swagger2.version>
         <springfox-swagger-ui.version>2.7.0</springfox-swagger-ui.version>
@@ -75,10 +72,8 @@
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth2</artifactId>
-            <version>${spring-security-oauth2.version}</version>
         </dependency>
 
-        <!-- spring security 5  -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
@@ -139,7 +134,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-jwt</artifactId>
-            <version>${spring-security-jwt.version}</version>
         </dependency>
 
         <!-- In memory database, used for demo mode only -->
@@ -203,7 +197,6 @@
             <version>1.2</version>
         </dependency>
     </dependencies>
-
 
     <build>
         <pluginManagement>
