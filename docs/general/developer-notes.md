@@ -5,6 +5,8 @@
  - Project structure
  - Continued OData
  - Testing framework
+ - Upgrade to spring-boot 2
+
 
 ###Project structure
 ###Continued OData
@@ -22,6 +24,12 @@ This has also resulted in our approach to CI being worthless as up to now
 everything passes travisCI. So hopefully now we can latch the test framework 
 properly into travisCI so future development is  
 
+###Upgrade to spring-boot 2
+
+We decided that now was probably a good time to upgrade to spring-boot 2. By
+doing this we move the project to a base with better long term support and we
+gain access to spring-security 5, which is a major improvement.  Native JWT 
+support is included in spring-security 5.  
 
 [principles](https://blog.parasoft
 .com/start-to-love-spring-testing-with-unit-test-assistant-for-java)
