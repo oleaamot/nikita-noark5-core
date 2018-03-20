@@ -59,10 +59,8 @@ public class HQLStatementBuilder {
     }
 
     public Query buildHQLStatement(Session session) {
-
-
         // take care of the select part
-        String hqlStatement = select;
+        StringBuffer hqlStatement = new StringBuffer(select);
 
         boolean firstWhere = false;
         // take care of the where part
@@ -70,25 +68,26 @@ public class HQLStatementBuilder {
         for (String where : whereList) {
             if (!firstWhere) {
                 firstWhere = true;
-                hqlStatement += " and ";
+                hqlStatement.append(" and ");
             }
-            hqlStatement += where;
+            hqlStatement.append(where);
         }
 
-        hqlStatement += " ";
+        hqlStatement.append(" ");
 
-        Query query = session.createQuery(hqlStatement);
+        Query query = session.createQuery(hqlStatement.toString());
 
         // take care of the orderBy part
         boolean firstOrderBy = true;
         for (Map.Entry entry : orderByMap.entrySet()) {
             if (!firstOrderBy) {
                 firstOrderBy = false;
-                hqlStatement += ", ";
+                hqlStatement.append(", ");
             } else {
-                hqlStatement += " order by ";
+                hqlStatement.append(" order by ");
+                firstOrderBy = false;
             }
-            hqlStatement += entry.getKey() + " " + entry.getValue();
+            hqlStatement.append(entry.getKey() + " " + entry.getValue());
         }
 
         query.setFirstResult(limitOffset);

@@ -31,8 +31,6 @@ public class DocumentDescriptionService
     private DocumentObjectService documentObjectService;
     private IDocumentDescriptionRepository documentDescriptionRepository;
     private EntityManager entityManager;
-    //@Value("${nikita-noark5-core.pagination.maxPageSize}")
-    private Integer maxPageSize = new Integer(10);
 
     public DocumentDescriptionService(DocumentObjectService documentObjectService,
                                       IDocumentDescriptionRepository documentDescriptionRepository,

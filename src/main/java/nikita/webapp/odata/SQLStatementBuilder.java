@@ -55,7 +55,7 @@ public class SQLStatementBuilder {
     public String buildSQLStatement() {
 
         // take care of the select part
-        String sqlStatement = select;
+        StringBuffer sqlStatement = new StringBuffer(select);
 
         boolean firstWhere = false;
         // take care of the where part
@@ -63,37 +63,39 @@ public class SQLStatementBuilder {
         for (String where : whereList) {
             if (!firstWhere) {
                 firstWhere = true;
-                sqlStatement += " and ";
+                sqlStatement.append(" and ");
             }
-            sqlStatement += where;
+            sqlStatement.append(where);
+            firstWhere = false;
         }
 
 
-        sqlStatement += " ";
+        sqlStatement.append(" ");
 
         // take care of the orderBy part
         boolean firstOrderBy = true;
         for (String orderBy : orderByList) {
             if (!firstOrderBy) {
                 firstOrderBy = false;
-                sqlStatement += ", ";
+                sqlStatement.append(", ");
             } else {
-                sqlStatement += " order by ";
+                sqlStatement.append(" order by ");
             }
-            sqlStatement += orderBy;
+            sqlStatement.append(orderBy);
         }
 
-        sqlStatement += " ";
+        sqlStatement.append(" ");
 
         // take care of the limit part
         if (limitOffset != null) {
-            sqlStatement += " LIMIT " + limitOffset;
+            sqlStatement.append(" LIMIT " + limitOffset);
             if (limitHowMany != null) {
-                sqlStatement += ", " + limitHowMany;
+                sqlStatement.append(", " + limitHowMany);
             }
         } else if (limitHowMany != null) {
-            sqlStatement += " LIMIT " + limitHowMany;
+            sqlStatement.append(" LIMIT " + limitHowMany);
         }
-        return sqlStatement;
+
+        return sqlStatement.toString();
     }
 }

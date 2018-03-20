@@ -20,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 
 import static nikita.common.config.Constants.*;
@@ -42,17 +41,13 @@ import static org.springframework.http.HttpHeaders.ETAG;
 // issues.
 public class FondsHateoasController extends NoarkController {
 
-    private EntityManager entityManager;
     private IFondsService fondsService;
 
-
-    public FondsHateoasController(EntityManager entityManager,
-                                  IFondsService fondsService) {
-        this.entityManager = entityManager;
+    public FondsHateoasController(IFondsService fondsService) {
         this.fondsService = fondsService;
     }
 
-    // API - All POST Requests (CRUD - CREATE)
+// API - All POST Requests (CRUD - CREATE)
 
     // Create a Fonds
     // POST [contextPath][api]/arkivstruktur/arkiv
