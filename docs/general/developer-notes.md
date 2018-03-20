@@ -1,6 +1,6 @@
 # Nikita developer notes
 
-## 2018-03-17
+## 2018-03-20
 
  - Project structure
  - Continued OData
@@ -9,8 +9,44 @@
 
 
 ###Project structure
-###Continued OData
 
+We changed the project from a multi-module maven project to a single module 
+maven project. The reason for this is that we were never able to get spring 
+working "just right" as a multi-module project. We weren't for example able to 
+get spring testing working properly. We missed out on a lot of springs 
+autoconfiguration.
+
+With this change we got rid of a number of annotations and now let spring 
+automagically configure everything.
+
+We keep the webapp separate from common logic using package names, so if anyone 
+wants to reuse a lot of of the ORM layer it should be possible to take it from  
+nikita.common.
+
+We used this opportunity to change the package naming as well.  The old 
+naming was no.arkivlab.hioa.nikita. This naming came from an initiative to try to
+create a community for public archives software called arkivlab. Nothing ever 
+came of this initiative and the project is firmly anchored at OsloMet 
+(earlirer HiOA) so the need for package naming to include organisation is 
+redundant. HiOA is now called OsloMet so removing hioa from the codebase 
+makes sense.
+
+###Continued OData
+OData support continues. The code is now able to create simple SQL/HQL 
+statements from simple OData syntax. The following examples are supported:
+
+    http://localhost/noark5v4/api/arkivstruktur/arkiv?$filter=contains(tittel, 'Oslo') and tittel eq 'goodbye'$top=2$skip=4$orderby=tittel desc
+    http://localhost/noark5v4/api/arkivstruktur/arkiv?$filter=tittel eq 'hello'$top=2$orderby=tittel desc
+    http://localhost/noark5v4/api/arkivstruktur/arkiv?$top=2$skip=4$filter=tittel eq 'hello'$orderby=beskrivelse desc
+    http://localhost/noark5v4/api/arkivstruktur/mappe?$filter=tittel lt 'hello'
+    http://localhost/noark5v4/api/arkivstruktur/arkiv?$filter=startsWith(tittel, 'hello')
+    http://localhost/noark5v4/api/arkivstruktur/arkiv?$filter=contains(beskrivelse, 'hello')
+    http://localhost/noark5v4/api/arkivstruktur/mappe?$filter=tittel eq 'hello'
+
+There is still a bit more work to be done and quality control. But this is a 
+good start. Going forward, we will integrate this to the controller, service and
+persistence layers. There is an ongoing clean-up of the controller / service 
+layers so we will gradually introduce this for all Noark entities.
 
 ### Testing framework 
 
@@ -22,18 +58,18 @@ integration tests.
 
 This has also resulted in our approach to CI being worthless as up to now 
 everything passes travisCI. So hopefully now we can latch the test framework 
-properly into travisCI so future development is  
+properly into travisCI so future development is properly controlled.  
+
+This is something we're looking at [principles](https://blog.parasoft.com/start-to-love-spring-testing-with-unit-test-assistant-for-java)
 
 ###Upgrade to spring-boot 2
 
 We decided that now was probably a good time to upgrade to spring-boot 2. By
 doing this we move the project to a base with better long term support and we
 gain access to spring-security 5, which is a major improvement.  Native JWT 
-support is included in spring-security 5.  
-
-[principles](https://blog.parasoft
-.com/start-to-love-spring-testing-with-unit-test-assistant-for-java)
-
+support is included in spring-security 5. This leaves the codebase without any
+security implementation. So the current builds are starting nikita but it is 
+not possible to log on until we get security working.
 
 ## 2018-02-23
 
