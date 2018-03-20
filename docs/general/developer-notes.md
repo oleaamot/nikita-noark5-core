@@ -7,7 +7,6 @@
  - Testing framework
  - Upgrade to spring-boot 2
 
-
 ###Project structure
 
 We changed the project from a multi-module maven project to a single module 
@@ -27,7 +26,7 @@ We used this opportunity to change the package naming as well.  The old
 naming was no.arkivlab.hioa.nikita. This naming came from an initiative to try to
 create a community for public archives software called arkivlab. Nothing ever 
 came of this initiative and the project is firmly anchored at OsloMet 
-(earlirer HiOA) so the need for package naming to include organisation is 
+(earlier HiOA) so the need for package naming to include organisation is 
 redundant. HiOA is now called OsloMet so removing hioa from the codebase 
 makes sense.
 
