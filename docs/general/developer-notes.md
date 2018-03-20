@@ -7,7 +7,7 @@
  - Testing framework
  - Upgrade to spring-boot 2
 
-###Project structure
+### Project structure
 
 We changed the project from a multi-module maven project to a single module 
 maven project. The reason for this is that we were never able to get spring 
@@ -23,14 +23,14 @@ wants to reuse a lot of of the ORM layer it should be possible to take it from
 nikita.common.
 
 We used this opportunity to change the package naming as well.  The old 
-naming was no.arkivlab.hioa.nikita. This naming came from an initiative to try to
-create a community for public archives software called arkivlab. Nothing ever 
-came of this initiative and the project is firmly anchored at OsloMet 
+naming was no.arkivlab.hioa.nikita. This naming came from an initiative to try 
+to create a community for public archives software called arkivlab. Nothing 
+ever came of this initiative and the project is firmly anchored at OsloMet 
 (earlier HiOA) so the need for package naming to include organisation is 
 redundant. HiOA is now called OsloMet so removing hioa from the codebase 
 makes sense.
 
-###Continued OData
+### Continued OData
 OData support continues. The code is now able to create simple SQL/HQL 
 statements from simple OData syntax. The following examples are supported:
 
@@ -61,7 +61,7 @@ properly into travisCI so future development is properly controlled.
 
 This is something we're looking at [principles](https://blog.parasoft.com/start-to-love-spring-testing-with-unit-test-assistant-for-java)
 
-###Upgrade to spring-boot 2
+### Upgrade to spring-boot 2
 
 We decided that now was probably a good time to upgrade to spring-boot 2. By
 doing this we move the project to a base with better long term support and we
