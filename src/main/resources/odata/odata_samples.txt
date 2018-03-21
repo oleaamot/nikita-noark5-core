@@ -1,4 +1,4 @@
-http://localhost/noark5v4/api/arkivstruktur/arkiv?$filter=contains(tittel,'Oslo')$top=2$skip=4$orderby=tittel desc
+http://localhost/noark5v4/api/arkivstruktur/arkiv?$filter=contains(beskrivelse,'Oslo') and tittel eq 'goodbye'$top=2$skip=4$orderby=tittel desc
 http://localhost/noark5v4/api/arkivstruktur/arkiv?$filter=tittel eq 'hello'$top=2$orderby=tittel desc
 http://localhost/noark5v4/api/arkivstruktur/arkiv?$top=2$skip=4$filter=tittel eq 'hello'$orderby=beskrivelse desc
 http://localhost/noark5v4/api/arkivstruktur/mappe?$filter=tittel lt 'hello'

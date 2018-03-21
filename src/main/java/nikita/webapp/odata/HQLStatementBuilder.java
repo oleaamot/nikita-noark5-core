@@ -62,14 +62,12 @@ public class HQLStatementBuilder {
         // take care of the select part
         StringBuffer hqlStatement = new StringBuffer(select);
 
-        boolean firstWhere = false;
         // take care of the where part
         // Coding with 'and'. Will figure out how to handle this properly later
+        // We always start limiting based on logged in person, so we have to
+        // add an 'and' here.
         for (String where : whereList) {
-            if (!firstWhere) {
-                firstWhere = true;
-                hqlStatement.append(" and ");
-            }
+            hqlStatement.append(" and ");
             hqlStatement.append(where);
         }
 
@@ -78,14 +76,13 @@ public class HQLStatementBuilder {
         Query query = session.createQuery(hqlStatement.toString());
 
         // take care of the orderBy part
-        boolean firstOrderBy = true;
+        boolean firstOrderBy = false;
         for (Map.Entry entry : orderByMap.entrySet()) {
-            if (!firstOrderBy) {
-                firstOrderBy = false;
+            if (firstOrderBy) {
                 hqlStatement.append(", ");
             } else {
                 hqlStatement.append(" order by ");
-                firstOrderBy = false;
+                firstOrderBy = true;
             }
             hqlStatement.append(entry.getKey() + " " + entry.getValue());
         }

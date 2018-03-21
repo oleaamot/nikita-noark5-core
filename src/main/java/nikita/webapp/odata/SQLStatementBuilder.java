@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * where part is an ArrayList of various clauses that are currently joined
  * together with an 'and'. We need a better way to handle this. But this is
  * experimental, prototyping the solution as we go along.
- *
+ * <p>
  * Note. When implementing paging, make sure there is a sort order. Remember
  * the fetch order is unpredictable.
  */
@@ -57,29 +57,25 @@ public class SQLStatementBuilder {
         // take care of the select part
         StringBuffer sqlStatement = new StringBuffer(select);
 
-        boolean firstWhere = false;
         // take care of the where part
         // Coding with 'and'. Will figure out how to handle this properly later
+        // We always start filtering based on logged in person, so we have to
+        // add an 'and' here.
         for (String where : whereList) {
-            if (!firstWhere) {
-                firstWhere = true;
-                sqlStatement.append(" and ");
-            }
+            sqlStatement.append(" and ");
             sqlStatement.append(where);
-            firstWhere = false;
         }
-
 
         sqlStatement.append(" ");
 
         // take care of the orderBy part
-        boolean firstOrderBy = true;
+        boolean firstOrderBy = false;
         for (String orderBy : orderByList) {
-            if (!firstOrderBy) {
-                firstOrderBy = false;
+            if (firstOrderBy) {
                 sqlStatement.append(", ");
             } else {
                 sqlStatement.append(" order by ");
+                firstOrderBy = true;
             }
             sqlStatement.append(orderBy);
         }
