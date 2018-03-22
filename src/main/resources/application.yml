@@ -3,13 +3,13 @@
 #
 # ===================================================================
 
-logging.level.org.springframework.web: DEBUG
+#logging.level.org.springframework.web: DEBUG
 
 server:
   application:
     name: OsloMet Noark 5 Core (Demo mode)
-    servlet:
-      contextPath: /noark5v4
+  servlet:
+    context-path: /noark5v4
   port: 8092
 
 spring:

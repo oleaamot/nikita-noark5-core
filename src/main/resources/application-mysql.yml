@@ -16,9 +16,11 @@
 # ===================================================================
 server:
   application:
-    name: OsloMet Noark 5 Core (Running on MySQL)
-  contextPath: /noark5v4
+    name: OsloMet Noark 5 Core (using MySQL)
+  servlet:
+    context-path: /noark5v4
   port: 8092
+
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/nikita_noark5_prod
