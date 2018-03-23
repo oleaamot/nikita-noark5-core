@@ -49,7 +49,7 @@ public class N5CoreApp {
                 env.getProperty("server.port"),
                 InetAddress.getLocalHost().getHostAddress(),
                 env.getProperty("server.port"),
-                env.getProperty("server.contextPath"),
+                env.getProperty("server.servlet.context-path"),
                 profilesAsString
         );
 
@@ -67,7 +67,7 @@ public class N5CoreApp {
                     env.getProperty("spring.jpa.database"),
                     InetAddress.getLocalHost().getHostAddress(),
                     env.getProperty("server.port"),
-                    env.getProperty("server.contextPath"),
+                    env.getProperty("server.servlet.context-path"),
                     env.getProperty("spring.h2.console.path")
             );
         }
