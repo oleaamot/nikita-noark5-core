@@ -1,7 +1,7 @@
 package nikita.webapp.service;
 
 import nikita.common.model.noark5.v4.admin.User;
-import nikita.webapp.security.repository.UserRepository;
+import nikita.common.repository.nikita.UserRepository;
 import nikita.webapp.util.exceptions.UsernameExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

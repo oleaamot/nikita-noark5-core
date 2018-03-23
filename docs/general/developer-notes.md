@@ -19,8 +19,8 @@ With this change we got rid of a number of annotations and now let spring
 automagically configure everything.
 
 We keep the webapp separate from common logic using package names, so if anyone 
-wants to reuse a lot of of the ORM layer it should be possible to take it from  
-nikita.common.
+wants to reuse a lot of of the ORM layer it should be possible to take it 
+from nikita.common.
 
 We used this opportunity to change the package naming as well.  The old 
 naming was no.arkivlab.hioa.nikita. This naming came from an initiative to try 
@@ -66,9 +66,11 @@ This is something we're looking at [principles](https://blog.parasoft.com/start-
 We decided that now was probably a good time to upgrade to spring-boot 2. By
 doing this we move the project to a base with better long term support and we
 gain access to spring-security 5, which is a major improvement.  Native JWT 
-support is included in spring-security 5. This leaves the codebase without any
-security implementation. So the current builds are starting nikita but it is 
-not possible to log on until we get security working.
+support is included in spring-security 5. 
+
+So far the upgrade worked. There were a few issues. This leaves the codebase 
+without any security implementation. So the current builds are starting 
+nikita but it is not possible to log on until we get security working.
 
 ## 2018-02-23
 
