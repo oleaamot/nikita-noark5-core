@@ -4,35 +4,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>no.arkivlab.hioa.nikita</groupId>
-    <artifactId>nikita-noark5</artifactId>
-    <packaging>pom</packaging>
+    <groupId>nikita</groupId>
+    <artifactId>nikita-noark5-core</artifactId>
+    <packaging>jar</packaging>
     <version>0.1.0</version>
-
-    <modules>
-        <module>core-common</module>
-        <module>core-webapp</module>
-        <module>core-extraction</module>
-        <module>core-integration</module>
-    </modules>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.4.1.RELEASE</version>
-        <relativePath />
+        <version>2.0.0.RELEASE</version>
     </parent>
 
     <name>nikita-noark5</name>
 
     <issueManagement>
-        <url>https://github.com/tsodring/nikita-noark5-core/issues</url>
+        <url>https://github.com/HiOA-ABI/nikita-noark5-core/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
     <licenses>
         <license>
-            <name>AGPLv3 - GNU Affero General Public Licens</name>
+            <name>AGPLv3 - GNU Affero General Public License</name>
             <url>https://www.gnu.org/licenses/agpl-3.0.html</url>
             <distribution>repo</distribution>
         </license>
@@ -40,7 +32,7 @@
 
     <developers>
         <developer>
-            <email>thomas.sodring@hioa.no</email>
+            <email>tsodring@oslomet.no</email>
             <name>Thomas Sødring</name>
             <url>https://github.com/tsodring</url>
             <id>tsodring</id>
@@ -53,165 +45,201 @@
         </developer>
     </developers>
 
+    <properties>
+        <start-class>nikita.N5CoreApp</start-class>
+
+        <!-- dependency versions -->
+        <spring-security.version>5.0.3.RELEASE</spring-security.version>
+        <spring-security-oauth2.version>2.3.0.RELEASE
+        </spring-security-oauth2.version>
+        <spring-security-jwt.version>1.0.9.RELEASE</spring-security-jwt.version>
+        <commons-lang3.version>3.4</commons-lang3.version>
+        <springfox-swagger2.version>2.7.0</springfox-swagger2.version>
+        <springfox-swagger-ui.version>2.7.0</springfox-swagger-ui.version>
+        <antlr.version>4.7.1</antlr.version>
+        <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>${spring-security-oauth2.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+        </dependency>
+
+        <!-- Used for CompareToBuilder etc -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+
+        <!-- Used for the @Audited annotation-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-envers</artifactId>
+        </dependency>
+
+        <!-- antlr dependency for parsing OData syntax -->
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>${antlr.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-jwt</artifactId>
+            <version>${spring-security-jwt.version}</version>
+        </dependency>
+
+        <!-- In memory database, used for demo mode only -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+
+        <!-- Postgres database. Toggled using profiles. -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+
+        <!-- MySQL database. Toggled using profiles. -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <!-- swagger dependency -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox-swagger-ui.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox-swagger2.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ryantenney.metrics</groupId>
+            <artifactId>metrics-spring</artifactId>
+            <version>3.1.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Used for OData, Elasticsearch query generation and in tests -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20180130</version>
+        </dependency>
+
+        <!--
+        We are experiencing this issue
+        https://stackoverflow.com/questions/27808734/jdk8-error-class-file-for-javax-interceptor-interceptorbinding-not-found-whe
+        The following dependency resolves the issue.
+        -->
+        <dependency>
+            <groupId>javax.interceptor</groupId>
+            <artifactId>javax.interceptor-api</artifactId>
+            <version>1.2</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler-plugin.version}</version>
+                    <artifactId>maven-surefire-plugin</artifactId>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                        <compilerArgument>-proc:none</compilerArgument>
-                    </configuration>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>${maven-resources-plugin.version}</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>1.4.1.RELEASE</version>
-                    <configuration>
-                      <classifier>spring-boot</classifier>
-                        <mainClass>no.arkivlab.hioa.nikita.webapp.run.N5CoreApp</mainClass>
+                        <excludes>
+                            <exclude>**/*IntegrationTest.java</exclude>
+                        </excludes>
                     </configuration>
                     <executions>
                         <execution>
+                            <id>integration-test</id>
                             <goals>
-                                <goal>repackage</goal>
+                                <goal>test</goal>
                             </goals>
+                            <phase>integration-test</phase>
+                            <configuration>
+                                <excludes>
+                                    <exclude>none</exclude>
+                                </excludes>
+                                <includes>
+                                    <include>**/*IT.java</include>
+                                </includes>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
-
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <configuration>
+                        <mainClass>nikita.N5CoreApp</mainClass>
+                    </configuration>
+                </plugin>
             </plugins>
-
-
         </pluginManagement>
-
     </build>
-
-    <properties>
-
-        <!-- The main class to start by executing java -jar -->
-        <start-class>no.arkivlab.hioa.nikita.webapp.run.N5CoreApp</start-class>
-
-        <!-- non-dependencies -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
-        <metrics-spark-reporter.version>1.2</metrics-spark-reporter.version>
-        <metrics-spring.version>3.1.3</metrics-spring.version>
-        <dropwizard-metrics.version>3.1.2</dropwizard-metrics.version>
-        <commons-collections.version>3.2.1</commons-collections.version>
-        <hibernate.version>5.2.6.Final</hibernate.version>
-        <hibernate-validator.version>5.3.4.Final</hibernate-validator.version>
-        <hibernate-envers.version>5.2.6.Final</hibernate-envers.version>
-        <hibernate-search.version>5.7.0.CR1</hibernate-search.version>
-
-        <!-- persistence -->
-        <hibernate-jpamodelgen.version>5.2.6.Final</hibernate-jpamodelgen.version>
-
-
-        <httpclient.version>4.5.1</httpclient.version>
-        <jackson.version>2.7.5</jackson.version>
-        <jackson-databind.version>2.7.5</jackson-databind.version>
-        <jackson-core>2.7.5</jackson-core>
-        <javassist.version>3.20.0-GA</javassist.version>
-
-        <slf4j.version>1.7.13</slf4j.version>
-        <jquery.version>3.0.0</jquery.version>
-
-        <commons-lang3.version>3.4</commons-lang3.version>
-
-        <jackson-dataformat-xml.version>2.7.5</jackson-dataformat-xml.version>
-        <jackson-datatype-jdk8.version>2.7.5</jackson-datatype-jdk8.version>
-        <woodstox-core-asl.version>4.4.1</woodstox-core-asl.version>
-        <jcl-over-slf4j.version>1.7.19</jcl-over-slf4j.version>
-        <log4j-over-slf4j.version>1.7.19</log4j-over-slf4j.version>
-
-        <!-- Spring related -->
-
-        <aspectjweaver.version>1.8.9</aspectjweaver.version>
-
-        <maven-processor-plugin.version>3.1.0</maven-processor-plugin.version>
-        <spring-security.version>4.0.4.RELEASE</spring-security.version>
-
-        <!-- <spring.version>4.2.8.RELEASE</spring.version> -->
-
-        <jjwt.version>0.7.0</jjwt.version>
-
-        <odata.version>4.3.0</odata.version>
-
-        <!-- web -->
-        <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
-        <httpclient.version>4.5.2</httpclient.version>
-        <!-- marshalling -->
-        <jaxb-api.version>2.2.12</jaxb-api.version>
-
-        <!-- commons and utils -->
-        <commons-lang3.version>3.4</commons-lang3.version>
-        <guava.version>18.0</guava.version>
-
-        <!-- UNSORTED -->
-        <commons-codec.version>1.10</commons-codec.version>
-
-
-
-        <querydsl.version>4.0.7</querydsl.version>
-        <h2.version>1.4.190</h2.version>
-        <postgresql.version>9.4.1208</postgresql.version>
-        <mysql.version>5.1.38</mysql.version>
-
-
-
-        <validation-api.version>1.1.0.Final</validation-api.version>
-
-
-
-        <springfox-swagger2.version>2.4.0</springfox-swagger2.version>
-        <springfox-swagger-ui.version>2.4.0</springfox-swagger-ui.version>
-        <javax-inject.version>1</javax-inject.version>
-
-        <!-- ops related -->
-        <tomcat.version>8.0.30</tomcat.version>
-
-        <!-- logging -->
-        <logback.version>1.1.3</logback.version>
-        <slf4j-api.version>1.7.19</slf4j-api.version>
-        <!-- WADL generation -->
-        <wadl.version>1.1.6</wadl.version>
-
-        <!-- testing -->
-        <org.hamcrest.version>1.3</org.hamcrest.version>
-        <org.hamcrest-core.version>1.3</org.hamcrest-core.version>
-        <org.hamcrest-library.version>1.3</org.hamcrest-library.version>
-        <junit.version>4.12</junit.version>
-        <mockito.version>1.10.19</mockito.version>
-        <mockito-core.version>1.10.19</mockito-core.version>
-        <httpcore.version>4.4.4</httpcore.version>
-        <rest-assured.version>2.7.0</rest-assured.version>
-        <logback-classic.version>1.1.6</logback-classic.version>
-
-
-        <jdk.version>1.8</jdk.version>
-        <!-- maven plugins -->
-        <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
-        <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
-        <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
-        <cargo-maven2-plugin.version>1.4.16</cargo-maven2-plugin.version>
-        <maven-war-plugin.version>3.0.0</maven-war-plugin.version>
-        <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
-
-        <target.deploy>localhost</target.deploy>
-
-
-    </properties>
-
-
 </project>

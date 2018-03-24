@@ -1,0 +1,90 @@
+# ===================================================================
+# Spring Boot configuration for the "postgres" profile.
+#
+# This configuration overrides the application.yml file.
+# ===================================================================
+
+server:
+  application:
+    name: OsloMet Noark 5 Core (using Postgres)
+  servlet:
+    context-path: /noark5v4
+  port: 8092
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/nikita_noark5_prod
+    username: INSERT-USERNAME-HERE
+    password: INSERT-PASSWORD-HERE
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        hbm2ddl:
+          import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+          import_files: db/h2/import.sql,db/noark5_metadata_values.sql,db/postcode.sql,db/countrycode.sql
+#        show_sql: true # Slows things down if this is enabled.
+        hbm2ddl.auto: create
+    database: postgresql
+jwt:
+  header: Authorization
+  secret: mySecret
+  expiration: 604800
+  route:
+    authentication:
+      path: auth
+      refresh: refresh
+management:
+    context-path: /management
+info:
+    app.name: OsloMet Noark 5 Core (Demo version)
+    build.version: ${project.version}
+hateoas:
+    publicAddress: http://localhost:8092/noark5v4/
+
+# ===================================================================
+# nikita-noark5-core specific properties
+# ===================================================================
+
+# Application properties
+application:
+  pagination:
+    max-page-size: 10
+
+nikita-noark5-core:
+    mail:
+        from: nikita@example.com
+    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
+        jmx.enabled: true
+        spark:
+            enabled: false
+            host: localhost
+            port: 9999
+        graphite:
+            enabled: false
+            host: localhost
+            port: 2003
+            prefix: nikitaNoark5Core
+        logs: # report metrics in the logs
+            enabled: false
+            reportFrequency: 60 # in seconds
+    logging:
+        level:
+            ROOT: DEBUG
+        logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
+            enabled: false
+            host: localhost
+            port: 5000
+            queueSize: 512
+    persistence:
+         jpa.generateDdl: true
+    server:
+         name: nikita.hioa.no
+    details:
+        conformity-levels:
+            official: arkivstruktur, casehandling, metadata
+            non-official: gui, import-api
+    storage:
+        location: /tmp/dokumenter
+    checksumAlgorithm: SHA-256

@@ -1,0 +1,24 @@
+<div id="breadcrumb" class="container">
+    <div class="mdl-layout__header-row mdl-layout--fixed-drawer mdl-layout--fixed-header">
+        <div>
+            <a href="saksbehandler-dashboard.html"><label>Start</label></a>
+        </div>
+        <div ng-if="caseFile.mappeID">
+            <label>&gt;</label>
+            <a href="saksmappe.html"><label>Sak ({{ caseFile.mappeID }})</label></a>
+        </div>
+        <div ng-if="registryEntry.journaldato">
+            <label>&gt;</label>
+            <label><a href="journalpost.html">Journalpost({{ registryEntry.journalpostnummer }})</a></label>
+        </div>
+        <div ng-if="printCorrespondencePart">
+            <label>&gt;</label>
+            <label>{{label_correspondansepart}}</label>
+        </div>
+        <div ng-if="printDocument">
+            <label>&gt;</label>
+            <label>{{label_document}}</label>
+        </div>
+    </div>
+
+</div>

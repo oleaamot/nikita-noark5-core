@@ -10,44 +10,44 @@ require([
       body: raw.body,
       tags: raw.tags.join(' ')
     }
-  })
+  });
 
-  console.profile('load')
+    console.profile('load');
   window.idx = lunr(function () {
-    this.ref('id')
-    this.field('title')
-    this.field('body')
-    this.field('tags')
+      this.ref('id');
+      this.field('title');
+      this.field('body');
+      this.field('tags');
 
     questions.forEach(function (q) {
       this.add(q)
     }, this)
-  })
-  console.profileEnd('load')
+  });
+    console.profileEnd('load');
 
   window.profile = function (term) {
-    console.profile('search')
-    window.idx.search(term)
+      console.profile('search');
+      window.idx.search(term);
     console.profileEnd('search')
-  }
+  };
 
   window.search = function (term) {
-    console.time('search')
-    window.idx.search(term)
+      console.time('search');
+      window.idx.search(term);
     console.timeEnd('search')
-  }
+  };
 
   window.serialize = function () {
-    console.time('dump')
-    var json = JSON.stringify(window.idx)
-    console.timeEnd('dump')
+      console.time('dump');
+      var json = JSON.stringify(window.idx);
+      console.timeEnd('dump');
 
-    var serialized = JSON.parse(json)
-    console.profile("load")
-    var newIdx = lunr.Index.load(serialized)
-    console.profileEnd("load")
+      var serialized = JSON.parse(json);
+      console.profile("load");
+      var newIdx = lunr.Index.load(serialized);
+      console.profileEnd("load");
 
     return newIdx
   }
 
-})
+});

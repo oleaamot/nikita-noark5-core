@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="nb" ng-app="nikita-search">
+<head>
+  <meta charset="UTF-8">
+  <script src="/dependencies/internal/config.js"></script>
+  <script src="/dependencies/external/jQuery-2.2.4/jquery-2.2.4.min.js"></script>
+  <script src="/dependencies/external/angular-1.6.4/angular.min.js"></script>
+  <script src="/dependencies/internal/common_functionality.js"></script>
+  <script src="/dependencies/internal/sok.js"></script>
+  <script src="/dependencies/external/material-design-lite/material.min.js"></script>
+  <link rel="stylesheet" href="/dependencies/external/material-design-lite//material.min.css">
+  <meta charset="UTF-8">
+  <title>nikita-noark5</title>
+</head>
+<body ng-controller="SearchController">
+
+Archive:
+<input id="archive" type="text" name="archive"/>
+
+<br/>
+
+Content:
+<select name="content">
+  <option value="tittel">tittel</option>
+  <option value="beskrivelse">beskrivelse</option>
+</select>
+
+<br/>
+
+Element:
+<select name="element">
+  <option value="arkiv">arkiv</option>
+  <option value="arkivdel">arkivdel</option>
+  <option value="mappe">mappe</option>
+</select>
+<br/>
+
+Tittel:
+<div id="tittel"></div>
+Beskrivelse:
+<div id="beskrivelse"></div>
+
+<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ng-click="do_search()">
+  Search
+</button>
+
+</body>
+</html>

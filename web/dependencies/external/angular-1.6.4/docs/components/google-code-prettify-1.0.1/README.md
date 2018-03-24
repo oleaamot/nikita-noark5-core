@@ -26,6 +26,13 @@ define(['jquery', 'prettify'], function($, prettify){
 		})
 	);
 });
+
+
+
+
+
+
+
 ```
 
 This version of google-code-prettify defines an anonymous module, which is more flexible.  To allow your AMD loader to find google-code-prettify with a more convenient name, map a path to it as follows:
