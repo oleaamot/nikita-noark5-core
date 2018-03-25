@@ -20,7 +20,7 @@ app.controller('SearchController', ['$scope', '$http', function ($scope, $http) 
 	$http({
 	    method: 'GET',
 	    url: urlToFonds,
-	    headers: {'Authorization': token, 'Access-Control-Allow-Origin': 'http://www.arkivarium.no/'}
+	    headers: {'Authorization': token}
 	}).then(function successCallback(response) {
 	    console.log("Data received from search is : " + JSON.stringify(response.data));
 	}, function errorCallback(response) {
