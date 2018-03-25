@@ -1,48 +1,46 @@
 <!DOCTYPE html>
 <html lang="nb" ng-app="nikita-search">
-<head>
-  <meta charset="UTF-8">
-  <script src="/dependencies/internal/config.js"></script>
-  <script src="/dependencies/external/jQuery-2.2.4/jquery-2.2.4.min.js"></script>
-  <script src="/dependencies/external/angular-1.6.4/angular.min.js"></script>
-  <script src="/dependencies/internal/common_functionality.js"></script>
-  <script src="/dependencies/internal/sok.js"></script>
-  <script src="/dependencies/external/material-design-lite/material.min.js"></script>
-  <link rel="stylesheet" href="/dependencies/external/material-design-lite//material.min.css">
-  <meta charset="UTF-8">
-  <title>nikita-noark5</title>
-</head>
-<body ng-controller="SearchController">
-
-Archive:
-<input id="archive" type="text" name="archive"/>
-
-<br/>
-
-Content:
-<select name="content">
-  <option value="tittel">tittel</option>
-  <option value="beskrivelse">beskrivelse</option>
-</select>
-
-<br/>
-
-Element:
-<select name="element">
-  <option value="arkiv">arkiv</option>
-  <option value="arkivdel">arkivdel</option>
-  <option value="mappe">mappe</option>
-</select>
-<br/>
-
-Tittel:
-<div id="tittel"></div>
-Beskrivelse:
-<div id="beskrivelse"></div>
-
-<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ng-click="do_search()">
-  Search
-</button>
-
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <script src="/dependencies/internal/config.js"></script>
+    <script src="/dependencies/external/jQuery-2.2.4/jquery-2.2.4.min.js"></script>
+    <script src="/dependencies/external/angular-1.6.4/angular.min.js"></script>
+    <script src="/dependencies/internal/common_functionality.js"></script>
+    <script src="/dependencies/internal/sok.js"></script>
+    <script src="/dependencies/external/material-design-lite/material.min.js"></script>
+    <link rel="stylesheet" href="/dependencies/external/material-design-lite//material.min.css">
+    <meta charset="UTF-8">
+    <title>nikita-noark5</title>
+  </head>
+  <body ng-controller="SearchController">
+    <p><a href="login.html">logg inn</a> (Status: {{ status }})</p>
+    <h2></h2>
+    <form ng-submit="do_search()" method="post">
+    <table>
+      <tr>
+	<th>Element:</th>
+	<td><select name="element" id="element">
+	    <option value="arkiv">arkiv</option>
+	    <option value="arkivdel">arkivdel</option>
+	    <option value="mappe">mappe</option>
+	  </select>
+	</td>
+	<th>Content:</th>
+	<td><select name="content" id="content">
+	    <option value="tittel">tittel</option>
+	    <option value="beskrivelse">beskrivelse</option>
+	  </select>
+	</td>
+	<th>Filter:</th>
+	<td><select name="filter" id="filter">
+	    <option value="startswith">startswith</option>
+	  </select>
+	</td>
+	<th>String:</th>
+	<td><input id="string" type="text" name="string"/></td>
+	<td><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ng-click="do_search()">Search</button></td>
+      </tr>
+    </table>
+    </form>
+  </body>
 </html>
